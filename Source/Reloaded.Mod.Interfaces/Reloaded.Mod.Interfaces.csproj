@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Reloaded.Mod.Interfaces</AssemblyName>
+    <RootNamespace>Reloaded.Mod.Interfaces</RootNamespace>
+  </PropertyGroup>
+
+</Project>

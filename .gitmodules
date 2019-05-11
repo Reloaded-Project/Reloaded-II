@@ -1,0 +1,3 @@
+[submodule "Submodules/Reloaded.WPF"]
+	path = Submodules/Reloaded.WPF
+	url = https://github.com/Sewer56/Reloaded.WPF.git

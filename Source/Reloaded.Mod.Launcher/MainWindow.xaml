@@ -1,0 +1,20 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
+        xmlns:utilities="clr-namespace:Reloaded.WPF.Utilities;assembly=Reloaded.WPF"
+        xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        xmlns:properties="clr-namespace:Reloaded.WPF.MVVM.Properties;assembly=Reloaded.WPF"
+        xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        Style="{DynamicResource ReloadedWindow}">
+
+    <!-- Window Content -->
+    <controls:PageHost
+           CurrentPage = "{Binding Path=CurrentPage, 
+                             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, 
+                             Converter={x:Static converters:ApplicationPageToPageConverter.Instance}}"/>
+</default:ReloadedWindow>

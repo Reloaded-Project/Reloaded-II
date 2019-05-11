@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Sidebar Properties -->
+    <GridLength x:Key="SidebarWidth">44</GridLength>               <!-- The width of the sidebar. -->
+    <Thickness x:Key="SidebarMargin">5,0</Thickness>               <!-- Margin between the sidebar and elements inside. -->
+    <Thickness x:Key="SidebarElementMargin">0,0,0,5</Thickness>    <!-- The margin between the individual elements of the sidebar. -->
+    <sys:Double x:Key="SeparatorHeight">2</sys:Double>             <!-- Height of the separator between the default pages and processes. -->
+    
+</ResourceDictionary>

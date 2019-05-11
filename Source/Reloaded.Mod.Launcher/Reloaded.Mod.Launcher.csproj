@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>NET472;netcoreapp3.0</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>Reloaded-II</AssemblyName>
+    <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Images\Icons-1.png" />
+    <None Remove="Assets\Images\Icons-2.png" />
+    <None Remove="Assets\Images\Mods-Icon.png" />
+    <None Remove="Assets\Images\Search-Icon.png" />
+    <None Remove="Assets\Images\Settings-Icon.png" />
+    <None Remove="DesignTimeResources.xaml" />
+    <None Remove="Pages\MainPage.xaml" />
+    <None Remove="Styles\Window_Settings.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Properties\DesignTimeResources.xaml" />
+    <Page Remove="Styles\Window_Settings.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Styles\Window_Settings.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Properties\DesignTimeResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="4.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.5.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Submodules\Reloaded.WPF\Source\Reloaded.WPF.Theme.Default\Reloaded.WPF.Theme.Default.csproj" />
+    <ProjectReference Include="..\Reloaded.Loader.Loader\Reloaded.Mod.Loader.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Pages\MainPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Model\" />
+    <Folder Include="Models\ViewModel\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Images\Mods-Icon.png" />
+    <Resource Include="Assets\Images\Search-Icon.png" />
+    <Resource Include="Assets\Images\Settings-Icon.png" />
+  </ItemGroup>
+</Project>
