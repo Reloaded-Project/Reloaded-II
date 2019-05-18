@@ -3,11 +3,12 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
 using Reloaded.Mod.Launcher.Pages;
+using Reloaded.WPF.Theme.Default;
 using Page = Reloaded.Mod.Launcher.Pages.Page;
 
 namespace Reloaded.Mod.Launcher.Converters
 {
-    [ValueConversion(typeof(Page), typeof(System.Windows.Controls.Page))]
+    [ValueConversion(typeof(Page), typeof(ReloadedPage))]
     public class ApplicationPageToPageConverter : IValueConverter
     {
         public static ApplicationPageToPageConverter Instance = new ApplicationPageToPageConverter();
@@ -19,8 +20,14 @@ namespace Reloaded.Mod.Launcher.Converters
                 case Page.None:
                     return null;
 
+                case Page.Splash:
+                    return new SplashPage();
+
                 case Page.Base:
                     return new MainPage();
+
+                case Page.AddApp:
+                    return new AddAppPage();
 
                 default:
                     Debugger.Break();

@@ -2,6 +2,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
+    <!-- Common Page Settings -->
+    <Thickness x:Key="PageMargin">40</Thickness>    <!-- Space between the page content and edges of the window. -->
+    <Thickness x:Key="PanelMargin">10</Thickness>   <!-- Space between individual panels/grids of a page. -->
+    
+
+    <!-- Splash Properties -->
+    <Thickness x:Key="SplashImageMargin">100</Thickness>           <!-- Space between the splash image and edges of the window. -->
+    <sys:Double x:Key="SplashFontSize">28</sys:Double>             <!-- Size of the font used in the splash screen. -->
+
     <!-- Sidebar Properties -->
     <GridLength x:Key="SidebarWidth">44</GridLength>               <!-- The width of the sidebar. -->
     <Thickness x:Key="SidebarMargin">5,0</Thickness>               <!-- Margin between the sidebar and elements inside. -->

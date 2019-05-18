@@ -11,9 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.WPF", "..\Submodul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.WPF.Theme.Default", "..\Submodules\Reloaded.WPF\Source\Reloaded.WPF.Theme.Default\Reloaded.WPF.Theme.Default.csproj", "{FFA9815A-9E44-4603-8CCC-8289472BD562}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Interfaces", "Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj", "{23A7DB81-C58A-49EE-9AE0-A6C1E1064A6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Interfaces", "Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj", "{23A7DB81-C58A-49EE-9AE0-A6C1E1064A6A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Loader", "Reloaded.Mod.Loader\Reloaded.Mod.Loader.csproj", "{CF3E2DC7-04F8-4878-97F4-1BCF950AC97D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Loader.Tests", "Reloaded.Mod.Loader.Tests\Reloaded.Mod.Loader.Tests.csproj", "{305129E2-ED0F-45A5-BEBB-72202B002AF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Loader.IO", "Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj", "{82170607-827D-4F66-B01B-73B4CA47B473}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,14 @@ Global
 		{CF3E2DC7-04F8-4878-97F4-1BCF950AC97D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF3E2DC7-04F8-4878-97F4-1BCF950AC97D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF3E2DC7-04F8-4878-97F4-1BCF950AC97D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{305129E2-ED0F-45A5-BEBB-72202B002AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{305129E2-ED0F-45A5-BEBB-72202B002AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{305129E2-ED0F-45A5-BEBB-72202B002AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{305129E2-ED0F-45A5-BEBB-72202B002AF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82170607-827D-4F66-B01B-73B4CA47B473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82170607-827D-4F66-B01B-73B4CA47B473}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82170607-827D-4F66-B01B-73B4CA47B473}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82170607-827D-4F66-B01B-73B4CA47B473}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

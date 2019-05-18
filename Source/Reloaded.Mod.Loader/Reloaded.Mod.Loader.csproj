@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ParallelExtensionsExtras, Version=1.2.3.0, Culture=neutral, PublicKeyToken=665f4d61f853b5a9, processorArchitecture=MSIL">
+      <HintPath>..\packages\ParallelExtensionsExtras.1.2.0.0\lib\net40\ParallelExtensionsExtras.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,8 +44,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj">
+      <Project>{23a7db81-c58a-49ee-9ae0-a6c1e1064a6a}</Project>
+      <Name>Reloaded.Mod.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj">
+      <Project>{82170607-827d-4f66-b01b-73b4ca47b473}</Project>
+      <Name>Reloaded.Mod.Loader.IO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

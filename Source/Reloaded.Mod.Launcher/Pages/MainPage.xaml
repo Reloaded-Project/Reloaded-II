@@ -1,4 +1,4 @@
-﻿<default:ReloadedPage x:Class="Reloaded.Mod.Launcher.Pages.MainPage"
+﻿<launcher:ReloadedIIPage x:Class="Reloaded.Mod.Launcher.Pages.MainPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,14 +7,17 @@
              xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
              xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
              xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+             xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="800"
+             Title="{DynamicResource TitleMainPage}">
 
     <!-- IntelliSense -->
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles/Window_Settings.xaml"/>
+                <ResourceDictionary Source="../Languages/en-GB.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -34,20 +37,20 @@
                 <!-- Theme Page Buttons -->
                 <Viewbox DockPanel.Dock="Top" Margin="0,10,0,10">
                     <controls:CircleButton 
-                        ImageSource="pack://application:,,,/Assets/Images/Search-Icon.png"
-                        TooltipText="Search"/>
+                        ImageSource="pack://application:,,,/Assets/Images/Add-App-Icon.png"
+                        TooltipText="{DynamicResource TitleAddApplication}" PreviewMouseDown="AddApp_PreviewMouseDown"/>
                 </Viewbox>
-                
+
                 <Viewbox DockPanel.Dock="Top" Margin="0,0,0,10">
-                    <controls:CircleButton 
-                        ImageSource="pack://application:,,,/Assets/Images/Settings-Icon.png"
-                        TooltipText="Mod Loader Settings"/>
+                    <controls:CircleButton
+                        ImageSource="pack://application:,,,/Assets/Images/Mods-Icon.png" 
+                        TooltipText="{DynamicResource TitleManageMods}"/>
                 </Viewbox>
 
                 <Viewbox DockPanel.Dock="Top">
-                    <controls:CircleButton
-                        ImageSource="pack://application:,,,/Assets/Images/Mods-Icon.png" 
-                        TooltipText="Mod Manager"/>
+                    <controls:CircleButton 
+                        ImageSource="pack://application:,,,/Assets/Images/Settings-Icon.png"
+                        TooltipText="{DynamicResource TitleLoaderSettings}"/>
                 </Viewbox>
 
                 <!-- Separator -->
@@ -63,7 +66,7 @@
                 </Separator>
 
                 <!-- List of Games -->
-                <ItemsControl Name="ProcessesPanel" ItemsSource="{Binding Path=ProcessModels}"
+                <ItemsControl Name="ProcessesPanel" ItemsSource="{Binding Path=Applications}"
                               ScrollViewer.VerticalScrollBarVisibility="Hidden"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Recycling" DockPanel.Dock="Top">
@@ -88,8 +91,8 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Viewbox Margin="{DynamicResource SidebarElementMargin}">
-                                <controls:CircleButton TooltipText="{Binding Path=Value.ProcessName}"
-                                                       ImageSource="{Binding Path=Value.Image}"
+                                <controls:CircleButton TooltipText="{Binding Path=Item2.AppName}"
+                                                       ImageSource="{Binding Path=Item1}"
                                 />
                             </Viewbox>
                         </DataTemplate>
@@ -103,6 +106,8 @@
         <controls:PageHost Grid.Column="1" 
                Name="ContentFrame" 
                ClipToBounds="True"
-               CurrentPage="{Binding Path=Page, Converter={x:Static converters:ApplicationPageToPageConverter.Instance}}" Grid.RowSpan="2"/>
+               Grid.RowSpan="2"
+               CurrentPage="{Binding Path=Page,
+                                     Converter={x:Static converters:ApplicationPageToPageConverter.Instance}}"/>
     </Grid>
-</default:ReloadedPage>
+</launcher:ReloadedIIPage>

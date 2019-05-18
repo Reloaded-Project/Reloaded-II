@@ -1,2 +1,6 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    Source="pack://application:,,,/Reloaded.WPF.Theme.Default;component/Theme/Default/Root.xaml"/>
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Reloaded.WPF.Theme.Default;component/Theme/Default/Root.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Reloaded.Mod.Launcher;component/Languages/en-GB.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

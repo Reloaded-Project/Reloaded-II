@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- This file contains the Polish Language Text for Reloaded II -->
+
+    <!-- Page Titles -->
+    <sys:String x:Key="TitleAddApplication">Dodaj Aplikacje</sys:String>
+    <sys:String x:Key="TitleManageMods">Zarządzaj Modami</sys:String>
+    <sys:String x:Key="TitleLoaderSettings">Opcje Reloaded II</sys:String>
+    <sys:String x:Key="TitleMainPage">Ekran Główny</sys:String>
+    <sys:String x:Key="TitleSearchApplications">Szukaj/Filtruj Aplikacje</sys:String> <!-- Sidebar button to search applications. Removed. Might be brought back someday. -->
+    <sys:String x:Key="TitleSplashPage">Przygotowanie Reloaded II..</sys:String>
+
+    <!-- Splash Screen: Progress Messages -->
+    <sys:String x:Key="SplashCreatingDefaultConfig">Stwarzanie Domyślnych Konfiguracji</sys:String>
+    <sys:String x:Key="SplashCleaningConfigurations">Czysczenie App/Loader/Mod Konfiguracji</sys:String>
+    <sys:String x:Key="SplashLoadCompleteIn">Ładowanie Zakończone w:</sys:String>
+
+    <!-- Add Application Page -->
+    
+
+</ResourceDictionary>

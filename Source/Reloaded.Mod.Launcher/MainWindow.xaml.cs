@@ -7,17 +7,17 @@ namespace Reloaded.Mod.Launcher
     /// </summary>
     public partial class MainWindow : ReloadedWindow
     {
-        /// <summary>
-        /// The currently displayed page on this window.
-        /// </summary>
-        public Pages.Page CurrentPage { get; set; } = Pages.Page.Base;
+        public Models.ViewModel.WindowViewModel RealViewModel { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+            RealViewModel = new Models.ViewModel.WindowViewModel();
 
             // Make viewmodel of this window available.
             IoC.Kernel.Bind<WindowViewModel>().ToConstant((WindowViewModel)this.DataContext);
+            IoC.Kernel.Bind<MainWindow>().ToConstant(this);
+            IoC.Kernel.Bind<Models.ViewModel.WindowViewModel>().ToConstant(RealViewModel);
         }
     }
 }

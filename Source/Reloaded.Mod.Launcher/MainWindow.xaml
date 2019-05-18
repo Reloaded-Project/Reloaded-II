@@ -9,12 +9,14 @@
         xmlns:properties="clr-namespace:Reloaded.WPF.MVVM.Properties;assembly=Reloaded.WPF"
         xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="600" Width="800"
+        MinWidth="450"
+        MinHeight="300"
         Style="{DynamicResource ReloadedWindow}">
 
     <!-- Window Content -->
     <controls:PageHost
-           CurrentPage = "{Binding Path=CurrentPage, 
+           CurrentPage = "{Binding Path=RealViewModel.CurrentPage, 
                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, 
                              Converter={x:Static converters:ApplicationPageToPageConverter.Instance}}"/>
 </default:ReloadedWindow>

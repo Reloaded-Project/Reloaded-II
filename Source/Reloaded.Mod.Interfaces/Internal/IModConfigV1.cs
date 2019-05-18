@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Reloaded.Mod.Interfaces.Internal
+﻿namespace Reloaded.Mod.Interfaces.Internal
 {
     public interface IModConfigV1
     {

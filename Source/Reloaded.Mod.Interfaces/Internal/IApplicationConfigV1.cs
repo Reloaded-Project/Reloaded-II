@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Reloaded.Mod.Interfaces.Internal
+﻿namespace Reloaded.Mod.Interfaces.Internal
 {
     public interface IApplicationConfigV1
     {
         /// <summary>
+        /// Name that uniquely identifies the Application.
+        /// </summary>
+        string AppId { get; set; }
+
+        /// <summary>
         /// The visible name of the application. (As set by user and seen in launcher)
         /// </summary>
         string AppName { get; set; }
-
-        /// <summary>
-        /// Any important notes regarding the application.
-        /// </summary>
-        string AppDescription { get; set; }
 
         /// <summary>
         /// The location of the main executable of the application.
@@ -32,7 +28,7 @@ namespace Reloaded.Mod.Interfaces.Internal
         string AppIcon { get; set; }
 
         /// <summary>
-        /// Collection of enabled mods for this application by ModId, sorted in load order.
+        /// Collection of enabled mods for this application by mod folder, sorted in load order.
         /// </summary>
         string[] EnabledMods { get; set; }
     }
