@@ -17,5 +17,14 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             get;
             set;
         } = Pages.Page.Splash;
+
+        /// <summary>
+        /// The title of the main window.
+        /// </summary>
+        public string WindowTitle
+        {
+            get;
+            set;
+        } = "Reloaded II";
     }
 }

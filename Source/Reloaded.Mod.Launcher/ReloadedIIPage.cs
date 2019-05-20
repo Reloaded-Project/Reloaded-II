@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.WPF.Theme.Default;
+using WindowViewModel = Reloaded.Mod.Launcher.Models.ViewModel.WindowViewModel;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -19,23 +20,14 @@ namespace Reloaded.Mod.Launcher
     {
         public ReloadedIIPage()
         {
-            this.Loaded += OnLoaded;
+            this.AnimateInFinished += OnAnimateInFinished;
         }
 
-        protected void OnLoaded(object sender, RoutedEventArgs e)
+        protected void OnAnimateInFinished()
         {
-            // Set language dictionary.
-            var langDict = new ResourceDictionary();
-            string culture = Thread.CurrentThread.CurrentCulture.ToString();
-            string languageFilePath = AppDomain.CurrentDomain.BaseDirectory + $"/Languages/{culture}.xaml";
-            if (File.Exists(languageFilePath))
-                langDict.Source = new Uri(languageFilePath, UriKind.Absolute);
-
-            this.Resources.MergedDictionaries.Add(langDict);
-
             // Change window title to current page title.
             if (! String.IsNullOrEmpty(this.Title))
-                IoC.Get<MainWindow>().Title = this.Title;
+                IoC.Get<WindowViewModel>().WindowTitle = this.Title;
         }
     }
 }

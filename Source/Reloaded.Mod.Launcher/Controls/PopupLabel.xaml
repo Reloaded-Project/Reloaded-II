@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="Reloaded.Mod.Launcher.Controls.PopupLabel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:designTimeModels="clr-namespace:Reloaded.Mod.Launcher.Controls.DesignTimeModels"
+             xmlns:converters1="clr-namespace:Reloaded.Mod.Launcher.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="200">
+
+    <Grid>
+
+        <!-- Button -->
+        <StackPanel>
+            <Button Style="{DynamicResource LabelButton}"
+                    Content="{Binding ButtonText}"
+                    d:DataContext="{x:Static designTimeModels:PopupLabelDesignTimeModel.Instance}"
+                    DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                    PreviewMouseDown="Button_PreviewMouseDown">
+            </Button>
+
+            <ContentPresenter x:Name="HiddenContentContainer"
+                              Content="{Binding HiddenContent, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

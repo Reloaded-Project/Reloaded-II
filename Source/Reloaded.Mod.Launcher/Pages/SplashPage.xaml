@@ -12,16 +12,6 @@
              d:DesignHeight="600" d:DesignWidth="800"
              Title="{DynamicResource TitleSplashPage}">
 
-    <!-- IntelliSense -->
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/Window_Settings.xaml"/>
-                <ResourceDictionary Source="../Languages/en-GB.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
-
     <Grid>
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <Grid Margin="{DynamicResource SplashImageMargin}">

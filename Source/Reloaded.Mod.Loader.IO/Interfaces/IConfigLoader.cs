@@ -39,7 +39,7 @@ namespace Reloaded.Mod.Loader.IO.Interfaces
         /// Writes a given mod configurations to an absolute file path.
         /// </summary>
         /// <param name="path">The absolute path to write the configurations file to.</param>
-        /// <param name="modConfig">The mod configurations to commit to file.</param>
-        void WriteConfiguration(string path, TConfigType modConfig);
+        /// <param name="config">The mod configurations to commit to file.</param>
+        void WriteConfiguration(string path, TConfigType config);
     }
 }

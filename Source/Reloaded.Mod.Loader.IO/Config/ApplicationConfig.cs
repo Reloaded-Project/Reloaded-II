@@ -6,22 +6,49 @@ using System.Linq;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Utility;
+using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
-    public class ApplicationConfig : IApplicationConfig, IConfig, IConfigCleanup
+    public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig, IConfigCleanup
     {
         /// <summary>
         /// The name of the configuration file as stored on disk.
         /// </summary>
         public const string ConfigFileName = "AppConfig.json";
-
         public string AppId { get; set; } = "reloaded.application.template";
-        public string AppName { get; set; } = "Reloaded Application Name";
-        public string AppLocation { get; set; } = "Reloaded Application Location";
-        public string AppArguments { get; set; } = "Reloaded Application Arguments";
+        public string AppName { get; set; } = "Reloaded Application Template";
+        public string AppLocation { get; set; } = "";
+        public string AppArguments { get; set; } = "";
         public string AppIcon { get; set; } = "Icon.png";
         public string[] EnabledMods { get; set; } = new string[0];
+
+        public ApplicationConfig()
+        {
+
+        }
+
+        public ApplicationConfig(string appId, string appName, string appLocation)
+        {
+            AppId = appId;
+            AppName = appName;
+            AppLocation = appLocation;
+        }
+
+        /*
+           ---------
+           Utilities
+           --------- 
+        */
+
+        /// <summary>
+        /// Writes the configuration to a specified file path.
+        /// </summary>
+        public static void WriteConfiguration(string path, ApplicationConfig config)
+        {
+            var _applicationConfigLoader = new ConfigLoader<ApplicationConfig>();
+            _applicationConfigLoader.WriteConfiguration(path, config);
+        }
 
         /*
             ---------

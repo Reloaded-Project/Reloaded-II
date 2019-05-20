@@ -15,12 +15,24 @@
     <!-- Splash Screen: Progress Messages -->
     <sys:String x:Key="SplashCreatingDefaultConfig">Creating Default Config</sys:String>
     <sys:String x:Key="SplashCleaningConfigurations">Cleaning App/Loader/Mod Configurations</sys:String>
+    <sys:String x:Key="SplashPreparingViewModels">Setting up ViewModels</sys:String>
     <sys:String x:Key="SplashLoadCompleteIn">Load Complete in:</sys:String>
 
     <!-- Add Application Page -->
+    <sys:String x:Key="AddAppImageTooltip">Click this image to import a custom logo.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Select Image to use as icon or Executable to extract image from.</sys:String>
+
+    <sys:String x:Key="AddAppNewButton">New</sys:String>
+    <sys:String x:Key="AddAppDeleteButton">Delete</sys:String>
+
     <sys:String x:Key="AddAppName">Application Name</sys:String>
     <sys:String x:Key="AddAppLocation">Executable Location</sys:String>
     <sys:String x:Key="AddAppArguments">Commandline Arguments</sys:String>
 
+    <sys:String x:Key="AddAppAdvancedOptions">Advanced Tools &amp; Options</sys:String>
+    <sys:String x:Key="AddAppCreateShortcut">Create Shortcut</sys:String>
+
+    <sys:String x:Key="AddAppExecutableTitle">Select an application to create the configuration for.</sys:String>
+    <sys:String x:Key="AddAppExecutableFilter">Application Executable</sys:String>
 
 </ResourceDictionary>

@@ -16,12 +16,14 @@
     <None Remove="Assets\Images\Reloaded-No-Brackets.png" />
     <None Remove="Assets\Images\Search-Icon.png" />
     <None Remove="Assets\Images\Settings-Icon.png" />
+    <None Remove="Controls\PopupLabel.xaml" />
     <None Remove="DesignTimeResources.xaml" />
     <None Remove="Languages\en-GB.xaml" />
     <None Remove="Languages\pl-PL.xaml" />
     <None Remove="Pages\AddAppPage.xaml" />
-    <None Remove="Pages\MainPage.xaml" />
+    <None Remove="Pages\BasePage.xaml" />
     <None Remove="Pages\SplashPage.xaml" />
+    <None Remove="Pages\WelcomePage.xaml" />
     <None Remove="Styles\Controls.xaml" />
     <None Remove="Styles\Window_Settings.xaml" />
   </ItemGroup>
@@ -68,6 +70,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="1.0.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.5.14" />
   </ItemGroup>
 
@@ -77,13 +80,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Pages\AddAppPage.xaml.cs">
+    <Compile Update="Controls\PopupLabel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\BaseSubpages\AddAppPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\BaseSubpages\WelcomePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\SplashPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\MainPage.xaml.cs">
+    <Compile Update="Pages\BasePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -97,7 +106,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Pages\AddAppPage.xaml">
+    <Page Update="Controls\PopupLabel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\BaseSubpages\AddAppPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\BaseSubpages\WelcomePage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\SplashPage.xaml">
@@ -106,6 +121,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controls\" />
+    <Folder Include="Controls\Converters\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ApplicationDefinition>
   </ItemGroup>
 </Project>

@@ -21,15 +21,8 @@ namespace Reloaded.Mod.Launcher.Pages
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public partial class SplashPage : ReloadedIIPage
     {
-        #region XAML String Resource Constants
-        private const string XAML_SplashCreatingDefaultConfig = "SplashCreatingDefaultConfig";
-        private const string XAML_SplashCleaningConfigurations = "SplashCleaningConfigurations";
-        private const string XAML_SplashLoadCompleteIn = "SplashLoadCompleteIn";
-        #endregion XAML String Resource Constants
-
-        private const int MinimumSplashDelay = 2000;
         private SplashViewModel _splashViewModel;
-        private ResourceManipulator _manipulator;
+        private bool _loaded = false;
 
         public SplashPage() : base()
         {  
@@ -39,54 +32,23 @@ namespace Reloaded.Mod.Launcher.Pages
             // Setup ViewModel
             _splashViewModel = new SplashViewModel();
             this.DataContext = _splashViewModel;
-            _manipulator = new ResourceManipulator(this);
         }
 
         private void AfterLoading(object sender, RoutedEventArgs e)
         {
             // Start preparing everything on Splash Screen!
-            Task.Run(SetupApplication);
+            if (!_loaded)
+            {
+                _loaded = true;
+                Task.Run(() => Setup.SetupApplication(GetText, UpdateText)).ContinueWith(ChangeToMainPage);
+            }
         }
 
-        private async void SetupApplication()
+        /// <summary>
+        /// Switches the Reloaded Window to the main page.
+        /// </summary>
+        private void ChangeToMainPage(Task obj)
         {
-            // Counter for max load time.
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
-            // Cleanup Configurations
-            UpdateText(_manipulator.Get<string>(XAML_SplashCreatingDefaultConfig));
-            var _loaderConfig = CreateNewConfigIfNotExist();
-
-            // Cleaning up App/Loader/Mod Configurations
-            UpdateText(_manipulator.Get<string>(XAML_SplashCleaningConfigurations));
-
-            var modConfigLoader = new ConfigLoader<ModConfig>();
-            var appConfigLoader = new ConfigLoader<ApplicationConfig>();
-            var loaderConfigReader = new LoaderConfigReader();
-
-            foreach (var modConfiguration in modConfigLoader.ReadConfigurations(_loaderConfig.ModConfigDirectory, ModConfig.ConfigFileName))
-            {
-                modConfiguration.Object.CleanupConfig();
-                modConfigLoader.WriteConfiguration(modConfiguration.Path, modConfiguration.Object);
-            }
-
-            foreach (var appConfiguration in appConfigLoader.ReadConfigurations(_loaderConfig.ApplicationConfigDirectory, ApplicationConfig.ConfigFileName))
-            {
-                appConfiguration.Object.CleanupConfig();
-                appConfigLoader.WriteConfiguration(appConfiguration.Path, appConfiguration.Object);
-            }
-
-            var loaderConfiguration = loaderConfigReader.ReadConfiguration();
-            loaderConfiguration.CleanupConfig();
-            loaderConfigReader.WriteConfiguration(loaderConfiguration);
-
-            // Wait until splash screen time.
-            UpdateText($"{_manipulator.Get<string>(XAML_SplashLoadCompleteIn)} {watch.ElapsedMilliseconds}ms");
-            while (watch.ElapsedMilliseconds < MinimumSplashDelay)
-            { await Task.Delay(100); }
-
-            // Switch Page
             IoC.Get<MainWindow>().Dispatcher.Invoke(() =>
             {
                 var viewModel = IoC.Get<WindowViewModel>();
@@ -95,23 +57,19 @@ namespace Reloaded.Mod.Launcher.Pages
         }
 
         /// <summary>
+        /// Retrieves text from XAML resources given a specific argument.
+        /// </summary>
+        private string GetText(string arg)
+        {
+            return (string) Application.Current.Resources[arg];
+        }
+
+        /// <summary>
         /// Runs a method intended to update the UI thread.
         /// </summary>
         private void UpdateText(string newText)
         {
             this.Dispatcher.Invoke(() => { _splashViewModel.Text = newText; });
-        }
-
-        /// <summary>
-        /// Creates a new configuration if the config does not exist.
-        /// </summary>
-        private LoaderConfig CreateNewConfigIfNotExist()
-        {
-            var configReader = new LoaderConfigReader();
-            if (!configReader.ConfigurationExists())
-                configReader.WriteConfiguration(new LoaderConfig());
-
-            return configReader.ReadConfiguration();
         }
     }
 }

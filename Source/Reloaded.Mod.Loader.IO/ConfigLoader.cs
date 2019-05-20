@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Threading;
 using Reloaded.Mod.Loader.IO.Config;
 using Newtonsoft.Json;
 using Reloaded.Mod.Loader.IO.Interfaces;
@@ -46,15 +48,15 @@ namespace Reloaded.Mod.Loader.IO
             return JsonConvert.DeserializeObject<TConfigType>(jsonFile);
         }
 
-        public void WriteConfiguration(string path, TConfigType modConfig)
+        public void WriteConfiguration(string path, TConfigType config)
         {
-            string directoryOfPath = Path.GetDirectoryName(Path.GetFullPath(path));
+            string fullPath = Path.GetFullPath(path);
+            string directoryOfPath = Path.GetDirectoryName(fullPath);
             if (!Directory.Exists(directoryOfPath))
                 Directory.CreateDirectory(directoryOfPath);
 
-            string jsonFile = JsonConvert.SerializeObject(modConfig, Formatting.Indented);
+            string jsonFile = JsonConvert.SerializeObject(config, Formatting.Indented);
             File.WriteAllText(path, jsonFile);
         }
-
     }
 }

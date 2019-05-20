@@ -4,7 +4,6 @@
     {
         None,
         Splash,
-        Base,
-        AddApp
+        Base
     }
 }

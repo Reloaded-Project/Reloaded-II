@@ -5,10 +5,11 @@ using System.Linq;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Utility;
+using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
-    public class ModConfig : IModConfig, IConfig, IConfigCleanup
+    public class ModConfig : ObservableObject, IModConfig, IConfig, IConfigCleanup
     {
         /// <summary>
         /// The name of the configuration file as stored on disk.
@@ -22,6 +23,22 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string ModDescription    { get; set; } = "Template for a Reloaded Mod Configuration";
         public string ModDll            { get; set; } = "";
         public string[] ModDependencies { get; set; } = new string[0];
+
+
+        /*
+           ---------
+           Utilities
+           --------- 
+        */
+
+        /// <summary>
+        /// Writes the configuration to a specified file path.
+        /// </summary>
+        public static void WriteConfiguration(string path, ModConfig config)
+        {
+            var _applicationConfigLoader = new ConfigLoader<ModConfig>();
+            _applicationConfigLoader.WriteConfiguration(path, config);
+        }
 
         /*
            ---------

@@ -11,13 +11,16 @@ namespace Reloaded.Mod.Launcher
 
         public MainWindow()
         {
-            InitializeComponent();
-            RealViewModel = new Models.ViewModel.WindowViewModel();
-
             // Make viewmodel of this window available.
-            IoC.Kernel.Bind<WindowViewModel>().ToConstant((WindowViewModel)this.DataContext);
-            IoC.Kernel.Bind<MainWindow>().ToConstant(this);
+            RealViewModel = IoC.Get<Models.ViewModel.WindowViewModel>();
             IoC.Kernel.Bind<Models.ViewModel.WindowViewModel>().ToConstant(RealViewModel);
+
+            // Initialize XAML.
+            InitializeComponent();
+
+            // Bind other models.
+            IoC.Kernel.Bind<WindowViewModel>().ToConstant((WindowViewModel)this.DataContext); // Controls window properties.
+            IoC.Kernel.Bind<MainWindow>().ToConstant(this);
         }
     }
 }

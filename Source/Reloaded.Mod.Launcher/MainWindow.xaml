@@ -9,7 +9,9 @@
         xmlns:properties="clr-namespace:Reloaded.WPF.MVVM.Properties;assembly=Reloaded.WPF"
         xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800"
+        Title="{Binding Path=RealViewModel.WindowTitle, RelativeSource={RelativeSource Mode=Self}}" 
+        Height="600"
+        Width="800"
         MinWidth="450"
         MinHeight="300"
         Style="{DynamicResource ReloadedWindow}">

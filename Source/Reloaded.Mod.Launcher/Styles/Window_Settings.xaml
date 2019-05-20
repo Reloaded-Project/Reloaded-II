@@ -16,5 +16,15 @@
     <Thickness x:Key="SidebarMargin">5,0</Thickness>               <!-- Margin between the sidebar and elements inside. -->
     <Thickness x:Key="SidebarElementMargin">0,0,0,5</Thickness>    <!-- The margin between the individual elements of the sidebar. -->
     <sys:Double x:Key="SeparatorHeight">2</sys:Double>             <!-- Height of the separator between the default pages and processes. -->
-    
+
+    <!-- Popup Label Properties -->
+
+    <sys:Double x:Key="PopupLabelSlideAnimationDuration">0.250</sys:Double>  <!-- Length of the slide in part of the animation in Milliseconds -->
+    <sys:Double x:Key="PopupLabelFadeAnimationDuration">0.366</sys:Double>   <!-- Length of the fade in part of the animation in Milliseconds -->
+    <sys:Double x:Key="PopupLabelFadeOpacityStart">0.0</sys:Double>          <!-- The opacity to start fading in at (0.0 to 1.0). -->
+
+    <sys:Double x:Key="PopupLabelExitSlideAnimationDuration">0.666</sys:Double>   <!-- Length of the slide out part of the animation in Milliseconds -->
+    <sys:Double x:Key="PopupLabelExitFadeAnimationDuration">0.666</sys:Double>    <!-- Length of the fade out part of the animation in Milliseconds -->
+    <sys:Double x:Key="PopupLabelExitFadeOpacityEnd">0.0</sys:Double>             <!-- The opacity to fade out to (from 1.0). -->
+
 </ResourceDictionary>

@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Utility;
+using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
-    public class LoaderConfig : IConfigCleanup
+    public class LoaderConfig : ObservableObject, IConfigCleanup
     {
         /// <summary>
         /// The name of the configuration file as stored on disk.

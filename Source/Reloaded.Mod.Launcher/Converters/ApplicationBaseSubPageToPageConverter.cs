@@ -3,29 +3,26 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
 using Reloaded.Mod.Launcher.Pages;
+using Reloaded.Mod.Launcher.Pages.BaseSubpages;
 using Reloaded.WPF.Theme.Default;
 using Page = Reloaded.Mod.Launcher.Pages.Page;
 
 namespace Reloaded.Mod.Launcher.Converters
 {
-    [ValueConversion(typeof(Page), typeof(ReloadedPage))]
-    public class ApplicationPageToPageConverter : IValueConverter
+    [ValueConversion(typeof(BaseSubPage), typeof(ReloadedPage))]
+    public class ApplicationBaseSubPageToPageConverter : IValueConverter
     {
-        public static ApplicationPageToPageConverter Instance = new ApplicationPageToPageConverter();
+        public static ApplicationBaseSubPageToPageConverter Instance = new ApplicationBaseSubPageToPageConverter();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch ((Page)value)
+            switch ((BaseSubPage) value)
             {
-                case Page.None:
-                    return null;
 
-                case Page.Splash:
-                    return new SplashPage();
-
-                case Page.Base:
-                    return new BasePage();
-
+                case BaseSubPage.Welcome:
+                    return new WelcomePage();
+                case BaseSubPage.AddApp:
+                    return new AddAppPage();
                 default:
                     Debugger.Break();
                     return null;
