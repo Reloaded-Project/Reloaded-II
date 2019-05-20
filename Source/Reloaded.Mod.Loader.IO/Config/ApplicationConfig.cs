@@ -65,9 +65,12 @@ namespace Reloaded.Mod.Loader.IO.Config
             if (String.IsNullOrEmpty(AppId))
                 AppId = AppName.Replace(" ", ".");
 
-            string imagePath = Path.Combine(Path.GetDirectoryName(thisPath), AppIcon); 
-            if (!File.Exists(imagePath))
-                AppIcon = "";
+            if (!String.IsNullOrEmpty(thisPath))
+            {
+                string imagePath = Path.Combine(Path.GetDirectoryName(thisPath), AppIcon);
+                if (!File.Exists(imagePath))
+                    AppIcon = "";
+            }
 
             if (!File.Exists(AppLocation))
             {

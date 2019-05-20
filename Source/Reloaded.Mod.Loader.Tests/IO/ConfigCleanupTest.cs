@@ -69,7 +69,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
             };
 
             // Remove fake dependencies from config.
-            testConfig.CleanupConfig();
+            testConfig.CleanupConfig(null);
 
             // Check that the only dependency left is the real one.
             Assert.True(testConfig.ModDependencies.Length == 1);
@@ -95,7 +95,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
             };
 
             // Remove fake mods from config.
-            appConfig.CleanupConfig();
+            appConfig.CleanupConfig(null);
 
             // Check no dependencies exist.
             Assert.True(appConfig.EnabledMods.Length == 1);
@@ -117,7 +117,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
                 RandomString(RandomStringLength), _realModConfig.ModId }); // Existing Application with real Mod
 
             // Remove fake mod matrix entries.
-            appConfig.CleanupConfig();
+            appConfig.CleanupConfig(null);
 
             // Check fake Applications were removed.
             Assert.True(appConfig.ModSupportMatrix.Keys.Count == 1);

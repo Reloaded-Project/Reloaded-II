@@ -28,14 +28,26 @@ namespace Reloaded.Mod.Loader.Tests.IO.Utilities
         {
             // Delete all temp loader directories.
             var currentLoaderConfig = _configReader.ReadConfiguration();
-            Directory.Delete(currentLoaderConfig.ApplicationConfigDirectory, true);
-            Directory.Delete(currentLoaderConfig.ModConfigDirectory, true);
-            Directory.Delete(currentLoaderConfig.PluginConfigDirectory, true);
+            TryCatchIgnoreCode(() => Directory.Delete(currentLoaderConfig.ApplicationConfigDirectory, true));
+            TryCatchIgnoreCode(() => Directory.Delete(currentLoaderConfig.ModConfigDirectory, true));
+            TryCatchIgnoreCode(() => Directory.Delete(currentLoaderConfig.PluginConfigDirectory, true));
 
             if (_originalConfig != null)
                 _configReader.WriteConfiguration(_originalConfig);
             else
                 File.Delete(_configReader.ConfigurationPath());
+        }
+
+        private void TryCatchIgnoreCode(Action code)
+        {
+            try
+            {
+                code();
+            }
+            catch (Exception)
+            {
+                /* ignored */
+            }
         }
     }
 }
