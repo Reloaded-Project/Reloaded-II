@@ -9,6 +9,7 @@
              xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
              xmlns:commands="clr-namespace:Reloaded.Mod.Launcher.Commands"
              xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+             xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
              mc:Ignorable="d"
              d:DesignHeight="600" 
              d:DesignWidth="800"
@@ -44,10 +45,9 @@
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
                              Margin="{StaticResource DetailsRowHeight}">
                         <Image d:DataContext="{x:Static designTimeModels:ApplicationIcon.Instance}"
-                               DataContext="{x:Static designTimeModels:ApplicationIcon.Instance}"
-                               Source="{Binding Image}" 
-                               ToolTip="{DynamicResource AddAppImageTooltip}"
-                        />
+                               Source="{Binding Application, Converter={x:Static converters:ApplicationPathToImageConverter.Instance}}" 
+                               ToolTip="{DynamicResource AddAppImageTooltip}" 
+                               PreviewMouseDown="Image_PreviewMouseDown"/>
                     </Viewbox>
 
                     <!-- Application Selector -->

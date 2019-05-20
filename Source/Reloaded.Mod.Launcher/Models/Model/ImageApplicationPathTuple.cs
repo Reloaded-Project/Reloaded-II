@@ -21,7 +21,7 @@ namespace Reloaded.Mod.Launcher.Models.Model
         public IApplicationConfig ApplicationConfig { get; set; }
 
         /// <summary>
-        /// Folder containing the application config.
+        /// The full path to the application configuration file.
         /// </summary>
         public string ApplicationConfigPath { get; set; }
 

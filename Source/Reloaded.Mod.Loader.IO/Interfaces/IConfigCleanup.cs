@@ -9,6 +9,6 @@ namespace Reloaded.Mod.Loader.IO.Interfaces
         /// <summary>
         /// Verifies the validity of the configuration, removing/replacing any items that are invalid or may not exist.
         /// </summary>
-        void CleanupConfig();
+        void CleanupConfig(string thisPath);
     }
 }

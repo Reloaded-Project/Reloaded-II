@@ -12,6 +12,6 @@ namespace Reloaded.Mod.Launcher.Models.DesignTimeModel
     public class ApplicationIcon
     {
         public static ApplicationIcon Instance { get; set; } = new ApplicationIcon();
-        public ImageSource Image { get; set; } = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE));
+        public ImageSource Application { get; set; } = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE));
     }
 }

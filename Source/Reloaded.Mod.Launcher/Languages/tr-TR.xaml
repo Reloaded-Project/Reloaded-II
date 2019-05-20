@@ -1,0 +1,38 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- This file contains the Turkish Language Text for Reloaded II -->
+
+    <!-- Page Titles -->
+    <sys:String x:Key="TitleAddApplication">Bir Uygulama Ekle</sys:String>
+    <sys:String x:Key="TitleManageMods">Modları Yönet</sys:String>
+    <sys:String x:Key="TitleLoaderSettings">Mod Yükleyici Ayarları</sys:String>
+    <sys:String x:Key="TitleMainPage">Ana Sayfa</sys:String>
+    <sys:String x:Key="TitleSearchApplications">Uygulama Ara/Filtre Et</sys:String> <!-- Sidebar button to search applications. Removed. Might be brought back someday. -->
+    <sys:String x:Key="TitleSplashPage">Reloaded II Hazırlanıyor...</sys:String>
+
+    <!-- Splash Screen: Progress Messages -->
+    <sys:String x:Key="SplashCreatingDefaultConfig">Varsayılan Yapılandırma Oluşturuluyor</sys:String>
+    <sys:String x:Key="SplashCleaningConfigurations">Uygulama/Yükleyici/Mod Yapılandırmaları Temizleniyor</sys:String>
+    <sys:String x:Key="SplashPreparingViewModels">ViewModel Ayarlanıyor</sys:String>
+    <sys:String x:Key="SplashLoadCompleteIn">Yüklenme Süresi:</sys:String>
+
+    <!-- Add Application Page -->
+    <sys:String x:Key="AddAppImageTooltip">Özel bir logo içeri aktarmak için bu görüntüye tıklayın.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Görüntü olarak kullanmak için bir görüntü ya da simgesini kullanmak üzere yürütülebilir bir uygulama dosyası seçin.</sys:String>
+
+    <sys:String x:Key="AddAppNewButton">Yeni</sys:String>
+    <sys:String x:Key="AddAppDeleteButton">Sil</sys:String>
+
+    <sys:String x:Key="AddAppName">Uygulama Adı</sys:String>
+    <sys:String x:Key="AddAppLocation">Yürütülebilir Uygulama Dosyası Konumu</sys:String>
+    <sys:String x:Key="AddAppArguments">Komut Satırı Argümanları</sys:String>
+
+    <sys:String x:Key="AddAppAdvancedOptions">Gelişmiş Araçlar ve Ayarlar</sys:String>
+    <sys:String x:Key="AddAppCreateShortcut">Kısayol Oluştur</sys:String>
+
+    <sys:String x:Key="AddAppExecutableTitle">Yapılandırma oluşturmak için bir uygulama seçin.</sys:String>
+    <sys:String x:Key="AddAppExecutableFilter">Yürütülebilir Uygulama Dosyası</sys:String>
+
+</ResourceDictionary>

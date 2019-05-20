@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- This file contains the English Language Text for Reloaded II -->
+
+    <!-- Page Titles -->
+    <sys:String x:Key="TitleAddApplication">Adicionar uma aplicação</sys:String>
+    <sys:String x:Key="TitleManageMods">Gerenciar Mods</sys:String>
+    <sys:String x:Key="TitleLoaderSettings">Definições do Mod Loader</sys:String>
+    <sys:String x:Key="TitleMainPage">Página Principal</sys:String>
+    <sys:String x:Key="TitleSearchApplications">Procurar/Filtrar Aplicações</sys:String> <!-- Sidebar button to search applications. Removed. Might be brought back someday. -->
+    <sys:String x:Key="TitleSplashPage">A preparar Reloaded II..</sys:String>
+
+    <!-- Splash Screen: Progress Messages -->
+    <sys:String x:Key="SplashCreatingDefaultConfig">A criar configuração predefinida</sys:String>
+    <sys:String x:Key="SplashCleaningConfigurations">A limpar configurações de Apps/Loader/Mods</sys:String>
+    <sys:String x:Key="SplashPreparingViewModels">A configurar ViewModels</sys:String>
+    <sys:String x:Key="SplashLoadCompleteIn">Carregamento completo em:</sys:String>
+
+    <!-- Add Application Page -->
+    <sys:String x:Key="AddAppImageTooltip">Clica nesta imagem para importar um logótipo personalizado.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Seleciona uma imagem para usar como ícone.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorFilter">Imagem</sys:String>
+
+    <sys:String x:Key="AddAppNewButton">Novo</sys:String>
+    <sys:String x:Key="AddAppDeleteButton">Apagar</sys:String>
+
+    <sys:String x:Key="AddAppName">Nome da Aplicação</sys:String>
+    <sys:String x:Key="AddAppLocation">Localização da Aplicação</sys:String>
+    <sys:String x:Key="AddAppArguments">Argumentos da Linha de Comandos</sys:String>
+
+    <sys:String x:Key="AddAppAdvancedOptions">Ferramentas e Opções Avançadas</sys:String>
+    <sys:String x:Key="AddAppCreateShortcut">Criar Atalho</sys:String>
+
+    <sys:String x:Key="AddAppExecutableTitle">Seleciona uma aplicação para criar a configuração.</sys:String>
+    <sys:String x:Key="AddAppExecutableFilter">Executável da Aplicação</sys:String>
+
+</ResourceDictionary>

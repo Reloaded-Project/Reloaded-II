@@ -20,7 +20,8 @@
 
     <!-- Add Application Page -->
     <sys:String x:Key="AddAppImageTooltip">Click this image to import a custom logo.</sys:String>
-    <sys:String x:Key="AddAppImageSelectorTitle">Select Image to use as icon or Executable to extract image from.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Select Image to use as icon.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorFilter">Image</sys:String>
 
     <sys:String x:Key="AddAppNewButton">New</sys:String>
     <sys:String x:Key="AddAppDeleteButton">Delete</sys:String>

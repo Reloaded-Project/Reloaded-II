@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+
+    <!-- Page Titles -->
+    <sys:String x:Key="TitleAddApplication">Добавить приложение</sys:String>
+    <sys:String x:Key="TitleManageMods">Управление модами</sys:String>
+    <sys:String x:Key="TitleLoaderSettings">Настройки мод-загрузчика</sys:String>
+    <sys:String x:Key="TitleMainPage">Главная страница</sys:String>
+    <sys:String x:Key="TitleSearchApplications">Поиск\сортировка приложений</sys:String> <!-- Sidebar button to search applications. Removed. Might be brought back someday. -->
+    <sys:String x:Key="TitleSplashPage">Подготовить Reloaded II..</sys:String> <!-- Или "приготовить"? -->
+
+    <!-- Splash Screen: Progress Messages -->
+    <sys:String x:Key="SplashCreatingDefaultConfig">Создание стандартной конфигурации</sys:String>
+    <sys:String x:Key="SplashCleaningConfigurations">Удаление конфигурации приложения\загрузчика\модов</sys:String> <!-- Cleaning App/Loader/Mod Configurations -->
+    <sys:String x:Key="SplashPreparingViewModels">Создать ViewModels</sys:String>
+    <sys:String x:Key="SplashLoadCompleteIn">Завершение загрузки:</sys:String>
+
+    <!-- Add Application Page -->
+    <sys:String x:Key="AddAppImageTooltip">Выберите изображение, чтобы импортировать собственный логотип.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Выберите изображение, чтобы использовать его как иконку</sys:String>
+    <sys:String x:Key="AddAppImageSelectorFilter">Изображение</sys:String>
+
+    <sys:String x:Key="AddAppNewButton">Новое</sys:String>
+    <sys:String x:Key="AddAppDeleteButton">Удалить</sys:String>
+
+    <sys:String x:Key="AddAppName">Имя приложения</sys:String>
+    <sys:String x:Key="AddAppLocation">Расположение исполняемого файла</sys:String>
+    <sys:String x:Key="AddAppArguments">Аргументы командной строки</sys:String>
+
+    <sys:String x:Key="AddAppAdvancedOptions">Продвинутые инструменты и настройки</sys:String>
+    <sys:String x:Key="AddAppCreateShortcut">Создать ярлык</sys:String>
+
+    <sys:String x:Key="AddAppExecutableTitle">Выберите приложение для создание конфигурации.</sys:String>
+    <sys:String x:Key="AddAppExecutableFilter">Исполняемый файл приложения</sys:String>
+
+</ResourceDictionary>

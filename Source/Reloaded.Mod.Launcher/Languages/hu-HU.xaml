@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- This file contains the Hungarian Language Text for Reloaded II -->
+
+    <!-- Page Titles -->
+    <sys:String x:Key="TitleAddApplication">Alkalmazás hozzáadása</sys:String>
+    <sys:String x:Key="TitleManageMods">Modok kezelése</sys:String>
+    <sys:String x:Key="TitleLoaderSettings">Reloaded II beállítások</sys:String>
+    <sys:String x:Key="TitleMainPage">Főmenü</sys:String>
+    <sys:String x:Key="TitleSearchApplications">Alkalmazások keresése/szűrése</sys:String>
+    <sys:String x:Key="TitleSplashPage">Reloaded II előkészítése..</sys:String>
+
+    <!-- Splash Screen: Progress Messages -->
+    <sys:String x:Key="SplashCreatingDefaultConfig">Alapértelmezett konfiguráció készítése</sys:String>
+    <sys:String x:Key="SplashCleaningConfigurations">Alkalmazás/Reloaded II/Mod konfiguráció takarítása</sys:String>
+    <sys:String x:Key="SplashPreparingViewModels">ViewModel-ek előkészítése</sys:String>
+    <!-- Sidebar button to search applications. -->
+    <sys:String x:Key="SplashLoadComplateIn">Betöltés kész:</sys:String>
+
+    <!-- Add Application Page -->
+    <sys:String x:Key="AddAppImageTooltip">Kattints erre a képre egyedi logó beszúrásához.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Válassz ki egy képet, vagy egy .exe fájlt, ikonnak.</sys:String>
+
+    <sys:String x:Key="AddAppNewButton">Új</sys:String>
+    <sys:String x:Key="AddAppDeleteButton">Törlés</sys:String>
+
+    <sys:String x:Key="AddAppName">Alkalmazás neve</sys:String>
+    <sys:String x:Key="AddAppLocation">.exe fájl helye</sys:String>
+    <sys:String x:Key="AddAppArguments">Parancssor argumentumok</sys:String>
+
+    <sys:String x:Key="AddAppAdvancedOptions">Haladó beállítások</sys:String>
+    <sys:String x:Key="AddAppCreateShortcut">Parancsikon létrehozása</sys:String>
+
+    <sys:String x:Key="AddAdppExecutableTitle">Válassz ki egy alkalmazást konfiguráció létrehozásához.</sys:String>
+    <sys:String x:Key="AddAppExecutableFilter">Alkalmázás .exe</sys:String>
+
+
+</ResourceDictionary>

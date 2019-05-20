@@ -29,9 +29,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private static LoaderConfigReader _loaderConfigReader = new LoaderConfigReader();
         private static ConfigLoader<ApplicationConfig> _applicationConfigLoader = new ConfigLoader<ApplicationConfig>();
 
-        /// <summary> A persistent cache of all the icons of executables. </summary>
-        private static Dictionary<string, BitmapSource> _iconCache = new Dictionary<string, BitmapSource>();
-
         /* Fired after the Applications collection changes. */
         public event NotifyCollectionChangedEventHandler ApplicationsChanged = (sender, args) => { };
 
@@ -93,7 +90,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             catch (Exception) { return; }
 
             foreach (var config in applicationConfigs)
-                applications.Add(new ImageApplicationPathTuple(GetImageForModConfig(config), config.Object, config.Path));
+                applications.Add(new ImageApplicationPathTuple(GetImageForAppConfig(config), config.Object, config.Path));
 
             Applications = applications;
         }
@@ -134,7 +131,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// The image is either a custom one or the icon of the application.
         /// </summary>
         /// <param name="applicationConfig">Individual configuration of the application.</param>
-        private ImageSource GetImageForModConfig(PathGenericTuple<ApplicationConfig> applicationConfig)
+        private ImageSource GetImageForAppConfig(PathGenericTuple<ApplicationConfig> applicationConfig)
         {
             // Check if custom icon exists.
             if (!String.IsNullOrEmpty(applicationConfig.Object.AppIcon))
@@ -144,42 +141,30 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
                 if (File.Exists(logoFilePath))
                 {
-                    return new BitmapImage(new Uri(logoFilePath, UriKind.Absolute));
+                    ImageSource source = new BitmapImage(new Uri(logoFilePath, UriKind.Absolute));
+                    source.Freeze();
+                    return source;
                 }
             }
             
             // Otherwise extract new icon from executable.
             if (File.Exists(applicationConfig.Object.AppLocation))
             {
-                // Try to retrieve from cache.
-                if (_iconCache.TryGetValue(applicationConfig.Object.AppLocation, out BitmapSource icon))
-                    return icon;
-
                 // Else make new from icon.
                 using (Icon ico = Icon.ExtractAssociatedIcon(applicationConfig.Object.AppLocation))
                 {
                     // Extract to config set location.
                     BitmapSource bitmapImage = Imaging.CreateBitmapSourceFromHIcon(ico.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                    CachedBitmap cachedBitmap = new CachedBitmap(bitmapImage, BitmapCreateOptions.None, BitmapCacheOption.Default);
-                    cachedBitmap.Freeze();
                     bitmapImage.Freeze();
 
-                    _iconCache[applicationConfig.Object.AppLocation] = cachedBitmap;
                     return bitmapImage;
                 }
             }
             else
             {
-                // As last resort, use Reloaded Icon. (Cached)
-                if (_iconCache.TryGetValue(Paths.PLACEHOLDER_IMAGE, out BitmapSource icon))
-                    return icon;
-
                 var image = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.RelativeOrAbsolute));
-                var cachedBitmap = new CachedBitmap(image, BitmapCreateOptions.None, BitmapCacheOption.Default);
-                cachedBitmap.Freeze();
                 image.Freeze();
 
-                _iconCache[Paths.PLACEHOLDER_IMAGE] = cachedBitmap;
                 return image;
             }
         }

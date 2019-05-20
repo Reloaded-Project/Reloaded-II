@@ -58,7 +58,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             ResetMissingDirectories();
         }
 
-        public void CleanupConfig()
+        public void CleanupConfig(string thisPath)
         {
             ResetMissingDirectories();
 

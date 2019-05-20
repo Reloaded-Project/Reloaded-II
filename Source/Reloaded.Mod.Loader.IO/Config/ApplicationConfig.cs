@@ -57,7 +57,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         */
 
         /* For maintaining consistency. */
-        public void CleanupConfig()
+        public void CleanupConfig(string thisPath)
         {
             if (String.IsNullOrEmpty(AppName))
                 AppName = "Reloaded Application Name";
@@ -65,7 +65,8 @@ namespace Reloaded.Mod.Loader.IO.Config
             if (String.IsNullOrEmpty(AppId))
                 AppId = AppName.Replace(" ", ".");
 
-            if (!File.Exists(AppIcon))
+            string imagePath = Path.Combine(Path.GetDirectoryName(thisPath), AppIcon); 
+            if (!File.Exists(imagePath))
                 AppIcon = "";
 
             if (!File.Exists(AppLocation))

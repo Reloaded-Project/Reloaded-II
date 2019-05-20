@@ -124,18 +124,18 @@ namespace Reloaded.Mod.Launcher
 
             foreach (var modConfiguration in modConfigLoader.ReadConfigurations(loaderConfig.ModConfigDirectory, ModConfig.ConfigFileName))
             {
-                modConfiguration.Object.CleanupConfig();
+                modConfiguration.Object.CleanupConfig(null);
                 modConfigLoader.WriteConfiguration(modConfiguration.Path, modConfiguration.Object);
             }
 
             foreach (var appConfiguration in appConfigLoader.ReadConfigurations(loaderConfig.ApplicationConfigDirectory, ApplicationConfig.ConfigFileName))
             {
-                appConfiguration.Object.CleanupConfig();
+                appConfiguration.Object.CleanupConfig(appConfiguration.Path);
                 appConfigLoader.WriteConfiguration(appConfiguration.Path, appConfiguration.Object);
             }
 
             var loaderConfiguration = loaderConfigReader.ReadConfiguration();
-            loaderConfiguration.CleanupConfig();
+            loaderConfiguration.CleanupConfig(null);
             loaderConfigReader.WriteConfiguration(loaderConfiguration);
         }
     }

@@ -52,7 +52,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             return $"ModId: {ModId}, ModName: {ModName}";
         }
 
-        public void CleanupConfig()
+        public void CleanupConfig(string thisPath)
         {
             if (String.IsNullOrEmpty(ModName))
                 ModName = "Reloaded Application Name";
