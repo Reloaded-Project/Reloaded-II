@@ -9,15 +9,15 @@ using System.Windows.Media;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 
-namespace Reloaded.Mod.Launcher.Converters
+namespace Reloaded.Mod.Launcher.Converters.AddAppPage
 {
     /// <summary>
     /// Converts an <see cref="IApplicationConfig"/> to an <see cref="ImageSource"/>.
     /// </summary>
     [ValueConversion(typeof(IApplicationConfig), typeof(ImageSource))]
-    public class ApplicationPathToImageConverter : IValueConverter
+    public class ApplicationToImageConverter : IValueConverter
     {
-        public static ApplicationPathToImageConverter Instance = new ApplicationPathToImageConverter();
+        public static ApplicationToImageConverter Instance = new ApplicationToImageConverter();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

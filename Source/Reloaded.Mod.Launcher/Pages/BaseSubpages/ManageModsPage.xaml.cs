@@ -5,9 +5,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
     /// <summary>
     /// The main page of the application.
     /// </summary>
-    public partial class WelcomePage : ReloadedIIPage
+    public partial class ManageModsPage : ReloadedIIPage
     {
-        public WelcomePage() : base()
+        public ManageModsPage() : base()
         {  
             InitializeComponent();
         }

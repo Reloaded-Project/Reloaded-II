@@ -12,7 +12,7 @@ using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 
-namespace Reloaded.Mod.Launcher.Commands
+namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
     /// <summary>
     /// Comnmand to be used by the <see cref="AddAppPage"/> which allows

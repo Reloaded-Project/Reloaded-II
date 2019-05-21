@@ -18,11 +18,12 @@ namespace Reloaded.Mod.Launcher.Converters
         {
             switch ((BaseSubPage) value)
             {
-
                 case BaseSubPage.Welcome:
                     return new WelcomePage();
                 case BaseSubPage.AddApp:
-                    return new AddAppPage();
+                    return new Pages.BaseSubpages.AddAppPage();
+                case BaseSubPage.ManageMods:
+                    return new ManageModsPage();
                 default:
                     Debugger.Break();
                     return null;

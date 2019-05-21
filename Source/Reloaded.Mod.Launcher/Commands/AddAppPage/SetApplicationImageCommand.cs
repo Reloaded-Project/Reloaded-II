@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Specialized;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -11,10 +8,8 @@ using System.Windows.Media.Imaging;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.ViewModel;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
 
-namespace Reloaded.Mod.Launcher.Commands
+namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
     /// <summary>
     /// Comnmand to be used by the <see cref="AddAppPage"/> which allows

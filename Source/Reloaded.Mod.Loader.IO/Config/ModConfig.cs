@@ -22,6 +22,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string ModVersion        { get; set; } = "1.0.0";
         public string ModDescription    { get; set; } = "Template for a Reloaded Mod Configuration";
         public string ModDll            { get; set; } = "";
+        public string ModImage          { get; set; } = "";
         public string[] ModDependencies { get; set; } = new string[0];
 
 
@@ -59,6 +60,13 @@ namespace Reloaded.Mod.Loader.IO.Config
 
             if (String.IsNullOrEmpty(ModId))
                 ModId = ModName.Replace(" ", ".");
+
+            if (!String.IsNullOrEmpty(thisPath))
+            {
+                string imagePath = Path.Combine(Path.GetDirectoryName(thisPath), ModImage);
+                if (!File.Exists(imagePath))
+                    ModImage = "";
+            }
 
             ModDependencies = ConfigCleanupUtility.FilterNonexistingModIds(ModDependencies).ToArray();
         }

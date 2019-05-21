@@ -124,7 +124,7 @@ namespace Reloaded.Mod.Launcher
 
             foreach (var modConfiguration in modConfigLoader.ReadConfigurations(loaderConfig.ModConfigDirectory, ModConfig.ConfigFileName))
             {
-                modConfiguration.Object.CleanupConfig(null);
+                modConfiguration.Object.CleanupConfig(modConfiguration.Path);
                 modConfigLoader.WriteConfiguration(modConfiguration.Path, modConfiguration.Object);
             }
 
@@ -135,7 +135,7 @@ namespace Reloaded.Mod.Launcher
             }
 
             var loaderConfiguration = loaderConfigReader.ReadConfiguration();
-            loaderConfiguration.CleanupConfig(null);
+            loaderConfiguration.CleanupConfig(loaderConfigReader.ConfigurationPath());
             loaderConfigReader.WriteConfiguration(loaderConfiguration);
         }
     }

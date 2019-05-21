@@ -10,12 +10,13 @@
              xmlns:commands="clr-namespace:Reloaded.Mod.Launcher.Commands"
              xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
              xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+             xmlns:addAppPage="clr-namespace:Reloaded.Mod.Launcher.Converters.AddAppPage"
+             xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.AddAppPage"
              mc:Ignorable="d"
              d:DesignHeight="600" 
              d:DesignWidth="800"
              Title="{DynamicResource TitleAddApplication}">
 
-    <!-- IntelliSense -->
     <Page.Resources>
         <ResourceDictionary>
 
@@ -23,11 +24,10 @@
             <sys:Double x:Key="DetailsImageWidth">180</sys:Double>
             <sys:Double x:Key="DetailsColumnWidth">280</sys:Double>
 
-
             <Thickness x:Key="DetailsRowHeight">0,10</Thickness>
             <Thickness x:Key="ButtonMargin">10,0</Thickness>
-            <commands:DeleteApplicationCommand x:Key="DeleteApplicationCommand"/>
-            <commands:AddApplicationCommand x:Key="AddApplicationCommand"/>
+            <addAppPage1:DeleteApplicationCommand x:Key="DeleteApplicationCommand"/>
+            <addAppPage1:AddApplicationCommand x:Key="AddApplicationCommand"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -45,7 +45,7 @@
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
                              Margin="{StaticResource DetailsRowHeight}">
                         <Image d:DataContext="{x:Static designTimeModels:ApplicationIcon.Instance}"
-                               Source="{Binding Application, Converter={x:Static converters:ApplicationPathToImageConverter.Instance}}" 
+                               Source="{Binding Application, Converter={x:Static addAppPage:ApplicationToImageConverter.Instance}}" 
                                ToolTip="{DynamicResource AddAppImageTooltip}" 
                                PreviewMouseDown="Image_PreviewMouseDown"/>
                     </Viewbox>

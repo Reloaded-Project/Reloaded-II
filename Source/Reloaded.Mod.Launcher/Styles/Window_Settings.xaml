@@ -5,7 +5,6 @@
     <!-- Common Page Settings -->
     <Thickness x:Key="PageMargin">40</Thickness>    <!-- Space between the page content and edges of the window. -->
     <Thickness x:Key="PanelMargin">10</Thickness>   <!-- Space between individual panels/grids of a page. -->
-    
 
     <!-- Splash Properties -->
     <Thickness x:Key="SplashImageMargin">100</Thickness>           <!-- Space between the splash image and edges of the window. -->

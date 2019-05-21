@@ -5,10 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 
-namespace Reloaded.Mod.Launcher.Commands
+namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
     /// <summary>
     /// Comnmand to be used by the <see cref="AddAppPage"/> which decides

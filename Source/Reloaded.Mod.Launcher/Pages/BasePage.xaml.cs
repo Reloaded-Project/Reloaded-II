@@ -26,5 +26,10 @@ namespace Reloaded.Mod.Launcher.Pages
         {
             _mainPageViewModel.Page = BaseSubPage.AddApp;
         }
+
+        private void CircleButton_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _mainPageViewModel.Page = BaseSubPage.ManageMods;
+        }
     }
 }

@@ -3,6 +3,7 @@
     public enum BaseSubPage
     {
         Welcome,
-        AddApp
+        AddApp,
+        ManageMods
     }
 }

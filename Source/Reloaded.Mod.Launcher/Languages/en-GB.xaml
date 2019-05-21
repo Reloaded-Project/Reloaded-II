@@ -36,4 +36,8 @@
     <sys:String x:Key="AddAppExecutableTitle">Select an application to create the configuration for.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">Application Executable</sys:String>
 
+    <!-- Mod Manager Page -->
+
+
+
 </ResourceDictionary>

@@ -26,6 +26,9 @@ namespace Reloaded.Mod.Loader.Tests.IO
         private ModConfig _realModConfig;
         private ApplicationConfig _realAppConfig;
 
+        private string _realModConfigFilePath;
+        private string _realAppConfigFilePath;
+
         private ConfigLoader<ModConfig> _modConfigLoader;
         private ConfigLoader<ApplicationConfig> _appConfigLoader;
 
@@ -42,11 +45,11 @@ namespace Reloaded.Mod.Loader.Tests.IO
             _realModConfig = new ModConfig();
             _realAppConfig = new ApplicationConfig();
 
-            string realModConfigFilePath = Path.Combine(_tempLoaderConfig.ModConfigDirectory, RandomString(RandomDirectoryLength), ModConfig.ConfigFileName);
-            string realAppConfigFilePath = Path.Combine(_tempLoaderConfig.ApplicationConfigDirectory, RandomString(RandomDirectoryLength), ApplicationConfig.ConfigFileName);
+            _realModConfigFilePath = Path.Combine(_tempLoaderConfig.ModConfigDirectory, RandomString(RandomDirectoryLength), ModConfig.ConfigFileName);
+            _realAppConfigFilePath = Path.Combine(_tempLoaderConfig.ApplicationConfigDirectory, RandomString(RandomDirectoryLength), ApplicationConfig.ConfigFileName);
 
-            _modConfigLoader.WriteConfiguration(realModConfigFilePath, _realModConfig);
-            _appConfigLoader.WriteConfiguration(realAppConfigFilePath, _realAppConfig);
+            _modConfigLoader.WriteConfiguration(_realModConfigFilePath, _realModConfig);
+            _appConfigLoader.WriteConfiguration(_realAppConfigFilePath, _realAppConfig);
         }
 
         public void Dispose()
@@ -63,17 +66,19 @@ namespace Reloaded.Mod.Loader.Tests.IO
             // Make a new mod config.
             var testConfig = new ModConfig
             {
+                ModImage = RandomString(RandomStringLength),
                 ModDependencies = new[] { RandomString(RandomStringLength),
                                           RandomString(RandomStringLength),
                                           _realModConfig.ModId } // Default Mod ID
             };
 
             // Remove fake dependencies from config.
-            testConfig.CleanupConfig(null);
+            testConfig.CleanupConfig(_realModConfigFilePath);
 
             // Check that the only dependency left is the real one.
             Assert.True(testConfig.ModDependencies.Length == 1);
             Assert.True(testConfig.ModDependencies[0] == _realModConfig.ModId);
+            Assert.True(String.IsNullOrEmpty(testConfig.ModImage));
         }
 
         /// <summary>
@@ -85,6 +90,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
             // Make a new mod config.
             var appConfig = new ApplicationConfig()
             {
+                AppIcon = RandomString(RandomStringLength),
                 EnabledMods = new[]
                 {
                     RandomString(RandomStringLength),
@@ -95,11 +101,12 @@ namespace Reloaded.Mod.Loader.Tests.IO
             };
 
             // Remove fake mods from config.
-            appConfig.CleanupConfig(null);
+            appConfig.CleanupConfig(_realAppConfigFilePath);
 
             // Check no dependencies exist.
             Assert.True(appConfig.EnabledMods.Length == 1);
             Assert.True(appConfig.EnabledMods[0] == _realModConfig.ModId);
+            Assert.True(String.IsNullOrEmpty(appConfig.AppIcon));
         }
 
         /// <summary>
