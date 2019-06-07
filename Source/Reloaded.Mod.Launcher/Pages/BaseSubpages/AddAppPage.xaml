@@ -26,6 +26,7 @@
 
             <Thickness x:Key="DetailsRowHeight">0,10</Thickness>
             <Thickness x:Key="ButtonMargin">10,0</Thickness>
+
             <addAppPage1:DeleteApplicationCommand x:Key="DeleteApplicationCommand"/>
             <addAppPage1:AddApplicationCommand x:Key="AddApplicationCommand"/>
         </ResourceDictionary>

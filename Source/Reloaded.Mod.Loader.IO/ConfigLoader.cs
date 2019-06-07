@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Threading;
 using Reloaded.Mod.Loader.IO.Config;
 using Newtonsoft.Json;
 using Reloaded.Mod.Loader.IO.Interfaces;

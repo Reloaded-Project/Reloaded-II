@@ -2,10 +2,8 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
-using Reloaded.Mod.Launcher.Pages;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
 using Reloaded.WPF.Theme.Default;
-using Page = Reloaded.Mod.Launcher.Pages.Page;
 
 namespace Reloaded.Mod.Launcher.Converters
 {

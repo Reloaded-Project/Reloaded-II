@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Reloaded.Mod.Loader.IO.Interfaces
+﻿namespace Reloaded.Mod.Loader.IO.Interfaces
 {
     public interface IConfigCleanup
     {

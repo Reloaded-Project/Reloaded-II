@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Security.Principal;
 using System.Windows;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Launcher
 {

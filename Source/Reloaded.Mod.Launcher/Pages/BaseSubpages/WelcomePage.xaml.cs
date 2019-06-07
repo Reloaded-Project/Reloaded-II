@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
+﻿namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {
     /// <summary>
     /// The main page of the application.

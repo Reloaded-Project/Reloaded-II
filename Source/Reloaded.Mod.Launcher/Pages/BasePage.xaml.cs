@@ -1,8 +1,5 @@
-﻿using System;
-using System.Windows.Media.Animation;
-using Reloaded.Mod.Launcher.Models.ViewModel;
+﻿using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
-using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher.Pages
 {

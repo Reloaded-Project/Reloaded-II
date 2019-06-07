@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Reloaded.Mod.Launcher.Commands;
 using Reloaded.Mod.Launcher.Commands.AddAppPage;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;

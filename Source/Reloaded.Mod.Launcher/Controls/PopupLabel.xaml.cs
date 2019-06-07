@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
 using Reloaded.WPF.Pages.Animations;
 using Reloaded.WPF.Pages.Animations.Enum;
 using Reloaded.WPF.Utilities;

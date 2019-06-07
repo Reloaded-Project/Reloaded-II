@@ -104,24 +104,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controls\PopupLabel.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\BaseSubpages\AddAppPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\BaseSubpages\ManageModsPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\BaseSubpages\WelcomePage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\SplashPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\BasePage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Update="Controls\PopupLabel.xaml.cs" />
+    <Compile Update="Pages\BaseSubpages\AddAppPage.xaml.cs" />
+    <Compile Update="Pages\BaseSubpages\ManageModsPage.xaml.cs" />
+    <Compile Update="Pages\BaseSubpages\WelcomePage.xaml.cs" />
+    <Compile Update="Pages\SplashPage.xaml.cs" />
+    <Compile Update="Pages\BasePage.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
