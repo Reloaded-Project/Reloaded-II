@@ -37,7 +37,26 @@
     <sys:String x:Key="AddAppExecutableFilter">Application Executable</sys:String>
 
     <!-- Mod Manager Page -->
+    <sys:String x:Key="ModManagerSelectMod">Select the mod to change the details of.</sys:String>
+    <sys:String x:Key="ModManagerSelectApp">Select the applications that are compatible with this mod.</sys:String>
 
+    <!-- Create Mod Page -->
+    <sys:String x:Key="TitleCreateModDialog">Create Mod</sys:String>
+    <sys:String x:Key="CreateModDialogId">Unique Id</sys:String>
+    <sys:String x:Key="CreateModDialogName">Name</sys:String>
+    <sys:String x:Key="CreateModDialogAuthor">Author</sys:String>
+    <sys:String x:Key="CreateModDialogVersion">Version</sys:String>
+    <sys:String x:Key="CreateModDialogDescription">Short Description</sys:String>
+    <sys:String x:Key="CreateModDialogDependencies">Mod Dependencies</sys:String>
 
+    <sys:String x:Key="CreateModDialogImageSelectorTitle">Select a custom logo for the mod.</sys:String>
+    <sys:String x:Key="CreateModDialogImageSelectorFilter">Image</sys:String>
+
+    <sys:String x:Key="TitleCreateModNonUniqueId">Non-Unique ID</sys:String>
+    <sys:String x:Key="MessageCreateModNonUniqueId" xml:space="preserve">The ModId for the mod you are creating is not unique.&#x0a;Please make the ModId unique.</sys:String>
+
+    <!-- xml:space="preserve" allows for new line. &#x0a; is new line (ASCII character). -->
+    
+    <!-- Dialogs -->
 
 </ResourceDictionary>

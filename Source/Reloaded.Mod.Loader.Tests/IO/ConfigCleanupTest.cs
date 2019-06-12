@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Tests.IO.Utilities;
+using Reloaded.Mod.Loader.IO.Structs;
 using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.IO
@@ -11,13 +11,12 @@ namespace Reloaded.Mod.Loader.Tests.IO
     /// <summary>
     /// Validates whether the config cleanup helper functions work.
     /// </summary>
-    public class ConfigCleanupTest : IDisposable
+    public class ConfigCleanupTest
     {
         private const int RandomStringLength = 500;
         private const int RandomDirectoryLength = 5;
 
         private static Random _random = new Random();
-        private TempLoaderConfigCreator _loaderConfigCreator;
         private LoaderConfig _tempLoaderConfig;
 
         /* Sample configs committed to disk for testing. */
@@ -27,17 +26,18 @@ namespace Reloaded.Mod.Loader.Tests.IO
         private string _realModConfigFilePath;
         private string _realAppConfigFilePath;
 
-        private ConfigLoader<ModConfig> _modConfigLoader;
-        private ConfigLoader<ApplicationConfig> _appConfigLoader;
+        private ConfigReader<ModConfig> _modConfigReader;
+        private ConfigReader<ApplicationConfig> _appConfigReader;
+
+        private ConfigCleaner _configCleaner;
 
         /* Before and After Test. */
         public ConfigCleanupTest()
         {
-            _loaderConfigCreator = new TempLoaderConfigCreator();
-            _tempLoaderConfig = new LoaderConfigReader().ReadConfiguration();
+            _tempLoaderConfig = LoaderConfig.GetTestConfig();
 
-            _modConfigLoader = new ConfigLoader<ModConfig>();
-            _appConfigLoader = new ConfigLoader<ApplicationConfig>();
+            _modConfigReader = new ConfigReader<ModConfig>();
+            _appConfigReader = new ConfigReader<ApplicationConfig>();
 
             // Make real sample configurations.
             _realModConfig = new ModConfig();
@@ -46,13 +46,9 @@ namespace Reloaded.Mod.Loader.Tests.IO
             _realModConfigFilePath = Path.Combine(_tempLoaderConfig.ModConfigDirectory, RandomString(RandomDirectoryLength), ModConfig.ConfigFileName);
             _realAppConfigFilePath = Path.Combine(_tempLoaderConfig.ApplicationConfigDirectory, RandomString(RandomDirectoryLength), ApplicationConfig.ConfigFileName);
 
-            _modConfigLoader.WriteConfiguration(_realModConfigFilePath, _realModConfig);
-            _appConfigLoader.WriteConfiguration(_realAppConfigFilePath, _realAppConfig);
-        }
-
-        public void Dispose()
-        {
-            _loaderConfigCreator.Dispose();
+            _modConfigReader.WriteConfiguration(_realModConfigFilePath, _realModConfig);
+            _appConfigReader.WriteConfiguration(_realAppConfigFilePath, _realAppConfig);
+            _configCleaner = new ConfigCleaner(_tempLoaderConfig);
         }
 
         /// <summary>
@@ -64,19 +60,25 @@ namespace Reloaded.Mod.Loader.Tests.IO
             // Make a new mod config.
             var testConfig = new ModConfig
             {
-                ModImage = RandomString(RandomStringLength),
+                ModIcon = RandomString(RandomStringLength),
                 ModDependencies = new[] { RandomString(RandomStringLength),
                                           RandomString(RandomStringLength),
-                                          _realModConfig.ModId } // Default Mod ID
+                                          _realModConfig.ModId }, // Default Mod ID
+                SupportedAppId = new[] { _realAppConfig.AppId,
+                                         RandomString(RandomStringLength),
+                                         RandomString(RandomStringLength) }
             };
 
             // Remove fake dependencies from config.
-            testConfig.CleanupConfig(_realModConfigFilePath);
+            _configCleaner.CleanupModConfig(new PathGenericTuple<ModConfig>("", testConfig));
 
             // Check that the only dependency left is the real one.
             Assert.True(testConfig.ModDependencies.Length == 1);
             Assert.True(testConfig.ModDependencies[0] == _realModConfig.ModId);
-            Assert.True(String.IsNullOrEmpty(testConfig.ModImage));
+            Assert.True(String.IsNullOrEmpty(testConfig.ModIcon));
+
+            Assert.True(testConfig.SupportedAppId.Length == 1);
+            Assert.True(testConfig.SupportedAppId[0] == _realAppConfig.AppId);
         }
 
         /// <summary>
@@ -99,7 +101,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
             };
 
             // Remove fake mods from config.
-            appConfig.CleanupConfig(_realAppConfigFilePath);
+            _configCleaner.CleanupApplicationConfig(new PathGenericTuple<ApplicationConfig>("", appConfig));
 
             // Check no dependencies exist.
             Assert.True(appConfig.EnabledMods.Length == 1);
@@ -115,24 +117,22 @@ namespace Reloaded.Mod.Loader.Tests.IO
         {
             // Make a new mod config.
             var appConfig = new LoaderConfig();
-            appConfig.ModSupportMatrix.Add(RandomString(RandomStringLength), new string[0]); // Nonexisting Application without Mods
-            appConfig.ModSupportMatrix.Add(RandomString(RandomStringLength), new string[] { RandomString(RandomStringLength),
-                    RandomString(RandomStringLength), _realModConfig.ModId }); // Nonexisting Application with real Mod
-            appConfig.ModSupportMatrix.Add(_realAppConfig.AppId, new string[] { RandomString(RandomStringLength),
-                RandomString(RandomStringLength), _realModConfig.ModId }); // Existing Application with real Mod
+            string fakeDirectory = "FAKEDIRECTORY";
+            appConfig.ApplicationConfigDirectory = fakeDirectory;
+            appConfig.ModConfigDirectory = fakeDirectory;
+            appConfig.PluginConfigDirectory = fakeDirectory;
 
             // Remove fake mod matrix entries.
-            appConfig.CleanupConfig(null);
+            _configCleaner.CleanupLoaderConfig(appConfig);
 
             // Check fake Applications were removed.
-            Assert.True(appConfig.ModSupportMatrix.Keys.Count == 1);
+            Assert.True(Directory.Exists(appConfig.ApplicationConfigDirectory));
+            Assert.True(Directory.Exists(appConfig.ModConfigDirectory));
+            Assert.True(Directory.Exists(appConfig.PluginConfigDirectory));
 
-            // Check that only one real mod in one real application remains.
-            string firstKey = appConfig.ModSupportMatrix.Keys.ToArray()[0];
-            string[] realAppModIds = appConfig.ModSupportMatrix[firstKey];
-
-            Assert.True(realAppModIds.Length == 1); 
-            Assert.True(realAppModIds[0] == _realModConfig.ModId);
+            Assert.NotEqual(fakeDirectory, appConfig.ApplicationConfigDirectory);
+            Assert.NotEqual(fakeDirectory, appConfig.ModConfigDirectory);
+            Assert.NotEqual(fakeDirectory, appConfig.PluginConfigDirectory);
         }
 
         private static string RandomString(int length)
@@ -141,7 +141,5 @@ namespace Reloaded.Mod.Loader.Tests.IO
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[_random.Next(s.Length)]).ToArray());
         }
-
-
     }
 }

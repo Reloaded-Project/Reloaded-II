@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Reloaded.Mod.Loader.IO.Config;
@@ -15,7 +16,7 @@ namespace Reloaded.Mod.Loader.IO
     ///     A json config class that implements interface <see cref="IConfig"/>.
     ///     Examples: <see cref="ModConfig"/>, <see cref="ApplicationConfig"/>.
     /// </typeparam>
-    public class ConfigLoader<TConfigType> : IConfigLoader<TConfigType> where TConfigType : IConfig
+    public class ConfigReader<TConfigType> : IConfigLoader<TConfigType> where TConfigType : IConfig
     {
         /* Documentation: See IConfigLoader. */
 

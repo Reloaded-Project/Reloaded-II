@@ -12,8 +12,7 @@ namespace Reloaded.Mod.Launcher
         public MainWindow()
         {
             // Make viewmodel of this window available.
-            RealViewModel = IoC.Get<Models.ViewModel.WindowViewModel>();
-            IoC.Kernel.Bind<Models.ViewModel.WindowViewModel>().ToConstant(RealViewModel);
+            RealViewModel = IoC.GetConstant<Models.ViewModel.WindowViewModel>();
 
             // Initialize XAML.
             InitializeComponent();

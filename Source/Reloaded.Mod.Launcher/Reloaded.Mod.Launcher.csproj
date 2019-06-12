@@ -22,13 +22,6 @@
     <None Remove="Languages\en-GB.xaml" />
     <None Remove="Languages\hu-HU.xaml" />
     <None Remove="Languages\pl-PL.xaml" />
-    <None Remove="Pages\AddAppPage.xaml" />
-    <None Remove="Pages\BasePage.xaml" />
-    <None Remove="Pages\BaseSubpages\ManageModsPage.xaml" />
-    <None Remove="Pages\SplashPage.xaml" />
-    <None Remove="Pages\WelcomePage.xaml" />
-    <None Remove="Styles\Controls.xaml" />
-    <None Remove="Styles\Window_Settings.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,13 +65,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Styles\Controls.xaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Styles\Window_Settings.xaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
@@ -122,15 +114,6 @@
 
   <ItemGroup>
     <Page Update="Controls\PopupLabel.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\BaseSubpages\AddAppPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\BaseSubpages\ManageModsPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\BaseSubpages\WelcomePage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\SplashPage.xaml">

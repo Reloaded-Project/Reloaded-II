@@ -1,6 +1,5 @@
 ﻿using System.Windows.Media;
 using Reloaded.Mod.Interfaces;
-
 namespace Reloaded.Mod.Launcher.Models.Model
 {
     public class ImageApplicationPathTuple

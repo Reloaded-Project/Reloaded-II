@@ -23,7 +23,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
         /// <summary>
         /// Supports reading/writing of configurations.
         /// </summary>
-        private static ConfigLoader<ModConfig> _configLoader = new ConfigLoader<ModConfig>();
+        private static ConfigReader<ModConfig> _configReader = new ConfigReader<ModConfig>();
 
         /// <summary>
         /// Stores configurations used for testing.
@@ -50,10 +50,10 @@ namespace Reloaded.Mod.Loader.Tests.IO
                 string configPath = Path.Combine(tempDirectory, ModConfig.ConfigFileName);
 
                 // Make default mod config.
-                _configLoader.WriteConfiguration(configPath, new ModConfig());
+                _configReader.WriteConfiguration(configPath, new ModConfig());
             }
 
-            _initialConfigurations = _configLoader.ReadConfigurations(Path.GetFullPath(SampleItemDirectory), ModConfig.ConfigFileName);
+            _initialConfigurations = _configReader.ReadConfigurations(Path.GetFullPath(SampleItemDirectory), ModConfig.ConfigFileName);
         }
 
         /* After unit test. */

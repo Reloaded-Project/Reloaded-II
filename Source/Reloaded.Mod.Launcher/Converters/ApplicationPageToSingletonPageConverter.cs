@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
+using Ninject;
 using Reloaded.Mod.Launcher.Pages;
 using Reloaded.WPF.Theme.Default;
 using Page = Reloaded.Mod.Launcher.Pages.Page;
@@ -9,9 +10,9 @@ using Page = Reloaded.Mod.Launcher.Pages.Page;
 namespace Reloaded.Mod.Launcher.Converters
 {
     [ValueConversion(typeof(Page), typeof(ReloadedPage))]
-    public class ApplicationPageToPageConverter : IValueConverter
+    public class ApplicationPageToSingletonPageConverter : IValueConverter
     {
-        public static ApplicationPageToPageConverter Instance = new ApplicationPageToPageConverter();
+        public static ApplicationPageToSingletonPageConverter Instance = new ApplicationPageToSingletonPageConverter();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -21,10 +22,10 @@ namespace Reloaded.Mod.Launcher.Converters
                     return null;
 
                 case Page.Splash:
-                    return new SplashPage();
+                    return IoC.GetConstant<SplashPage>();
 
                 case Page.Base:
-                    return new BasePage();
+                    return IoC.GetConstant<BasePage>();
 
                 default:
                     Debugger.Break();

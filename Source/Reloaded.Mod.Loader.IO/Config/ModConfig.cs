@@ -9,12 +9,13 @@ using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
-    public class ModConfig : ObservableObject, IModConfig, IConfig, IConfigCleanup
+    public class ModConfig : ObservableObject, IModConfig, IConfig
     {
         /// <summary>
         /// The name of the configuration file as stored on disk.
         /// </summary>
         public const string ConfigFileName = "ModConfig.json";
+        public const string IconFileName = "Preview.png";
 
         public string ModId             { get; set; } = "reloaded.template.modconfig";
         public string ModName           { get; set; } = "Reloaded Mod Config Template";
@@ -22,9 +23,9 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string ModVersion        { get; set; } = "1.0.0";
         public string ModDescription    { get; set; } = "Template for a Reloaded Mod Configuration";
         public string ModDll            { get; set; } = "";
-        public string ModImage          { get; set; } = "";
+        public string ModIcon           { get; set; } = "";
         public string[] ModDependencies { get; set; } = new string[0];
-
+        public string[] SupportedAppId  { get; set; } = new string[0];
 
         /*
            ---------
@@ -37,7 +38,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         public static void WriteConfiguration(string path, ModConfig config)
         {
-            var _applicationConfigLoader = new ConfigLoader<ModConfig>();
+            var _applicationConfigLoader = new ConfigReader<ModConfig>();
             _applicationConfigLoader.WriteConfiguration(path, config);
         }
 
@@ -51,24 +52,6 @@ namespace Reloaded.Mod.Loader.IO.Config
         public override string ToString()
         {
             return $"ModId: {ModId}, ModName: {ModName}";
-        }
-
-        public void CleanupConfig(string thisPath)
-        {
-            if (String.IsNullOrEmpty(ModName))
-                ModName = "Reloaded Application Name";
-
-            if (String.IsNullOrEmpty(ModId))
-                ModId = ModName.Replace(" ", ".");
-
-            if (!String.IsNullOrEmpty(thisPath))
-            {
-                string imagePath = Path.Combine(Path.GetDirectoryName(thisPath), ModImage);
-                if (!File.Exists(imagePath))
-                    ModImage = "";
-            }
-
-            ModDependencies = ConfigCleanupUtility.FilterNonexistingModIds(ModDependencies).ToArray();
         }
 
         /*

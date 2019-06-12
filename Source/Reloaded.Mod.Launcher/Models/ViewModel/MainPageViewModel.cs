@@ -5,12 +5,12 @@ using System.Collections.Specialized;
 using System.Drawing;
 using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using PropertyChanged;
+using Reloaded.Mod.Launcher.Commands;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
 using Reloaded.Mod.Loader.IO;
@@ -24,7 +24,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
     public class MainPageViewModel : ObservableObject
     {
         private static LoaderConfigReader _loaderConfigReader = new LoaderConfigReader();
-        private static ConfigLoader<ApplicationConfig> _applicationConfigLoader = new ConfigLoader<ApplicationConfig>();
+        private static ConfigReader<ApplicationConfig> _applicationConfigReader = new ConfigReader<ApplicationConfig>();
 
         /* Fired after the Applications collection changes. */
         public event NotifyCollectionChangedEventHandler ApplicationsChanged = (sender, args) => { };
@@ -52,38 +52,35 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         /* Application Monitoring */
         private ObservableCollection<ImageApplicationPathTuple> _applications;
-        private FileSystemWatcher _fileSystemWatcher; /* Monitors for additions/changes in available applications. */
+        private FileSystemWatcher _applicationWatcher; /* Monitors for additions/changes in available applications. */
 
         /* Get Applications Task */
-        private Task _getApplicationsTask;
-        private CancellationToken _getApplicationsCancellationToken;
-        private CancellationTokenSource _getApplicationsCancellationTokenSource;
+        private SerialTaskCommand _getApplicationsTaskCommand = new SerialTaskCommand();
 
         public MainPageViewModel()
         {
             GetApplications();
 
-            // Observe changes to filesystem to automatically recognize new entries.
-            SetupApplicationWatch();
+            string appConfigDirectory = _loaderConfigReader.ReadConfiguration().ApplicationConfigDirectory;
+            _applicationWatcher = FileSystemWatcherFactory.CreateGeneric(appConfigDirectory, StartGetApplicationsTask, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed | FileSystemWatcherFactory.FileSystemWatcherEvents.Renamed | FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted, true, "*.json");
         }
 
         /// <summary>
         /// Populates the application list governed by <see cref="Applications"/>.
         /// </summary>
-        private void GetApplications()
+        private void GetApplications(CancellationToken cancellationToken = default)
         {
             var applications = new ObservableCollection<ImageApplicationPathTuple>();
             var loaderConfig = _loaderConfigReader.ReadConfiguration();
             List<PathGenericTuple<ApplicationConfig>> applicationConfigs;
                 
-            /* Check for cancellation request before config reading begins if necessary. */
-            if (_getApplicationsCancellationToken.IsCancellationRequested)
+            // Check for cancellation request before config reading begins if necessary. */
+            if (cancellationToken.IsCancellationRequested)
                 return;
 
-            /* Try read all configs, this action may sometimes fail if some of the files are still being copied.
-               Worth noting is that the last fired event will never collide here and fail, thus this is a safe point to exit.
-            */
-            try { applicationConfigs = _applicationConfigLoader.ReadConfigurations(loaderConfig.ApplicationConfigDirectory, ApplicationConfig.ConfigFileName); }
+            // Try read all configs, this action may sometimes fail if some of the files are still being copied.
+            // Worth noting is that the last fired event will never collide here and fail, thus this is a safe point to exit.
+            try { applicationConfigs = _applicationConfigReader.ReadConfigurations(loaderConfig.ApplicationConfigDirectory, ApplicationConfig.ConfigFileName); }
             catch (Exception) { return; }
 
             foreach (var config in applicationConfigs)
@@ -92,42 +89,16 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             Applications = applications;
         }
 
-        /// <summary>
-        /// Sets up an observer that automatically updates applications as they are created/deleted/renamed.
-        /// </summary>
-        private void SetupApplicationWatch()
-        {
-            _fileSystemWatcher = new FileSystemWatcher(_loaderConfigReader.ReadConfiguration().ApplicationConfigDirectory);
-            _fileSystemWatcher.EnableRaisingEvents = true;
-            _fileSystemWatcher.IncludeSubdirectories = true;
-            _fileSystemWatcher.Deleted += (a, b) => { StartGetApplicationsTask(); };
-            _fileSystemWatcher.Changed += (a, b) => { StartGetApplicationsTask(); };
-            _fileSystemWatcher.Renamed += (a, b) => { StartGetApplicationsTask(); };
-        }
-
         private void StartGetApplicationsTask()
         {
             if (MonitorNewApplications)
-            {
-                // Cancel current task 
-                if (_getApplicationsTask != null)
-                {
-                    _getApplicationsCancellationTokenSource.Cancel();
-                    try { _getApplicationsTask.Wait(_getApplicationsCancellationToken); }
-                    catch (Exception) { /* ignored */ }
-                }
-
-                _getApplicationsCancellationTokenSource = new CancellationTokenSource();
-                _getApplicationsCancellationToken = _getApplicationsCancellationTokenSource.Token;
-                _getApplicationsTask = Task.Run(GetApplications, _getApplicationsCancellationToken);
-            }
+                _getApplicationsTaskCommand.Execute(new Action<CancellationToken>(GetApplications));
         }
 
         /// <summary>
         /// Obtains an image to represent a given application.
         /// The image is either a custom one or the icon of the application.
         /// </summary>
-        /// <param name="applicationConfig">Individual configuration of the application.</param>
         private ImageSource GetImageForAppConfig(PathGenericTuple<ApplicationConfig> applicationConfig)
         {
             // Check if custom icon exists.
@@ -137,11 +108,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 string logoFilePath = Path.Combine(logoDirectory, applicationConfig.Object.AppIcon);
 
                 if (File.Exists(logoFilePath))
-                {
-                    ImageSource source = new BitmapImage(new Uri(logoFilePath, UriKind.Absolute));
-                    source.Freeze();
-                    return source;
-                }
+                    return Misc.Imaging.BitmapFromUri(new Uri(logoFilePath, UriKind.Absolute));
             }
             
             // Otherwise extract new icon from executable.

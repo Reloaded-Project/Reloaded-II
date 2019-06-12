@@ -47,8 +47,19 @@
         string ModDll { get; set; }
 
         /// <summary>
+        /// File name of the image used to represent the mod in the launcher present in the same directory
+        /// as the config.
+        /// </summary>
+        string ModIcon { get; set; }
+
+        /// <summary>
         /// A collection of <see cref="ModId"/>(s) of other modifications that this mod requires to run.
         /// </summary>
         string[] ModDependencies { get; set; }
+
+        /// <summary>
+        /// Stores a list of supported applications.
+        /// </summary>
+        string[] SupportedAppId { get; set; }
     }
 }

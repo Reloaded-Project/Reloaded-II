@@ -1,27 +1,19 @@
 ﻿using System;
+using System.IO;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Tests.IO.Utilities;
 using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.IO
 {
-    public class LoaderConfigReaderTest : IDisposable
+    public class LoaderConfigReaderTest
     {
         private static LoaderConfigReader _configReader;
-        private TempLoaderConfigCreator _loaderConfigCreator;
 
         /* Before Test */
         public LoaderConfigReaderTest()
         {
             _configReader = new LoaderConfigReader();
-            _loaderConfigCreator = new TempLoaderConfigCreator();
-        }
-
-        /* After Test */
-        public void Dispose()
-        {
-            _loaderConfigCreator.Dispose();
         }
 
         /* Simple Read/Write and Serialization Test */
@@ -29,11 +21,15 @@ namespace Reloaded.Mod.Loader.Tests.IO
         [Fact]
         public void ReadWriteConfig()
         {
-            // Read back config first. (It will exist because of constructor)
+            // Make new config first and backup old.
             var config = new LoaderConfig();
+            bool configExists = File.Exists(_configReader.ConfigurationPath());
+            LoaderConfig oldConfig = new LoaderConfig();
+
+            if (configExists)
+                oldConfig = _configReader.ReadConfiguration();
 
             // Add some random app support entries.
-            config.ModSupportMatrix.Add("reloaded.sample.app", new string[] { "sample.mod.a", "sample.mod.b" });
             config.ApplicationConfigDirectory = "Apps";
             config.ModConfigDirectory = "Mods";
             config.PluginConfigDirectory = "Plugins";
@@ -42,6 +38,12 @@ namespace Reloaded.Mod.Loader.Tests.IO
             // Write and read back the config.
             _configReader.WriteConfiguration(config);
             var newConfig = _configReader.ReadConfiguration();
+
+            // Restore old config and assert.
+            if (configExists)
+                _configReader.WriteConfiguration(oldConfig);
+            else
+                File.Delete(_configReader.ConfigurationPath());
 
             Assert.Equal(config, newConfig);
         }

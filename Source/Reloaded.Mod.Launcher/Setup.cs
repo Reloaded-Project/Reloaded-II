@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -51,7 +54,7 @@ namespace Reloaded.Mod.Launcher
 
                 // Cleaning up App/Loader/Mod Configurations
                 updateText(getText(XAML_SplashCleaningConfigurations));
-                CleanupConfigurations(_loaderConfig);
+                CleanupConfigurations();
 
                 // Preparing viewmodels.
                 updateText(getText(XAML_SplashPreparingViewModels));
@@ -99,12 +102,9 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static void SetupViewModels()
         {
-            var mainPageViewModel = IoC.Get<MainPageViewModel>();
-            IoC.Kernel.Bind<MainPageViewModel>().ToConstant(mainPageViewModel);
-
-            // Consumes MainPageViewModel, make sure it goes after it.
-            var addAppViewModel = IoC.Get<AddAppViewModel>();
-            IoC.Kernel.Bind<AddAppViewModel>().ToConstant(addAppViewModel);
+            IoC.GetConstant<MainPageViewModel>();
+            IoC.GetConstant<AddAppViewModel>(); // Consumes MainPageViewModel, make sure it goes after it.
+            IoC.GetConstant<ManageModsViewModel>();
         }
 
 
@@ -112,27 +112,10 @@ namespace Reloaded.Mod.Launcher
         /// Cleans up App/Loader/Mod Configurations from nonexisting
         /// references such as removed mods.
         /// </summary>
-        private static void CleanupConfigurations(LoaderConfig loaderConfig)
+        private static void CleanupConfigurations()
         {
-            var modConfigLoader = new ConfigLoader<ModConfig>();
-            var appConfigLoader = new ConfigLoader<ApplicationConfig>();
-            var loaderConfigReader = new LoaderConfigReader();
-
-            foreach (var modConfiguration in modConfigLoader.ReadConfigurations(loaderConfig.ModConfigDirectory, ModConfig.ConfigFileName))
-            {
-                modConfiguration.Object.CleanupConfig(modConfiguration.Path);
-                modConfigLoader.WriteConfiguration(modConfiguration.Path, modConfiguration.Object);
-            }
-
-            foreach (var appConfiguration in appConfigLoader.ReadConfigurations(loaderConfig.ApplicationConfigDirectory, ApplicationConfig.ConfigFileName))
-            {
-                appConfiguration.Object.CleanupConfig(appConfiguration.Path);
-                appConfigLoader.WriteConfiguration(appConfiguration.Path, appConfiguration.Object);
-            }
-
-            var loaderConfiguration = loaderConfigReader.ReadConfiguration();
-            loaderConfiguration.CleanupConfig(loaderConfigReader.ConfigurationPath());
-            loaderConfigReader.WriteConfiguration(loaderConfiguration);
+            var configCleaner = new ConfigCleaner();
+            configCleaner.Clean();
         }
     }
 }

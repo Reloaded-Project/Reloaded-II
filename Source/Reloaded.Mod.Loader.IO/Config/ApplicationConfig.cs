@@ -9,7 +9,7 @@ using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
-    public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig, IConfigCleanup
+    public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig
     {
         /// <summary>
         /// The name of the configuration file as stored on disk.
@@ -45,7 +45,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         public static void WriteConfiguration(string path, ApplicationConfig config)
         {
-            var _applicationConfigLoader = new ConfigLoader<ApplicationConfig>();
+            var _applicationConfigLoader = new ConfigReader<ApplicationConfig>();
             _applicationConfigLoader.WriteConfiguration(path, config);
         }
 
@@ -54,31 +54,6 @@ namespace Reloaded.Mod.Loader.IO.Config
             Overrides
             ---------
         */
-
-        /* For maintaining consistency. */
-        public void CleanupConfig(string thisPath)
-        {
-            if (String.IsNullOrEmpty(AppName))
-                AppName = "Reloaded Application Name";
-
-            if (String.IsNullOrEmpty(AppId))
-                AppId = AppName.Replace(" ", ".");
-
-            if (!String.IsNullOrEmpty(thisPath))
-            {
-                string imagePath = Path.Combine(Path.GetDirectoryName(thisPath), AppIcon);
-                if (!File.Exists(imagePath))
-                    AppIcon = "";
-            }
-
-            if (!File.Exists(AppLocation))
-            {
-                AppLocation = "";
-                AppArguments = "";
-            }
-
-            EnabledMods = ConfigCleanupUtility.FilterNonexistingModIds(EnabledMods).ToArray();
-        }
 
         /* Useful for debugging. */
         public override string ToString()

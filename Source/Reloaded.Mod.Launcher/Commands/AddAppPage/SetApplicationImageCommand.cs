@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
@@ -56,12 +57,11 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             string applicationIconPath = Path.Combine(applicationDirectory, applicationIconFileName);
 
             // Copy image and set config file path.
-            File.Copy(imagePath, applicationIconPath);
+            File.Copy(imagePath, applicationIconPath, true);
             config.AppIcon = applicationIconFileName;
 
-            // No need to write file on disk, file will be updated by image.
-            ImageSource source = new BitmapImage(new Uri(applicationIconPath, UriKind.Absolute));
-            source.Freeze();
+            // No need to write file on disk, file will be updated by binding.
+            ImageSource source = Imaging.BitmapFromUri(new Uri(applicationIconPath, UriKind.Absolute));
             appIconPathTuple.Image = source;
         }
 
@@ -74,7 +74,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         {
             var dialog = new VistaOpenFileDialog();
             dialog.Title = (string) Application.Current.Resources[XAML_AddAppImageExecutableTitle];
-            dialog.Filter = $"{(string)Application.Current.Resources[XAML_AddAppImageSelectorFilter]} (*.jpg, *.jpeg, *.jpe, *.jfif, *.png)|*.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            dialog.Filter = $"{(string)Application.Current.Resources[XAML_AddAppImageSelectorFilter]} {Constants.WpfSupportedFormatsFilter}";
             if ((bool) dialog.ShowDialog())
             {
                 return dialog.FileName;

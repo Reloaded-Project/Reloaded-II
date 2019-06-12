@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using System.Linq;
+using Ninject;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -24,6 +25,22 @@ namespace Reloaded.Mod.Launcher
         public static T Get<T>()
         {
             return Kernel.Get<T>();
+        }
+
+        /// <summary>
+        /// Retrieves a constant service/class.
+        /// If none is registered, binds it as the new constant to then be re-acquired.
+        /// </summary>
+        public static T GetConstant<T>()
+        {
+            var value = Kernel.Get<T>();
+
+            if (Kernel.GetBindings(typeof(T)).All(x => x.IsImplicit))
+            {
+                Kernel.Bind<T>().ToConstant(value);
+            }
+
+            return value;
         }
     }
 }

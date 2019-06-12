@@ -8,7 +8,7 @@ using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
-    public class LoaderConfig : ObservableObject, IConfigCleanup
+    public class LoaderConfig : ObservableObject
     {
         /// <summary>
         /// The name of the configuration file as stored on disk.
@@ -42,45 +42,30 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
         /// </summary>
-        public string[] EnabledPlugins { get; set; } 
-
-        /// <summary>
-        /// A mapping of Application ID to many Mod IDs which declare which applications support which mods.
-        /// </summary>
-        public Dictionary<string, string[]> ModSupportMatrix { get; set; }
+        public string[] EnabledPlugins { get; set; }
 
         /* Some mods are universal :wink: */
 
         public LoaderConfig()
         {
-            ModSupportMatrix = new Dictionary<string, string[]>();
             EnabledPlugins = new string[0];
             ResetMissingDirectories();
         }
 
-        public void CleanupConfig(string thisPath)
+        /// <summary>
+        /// Testing use only.
+        /// </summary>
+        public static LoaderConfig GetTestConfig()
         {
-            ResetMissingDirectories();
-
-            // Cleanup application list.
-            var newApplicationSet = ConfigCleanupUtility.FilterNonexistingAppIds(ModSupportMatrix.Keys);
-
-            foreach (var key in ModSupportMatrix.Keys.ToArray())
-            {
-                // Remove key it does not exist.
-                if (!newApplicationSet.Contains(key))
-                {
-                    ModSupportMatrix.Remove(key);
-                    continue;
-                }
-                
-                // If key exists, try to remove nonexisting mods.
-                ModSupportMatrix[key] = ConfigCleanupUtility.FilterNonexistingModIds(ModSupportMatrix[key]).ToArray();
-            }
+            var config = new LoaderConfig();
+            config.ApplicationConfigDirectory = IfNotExistsMakeDefaultDirectory(config.ApplicationConfigDirectory, "TestApps");
+            config.ModConfigDirectory = IfNotExistsMakeDefaultDirectory(config.ModConfigDirectory, "TestMods");
+            config.PluginConfigDirectory = IfNotExistsMakeDefaultDirectory(config.PluginConfigDirectory, "TestPlugins");
+            return config;
         }
 
         // Creates directories/folders if they do not exist.
-        private void ResetMissingDirectories()
+        public void ResetMissingDirectories()
         {
             ApplicationConfigDirectory = IfNotExistsMakeDefaultDirectory(ApplicationConfigDirectory, DefaultApplicationConfigDirectory);
             ModConfigDirectory = IfNotExistsMakeDefaultDirectory(ModConfigDirectory, DefaultModConfigDirectory);
@@ -88,7 +73,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         }
 
         // Sets default directory if does not exist.
-        private string IfNotExistsMakeDefaultDirectory(string directoryPath, string defaultDirectory)
+        private static string IfNotExistsMakeDefaultDirectory(string directoryPath, string defaultDirectory)
         {
             if (!Directory.Exists(directoryPath))
                 return CreateDirectoryRelativeToCurrent(defaultDirectory);
@@ -100,7 +85,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Creates a directory relative to the current directory
         /// and returns the full path of the supplied directory parameter.
         /// </summary>
-        private string CreateDirectoryRelativeToCurrent(string directoryPath)
+        private static string CreateDirectoryRelativeToCurrent(string directoryPath)
         {
             string fullDirectoryPath = Path.GetFullPath(directoryPath);
             Directory.CreateDirectory(fullDirectoryPath);
@@ -133,12 +118,11 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         protected bool Equals(LoaderConfig other)
         {
-            return string.Equals(InstallDirectory, other.InstallDirectory) && 
-                   string.Equals(ApplicationConfigDirectory, other.ApplicationConfigDirectory) && 
-                   string.Equals(ModConfigDirectory, other.ModConfigDirectory) && 
+            return string.Equals(InstallDirectory, other.InstallDirectory) &&
+                   string.Equals(ApplicationConfigDirectory, other.ApplicationConfigDirectory) &&
+                   string.Equals(ModConfigDirectory, other.ModConfigDirectory) &&
                    string.Equals(PluginConfigDirectory, other.PluginConfigDirectory) &&
-                   Enumerable.SequenceEqual(EnabledPlugins, other.EnabledPlugins) &&
-                   ModMatrixEqual(this.ModSupportMatrix, other.ModSupportMatrix);
+                   Enumerable.SequenceEqual(EnabledPlugins, other.EnabledPlugins);
         }
 
         public override bool Equals(object obj)
@@ -165,7 +149,6 @@ namespace Reloaded.Mod.Loader.IO.Config
                 hashCode = (hashCode * 397) ^ (ModConfigDirectory != null ? ModConfigDirectory.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (PluginConfigDirectory != null ? PluginConfigDirectory.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (EnabledPlugins != null ? EnabledPlugins.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ModSupportMatrix != null ? ModSupportMatrix.GetHashCode() : 0);
                 return hashCode;
             }
         }

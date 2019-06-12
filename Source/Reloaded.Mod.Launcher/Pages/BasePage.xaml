@@ -98,6 +98,6 @@
                ClipToBounds="True"
                Grid.RowSpan="2"
                CurrentPage="{Binding Path=Page,
-                                     Converter={x:Static converters:ApplicationBaseSubPageToPageConverter.Instance}}"/>
+                                     Converter={x:Static converters:ApplicationBaseSubPageToSingletonPageConverter.Instance}}"/>
     </Grid>
 </launcher:ReloadedIIPage>

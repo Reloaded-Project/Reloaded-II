@@ -8,20 +8,20 @@ using Reloaded.WPF.Theme.Default;
 namespace Reloaded.Mod.Launcher.Converters
 {
     [ValueConversion(typeof(BaseSubPage), typeof(ReloadedPage))]
-    public class ApplicationBaseSubPageToPageConverter : IValueConverter
+    public class ApplicationBaseSubPageToSingletonPageConverter : IValueConverter
     {
-        public static ApplicationBaseSubPageToPageConverter Instance = new ApplicationBaseSubPageToPageConverter();
+        public static ApplicationBaseSubPageToSingletonPageConverter Instance = new ApplicationBaseSubPageToSingletonPageConverter();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             switch ((BaseSubPage) value)
             {
                 case BaseSubPage.Welcome:
-                    return new WelcomePage();
+                    return IoC.GetConstant<WelcomePage>();
                 case BaseSubPage.AddApp:
-                    return new Pages.BaseSubpages.AddAppPage();
+                    return IoC.GetConstant<Pages.BaseSubpages.AddAppPage>();
                 case BaseSubPage.ManageMods:
-                    return new ManageModsPage();
+                    return IoC.GetConstant<ManageModsPage>();
                 default:
                     Debugger.Break();
                     return null;

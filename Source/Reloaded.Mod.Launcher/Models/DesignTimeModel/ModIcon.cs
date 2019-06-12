@@ -8,6 +8,7 @@ namespace Reloaded.Mod.Launcher.Models.DesignTimeModel
     public class ModIcon
     {
         public static ModIcon Instance { get; set; } = new ModIcon();
-        public ImageSource Mod { get; set; } = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute));
+
+        public ImageSource Icon { get; set; } = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute));
     }
 }

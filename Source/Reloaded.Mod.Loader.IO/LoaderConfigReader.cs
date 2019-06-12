@@ -52,14 +52,14 @@ namespace Reloaded.Mod.Loader.IO
         /// <summary>
         /// Writes a new mod loader configuration to disk.
         /// </summary>
-        /// <param name="modConfig">The new mod loader configuration to write.</param>
-        public void WriteConfiguration(LoaderConfig modConfig)
+        /// <param name="config">The new mod loader configuration to write.</param>
+        public void WriteConfiguration(LoaderConfig config)
         {
             string directory = Path.GetDirectoryName(StaticConfigFilePath);
             if (! Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            string jsonFile = JsonConvert.SerializeObject(modConfig, Formatting.Indented);
+            string jsonFile = JsonConvert.SerializeObject(config, Formatting.Indented);
             File.WriteAllText(StaticConfigFilePath, jsonFile);
         }
     }

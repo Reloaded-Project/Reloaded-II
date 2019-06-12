@@ -1,0 +1,126 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs.CreateModDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs"
+        xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        xmlns:designTimeModels="clr-namespace:Reloaded.Mod.Launcher.Models.DesignTimeModel"
+        xmlns:addAppPage="clr-namespace:Reloaded.Mod.Launcher.Converters.AddAppPage"
+        xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.AddAppPage"
+        mc:Ignorable="d"
+        Title="{DynamicResource TitleCreateModDialog}" 
+        Height="550" 
+        Width="500"
+        WindowStartupLocation="CenterOwner"
+        Style="{DynamicResource ReloadedWindow}">
+
+    <Grid DataContext="{Binding Path=RealViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+        
+        <!-- Grid Resources -->
+        <Grid.Resources>
+            <ResourceDictionary>
+                <system:Double x:Key="DetailsImageWidth">180</system:Double>
+                <system:Double x:Key="DetailsColumnWidth">280</system:Double>
+
+                <Thickness x:Key="DependencyListItemMargin">5,2.5,5,2.5</Thickness>
+                <Thickness x:Key="DetailsRowHeight">0,7.5</Thickness>
+            </ResourceDictionary>
+        </Grid.Resources>
+
+        <!-- All Content. -->
+        <ScrollViewer>
+            <Grid Margin="{DynamicResource PageMargin}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+
+                <!-- Grid Contents -->
+                <WrapPanel Orientation="Vertical" Grid.Column="0">
+
+                    <!-- Application Image -->
+                    <Viewbox Width="{StaticResource DetailsImageWidth}" 
+                             Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
+                             Margin="{StaticResource DetailsRowHeight}">
+                        <Image x:Name="ModIcon"
+                               Source="{Binding Image}" 
+                               ToolTip="{DynamicResource AddAppImageTooltip}" PreviewMouseDown="ModIcon_PreviewMouseDown"/>
+                    </Viewbox>
+
+                    <!-- Mod Properties -->
+                    <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+                        Tag="{DynamicResource CreateModDialogId}" 
+                        ToolTip="{DynamicResource CreateModDialogId}"
+                        Text="{Binding Config.ModId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="{StaticResource DetailsRowHeight}" 
+                        Width="{StaticResource DetailsColumnWidth}"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+
+                    <TextBox
+                        Style="{DynamicResource TextboxWithPlaceholder}" 
+                        Tag="{DynamicResource CreateModDialogName}" 
+                        Text="{Binding Config.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Width="{StaticResource DetailsColumnWidth}"
+                        Margin="{StaticResource DetailsRowHeight}"
+                        ToolTip="{DynamicResource CreateModDialogName}"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+
+                    <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+                             Text="{Binding Config.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Tag="{DynamicResource CreateModDialogAuthor}" 
+                        ToolTip="{DynamicResource CreateModDialogAuthor}"
+                        Margin="{StaticResource DetailsRowHeight}" 
+                        Width="{StaticResource DetailsColumnWidth}"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+
+                    <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+                             Text="{Binding Config.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Tag="{DynamicResource CreateModDialogVersion}" 
+                             ToolTip="{DynamicResource CreateModDialogVersion}"
+                             Margin="{StaticResource DetailsRowHeight}" 
+                             Width="{StaticResource DetailsColumnWidth}"
+                             HorizontalAlignment="Center" 
+                             VerticalAlignment="Center"/>
+
+                    <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+                             Text="{Binding Config.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Tag="{DynamicResource CreateModDialogDescription}" 
+                             ToolTip="{DynamicResource CreateModDialogDescription}"
+                             Margin="{StaticResource DetailsRowHeight}" 
+                             Width="{StaticResource DetailsColumnWidth}"
+                             HorizontalAlignment="Center" 
+                             VerticalAlignment="Center"/>
+
+                    <Button Content="Create Mod"
+                            Margin="{StaticResource DetailsRowHeight}" PreviewMouseDown="Save_PreviewMouseDown">
+                    </Button>
+
+                    <!-- Supported Dependencies -->
+                    <controls:PopupLabel ButtonText="{DynamicResource CreateModDialogDependencies}"
+                                         FontSize="{DynamicResource FontSizeSmall}"
+                                         Margin="{StaticResource DetailsRowHeight}"
+                                         HiddenVisibilityType="Collapsed"
+                                         IsOpen="False">
+                        <controls:PopupLabel.HiddenContent>
+                            <ListView ItemsSource="{Binding Dependencies}" Margin="{StaticResource DetailsRowHeight}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource DependencyListItemMargin}"/>
+                                            <TextBlock Text="{Binding ModConfig.ModName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource DependencyListItemMargin}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </controls:PopupLabel.HiddenContent>
+                    </controls:PopupLabel>
+                </WrapPanel>
+
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</default:ReloadedWindow>

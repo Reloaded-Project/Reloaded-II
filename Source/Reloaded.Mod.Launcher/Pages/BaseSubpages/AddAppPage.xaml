@@ -12,14 +12,14 @@
              xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
              xmlns:addAppPage="clr-namespace:Reloaded.Mod.Launcher.Converters.AddAppPage"
              xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.AddAppPage"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignHeight="600" 
              d:DesignWidth="800"
              Title="{DynamicResource TitleAddApplication}">
+    <ScrollViewer DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
-    <Page.Resources>
-        <ResourceDictionary>
-
+        <ScrollViewer.Resources>
             <!-- Layout properties -->
             <sys:Double x:Key="DetailsImageWidth">180</sys:Double>
             <sys:Double x:Key="DetailsColumnWidth">280</sys:Double>
@@ -29,80 +29,85 @@
 
             <addAppPage1:DeleteApplicationCommand x:Key="DeleteApplicationCommand"/>
             <addAppPage1:AddApplicationCommand x:Key="AddApplicationCommand"/>
-        </ResourceDictionary>
-    </Page.Resources>
 
-    <Grid>
-        <ScrollViewer>
-            <Grid Margin="{DynamicResource PageMargin}"
+            <!-- Sort the app list -->
+            <CollectionViewSource Source="{Binding MainPageViewModel.Applications, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Key="SortedApps" IsLiveSortingRequested="True">
+                <CollectionViewSource.SortDescriptions>
+                    <componentModel:SortDescription PropertyName="ApplicationConfig.AppName"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+        </ScrollViewer.Resources>
+
+        <Grid Margin="{DynamicResource PageMargin}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center">
 
-                <!-- Grid Contents -->
-                <WrapPanel Orientation="Vertical" Grid.Column="0">
+            <!-- Grid Contents -->
+            <WrapPanel Orientation="Vertical" Grid.Column="0">
 
-                    <!-- Application Image -->
-                    <Viewbox Width="{StaticResource DetailsImageWidth}" 
+                <!-- Application Image -->
+                <Viewbox Width="{StaticResource DetailsImageWidth}" 
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
                              Margin="{StaticResource DetailsRowHeight}">
-                        <Image d:DataContext="{x:Static designTimeModels:ApplicationIcon.Instance}"
-                               Source="{Binding Application, Converter={x:Static addAppPage:ApplicationToImageConverter.Instance}}" 
+                    <Image d:DataContext="{x:Static designTimeModels:ApplicationIcon.Instance}"
+                               Source="{Binding Application, Converter={x:Static addAppPage:ApplicationToImageConverter.Instance}, IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
                                ToolTip="{DynamicResource AddAppImageTooltip}" 
                                PreviewMouseDown="Image_PreviewMouseDown"/>
-                    </Viewbox>
+                </Viewbox>
 
-                    <!-- Application Selector -->
-                    <ComboBox Margin="{StaticResource DetailsRowHeight}"
+                <!-- Application Selector -->
+                <ComboBox x:Name="AppSelectionBox"
+                              Margin="{StaticResource DetailsRowHeight}"
                               Width="{StaticResource DetailsColumnWidth}"
                               IsSynchronizedWithCurrentItem="True"
-                              ItemsSource="{Binding MainPageViewModel.Applications, Mode=TwoWay}"
-                              SelectedValue="{Binding Application}"
+                              ItemsSource="{Binding Source={StaticResource SortedApps}}"
                               SelectedValuePath="ApplicationConfig"
+                              SelectedValue="{Binding Application}"
                               Text="Select a Game"
                               SelectionChanged="ComboBox_SelectionChanged"
                               SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding ApplicationConfig.AppName, Mode=TwoWay}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ApplicationConfig.AppName, Mode=TwoWay}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
-                    <!-- Add / Delete -->
-                    <Grid Margin="{StaticResource DetailsRowHeight}"
+                <!-- Add / Delete -->
+                <Grid Margin="{StaticResource DetailsRowHeight}"
                           Width="{StaticResource DetailsColumnWidth}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"/>
-                        </Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" Padding="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                    <Button Grid.Column="0" Padding="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
                                 Content="{DynamicResource AddAppNewButton}" 
                                 Margin="{StaticResource ButtonMargin}"
                                 Command="{StaticResource AddApplicationCommand}"/>
 
-                        <Button Grid.Column="1" Padding="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                    <Button Grid.Column="1" Padding="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                                 Content="{DynamicResource AddAppDeleteButton}" 
                                 Margin="{StaticResource ButtonMargin}"
                                 Command="{StaticResource DeleteApplicationCommand}"/>
-                    </Grid>
+                </Grid>
 
-                    <!-- Name, Executable Location, Commandline Arguments. -->
-                    <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+                <!-- Name, Executable Location, Commandline Arguments. -->
+                <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
                         Tag="{DynamicResource AddAppName}" 
                         ToolTip="{DynamicResource AddAppName}"
-                        Text="{Binding Application.AppName}"
+                        Text="{Binding Application.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Margin="{StaticResource DetailsRowHeight}" 
                         Width="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
 
-                    <TextBox
-                        Text="{Binding Application.AppLocation}"
+                <TextBox
+                        Text="{Binding Application.AppLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Width="{StaticResource DetailsColumnWidth}"
                         Margin="{StaticResource DetailsRowHeight}"
                         Style="{DynamicResource TextboxWithPlaceholder}" 
@@ -111,8 +116,8 @@
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
 
-                    <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
-                             Text="{Binding Application.AppArguments}"
+                <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+                             Text="{Binding Application.AppArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Tag="{DynamicResource AddAppArguments}" 
                         ToolTip="{DynamicResource AddAppArguments}"
                         Margin="{StaticResource DetailsRowHeight}" 
@@ -120,22 +125,21 @@
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
 
-                    <!-- The text can be a tiny bit too long, no width cap here. -->
-                    <controls:PopupLabel ButtonText="{DynamicResource AddAppAdvancedOptions}"
+                <!-- The text can be a tiny bit too long, no width cap here. -->
+                <controls:PopupLabel ButtonText="{DynamicResource AddAppAdvancedOptions}"
                                          FontSize="{DynamicResource FontSizeSmall}"
                                          HiddenVisibilityType="Collapsed"
                                          IsOpen="False">
-                        <controls:PopupLabel.HiddenContent>
-                            <StackPanel Margin="{StaticResource ButtonMargin}">
-                                <Button Content="{DynamicResource AddAppCreateShortcut}" 
+                    <controls:PopupLabel.HiddenContent>
+                        <StackPanel Margin="{StaticResource ButtonMargin}">
+                            <Button Content="{DynamicResource AddAppCreateShortcut}" 
                                         Margin="{StaticResource DetailsRowHeight}" 
                                         HorizontalAlignment="Stretch"/>
-                            </StackPanel>
-                        </controls:PopupLabel.HiddenContent>
-                    </controls:PopupLabel>
-                </WrapPanel>
+                        </StackPanel>
+                    </controls:PopupLabel.HiddenContent>
+                </controls:PopupLabel>
+            </WrapPanel>
 
-            </Grid>
-        </ScrollViewer>
-    </Grid>
+        </Grid>
+    </ScrollViewer>
 </launcher:ReloadedIIPage>

@@ -13,7 +13,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
     /// </summary>
     public partial class AddAppPage : ReloadedIIPage
     {
-        private readonly AddAppViewModel _model;
+        public AddAppViewModel ViewModel { get; set; }
         private readonly SetApplicationImageCommand _setApplicationImageCommand;
 
         public AddAppPage() : base()
@@ -21,22 +21,23 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             InitializeComponent();
 
             // Setup ViewModel
-            _model = IoC.Get<AddAppViewModel>();
-            this.DataContext = _model;
-            this.AnimateOutStarted += SaveCurrentSelection;
+            ViewModel = IoC.Get<AddAppViewModel>();
+            this.DataContext = ViewModel;
+            this.AnimateOutStarted += SaveCurrentSelectedItem;
+            this.AnimateInStarted += SetDefaultSelectionIndex;
 
             _setApplicationImageCommand = new SetApplicationImageCommand();
         }
 
-        private void SaveCurrentSelection()
+        private void SaveCurrentSelectedItem()
         {
             // Saves the current selection before exiting launcher.
-            if (_model.MainPageViewModel.Applications.Count >= 0)
+            if (ViewModel.MainPageViewModel.Applications.Count >= 0)
             {
                 try
                 {
-                    var imagePathAppTuple = _model.MainPageViewModel.Applications.First(x => x.ApplicationConfig.Equals(_model.Application));
-                    ApplicationConfig.WriteConfiguration(imagePathAppTuple.ApplicationConfigPath, (ApplicationConfig) _model.Application);
+                    var imagePathAppTuple = ViewModel.MainPageViewModel.Applications.First(x => x.ApplicationConfig.Equals(ViewModel.Application));
+                    ApplicationConfig.WriteConfiguration(imagePathAppTuple.ApplicationConfigPath, (ApplicationConfig) ViewModel.Application);
                 }
                 catch (Exception) { }
             }
@@ -44,13 +45,12 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 
         private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            // TODO: Save items on exit page too.
             // Filter for first load.
             if (e.RemovedItems.Count > 0)
             {
                 // Backup and disable monitor status.
-                bool oldMonitorNewApplications = _model.MainPageViewModel.MonitorNewApplications;
-                _model.MainPageViewModel.MonitorNewApplications = false;
+                bool oldMonitorNewApplications = ViewModel.MainPageViewModel.MonitorNewApplications;
+                ViewModel.MainPageViewModel.MonitorNewApplications = false;
 
                 // Write config.
                 // Without the file existence check, what can happen is we remove an application and it immediately comes back.
@@ -59,14 +59,24 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                     ApplicationConfig.WriteConfiguration(tuple.ApplicationConfigPath, (ApplicationConfig)tuple.ApplicationConfig);
 
                 // Restore old monitor status.
-                _model.MainPageViewModel.MonitorNewApplications = oldMonitorNewApplications;
+                ViewModel.MainPageViewModel.MonitorNewApplications = oldMonitorNewApplications;
             }
+        }
+
+        /* Load save index between menu leave/entry */
+        private void SetDefaultSelectionIndex()
+        {
+            ViewModel.SelectedIndex = 0;
         }
 
         private void Image_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (_setApplicationImageCommand.CanExecute(null))
+            {
                 _setApplicationImageCommand.Execute(null);
+                ViewModel.RaiseApplicationChangedEvent();
+                e.Handled = true;
+            }
         }
     }
 }
