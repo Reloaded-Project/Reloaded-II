@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Data;
+using Reloaded.Mod.Launcher.Models.Model;
+using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.WPF.Theme.Default;
+using Reloaded.WPF.Utilities;
+
+namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
+{
+    /// <summary>
+    /// Interaction logic for SetDependenciesDialog.xaml
+    /// </summary>
+    public partial class SetDependenciesDialog : ReloadedWindow
+    {
+        public ObservableCollection<BooleanModTuple> Dependencies { get; set; } = new ObservableCollection<BooleanModTuple>();
+        public ManageModsViewModel ManageModsViewModel { get; }
+        public ImageModPathTuple CurrentMod { get; }
+
+        private readonly ResourceManipulator _manipulator;
+        private CollectionViewSource _dependenciesViewSource;
+
+        public SetDependenciesDialog(ManageModsViewModel manageModsViewModel)
+        {
+            InitializeComponent();
+            ManageModsViewModel = manageModsViewModel;
+            CurrentMod = manageModsViewModel.SelectedModPathTuple;
+
+            PopulateDependencies();
+            this.Closed += OnClosed;
+
+            // Setup filters
+            _manipulator = new ResourceManipulator(this.Contents);
+            _dependenciesViewSource = _manipulator.Get<CollectionViewSource>("SortedDependencies");
+            _dependenciesViewSource.Filter += DependenciesViewSourceOnFilter;
+        }
+
+        private void DependenciesViewSourceOnFilter(object sender, FilterEventArgs e)
+        {
+            if (this.ModsFilter.Text.Length <= 0)
+            {
+                e.Accepted = true;
+                return;
+            }
+
+            var tuple = (BooleanModTuple)e.Item;
+            e.Accepted = tuple.ModConfig.ModName.IndexOf(this.ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        }
+
+        private void PopulateDependencies()
+        {
+            var mods = ManageModsViewModel.Mods; // In case collection changes during window open.
+            foreach (var mod in mods)
+            {
+                bool enabled = CurrentMod.ModConfig.ModDependencies.Contains(mod.ModConfig.ModId);
+                Dependencies.Add(new BooleanModTuple(enabled, mod.ModConfig));
+            }
+        }
+
+        private void OnClosed(object sender, EventArgs e)
+        {
+            CurrentMod.ModConfig.ModDependencies = Dependencies.Where(x => x.Enabled).Select(x => x.ModConfig.ModId).ToArray();
+            CurrentMod.Save();
+        }
+
+        private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            _dependenciesViewSource.View.Refresh();
+        }
+    }
+}

@@ -5,10 +5,17 @@
     <!-- Common Page Settings -->
     <Thickness x:Key="PageMargin">40</Thickness>    <!-- Space between the page content and edges of the window. -->
     <Thickness x:Key="PanelMargin">10</Thickness>   <!-- Space between individual panels/grids of a page. -->
+    
+    <!-- Control Layout Properties -->
+    <Thickness x:Key="CommonItemMargin">0,10</Thickness>
+    <Thickness x:Key="CommonItemMarginSmall">0,7.5</Thickness>
+    <Thickness x:Key="ListEntryItemMarginSmall">5,0</Thickness>
+    <sys:Double x:Key="ModEntryCheckboxHeightSmall">18</sys:Double>
 
     <!-- Splash Properties -->
     <Thickness x:Key="SplashImageMargin">100</Thickness>           <!-- Space between the splash image and edges of the window. -->
     <sys:Double x:Key="SplashFontSize">28</sys:Double>             <!-- Size of the font used in the splash screen. -->
+    <sys:Int32 x:Key="SplashMinimumTime">0</sys:Int32>             <!-- The minimum amount of time to show the splash screen on startup. -->
 
     <!-- Sidebar Properties -->
     <GridLength x:Key="SidebarWidth">44</GridLength>               <!-- The width of the sidebar. -->

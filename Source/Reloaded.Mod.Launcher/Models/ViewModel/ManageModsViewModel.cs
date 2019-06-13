@@ -110,19 +110,19 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             }
         }
 
+        public void InvokeWithoutMonitoringMods(Action action)
+        {
+            MonitorNewMods = false;
+            action();
+            MonitorNewMods = true;
+        }
+
         private void InvokeAsync(Action action)
         {
             if (Application.Current != null)
                 Application.Current.Dispatcher.InvokeAsync(action);
             else
                 action();
-        }
-
-        private void InvokeWithoutMonitoringMods(Action action)
-        {
-            MonitorNewMods = false;
-            action();
-            MonitorNewMods = true;
         }
 
         private void ExecuteGetModifications()

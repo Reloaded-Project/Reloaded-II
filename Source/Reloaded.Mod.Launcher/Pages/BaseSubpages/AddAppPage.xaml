@@ -24,9 +24,6 @@
             <sys:Double x:Key="DetailsImageWidth">180</sys:Double>
             <sys:Double x:Key="DetailsColumnWidth">280</sys:Double>
 
-            <Thickness x:Key="DetailsRowHeight">0,10</Thickness>
-            <Thickness x:Key="ButtonMargin">10,0</Thickness>
-
             <addAppPage1:DeleteApplicationCommand x:Key="DeleteApplicationCommand"/>
             <addAppPage1:AddApplicationCommand x:Key="AddApplicationCommand"/>
 
@@ -48,7 +45,7 @@
                 <!-- Application Image -->
                 <Viewbox Width="{StaticResource DetailsImageWidth}" 
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                             Margin="{StaticResource DetailsRowHeight}">
+                             Margin="{DynamicResource CommonItemMargin}">
                     <Image d:DataContext="{x:Static designTimeModels:ApplicationIcon.Instance}"
                                Source="{Binding Application, Converter={x:Static addAppPage:ApplicationToImageConverter.Instance}, IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
                                ToolTip="{DynamicResource AddAppImageTooltip}" 
@@ -57,7 +54,7 @@
 
                 <!-- Application Selector -->
                 <ComboBox x:Name="AppSelectionBox"
-                              Margin="{StaticResource DetailsRowHeight}"
+                              Margin="{DynamicResource CommonItemMargin}"
                               Width="{StaticResource DetailsColumnWidth}"
                               IsSynchronizedWithCurrentItem="True"
                               ItemsSource="{Binding Source={StaticResource SortedApps}}"
@@ -74,7 +71,7 @@
                 </ComboBox>
 
                 <!-- Add / Delete -->
-                <Grid Margin="{StaticResource DetailsRowHeight}"
+                <Grid Margin="{DynamicResource CommonItemMargin}"
                           Width="{StaticResource DetailsColumnWidth}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -85,15 +82,15 @@
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
 
-                    <Button Grid.Column="0" Padding="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                                Content="{DynamicResource AddAppNewButton}" 
-                                Margin="{StaticResource ButtonMargin}"
-                                Command="{StaticResource AddApplicationCommand}"/>
+                    <Button Grid.Column="0"
+                            Content="{DynamicResource AddAppNewButton}" 
+                            Style="{DynamicResource UnpaddedStretchedGridButton}"
+                            Command="{StaticResource AddApplicationCommand}"/>
 
-                    <Button Grid.Column="1" Padding="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                                Content="{DynamicResource AddAppDeleteButton}" 
-                                Margin="{StaticResource ButtonMargin}"
-                                Command="{StaticResource DeleteApplicationCommand}"/>
+                    <Button Grid.Column="1"
+                            Content="{DynamicResource AddAppDeleteButton}"
+                            Style="{DynamicResource UnpaddedStretchedGridButton}"
+                            Command="{StaticResource DeleteApplicationCommand}"/>
                 </Grid>
 
                 <!-- Name, Executable Location, Commandline Arguments. -->
@@ -101,7 +98,7 @@
                         Tag="{DynamicResource AddAppName}" 
                         ToolTip="{DynamicResource AddAppName}"
                         Text="{Binding Application.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Margin="{StaticResource DetailsRowHeight}" 
+                        Margin="{DynamicResource CommonItemMargin}" 
                         Width="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
@@ -109,7 +106,7 @@
                 <TextBox
                         Text="{Binding Application.AppLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Width="{StaticResource DetailsColumnWidth}"
-                        Margin="{StaticResource DetailsRowHeight}"
+                        Margin="{DynamicResource CommonItemMargin}"
                         Style="{DynamicResource TextboxWithPlaceholder}" 
                         Tag="{DynamicResource AddAppLocation}" 
                         ToolTip="{DynamicResource AddAppLocation}"
@@ -120,7 +117,7 @@
                              Text="{Binding Application.AppArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Tag="{DynamicResource AddAppArguments}" 
                         ToolTip="{DynamicResource AddAppArguments}"
-                        Margin="{StaticResource DetailsRowHeight}" 
+                        Margin="{DynamicResource CommonItemMargin}" 
                         Width="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
@@ -131,9 +128,9 @@
                                          HiddenVisibilityType="Collapsed"
                                          IsOpen="False">
                     <controls:PopupLabel.HiddenContent>
-                        <StackPanel Margin="{StaticResource ButtonMargin}">
+                        <StackPanel>
                             <Button Content="{DynamicResource AddAppCreateShortcut}" 
-                                        Margin="{StaticResource DetailsRowHeight}" 
+                                        Margin="{DynamicResource CommonItemMargin}" 
                                         HorizontalAlignment="Stretch"/>
                         </StackPanel>
                     </controls:PopupLabel.HiddenContent>

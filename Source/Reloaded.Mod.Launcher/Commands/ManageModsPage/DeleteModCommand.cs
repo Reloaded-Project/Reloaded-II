@@ -5,15 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 
-namespace Reloaded.Mod.Launcher.Commands.AddAppPage
+namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 {
-    /// <summary>
-    /// Comnmand to be used by the <see cref="ManageModsPage"/> which decides
-    /// whether the current entry can be removed.
-    /// </summary>
-    public class DeleteModCommand : ICommand, IDisposable
+    public class DeleteModCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
         private ManageModsViewModel _manageModsViewModel;
 
@@ -25,18 +22,13 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
         ~DeleteModCommand()
         {
-            Cleanup();
+            Dispose();
         }
 
         public void Dispose()
         {
-            Cleanup();
-            GC.SuppressFinalize(this);
-        }
-
-        private void Cleanup()
-        {
             _manageModsViewModel.PropertyChanged -= ManageModsViewModelPropertyChanged;
+            GC.SuppressFinalize(this);
         }
 
         /* Implementation */
@@ -47,12 +39,6 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
                 RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
-        /* Helper(s) */
-
-        private void RaiseCanExecute(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke( () => { CanExecuteChanged(sender, e); } );
-        }
 
         /* ICommand. */
 
@@ -77,6 +63,6 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             // File system watcher automatically updates collection in MainPageViewModel.Applications
         }
 
-        public event EventHandler CanExecuteChanged = (sender, args) => { };
+
     }
 }

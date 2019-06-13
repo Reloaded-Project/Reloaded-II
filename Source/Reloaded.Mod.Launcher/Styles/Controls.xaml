@@ -13,9 +13,27 @@
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
+    <!-- Button without internal padding -->
+    <Style x:Key="UnpaddedButton" TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultButton}">
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <Style x:Key="UnpaddedStretchedButton" TargetType="{x:Type Button}" BasedOn="{StaticResource UnpaddedButton}">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+    </Style>
+
+    <Style x:Key="UnpaddedStretchedGridButton" TargetType="{x:Type Button}" BasedOn="{StaticResource UnpaddedStretchedButton}">
+        <Setter Property="Margin" Value="10,0"/>
+    </Style>
+
     <!-- Custom textbox type featuring a placeholder piece of text -->
     <Style x:Key="TextboxWithPlaceholder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource DefaultTextBox}">
-        
+
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -47,8 +65,8 @@
                         <!-- Block of default text to display if no text in real textbox. -->
                         <TextBlock IsHitTestVisible="False" 
                                    Text="{TemplateBinding Tag}" 
-                                   VerticalAlignment="Center" 
-                                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Foreground" Value="{DynamicResource BorderColorBrush}"/>

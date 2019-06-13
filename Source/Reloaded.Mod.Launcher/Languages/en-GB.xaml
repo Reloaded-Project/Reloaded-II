@@ -37,10 +37,18 @@
     <sys:String x:Key="AddAppExecutableFilter">Application Executable</sys:String>
 
     <!-- Mod Manager Page -->
+    <sys:String x:Key="ModManagerSearchMods">Search Mods</sys:String>
+    <sys:String x:Key="ModManagerSearchApps">Search Apps</sys:String>
+    <sys:String x:Key="ModManagerExtraOptions">Extra Options</sys:String>
+    <sys:String x:Key="ModManagerOpenModDirectory">Open Mod Directory</sys:String>
+    <sys:String x:Key="ModManagerManageDependencies">Manage Dependencies</sys:String>
     <sys:String x:Key="ModManagerSelectMod">Select the mod to change the details of.</sys:String>
     <sys:String x:Key="ModManagerSelectApp">Select the applications that are compatible with this mod.</sys:String>
 
-    <!-- Create Mod Page -->
+    <!-- Mod Manager: Set Dependencies -->
+    <sys:String x:Key="TitleSetDependenciesDialog">Set Dependencies for Mod</sys:String>
+
+    <!-- Mod Manager: Create Mod Page -->
     <sys:String x:Key="TitleCreateModDialog">Create Mod</sys:String>
     <sys:String x:Key="CreateModDialogId">Unique Id</sys:String>
     <sys:String x:Key="CreateModDialogName">Name</sys:String>

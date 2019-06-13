@@ -36,7 +36,7 @@ namespace Reloaded.Mod.Launcher
         /// <param name="getText">A function that accepts the name of a XAML resource and retrieves the text to update with.</param>
         /// <param name="updateText">A function that updates the visible text onscreen.</param>
         /// <param name="minimumSplashDelay">Minimum amount of time to wait to complete the loading process.</param>
-        public static async Task SetupApplication(Func<string, string> getText, Action<string> updateText, int minimumSplashDelay = 1000)
+        public static async Task SetupApplication(Func<string, string> getText, Action<string> updateText, int minimumSplashDelay)
         {
             if (!_loadExecuted)
             {
@@ -50,11 +50,14 @@ namespace Reloaded.Mod.Launcher
 
                 // Make Default Config if Necessary.
                 updateText(getText(XAML_SplashCreatingDefaultConfig));
-                var _loaderConfig = CreateNewConfigIfNotExist();
+                CreateNewConfigIfNotExist();
 
                 // Cleaning up App/Loader/Mod Configurations
+                // This is unused for cases when e.g. user installs mod before game or lacks a dependency.
+                /*
                 updateText(getText(XAML_SplashCleaningConfigurations));
                 CleanupConfigurations();
+                */
 
                 // Preparing viewmodels.
                 updateText(getText(XAML_SplashPreparingViewModels));
@@ -88,13 +91,11 @@ namespace Reloaded.Mod.Launcher
         /// <summary>
         /// Creates a new configuration if the config does not exist.
         /// </summary>
-        private static LoaderConfig CreateNewConfigIfNotExist()
+        private static void CreateNewConfigIfNotExist()
         {
             var configReader = new LoaderConfigReader();
             if (!configReader.ConfigurationExists())
                 configReader.WriteConfiguration(new LoaderConfig());
-
-            return configReader.ReadConfiguration();
         }
 
         /// <summary>
@@ -106,7 +107,6 @@ namespace Reloaded.Mod.Launcher
             IoC.GetConstant<AddAppViewModel>(); // Consumes MainPageViewModel, make sure it goes after it.
             IoC.GetConstant<ManageModsViewModel>();
         }
-
 
         /// <summary>
         /// Cleans up App/Loader/Mod Configurations from nonexisting

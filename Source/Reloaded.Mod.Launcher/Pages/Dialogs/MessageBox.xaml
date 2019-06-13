@@ -15,13 +15,6 @@
         WindowStartupLocation="CenterOwner"
         Style="{DynamicResource ReloadedWindow}">
     <ScrollViewer>
-
-        <ScrollViewer.Resources>
-            <ResourceDictionary>
-                <Thickness x:Key="DetailsRowHeight">0,10</Thickness>
-            </ResourceDictionary>
-        </ScrollViewer.Resources>
-
         <Grid Margin="{DynamicResource PanelMargin}">
             <StackPanel>
                 <TextBlock TextWrapping="Wrap"
@@ -29,7 +22,7 @@
                            VerticalAlignment="Center"
                            DockPanel.Dock="Top"
                            x:Name="Message"
-                           Margin="{DynamicResource DetailsRowHeight}">
+                           Margin="{DynamicResource CommonItemMargin}">
                     This is a sample message.<LineBreak/>
                     It may or may not be important.
                 </TextBlock>

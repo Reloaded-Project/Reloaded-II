@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Threading;
 using Reloaded.Mod.Loader.IO.Config;
 using Newtonsoft.Json;
 using Reloaded.Mod.Loader.IO.Interfaces;
@@ -20,7 +21,13 @@ namespace Reloaded.Mod.Loader.IO
     {
         /* Documentation: See IConfigLoader. */
 
-        public List<PathGenericTuple<TConfigType>> ReadConfigurations(string directory, string fileName)
+        /* Interface */
+        public List<PathGenericTuple<TConfigType>> ReadConfigurations(string directory, string fileName) => ReadConfigurations(directory, fileName, default);
+        public void WriteConfigurations(PathGenericTuple<TConfigType>[] configurations) => WriteConfigurations(configurations, default);
+
+        /* Implementation with Cancellation. */
+
+        public List<PathGenericTuple<TConfigType>> ReadConfigurations(string directory, string fileName, CancellationToken token)
         {
             // Get all config files to load.
             string[] configurationPaths = Directory.GetFiles(directory, fileName, SearchOption.AllDirectories);
@@ -28,17 +35,19 @@ namespace Reloaded.Mod.Loader.IO
             // Configurations to be returned
             var configurations = new List<PathGenericTuple<TConfigType>>(configurationPaths.Length);
             foreach (string configurationPath in configurationPaths)
-                configurations.Add( new PathGenericTuple<TConfigType>(configurationPath, ReadConfiguration(configurationPath)) );
+                if (! token.IsCancellationRequested)
+                    configurations.Add( new PathGenericTuple<TConfigType>(configurationPath, ReadConfiguration(configurationPath)) );
 
             return configurations;
         }
 
         /* Excluding because path and WriteConfiguration are tested. */
         [ExcludeFromCodeCoverage]
-        public void WriteConfigurations(PathGenericTuple<TConfigType>[] configurations)
+        public void WriteConfigurations(PathGenericTuple<TConfigType>[] configurations, CancellationToken token)
         {
             foreach (var configuration in configurations)
-                WriteConfiguration(configuration.Path, configuration.Object);
+                if (!token.IsCancellationRequested)
+                    WriteConfiguration(configuration.Path, configuration.Object);
         }
 
         public TConfigType ReadConfiguration(string path)

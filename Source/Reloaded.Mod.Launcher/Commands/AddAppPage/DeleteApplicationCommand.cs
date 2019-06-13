@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
@@ -13,7 +14,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
     /// Comnmand to be used by the <see cref="AddAppPage"/> which decides
     /// whether the current entry can be removed.
     /// </summary>
-    public class DeleteApplicationCommand : ICommand, IDisposable
+    public class DeleteApplicationCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
         private AddAppViewModel _addAppViewModel;
 
@@ -26,20 +27,16 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
         ~DeleteApplicationCommand()
         {
-            Cleanup();
+            Dispose();
         }
 
         public void Dispose()
         {
-            Cleanup();
+            _addAppViewModel.PropertyChanged -= AddAppViewModelOnPropertyChanged;
+            _addAppViewModel.MainPageViewModel.ApplicationsChanged -= RaiseCanExecute;
             GC.SuppressFinalize(this);
         }
 
-        private void Cleanup()
-        {
-            _addAppViewModel.PropertyChanged -= AddAppViewModelOnPropertyChanged;
-            _addAppViewModel.MainPageViewModel.ApplicationsChanged -= RaiseCanExecute;
-        }
 
         /* Implementation */
 
@@ -47,13 +44,6 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         {
             if (e.PropertyName == nameof(_addAppViewModel.Application))
                 RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        }
-
-        /* Helper(s) */
-
-        private void RaiseCanExecute(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke( () => { CanExecuteChanged(sender, e); } );
         }
 
         /* ICommand. */
@@ -78,7 +68,5 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
             // File system watcher automatically updates collection in MainPageViewModel.Applications
         }
-
-        public event EventHandler CanExecuteChanged = (sender, args) => { };
     }
 }

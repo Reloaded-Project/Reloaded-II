@@ -10,6 +10,7 @@
         xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.AddAppPage"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="{DynamicResource TitleCreateModDialog}" 
         Height="550" 
@@ -25,8 +26,12 @@
                 <system:Double x:Key="DetailsImageWidth">180</system:Double>
                 <system:Double x:Key="DetailsColumnWidth">280</system:Double>
 
-                <Thickness x:Key="DependencyListItemMargin">5,2.5,5,2.5</Thickness>
-                <Thickness x:Key="DetailsRowHeight">0,7.5</Thickness>
+                <!-- Sort the mod list -->
+                <CollectionViewSource x:Key="SortedDependencies" Source="{Binding Dependencies, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True">
+                    <CollectionViewSource.SortDescriptions>
+                        <componentModel:SortDescription PropertyName="ModConfig.ModName"/>
+                    </CollectionViewSource.SortDescriptions>
+                </CollectionViewSource>
             </ResourceDictionary>
         </Grid.Resources>
 
@@ -42,7 +47,7 @@
                     <!-- Application Image -->
                     <Viewbox Width="{StaticResource DetailsImageWidth}" 
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                             Margin="{StaticResource DetailsRowHeight}">
+                             Margin="{DynamicResource CommonItemMarginSmall}">
                         <Image x:Name="ModIcon"
                                Source="{Binding Image}" 
                                ToolTip="{DynamicResource AddAppImageTooltip}" PreviewMouseDown="ModIcon_PreviewMouseDown"/>
@@ -53,7 +58,7 @@
                         Tag="{DynamicResource CreateModDialogId}" 
                         ToolTip="{DynamicResource CreateModDialogId}"
                         Text="{Binding Config.ModId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Margin="{StaticResource DetailsRowHeight}" 
+                        Margin="{DynamicResource CommonItemMarginSmall}" 
                         Width="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
@@ -63,7 +68,7 @@
                         Tag="{DynamicResource CreateModDialogName}" 
                         Text="{Binding Config.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Width="{StaticResource DetailsColumnWidth}"
-                        Margin="{StaticResource DetailsRowHeight}"
+                        Margin="{DynamicResource CommonItemMarginSmall}"
                         ToolTip="{DynamicResource CreateModDialogName}"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
@@ -72,7 +77,7 @@
                              Text="{Binding Config.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Tag="{DynamicResource CreateModDialogAuthor}" 
                         ToolTip="{DynamicResource CreateModDialogAuthor}"
-                        Margin="{StaticResource DetailsRowHeight}" 
+                        Margin="{DynamicResource CommonItemMarginSmall}" 
                         Width="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
@@ -81,7 +86,7 @@
                              Text="{Binding Config.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Tag="{DynamicResource CreateModDialogVersion}" 
                              ToolTip="{DynamicResource CreateModDialogVersion}"
-                             Margin="{StaticResource DetailsRowHeight}" 
+                             Margin="{DynamicResource CommonItemMarginSmall}" 
                              Width="{StaticResource DetailsColumnWidth}"
                              HorizontalAlignment="Center" 
                              VerticalAlignment="Center"/>
@@ -90,28 +95,38 @@
                              Text="{Binding Config.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Tag="{DynamicResource CreateModDialogDescription}" 
                              ToolTip="{DynamicResource CreateModDialogDescription}"
-                             Margin="{StaticResource DetailsRowHeight}" 
+                             Margin="{DynamicResource CommonItemMarginSmall}" 
                              Width="{StaticResource DetailsColumnWidth}"
                              HorizontalAlignment="Center" 
                              VerticalAlignment="Center"/>
 
                     <Button Content="Create Mod"
-                            Margin="{StaticResource DetailsRowHeight}" PreviewMouseDown="Save_PreviewMouseDown">
+                            Margin="{DynamicResource CommonItemMarginSmall}"
+                            Style="{DynamicResource UnpaddedStretchedGridButton}"
+                            PreviewMouseDown="Save_PreviewMouseDown">
                     </Button>
 
                     <!-- Supported Dependencies -->
                     <controls:PopupLabel ButtonText="{DynamicResource CreateModDialogDependencies}"
                                          FontSize="{DynamicResource FontSizeSmall}"
-                                         Margin="{StaticResource DetailsRowHeight}"
+                                         Margin="{DynamicResource CommonItemMarginSmall}"
                                          HiddenVisibilityType="Collapsed"
                                          IsOpen="False">
                         <controls:PopupLabel.HiddenContent>
-                            <ListView ItemsSource="{Binding Dependencies}" Margin="{StaticResource DetailsRowHeight}">
+                            <ListView ItemsSource="{Binding Source={StaticResource SortedDependencies}}" Margin="{DynamicResource CommonItemMarginSmall}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource DependencyListItemMargin}"/>
-                                            <TextBlock Text="{Binding ModConfig.ModName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource DependencyListItemMargin}"/>
+                                            <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                      VerticalAlignment="Center" 
+                                                      HorizontalAlignment="Center"
+                                                      Height="{DynamicResource ModEntryCheckboxHeightSmall}"
+                                                      Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+
+                                            <TextBlock Text="{Binding ModConfig.ModName, UpdateSourceTrigger=PropertyChanged}" 
+                                                       VerticalAlignment="Center" 
+                                                       HorizontalAlignment="Center" 
+                                                       Margin="{DynamicResource ListEntryItemMarginSmall}"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>

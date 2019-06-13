@@ -12,6 +12,7 @@ namespace Reloaded.Mod.Launcher.Pages
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public partial class SplashPage : ReloadedIIPage
     {
+        private const string XAML_SplashMinimumTime = "SplashMinimumTime";
         private SplashViewModel _splashViewModel;
         private bool _loaded = false;
 
@@ -31,7 +32,8 @@ namespace Reloaded.Mod.Launcher.Pages
             if (!_loaded)
             {
                 _loaded = true;
-                Task.Run(() => Setup.SetupApplication(GetText, UpdateText)).ContinueWith(ChangeToMainPage);
+                Task.Run(() => Setup.SetupApplication(GetText, UpdateText, (int)Application.Current.Resources[XAML_SplashMinimumTime]))
+                    .ContinueWith(ChangeToMainPage);
             }
         }
 
