@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Reloaded.Mod.Launcher.Commands.AddAppPage;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
@@ -32,15 +34,18 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         private void SaveCurrentSelectedItem()
         {
             // Saves the current selection before exiting launcher.
-            if (ViewModel.MainPageViewModel.Applications.Count >= 0)
+            Task.Run(() =>
             {
-                try
+                if (ViewModel.MainPageViewModel.Applications.Count >= 0)
                 {
-                    var imagePathAppTuple = ViewModel.MainPageViewModel.Applications.First(x => x.ApplicationConfig.Equals(ViewModel.Application));
-                    ApplicationConfig.WriteConfiguration(imagePathAppTuple.ApplicationConfigPath, (ApplicationConfig) ViewModel.Application);
+                    try
+                    {
+                        var imagePathAppTuple = ViewModel.MainPageViewModel.Applications.First(x => x.ApplicationConfig.Equals(ViewModel.Application));
+                        ApplicationConfig.WriteConfiguration(imagePathAppTuple.ApplicationConfigPath, (ApplicationConfig)ViewModel.Application);
+                    }
+                    catch (Exception) { Debug.WriteLine("AddAppPage: Failed to save current selected item."); }
                 }
-                catch (Exception) { }
-            }
+            });
         }
 
         private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
