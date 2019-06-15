@@ -1,10 +1,7 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
-using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config

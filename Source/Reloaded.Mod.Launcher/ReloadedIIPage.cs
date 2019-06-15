@@ -15,7 +15,7 @@ namespace Reloaded.Mod.Launcher
             this.AnimateInFinished += OnAnimateInFinished;
         }
 
-        protected void OnAnimateInFinished()
+        protected virtual void OnAnimateInFinished()
         {
             // Change window title to current page title.
             if (! String.IsNullOrEmpty(this.Title))

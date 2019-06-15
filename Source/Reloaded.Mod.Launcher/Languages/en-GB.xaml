@@ -64,7 +64,35 @@
     <sys:String x:Key="MessageCreateModNonUniqueId" xml:space="preserve">The ModId for the mod you are creating is not unique.&#x0a;Please make the ModId unique.</sys:String>
 
     <!-- xml:space="preserve" allows for new line. &#x0a; is new line (ASCII character). -->
-    
+
+    <!-- Mod Loader Settings -->
+    <sys:String x:Key="LoaderSettingsCleanup">Cleanup Configurations</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupWarning" xml:space="preserve">The following operation performs housekeeping on various configurations (App, Mod etc.).&#x0a;Housekeeping functions include things such as removing nonexisting mods from a mod's list of dependencies.&#x0a;Please be aware that if you are missing any dependencies, supported applications etc. they will be removed from the configuration files.</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupComplete">Cleanup Completel</sys:String>
+
+    <sys:String x:Key="LoaderSettingsAppsInstalled">Applications Installed:</sys:String>
+    <sys:String x:Key="LoaderSettingsModsInstalled">Mods Installed:</sys:String>
+    <sys:String x:Key="LoaderSettingsCompileDate">Compiled on:</sys:String>
+    <sys:String x:Key="LoaderSettingsAndDocumentation">User Guide + Docs.</sys:String>
+    <sys:String x:Key="LoaderSettingsCopyright">Reloaded II is Free Software Licensed under GNU GPL V3</sys:String>
+    <sys:String x:Key="LoaderSettingsEnableAutomaticUpdates">Automatic Updates</sys:String>
+
+    <!-- Application Entry -->
+    <sys:String x:Key="TitleApplication">Application Hub</sys:String>
+    <sys:String x:Key="ApplicationTotalMods">Total Mods</sys:String>
+    <sys:String x:Key="ApplicationOtherInstances">Other Instances</sys:String>
+    <sys:String x:Key="ApplicationReloadedInstances">Reloaded Instances</sys:String>
+
+    <!-- First Launch -->
+    <sys:String x:Key="TitleFirstLaunch">Welcome to Reloaded II</sys:String>
+    <sys:String x:Key="FirstLaunchLineOne">It's your first time using Reloaded II.</sys:String>
+    <sys:String x:Key="FirstLaunchLineTwo">Before getting started, you might consider checking out the following links:</sys:String>
+    <sys:String x:Key="FirstLaunchLineDocumentation">Documentation</sys:String>
+    <sys:String x:Key="FirstLaunchLineUserguide">User Guide</sys:String>
+    <sys:String x:Key="FirstLaunchLineThree">You may later find these links in [Mod Loader Settings].</sys:String>
+
     <!-- Dialogs -->
+    <sys:String x:Key="MessageBoxButtonOK">OK</sys:String>
+    <sys:String x:Key="MessageBoxButtonCancel">Cancel</sys:String>
 
 </ResourceDictionary>

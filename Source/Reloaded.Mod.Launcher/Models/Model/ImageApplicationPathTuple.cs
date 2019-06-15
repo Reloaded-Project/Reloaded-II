@@ -1,5 +1,7 @@
 ﻿using System.Windows.Media;
 using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Loader.IO.Config;
+
 namespace Reloaded.Mod.Launcher.Models.Model
 {
     public class ImageApplicationPathTuple
@@ -12,14 +14,14 @@ namespace Reloaded.Mod.Launcher.Models.Model
         /// <summary>
         /// The application configuration.
         /// </summary>
-        public IApplicationConfig ApplicationConfig { get; set; }
+        public ApplicationConfig ApplicationConfig { get; set; }
 
         /// <summary>
         /// The full path to the application configuration file.
         /// </summary>
         public string ApplicationConfigPath { get; set; }
 
-        public ImageApplicationPathTuple(ImageSource image, IApplicationConfig applicationConfig, string applicationConfigPath)
+        public ImageApplicationPathTuple(ImageSource image, ApplicationConfig applicationConfig, string applicationConfigPath)
         {
             Image = image;
             ApplicationConfig = applicationConfig;

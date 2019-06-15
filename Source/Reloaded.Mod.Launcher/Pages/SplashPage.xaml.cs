@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Pages.Dialogs;
+using Reloaded.Mod.Loader.IO;
 using WindowViewModel = Reloaded.Mod.Launcher.Models.ViewModel.WindowViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages
@@ -33,19 +35,35 @@ namespace Reloaded.Mod.Launcher.Pages
             {
                 _loaded = true;
                 Task.Run(() => Setup.SetupApplication(GetText, UpdateText, (int)Application.Current.Resources[XAML_SplashMinimumTime]))
-                    .ContinueWith(ChangeToMainPage);
+                    .ContinueWith(ChangeToMainPage)
+                    .ContinueWith(DisplayFirstLaunchWarningIfNeeded);
             }
         }
 
-        /// <summary>
-        /// Switches the Reloaded Window to the main page.
-        /// </summary>
+        
         private void ChangeToMainPage(Task obj)
         {
             IoC.Get<MainWindow>().Dispatcher.Invoke(() =>
             {
                 var viewModel = IoC.Get<WindowViewModel>();
                 viewModel.CurrentPage = Page.Base;
+            });
+        }
+
+        private void DisplayFirstLaunchWarningIfNeeded(Task obj)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var loaderConfig = LoaderConfigReader.ReadConfiguration();
+                if (loaderConfig.FirstLaunch)
+                {
+                    var firstLaunchWindow = new FirstLaunch();
+                    firstLaunchWindow.Owner = Window.GetWindow(this);
+                    firstLaunchWindow.ShowDialog();
+                    loaderConfig.FirstLaunch = false;
+                    LoaderConfigReader.WriteConfiguration(loaderConfig);
+                }
+
             });
         }
 

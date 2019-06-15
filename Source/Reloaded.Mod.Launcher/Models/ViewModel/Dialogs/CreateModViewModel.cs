@@ -43,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
         public void Save()
         {
             // Make folder path and save folder.
-            string modConfigDirectory = new LoaderConfigReader().ReadConfiguration().ModConfigDirectory;
+            string modConfigDirectory = LoaderConfigReader.ReadConfiguration().ModConfigDirectory;
             string modDirectory = Path.Combine(modConfigDirectory, PathSanitizer.ForceValidFilePath(Config.ModId));
             Directory.CreateDirectory(modDirectory);
 

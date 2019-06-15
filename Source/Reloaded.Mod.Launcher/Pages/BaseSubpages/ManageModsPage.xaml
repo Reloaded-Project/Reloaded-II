@@ -10,7 +10,7 @@
              xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
              xmlns:manageModsPageCommands="clr-namespace:Reloaded.Mod.Launcher.Commands.ManageModsPage"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="800"
+             d:DesignHeight="600" d:DesignWidth="756"
              Title="{DynamicResource TitleManageMods}">
 
     <Grid x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">

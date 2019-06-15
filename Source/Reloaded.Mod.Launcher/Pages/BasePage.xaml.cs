@@ -1,4 +1,8 @@
-﻿using Reloaded.Mod.Launcher.Models.ViewModel;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows;
+using Reloaded.Mod.Launcher.Models.Model;
+using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
 
 namespace Reloaded.Mod.Launcher.Pages
@@ -24,9 +28,28 @@ namespace Reloaded.Mod.Launcher.Pages
             _mainPageViewModel.Page = BaseSubPage.AddApp;
         }
 
-        private void CircleButton_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ManageMods_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             _mainPageViewModel.Page = BaseSubPage.ManageMods;
+        }
+
+        private void LoaderSettings_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _mainPageViewModel.Page = BaseSubPage.SettingsPage;
+        }
+
+        private void Application_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            // Prepare for parameter transfer.
+            if (sender is FrameworkElement element)
+            {
+                if (element.DataContext is ImageApplicationPathTuple tuple)
+                {
+                    IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(new ApplicationViewModel(tuple, IoC.Get<ManageModsViewModel>()));
+                    _mainPageViewModel.Page = BaseSubPage.Application;
+                    _mainPageViewModel.RaisePagePropertyChanged();
+                }
+            }
         }
     }
 }

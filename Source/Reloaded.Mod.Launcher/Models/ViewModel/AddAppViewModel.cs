@@ -1,6 +1,4 @@
-﻿using System.Windows.Media;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.IO.Config;
+﻿using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.MVVM;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel

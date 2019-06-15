@@ -1,5 +1,4 @@
-﻿using System.Windows.Media;
-using Reloaded.Mod.Interfaces;
+﻿using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 

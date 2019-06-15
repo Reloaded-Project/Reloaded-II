@@ -1,0 +1,110 @@
+﻿<launcher:ReloadedIIPage x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
+    mc:Ignorable="d"
+    d:DesignHeight="600" 
+    d:DesignWidth="756"
+    Title="{DynamicResource TitleLoaderSettings}">
+    <Grid Margin="{DynamicResource PageMargin}" DataContext="{Binding ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+
+        <Grid.Resources>
+            <Thickness x:Key="BannerMargin">75,20,75,0</Thickness>
+        </Grid.Resources>
+
+        <StackPanel>
+            <!-- Banner and Build Date -->
+            <Image 
+                x:Name="Banner"
+                Style="{DynamicResource HighQualityImage}"
+                Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Reloaded-No-Brackets.png"
+                Margin="{DynamicResource BannerMargin}"/>
+
+            <TextBlock DockPanel.Dock="Bottom"
+                       HorizontalAlignment="Center"
+                       Style="{DynamicResource BuildTextBlock}"
+                       Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
+
+            <!-- Docs / User Guide -->
+            <Grid Margin="{DynamicResource CommonItemMargin}"
+                  Width="{Binding ActualWidth, ElementName=Banner}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" 
+                           Text="{DynamicResource LoaderSettingsCopyright}"
+                           TextWrapping="Wrap"
+                           FontSize="{DynamicResource FontSizeLarge}"
+                           Margin="18,0,17,0"
+                           Style="{DynamicResource TextblockWithColourChange}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"/>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" PreviewMouseDown="Documents_PreviewMouseDown">
+                    <Image Height="48" 
+                               Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Info-Icon.png"
+                               Style="{DynamicResource HighQualityImage}"
+                               Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                    <TextBlock Text="{DynamicResource LoaderSettingsAndDocumentation}"
+                                   FontSize="{DynamicResource FontSizeLarge}"
+                                   Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                   Style="{DynamicResource TextblockWithColourChange}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Toggle Auto Accept Updates -->
+            <CheckBox Margin="{DynamicResource CommonItemMargin}" 
+                      HorizontalAlignment="Center" 
+                      IsChecked="{Binding LoaderConfig.AutoAcceptUpdates}"
+                      Content="{DynamicResource LoaderSettingsEnableAutomaticUpdates}"
+                      Style="{DynamicResource DefaultCheckBox}"/>
+
+        </StackPanel>
+
+        <!-- Settings -->
+        <DockPanel LastChildFill="False">
+
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button 
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    Content="{DynamicResource LoaderSettingsCleanup}" Click="Button_Click" />
+
+                <!-- Statistics -->
+                <StackPanel Grid.Column="2">
+                    <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock HorizontalAlignment="Right"
+                                   Style="{DynamicResource StatisticsTextblock}"
+                                   Text="{DynamicResource LoaderSettingsAppsInstalled}"/>
+                        <TextBlock HorizontalAlignment="Right"
+                                   Style="{DynamicResource StatisticsTextvalue}"
+                                   Text="{Binding Path=TotalApplicationsInstalled, UpdateSourceTrigger=PropertyChanged, FallbackValue=0}">
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock HorizontalAlignment="Right"
+                                   Style="{DynamicResource StatisticsTextblock}"
+                                   Text="{DynamicResource LoaderSettingsModsInstalled}"/>
+                        <TextBlock HorizontalAlignment="Right"
+                                   Style="{DynamicResource StatisticsTextvalue}"
+                                   Text="{Binding Path=TotalModsInstalled, UpdateSourceTrigger=PropertyChanged, FallbackValue=0}">
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</launcher:ReloadedIIPage>

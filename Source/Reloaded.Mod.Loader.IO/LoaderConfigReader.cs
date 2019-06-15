@@ -20,12 +20,12 @@ namespace Reloaded.Mod.Loader.IO
         /// </summary>
         private static readonly string StaticConfigFilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{ReloadedFolderName}\\{LoaderConfig.ConfigFileName}";
 
-        public string ConfigurationPath() => StaticConfigFilePath;
+        public static string ConfigurationPath() => StaticConfigFilePath;
 
         /// <summary>
         /// Returns true if the configuration file exists, else false.
         /// </summary>
-        public bool ConfigurationExists()
+        public static bool ConfigurationExists()
         {
             return File.Exists(StaticConfigFilePath);
         }
@@ -33,7 +33,7 @@ namespace Reloaded.Mod.Loader.IO
         /// <summary>
         /// Loads the mod loader configuration from disk.
         /// </summary>
-        public LoaderConfig ReadConfiguration()
+        public static LoaderConfig ReadConfiguration()
         {
             if (! File.Exists(StaticConfigFilePath))
                 throw new FileNotFoundException($"Reloaded II's static config file path {StaticConfigFilePath} does not exist." +
@@ -53,7 +53,7 @@ namespace Reloaded.Mod.Loader.IO
         /// Writes a new mod loader configuration to disk.
         /// </summary>
         /// <param name="config">The new mod loader configuration to write.</param>
-        public void WriteConfiguration(LoaderConfig config)
+        public static void WriteConfiguration(LoaderConfig config)
         {
             string directory = Path.GetDirectoryName(StaticConfigFilePath);
             if (! Directory.Exists(directory))

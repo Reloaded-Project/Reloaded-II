@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -25,7 +24,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private const string JsonFilter = "*.json";
 
         /* Mod Config Loader. */
-        private static LoaderConfigReader _loaderConfigReader = new LoaderConfigReader();
         private static ConfigReader<ModConfig> _modConfigReader = new ConfigReader<ModConfig>();
         private static MainPageViewModel _mainPageViewModel;
 
@@ -66,7 +64,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         {
             GetModifications();
             _mainPageViewModel = IoC.Get<MainPageViewModel>();
-            string modDirectory = _loaderConfigReader.ReadConfiguration().ModConfigDirectory;
+            string modDirectory = LoaderConfigReader.ReadConfiguration().ModConfigDirectory;
 
             _createWatcher = FileSystemWatcherFactory.CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed, true, "*.*");
             _deleteFileWatcher = FileSystemWatcherFactory.CreateChangeCreateDelete(modDirectory, OnDeleteFile, FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted, true, JsonFilter);
@@ -101,9 +99,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             {
                 // Make new collection.
                 var booleanAppTuples = new ObservableCollection<BooleanApplicationTuple>();
+                string[] supportedAppIds = newModTuple.ModConfig.SupportedAppId;
                 foreach (var applicationPathTuple in _mainPageViewModel.Applications)
                 {
-                    bool enabled = newModTuple.ModConfig.SupportedAppId.Contains(applicationPathTuple.ApplicationConfig.AppId);
+                    bool enabled = supportedAppIds.Contains(applicationPathTuple.ApplicationConfig.AppId);
                     booleanAppTuples.Add(new BooleanApplicationTuple(enabled, applicationPathTuple.ApplicationConfig));
                 }
                 EnabledAppIds = booleanAppTuples;
@@ -179,7 +178,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void GetModifications(CancellationToken cancellationToken = default)
         {
             var mods = new ObservableCollection<ImageModPathTuple>();
-            var loaderConfig = _loaderConfigReader.ReadConfiguration();
+            var loaderConfig = LoaderConfigReader.ReadConfiguration();
             List<PathGenericTuple<ModConfig>> modConfigs;
 
             // Check for cancellation request before config reading begins if necessary. 

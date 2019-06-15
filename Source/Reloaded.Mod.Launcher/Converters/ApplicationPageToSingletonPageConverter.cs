@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
-using Ninject;
 using Reloaded.Mod.Launcher.Pages;
 using Reloaded.WPF.Theme.Default;
 using Page = Reloaded.Mod.Launcher.Pages.Page;

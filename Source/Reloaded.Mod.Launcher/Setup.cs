@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -93,9 +90,8 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static void CreateNewConfigIfNotExist()
         {
-            var configReader = new LoaderConfigReader();
-            if (!configReader.ConfigurationExists())
-                configReader.WriteConfiguration(new LoaderConfig());
+            if (!LoaderConfigReader.ConfigurationExists())
+                LoaderConfigReader.WriteConfiguration(new LoaderConfig());
         }
 
         /// <summary>
@@ -106,6 +102,8 @@ namespace Reloaded.Mod.Launcher
             IoC.GetConstant<MainPageViewModel>();
             IoC.GetConstant<AddAppViewModel>(); // Consumes MainPageViewModel, make sure it goes after it.
             IoC.GetConstant<ManageModsViewModel>();
+
+            IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, AddAppViewModel
         }
 
         /// <summary>

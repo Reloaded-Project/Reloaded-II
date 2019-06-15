@@ -4,6 +4,8 @@
     {
         Welcome,
         AddApp,
-        ManageMods
+        ManageMods,
+        SettingsPage,
+        Application
     }
 }

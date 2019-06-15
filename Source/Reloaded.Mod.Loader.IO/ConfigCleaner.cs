@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Misc;
 using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Loader.IO
 {
@@ -30,7 +27,7 @@ namespace Reloaded.Mod.Loader.IO
         public ConfigCleaner()
         {
             LoaderConfig loaderConfig;
-            try { loaderConfig = new LoaderConfigReader().ReadConfiguration();  }
+            try { loaderConfig = LoaderConfigReader.ReadConfiguration();  }
             catch (Exception ex) { loaderConfig = new LoaderConfig(); }
             SetupConfigCleaner(loaderConfig);
         }
@@ -60,7 +57,7 @@ namespace Reloaded.Mod.Loader.IO
         private void CleanupLoaderConfig()
         {
             CleanupLoaderConfig(_loaderConfig);
-            new LoaderConfigReader().WriteConfiguration(_loaderConfig);
+            LoaderConfigReader.WriteConfiguration(_loaderConfig);
         }
 
         private void CleanupModConfigs()

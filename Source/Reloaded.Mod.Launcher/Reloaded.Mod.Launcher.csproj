@@ -2,17 +2,29 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>NET472;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp3.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
     <Version>0.2.0</Version>
+    <Copyright>Sewer56 ~ 2019 | $([System.DateTime]::UtcNow.ToString("s"))</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net472|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net472|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Assets\Images\Add-App-Icon.png" />
+    <None Remove="Assets\Images\Github-Icon.png" />
     <None Remove="Assets\Images\Icons-1.png" />
     <None Remove="Assets\Images\Icons-2.png" />
+    <None Remove="Assets\Images\Info-Icon.png" />
     <None Remove="Assets\Images\Mods-Icon.png" />
     <None Remove="Assets\Images\Reloaded-No-Brackets.png" />
     <None Remove="Assets\Images\Search-Icon.png" />
@@ -22,7 +34,11 @@
     <None Remove="Languages\en-GB.xaml" />
     <None Remove="Languages\hu-HU.xaml" />
     <None Remove="Languages\pl-PL.xaml" />
+    <None Remove="Pages\BaseSubpages\ApplicationPage.xaml" />
     <None Remove="Pages\BaseSubpages\Dialogs\SetDependenciesDialog.xaml" />
+    <None Remove="Pages\BaseSubpages\SettingsPage.xaml" />
+    <None Remove="Pages\Dialogs\FirstLaunch.xaml" />
+    <None Remove="Pages\Dialogs\MessageBoxOkCancel.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,6 +105,7 @@
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="1.0.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.5.14" />
+    <PackageReference Include="System.Management" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -107,6 +124,8 @@
 
   <ItemGroup>
     <Resource Include="Assets\Images\Add-App-Icon.png" />
+    <Resource Include="Assets\Images\Github-Icon.png" />
+    <Resource Include="Assets\Images\Info-Icon.png" />
     <Resource Include="Assets\Images\Mods-Icon.png" />
     <Resource Include="Assets\Images\Reloaded-No-Brackets.png" />
     <Resource Include="Assets\Images\Search-Icon.png" />

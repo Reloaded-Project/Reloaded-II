@@ -8,14 +8,6 @@ namespace Reloaded.Mod.Loader.Tests.IO
 {
     public class LoaderConfigReaderTest
     {
-        private static LoaderConfigReader _configReader;
-
-        /* Before Test */
-        public LoaderConfigReaderTest()
-        {
-            _configReader = new LoaderConfigReader();
-        }
-
         /* Simple Read/Write and Serialization Test */
 
         [Fact]
@@ -23,11 +15,11 @@ namespace Reloaded.Mod.Loader.Tests.IO
         {
             // Make new config first and backup old.
             var config = new LoaderConfig();
-            bool configExists = File.Exists(_configReader.ConfigurationPath());
+            bool configExists = File.Exists(LoaderConfigReader.ConfigurationPath());
             LoaderConfig oldConfig = new LoaderConfig();
 
             if (configExists)
-                oldConfig = _configReader.ReadConfiguration();
+                oldConfig = LoaderConfigReader.ReadConfiguration();
 
             // Add some random app support entries.
             config.ApplicationConfigDirectory = "Apps";
@@ -36,14 +28,14 @@ namespace Reloaded.Mod.Loader.Tests.IO
             config.InstallDirectory = Environment.CurrentDirectory;
 
             // Write and read back the config.
-            _configReader.WriteConfiguration(config);
-            var newConfig = _configReader.ReadConfiguration();
+            LoaderConfigReader.WriteConfiguration(config);
+            var newConfig = LoaderConfigReader.ReadConfiguration();
 
             // Restore old config and assert.
             if (configExists)
-                _configReader.WriteConfiguration(oldConfig);
+                LoaderConfigReader.WriteConfiguration(oldConfig);
             else
-                File.Delete(_configReader.ConfigurationPath());
+                File.Delete(LoaderConfigReader.ConfigurationPath());
 
             Assert.Equal(config, newConfig);
         }

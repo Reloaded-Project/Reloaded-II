@@ -15,7 +15,7 @@
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignHeight="600" 
-             d:DesignWidth="800"
+             d:DesignWidth="756"
              Title="{DynamicResource TitleAddApplication}">
     <ScrollViewer DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 

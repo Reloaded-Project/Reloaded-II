@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.ViewModel;

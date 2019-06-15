@@ -23,7 +23,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
     public class MainPageViewModel : ObservableObject
     {
-        private static LoaderConfigReader _loaderConfigReader = new LoaderConfigReader();
         private static ConfigReader<ApplicationConfig> _applicationConfigReader = new ConfigReader<ApplicationConfig>();
 
         /* Fired after the Applications collection changes. */
@@ -61,17 +60,26 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         {
             GetApplications();
 
-            string appConfigDirectory = _loaderConfigReader.ReadConfiguration().ApplicationConfigDirectory;
+            string appConfigDirectory = LoaderConfigReader.ReadConfiguration().ApplicationConfigDirectory;
             _applicationWatcher = FileSystemWatcherFactory.CreateGeneric(appConfigDirectory, StartGetApplicationsTask, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed | FileSystemWatcherFactory.FileSystemWatcherEvents.Renamed | FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted, true, "*.json");
         }
 
+        /// <summary>
+        /// Manually raises the property changed event for the <see cref="Page"/> property.
+        /// Used for specific pages that are not singletons/have only one instance.
+        /// </summary>
+        public void RaisePagePropertyChanged()
+        {
+            RaisePropertyChangedEvent(nameof(Page));
+        }
+        
         /// <summary>
         /// Populates the application list governed by <see cref="Applications"/>.
         /// </summary>
         private void GetApplications(CancellationToken cancellationToken = default)
         {
             var applications = new ObservableCollection<ImageApplicationPathTuple>();
-            var loaderConfig = _loaderConfigReader.ReadConfiguration();
+            var loaderConfig = LoaderConfigReader.ReadConfiguration();
             List<PathGenericTuple<ApplicationConfig>> applicationConfigs;
                 
             // Check for cancellation request before config reading begins if necessary. */

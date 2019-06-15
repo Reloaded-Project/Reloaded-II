@@ -2,8 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using Reloaded.Mod.Loader.IO.Interfaces;
-using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
@@ -43,6 +41,9 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
         /// </summary>
         public string[] EnabledPlugins { get; set; }
+
+        public bool FirstLaunch { get; set; } = true;
+        public bool AutoAcceptUpdates { get; set; } = false;
 
         /* Some mods are universal :wink: */
 

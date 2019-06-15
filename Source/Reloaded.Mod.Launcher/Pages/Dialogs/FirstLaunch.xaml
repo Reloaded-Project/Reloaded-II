@@ -1,0 +1,68 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunch"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
+        xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
+        mc:Ignorable="d"
+        MinHeight="10"
+        MinWidth="10"
+        SizeToContent="WidthAndHeight"
+        Height="Auto" 
+        Width="Auto"
+        WindowStartupLocation="CenterScreen"
+        Title="{DynamicResource TitleFirstLaunch}"
+        Style="{DynamicResource ReloadedWindow}">
+    <ScrollViewer>
+        <Grid Margin="{DynamicResource PageMarginSmall}">
+        
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="{DynamicResource FirstLaunchLineOne}" Margin="{DynamicResource CommonItemMargin}" TextWrapping="Wrap"/>
+                <TextBlock Text="{DynamicResource FirstLaunchLineTwo}" Margin="{DynamicResource CommonItemMargin}" TextWrapping="Wrap"/>
+
+                <!-- Buttons -->
+                <Grid Margin="{DynamicResource CommonItemMargin}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" PreviewMouseDown="Documents_PreviewMouseDown">
+                        <Image Height="48" 
+                               Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Github-Icon.png"
+                               Style="{DynamicResource HighQualityImage}"
+                               Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                        <TextBlock Text="{DynamicResource FirstLaunchLineDocumentation}"
+                                   FontSize="{DynamicResource FontSizeLarge}"
+                                   Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                   Style="{DynamicResource TextblockWithColourChange}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" PreviewMouseDown="UserGuide_PreviewMouseDown">
+                        <Image Height="48" 
+                               Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Info-Icon.png"
+                               Style="{DynamicResource HighQualityImage}"
+                               Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                        <TextBlock Text="{DynamicResource FirstLaunchLineUserguide}"
+                                   FontSize="{DynamicResource FontSizeLarge}"
+                                   Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                   Style="{DynamicResource TextblockWithColourChange}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Text -->
+                <TextBlock Text="{DynamicResource FirstLaunchLineThree}" Margin="{DynamicResource CommonItemMargin}" TextWrapping="Wrap"/>
+
+                <!-- OK -->
+                <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource UnpaddedStretchedButton}" Margin="{DynamicResource CommonItemMargin}" 
+                        Click="OK_Click"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</default:ReloadedWindow>

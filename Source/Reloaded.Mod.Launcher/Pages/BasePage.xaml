@@ -13,6 +13,9 @@
              Title="{DynamicResource TitleMainPage}">
 
     <Grid>
+        <Grid.Resources>
+        </Grid.Resources>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{DynamicResource SidebarWidth}"/>
             <ColumnDefinition/>
@@ -25,26 +28,26 @@
             <DockPanel Margin="{DynamicResource SidebarMargin}">
 
                 <!-- Theme Page Buttons -->
-                <Viewbox DockPanel.Dock="Top" Margin="0,10,0,10">
+                <Viewbox DockPanel.Dock="Top" Margin="{DynamicResource SidebarElementMargin}">
                     <controls:CircleButton 
                         ImageSource="pack://application:,,,/Assets/Images/Add-App-Icon.png"
                         TooltipText="{DynamicResource TitleAddApplication}" PreviewMouseDown="AddApp_PreviewMouseDown"/>
                 </Viewbox>
 
-                <Viewbox DockPanel.Dock="Top" Margin="0,0,0,10">
+                <Viewbox DockPanel.Dock="Top" Margin="{DynamicResource SidebarElementMargin}">
                     <controls:CircleButton
                         ImageSource="pack://application:,,,/Assets/Images/Mods-Icon.png" 
-                        TooltipText="{DynamicResource TitleManageMods}" PreviewMouseDown="CircleButton_PreviewMouseDown"/>
+                        TooltipText="{DynamicResource TitleManageMods}" PreviewMouseDown="ManageMods_PreviewMouseDown"/>
                 </Viewbox>
 
-                <Viewbox DockPanel.Dock="Top">
+                <Viewbox DockPanel.Dock="Top" Margin="{DynamicResource SidebarElementMargin}">
                     <controls:CircleButton 
                         ImageSource="pack://application:,,,/Assets/Images/Settings-Icon.png"
-                        TooltipText="{DynamicResource TitleLoaderSettings}"/>
+                        TooltipText="{DynamicResource TitleLoaderSettings}" PreviewMouseDown="LoaderSettings_PreviewMouseDown"/>
                 </Viewbox>
 
                 <!-- Separator -->
-                <Separator Margin="0,10" Style="{DynamicResource AltSeparatorStyle}" RenderTransformOrigin="0.5,0.5" DockPanel.Dock="Top" >
+                <Separator Margin="{DynamicResource SidebarElementMargin}" Style="{DynamicResource AltSeparatorStyle}" RenderTransformOrigin="0.5,0.5" DockPanel.Dock="Top" >
                     <Separator.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform ScaleY="{DynamicResource SeparatorHeight}"/>
@@ -83,6 +86,7 @@
                             <Viewbox Margin="{DynamicResource SidebarElementMargin}">
                                 <controls:CircleButton TooltipText="{Binding Path=ApplicationConfig.AppName}"
                                                        ImageSource="{Binding Path=Image}"
+                                                       PreviewMouseDown="Application_PreviewMouseDown"
                                 />
                             </Viewbox>
                         </DataTemplate>
@@ -98,6 +102,6 @@
                ClipToBounds="True"
                Grid.RowSpan="2"
                CurrentPage="{Binding Path=Page,
-                                     Converter={x:Static converters:ApplicationBaseSubPageToSingletonPageConverter.Instance}}"/>
+                                     Converter={x:Static converters:ApplicationBaseSubPageToPageConverter.Instance}}"/>
     </Grid>
 </launcher:ReloadedIIPage>

@@ -5,11 +5,11 @@ using Reloaded.WPF.Theme.Default;
 namespace Reloaded.Mod.Launcher.Pages.Dialogs
 {
     /// <summary>
-    /// Interaction logic for MessageBox.xaml
+    /// Interaction logic for MessageBoxOkCancel.xaml
     /// </summary>
-    public partial class MessageBox : ReloadedWindow
+    public partial class MessageBoxOkCancel : ReloadedWindow
     {
-        public MessageBox(string title, string message) : base()
+        public MessageBoxOkCancel(string title, string message)
         {
             InitializeComponent();
             this.Title = title;
@@ -20,11 +20,20 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             viewModel.MaximizeButtonVisibility = Visibility.Collapsed;
         }
 
-        private void Button_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void OK_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                this.DialogResult = true;
+                DialogResult = true;
+                this.Close();
+            }
+        }
+
+        private void Cancel_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DialogResult = false;
                 this.Close();
             }
         }

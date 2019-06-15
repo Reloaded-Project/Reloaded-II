@@ -1,15 +1,13 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
-using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
-    public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig
+    public class ApplicationConfig : ObservableObject, Mod.Interfaces.IApplicationConfig, IConfig
     {
         /// <summary>
         /// The name of the configuration file as stored on disk.
@@ -39,6 +37,11 @@ namespace Reloaded.Mod.Loader.IO.Config
            Utilities
            --------- 
         */
+
+        /// <summary>
+        /// Returns the name of the executable, with extension.
+        /// </summary>
+        public string GetExecutableName() => Path.GetFileName(AppLocation);
 
         /// <summary>
         /// Writes the configuration to a specified file path.

@@ -49,7 +49,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
             // Get file information and populate initial application details.
             var fileInfo = FileVersionInfo.GetVersionInfo(exePath);
-            IApplicationConfig config = new ApplicationConfig(Path.GetFileName(fileInfo.FileName), fileInfo.ProductName, exePath);
+            IApplicationConfig config = new Loader.IO.Config.ApplicationConfig(Path.GetFileName(fileInfo.FileName), fileInfo.ProductName, exePath);
 
             // Set AppName if empty & Ensure no duplicate ID.
             if (String.IsNullOrEmpty(config.AppName))
@@ -58,13 +58,13 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             UpdateIdIfDuplicate(config);
 
             // Get paths.
-            string applicationConfigDirectory = new LoaderConfigReader().ReadConfiguration().ApplicationConfigDirectory;
+            string applicationConfigDirectory = LoaderConfigReader.ReadConfiguration().ApplicationConfigDirectory;
             string applicationDirectory = Path.Combine(applicationConfigDirectory, config.AppId);
-            string applicationConfigFile = Path.Combine(applicationDirectory, ApplicationConfig.ConfigFileName);
+            string applicationConfigFile = Path.Combine(applicationDirectory, Loader.IO.Config.ApplicationConfig.ConfigFileName);
 
             // Write file to disk.
             Directory.CreateDirectory(applicationDirectory);
-            ApplicationConfig.WriteConfiguration(applicationConfigFile, (ApplicationConfig)config);
+            Loader.IO.Config.ApplicationConfig.WriteConfiguration(applicationConfigFile, (Loader.IO.Config.ApplicationConfig)config);
 
             // Select this config.
             _lastConfigFileLocation = applicationConfigFile;

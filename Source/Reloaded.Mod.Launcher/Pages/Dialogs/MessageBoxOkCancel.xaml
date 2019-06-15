@@ -1,12 +1,10 @@
-﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox"
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.MessageBoxOkCancel"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
-        xmlns:system="clr-namespace:System;assembly=mscorlib"
-        mc:Ignorable="d"
         MinHeight="10"
         MinWidth="10"
         SizeToContent="WidthAndHeight"
@@ -27,7 +25,10 @@
                     It may or may not be important.
                 </TextBlock>
 
-                <Button Content="{DynamicResource MessageBoxButtonOK}" PreviewMouseDown="Button_PreviewMouseDown"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="{DynamicResource MessageBoxButtonCancel}" Style="{DynamicResource GridButton}" PreviewMouseDown="Cancel_PreviewMouseDown"/>
+                    <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource GridButton}" PreviewMouseDown="OK_PreviewMouseDown"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </ScrollViewer>

@@ -13,6 +13,20 @@
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
+    <!-- Textblock with colour change on hover -->
+    <Style x:Key="TextblockWithColourChange" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource ForegroundFadeTextToAccentLightest}"/>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource ForegroundFadeAccentLightestToText}"/>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- Button without internal padding -->
     <Style x:Key="UnpaddedButton" TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultButton}">
         <Setter Property="Height" Value="30"/>
@@ -26,6 +40,37 @@
 
     <Style x:Key="UnpaddedStretchedGridButton" TargetType="{x:Type Button}" BasedOn="{StaticResource UnpaddedStretchedButton}">
         <Setter Property="Margin" Value="10,0"/>
+    </Style>
+
+    <!-- Buttons to be positioned side by side -->
+    <Style x:Key="GridButton" TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultButton}">
+        <Setter Property="Margin" Value="10,0"/>
+    </Style>
+
+    <!-- Image with High Quality render preset -->
+    <Style x:Key="HighQualityImage" TargetType="{x:Type Image}">
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+        <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
+        <Setter Property="RenderOptions.CachingHint" Value="Cache"/>
+    </Style>
+
+    <!-- Settings Page Specific -->
+    <Style x:Key="StatisticsTextblock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextblockWithColourChange}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
+        <Setter Property="Margin" Value="{DynamicResource CommonItemMarginSmall}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="StatisticsTextvalue" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextblockWithColourChange}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
+        <Setter Property="Margin" Value="8,0,0,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="BuildTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextblockWithColourChange}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLargest}"/>
+        <Setter Property="Margin" Value="{DynamicResource CommonItemMarginSmall}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
     <!-- Custom textbox type featuring a placeholder piece of text -->
