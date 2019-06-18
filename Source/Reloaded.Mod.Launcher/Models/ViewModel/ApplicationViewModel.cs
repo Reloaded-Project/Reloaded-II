@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Reloaded.Mod.Launcher.Commands;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.WPF.MVVM;
+using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
-    public class ApplicationViewModel : IDisposable
+    public class ApplicationViewModel : ObservableObject, IDisposable
     {
-        public const string LoaderDllName = "Reloaded.Mod.Loader.dll";
+        public const string ModsForThisAppPropertyName = nameof(ModsForThisApp);
 
         public ImageApplicationPathTuple ApplicationTuple { get; private set; }
         public ManageModsViewModel ManageModsViewModel { get; private set; }
-        public ProcessWatcher ProcessWatcher { get; private set; }
+        public ApplicationInstanceTracker InstanceTracker { get; private set; }
 
         public ObservableCollection<ImageModPathTuple> ModsForThisApp { get; set; }
         public ObservableCollection<Process> ProcessesWithReloaded { get; set; }
@@ -29,24 +28,28 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public int NonReloadedApps { get; set; }
         public int TotalMods { get; set; }
 
-        private SerialTaskCommand _serialTaskCommand = new SerialTaskCommand();
-        private Action<CancellationToken> _onProcessesChanged; 
+        public ApplicationSubPage Page { get; set; } = ApplicationSubPage.ApplicationSummary;
+        public Process SelectedProcess { get; set; }
+
+        private Task _initializeClassTask;
+        private CancellationTokenSource _initializeClassTaskTokenSource;
 
         public ApplicationViewModel(ImageApplicationPathTuple tuple, ManageModsViewModel modsViewModel)
         {
             ApplicationTuple = tuple;
             ManageModsViewModel = modsViewModel;
-            ProcessWatcher = IoC.GetConstant<ProcessWatcher>();
-            _onProcessesChanged = ProcessWatcherOnProcessesChanged;
-
-            ManageModsViewModel.ModsChanged += OnModsChanged;
-            ProcessWatcher.ProcessesChanged += ProcessWatcherOnProcessesChanged;
 
             // Update Initial Values
-            Task.Run(() =>
+            _initializeClassTaskTokenSource = new CancellationTokenSource();
+            IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
+            _initializeClassTask = Task.Run(() =>
             {
-                OnModsChanged(null, null);
-                ProcessWatcherOnProcessesChanged();
+                InstanceTracker = new ApplicationInstanceTracker(tuple.ApplicationConfig.AppLocation, _initializeClassTaskTokenSource.Token);
+                ManageModsViewModel.ModsChanged += OnModsChanged;
+                InstanceTracker.OnProcessesChanged += InstanceTrackerOnProcessesChanged;
+
+                InstanceTrackerOnProcessesChanged(new Process[0]);
+                OnModsChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             });
         }
 
@@ -57,14 +60,30 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public void Dispose()
         {
+            // Safeguard for those spamming the application button.
+            if (!_initializeClassTask.IsCompleted)
+            {
+                _initializeClassTaskTokenSource.Cancel();
+                _initializeClassTask.Wait();
+            }
+
             ManageModsViewModel.ModsChanged -= OnModsChanged;
-            ProcessWatcher.ProcessesChanged -= ProcessWatcherOnProcessesChanged;
+            InstanceTracker.OnProcessesChanged -= InstanceTrackerOnProcessesChanged;
             GC.SuppressFinalize(this);
         }
 
-        private void ProcessWatcherOnProcessesChanged(object sender, NotifyCollectionChangedEventArgs e)
+        public void RaisePagePropertyChanged()
         {
-            _serialTaskCommand.Execute(_onProcessesChanged);
+            RaisePropertyChangedEvent(nameof(Page));
+        }
+
+        private void InstanceTrackerOnProcessesChanged(Process[] newProcesses)
+        {
+            var result = InstanceTracker.GetProcesses();
+            ProcessesWithReloaded = new ObservableCollection<Process>(result.ReloadedProcesses);
+            ProcessesWithoutReloaded = new ObservableCollection<Process>(result.NonReloadedProcesses);
+            ReloadedApps = ProcessesWithReloaded.Count;
+            NonReloadedApps = ProcessesWithoutReloaded.Count;
         }
 
         private void OnModsChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -81,48 +100,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             // Set count.
             ModsForThisApp = newMods;
             TotalMods = newMods.Count;
-        }
-
-        private void ProcessWatcherOnProcessesChanged(CancellationToken token = default)
-        {
-            ActionWrappers.TryCatch(() =>
-            {
-                var processesWithReloaded = new ObservableCollection<Process>();
-                var processesWithoutReloaded = new ObservableCollection<Process>();
-                string gameExecutableName = ApplicationTuple.ApplicationConfig.GetExecutableName();
-
-                foreach (var process in ProcessWatcher.Processes)
-                {
-                    if (token.IsCancellationRequested)
-                        return;
-
-                    ActionWrappers.TryCatch(() =>
-                    {
-                        if (process.MainModule.ModuleName == gameExecutableName)
-                        {
-                            if (IsModLoaderPresent(process))
-                                processesWithReloaded.Add(process);
-                            else
-                                processesWithoutReloaded.Add(process);
-                        }
-                    });
-                }
-
-                ProcessesWithReloaded = processesWithReloaded;
-                ProcessesWithoutReloaded = processesWithoutReloaded;
-            });
-        }
-
-        private bool IsModLoaderPresent(Process process)
-        {
-            foreach (ProcessModule module in process.Modules)
-            {
-                if (module.ModuleName == LoaderDllName)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }

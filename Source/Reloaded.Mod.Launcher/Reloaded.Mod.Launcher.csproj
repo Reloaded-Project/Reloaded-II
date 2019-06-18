@@ -35,6 +35,9 @@
     <None Remove="Languages\hu-HU.xaml" />
     <None Remove="Languages\pl-PL.xaml" />
     <None Remove="Pages\BaseSubpages\ApplicationPage.xaml" />
+    <None Remove="Pages\BaseSubpages\ApplicationSubPages\ApplicationSummaryPage.xaml" />
+    <None Remove="Pages\BaseSubpages\ApplicationSubPages\NonReloadedProcessPage.xaml" />
+    <None Remove="Pages\BaseSubpages\ApplicationSubPages\ReloadedProcessPage.xaml" />
     <None Remove="Pages\BaseSubpages\Dialogs\SetDependenciesDialog.xaml" />
     <None Remove="Pages\BaseSubpages\SettingsPage.xaml" />
     <None Remove="Pages\Dialogs\FirstLaunch.xaml" />

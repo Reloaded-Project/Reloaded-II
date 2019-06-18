@@ -6,7 +6,8 @@
              xmlns:designTimeModels="clr-namespace:Reloaded.Mod.Launcher.Controls.DesignTimeModels"
              xmlns:converters1="clr-namespace:Reloaded.Mod.Launcher.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="200">
+             d:DesignHeight="250" d:DesignWidth="200"
+             Foreground="{DynamicResource TextColorBrush}">
 
     <Grid>
 

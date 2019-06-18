@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Reloaded.Mod.Launcher.Commands.Dialog;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;

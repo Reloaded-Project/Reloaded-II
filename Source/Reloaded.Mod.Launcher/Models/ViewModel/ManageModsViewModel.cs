@@ -137,7 +137,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 _getModsTaskCommand.Execute(new Action<CancellationToken>(token =>
                 {
                     // Remove any mod that may have been inside removed directory.
-                    var directoryPath = Path.GetFileName(e.FullPath);
                     var allMods = Mods;
                     foreach (var mod in allMods)
                     {

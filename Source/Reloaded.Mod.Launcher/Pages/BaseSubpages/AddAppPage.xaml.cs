@@ -83,5 +83,10 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                 e.Handled = true;
             }
         }
+
+        private void CreateShortcut_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            // TODO: Implement CreateShortcut
+        }
     }
 }

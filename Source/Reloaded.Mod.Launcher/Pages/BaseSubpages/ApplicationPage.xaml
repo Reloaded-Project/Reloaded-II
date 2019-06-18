@@ -6,6 +6,8 @@
       xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages"
       xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
       xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
+      xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+      xmlns:reloadedWpfControls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
       mc:Ignorable="d"              
       d:DesignHeight="600" 
       d:DesignWidth="756"
@@ -13,26 +15,103 @@
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{DynamicResource ApplicationBarWidth}"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Background="{DynamicResource AccentColorBrushDark}">
+        <!-- Left Side -->
+        <Grid Grid.Column="0" Background="{DynamicResource AccentColorBrushDark}">
             <Grid Margin="{DynamicResource ApplicationBarMargin}">
                 
                 <StackPanel>
+
+                    <!-- Main Page -->
+                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="{DynamicResource FontSizeSmaller}"
+                               Text="{DynamicResource TitleApplicationSummary}"
+                               PreviewMouseDown="Summary_PreviewMouseDown"/>
+
+                    <!-- Reloaded Processes -->
                     <controls:PopupLabel Margin="{DynamicResource CommonItemMarginSmallest}"
                                          FontFamily="{DynamicResource FontThin}"
                                          Foreground="{DynamicResource TextColorBrush}"
                                          ButtonText="{DynamicResource ApplicationReloadedInstances}"
                                          IsOpen="True">
+                        <controls:PopupLabel.HiddenContent>
+                            <ItemsControl ItemsSource="{Binding ProcessesWithReloaded, UpdateSourceTrigger=PropertyChanged}"
+                                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                          VirtualizingPanel.IsVirtualizing="True"
+                                          VirtualizingPanel.VirtualizationMode="Recycling">
 
+                                <!-- Allow for virtualization of stack panel. -->
+                                <ItemsControl.Template>
+                                    <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                        <ScrollViewer CanContentScroll="True">
+                                            <ItemsPresenter/>
+                                        </ScrollViewer>
+                                    </ControlTemplate>
+                                </ItemsControl.Template>
+
+                                <!-- The actual panel of visible items -->
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel IsItemsHost="True"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <!-- Define each control. -->
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" HorizontalAlignment="Center" 
+                                                   FontSize="{DynamicResource FontSizeSmaller}"
+                                                   Text="{Binding ., Converter={x:Static converters:ProcessToNameStringConverter.Instance}}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+                        </controls:PopupLabel.HiddenContent>
                     </controls:PopupLabel>
 
+                    <!-- Non-Reloaded Processes -->
                     <controls:PopupLabel Margin="{DynamicResource CommonItemMarginSmallest}"
                                          FontFamily="{DynamicResource FontThin}"
                                          Foreground="{DynamicResource TextColorBrush}"
                                          ButtonText="{DynamicResource ApplicationOtherInstances}"
                                          IsOpen="True">
+                        <controls:PopupLabel.HiddenContent>
+                            <ItemsControl ItemsSource="{Binding ProcessesWithoutReloaded, UpdateSourceTrigger=PropertyChanged}"
+                                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                          VirtualizingPanel.IsVirtualizing="True"
+                                          VirtualizingPanel.VirtualizationMode="Recycling">
 
+                                <!-- Allow for virtualization of stack panel. -->
+                                <ItemsControl.Template>
+                                    <ControlTemplate TargetType="{x:Type ItemsControl}">
+                                        <ScrollViewer CanContentScroll="True">
+                                            <ItemsPresenter/>
+                                        </ScrollViewer>
+                                    </ControlTemplate>
+                                </ItemsControl.Template>
+
+                                <!-- The actual panel of visible items -->
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel IsItemsHost="True"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <!-- Define each control. -->
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" HorizontalAlignment="Center" 
+                                                   FontSize="{DynamicResource FontSizeSmaller}"
+                                                   Text="{Binding ., Converter={x:Static converters:ProcessToNameStringConverter.Instance}}" 
+                                                   PreviewMouseDown="NonReloadedMod_PreviewMouseDown"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+                        </controls:PopupLabel.HiddenContent>
                     </controls:PopupLabel>
                 </StackPanel>
 
@@ -88,5 +167,9 @@
                 </DockPanel>
             </Grid>
         </Grid>
+
+        <!-- Right Side -->
+        <reloadedWpfControls:PageHost x:Name="PageHost" Grid.Column="1" CurrentPage="{Binding Page, Converter={x:Static converters:ApplicationSubPageToPageConverter.Instance}}" />
+
     </Grid>
 </launcher:ReloadedIIPage>

@@ -95,4 +95,17 @@
     <sys:String x:Key="MessageBoxButtonOK">OK</sys:String>
     <sys:String x:Key="MessageBoxButtonCancel">Cancel</sys:String>
 
+    <!-- Non-Reloaded Process -->
+    <sys:String x:Key="TitleNonReloadedProcess">Non-Reloaded Process</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageOne">Reloaded is not managing this particular process.</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageTwo">You may load Reloaded into the process by pressing the following button below.</sys:String>
+    <sys:String x:Key="NonReloadedProcessInject">Inject</sys:String>
+
+    <!-- Reloaded Process -->
+    <sys:String x:Key="TitleReloadedProcess">Reloaded Process</sys:String>
+
+    <!-- Application Summary -->
+    <sys:String x:Key="TitleApplicationSummary">Application Summary</sys:String>
+
+
 </ResourceDictionary>

@@ -33,6 +33,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         /* Set this to false to temporarily suspend the file system watcher monitoring new applications. */
         public bool MonitorNewApplications { get; set; } = true;
+        public ImageApplicationPathTuple SelectedApplication { get; set; }
 
         /* List of programs on the sidebar. */
         [DoNotNotify]

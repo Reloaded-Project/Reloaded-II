@@ -1,0 +1,27 @@
+﻿<local:ApplicationSubPage x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.NonReloadedProcessPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages"
+      xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" 
+      d:DesignWidth="576"
+      Title="{DynamicResource TitleNonReloadedProcess}">
+
+    <Grid>
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="{DynamicResource NonReloadedProcessMessageOne}" 
+                       Margin="{DynamicResource CommonItemMarginSmallest}"
+                       TextWrapping="Wrap" HorizontalAlignment="Center"/>
+            <TextBlock Text="{DynamicResource NonReloadedProcessMessageTwo}" 
+                       Margin="{DynamicResource CommonItemMarginSmallest}"
+                       TextWrapping="Wrap" HorizontalAlignment="Center"/>
+            <Button Content="{DynamicResource NonReloadedProcessInject}" 
+                    Margin="{DynamicResource CommonItemMargin}"
+                    HorizontalAlignment="Center" Click="Button_Click"/>
+        </StackPanel>
+
+    </Grid>
+</local:ApplicationSubPage>

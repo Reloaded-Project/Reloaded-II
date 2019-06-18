@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
@@ -45,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Pages
             {
                 if (element.DataContext is ImageApplicationPathTuple tuple)
                 {
-                    IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(new ApplicationViewModel(tuple, IoC.Get<ManageModsViewModel>()));
+                    _mainPageViewModel.SelectedApplication = tuple;
                     _mainPageViewModel.Page = BaseSubPage.Application;
                     _mainPageViewModel.RaisePagePropertyChanged();
                 }

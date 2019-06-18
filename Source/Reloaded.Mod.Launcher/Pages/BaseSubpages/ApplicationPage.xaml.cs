@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.WPF.Pages.Animations;
 using Reloaded.WPF.Pages.Animations.Enum;
+using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {
@@ -28,7 +19,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         public ApplicationPage()
         {
             InitializeComponent();
-            ViewModel = IoC.GetConstant<ApplicationViewModel>();
+            ViewModel = new ApplicationViewModel(IoC.Get<MainPageViewModel>().SelectedApplication, IoC.Get<ManageModsViewModel>());
             this.AnimateOutStarted += Dispose;
         }
 
@@ -43,10 +34,33 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Creates instances of the animations that are ran on exiting the page.
-        /// Note: Override this to modify animations used by page.
-        /// </summary>
+        private void NonReloadedMod_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                if (sender is FrameworkElement element)
+                {
+                    if (element.DataContext is Process process)
+                    {
+                        ViewModel.SelectedProcess = process;
+                        ViewModel.Page = ApplicationSubPage.NonReloadedProcess;
+                        ViewModel.RaisePagePropertyChanged();
+                    }
+                }
+            }
+        }
+
+        private void Summary_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                ViewModel.Page = ApplicationSubPage.ApplicationSummary;
+                ViewModel.RaisePagePropertyChanged();
+            }
+        }
+
+        /* Animation/Title/Setup overrides */
+
         protected override Animation[] MakeExitAnimations()
         {
             return new Animation[]

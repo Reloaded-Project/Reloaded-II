@@ -131,7 +131,8 @@
                         <StackPanel>
                             <Button Content="{DynamicResource AddAppCreateShortcut}" 
                                         Margin="{DynamicResource CommonItemMargin}" 
-                                        HorizontalAlignment="Stretch"/>
+                                        HorizontalAlignment="Stretch"
+                                        Click="CreateShortcut_Click"/>
                         </StackPanel>
                     </controls:PopupLabel.HiddenContent>
                 </controls:PopupLabel>

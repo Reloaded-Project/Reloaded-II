@@ -1,5 +1,4 @@
 ﻿using System.Windows.Media;
-using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Launcher.Models.Model

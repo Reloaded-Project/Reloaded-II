@@ -1,48 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Linq;
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using PropertyChanged;
 using Reloaded.WPF.MVVM;
 
 namespace Reloaded.Mod.Launcher.Utility 
 {
+    /// <summary>
+    /// Utility class that provides events for when processes start up and/or shut down.
+    /// </summary>
     public class ProcessWatcher : ObservableObject, IDisposable
     {
         private const string WmiProcessidName = "ProcessID";
-        private static object _lock = new object();
 
-        /* Fired when the available mods collection changes. */
-        public event NotifyCollectionChangedEventHandler ProcessesChanged = (sender, args) => { };
+        public event ProcessArrived OnNewProcess = process => { };
+        public event ProcessExited OnRemovedProcess = processId => { };
 
-        public ObservableCollection<Process> Processes
-        {
-            get => _processes;
-            set
-            {
-                value.CollectionChanged += ProcessesChanged;
-                _processes = value;
-
-                RaisePropertyChangedEvent(nameof(Processes));
-                ProcessesChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-            }
-        }
-
-        private ObservableCollection<Process> _processes;
         private ManagementEventWatcher _startWatcher;
         private ManagementEventWatcher _stopWatcher;
 
         public ProcessWatcher()
         {
             // Populate bindings.
-            Processes = new ObservableCollection<Process>();
-            PopulateProcesses();
             _startWatcher = new ManagementEventWatcher(new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace"));
             _stopWatcher = new ManagementEventWatcher(new WqlEventQuery("SELECT * FROM Win32_ProcessStopTrace"));
             _startWatcher.EventArrived += ApplicationLaunched;
@@ -63,44 +41,33 @@ namespace Reloaded.Mod.Launcher.Utility
             GC.SuppressFinalize(this);
         }
 
-        private void PopulateProcesses()
+        protected virtual void RaiseOnNewProcess(Process process)
         {
-            foreach (Process process in Process.GetProcesses())
-                AddProcess(process);
+            OnNewProcess(process);
         }
 
-        private void AddProcess(Process process)
+        protected virtual void RaiseOnRemovedProcess(int processId)
         {
-            Application.Current.Dispatcher.Invoke(() => {
-                lock (_lock)
-                {
-                    Processes.Add(process);
-                    ProcessesChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                }
-            });
+            OnRemovedProcess(processId);
         }
-
 
         private void ApplicationLaunched(object sender, EventArrivedEventArgs e)
         {
             ActionWrappers.TryCatch(() =>
             {
                 var processId = Convert.ToInt32(e.NewEvent.Properties[WmiProcessidName].Value);
-                AddProcess(Process.GetProcessById(processId));
+                var process = Process.GetProcessById(processId);
+                RaiseOnNewProcess(process);
             });
         }
 
         private void ApplicationExited(object sender, EventArrivedEventArgs e)
         {
-            lock (_lock)
-            {
-                int processId = Convert.ToInt32(e.NewEvent.Properties[WmiProcessidName].Value);
-                var processes = Processes.Where(x => x.Id == processId).ToList();
-                foreach (var process in processes)
-                    Processes.Remove(process);
-
-                ProcessesChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-            }
+            int processId = Convert.ToInt32(e.NewEvent.Properties[WmiProcessidName].Value);
+            RaiseOnRemovedProcess(processId);
         }
+
+        public delegate void ProcessArrived(Process newProcess);
+        public delegate void ProcessExited(int processId);
     }
 }

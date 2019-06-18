@@ -10,7 +10,6 @@ using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
