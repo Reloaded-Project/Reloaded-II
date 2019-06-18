@@ -34,7 +34,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public ImageModPathTuple SelectedModPathTuple { get; set; }
         public ImageSource Icon { get; set; }
 
-        public ObservableCollection<BooleanApplicationTuple> EnabledAppIds { get; set; }
+        public ObservableCollection<BooleanGenericTuple<ApplicationConfig>> EnabledAppIds { get; set; }
         public bool MonitorNewMods { get; set; } = true;
 
         [DoNotNotify]
@@ -83,7 +83,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                     foreach (var booleanAppTuple in EnabledAppIds)
                     {
                         if (booleanAppTuple.Enabled)
-                            supportedApps.Add(booleanAppTuple.AppConfig.AppId);
+                            supportedApps.Add(booleanAppTuple.Generic.AppId);
                     }
 
                     oldModTuple.ModConfig.SupportedAppId = supportedApps.ToArray();
@@ -98,12 +98,12 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             if (newModTuple != null)
             {
                 // Make new collection.
-                var booleanAppTuples = new ObservableCollection<BooleanApplicationTuple>();
+                var booleanAppTuples = new ObservableCollection<BooleanGenericTuple<ApplicationConfig>>();
                 string[] supportedAppIds = newModTuple.ModConfig.SupportedAppId;
                 foreach (var applicationPathTuple in _mainPageViewModel.Applications)
                 {
                     bool enabled = supportedAppIds.Contains(applicationPathTuple.ApplicationConfig.AppId);
-                    booleanAppTuples.Add(new BooleanApplicationTuple(enabled, applicationPathTuple.ApplicationConfig));
+                    booleanAppTuples.Add(new BooleanGenericTuple<ApplicationConfig>(enabled, applicationPathTuple.ApplicationConfig));
                 }
                 EnabledAppIds = booleanAppTuples;
             }

@@ -6,6 +6,7 @@ using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
@@ -44,8 +45,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                 return;
             }
 
-            var tuple = (BooleanApplicationTuple)e.Item;
-            e.Accepted = tuple.AppConfig.AppName.IndexOf(this.AppsFilter.Text, StringComparison.InvariantCultureIgnoreCase) >= 0;
+            var tuple = (BooleanGenericTuple<ApplicationConfig>)e.Item;
+            e.Accepted = tuple.Generic.AppName.IndexOf(this.AppsFilter.Text, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
         private void ModsViewSourceOnFilter(object sender, FilterEventArgs e)

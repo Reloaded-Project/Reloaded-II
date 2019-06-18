@@ -3,13 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs"
         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
-        xmlns:designTimeModels="clr-namespace:Reloaded.Mod.Launcher.Models.DesignTimeModel"
-        xmlns:addAppPage="clr-namespace:Reloaded.Mod.Launcher.Converters.AddAppPage"
         xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
-        xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.AddAppPage"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="{DynamicResource TitleCreateModDialog}" 
@@ -123,7 +119,7 @@
                                                       Height="{DynamicResource ModEntryCheckboxHeightSmall}"
                                                       Margin="{DynamicResource ListEntryItemMarginSmall}"/>
 
-                                            <TextBlock Text="{Binding ModConfig.ModName, UpdateSourceTrigger=PropertyChanged}" 
+                                            <TextBlock Text="{Binding Generic.ModName, UpdateSourceTrigger=PropertyChanged}" 
                                                        VerticalAlignment="Center" 
                                                        HorizontalAlignment="Center" 
                                                        Margin="{DynamicResource ListEntryItemMarginSmall}"/>

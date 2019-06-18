@@ -27,7 +27,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
 
         public IModConfig Config { get; set; } = new ModConfig();
         public ImageSource Image { get; set; } = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute));
-        public ObservableCollection<BooleanModTuple> Dependencies { get; set; } = new ObservableCollection<BooleanModTuple>();
+        public ObservableCollection<BooleanGenericTuple<IModConfig>> Dependencies { get; set; } = new ObservableCollection<BooleanGenericTuple<IModConfig>>();
 
         public CreateModViewModel(ManageModsViewModel manageModsViewModel)
         {
@@ -35,7 +35,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
             var mods = manageModsViewModel.Mods; // In case collection changes during window open.
             foreach (var mod in mods)
             {
-                Dependencies.Add(new BooleanModTuple(false, mod.ModConfig));
+                Dependencies.Add(new BooleanGenericTuple<IModConfig>(false, mod.ModConfig));
             }
         }
 
@@ -51,7 +51,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
             string configSaveDirectory = Path.Combine(modDirectory, ModConfig.ConfigFileName);
             string iconSaveDirectory = Path.Combine(modDirectory, ModConfig.IconFileName);
             Config.ModIcon = ModConfig.IconFileName;
-            Config.ModDependencies = Dependencies.Where(x => x.Enabled).Select(x => x.ModConfig.ModId).ToArray();
+            Config.ModDependencies = Dependencies.Where(x => x.Enabled).Select(x => x.Generic.ModId).ToArray();
 
             var configLoader = new ConfigReader<ModConfig>();
             configLoader.WriteConfiguration(configSaveDirectory, (ModConfig) Config);

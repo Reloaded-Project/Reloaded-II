@@ -4,18 +4,26 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages"
-      xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
+      xmlns:system="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="600" 
       d:DesignWidth="576"
       Title="{DynamicResource TitleApplicationSummary}">
 
-    <Grid Margin="{DynamicResource PageMargin}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition>
+    <Grid Margin="{DynamicResource PageMargin}"
+          DataContext="{Binding ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
-            </ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        
+        <!-- Resources -->
+        <Grid.Resources>
+            <system:Double x:Key="ImageSize">180</system:Double>
+        </Grid.Resources>
+
+        <!-- Layout -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Contents -->
     </Grid>
 </local:ApplicationSubPage>

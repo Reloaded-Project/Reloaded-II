@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Reloaded.Mod.Loader\Reloaded.Mod.Loader.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Loader\" />
+  </ItemGroup>
+
 </Project>

@@ -182,7 +182,7 @@
                                           VerticalAlignment="Center" 
                                           Margin="{DynamicResource ListEntryItemMarginSmall}" />
 
-                                <TextBlock Text="{Binding AppConfig.AppName}" 
+                                <TextBlock Text="{Binding Generic.AppName}" 
                                            VerticalAlignment="Center" 
                                            HorizontalAlignment="Center" 
                                            Margin="{DynamicResource ListEntryItemMarginSmall}"/>
