@@ -14,7 +14,7 @@ using Reloaded.Mod.Loader.IO;
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
     /// <summary>
-    /// Comnmand to be used by the <see cref="AddAppPage"/> which allows
+    /// Command to be used by the <see cref="AddAppPage"/> which allows
     /// for the addition of a new application.
     /// </summary>
     public class AddApplicationCommand : ICommand
