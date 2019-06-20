@@ -2,6 +2,7 @@
 {
     public enum ApplicationSubPage
     {
+        Null,
         NonReloadedProcess,
         ReloadedProcess,
         ApplicationSummary

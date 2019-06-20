@@ -3,9 +3,9 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!-- Common Page Settings -->
-    <Thickness x:Key="PageMargin">40</Thickness>       <!-- Space between the page content and edges of the window. -->
+    <Thickness x:Key="PageMargin">30</Thickness>       <!-- Space between the page content and edges of the window. -->
     <Thickness x:Key="PageMarginSmall">20</Thickness>  <!-- Alternative: Space between the page content and edges of the window. -->
-    <Thickness x:Key="PanelMargin">10</Thickness>      <!-- Space between individual panels/grids of a page. -->
+    <Thickness x:Key="PanelMargin">10</Thickness>      <!-- Space between individual panels/grids of a page when/if multiple panels exist. -->
     
     <!-- Control Layout Properties -->
     <Thickness x:Key="CommonItemMargin">0,10</Thickness>
@@ -13,7 +13,7 @@
     <Thickness x:Key="CommonItemMarginSmaller">0,5</Thickness>
     <Thickness x:Key="CommonItemMarginSmallest">0,2.5</Thickness>
     <Thickness x:Key="ListEntryItemMarginSmall">5,0</Thickness>
-    <sys:Double x:Key="ModEntryCheckboxHeightSmall">18</sys:Double>
+    <sys:Double x:Key="ListEntryCheckboxHeightSmall">18</sys:Double>
 
     <!-- Splash Properties -->
     <Thickness x:Key="SplashImageMargin">100</Thickness>           <!-- Space between the splash image and edges of the window. -->

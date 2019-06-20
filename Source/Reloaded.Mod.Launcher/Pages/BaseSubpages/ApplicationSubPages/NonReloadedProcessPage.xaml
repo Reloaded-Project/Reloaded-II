@@ -9,7 +9,7 @@
       d:DesignWidth="576"
       Title="{DynamicResource TitleNonReloadedProcess}">
 
-    <Grid>
+    <Grid Margin="{DynamicResource PanelMargin}">
         <StackPanel VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource NonReloadedProcessMessageOne}" 
                        Margin="{DynamicResource CommonItemMarginSmallest}"

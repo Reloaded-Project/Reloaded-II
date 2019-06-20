@@ -18,6 +18,8 @@ namespace Reloaded.Mod.Launcher.Converters
         {
             switch ((ApplicationSubPage)value)
             {
+                case ApplicationSubPage.Null:
+                    return null;
                 case ApplicationSubPage.NonReloadedProcess:
                     return IoC.Get<NonReloadedProcessPage>();
                 case ApplicationSubPage.ReloadedProcess:

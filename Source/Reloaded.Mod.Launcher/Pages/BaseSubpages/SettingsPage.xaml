@@ -14,7 +14,7 @@
             <Thickness x:Key="BannerMargin">75,20,75,0</Thickness>
         </Grid.Resources>
 
-        <StackPanel>
+        <StackPanel Margin="{DynamicResource PanelMargin}">
             <!-- Banner and Build Date -->
             <Image 
                 x:Name="Banner"
@@ -68,7 +68,7 @@
         </StackPanel>
 
         <!-- Settings -->
-        <DockPanel LastChildFill="False">
+        <DockPanel LastChildFill="False" Margin="{DynamicResource PanelMargin}">
 
             <Grid DockPanel.Dock="Bottom">
                 <Grid.ColumnDefinitions>

@@ -15,6 +15,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
     public class ApplicationViewModel : ObservableObject, IDisposable
     {
         public const string ModsForThisAppPropertyName = nameof(ModsForThisApp);
+        private static object _lock = new object();
 
         public ImageApplicationPathTuple ApplicationTuple { get; private set; }
         public ManageModsViewModel ManageModsViewModel { get; private set; }
@@ -28,10 +29,14 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public int NonReloadedApps { get; set; }
         public int TotalMods { get; set; }
 
-        public ApplicationSubPage Page { get; set; } = ApplicationSubPage.ApplicationSummary;
+        public ApplicationSubPage Page { get; set; }
         public Process SelectedProcess { get; set; }
 
-        private Task _initializeClassTask;
+        /// <summary>
+        /// The task that handles asynchronous initialization of this viewmodel.
+        /// Child pages should check that it completed before initializing self.
+        /// </summary>
+        public Task InitializeClassTask { get; private set; }
         private CancellationTokenSource _initializeClassTaskTokenSource;
 
         public ApplicationViewModel(ImageApplicationPathTuple tuple, ManageModsViewModel modsViewModel)
@@ -41,8 +46,14 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             // Update Initial Values
             _initializeClassTaskTokenSource = new CancellationTokenSource();
-            IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
-            _initializeClassTask = Task.Run(() =>
+            lock (_lock)
+            {
+                // Rebind needs to be atomic or otherwise when default page's viewmodel (ApplicationSummaryViewModel)
+                // picks up this viewmodel, there may be multiple bindings.
+                IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
+            }
+
+            InitializeClassTask = Task.Run(() =>
             {
                 InstanceTracker = new ApplicationInstanceTracker(tuple.ApplicationConfig.AppLocation, _initializeClassTaskTokenSource.Token);
                 ManageModsViewModel.ModsChanged += OnModsChanged;
@@ -50,6 +61,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
                 InstanceTrackerOnProcessesChanged(new Process[0]);
                 OnModsChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                Page = ApplicationSubPage.ApplicationSummary;
             });
         }
 
@@ -61,10 +73,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public void Dispose()
         {
             // Safeguard for those spamming the application button.
-            if (!_initializeClassTask.IsCompleted)
+            if (!InitializeClassTask.IsCompleted)
             {
                 _initializeClassTaskTokenSource.Cancel();
-                _initializeClassTask.Wait();
+                InitializeClassTask.Wait();
             }
 
             ManageModsViewModel.ModsChanged -= OnModsChanged;

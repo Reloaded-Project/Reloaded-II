@@ -116,7 +116,7 @@
                                             <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                       VerticalAlignment="Center" 
                                                       HorizontalAlignment="Center"
-                                                      Height="{DynamicResource ModEntryCheckboxHeightSmall}"
+                                                      Height="{DynamicResource ListEntryCheckboxHeightSmall}"
                                                       Margin="{DynamicResource ListEntryItemMarginSmall}"/>
 
                                             <TextBlock Text="{Binding Generic.ModName, UpdateSourceTrigger=PropertyChanged}" 

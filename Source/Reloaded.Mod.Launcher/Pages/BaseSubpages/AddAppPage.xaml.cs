@@ -68,7 +68,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             }
         }
 
-        /* Load save index between menu leave/entry */
+        /* Set default index on entry. */
         private void SetDefaultSelectionIndex()
         {
             ViewModel.SelectedIndex = 0;

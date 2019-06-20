@@ -27,11 +27,20 @@
                     <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
                                HorizontalAlignment="Center" 
                                FontSize="{DynamicResource FontSizeSmaller}"
-                               Text="{DynamicResource TitleApplicationSummary}"
+                               Text="{DynamicResource ApplicationLaunch}"
+                               Margin="{DynamicResource CommonItemMarginSmall}"
+                               PreviewMouseDown="LaunchApplication_PreviewMouseDown"/>
+
+                    <!-- Main Page -->
+                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="{DynamicResource FontSizeSmaller}"
+                               Text="{DynamicResource TitleConfigureMods}"
+                               Margin="{DynamicResource CommonItemMarginSmall}"
                                PreviewMouseDown="Summary_PreviewMouseDown"/>
 
                     <!-- Reloaded Processes -->
-                    <controls:PopupLabel Margin="{DynamicResource CommonItemMarginSmallest}"
+                    <controls:PopupLabel Margin="{DynamicResource CommonItemMarginSmall}"
                                          FontFamily="{DynamicResource FontThin}"
                                          Foreground="{DynamicResource TextColorBrush}"
                                          ButtonText="{DynamicResource ApplicationReloadedInstances}"
@@ -72,7 +81,7 @@
                     </controls:PopupLabel>
 
                     <!-- Non-Reloaded Processes -->
-                    <controls:PopupLabel Margin="{DynamicResource CommonItemMarginSmallest}"
+                    <controls:PopupLabel Margin="{DynamicResource CommonItemMarginSmall}"
                                          FontFamily="{DynamicResource FontThin}"
                                          Foreground="{DynamicResource TextColorBrush}"
                                          ButtonText="{DynamicResource ApplicationOtherInstances}"

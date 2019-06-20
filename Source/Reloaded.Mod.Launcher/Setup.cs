@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -63,11 +64,19 @@ namespace Reloaded.Mod.Launcher
                 // Wait until splash screen time.
                 updateText($"{getText(XAML_SplashLoadCompleteIn)} {watch.ElapsedMilliseconds}ms");
                 
+                // Allow for debugging before crashing.
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
                 while (watch.ElapsedMilliseconds < minimumSplashDelay)
                 {
                     await Task.Delay(100);
                 }
             }
+        }
+
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Debugger.Launch();
         }
 
         /// <summary>

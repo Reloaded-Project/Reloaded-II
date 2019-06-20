@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Models.ViewModel;
@@ -20,6 +21,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             InitializeComponent();
             ViewModel = new ApplicationViewModel(IoC.Get<MainPageViewModel>().SelectedApplication, IoC.Get<ManageModsViewModel>());
+            this.AnimateOutStarted += AnimateOutChild;
             this.AnimateOutStarted += Dispose;
         }
 
@@ -32,6 +34,11 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             ViewModel?.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        private void AnimateOutChild()
+        {
+            PageHost.CurrentPage.AnimateOut();
         }
 
         private void NonReloadedMod_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -74,6 +81,12 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             if (!String.IsNullOrEmpty(this.Title))
                 IoC.Get<WindowViewModel>().WindowTitle = $"{this.Title}: {ViewModel.ApplicationTuple.ApplicationConfig.AppName}";
+        }
+
+        private void LaunchApplication_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // TODO: Implement Launch Application
+
         }
     }
 }

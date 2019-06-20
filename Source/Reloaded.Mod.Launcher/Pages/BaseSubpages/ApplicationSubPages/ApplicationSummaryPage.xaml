@@ -5,25 +5,122 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages"
       xmlns:system="clr-namespace:System;assembly=mscorlib"
+      xmlns:dd="urn:gong-wpf-dragdrop"
+      xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+      xmlns:designTimeModels="clr-namespace:Reloaded.Mod.Launcher.Models.DesignTimeModel"
+      xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
       mc:Ignorable="d" 
       d:DesignHeight="600" 
       d:DesignWidth="576"
-      Title="{DynamicResource TitleApplicationSummary}">
+      Title="{DynamicResource TitleConfigureMods}">
 
-    <Grid Margin="{DynamicResource PageMargin}"
+    <Grid x:Name="Contents"
+          Margin="{DynamicResource PageMargin}"
           DataContext="{Binding ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
         <!-- Resources -->
         <Grid.Resources>
             <system:Double x:Key="ImageSize">180</system:Double>
+
+            <!-- Filtered Mod List -->
+            <CollectionViewSource x:Key="FilteredMods" Source="{Binding AllMods, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsLiveFilteringRequested="True">
+                <!-- Filtering setup in code behind. -->
+            </CollectionViewSource>
+
         </Grid.Resources>
 
         <!-- Layout -->
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Contents -->
+        <!-- Search Filter -->
+        <Grid Grid.Row="0" Margin="{DynamicResource PanelMargin}">
+            <TextBox x:Name="ModsFilter" 
+                     Style="{DynamicResource TextboxWithPlaceholder}" 
+                     Tag="{DynamicResource ModManagerSearchMods}" 
+                     TextChanged="ModsFilter_TextChanged"/>
+        </Grid>
+
+        <!-- Items -->
+        <Grid Grid.Row="1" Margin="{DynamicResource PanelMargin}">
+            <ListView 
+                x:Name="ModListView"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Source={StaticResource FilteredMods}}"
+                SelectedValue="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedIndex="{Binding SelectedModIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ToolTip="{DynamicResource ConfigureModsListItemTooltip}"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Top"
+                dd:DragDrop.IsDragSource="True"
+                dd:DragDrop.IsDropTarget="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      Margin="{DynamicResource ListEntryItemMarginSmall}" 
+                                      Style="{DynamicResource DefaultCheckBox}"
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center" 
+                                      Height="{DynamicResource ListEntryCheckboxHeightSmall}"/>
+
+                            <TextBlock Text="{Binding Generic.ModConfig.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       VerticalAlignment="Center" 
+                                       HorizontalAlignment="Center" 
+                                       Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+
+        <!-- Bottom Panel -->
+        <Grid Grid.Row="2" Margin="{DynamicResource PanelMargin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Application Image -->
+            <Border Grid.Column="0" BorderBrush="{DynamicResource BorderColorBrush}" Background="Transparent" BorderThickness="1" >
+                <Viewbox Width="{StaticResource ImageSize}"
+                         Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}">
+                    <Image Source="{Binding Icon}"
+                           Style="{DynamicResource HighQualityImage}"/>
+                </Viewbox>
+            </Border>
+
+            <!-- Application Details -->
+            <DockPanel Grid.Column="1" LastChildFill="False">
+                <StackPanel DockPanel.Dock="Top"
+                            Margin="{DynamicResource PanelMargin}">
+                    <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModId, UpdateSourceTrigger=PropertyChanged, FallbackValue='reloaded.somerandom.modid'}" 
+                               HorizontalAlignment="Center"
+                               Style="{DynamicResource TextblockWithColourChange}" 
+                               TextWrapping="Wrap"/>
+
+                    <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModAuthor, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56'}" 
+                               HorizontalAlignment="Center"
+                               Style="{DynamicResource TextblockWithColourChange}" 
+                               TextWrapping="Wrap"/>
+
+                    <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModVersion, UpdateSourceTrigger=PropertyChanged, FallbackValue='2.0.0'}" 
+                               HorizontalAlignment="Center"
+                               Style="{DynamicResource TextblockWithColourChange}" 
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModDescription, UpdateSourceTrigger=PropertyChanged, FallbackValue='Uses Reloaded library to feed Heroes inputs. Supports all players P1-P4. See mod folder after first run for config files allowing rebinding.'}" 
+                           DockPanel.Dock="Bottom"
+                           HorizontalAlignment="Center"
+                           Margin="{DynamicResource PanelMargin}"
+                           Style="{DynamicResource TextblockWithColourChange}" 
+                           TextWrapping="Wrap"/>
+            </DockPanel>
+        </Grid>
     </Grid>
 </local:ApplicationSubPage>

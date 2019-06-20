@@ -35,35 +35,37 @@
         </Grid.RowDefinitions>
 
         <!-- All Content. -->
-        <TextBox Grid.Row="0" 
-                 x:Name="ModsFilter"
-                 Style="{DynamicResource TextboxWithPlaceholder}"
-                 Tag="{DynamicResource ModManagerSearchMods}"
-                 Margin="{DynamicResource CommonItemMargin}" TextChanged="ModsFilter_TextChanged"/>
+        <Grid Grid.Row="0" Margin="{DynamicResource PanelMargin}">
+            <TextBox x:Name="ModsFilter"
+                     Style="{DynamicResource TextboxWithPlaceholder}"
+                     Tag="{DynamicResource ModManagerSearchMods}"
+                     TextChanged="ModsFilter_TextChanged"/>
+        </Grid>
 
-        <ListView Grid.Row="1" 
-                  ItemsSource="{Binding Source={StaticResource SortedDependencies}}"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  VerticalContentAlignment="Top"
-                  Margin="{DynamicResource CommonItemMargin}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                  VerticalAlignment="Center" 
-                                  HorizontalAlignment="Center"
-                                  Style="{DynamicResource DefaultCheckBox}" 
-                                  Height="{DynamicResource ModEntryCheckboxHeightSmall}"
-                                  Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+        <Grid Grid.Row="1" Margin="{DynamicResource PanelMargin}">
+            <ListView ItemsSource="{Binding Source={StaticResource SortedDependencies}}"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      VerticalContentAlignment="Top">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      Style="{DynamicResource DefaultCheckBox}" 
+                                      Height="{DynamicResource ListEntryCheckboxHeightSmall}"/>
 
-                        <TextBlock Text="{Binding Generic.ModName, UpdateSourceTrigger=PropertyChanged}" 
-                                   VerticalAlignment="Center" 
-                                   HorizontalAlignment="Center" 
-                                   Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                            <TextBlock Text="{Binding Generic.ModName, UpdateSourceTrigger=PropertyChanged}" 
+                                       VerticalAlignment="Center" 
+                                       HorizontalAlignment="Center" 
+                                       Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+
     </Grid>
 </default:ReloadedWindow>

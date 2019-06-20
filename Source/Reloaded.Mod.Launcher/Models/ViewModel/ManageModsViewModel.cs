@@ -31,6 +31,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public event NotifyCollectionChangedEventHandler ModsChanged = (sender, args) => { };
 
         /* Fields */
+        public int SelectedIndex { get; set; } = 0;
         public ImageModPathTuple SelectedModPathTuple { get; set; }
         public ImageSource Icon { get; set; }
 

@@ -24,7 +24,7 @@ namespace Reloaded.Mod.Launcher.Converters.AddAppPage
             if (value is IApplicationConfig applicationConfig)
             {
                 var viewModel = IoC.Get<AddAppViewModel>();
-                var appImagePathTuple = viewModel.MainPageViewModel.Applications.First(x => x.ApplicationConfig.Equals(viewModel.Application));
+                var appImagePathTuple = viewModel.MainPageViewModel.Applications.FirstOrDefault(x => x.ApplicationConfig.Equals(viewModel.Application));
                 return appImagePathTuple.Image;
             }
 

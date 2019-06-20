@@ -13,7 +13,7 @@
              d:DesignHeight="600" d:DesignWidth="756"
              Title="{DynamicResource TitleManageMods}">
 
-    <Grid x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+    <Grid Margin="{DynamicResource PageMargin}" x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
         <Grid.Resources>
             <!-- Layout properties -->
@@ -35,14 +35,13 @@
             <!-- Sort the app list -->
             <CollectionViewSource x:Key="SortedApps" Source="{Binding EnabledAppIds, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                 <CollectionViewSource.SortDescriptions>
-                    <componentModel:SortDescription PropertyName="AppConfig.AppName"/>
+                    <componentModel:SortDescription PropertyName="Generic.AppName"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
         </Grid.Resources>
 
-        <Grid Margin="{DynamicResource PageMargin}">
-
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{DynamicResource LeftPanelWidth}"/>
                 <ColumnDefinition Width="*"/>
@@ -50,8 +49,7 @@
 
             <!-- Left Side. -->
             <ScrollViewer>
-                <StackPanel
-                    Margin="{DynamicResource PanelMargin}">
+                <StackPanel Margin="{DynamicResource PanelMargin}">
 
                     <!-- Application Image -->
                     <Viewbox Width="{StaticResource DetailsImageSize}"
@@ -140,17 +138,30 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBox x:Name="ModsFilter" Style="{DynamicResource TextboxWithPlaceholder}" Tag="{DynamicResource ModManagerSearchMods}" TextChanged="ModsFilter_TextChanged" Grid.Column="0" Grid.Row="0"/>
-                    <TextBox x:Name="AppsFilter" Style="{DynamicResource TextboxWithPlaceholder}" Tag="{DynamicResource ModManagerSearchApps}" TextChanged="AppsFilter_TextChanged" Grid.Column="1" Grid.Row="0"/>
+                    
+                    <TextBox x:Name="ModsFilter" Style="{DynamicResource TextboxWithPlaceholder}" 
+                             Margin="{DynamicResource PanelMargin}"
+                             Tag="{DynamicResource ModManagerSearchMods}" 
+                             TextChanged="ModsFilter_TextChanged" 
+                             Grid.Column="0" 
+                             Grid.Row="0"/>
+
+                    <TextBox x:Name="AppsFilter" 
+                             Margin="{DynamicResource PanelMargin}"
+                             Style="{DynamicResource TextboxWithPlaceholder}" 
+                             Tag="{DynamicResource ModManagerSearchApps}"
+                             TextChanged="AppsFilter_TextChanged" 
+                             Grid.Column="1" 
+                             Grid.Row="0"/>
 
                     <!-- List of Mods -->
-                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="{DynamicResource PanelMargin}">
                         <ListView 
                             x:Name="ModListView"
-                            Margin="{DynamicResource CommonItemMargin}"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding Source={StaticResource SortedMods}}"
                             SelectedValue="{Binding SelectedModPathTuple}" 
+                            SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             ToolTip="{DynamicResource ModManagerSelectMod}"
                             SelectionChanged="ListView_SelectionChanged" 
                             VerticalAlignment="Stretch"
@@ -164,32 +175,32 @@
                     </Grid>
                 </Grid>
 
-                <ListView Grid.Row="1"
-                          Margin="{DynamicResource CommonItemMargin}"
-                          ToolTip="{DynamicResource ModManagerSelectApp}"
-                          ItemsSource="{Binding Source={StaticResource SortedApps}}"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"
-                          VerticalContentAlignment="Top">
-                    
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <CheckBox IsChecked="{Binding Enabled}" 
-                                          Style="{DynamicResource DefaultCheckBox}" 
-                                          Height="{DynamicResource ModEntryCheckboxHeightSmall}" 
-                                          HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center" 
-                                          Margin="{DynamicResource ListEntryItemMarginSmall}" />
+                <Grid Grid.Row="1" Margin="{DynamicResource PanelMargin}">
+                    <ListView 
+                        ToolTip="{DynamicResource ModManagerSelectApp}"
+                        ItemsSource="{Binding Source={StaticResource SortedApps}}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        VerticalContentAlignment="Top">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox IsChecked="{Binding Enabled}" 
+                                              Style="{DynamicResource DefaultCheckBox}" 
+                                              Height="{DynamicResource ListEntryCheckboxHeightSmall}" 
+                                              HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" 
+                                              Margin="{DynamicResource ListEntryItemMarginSmall}" />
 
-                                <TextBlock Text="{Binding Generic.AppName}" 
-                                           VerticalAlignment="Center" 
-                                           HorizontalAlignment="Center" 
-                                           Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                    <TextBlock Text="{Binding Generic.AppName}" 
+                                               VerticalAlignment="Center" 
+                                               HorizontalAlignment="Center" 
+                                               Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

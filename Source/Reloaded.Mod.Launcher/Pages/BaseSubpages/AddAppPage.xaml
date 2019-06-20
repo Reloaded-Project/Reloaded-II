@@ -59,7 +59,7 @@
                               SelectedValue="{Binding Application}"
                               Text="Select a Game"
                               SelectionChanged="ComboBox_SelectionChanged"
-                              SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
+                              SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding ApplicationConfig.AppName, Mode=TwoWay}"/>

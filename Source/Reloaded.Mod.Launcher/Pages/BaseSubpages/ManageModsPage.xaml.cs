@@ -26,7 +26,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             InitializeComponent();
             ViewModel = IoC.Get<ManageModsViewModel>();
             this.DataContext = ViewModel;
-
             this.AnimateOutStarted += SaveCurrentMod;
 
             // Setup filters
