@@ -1,41 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
 using Reloaded.Mod.Loader.Bootstrap;
+using Reloaded.Mod.Loader.Networking;
+using Reloaded.Mod.Loader.Networking.Messages;
+using Reloaded.Mod.Loader.Server;
+using Reloaded.Mod.Loader.Server.Structs;
 
 namespace Reloaded.Mod.Loader
 {
-    [Guid("83f622b9-74f4-4700-9167-52c4ce9e79aa")]
-    [ComVisible(true)]
-    public class API
+    public static class API
     {
+        private static Server.SimpleHost<MessageType> _simpleHost;
+
         /* Ensures DLL Resolution */
         static API()
         {
-            Debugger.Launch();
             AppDomain.CurrentDomain.AssemblyResolve += LocalAssemblyResolver.ResolveAssembly;
         }
 
         /* Initialize Mod Loader (DLL_PROCESS_ATTACH) */
-        [ComVisible(true)]
-        public void Initialize()
+
+        /// <summary>
+        /// Returns the port on the local machine
+        /// </summary>
+        public static int GetPort()
         {
-            Debugger.Launch();
+            return _simpleHost.Port;
         }
 
-        [ComVisible(true)]
-        public void GetFunctions()
+        /* Message Handlers */
+        private static void GetLoadedMods(NetMessage<GetLoadedModsParams> obj)
         {
-            Debugger.Launch();
+            throw new NotImplementedException();
         }
 
-        /* Return list of mod loader pointers. */
-        struct LoaderMethodPointers
-        {
 
+        /*
+            ModInfo = GetLoadedMods()
+            SuspendMod(string ModId)
+            ResumeMod(string ModId)
+            UnloadMod(string ModId)
+            LoadMod(string ModId)
 
-        }
+            // Each has a message and result structs.
+            // All structs in enum (MessageType) and inherit from base message.
+
+           
+        */
     }
 }

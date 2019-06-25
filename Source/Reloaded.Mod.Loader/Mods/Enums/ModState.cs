@@ -3,7 +3,6 @@
     public enum ModState
     {
         Running,
-        Suspended,
-        Unloaded
+        Suspended
     }
 }
