@@ -23,39 +23,39 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// <summary>
         /// Returns a list of all currently active mods.
         /// </summary>
-        IMod[] GetActiveMods();
+        (IMod, IModConfig)[] GetActiveMods();
 
         /// <summary>
-        /// Returns a sorted list of all mods, taking in account inter-mod dependencies.
+        /// Retrieves the logger.
         /// </summary>
-        IMod[] GetSortedMods();
+        ILogger GetLogger();
 
         /* Events */
 
         /// <summary>
         /// This method is automatically called by the mod loader when all mods have finished loading.
         /// </summary>
-        event Action OnModLoaderInitialized;
+        Action OnModLoaderInitialized { get; }
         
         /// <summary>
         /// This method is automatically called by the mod loader before a mod is unloaded.
         /// </summary>
-        event Action<IMod> ModUnloading;
+        Action<IMod, IModConfig> ModUnloading { get; }
 
         /// <summary>
         /// This method is automatically called by the mod loader before a mod is loaded.
         /// </summary>
-        event Action<IMod> ModLoading;
+        Action<IMod, IModConfig> ModLoading { get; }
 
         /// <summary>
         /// This method is automatically called by the mod loader after a mod is unloaded.
         /// </summary>
-        event Action<IMod> ModUnloaded;
+        Action<IMod, IModConfig> ModUnloaded { get; }
 
         /// <summary>
         /// This method is automatically called by the mod loader after a mod is loaded.
         /// </summary>
-        event Action<IMod> ModLoaded;
+        Action<IMod, IModConfig> ModLoaded { get; }
 
         /* Plugins and Extensibility */
 

@@ -5,6 +5,7 @@ using System.Windows.Data;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
 

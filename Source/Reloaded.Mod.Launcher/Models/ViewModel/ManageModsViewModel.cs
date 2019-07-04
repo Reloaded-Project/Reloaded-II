@@ -187,7 +187,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             // Try read all configs, this action may sometimes fail if some of the files are still being copied.
             // Worth noting is that the last fired event will never collide here and fail, thus this is a safe point to exit.
-            try { modConfigs = _modConfigReader.ReadConfigurations(loaderConfig.ModConfigDirectory, ModConfig.ConfigFileName); }
+            try { modConfigs = ModConfig.GetAllMods(); }
             catch (Exception) { return; }
 
             foreach (var config in modConfigs)

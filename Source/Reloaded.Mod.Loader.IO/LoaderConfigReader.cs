@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Loader.IO
@@ -40,13 +40,7 @@ namespace Reloaded.Mod.Loader.IO
                                     $" Reloaded II may not be installed.");
 
             string jsonFile = File.ReadAllText(StaticConfigFilePath);
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
-            return JsonConvert.DeserializeObject<LoaderConfig>(jsonFile, settings);
+            return JsonSerializer.Parse<LoaderConfig>(jsonFile);
         }
 
         /// <summary>
@@ -59,7 +53,7 @@ namespace Reloaded.Mod.Loader.IO
             if (! Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            string jsonFile = JsonConvert.SerializeObject(config, Formatting.Indented);
+            string jsonFile = JsonSerializer.ToString(config, new JsonSerializerOptions() { WriteIndented = true });
             File.WriteAllText(StaticConfigFilePath, jsonFile);
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Mods.Enums
+﻿namespace Reloaded.Mod.Loader.Server.Messages.Structures
 {
     public enum ModState
     {

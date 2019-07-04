@@ -1,9 +1,2 @@
-[submodule "Submodules/Reloaded.WPF"]
-	path = Submodules/Reloaded.WPF
-	url = https://github.com/Sewer56/Reloaded.WPF.git
-[submodule "Submodules/Rock.Collections"]
-	path = Submodules/Rock.Collections
-	url = https://github.com/OndrejPetrzilka/Rock.Collections
 [submodule "Submodules/Reloaded.Core.Bootstrap"]
-	path = Submodules/Reloaded.Core.Bootstrap
 	url = https://github.com/Reloaded-Project/Reloaded.Core.Bootstrap

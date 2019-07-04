@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Documents;
 using System.Windows.Media;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 using Rock.Collections;
 

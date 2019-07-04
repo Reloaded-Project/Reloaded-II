@@ -1,6 +1,6 @@
-﻿using Reloaded.WPF.MVVM;
+﻿using Reloaded.Mod.Loader.IO.Weaving;
 
-namespace Reloaded.Mod.Launcher.Models.Model
+namespace Reloaded.Mod.Loader.IO.Structs
 {
     public class BooleanGenericTuple<TGeneric> : ObservableObject
     {

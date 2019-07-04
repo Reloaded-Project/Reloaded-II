@@ -40,8 +40,8 @@ namespace Reloaded.Mod.Loader.IO
         public void SetupConfigCleaner(LoaderConfig loaderConfig)
         {
             _loaderConfig = loaderConfig;
-            _modConfigs = _modConfigReader.ReadConfigurations(_loaderConfig.ModConfigDirectory, ModConfig.ConfigFileName);
-            _applicationConfigs = _appConfigReader.ReadConfigurations(_loaderConfig.ApplicationConfigDirectory, ApplicationConfig.ConfigFileName);
+            _modConfigs = ModConfig.GetAllMods();
+            _applicationConfigs = ApplicationConfig.GetAllApplications();
 
             _allAppsSet = BuildSet(_applicationConfigs.Select(tuple => tuple.Object.AppId));
             _allModsSet = BuildSet(_modConfigs.Select(tuple => tuple.Object.ModId));

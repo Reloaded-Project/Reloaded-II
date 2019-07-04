@@ -1,13 +1,19 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Weaving;
+using Rock.Collections;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
     public class ApplicationConfig : ObservableObject, Mod.Interfaces.IApplicationConfig, IConfig
     {
+        private static ConfigReader<ApplicationConfig> _appConfigReader = new ConfigReader<ApplicationConfig>();
+
         /// <summary>
         /// The name of the configuration file as stored on disk.
         /// </summary>
@@ -49,6 +55,66 @@ namespace Reloaded.Mod.Loader.IO.Config
         {
             var _applicationConfigLoader = new ConfigReader<ApplicationConfig>();
             _applicationConfigLoader.WriteConfiguration(path, config);
+        }
+
+        /// <summary>
+        /// Finds all apps on the filesystem, parses them and returns a list of
+        /// all apps.
+        /// </summary>
+        /// <returns></returns>
+        public static List<PathGenericTuple<ApplicationConfig>> GetAllApplications()
+        {
+            return _appConfigReader.ReadConfigurations(LoaderConfigReader.ReadConfiguration().ApplicationConfigDirectory, ConfigFileName);
+        }
+
+        /// <summary>
+        /// Returns all mods for this application in load order.
+        /// Note: Dependencies are not taken into account in load order - but the mod loader itself does reorder the list taking them into account.
+        /// </summary>
+        /// <param name="config">The application to get all mods for.</param>
+        public static List<BooleanGenericTuple<PathGenericTuple<ModConfig>>> GetAllMods(IApplicationConfig config)
+        {
+            var modifications = ModConfig.GetAllMods();
+            return GetAllMods(config, modifications);
+        }
+
+        /// <summary>
+        /// Returns all mods for this application in load order.
+        /// Note: Dependencies are not taken into account in load order - but the mod loader itself does reorder the list taking them into account.
+        /// </summary>
+        /// <param name="config">The application to get all mods for.</param>
+        /// <param name="modifications">List of modifications to retrieve all mods from.</param>
+        public static List<BooleanGenericTuple<PathGenericTuple<ModConfig>>> GetAllMods(IApplicationConfig config, List<PathGenericTuple<ModConfig>> modifications)
+        {
+            var enabledMods = config.EnabledMods;
+
+            // Build set of enabled mods in order of load | O(N^2)
+            var enabledModSet = new OrderedHashSet<PathGenericTuple<ModConfig>>(modifications.Count);
+            foreach (var enabledMod in enabledMods)
+            {
+                foreach (var mod in modifications)
+                {
+                    var modConfig = mod.Object;
+                    if (modConfig.ModId == enabledMod)
+                    {
+                        enabledModSet.Add(mod);
+                        break;
+                    }
+                }
+            }
+
+            var totalModList = new List<BooleanGenericTuple<PathGenericTuple<ModConfig>>>(modifications.Count);
+            foreach (var mod in enabledModSet)
+                totalModList.Add(new BooleanGenericTuple<PathGenericTuple<ModConfig>>(true, mod));
+
+            // Add items not in set.
+            foreach (var mod in enabledModSet)
+            {
+                if (! enabledModSet.Contains(mod))
+                    totalModList.Add(new BooleanGenericTuple<PathGenericTuple<ModConfig>>(false, mod));
+            }
+
+            return totalModList;
         }
 
         /*

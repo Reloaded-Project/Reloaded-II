@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Data;
-using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages

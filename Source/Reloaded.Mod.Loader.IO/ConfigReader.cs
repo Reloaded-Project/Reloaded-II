@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text.Json.Serialization;
 using System.Threading;
 using Reloaded.Mod.Loader.IO.Config;
-using Newtonsoft.Json;
 using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Structs;
 
@@ -52,7 +52,7 @@ namespace Reloaded.Mod.Loader.IO
         public TConfigType ReadConfiguration(string path)
         {
             string jsonFile = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<TConfigType>(jsonFile);
+            return JsonSerializer.Parse<TConfigType>(jsonFile);
         }
 
         public void WriteConfiguration(string path, TConfigType config)
@@ -62,7 +62,7 @@ namespace Reloaded.Mod.Loader.IO
             if (!Directory.Exists(directoryOfPath))
                 Directory.CreateDirectory(directoryOfPath);
 
-            string jsonFile = JsonConvert.SerializeObject(config, Formatting.Indented);
+            string jsonFile = JsonSerializer.ToString(config, new JsonSerializerOptions() { WriteIndented = true });
             File.WriteAllText(path, jsonFile);
         }
     }
