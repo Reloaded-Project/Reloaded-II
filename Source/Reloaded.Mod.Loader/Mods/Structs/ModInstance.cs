@@ -1,6 +1,7 @@
 ﻿using System;
 using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 
 namespace Reloaded.Mod.Loader.Mods.Structs
@@ -11,7 +12,7 @@ namespace Reloaded.Mod.Loader.Mods.Structs
     public class ModInstance : IDisposable
     {
         public PluginLoader Loader;
-        public IMod Mod;
+        public IModV1 Mod;
         public IModConfig ModConfig;
 
         public ModState State;
@@ -19,7 +20,7 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         public bool CanUnload;
         private bool _started = false;
 
-        public ModInstance(PluginLoader loader, IMod mod, IModConfig config)
+        public ModInstance(PluginLoader loader, IModV1 mod, IModConfig config)
         {
             Loader = loader;
             Mod = mod;
@@ -36,6 +37,7 @@ namespace Reloaded.Mod.Loader.Mods.Structs
 
         public void Dispose()
         {
+            Mod.Disposing();
             Mod = null;
             Loader?.Dispose();
             GC.SuppressFinalize(this);

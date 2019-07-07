@@ -6,6 +6,7 @@ using McMaster.NETCore.Plugins;
 using Reloaded.Messaging.Messages;
 using Reloaded.Messaging.Structs;
 using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Loader.Exceptions;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Mods.Structs;
@@ -21,9 +22,9 @@ namespace Reloaded.Mod.Loader.Mods
     /// </summary>
     public class PluginManager
     {
+        public LoaderAPI LoaderApi { get; private set; }
         private Dictionary<string, ModInstance> _modifications = new Dictionary<string, ModInstance>();
         private Loader _loader;
-        private LoaderAPI _loaderApi;
 
         /// <summary>
         /// Initializes the <see cref="PluginManager"/>
@@ -33,12 +34,17 @@ namespace Reloaded.Mod.Loader.Mods
         public PluginManager(IEnumerable<PathGenericTuple<IModConfig>> modPaths, Loader loader)
         {
             _loader = loader;
-            _loaderApi = new LoaderAPI(_loader);
+            LoaderApi = new LoaderAPI(_loader);
             foreach (var modPath in modPaths)
             {
                 LoadMod(modPath);
             }
         }
+
+        /// <summary>
+        /// Retrieves a list of all loaded modifications.
+        /// </summary>
+        public IReadOnlyCollection<ModInstance> GetModifications() => _modifications.Values;
 
         /// <summary>
         /// Loads an individual DLL/mod.
@@ -53,16 +59,16 @@ namespace Reloaded.Mod.Loader.Mods
             // TODO: Native mod loading support.
             var loaderOptions = PluginLoaderOptions.PreferSharedTypes | PluginLoaderOptions.IsUnloadable;
             var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path, 
-                new []{ typeof(IModLoader), typeof(IMod) },
+                new []{ typeof(IModLoaderV1), typeof(IModV1) },
                 loaderOptions);
 
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types = defaultAssembly.GetTypes();
-            var entryPoints = types.Where(t => typeof(IMod).IsAssignableFrom(t) && !t.IsAbstract);
+            var entryPoints = types.Where(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
 
             foreach (var entryPoint in entryPoints)
             {
-                var plugin = (IMod) Activator.CreateInstance(entryPoint);
+                var plugin = (IModV1) Activator.CreateInstance(entryPoint);
                 var modInstance = new ModInstance(loader, plugin, tuple.Object);
                 StartModInstance(modInstance);
                 _modifications[tuple.Object.ModId] = modInstance;
@@ -77,6 +83,7 @@ namespace Reloaded.Mod.Loader.Mods
             var mod = _modifications[modId];
             if (mod != null && mod.Mod.CanUnload())
             {
+                LoaderApi.ModUnloading(mod.Mod, mod.ModConfig);
                 _modifications.Remove(modId);
                 mod.Dispose();
             }
@@ -137,9 +144,9 @@ namespace Reloaded.Mod.Loader.Mods
         /* Helper methods. */
         private void StartModInstance(ModInstance instance)
         {
-            _loaderApi.ModLoading(instance.Mod, instance.ModConfig);
-            instance.Start(_loaderApi);
-            _loaderApi.ModLoaded(instance.Mod, instance.ModConfig);
+            LoaderApi.ModLoading(instance.Mod, instance.ModConfig);
+            instance.Start(LoaderApi);
+            LoaderApi.ModLoaded(instance.Mod, instance.ModConfig);
         }
     }
 }

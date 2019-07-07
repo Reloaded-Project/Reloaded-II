@@ -1,7 +1,12 @@
-﻿namespace Reloaded.Mod.Interfaces.Internal
+﻿using System;
+
+namespace Reloaded.Mod.Interfaces.Internal
 {
     public interface IModV1
     {
+        /* Events */
+        Action Disposing { get; }
+
         /* Actions */
 
         /// <summary>

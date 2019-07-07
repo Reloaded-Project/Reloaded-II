@@ -4,7 +4,6 @@ namespace Reloaded.Mod.Interfaces.Internal
 {
     public interface IModLoaderV1
     {
-
         /* Information */
 
         /// <summary>
@@ -18,17 +17,17 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// <summary>
         /// Returns the individual application configuration for the currently running application.
         /// </summary>
-        IApplicationConfig GetAppConfig();
+        IApplicationConfigV1 GetAppConfig();
 
         /// <summary>
         /// Returns a list of all currently active mods.
         /// </summary>
-        (IMod, IModConfig)[] GetActiveMods();
+        ModGenericTuple<IModConfigV1>[] GetActiveMods();
 
         /// <summary>
         /// Retrieves the logger.
         /// </summary>
-        ILogger GetLogger();
+        ILoggerV1 GetLogger();
 
         /* Events */
 
@@ -40,22 +39,17 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// <summary>
         /// This method is automatically called by the mod loader before a mod is unloaded.
         /// </summary>
-        Action<IMod, IModConfig> ModUnloading { get; }
+        Action<IModV1, IModConfigV1> ModUnloading { get; }
 
         /// <summary>
         /// This method is automatically called by the mod loader before a mod is loaded.
         /// </summary>
-        Action<IMod, IModConfig> ModLoading { get; }
-
-        /// <summary>
-        /// This method is automatically called by the mod loader after a mod is unloaded.
-        /// </summary>
-        Action<IMod, IModConfig> ModUnloaded { get; }
+        Action<IModV1, IModConfigV1> ModLoading { get; }
 
         /// <summary>
         /// This method is automatically called by the mod loader after a mod is loaded.
         /// </summary>
-        Action<IMod, IModConfig> ModLoaded { get; }
+        Action<IModV1, IModConfigV1> ModLoaded { get; }
 
         /* Plugins and Extensibility */
 
@@ -64,26 +58,42 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// inherit from a given interface, returning all instances.
         /// </summary>
         /// <typeparam name="T">The type of the interface to instantiate.</typeparam>
-        (IMod, T)[] MakeInterfaces<T>();
+        ModGenericTuple<T>[] MakeInterfaces<T>();
 
         /// <summary>
         /// Adds a controller to the mod loader's stored list of controllers.
         /// </summary>
         /// <typeparam name="T">The shared interface type of the controller.</typeparam>
+        /// <param name="owner">The mod that owns the shared controller interface.</param>
         /// <param name="instance">The individual instance of the controller to share.</param>
-        void AddController<T>(T instance);
+        void AddOrReplaceController<T>(IModV1 owner, T instance);
 
         /// <summary>
         /// Removes a controller from the mod loader's stored list of controllers.
         /// </summary>
         /// <typeparam name="T">The shared interface type of the controller.</typeparam>
-        /// <param name="instance">The individual instance of the controller to remove.</param>
-        void RemoveController<T>(T instance);
+        void RemoveController<T>();
 
         /// <summary>
         /// Gets a collection of controllers from the mod loader's stored list of controllers.
         /// </summary>
         /// <typeparam name="T">Type of the controller to return.</typeparam>
-        T[] GetController<T>();
+        /// <returns>True if controller was found and value assigned. Else false.</returns>
+        ModGenericTuple<T> GetController<T>();
+    }
+
+    /// <summary>
+    /// Tuple that combines a modification and a given generic.
+    /// </summary>
+    public class ModGenericTuple<T>
+    {
+        public IModV1 Mod { get; set; }
+        public T Generic { get; set; }
+
+        public ModGenericTuple(IModV1 mod, T generic)
+        {
+            Mod = mod;
+            Generic = generic;
+        }
     }
 }

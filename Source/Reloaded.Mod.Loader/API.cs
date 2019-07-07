@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using LiteNetLib;
 using Reloaded.Messaging;
@@ -15,6 +17,7 @@ namespace Reloaded.Mod.Loader
     {
         private static SimpleHost<MessageType> _simpleHost;
         private static Loader _loader;
+        private static Task _setupServerTask;
 
         /* Ensures DLL Resolution */
         static API()
@@ -27,17 +30,25 @@ namespace Reloaded.Mod.Loader
                 _loader = new Loader();
 
                 // Setup host.
-                _simpleHost = new SimpleHost<MessageType>(true);
-                AddMessageHandler<GetLoadedMods>(GetLoadedMods);
-                AddMessageHandler<SuspendMod>(SuspendMod);
-                AddMessageHandler<UnloadMod>(UnloadMod);
-                AddMessageHandler<LoadMod>(LoadMod);
-                AddMessageHandler<ResumeMod>(ResumeMod);
+                // Done on another thread via Task library to avoid
+                // JIT overhead affecting startup times by around ~30-70ms.
+                _setupServerTask = Task.Run(SetupServer);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to Load Reloaded-II.\n{ex.Message}");
             }
+        }
+
+        private static void SetupServer()
+        {
+            _simpleHost = new SimpleHost<MessageType>(true);
+            AddMessageHandler<GetLoadedMods>(GetLoadedMods);
+            AddMessageHandler<SuspendMod>(SuspendMod);
+            AddMessageHandler<UnloadMod>(UnloadMod);
+            AddMessageHandler<LoadMod>(LoadMod);
+            AddMessageHandler<ResumeMod>(ResumeMod);
+            _simpleHost.NetManager.Start(IPAddress.IPv6Loopback, IPAddress.Loopback, 0);
         }
 
         /* Custom method to add request handler with callback on exception. */
@@ -68,6 +79,7 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         public static int GetPort()
         {
+            _setupServerTask.Wait();
             return _simpleHost.NetManager.LocalPort;
         }
 

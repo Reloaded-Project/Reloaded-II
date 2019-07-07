@@ -31,6 +31,8 @@ namespace Reloaded.Mod.Loader
 
             Console = new Console();
             LoadMods();
+
+            Manager.LoaderApi.OnModLoaderInitialized();
         }
 
         /* Public Interface */
