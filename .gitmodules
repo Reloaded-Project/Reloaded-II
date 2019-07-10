@@ -1,2 +1,6 @@
 [submodule "Submodules/Reloaded.Core.Bootstrap"]
 	url = https://github.com/Reloaded-Project/Reloaded.Core.Bootstrap
+[submodule "Submodules/Reloaded.WPF"]
+	url = https://github.com/Sewer56/Reloaded.WPF.git
+[submodule "Submodules/Rock.Collections"]
+	url = https://github.com/Sewer56/Rock.Collections.git
