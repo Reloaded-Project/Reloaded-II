@@ -12,8 +12,10 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
     public partial class SettingsPage : ReloadedIIPage
     {
         #region XAML_Constants
+        // ReSharper disable InconsistentNaming
         public const string XAML_LoaderSettingsCleanup = "LoaderSettingsCleanup";
         public const string XAML_LoaderSettingsCleanupWarning = "LoaderSettingsCleanupWarning";
+        // ReSharper restore InconsistentNaming
         #endregion
 
         public SettingsPageViewModel ViewModel { get; set; }

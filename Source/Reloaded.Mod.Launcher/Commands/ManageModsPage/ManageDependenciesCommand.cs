@@ -10,7 +10,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 {
     public class ManageDependenciesCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
-        private ManageModsViewModel _manageModsViewModel;
+        private readonly ManageModsViewModel _manageModsViewModel;
 
         public ManageDependenciesCommand()
         {

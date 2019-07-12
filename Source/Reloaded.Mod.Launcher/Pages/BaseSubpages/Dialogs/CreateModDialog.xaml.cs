@@ -28,7 +28,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
             RealViewModel = IoC.Get<CreateModViewModel>();
         }
 
-        private void ModIcon_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ModIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {

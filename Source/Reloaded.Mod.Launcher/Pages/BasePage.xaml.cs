@@ -10,7 +10,7 @@ namespace Reloaded.Mod.Launcher.Pages
     /// </summary>
     public partial class BasePage : ReloadedIIPage
     {
-        private MainPageViewModel _mainPageViewModel;
+        private readonly MainPageViewModel _mainPageViewModel;
 
         public BasePage() : base()
         {

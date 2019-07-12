@@ -15,10 +15,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
     public class ApplicationViewModel : ObservableObject, IDisposable
     {
         public const string ModsForThisAppPropertyName = nameof(ModsForThisApp);
-        private static object _lock = new object();
+        private static readonly object Lock = new object();
 
-        public ImageApplicationPathTuple ApplicationTuple { get; private set; }
-        public ManageModsViewModel ManageModsViewModel { get; private set; }
+        public ImageApplicationPathTuple ApplicationTuple { get; }
+        public ManageModsViewModel ManageModsViewModel { get; }
         public ApplicationInstanceTracker InstanceTracker { get; private set; }
 
         public ObservableCollection<ImageModPathTuple> ModsForThisApp { get; set; }
@@ -36,8 +36,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// The task that handles asynchronous initialization of this viewmodel.
         /// Child pages should check that it completed before initializing self.
         /// </summary>
-        public Task InitializeClassTask { get; private set; }
-        private CancellationTokenSource _initializeClassTaskTokenSource;
+        public Task InitializeClassTask { get; }
+        private readonly CancellationTokenSource _initializeClassTaskTokenSource;
 
         public ApplicationViewModel(ImageApplicationPathTuple tuple, ManageModsViewModel modsViewModel)
         {
@@ -46,7 +46,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             // Update Initial Values
             _initializeClassTaskTokenSource = new CancellationTokenSource();
-            lock (_lock)
+            lock (Lock)
             {
                 // Rebind needs to be atomic or otherwise when default page's viewmodel (ApplicationSummaryViewModel)
                 // picks up this viewmodel, there may be multiple bindings.

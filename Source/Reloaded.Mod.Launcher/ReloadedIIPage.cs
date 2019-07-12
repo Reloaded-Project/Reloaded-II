@@ -8,6 +8,7 @@ namespace Reloaded.Mod.Launcher
     /// Special type of <see cref="ReloadedWindow"/> that adds localization support
     /// to the existing windows as well as auto-changes Window titles.
     /// </summary>
+    // ReSharper disable once InconsistentNaming
     public class ReloadedIIPage : ReloadedPage
     {
         public ReloadedIIPage()

@@ -25,7 +25,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reloaded.Mod.Loader.Bootstr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reloaded.Core.Bootstrap", "..\Submodules\Reloaded.Core.Bootstrap\Source\Reloaded.Core.Bootstrap\Reloaded.Core.Bootstrap.vcxproj", "{992AB7A3-F0C7-4276-B83C-380D99F5F9E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Loader.Server", "Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj", "{9D416472-B721-4DF6-8218-63853A17D8F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.Server", "Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj", "{9D416472-B721-4DF6-8218-63853A17D8F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{C958AA4D-5985-4F2E-8209-9B6187FF3D85}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mods", "Mods", "{A4CECC87-3188-4D37-A64B-D15F5B001A9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,6 +178,7 @@ Global
 		{FFA9815A-9E44-4603-8CCC-8289472BD562} = {3ACEF67A-59F3-445F-BBDF-8960B11D6557}
 		{7093891E-2F3E-4FE1-B855-B421C72B8CBF} = {3ACEF67A-59F3-445F-BBDF-8960B11D6557}
 		{992AB7A3-F0C7-4276-B83C-380D99F5F9E9} = {3ACEF67A-59F3-445F-BBDF-8960B11D6557}
+		{A4CECC87-3188-4D37-A64B-D15F5B001A9D} = {C958AA4D-5985-4F2E-8209-9B6187FF3D85}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {29C01A02-5EA4-442B-92BD-67EC119B4356}

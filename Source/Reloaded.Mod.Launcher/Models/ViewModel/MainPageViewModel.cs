@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -55,14 +56,14 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private FileSystemWatcher _applicationWatcher; /* Monitors for additions/changes in available applications. */
 
         /* Get Applications Task */
-        private SerialTaskCommand _getApplicationsTaskCommand = new SerialTaskCommand();
+        private readonly SerialTaskCommand _getApplicationsTaskCommand = new SerialTaskCommand();
 
         public MainPageViewModel()
         {
             GetApplications();
 
             string appConfigDirectory = LoaderConfigReader.ReadConfiguration().ApplicationConfigDirectory;
-            _applicationWatcher = FileSystemWatcherFactory.CreateGeneric(appConfigDirectory, StartGetApplicationsTask, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed | FileSystemWatcherFactory.FileSystemWatcherEvents.Renamed | FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted, true, "*.json");
+            _applicationWatcher = FileSystemWatcherFactory.CreateGeneric(appConfigDirectory, StartGetApplicationsTask, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed | FileSystemWatcherFactory.FileSystemWatcherEvents.Renamed | FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted);
         }
 
         /// <summary>
@@ -114,6 +115,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             if (!String.IsNullOrEmpty(applicationConfig.Object.AppIcon))
             {
                 string logoDirectory = Path.GetDirectoryName(applicationConfig.Path);
+                Debug.Assert(logoDirectory != null, nameof(logoDirectory) + " != null");
                 string logoFilePath = Path.Combine(logoDirectory, applicationConfig.Object.AppIcon);
 
                 if (File.Exists(logoFilePath))

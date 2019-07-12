@@ -14,7 +14,7 @@ namespace Reloaded.Mod.Launcher.Converters
         {
             if (value is bool boolValue)
             {
-                if (boolValue == true)
+                if (boolValue)
                     return Visibility.Visible;
             }
 

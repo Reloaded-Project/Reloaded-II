@@ -20,8 +20,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         public ManageModsViewModel ManageModsViewModel { get; }
         public ImageModPathTuple CurrentMod { get; }
 
-        private readonly ResourceManipulator _manipulator;
-        private CollectionViewSource _dependenciesViewSource;
+        private readonly CollectionViewSource _dependenciesViewSource;
 
         public SetDependenciesDialog(ManageModsViewModel manageModsViewModel)
         {
@@ -33,8 +32,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
             this.Closed += OnClosed;
 
             // Setup filters
-            _manipulator = new ResourceManipulator(this.Contents);
-            _dependenciesViewSource = _manipulator.Get<CollectionViewSource>("SortedDependencies");
+            var manipulator = new ResourceManipulator(this.Contents);
+            _dependenciesViewSource = manipulator.Get<CollectionViewSource>("SortedDependencies");
             _dependenciesViewSource.Filter += DependenciesViewSourceOnFilter;
         }
 

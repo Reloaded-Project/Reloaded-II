@@ -22,9 +22,9 @@ namespace Reloaded.Mod.Loader.Mods
     /// </summary>
     public class PluginManager
     {
-        public LoaderAPI LoaderApi { get; private set; }
-        private Dictionary<string, ModInstance> _modifications = new Dictionary<string, ModInstance>();
-        private Loader _loader;
+        public LoaderAPI LoaderApi { get; }
+        private readonly Dictionary<string, ModInstance> _modifications = new Dictionary<string, ModInstance>();
+        private readonly Loader _loader;
 
         /// <summary>
         /// Initializes the <see cref="PluginManager"/>
@@ -89,7 +89,7 @@ namespace Reloaded.Mod.Loader.Mods
             }
             else
             {
-                throw new ReloadedException("Mod to be unloaded not found.");
+                throw new ReloadedException(Errors.ModToUnloadNotFound);
             }
         }
 
@@ -105,7 +105,7 @@ namespace Reloaded.Mod.Loader.Mods
             }
             else
             {
-                throw new ReloadedException("Mod to be suspended not found.");
+                throw new ReloadedException(Errors.ModToSuspendNotFound);
             }
         }
 
@@ -122,7 +122,7 @@ namespace Reloaded.Mod.Loader.Mods
             }
             else
             {
-                throw new ReloadedException("Mod to be resumed not found.");
+                throw new ReloadedException(Errors.ModToResumeNotFound);
             }
         }
 

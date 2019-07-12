@@ -6,7 +6,7 @@ namespace Reloaded.Mod.Launcher.Models.Model
 {
     public class ImageModPathTuple
     {
-        private static ConfigReader<ModConfig> _configReader = new ConfigReader<ModConfig>();
+        private static readonly ConfigReader<ModConfig> ConfigReader = new ConfigReader<ModConfig>();
 
         /// <summary>
         /// The URI of the image used to represent the mod by in the GUI.
@@ -32,7 +32,7 @@ namespace Reloaded.Mod.Launcher.Models.Model
 
         public void Save()
         {
-            _configReader.WriteConfiguration(ModConfigPath, (ModConfig)ModConfig);
+            ConfigReader.WriteConfiguration(ModConfigPath, (ModConfig)ModConfig);
         }
 
         public override string ToString()

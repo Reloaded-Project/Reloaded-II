@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -21,8 +22,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
     public class ManageModsViewModel : ObservableObject
     {
-        private const string JsonFilter = "*.json";
-
         /* Mod Config Loader. */
         private static ConfigReader<ModConfig> _modConfigReader = new ConfigReader<ModConfig>();
         private static MainPageViewModel _mainPageViewModel;
@@ -56,10 +55,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private ObservableCollection<ImageModPathTuple> _mods;
 
         /* Get Applications Task */
-        private SerialTaskCommand _getModsTaskCommand = new SerialTaskCommand();
-        private FileSystemWatcher _createWatcher; 
-        private FileSystemWatcher _deleteFileWatcher;
-        private FileSystemWatcher _deleteDirectoryWatcher;
+        private readonly SerialTaskCommand _getModsTaskCommand = new SerialTaskCommand();
+        private readonly FileSystemWatcher _createWatcher; 
+        private readonly FileSystemWatcher _deleteFileWatcher;
+        private readonly FileSystemWatcher _deleteDirectoryWatcher;
 
         public ManageModsViewModel()
         {
@@ -68,7 +67,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             string modDirectory = LoaderConfigReader.ReadConfiguration().ModConfigDirectory;
 
             _createWatcher = FileSystemWatcherFactory.CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed, true, "*.*");
-            _deleteFileWatcher = FileSystemWatcherFactory.CreateChangeCreateDelete(modDirectory, OnDeleteFile, FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted, true, JsonFilter);
+            _deleteFileWatcher = FileSystemWatcherFactory.CreateChangeCreateDelete(modDirectory, OnDeleteFile, FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted);
             _deleteDirectoryWatcher = FileSystemWatcherFactory.CreateChangeCreateDelete(modDirectory, OnDeleteDirectory, FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted, false, "*.*");
             InvokeAsync(() => Icon = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute)));
         }
@@ -92,7 +91,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
                 // Make sure not to refresh the collection, we will lose our index.
                 // Note: Saving regardless of action because of possible other changes.
-                InvokeWithoutMonitoringMods(() => oldModTuple.Save());
+                InvokeWithoutMonitoringMods(oldModTuple.Save);
             }
 
             // Make new collection.
@@ -206,6 +205,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             if (!String.IsNullOrEmpty(modConfig.Object.ModIcon))
             {
                 string logoDirectory = Path.GetDirectoryName(modConfig.Path);
+                Debug.Assert(logoDirectory != null, nameof(logoDirectory) + " != null");
                 string logoFilePath = Path.Combine(logoDirectory, modConfig.Object.ModIcon);
 
                 if (File.Exists(logoFilePath))

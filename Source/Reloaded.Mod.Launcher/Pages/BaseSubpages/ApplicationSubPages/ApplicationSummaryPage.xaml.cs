@@ -14,7 +14,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
     {
         public ApplicationSummaryViewModel ViewModel { get; set; }
         private readonly ResourceManipulator _manipulator;
-        private CollectionViewSource _modsViewSource;
+        private readonly CollectionViewSource _modsViewSource;
 
         public ApplicationSummaryPage()
         {

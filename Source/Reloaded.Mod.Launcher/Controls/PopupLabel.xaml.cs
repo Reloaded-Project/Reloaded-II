@@ -27,7 +27,7 @@ namespace Reloaded.Mod.Launcher.Controls
         public static readonly DependencyProperty ButtonTextProperty = DependencyProperty.Register(nameof(ButtonText), typeof(String), typeof(PopupLabel), new PropertyMetadata("Close Me!"));
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(PopupLabel), new PropertyMetadata(true, IsOpenChangedCallback));
         public static readonly DependencyProperty HiddenContentProperty = DependencyProperty.Register(nameof(HiddenContent), typeof(object), typeof(PopupLabel));
-        public static readonly DependencyProperty HiddenVisibilityTypeProperty = DependencyProperty.Register(nameof(HiddenVisibilityType), typeof(Visibility), typeof(PopupLabel), new PropertyMetadata(System.Windows.Visibility.Collapsed));
+        public static readonly DependencyProperty HiddenVisibilityTypeProperty = DependencyProperty.Register(nameof(HiddenVisibilityType), typeof(Visibility), typeof(PopupLabel), new PropertyMetadata(Visibility.Collapsed));
 
         /* Uses zero width spaces at end to ensure does not clash with real text. */
         private const string DisabledLeft = "▼ ​";
@@ -36,7 +36,7 @@ namespace Reloaded.Mod.Launcher.Controls
         private const string EnabledRight = " ▲​";
 
         private bool _isWrapped = false;
-        private ResourceManipulator _resourceManipulator;
+        private readonly ResourceManipulator _resourceManipulator;
 
         /// <summary>
         /// Gets or Sets the text displayed by the label.

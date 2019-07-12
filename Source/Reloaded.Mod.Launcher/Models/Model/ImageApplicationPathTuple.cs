@@ -6,8 +6,7 @@ namespace Reloaded.Mod.Launcher.Models.Model
 {
     public class ImageApplicationPathTuple
     {
-        private static ConfigReader<ApplicationConfig> _configReader = new ConfigReader<ApplicationConfig>();
-
+        private static readonly ConfigReader<ApplicationConfig> ConfigReader = new ConfigReader<ApplicationConfig>();
 
         /// <summary>
         /// The image to represent the application by in the GUI.
@@ -33,7 +32,7 @@ namespace Reloaded.Mod.Launcher.Models.Model
 
         public void Save()
         {
-            _configReader.WriteConfiguration(ApplicationConfigPath, ApplicationConfig);
+            ConfigReader.WriteConfiguration(ApplicationConfigPath, ApplicationConfig);
         }
 
         public override string ToString()

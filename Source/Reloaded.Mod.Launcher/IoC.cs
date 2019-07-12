@@ -8,8 +8,7 @@ namespace Reloaded.Mod.Launcher
         /// <summary>
         /// The standard NInject Kernel.
         /// </summary>
-        public static IKernel Kernel { get; private set; } = new StandardKernel();
-
+        public static IKernel Kernel { get; } = new StandardKernel();
 
         /// <summary>
         /// Sets up the IoC container with any relevant bindings on first access of the class.

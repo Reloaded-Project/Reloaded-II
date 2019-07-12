@@ -15,8 +15,8 @@ namespace Reloaded.Mod.Launcher.Utility
         public event ProcessArrived OnNewProcess = process => { };
         public event ProcessExited OnRemovedProcess = processId => { };
 
-        private ManagementEventWatcher _startWatcher;
-        private ManagementEventWatcher _stopWatcher;
+        private readonly ManagementEventWatcher _startWatcher;
+        private readonly ManagementEventWatcher _stopWatcher;
 
         public ProcessWatcher()
         {

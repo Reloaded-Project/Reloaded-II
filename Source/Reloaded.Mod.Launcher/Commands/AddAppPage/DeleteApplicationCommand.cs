@@ -10,12 +10,12 @@ using Reloaded.Mod.Launcher.Models.ViewModel;
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
     /// <summary>
-    /// Comnmand to be used by the <see cref="AddAppPage"/> which decides
+    /// Command to be used by the <see cref="AddAppPage"/> which decides
     /// whether the current entry can be removed.
     /// </summary>
     public class DeleteApplicationCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
-        private AddAppViewModel _addAppViewModel;
+        private readonly AddAppViewModel _addAppViewModel;
 
         public DeleteApplicationCommand()
         {
@@ -63,7 +63,8 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             _addAppViewModel.MainPageViewModel.Applications.Remove(entry);
 
             // Delete folder contents.
-            Directory.Delete(Path.GetDirectoryName(entry.ApplicationConfigPath), true);
+            var directory = Path.GetDirectoryName(entry.ApplicationConfigPath) ?? throw new InvalidOperationException("Failed to obtain directory of Application to delete.");
+            Directory.Delete(directory, true);
 
             // File system watcher automatically updates collection in MainPageViewModel.Applications
         }

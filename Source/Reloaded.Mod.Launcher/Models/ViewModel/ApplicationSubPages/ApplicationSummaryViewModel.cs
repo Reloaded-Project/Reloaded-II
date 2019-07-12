@@ -39,7 +39,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         {
             if (e.PropertyName == nameof(SelectedMod))
             {
-                if (SelectedMod != null && SelectedMod.Generic != null)
+                if (SelectedMod?.Generic != null)
                 {
                     Icon = Imaging.BitmapFromUri(new Uri(SelectedMod.Generic.Image));
                 }

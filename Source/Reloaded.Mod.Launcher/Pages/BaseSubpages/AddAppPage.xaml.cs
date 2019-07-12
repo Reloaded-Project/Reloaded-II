@@ -41,7 +41,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                     try
                     {
                         var imagePathAppTuple = ViewModel.MainPageViewModel.Applications.First(x => x.ApplicationConfig.Equals(ViewModel.Application));
-                        ApplicationConfig.WriteConfiguration(imagePathAppTuple.ApplicationConfigPath, (ApplicationConfig)ViewModel.Application);
+                        ApplicationConfig.WriteConfiguration(imagePathAppTuple.ApplicationConfigPath, ViewModel.Application);
                     }
                     catch (Exception) { Debug.WriteLine("AddAppPage: Failed to save current selected item."); }
                 }
@@ -61,7 +61,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                 // Without the file existence check, what can happen is we remove an application and it immediately comes back.
                 var tuple = (ImageApplicationPathTuple)e.RemovedItems[0];
                 if (File.Exists(tuple.ApplicationConfigPath))
-                    ApplicationConfig.WriteConfiguration(tuple.ApplicationConfigPath, (ApplicationConfig)tuple.ApplicationConfig);
+                    ApplicationConfig.WriteConfiguration(tuple.ApplicationConfigPath, tuple.ApplicationConfig);
 
                 // Restore old monitor status.
                 ViewModel.MainPageViewModel.MonitorNewApplications = oldMonitorNewApplications;

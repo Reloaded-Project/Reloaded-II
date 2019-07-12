@@ -20,7 +20,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             viewModel.MaximizeButtonVisibility = Visibility.Collapsed;
         }
 
-        private void Button_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {

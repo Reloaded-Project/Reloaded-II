@@ -16,7 +16,7 @@ namespace Reloaded.Mod.Launcher.Utility
     public class ProcessCollection : ObservableObject, IDisposable
     {
         private const string WmiProcessidName = "ProcessID";
-        private static object _lock = new object();
+        private static readonly object Lock = new object();
 
         /* Fired when the available mods collection changes. */
         public event NotifyCollectionChangedEventHandler ProcessesChanged = (sender, args) => { };
@@ -35,8 +35,8 @@ namespace Reloaded.Mod.Launcher.Utility
         }
 
         private ObservableCollection<Process> _processes;
-        private ManagementEventWatcher _startWatcher;
-        private ManagementEventWatcher _stopWatcher;
+        private readonly ManagementEventWatcher _startWatcher;
+        private readonly ManagementEventWatcher _stopWatcher;
 
         public ProcessCollection()
         {
@@ -72,7 +72,7 @@ namespace Reloaded.Mod.Launcher.Utility
         private void AddProcess(Process process)
         {
             Application.Current.Dispatcher.Invoke(() => {
-                lock (_lock)
+                lock (Lock)
                 {
                     Processes.Add(process);
                     ProcessesChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -91,7 +91,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
         private void ApplicationExited(object sender, EventArrivedEventArgs e)
         {
-            lock (_lock)
+            lock (Lock)
             {
                 int processId = Convert.ToInt32(e.NewEvent.Properties[WmiProcessidName].Value);
                 var processes = Processes.Where(x => x.Id == processId).ToList();

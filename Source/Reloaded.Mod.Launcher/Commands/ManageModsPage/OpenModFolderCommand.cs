@@ -12,7 +12,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 {
     public class OpenModFolderCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
-        private ManageModsViewModel _manageModsViewModel;
+        private readonly ManageModsViewModel _manageModsViewModel;
 
         public OpenModFolderCommand()
         {

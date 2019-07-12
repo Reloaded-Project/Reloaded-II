@@ -11,7 +11,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 {
     public class DeleteModCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
-        private ManageModsViewModel _manageModsViewModel;
+        private readonly ManageModsViewModel _manageModsViewModel;
 
         public DeleteModCommand()
         {
@@ -57,11 +57,10 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
             _manageModsViewModel.Mods.Remove(entry);
 
             // Delete folder contents.
-            Directory.Delete(Path.GetDirectoryName(entry.ModConfigPath), true);
+            var directory = Path.GetDirectoryName(entry.ModConfigPath) ?? throw new InvalidOperationException("Failed to get directory of mod to delete.");
+            Directory.Delete(directory, true);
 
             // File system watcher automatically updates collection in MainPageViewModel.Applications
         }
-
-
     }
 }

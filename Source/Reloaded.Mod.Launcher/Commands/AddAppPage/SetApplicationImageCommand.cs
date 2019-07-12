@@ -12,7 +12,7 @@ using Reloaded.Mod.Launcher.Models.ViewModel;
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
     /// <summary>
-    /// Comnmand to be used by the <see cref="AddAppPage"/> which allows
+    /// Command to be used by the <see cref="AddAppPage"/> which allows
     /// for the addition of a new application.
     /// </summary>
     public class SetApplicationImageCommand : ICommand
@@ -22,7 +22,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         private const string XAML_AddAppImageSelectorFilter = "AddAppImageSelectorFilter";
         // ReSharper restore InconsistentNaming
 
-        private AddAppViewModel _addAppViewModel;
+        private readonly AddAppViewModel _addAppViewModel;
 
         public SetApplicationImageCommand()
         {
@@ -53,15 +53,18 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             string applicationDirectory = Path.GetDirectoryName(appIconPathTuple.ApplicationConfigPath);
 
             string applicationIconFileName = Path.GetFileName(imagePath);
-            string applicationIconPath = Path.Combine(applicationDirectory, applicationIconFileName);
+            if (applicationDirectory != null)
+            {
+                string applicationIconPath = Path.Combine(applicationDirectory, applicationIconFileName);
 
-            // Copy image and set config file path.
-            File.Copy(imagePath, applicationIconPath, true);
-            config.AppIcon = applicationIconFileName;
+                // Copy image and set config file path.
+                File.Copy(imagePath, applicationIconPath, true);
+                config.AppIcon = applicationIconFileName;
 
-            // No need to write file on disk, file will be updated by binding.
-            ImageSource source = Imaging.BitmapFromUri(new Uri(applicationIconPath, UriKind.Absolute));
-            appIconPathTuple.Image = source;
+                // No need to write file on disk, file will be updated by binding.
+                ImageSource source = Imaging.BitmapFromUri(new Uri(applicationIconPath, UriKind.Absolute));
+                appIconPathTuple.Image = source;
+            }
         }
 
         public event EventHandler CanExecuteChanged = (sender, args) => { };

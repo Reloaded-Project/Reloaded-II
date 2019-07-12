@@ -20,8 +20,8 @@ namespace Reloaded.Mod.Launcher.Utility
         public event ProcessesChanged OnProcessesChanged = processes => { }; 
 
         private HashSet<Process> _processes; // All processes that satisfy file path filter.
-        private string _applicationPath;
-        private ProcessWatcher _processWatcher;
+        private readonly string _applicationPath;
+        private readonly ProcessWatcher _processWatcher;
 
         /* Class Setup and Teardown */
 

@@ -15,7 +15,7 @@ namespace Reloaded.Mod.Launcher.Pages
     public partial class SplashPage : ReloadedIIPage
     {
         private const string XAML_SplashMinimumTime = "SplashMinimumTime";
-        private SplashViewModel _splashViewModel;
+        private readonly SplashViewModel _splashViewModel;
         private bool _loaded = false;
 
         public SplashPage() : base()

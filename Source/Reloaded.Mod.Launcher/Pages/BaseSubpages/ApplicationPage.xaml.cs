@@ -35,9 +35,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             GC.SuppressFinalize(this);
         }
 
-        private void AnimateOutChild()
+        private async void AnimateOutChild()
         {
-            PageHost.CurrentPage.AnimateOut();
+            await PageHost.CurrentPage.AnimateOut();
         }
 
         private void NonReloadedMod_PreviewMouseDown(object sender, MouseButtonEventArgs e)

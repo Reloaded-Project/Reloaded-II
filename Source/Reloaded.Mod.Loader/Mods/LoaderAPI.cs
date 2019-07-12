@@ -3,19 +3,18 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 
 namespace Reloaded.Mod.Loader.Mods
 {
+    // ReSharper disable once InconsistentNaming
     public class LoaderAPI : IModLoader
     {
         /* Controller to mod mapping for GetController<T>, MakeInterfaces<T> */
-        private ConcurrentDictionary<Type, ModGenericTuple<object>> _controllerModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
-        private ConcurrentDictionary<Type, ModGenericTuple<object>> _interfaceModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
-        private Loader _loader;
+        private readonly ConcurrentDictionary<Type, ModGenericTuple<object>> _controllerModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
+        private readonly ConcurrentDictionary<Type, ModGenericTuple<object>> _interfaceModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
+        private readonly Loader _loader;
 
         public LoaderAPI(Loader loader)
         {
@@ -60,7 +59,7 @@ namespace Reloaded.Mod.Loader.Mods
 
         /* Properties */
         public Version GetLoaderVersion()           => Assembly.GetExecutingAssembly().GetName().Version;
-        public IApplicationConfigV1 GetAppConfig()  => _loader.ThisApplication;
+        public IApplicationConfigV1 GetAppConfig()  => _loader.Application;
         public ILoggerV1 GetLogger()                => _loader.Console;
 
         /* Functions */
@@ -110,7 +109,7 @@ namespace Reloaded.Mod.Loader.Mods
 
         public void RemoveController<T>()
         {
-            _controllerModMapping.TryRemove(typeof(T), out var old);
+            _controllerModMapping.TryRemove(typeof(T), out _);
         }
 
         public WeakReference<T> GetController<T>() where T : class

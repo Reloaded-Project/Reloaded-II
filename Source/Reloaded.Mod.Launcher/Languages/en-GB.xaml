@@ -68,7 +68,7 @@
     <!-- Mod Loader Settings -->
     <sys:String x:Key="LoaderSettingsCleanup">Cleanup Configurations</sys:String>
     <sys:String x:Key="LoaderSettingsCleanupWarning" xml:space="preserve">The following operation performs housekeeping on various configurations (App, Mod etc.).&#x0a;Housekeeping functions include things such as removing nonexisting mods from a mod's list of dependencies.&#x0a;Please be aware that if you are missing any dependencies, supported applications etc. they will be removed from the configuration files.</sys:String>
-    <sys:String x:Key="LoaderSettingsCleanupComplete">Cleanup Completel</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupComplete">Cleanup Complete</sys:String>
 
     <sys:String x:Key="LoaderSettingsAppsInstalled">Applications Installed:</sys:String>
     <sys:String x:Key="LoaderSettingsModsInstalled">Mods Installed:</sys:String>

@@ -18,21 +18,20 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
     public partial class ManageModsPage : ReloadedIIPage
     {
         public ManageModsViewModel ViewModel { get; set; }
-        private readonly ResourceManipulator _manipulator;
-        private CollectionViewSource _modsViewSource;
-        private CollectionViewSource _appsViewSource;
+        private readonly CollectionViewSource _modsViewSource;
+        private readonly CollectionViewSource _appsViewSource;
 
         public ManageModsPage() : base()
-        {  
+        {
             InitializeComponent();
             ViewModel = IoC.Get<ManageModsViewModel>();
             this.DataContext = ViewModel;
             this.AnimateOutStarted += SaveCurrentMod;
 
             // Setup filters
-            _manipulator = new ResourceManipulator(this.Contents);
-            _modsViewSource = _manipulator.Get<CollectionViewSource>("SortedMods");
-            _appsViewSource = _manipulator.Get<CollectionViewSource>("SortedApps");
+            var manipulator = new ResourceManipulator(this.Contents);
+            _modsViewSource = manipulator.Get<CollectionViewSource>("SortedMods");
+            _appsViewSource = manipulator.Get<CollectionViewSource>("SortedApps");
             _modsViewSource.Filter += ModsViewSourceOnFilter;
             _appsViewSource.Filter += AppsViewSourceOnFilter;
         }
@@ -61,7 +60,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             e.Accepted = tuple.ModConfig.ModName.IndexOf(this.ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
-        private void Button_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {

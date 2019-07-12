@@ -25,8 +25,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         // ReSharper restore InconsistentNaming
 
         private string _lastConfigFileLocation;
-        private AddAppViewModel _addAppViewModel;
-
+        private readonly AddAppViewModel _addAppViewModel;
 
         public AddApplicationCommand()
         {
@@ -111,6 +110,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             var dialog = new VistaOpenFileDialog();
             dialog.Title = (string) Application.Current.Resources[XAML_AddAppExecutableTitle];
             dialog.Filter = $"{(string)Application.Current.Resources[XAML_AddAppExecutableFilter]} (*.exe)|*.exe";
+
             if ((bool) dialog.ShowDialog())
             {
                 return dialog.FileName;

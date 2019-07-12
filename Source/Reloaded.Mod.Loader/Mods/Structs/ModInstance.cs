@@ -18,7 +18,7 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         public ModState State;
         public bool CanSuspend;
         public bool CanUnload;
-        private bool _started = false;
+        private bool _started;
 
         public ModInstance(PluginLoader loader, IModV1 mod, IModConfig config)
         {
