@@ -40,7 +40,6 @@ namespace Reloaded.Mod.Launcher.Pages
             }
         }
 
-        
         private void ChangeToMainPage(Task obj)
         {
             IoC.Get<MainWindow>().Dispatcher.Invoke(() =>

@@ -40,7 +40,9 @@ namespace Reloaded.Mod.Loader.IO
                                     $" Reloaded II may not be installed.");
 
             string jsonFile = File.ReadAllText(StaticConfigFilePath);
-            return JsonSerializer.Parse<LoaderConfig>(jsonFile);
+            var config = JsonSerializer.Parse<LoaderConfig>(jsonFile);
+            config.ResetMissingDirectories();
+            return config;
         }
 
         /// <summary>

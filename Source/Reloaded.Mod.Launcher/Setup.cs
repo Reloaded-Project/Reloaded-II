@@ -42,6 +42,9 @@ namespace Reloaded.Mod.Launcher
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
 
+                // Allow for debugging before crashing.
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
                 // Setting up localization.
                 SetupLocalization();
 
@@ -63,9 +66,6 @@ namespace Reloaded.Mod.Launcher
                 // Wait until splash screen time.
                 updateText($"{getText(XAML_SplashLoadCompleteIn)} {watch.ElapsedMilliseconds}ms");
                 
-                // Allow for debugging before crashing.
-                AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
-
                 while (watch.ElapsedMilliseconds < minimumSplashDelay)
                 {
                     await Task.Delay(100);
