@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 
@@ -10,22 +12,51 @@ namespace Reloaded.Mod.Loader.Mods
 {
     public class LoaderAPI : IModLoader
     {
-        /* Controller to mod mapping for GetController<T> */
+        /* Controller to mod mapping for GetController<T>, MakeInterfaces<T> */
         private ConcurrentDictionary<Type, ModGenericTuple<object>> _controllerModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
+        private ConcurrentDictionary<Type, ModGenericTuple<object>> _interfaceModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
         private Loader _loader;
 
         public LoaderAPI(Loader loader)
         {
             _loader = loader;
+            ModUnloading += AutoDisposeController;
+            ModUnloading += AutoDisposePlugin;
+        }
+
+        private void AutoDisposeController(IModV1 modToRemove, IModConfigV1 modConfigToRemove)
+        {
+            // Note: Assumes no copying takes place.
+            foreach (var mapping in _controllerModMapping.ToArray())
+            {
+                var mod = mapping.Value.Mod;
+                if (mod.Equals(modToRemove))
+                {
+                    _controllerModMapping.Remove(mapping.Key, out _);
+                }
+            }
+        }
+
+        private void AutoDisposePlugin(IModV1 modToRemove, IModConfigV1 modConfigToRemove)
+        {
+            // Note: Assumes no copying takes place.
+            foreach (var mapping in _interfaceModMapping.ToArray())
+            {
+                var mod = mapping.Value.Mod;
+                if (mod.Equals(modToRemove))
+                {
+                    _interfaceModMapping.Remove(mapping.Key, out _);
+                }
+            }
         }
 
         /* Interface Implementation */
 
         /* Events */
         public Action OnModLoaderInitialized                { get; } = () => { };
-        public Action<IModV1, IModConfigV1> ModUnloading    { get; } = (a, b) => { };
         public Action<IModV1, IModConfigV1> ModLoading      { get; } = (a, b) => { };
         public Action<IModV1, IModConfigV1> ModLoaded       { get; } = (a, b) => { };
+        public Action<IModV1, IModConfigV1> ModUnloading    { get; } = (a, b) => { };
 
         /* Properties */
         public Version GetLoaderVersion()           => Assembly.GetExecutingAssembly().GetName().Version;
@@ -50,10 +81,10 @@ namespace Reloaded.Mod.Loader.Mods
             return activeMods;
         }
 
-        public ModGenericTuple<T>[] MakeInterfaces<T>()
+        public WeakReference<T>[] MakeInterfaces<T>() where T : class
         {
             var modifications = _loader.Manager.GetModifications();
-            var interfaces = new List<ModGenericTuple<T>>();
+            var interfaces = new List<WeakReference<T>>();
 
             foreach (var mod in modifications)
             {
@@ -62,7 +93,10 @@ namespace Reloaded.Mod.Loader.Mods
                 foreach (var entryPoint in entryPoints)
                 {
                     var instance = (T) Activator.CreateInstance(entryPoint);
-                    interfaces.Add(new ModGenericTuple<T>(mod.Mod, instance));
+                    interfaces.Add(new WeakReference<T>(instance));
+
+                    // Store strong reference in mod loader only.
+                    _interfaceModMapping[typeof(T)] = new ModGenericTuple<object>(mod.Mod, instance);
                 }
             }
 
@@ -79,7 +113,7 @@ namespace Reloaded.Mod.Loader.Mods
             _controllerModMapping.TryRemove(typeof(T), out var old);
         }
 
-        public ModGenericTuple<T> GetController<T>()
+        public WeakReference<T> GetController<T>() where T : class
         {
             var tType = typeof(T);
             foreach (var key in _controllerModMapping.Keys)
@@ -87,7 +121,8 @@ namespace Reloaded.Mod.Loader.Mods
                 if (key.IsAssignableFrom(tType))
                 {
                     var mapping = _controllerModMapping[key];
-                    return new ModGenericTuple<T>(mapping.Mod, (T) mapping.Generic);
+                    T tGeneric = (T) mapping.Generic;
+                    return new WeakReference<T>(tGeneric);
                 }
             }
 

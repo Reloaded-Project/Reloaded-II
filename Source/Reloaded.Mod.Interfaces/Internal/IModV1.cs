@@ -13,7 +13,7 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// Represents the entry point of the modification.
         /// </summary>
         /// <param name="loader">Interface which allows for the access of Mod Loader specific functionality.</param>
-        void Start(IModLoader loader);
+        void Start(IModLoaderV1 loader);
 
         /// <summary>
         /// Pauses any active mod behaviour.

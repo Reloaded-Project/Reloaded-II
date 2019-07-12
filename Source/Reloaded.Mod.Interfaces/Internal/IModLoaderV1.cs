@@ -58,7 +58,7 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// inherit from a given interface, returning all instances.
         /// </summary>
         /// <typeparam name="T">The type of the interface to instantiate.</typeparam>
-        ModGenericTuple<T>[] MakeInterfaces<T>();
+        WeakReference<T>[] MakeInterfaces<T>() where T : class;
 
         /// <summary>
         /// Adds a controller to the mod loader's stored list of controllers.
@@ -79,7 +79,7 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// </summary>
         /// <typeparam name="T">Type of the controller to return.</typeparam>
         /// <returns>True if controller was found and value assigned. Else false.</returns>
-        ModGenericTuple<T> GetController<T>();
+        WeakReference<T> GetController<T>() where T : class;
     }
 
     /// <summary>
@@ -87,8 +87,8 @@ namespace Reloaded.Mod.Interfaces.Internal
     /// </summary>
     public class ModGenericTuple<T>
     {
-        public IModV1 Mod { get; set; }
-        public T Generic { get; set; }
+        public IModV1 Mod                  { get; set; }
+        public T Generic                   { get; set; }
 
         public ModGenericTuple(IModV1 mod, T generic)
         {
