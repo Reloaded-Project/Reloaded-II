@@ -32,4 +32,8 @@
 
 - Getting Started: Project Structure (TBD)
 
+- [API Overview](./Docs/APIOverview.md)
+
+- [Inter Mod Communication](./Docs/InterModCommunication.md)
+
 - [Reloaded II's Architecture: Behind the Scenes.](./Docs/Reloaded-II-Architecture.md)
