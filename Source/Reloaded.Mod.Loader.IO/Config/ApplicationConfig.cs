@@ -59,7 +59,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public static List<PathGenericTuple<ApplicationConfig>> GetAllApplications(string appDirectory = null)
         {
             if (appDirectory == null)
-                appDirectory = LoaderConfigReader.ReadConfiguration().ModConfigDirectory;
+                appDirectory = LoaderConfigReader.ReadConfiguration().ApplicationConfigDirectory;
 
             return _appConfigReader.ReadConfigurations(appDirectory, ConfigFileName);
         }

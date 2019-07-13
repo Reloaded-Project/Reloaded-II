@@ -17,8 +17,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public string Copyright { get; set; }
         public LoaderConfig LoaderConfig { get; set; }
 
-        public SettingsPageViewModel(MainPageViewModel mainPageViewModel, ManageModsViewModel manageModsViewModel)
+        public SettingsPageViewModel(MainPageViewModel mainPageViewModel, ManageModsViewModel manageModsViewModel, LoaderConfig loaderConfig)
         {
+            LoaderConfig = loaderConfig;
             MainPageViewModel = mainPageViewModel;
             ManageModsViewModel = manageModsViewModel;
 
@@ -29,8 +30,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             var version = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
             Copyright = version.LegalCopyright;
-
-            LoaderConfig = LoaderConfigReader.ReadConfiguration();
         }
 
         /* Functions */

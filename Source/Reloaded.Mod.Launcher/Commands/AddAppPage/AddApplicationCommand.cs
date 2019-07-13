@@ -10,6 +10,7 @@ using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO;
+using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
@@ -56,7 +57,8 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             UpdateIdIfDuplicate(config);
 
             // Get paths.
-            string applicationConfigDirectory = LoaderConfigReader.ReadConfiguration().ApplicationConfigDirectory;
+            var loaderConfig = IoC.Get<LoaderConfig>();
+            string applicationConfigDirectory = loaderConfig.ApplicationConfigDirectory;
             string applicationDirectory = Path.Combine(applicationConfigDirectory, config.AppId);
             string applicationConfigFile = Path.Combine(applicationDirectory, Loader.IO.Config.ApplicationConfig.ConfigFileName);
 

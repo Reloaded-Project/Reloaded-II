@@ -25,17 +25,6 @@ namespace Reloaded.Mod.Loader.IO
         private readonly ConfigReader<ApplicationConfig> _appConfigReader = new ConfigReader<ApplicationConfig>();
 
         /// <summary>
-        /// Constructs a configuration cleaner which reads the default <see cref="LoaderConfig"/> from the filesystem.
-        /// </summary>
-        public ConfigCleaner()
-        {
-            LoaderConfig loaderConfig;
-            try { loaderConfig = LoaderConfigReader.ReadConfiguration();  }
-            catch (Exception) { loaderConfig = new LoaderConfig(); }
-            SetupConfigCleaner(loaderConfig);
-        }
-
-        /// <summary>
         /// Constructs a configuration cleaner which uses a supplied <see cref="LoaderConfig"/>.
         /// </summary>
         public ConfigCleaner(LoaderConfig loaderConfig)

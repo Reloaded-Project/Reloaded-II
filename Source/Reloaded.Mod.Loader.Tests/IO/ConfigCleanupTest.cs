@@ -64,7 +64,6 @@ namespace Reloaded.Mod.Loader.Tests.IO
         [Fact]
         public void CleanupModConfig()
         {
-            // Make a new mod config.
             var testConfig = new ModConfig
             {
                 ModIcon = RandomString(RandomStringLength),
@@ -76,10 +75,8 @@ namespace Reloaded.Mod.Loader.Tests.IO
                                          RandomString(RandomStringLength) }
             };
 
-            // Remove fake dependencies from config.
             _configCleaner.CleanupModConfig(new PathGenericTuple<ModConfig>("", testConfig));
 
-            // Check that the only dependency left is the real one.
             Assert.True(testConfig.ModDependencies.Length == 1);
             Assert.True(testConfig.ModDependencies[0] == _realModConfig.ModId);
             Assert.True(String.IsNullOrEmpty(testConfig.ModIcon));
@@ -94,7 +91,6 @@ namespace Reloaded.Mod.Loader.Tests.IO
         [Fact]
         public void CleanupApplicationConfig()
         {
-            // Make a new mod config.
             var appConfig = new ApplicationConfig()
             {
                 AppIcon = RandomString(RandomStringLength),
@@ -107,10 +103,8 @@ namespace Reloaded.Mod.Loader.Tests.IO
                 }
             };
 
-            // Remove fake mods from config.
             _configCleaner.CleanupApplicationConfig(new PathGenericTuple<ApplicationConfig>("", appConfig));
 
-            // Check no dependencies exist.
             Assert.True(appConfig.EnabledMods.Length == 1);
             Assert.True(appConfig.EnabledMods[0] == _realModConfig.ModId);
             Assert.True(String.IsNullOrEmpty(appConfig.AppIcon));
@@ -122,17 +116,14 @@ namespace Reloaded.Mod.Loader.Tests.IO
         [Fact]
         public void CleanupLoaderConfig()
         {
-            // Make a new mod config.
             var appConfig = new LoaderConfig();
             string fakeDirectory = "FAKEDIRECTORY";
             appConfig.ApplicationConfigDirectory = fakeDirectory;
             appConfig.ModConfigDirectory = fakeDirectory;
             appConfig.PluginConfigDirectory = fakeDirectory;
 
-            // Remove fake mod matrix entries.
             _configCleaner.CleanupLoaderConfig(appConfig);
 
-            // Check fake Applications were removed.
             Assert.True(Directory.Exists(appConfig.ApplicationConfigDirectory));
             Assert.True(Directory.Exists(appConfig.ModConfigDirectory));
             Assert.True(Directory.Exists(appConfig.PluginConfigDirectory));

@@ -52,13 +52,6 @@ namespace Reloaded.Mod.Launcher
                 updateText(getText(XAML_SplashCreatingDefaultConfig));
                 CreateNewConfigIfNotExist();
 
-                // Cleaning up App/Loader/Mod Configurations
-                // This is unused for cases when e.g. user installs mod before game or lacks a dependency.
-                /*
-                updateText(getText(XAML_SplashCleaningConfigurations));
-                CleanupConfigurations();
-                */
-
                 // Preparing viewmodels.
                 updateText(getText(XAML_SplashPreparingViewModels));
                 SetupViewModels();
@@ -107,21 +100,12 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static void SetupViewModels()
         {
+            IoC.Kernel.Bind<LoaderConfig>().ToConstant(LoaderConfigReader.ReadConfiguration());
             IoC.GetConstant<MainPageViewModel>();
-            IoC.GetConstant<AddAppViewModel>(); // Consumes MainPageViewModel, make sure it goes after it.
-            IoC.GetConstant<ManageModsViewModel>();
+            IoC.GetConstant<AddAppViewModel>();     // Consumes MainPageViewModel, make sure it goes after it.
+            IoC.GetConstant<ManageModsViewModel>(); // Consumes MainPageViewModel, LoaderConfig
 
             IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, AddAppViewModel
-        }
-
-        /// <summary>
-        /// Cleans up App/Loader/Mod Configurations from nonexisting
-        /// references such as removed mods.
-        /// </summary>
-        private static void CleanupConfigurations()
-        {
-            var configCleaner = new ConfigCleaner();
-            configCleaner.Clean();
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         {
             GetApplications();
 
-            string appConfigDirectory = LoaderConfigReader.ReadConfiguration().ApplicationConfigDirectory;
+            string appConfigDirectory = IoC.Get<LoaderConfig>().ApplicationConfigDirectory;
             _applicationWatcher = FileSystemWatcherFactory.CreateGeneric(appConfigDirectory, StartGetApplicationsTask, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed | FileSystemWatcherFactory.FileSystemWatcherEvents.Renamed | FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted);
         }
 
@@ -81,7 +81,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void GetApplications(CancellationToken cancellationToken = default)
         {
             var applications = new ObservableCollection<ImageApplicationPathTuple>();
-            var loaderConfig = LoaderConfigReader.ReadConfiguration();
             List<PathGenericTuple<ApplicationConfig>> applicationConfigs;
                 
             // Check for cancellation request before config reading begins if necessary. */
@@ -90,7 +89,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             // Try read all configs, this action may sometimes fail if some of the files are still being copied.
             // Worth noting is that the last fired event will never collide here and fail, thus this is a safe point to exit.
-            try { applicationConfigs = ApplicationConfig.GetAllApplications(); }
+            try   { applicationConfigs = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().ApplicationConfigDirectory); }
             catch (Exception) { return; }
 
             foreach (var config in applicationConfigs)

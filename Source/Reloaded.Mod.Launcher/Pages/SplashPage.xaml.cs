@@ -4,6 +4,7 @@ using System.Windows;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Loader.IO;
+using Reloaded.Mod.Loader.IO.Config;
 using WindowViewModel = Reloaded.Mod.Launcher.Models.ViewModel.WindowViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages
@@ -53,7 +54,7 @@ namespace Reloaded.Mod.Launcher.Pages
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var loaderConfig = LoaderConfigReader.ReadConfiguration();
+                var loaderConfig = IoC.Get<LoaderConfig>();
                 if (loaderConfig.FirstLaunch)
                 {
                     var firstLaunchWindow = new FirstLaunch();

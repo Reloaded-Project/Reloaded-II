@@ -41,7 +41,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 
             if (messageBox.DialogResult.HasValue && messageBox.DialogResult.Value)
             {
-                var configCleaner = new ConfigCleaner();
+                var configCleaner = IoC.Get<ConfigCleaner>();
                 configCleaner.Clean();
             }
         }

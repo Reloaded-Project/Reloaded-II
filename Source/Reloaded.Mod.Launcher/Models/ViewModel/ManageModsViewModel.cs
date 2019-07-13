@@ -60,11 +60,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private readonly FileSystemWatcher _deleteFileWatcher;
         private readonly FileSystemWatcher _deleteDirectoryWatcher;
 
-        public ManageModsViewModel()
+        public ManageModsViewModel(MainPageViewModel mainPageViewModel, LoaderConfig loaderConfig)
         {
             GetModifications();
-            _mainPageViewModel = IoC.Get<MainPageViewModel>();
-            string modDirectory = LoaderConfigReader.ReadConfiguration().ModConfigDirectory;
+            _mainPageViewModel = mainPageViewModel;
+            string modDirectory = loaderConfig.ModConfigDirectory;
 
             _createWatcher = FileSystemWatcherFactory.CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed, true, "*.*");
             _deleteFileWatcher = FileSystemWatcherFactory.CreateChangeCreateDelete(modDirectory, OnDeleteFile, FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted);
@@ -177,7 +177,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void GetModifications(CancellationToken cancellationToken = default)
         {
             var mods = new ObservableCollection<ImageModPathTuple>();
-            var loaderConfig = LoaderConfigReader.ReadConfiguration();
             List<PathGenericTuple<ModConfig>> modConfigs;
 
             // Check for cancellation request before config reading begins if necessary. 
@@ -186,7 +185,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             // Try read all configs, this action may sometimes fail if some of the files are still being copied.
             // Worth noting is that the last fired event will never collide here and fail, thus this is a safe point to exit.
-            try { modConfigs = ModConfig.GetAllMods(); }
+            try { modConfigs = ModConfig.GetAllMods(IoC.Get<LoaderConfig>().ModConfigDirectory); }
             catch (Exception) { return; }
 
             foreach (var config in modConfigs)
