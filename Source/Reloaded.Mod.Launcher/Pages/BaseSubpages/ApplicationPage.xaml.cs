@@ -20,8 +20,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             InitializeComponent();
             ViewModel = new ApplicationViewModel(IoC.Get<MainPageViewModel>().SelectedApplication, IoC.Get<ManageModsViewModel>());
-            this.AnimateOutStarted += AnimateOutChild;
-            this.AnimateOutStarted += Dispose;
+            this.AnimateOutStarted += AnimateOutChildAndDispose;
         }
 
         ~ApplicationPage()
@@ -35,9 +34,10 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             GC.SuppressFinalize(this);
         }
 
-        private async void AnimateOutChild()
+        private void AnimateOutChildAndDispose()
         {
-            await PageHost.CurrentPage.AnimateOut();
+            PageHost.CurrentPage?.AnimateOut();
+            Dispose();
         }
 
         private void NonReloadedMod_PreviewMouseDown(object sender, MouseButtonEventArgs e)

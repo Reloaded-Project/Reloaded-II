@@ -106,7 +106,7 @@ namespace Reloaded.Mod.Launcher.Controls
                 AnimateOut();
         }
 
-        private async void AnimateOut()
+        private void AnimateOut()
         {
             var animations = new Animation[]
             {
@@ -114,11 +114,11 @@ namespace Reloaded.Mod.Launcher.Controls
                 new OpacityAnimation(_resourceManipulator.Get<double>(XAML_PopupLabelExitFadeAnimationDuration), 1, _resourceManipulator.Get<double>(XAML_PopupLabelExitFadeOpacityEnd))
             };
 
-            await Animation.AnimateAsync(animations, this.HiddenContentContainer);
+            Animation.Animate(animations, this.HiddenContentContainer);
             this.HiddenContentContainer.Visibility = HiddenVisibilityType;
         }
 
-        private async void AnimateIn()
+        private void AnimateIn()
         {
             this.HiddenContentContainer.Visibility = Visibility.Visible;
             var animations = new Animation[]
@@ -127,7 +127,7 @@ namespace Reloaded.Mod.Launcher.Controls
                 new OpacityAnimation(_resourceManipulator.Get<double>(XAML_PopupLabelFadeAnimationDuration), _resourceManipulator.Get<double>(XAML_PopupLabelFadeOpacityStart), 1)
             };
 
-            await Animation.AnimateAsync(animations, this.HiddenContentContainer);
+            Animation.Animate(animations, this.HiddenContentContainer);
         }
 
         private static void IsOpenChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)

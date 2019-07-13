@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.IO
 {
-    public class ConfigLoaderTest : IDisposable
+    public class ConfigLoader : IDisposable
     {
         /* Name of the test configuration file and the default test configuration. */
         private const string ModConfigFileName = ModConfig.ConfigFileName;
@@ -20,7 +20,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
         private ConfigReader<ApplicationConfig> _appConfigReader;
 
         /* Before Tests */
-        public ConfigLoaderTest()
+        public ConfigLoader()
         {
             Dispose();
 
