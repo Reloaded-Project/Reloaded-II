@@ -24,6 +24,9 @@ namespace Reloaded.Mod.Loader.IO
         private readonly ConfigReader<ModConfig> _modConfigReader = new ConfigReader<ModConfig>();
         private readonly ConfigReader<ApplicationConfig> _appConfigReader = new ConfigReader<ApplicationConfig>();
 
+        /// <summary>
+        /// Constructs a configuration cleaner which reads the default <see cref="LoaderConfig"/> from the filesystem.
+        /// </summary>
         public ConfigCleaner()
         {
             LoaderConfig loaderConfig;
@@ -32,16 +35,19 @@ namespace Reloaded.Mod.Loader.IO
             SetupConfigCleaner(loaderConfig);
         }
 
+        /// <summary>
+        /// Constructs a configuration cleaner which uses a supplied <see cref="LoaderConfig"/>.
+        /// </summary>
         public ConfigCleaner(LoaderConfig loaderConfig)
         {
             SetupConfigCleaner(loaderConfig);
         }
 
-        public void SetupConfigCleaner(LoaderConfig loaderConfig)
+        private void SetupConfigCleaner(LoaderConfig loaderConfig)
         {
-            _loaderConfig = loaderConfig;
-            _modConfigs = ModConfig.GetAllMods();
-            _applicationConfigs = ApplicationConfig.GetAllApplications();
+            _loaderConfig       = loaderConfig;
+            _modConfigs         = ModConfig.GetAllMods(_loaderConfig.ModConfigDirectory);
+            _applicationConfigs = ApplicationConfig.GetAllApplications(_loaderConfig.ApplicationConfigDirectory);
 
             _allAppsSet = BuildSet(_applicationConfigs.Select(tuple => tuple.Object.AppId));
             _allModsSet = BuildSet(_modConfigs.Select(tuple => tuple.Object.ModId));
@@ -52,32 +58,6 @@ namespace Reloaded.Mod.Loader.IO
             CleanupLoaderConfig();
             CleanupApplicationConfigs();
             CleanupModConfigs();
-        }
-
-        private void CleanupLoaderConfig()
-        {
-            CleanupLoaderConfig(_loaderConfig);
-            LoaderConfigReader.WriteConfiguration(_loaderConfig);
-        }
-
-        private void CleanupModConfigs()
-        {
-            Parallel.ForEach(_modConfigs, (tuple) =>
-            {
-                bool needsSaving = CleanupModConfig(tuple);
-                if (needsSaving)
-                    _modConfigReader.WriteConfiguration(tuple.Path, tuple.Object);
-            });
-        }
-
-        private void CleanupApplicationConfigs()
-        {
-            Parallel.ForEach(_applicationConfigs, tuple =>
-            {
-                bool needsSaving = CleanupApplicationConfig(tuple);
-                if (needsSaving)
-                    _appConfigReader.WriteConfiguration(tuple.Path, tuple.Object);
-            });
         }
 
         /// <summary>
@@ -226,6 +206,32 @@ namespace Reloaded.Mod.Loader.IO
             }
 
             return newModList;
+        }
+
+        private void CleanupLoaderConfig()
+        {
+            CleanupLoaderConfig(_loaderConfig);
+            LoaderConfigReader.WriteConfiguration(_loaderConfig);
+        }
+
+        private void CleanupModConfigs()
+        {
+            Parallel.ForEach(_modConfigs, (tuple) =>
+            {
+                bool needsSaving = CleanupModConfig(tuple);
+                if (needsSaving)
+                    _modConfigReader.WriteConfiguration(tuple.Path, tuple.Object);
+            });
+        }
+
+        private void CleanupApplicationConfigs()
+        {
+            Parallel.ForEach(_applicationConfigs, tuple =>
+            {
+                bool needsSaving = CleanupApplicationConfig(tuple);
+                if (needsSaving)
+                    _appConfigReader.WriteConfiguration(tuple.Path, tuple.Object);
+            });
         }
 
         /// <summary>

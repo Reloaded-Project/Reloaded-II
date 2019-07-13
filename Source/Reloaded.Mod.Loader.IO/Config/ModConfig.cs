@@ -51,7 +51,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Finds all mods on the filesystem, parses them and returns a list of all mods.
         /// </summary>
-        /// <param name="modDirectory">Directory containing all of the mods.</param>
+        /// <param name="modDirectory">(Optional) Directory containing all of the mods.</param>
         public static List<PathGenericTuple<ModConfig>> GetAllMods(string modDirectory = null)
         {
             if (modDirectory == null)

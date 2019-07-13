@@ -11,7 +11,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
     /// <summary>
     /// Validates whether the config cleanup helper functions work.
     /// </summary>
-    public class ConfigCleanupTest
+    public class ConfigCleanupTest : IDisposable
     {
         private const int RandomStringLength = 500;
         private const int RandomDirectoryLength = 5;
@@ -49,6 +49,13 @@ namespace Reloaded.Mod.Loader.Tests.IO
             _modConfigReader.WriteConfiguration(_realModConfigFilePath, _realModConfig);
             _appConfigReader.WriteConfiguration(_realAppConfigFilePath, _realAppConfig);
             _configCleaner = new ConfigCleaner(_tempLoaderConfig);
+        }
+
+        public void Dispose()
+        {
+            Directory.Delete(_tempLoaderConfig.ModConfigDirectory, true);
+            Directory.Delete(_tempLoaderConfig.ApplicationConfigDirectory, true);
+            Directory.Delete(_tempLoaderConfig.PluginConfigDirectory, true);
         }
 
         /// <summary>

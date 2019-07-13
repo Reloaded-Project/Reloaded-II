@@ -55,10 +55,13 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Finds all apps on the filesystem, parses them and returns a list of
         /// all apps.
         /// </summary>
-        /// <returns></returns>
-        public static List<PathGenericTuple<ApplicationConfig>> GetAllApplications()
+        /// <param name="appDirectory">(Optional) Directory containing all of the applications.</param>
+        public static List<PathGenericTuple<ApplicationConfig>> GetAllApplications(string appDirectory = null)
         {
-            return _appConfigReader.ReadConfigurations(LoaderConfigReader.ReadConfiguration().ApplicationConfigDirectory, ConfigFileName);
+            if (appDirectory == null)
+                appDirectory = LoaderConfigReader.ReadConfiguration().ModConfigDirectory;
+
+            return _appConfigReader.ReadConfigurations(appDirectory, ConfigFileName);
         }
 
         /// <summary>
