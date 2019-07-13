@@ -6,12 +6,12 @@ using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.IO
 {
-    public class LoaderConfigReader : IDisposable
+    public class LoaderConfigReaderTest : IDisposable
     {
         /* Initialize/Dispose to protect existing config. */
         private LoaderConfig _backupConfig;
 
-        public LoaderConfigReader()
+        public LoaderConfigReaderTest()
         {
             bool configExists = File.Exists(Mod.Loader.IO.LoaderConfigReader.ConfigurationPath());
             if (configExists)

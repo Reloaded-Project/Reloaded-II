@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
+  </ItemGroup>
+
+</Project>

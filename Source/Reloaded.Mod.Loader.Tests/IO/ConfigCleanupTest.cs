@@ -11,7 +11,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
     /// <summary>
     /// Validates whether the config cleanup helper functions work.
     /// </summary>
-    public class ConfigCleanup
+    public class ConfigCleanupTest
     {
         private const int RandomStringLength = 500;
         private const int RandomDirectoryLength = 5;
@@ -32,7 +32,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
         private ConfigCleaner _configCleaner;
 
         /* Before and After Test. */
-        public ConfigCleanup()
+        public ConfigCleanupTest()
         {
             _tempLoaderConfig = LoaderConfig.GetTestConfig();
 

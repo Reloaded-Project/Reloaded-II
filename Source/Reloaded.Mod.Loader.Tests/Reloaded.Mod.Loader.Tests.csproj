@@ -26,6 +26,7 @@
     <ProjectReference Include="..\Reloaded.Mod.Loader\Reloaded.Mod.Loader.csproj" />
     <ProjectReference Include="..\Testing\Mods\TestModA\TestModA.csproj" />
     <ProjectReference Include="..\Testing\Mods\TestModB\TestModB.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModC\TestModC.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -85,11 +85,13 @@ namespace Reloaded.Mod.Loader
                 configToPathDictionary[mod.Generic.Object] = mod.Generic.Path;
 
             // Get list of mods to load and load them.
-            var modsToLoad = allMods.Where(x => x.Enabled).Select(x => x.Generic.Object);
-            var sortedModsToLoad = ModConfig.SortMods(modsToLoad);
-            var modPaths = new List<PathGenericTuple<IModConfig>>();
+            var modsToLoad          = allMods.Where(x => x.Enabled).Select(x => x.Generic.Object).ToArray();
+            var dependenciesToLoad  = ModConfig.GetDependencies(modsToLoad).Configurations.ToArray();
+            var allUniqueModsToLoad = modsToLoad.Concat(dependenciesToLoad).Distinct();
+            var allSortedModsToLoad = ModConfig.SortMods(allUniqueModsToLoad);
 
-            foreach (var modToLoad in sortedModsToLoad)
+            var modPaths            = new List<PathGenericTuple<IModConfig>>();
+            foreach (var modToLoad in allSortedModsToLoad)
             {
                 string configPath = configToPathDictionary[modToLoad];
                 string dllPath = ModConfig.GetDllPath(configPath, modToLoad);

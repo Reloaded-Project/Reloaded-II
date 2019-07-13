@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
@@ -12,7 +11,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 {
     public class ApplicationConfig : ObservableObject, Mod.Interfaces.IApplicationConfig, IConfig
     {
-        private static ConfigReader<ApplicationConfig> _appConfigReader = new ConfigReader<ApplicationConfig>();
+        private static readonly ConfigReader<ApplicationConfig> _appConfigReader = new ConfigReader<ApplicationConfig>();
 
         /// <summary>
         /// The name of the configuration file as stored on disk.
@@ -44,17 +43,12 @@ namespace Reloaded.Mod.Loader.IO.Config
         */
 
         /// <summary>
-        /// Returns the name of the executable, with extension.
-        /// </summary>
-        public string GetExecutableName() => Path.GetFileName(AppLocation);
-
-        /// <summary>
         /// Writes the configuration to a specified file path.
         /// </summary>
         public static void WriteConfiguration(string path, ApplicationConfig config)
         {
-            var _applicationConfigLoader = new ConfigReader<ApplicationConfig>();
-            _applicationConfigLoader.WriteConfiguration(path, config);
+            var applicationConfigLoader = new ConfigReader<ApplicationConfig>();
+            applicationConfigLoader.WriteConfiguration(path, config);
         }
 
         /// <summary>
@@ -98,6 +92,7 @@ namespace Reloaded.Mod.Loader.IO.Config
                     if (modConfig.ModId == enabledMod)
                     {
                         enabledModSet.Add(mod);
+
                         break;
                     }
                 }

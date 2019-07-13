@@ -5,6 +5,7 @@ using System.Linq;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.IO.Structs.Dependencies;
 using Reloaded.Mod.Loader.IO.Structs.Sorting;
 using Reloaded.Mod.Loader.IO.Weaving;
 
@@ -12,7 +13,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 {
     public class ModConfig : ObservableObject, IModConfig, IConfig
     {
-        private static ConfigReader<ModConfig> _modConfigReader = new ConfigReader<ModConfig>();
+        private static readonly ConfigReader<ModConfig> _modConfigReader = new ConfigReader<ModConfig>();
 
         /// <summary>
         /// The name of the configuration file as stored on disk.
@@ -48,29 +49,63 @@ namespace Reloaded.Mod.Loader.IO.Config
         }
 
         /// <summary>
-        /// Writes the configuration to a specified file path.
+        /// Finds all mods on the filesystem, parses them and returns a list of all mods.
         /// </summary>
-        public static void WriteConfiguration(string path, ModConfig config)
+        /// <param name="modDirectory">Directory containing all of the mods.</param>
+        public static List<PathGenericTuple<ModConfig>> GetAllMods(string modDirectory = null)
         {
-            var _applicationConfigLoader = new ConfigReader<ModConfig>();
-            _applicationConfigLoader.WriteConfiguration(path, config);
+            if (modDirectory == null)
+                modDirectory = LoaderConfigReader.ReadConfiguration().ModConfigDirectory;
+
+            return _modConfigReader.ReadConfigurations(modDirectory, ConfigFileName);
         }
 
         /// <summary>
-        /// Finds all mods on the filesystem, parses them and returns a list of
-        /// all mods.
+        /// Returns a list of all of present and missing dependencies for a set of configurations.
         /// </summary>
-        public static List<PathGenericTuple<ModConfig>> GetAllMods()
+        /// <param name="configurations">The mod configurations.</param>
+        /// <param name="allMods">(Optional) List of all available mods.</param>
+        public static ModDependencySet GetDependencies(IEnumerable<ModConfig> configurations, IEnumerable<ModConfig> allMods = null)
         {
-            return _modConfigReader.ReadConfigurations(LoaderConfigReader.ReadConfiguration().ModConfigDirectory, ConfigFileName);
+            ModConfig[] allModsArray = allMods == null  ? GetAllMods().Select(x => x.Object).ToArray()
+                                                        : allMods.ToArray();
+            var dependencySets = new List<ModDependencySet>();
+
+            foreach (var config in configurations)
+                dependencySets.Add(GetDependencies(config, allModsArray));
+            
+            return new ModDependencySet(dependencySets);
         }
 
         /// <summary>
-        /// Sorts a list of mods, taking into account individual dependencies between mods.
+        /// Returns a list of all of present and missing dependencies for a given configuration.
         /// </summary>
-        public static List<ModConfig> SortMods(IEnumerable<PathGenericTuple<ModConfig>> mods)
+        /// <param name="config">The mod configuration.</param>
+        /// <param name="allMods">(Optional) List of all available mods.</param>
+        public static ModDependencySet GetDependencies(ModConfig config, IEnumerable<ModConfig> allMods = null)
         {
-            return SortMods(mods.Select(x => x.Object));
+            if (allMods == null)
+                allMods = GetAllMods().Select(x => x.Object);
+
+            var dependencySet = new ModDependencySet();
+            var allModsArray = allMods.ToArray();
+
+            // Populate whole list of nodes (graph), connected up with dependencies as edges.
+            var allModsNodes = new List<Node<ModConfig>>();
+            foreach (var mod in allModsArray)
+                allModsNodes.Add(new Node<ModConfig>(mod));
+
+            foreach (var node in allModsNodes)
+                node.Edges = allModsNodes.Where(x => node.Element.ModDependencies.Contains(x.Element.ModId)).ToList();
+
+            // Find our mod configuration in set of nodes.
+            var initialNode = new Node<ModConfig>(config);
+            initialNode.Edges = allModsNodes.Where(x => initialNode.Element.ModDependencies.Contains(x.Element.ModId)).ToList();
+
+            // Recursive resolution.
+            GetDependenciesVisitNode(initialNode, allModsArray, dependencySet);
+
+            return dependencySet;
         }
 
         /// <summary>
@@ -93,7 +128,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             Node<ModConfig> firstUnvisitedNode;
             while ((firstUnvisitedNode = allNodes.FirstOrDefault(node => node.Visited == Mark.NotVisited)) != null)
             {
-                VisitNode(firstUnvisitedNode, sortedMods);
+                SortModsVisitNode(firstUnvisitedNode, sortedMods);
             }
 
             return sortedMods;
@@ -103,7 +138,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Recursive function which given an unsorted node and the list it's going to be stored in, arranges
         /// a set of mod configurations.
         /// </summary>
-        private static void VisitNode(Node<ModConfig> node, List<ModConfig> sortedMods)
+        private static void SortModsVisitNode(Node<ModConfig> node, List<ModConfig> sortedMods)
         {
             // Already fully visited, already in list.
             if (node.Visited == Mark.Visited)
@@ -118,10 +153,47 @@ namespace Reloaded.Mod.Loader.IO.Config
 
             // Visit all children, depth first.
             foreach (var dependency in node.Edges)
-                VisitNode(dependency, sortedMods);
+                SortModsVisitNode(dependency, sortedMods);
 
             node.Visited = Mark.Visited;
             sortedMods.Add(node.Element);
+        }
+
+        /// <summary>
+        /// Returns a list of all Mod IDs that are not installed referenced by a mod config.
+        /// </summary>
+        /// <param name="node">The mod configuration for which to find missing dependencies.</param>
+        /// <param name="allMods">Collection containing all of the mod configurations.</param>
+        /// <param name="dependencySet">Accumulator for all missing dependencies.</param>
+        private static void GetDependenciesVisitNode(Node<ModConfig> node, ModConfig[] allMods, ModDependencySet dependencySet)
+        {
+            // Already fully visited, already in list.
+            if (node.Visited == Mark.Visited)
+                return;
+
+            // Disallow looping on itself.
+            // Not a directed acyclic graph.
+            if (node.Visited == Mark.Visiting)
+                return;
+
+            node.Visited = Mark.Visiting;
+
+            // Visit all children, depth first.
+            foreach (var dependency in node.Edges)
+                GetDependenciesVisitNode(dependency, allMods, dependencySet);
+
+            // Do collect missing dependencies.
+            foreach (string dependencyId in node.Element.ModDependencies)
+            {
+                var dependencyConfig = allMods.FirstOrDefault(x => x.ModId == dependencyId);
+                if (dependencyConfig != null)
+                    dependencySet.Configurations.Add(dependencyConfig);
+                else
+                    dependencySet.MissingConfigurations.Add(dependencyId);
+            }
+
+            // Set visited and return to next in stack.
+            node.Visited = Mark.Visited;
         }
 
         /*

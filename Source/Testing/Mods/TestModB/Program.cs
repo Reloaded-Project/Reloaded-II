@@ -7,16 +7,20 @@ namespace TestModB
 {
     public class Program : IMod
     {
-        public Action Disposing { get; }
-        public IModConfig ModConfig = new ModConfig()
+        public const string NonexistingDependencyName = "TestModX";
+        public static ModConfig ModConfig = new ModConfig()
         {
             ModId = "TestModB",
             ModDll = "TestModB.dll",
-            ModDependencies = new [] { "TestModA" }
+            ModDependencies = new [] 
+            {
+                "TestModA",                 // Real
+                NonexistingDependencyName   // Non-existing
+            }
         };
 
-
         /* Entry point. */
+        public Action Disposing { get; }
         public void Start(IModLoaderV1 loader)
         {
             

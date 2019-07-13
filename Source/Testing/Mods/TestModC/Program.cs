@@ -3,14 +3,20 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Loader.IO.Config;
 
-namespace TestModA
+namespace TestModC
 {
     public class Program : IMod
     {
+        public const string NonexistingDependencyName = "TestModZ";
         public static ModConfig ModConfig = new ModConfig()
         {
-            ModId = "TestModA",
-            ModDll = "TestModA.dll"
+            ModId = "TestModC",
+            ModDll = "TestModC.dll",
+            ModDependencies = new[]
+            {
+                "TestModB",                 // Real
+                NonexistingDependencyName   // Non-existing
+            }
         };
 
         /* Entry point. */

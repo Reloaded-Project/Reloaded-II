@@ -21,14 +21,14 @@ namespace Reloaded.Mod.Loader.IO
         private HashSet<string> _allAppsSet;
         private HashSet<string> _allModsSet;
 
-        private ConfigReader<ModConfig> _modConfigReader = new ConfigReader<ModConfig>();
-        private ConfigReader<ApplicationConfig> _appConfigReader = new ConfigReader<ApplicationConfig>();
+        private readonly ConfigReader<ModConfig> _modConfigReader = new ConfigReader<ModConfig>();
+        private readonly ConfigReader<ApplicationConfig> _appConfigReader = new ConfigReader<ApplicationConfig>();
 
         public ConfigCleaner()
         {
             LoaderConfig loaderConfig;
             try { loaderConfig = LoaderConfigReader.ReadConfiguration();  }
-            catch (Exception ex) { loaderConfig = new LoaderConfig(); }
+            catch (Exception) { loaderConfig = new LoaderConfig(); }
             SetupConfigCleaner(loaderConfig);
         }
 
@@ -206,7 +206,7 @@ namespace Reloaded.Mod.Loader.IO
 
         private List<string> FilterNonexistingAppIds(IEnumerable<string> appIds)
         {
-            List<string> newAppList = new List<string>(appIds.Count());
+            List<string> newAppList = new List<string>();
             foreach (var appId in appIds)
             {
                 if (_allAppsSet.Contains(appId))
@@ -218,7 +218,7 @@ namespace Reloaded.Mod.Loader.IO
 
         private List<string> FilterNonexistingModIds(IEnumerable<string> modIds)
         {
-            List<string> newModList = new List<string>(modIds.Count());
+            List<string> newModList = new List<string>();
             foreach (var modId in modIds)
             {
                 if (_allModsSet.Contains(modId))
