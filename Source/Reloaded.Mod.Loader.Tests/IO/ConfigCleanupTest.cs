@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.Tests.SETUP.Utilities;
 using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.IO
@@ -13,22 +13,16 @@ namespace Reloaded.Mod.Loader.Tests.IO
     /// </summary>
     public class ConfigCleanupTest : IDisposable
     {
+        /* Random string generator settings. */
         private const int RandomStringLength = 500;
         private const int RandomDirectoryLength = 5;
-
-        private static Random _random = new Random();
-        private LoaderConfig _tempLoaderConfig;
 
         /* Sample configs committed to disk for testing. */
         private ModConfig _realModConfig;
         private ApplicationConfig _realAppConfig;
 
-        private string _realModConfigFilePath;
-        private string _realAppConfigFilePath;
-
-        private ConfigReader<ModConfig> _modConfigReader;
-        private ConfigReader<ApplicationConfig> _appConfigReader;
-
+        /* Classes setup for testing. */
+        private LoaderConfig _tempLoaderConfig;
         private ConfigCleaner _configCleaner;
 
         /* Before and After Test. */
@@ -36,18 +30,18 @@ namespace Reloaded.Mod.Loader.Tests.IO
         {
             _tempLoaderConfig = LoaderConfig.GetTestConfig();
 
-            _modConfigReader = new ConfigReader<ModConfig>();
-            _appConfigReader = new ConfigReader<ApplicationConfig>();
+            var modConfigReader = new ConfigReader<ModConfig>();
+            var appConfigReader = new ConfigReader<ApplicationConfig>();
 
             // Make real sample configurations.
             _realModConfig = new ModConfig();
             _realAppConfig = new ApplicationConfig();
 
-            _realModConfigFilePath = Path.Combine(_tempLoaderConfig.ModConfigDirectory, RandomString(RandomDirectoryLength), ModConfig.ConfigFileName);
-            _realAppConfigFilePath = Path.Combine(_tempLoaderConfig.ApplicationConfigDirectory, RandomString(RandomDirectoryLength), ApplicationConfig.ConfigFileName);
+            var realModConfigFilePath = Path.Combine(_tempLoaderConfig.ModConfigDirectory, RandomString.AlphaNumeric(RandomDirectoryLength), ModConfig.ConfigFileName);
+            var realAppConfigFilePath = Path.Combine(_tempLoaderConfig.ApplicationConfigDirectory, RandomString.AlphaNumeric(RandomDirectoryLength), ApplicationConfig.ConfigFileName);
 
-            _modConfigReader.WriteConfiguration(_realModConfigFilePath, _realModConfig);
-            _appConfigReader.WriteConfiguration(_realAppConfigFilePath, _realAppConfig);
+            modConfigReader.WriteConfiguration(realModConfigFilePath, _realModConfig);
+            appConfigReader.WriteConfiguration(realAppConfigFilePath, _realAppConfig);
             _configCleaner = new ConfigCleaner(_tempLoaderConfig);
         }
 
@@ -66,13 +60,13 @@ namespace Reloaded.Mod.Loader.Tests.IO
         {
             var testConfig = new ModConfig
             {
-                ModIcon = RandomString(RandomStringLength),
-                ModDependencies = new[] { RandomString(RandomStringLength),
-                                          RandomString(RandomStringLength),
+                ModIcon = RandomString.AlphaNumeric(RandomStringLength),
+                ModDependencies = new[] { RandomString.AlphaNumeric(RandomStringLength),
+                                          RandomString.AlphaNumeric(RandomStringLength),
                                           _realModConfig.ModId }, // Default Mod ID
                 SupportedAppId = new[] { _realAppConfig.AppId,
-                                         RandomString(RandomStringLength),
-                                         RandomString(RandomStringLength) }
+                                         RandomString.AlphaNumeric(RandomStringLength),
+                                         RandomString.AlphaNumeric(RandomStringLength) }
             };
 
             _configCleaner.CleanupModConfig(new PathGenericTuple<ModConfig>("", testConfig));
@@ -93,12 +87,12 @@ namespace Reloaded.Mod.Loader.Tests.IO
         {
             var appConfig = new ApplicationConfig()
             {
-                AppIcon = RandomString(RandomStringLength),
+                AppIcon = RandomString.AlphaNumeric(RandomStringLength),
                 EnabledMods = new[]
                 {
-                    RandomString(RandomStringLength),
-                    RandomString(RandomStringLength),
-                    RandomString(RandomStringLength),
+                    RandomString.AlphaNumeric(RandomStringLength),
+                    RandomString.AlphaNumeric(RandomStringLength),
+                    RandomString.AlphaNumeric(RandomStringLength),
                     _realModConfig.ModId
                 }
             };
@@ -131,13 +125,6 @@ namespace Reloaded.Mod.Loader.Tests.IO
             Assert.NotEqual(fakeDirectory, appConfig.ApplicationConfigDirectory);
             Assert.NotEqual(fakeDirectory, appConfig.ModConfigDirectory);
             Assert.NotEqual(fakeDirectory, appConfig.PluginConfigDirectory);
-        }
-
-        private static string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[_random.Next(s.Length)]).ToArray());
         }
     }
 }

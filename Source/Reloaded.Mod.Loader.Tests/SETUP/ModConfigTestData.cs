@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Reloaded.Mod.Interfaces;
+﻿using System.Collections.Generic;
 using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Loader.Tests.SETUP

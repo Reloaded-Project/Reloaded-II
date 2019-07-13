@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Tests.SETUP;
 using Xunit;
