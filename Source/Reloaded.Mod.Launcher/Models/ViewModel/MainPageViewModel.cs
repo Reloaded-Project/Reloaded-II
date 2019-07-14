@@ -30,7 +30,18 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public event NotifyCollectionChangedEventHandler ApplicationsChanged = (sender, args) => { };
 
         /* The page to display. */
-        public BaseSubPage Page { get; set; } = BaseSubPage.Welcome;
+        public BaseSubPage Page
+        {
+            get => _baseSubPage;
+            set
+            {
+                if (_baseSubPage != value)
+                {
+                    _baseSubPage = value;
+                    RaisePropertyChangedEvent(nameof(Page));
+                }
+            }
+        }
 
         /* Set this to false to temporarily suspend the file system watcher monitoring new applications. */
         public bool MonitorNewApplications { get; set; } = true;
@@ -51,6 +62,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             }
         } 
 
+        /* This one is to allow us to switch application without raising event twice. See: SwitchApplication */
+        private BaseSubPage _baseSubPage = BaseSubPage.Welcome;
+
         /* Application Monitoring */
         private ObservableCollection<ImageApplicationPathTuple> _applications;
         private FileSystemWatcher _applicationWatcher; /* Monitors for additions/changes in available applications. */
@@ -67,11 +81,12 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         }
 
         /// <summary>
-        /// Manually raises the property changed event for the <see cref="Page"/> property.
-        /// Used for specific pages that are not singletons/have only one instance.
+        /// Changes the <see cref="Page"/> property to <see cref="BaseSubPage.Application"/> and
+        /// raises the property changed event.
         /// </summary>
-        public void RaisePagePropertyChanged()
+        public void SwitchToApplication()
         {
+            _baseSubPage = BaseSubPage.Application;
             RaisePropertyChangedEvent(nameof(Page));
         }
         

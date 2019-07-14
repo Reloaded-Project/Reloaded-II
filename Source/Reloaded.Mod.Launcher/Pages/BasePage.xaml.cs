@@ -44,8 +44,16 @@ namespace Reloaded.Mod.Launcher.Pages
                 if (element.DataContext is ImageApplicationPathTuple tuple)
                 {
                     _mainPageViewModel.SelectedApplication = tuple;
-                    _mainPageViewModel.Page = BaseSubPage.Application;
-                    _mainPageViewModel.RaisePagePropertyChanged();
+                    _mainPageViewModel.SwitchToApplication();
+
+                    // Problem: Changing property and then raising manually causes the ApplicationViewModel 
+                    //          to be generated twice when switching from another page type.
+
+                    //          However if we don't raise manually, page will not update when changing from
+                    //          same page type, as all other page types are singletons and thus we do not allow
+                    //          two equal pages at once.
+
+                    //          This solution changes the property, raising the event only once.
                 }
             }
         }

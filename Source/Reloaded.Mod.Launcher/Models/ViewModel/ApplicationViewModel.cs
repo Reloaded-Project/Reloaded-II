@@ -81,6 +81,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             ManageModsViewModel.ModsChanged -= OnModsChanged;
             InstanceTracker.OnProcessesChanged -= InstanceTrackerOnProcessesChanged;
+            InstanceTracker.Dispose();
             GC.SuppressFinalize(this);
         }
 

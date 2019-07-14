@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
+using System.Windows;
+using Reloaded.Mod.Launcher.Misc;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -12,7 +17,8 @@ namespace Reloaded.Mod.Launcher.Utility
     /// </summary>
     public class ApplicationInstanceTracker : IDisposable
     {
-        public const string LoaderDllName = "Reloaded.Mod.Loader.dll";
+        public const int ProcessQueryLimitedInformation = 0x1000;
+        public const int MaxPath = 32767;
 
         /// <summary>
         /// Fired whenever the list of processes satisfying the application path changes.
@@ -22,6 +28,7 @@ namespace Reloaded.Mod.Launcher.Utility
         private HashSet<Process> _processes; // All processes that satisfy file path filter.
         private readonly string _applicationPath;
         private readonly ProcessWatcher _processWatcher;
+        private readonly StringBuilder _buffer = new StringBuilder(MaxPath);
 
         /* Class Setup and Teardown */
 
@@ -61,7 +68,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
                 ActionWrappers.TryCatch(() =>
                 {
-                    var processPath = Path.GetFullPath(process.MainModule.FileName);
+                    var processPath = Path.GetFullPath(GetExecutablePath(process.Id));
 
                     if (string.Equals(processPath, _applicationPath, StringComparison.OrdinalIgnoreCase))
                         _processes.Add(process);
@@ -71,9 +78,9 @@ namespace Reloaded.Mod.Launcher.Utility
 
         /* Public API */
 
-        public ProcessCollection GetProcesses()
+        public Structs.ProcessCollection GetProcesses()
         {
-            var processCollection = ProcessCollection.GetEmpty(_processes.Count);
+            var processCollection = Structs.ProcessCollection.GetEmpty(_processes.Count);
             foreach (var process in _processes)
             {
                 if (IsModLoaderPresent(process))
@@ -89,7 +96,7 @@ namespace Reloaded.Mod.Launcher.Utility
         {
             foreach (ProcessModule module in process.Modules)
             {
-                if (module.ModuleName == LoaderDllName)
+                if (module.ModuleName == Constants.LoaderDllName)
                 {
                     return true;
                 }
@@ -126,23 +133,42 @@ namespace Reloaded.Mod.Launcher.Utility
         private void ProcessWatcherOnOnRemovedProcess(int processid)  => RemoveProcess(processid);
         private void ProcessWatcherOnOnNewProcess(Process newprocess) => AddProcess(newprocess);
 
+        /* Helpers */
+        private string GetExecutablePath(int processId)
+        {
+            /* Vista+ implementation that is faster and allows to query system processes. */
+            var processHandle   = OpenProcess(ProcessQueryLimitedInformation, false, processId);
+            
+            // Note: We can re-use the buffer without clearing because the returned string is null-terminated.
+
+            if (processHandle != IntPtr.Zero)
+            {
+                try
+                {
+                    // ReSharper disable once NotAccessedVariable
+                    int size = _buffer.Capacity;
+                    if (QueryFullProcessImageNameW(processHandle, 0, _buffer, out size))
+                        return _buffer.ToString();
+                }
+                finally
+                {
+                    CloseHandle(processHandle);
+                }
+            }
+
+            throw new Win32Exception(Marshal.GetLastWin32Error());
+        }
+
         /* Definitions */
         public delegate void ProcessesChanged(Process[] newProcesses);
-        public struct ProcessCollection
-        {
-            public List<Process> ReloadedProcesses;
-            public List<Process> NonReloadedProcesses;
 
-            public ProcessCollection(List<Process> reloadedProcesses, List<Process> nonReloadedProcesses)
-            {
-                ReloadedProcesses = reloadedProcesses;
-                NonReloadedProcesses = nonReloadedProcesses;
-            }
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern bool QueryFullProcessImageNameW(IntPtr hprocess, int dwFlags, StringBuilder lpExeName, out int size);
 
-            public static ProcessCollection GetEmpty(int maxSize = 0)
-            {
-                return new ProcessCollection(new List<Process>(maxSize), new List<Process>(maxSize));
-            }
-        }
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool CloseHandle(IntPtr hHandle);
     }
 }
