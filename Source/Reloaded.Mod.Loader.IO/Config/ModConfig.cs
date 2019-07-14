@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
+using Reloaded.Mod.Loader.IO.Misc;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Structs.Dependencies;
 using Reloaded.Mod.Loader.IO.Structs.Sorting;
@@ -13,23 +15,42 @@ namespace Reloaded.Mod.Loader.IO.Config
 {
     public class ModConfig : ObservableObject, IModConfig, IConfig
     {
+        /* Constants */
+        public const string ConfigFileName  = "ModConfig.json";
+        public const string IconFileName    = "Preview.png";
+
+        /* Static defaults to prevent allocating new strings on object creation. */
+        private const string DefaultId = "reloaded.template.modconfig";
+        private const string DefaultName = "Reloaded Mod Config Template";
+        private const string DefaultAuthor = "Someone";
+        private const string DefaultVersion = "1.0.0";
+        private const string DefaultDescription = "Template for a Reloaded Mod Configuration";
+
         private static readonly ConfigReader<ModConfig> _modConfigReader = new ConfigReader<ModConfig>();
 
-        /// <summary>
-        /// The name of the configuration file as stored on disk.
-        /// </summary>
-        public const string ConfigFileName = "ModConfig.json";
-        public const string IconFileName = "Preview.png";
+        /* Class members. */
+        public string ModId             { get; set; } = DefaultId;
+        public string ModName           { get; set; } = DefaultName;
+        public string ModAuthor         { get; set; } = DefaultAuthor;
+        public string ModVersion        { get; set; } = DefaultVersion;
+        public string ModDescription    { get; set; } = DefaultDescription;
+        public string ModDll            { get; set; } = String.Empty;
+        public string ModIcon           { get; set; } = String.Empty;
 
-        public string ModId             { get; set; } = "reloaded.template.modconfig";
-        public string ModName           { get; set; } = "Reloaded Mod Config Template";
-        public string ModAuthor         { get; set; } = "Someone";
-        public string ModVersion        { get; set; } = "1.0.0";
-        public string ModDescription    { get; set; } = "Template for a Reloaded Mod Configuration";
-        public string ModDll            { get; set; } = "";
-        public string ModIcon           { get; set; } = "";
-        public string[] ModDependencies { get; set; } = new string[0];
-        public string[] SupportedAppId  { get; set; } = new string[0];
+        public string[] ModDependencies
+        {
+            get => _modDependencies;
+            set => _modDependencies = value ?? Constants.EmptyStringArray;
+        }
+
+        public string[] SupportedAppId
+        {
+            get => _supportedAppId;
+            set => _supportedAppId = value ?? Constants.EmptyStringArray;
+        }
+
+        private string[] _modDependencies;
+        private string[] _supportedAppId;
 
         /*
            ---------
@@ -222,7 +243,7 @@ namespace Reloaded.Mod.Loader.IO.Config
                    string.Equals(ModVersion, other.ModVersion) && 
                    string.Equals(ModDescription, other.ModDescription) && 
                    string.Equals(ModDll, other.ModDll) && 
-                   Enumerable.SequenceEqual(ModDependencies, other.ModDependencies);
+                   ModDependencies.SequenceEqualWithNullSupport(other.ModDependencies);
         }
 
         public override bool Equals(object obj)

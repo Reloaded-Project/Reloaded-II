@@ -2,11 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\Output\Tests\Mods\TestModC</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\Output\Tests\Mods\TestModC</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ModConfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ModConfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
-    <ProjectReference Include="..\..\..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
   </ItemGroup>
 
 </Project>

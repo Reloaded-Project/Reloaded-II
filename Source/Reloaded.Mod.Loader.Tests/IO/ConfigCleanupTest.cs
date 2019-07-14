@@ -3,6 +3,7 @@ using System.IO;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.Tests.SETUP;
 using Reloaded.Mod.Loader.Tests.SETUP.Utilities;
 using Xunit;
 
@@ -17,39 +18,22 @@ namespace Reloaded.Mod.Loader.Tests.IO
         private const int RandomStringLength = 500;
         private const int RandomDirectoryLength = 5;
 
-        /* Sample configs committed to disk for testing. */
-        private ModConfig _realModConfig;
-        private ApplicationConfig _realAppConfig;
-
         /* Classes setup for testing. */
-        private LoaderConfig _tempLoaderConfig;
+        private TestData _testData;
+        private LoaderConfig _loaderConfig;
         private ConfigCleaner _configCleaner;
 
         /* Before and After Test. */
         public ConfigCleanupTest()
         {
-            _tempLoaderConfig = LoaderConfig.GetTestConfig();
-
-            var modConfigReader = new ConfigReader<ModConfig>();
-            var appConfigReader = new ConfigReader<ApplicationConfig>();
-
-            // Make real sample configurations.
-            _realModConfig = new ModConfig();
-            _realAppConfig = new ApplicationConfig();
-
-            var realModConfigFilePath = Path.Combine(_tempLoaderConfig.ModConfigDirectory, RandomString.AlphaNumeric(RandomDirectoryLength), ModConfig.ConfigFileName);
-            var realAppConfigFilePath = Path.Combine(_tempLoaderConfig.ApplicationConfigDirectory, RandomString.AlphaNumeric(RandomDirectoryLength), ApplicationConfig.ConfigFileName);
-
-            modConfigReader.WriteConfiguration(realModConfigFilePath, _realModConfig);
-            appConfigReader.WriteConfiguration(realAppConfigFilePath, _realAppConfig);
-            _configCleaner = new ConfigCleaner(_tempLoaderConfig);
+            _testData = new TestData();
+            _loaderConfig = _testData.TestConfig;
+            _configCleaner = new ConfigCleaner(_loaderConfig);
         }
 
         public void Dispose()
         {
-            Directory.Delete(_tempLoaderConfig.ModConfigDirectory, true);
-            Directory.Delete(_tempLoaderConfig.ApplicationConfigDirectory, true);
-            Directory.Delete(_tempLoaderConfig.PluginConfigDirectory, true);
+            _testData?.Dispose();
         }
 
         /// <summary>
@@ -63,8 +47,8 @@ namespace Reloaded.Mod.Loader.Tests.IO
                 ModIcon = RandomString.AlphaNumeric(RandomStringLength),
                 ModDependencies = new[] { RandomString.AlphaNumeric(RandomStringLength),
                                           RandomString.AlphaNumeric(RandomStringLength),
-                                          _realModConfig.ModId }, // Default Mod ID
-                SupportedAppId = new[] { _realAppConfig.AppId,
+                                          _testData.TestModConfigA.ModId }, // Default Mod ID
+                SupportedAppId = new[] { _testData.TestAppConfigA.AppId,
                                          RandomString.AlphaNumeric(RandomStringLength),
                                          RandomString.AlphaNumeric(RandomStringLength) }
             };
@@ -72,11 +56,11 @@ namespace Reloaded.Mod.Loader.Tests.IO
             _configCleaner.CleanupModConfig(new PathGenericTuple<ModConfig>("", testConfig));
 
             Assert.True(testConfig.ModDependencies.Length == 1);
-            Assert.True(testConfig.ModDependencies[0] == _realModConfig.ModId);
+            Assert.True(testConfig.ModDependencies[0] == _testData.TestModConfigA.ModId);
             Assert.True(String.IsNullOrEmpty(testConfig.ModIcon));
 
             Assert.True(testConfig.SupportedAppId.Length == 1);
-            Assert.True(testConfig.SupportedAppId[0] == _realAppConfig.AppId);
+            Assert.True(testConfig.SupportedAppId[0] == _testData.TestAppConfigA.AppId);
         }
 
         /// <summary>
@@ -93,14 +77,14 @@ namespace Reloaded.Mod.Loader.Tests.IO
                     RandomString.AlphaNumeric(RandomStringLength),
                     RandomString.AlphaNumeric(RandomStringLength),
                     RandomString.AlphaNumeric(RandomStringLength),
-                    _realModConfig.ModId
+                    _testData.TestModConfigA.ModId
                 }
             };
 
             _configCleaner.CleanupApplicationConfig(new PathGenericTuple<ApplicationConfig>("", appConfig));
 
             Assert.True(appConfig.EnabledMods.Length == 1);
-            Assert.True(appConfig.EnabledMods[0] == _realModConfig.ModId);
+            Assert.True(appConfig.EnabledMods[0] == _testData.TestModConfigA.ModId);
             Assert.True(String.IsNullOrEmpty(appConfig.AppIcon));
         }
 

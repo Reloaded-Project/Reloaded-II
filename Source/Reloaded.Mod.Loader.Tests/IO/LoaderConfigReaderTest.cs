@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.Tests.SETUP;
 using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.IO
@@ -8,22 +9,11 @@ namespace Reloaded.Mod.Loader.Tests.IO
     public class LoaderConfigReaderTest : IDisposable
     {
         /* Initialize/Dispose to protect existing config. */
-        private LoaderConfig _backupConfig;
-
-        public LoaderConfigReaderTest()
-        {
-            bool configExists = File.Exists(Mod.Loader.IO.LoaderConfigReader.ConfigurationPath());
-            if (configExists)
-                _backupConfig = Mod.Loader.IO.LoaderConfigReader.ReadConfiguration();
-        }
+        private TestData _testData = new TestData();
 
         public void Dispose()
         {
-            // Delete if not exist prior, else restore.
-            if (_backupConfig == null)
-                File.Delete(Mod.Loader.IO.LoaderConfigReader.ConfigurationPath());
-            else
-                Mod.Loader.IO.LoaderConfigReader.WriteConfiguration(_backupConfig);
+            _testData.Dispose();
         }
 
         /* Simple Read/Write and Serialization Test */
@@ -31,7 +21,7 @@ namespace Reloaded.Mod.Loader.Tests.IO
         public void ReadWriteConfig()
         {
             // Make new config first and backup old.
-            var config = LoaderConfig.GetTestConfig();
+            var config = TestData.MakeTestConfig();
 
             // Write and read back the config.
             Mod.Loader.IO.LoaderConfigReader.WriteConfiguration(config);

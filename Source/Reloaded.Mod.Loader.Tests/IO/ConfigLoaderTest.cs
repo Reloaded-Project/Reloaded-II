@@ -56,29 +56,38 @@ namespace Reloaded.Mod.Loader.Tests.IO
                 MakeDirectory("AppConfigDirectory")
             };
 
-            string[] filePaths =
+            try
             {
-                Path.Combine(directories[0], ModConfigFileName),
-                Path.Combine(directories[1], AppConfigFileName)
-            };
+                string[] filePaths =
+                {
+                    Path.Combine(directories[0], ModConfigFileName),
+                    Path.Combine(directories[1], AppConfigFileName)
+                };
 
-            /* Write to directories. */
-            _modConfigReader.WriteConfiguration(filePaths[0], _testModConfig);
-            _appConfigReader.WriteConfiguration(filePaths[1], _testAppConfig);
+                /* Write to directories. */
+                _modConfigReader.WriteConfiguration(filePaths[0], _testModConfig);
+                _appConfigReader.WriteConfiguration(filePaths[1], _testAppConfig);
 
-            /* Find in directories. */
-            var modPathConfigTuple = _modConfigReader.ReadConfigurations(currentDirectory, ModConfigFileName)[0];
-            var appPathConfigTuple = _appConfigReader.ReadConfigurations(currentDirectory, AppConfigFileName)[0];
+                /* Find in directories. */
+                var modPathConfigTuple = _modConfigReader.ReadConfigurations(currentDirectory, ModConfigFileName)[0];
+                var appPathConfigTuple = _appConfigReader.ReadConfigurations(currentDirectory, AppConfigFileName)[0];
 
-            /* Validate Tuples. */
-            Assert.Equal(Path.GetFullPath(filePaths[0]), Path.GetFullPath(modPathConfigTuple.Path));
-            Assert.Equal(Path.GetFullPath(filePaths[1]), Path.GetFullPath(appPathConfigTuple.Path));
-            Assert.Equal(_testModConfig, modPathConfigTuple.Object);
-            Assert.Equal(_testAppConfig, appPathConfigTuple.Object);
-
-            /* Delete directories */
-            foreach (string directory in directories)
-                Directory.Delete(directory, true);
+                /* Validate Tuples. */
+                Assert.Equal(Path.GetFullPath(filePaths[0]), Path.GetFullPath(modPathConfigTuple.Path));
+                Assert.Equal(Path.GetFullPath(filePaths[1]), Path.GetFullPath(appPathConfigTuple.Path));
+                Assert.Equal(_testModConfig, modPathConfigTuple.Object);
+                Assert.Equal(_testAppConfig, appPathConfigTuple.Object);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            finally
+            {
+                /* Delete directories */
+                foreach (string directory in directories)
+                    Directory.Delete(directory, true);
+            }
         }
 
         /// <summary>

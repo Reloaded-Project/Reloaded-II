@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
+using Reloaded.Mod.Loader.IO.Misc;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Weaving;
 using Rock.Collections;
@@ -11,18 +13,28 @@ namespace Reloaded.Mod.Loader.IO.Config
 {
     public class ApplicationConfig : ObservableObject, Mod.Interfaces.IApplicationConfig, IConfig
     {
+        public const string ConfigFileName = "AppConfig.json";
+        
+        /* Static defaults to prevent allocating new strings on object creation. */
+        private static string DefaultId = "reloaded.application.template";
+        private static string DefaultName = "Reloaded Application Template";
+        private static string DefaultIcon = "Icon.png";
+
         private static readonly ConfigReader<ApplicationConfig> _appConfigReader = new ConfigReader<ApplicationConfig>();
 
-        /// <summary>
-        /// The name of the configuration file as stored on disk.
-        /// </summary>
-        public const string ConfigFileName = "AppConfig.json";
-        public string AppId { get; set; } = "reloaded.application.template";
-        public string AppName { get; set; } = "Reloaded Application Template";
-        public string AppLocation { get; set; } = "";
-        public string AppArguments { get; set; } = "";
-        public string AppIcon { get; set; } = "Icon.png";
-        public string[] EnabledMods { get; set; } = new string[0];
+        /* Class Members */
+        public string AppId                 { get; set; } = DefaultId;
+        public string AppName               { get; set; } = DefaultName;
+        public string AppLocation           { get; set; } = String.Empty;
+        public string AppArguments          { get; set; } = String.Empty;
+        public string AppIcon               { get; set; } = DefaultIcon;
+        public string[] EnabledMods
+        {
+            get => _enabledMods;
+            set => _enabledMods = value ?? Constants.EmptyStringArray;
+        }
+
+        private string[] _enabledMods;
 
         public ApplicationConfig()
         {
@@ -139,7 +151,7 @@ namespace Reloaded.Mod.Loader.IO.Config
                    string.Equals(AppLocation, other.AppLocation) && 
                    string.Equals(AppArguments, other.AppArguments) && 
                    string.Equals(AppIcon, other.AppIcon) && 
-                   Enumerable.SequenceEqual(EnabledMods, other.EnabledMods);
+                   EnabledMods.SequenceEqualWithNullSupport(other.EnabledMods);
         }
 
         public override bool Equals(object obj)

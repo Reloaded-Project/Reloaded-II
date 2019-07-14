@@ -19,6 +19,10 @@ namespace Reloaded.Mod.Loader.IO
     public class ConfigReader<TConfigType> : IConfigLoader<TConfigType> where TConfigType : IConfig
     {
         /* Documentation: See IConfigLoader. */
+        public static JsonSerializerOptions Options = new JsonSerializerOptions()
+        {
+            WriteIndented = true
+        };
 
         /* Interface */
         public List<PathGenericTuple<TConfigType>> ReadConfigurations(string directory, string fileName) => ReadConfigurations(directory, fileName, default);
@@ -41,7 +45,6 @@ namespace Reloaded.Mod.Loader.IO
         }
 
         /* Excluding because path and WriteConfiguration are tested. */
-        [ExcludeFromCodeCoverage]
         public void WriteConfigurations(PathGenericTuple<TConfigType>[] configurations, CancellationToken token)
         {
             foreach (var configuration in configurations)
@@ -52,7 +55,7 @@ namespace Reloaded.Mod.Loader.IO
         public TConfigType ReadConfiguration(string path)
         {
             string jsonFile = File.ReadAllText(path);
-            return JsonSerializer.Parse<TConfigType>(jsonFile);
+            return JsonSerializer.Parse<TConfigType>(jsonFile, Options);
         }
 
         public void WriteConfiguration(string path, TConfigType config)
@@ -62,7 +65,7 @@ namespace Reloaded.Mod.Loader.IO
             if (!Directory.Exists(directoryOfPath))
                 Directory.CreateDirectory(directoryOfPath);
 
-            string jsonFile = JsonSerializer.ToString(config, new JsonSerializerOptions() { WriteIndented = true });
+            string jsonFile = JsonSerializer.ToString(config, Options);
             File.WriteAllText(path, jsonFile);
         }
     }

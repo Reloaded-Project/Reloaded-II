@@ -1,0 +1,11 @@
+{
+  "ModId": "TestModA",
+  "ModName": "Test Mod A",
+  "ModAuthor": "Someone",
+  "ModVersion": "",
+  "ModDescription": "",
+  "ModDll": "TestModA.dll",
+  "ModIcon": "",
+  "ModDependencies": [],
+  "SupportedAppId": []
+}

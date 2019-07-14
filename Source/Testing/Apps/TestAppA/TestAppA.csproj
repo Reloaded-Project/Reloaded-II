@@ -7,25 +7,21 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\Output\Tests\Mods\TestModA</OutputPath>
+    <OutputPath>..\..\..\Output\Tests\Apps\TestAppA</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\Output\Tests\Mods\TestModA</OutputPath>
+    <OutputPath>..\..\..\Output\Tests\Apps\TestAppA</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ModConfig.json" />
+    <None Remove="AppConfig.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ModConfig.json">
+    <Content Include="AppConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

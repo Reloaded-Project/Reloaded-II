@@ -1,6 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Text.Json.Serialization;
+using Reloaded.Mod.Loader.IO.Misc;
 using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
@@ -19,36 +23,42 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Contains the location of the last directory that launched Reloaded Mod Loader II.
         /// </summary>
-        public string InstallDirectory { get; set; } = "";
+        public string InstallDirectory { get; set; } = String.Empty;
 
         /// <summary>
         /// The directory which houses all Reloaded Application information (e.g. Games etc.)
         /// </summary>
-        public string ApplicationConfigDirectory { get; set; } = "";
+        public string ApplicationConfigDirectory { get; set; } = String.Empty;
 
         /// <summary>
         /// Contains the directory which houses all Reloaded mods.
         /// </summary>
-        public string ModConfigDirectory { get; set; } = "";
+        public string ModConfigDirectory { get; set; } = String.Empty;
 
         /// <summary>
         /// Contains the directory which houses all Reloaded plugins.
         /// </summary>
-        public string PluginConfigDirectory { get; set; } = "";
+        public string PluginConfigDirectory { get; set; } = String.Empty;
 
         /// <summary>
         /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
         /// </summary>
-        public string[] EnabledPlugins { get; set; }
+        public string[] EnabledPlugins
+        {
+            get => _enabledPlugins;
+            set => _enabledPlugins = value ?? Constants.EmptyStringArray;
+        }
 
         public bool FirstLaunch { get; set; } = true;
         public bool AutoAcceptUpdates { get; set; } = false;
+
+
+        private string[] _enabledPlugins;
 
         /* Some mods are universal :wink: */
 
         public LoaderConfig()
         {
-            EnabledPlugins = new string[0];
             ResetMissingDirectories();
         }
 
@@ -100,7 +110,7 @@ namespace Reloaded.Mod.Loader.IO.Config
                    string.Equals(ApplicationConfigDirectory, other.ApplicationConfigDirectory) &&
                    string.Equals(ModConfigDirectory, other.ModConfigDirectory) &&
                    string.Equals(PluginConfigDirectory, other.PluginConfigDirectory) &&
-                   Enumerable.SequenceEqual(EnabledPlugins, other.EnabledPlugins);
+                   EnabledPlugins.SequenceEqualWithNullSupport(other.EnabledPlugins);
         }
 
         public override bool Equals(object obj)
