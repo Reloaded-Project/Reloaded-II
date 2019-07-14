@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.Json.Serialization;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Misc;
 
 namespace Reloaded.Mod.Loader.IO
 {
@@ -54,6 +55,10 @@ namespace Reloaded.Mod.Loader.IO
             string directory = Path.GetDirectoryName(StaticConfigFilePath);
             if (! Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
+
+            // TODO: Remove this once serialization library supports nulls as empty array.
+            if (config.EnabledPlugins == null)
+                config.EnabledPlugins = Constants.EmptyStringArray;
 
             string jsonFile = JsonSerializer.ToString(config, new JsonSerializerOptions() { WriteIndented = true });
             File.WriteAllText(StaticConfigFilePath, jsonFile);

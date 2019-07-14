@@ -52,7 +52,6 @@ namespace Reloaded.Mod.Loader.IO.Config
         public bool FirstLaunch { get; set; } = true;
         public bool AutoAcceptUpdates { get; set; } = false;
 
-
         private string[] _enabledPlugins;
 
         /* Some mods are universal :wink: */
@@ -60,18 +59,6 @@ namespace Reloaded.Mod.Loader.IO.Config
         public LoaderConfig()
         {
             ResetMissingDirectories();
-        }
-
-        /// <summary>
-        /// Testing use only.
-        /// </summary>
-        public static LoaderConfig GetTestConfig()
-        {
-            var config = new LoaderConfig();
-            config.ApplicationConfigDirectory = IfNotExistsMakeDefaultDirectory(config.ApplicationConfigDirectory, "TestApps");
-            config.ModConfigDirectory = IfNotExistsMakeDefaultDirectory(config.ModConfigDirectory, "TestMods");
-            config.PluginConfigDirectory = IfNotExistsMakeDefaultDirectory(config.PluginConfigDirectory, "TestPlugins");
-            return config;
         }
 
         // Creates directories/folders if they do not exist.

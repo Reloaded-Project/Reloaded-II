@@ -46,6 +46,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             AppId = appId;
             AppName = appName;
             AppLocation = appLocation;
+            EnabledMods = Constants.EmptyStringArray;
         }
 
         /*

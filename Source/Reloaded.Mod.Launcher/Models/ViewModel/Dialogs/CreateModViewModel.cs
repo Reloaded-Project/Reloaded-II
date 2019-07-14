@@ -52,6 +52,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
             string iconSaveDirectory = Path.Combine(modDirectory, ModConfig.IconFileName);
             Config.ModIcon = ModConfig.IconFileName;
             Config.ModDependencies = Dependencies.Where(x => x.Enabled).Select(x => x.Generic.ModId).ToArray();
+            Config.SupportedAppId = Constants.EmptyStringArray;
 
             var configLoader = new ConfigReader<ModConfig>();
             configLoader.WriteConfiguration(configSaveDirectory, (ModConfig) Config);

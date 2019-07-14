@@ -64,7 +64,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
             // Write file to disk.
             Directory.CreateDirectory(applicationDirectory);
-            Loader.IO.Config.ApplicationConfig.WriteConfiguration(applicationConfigFile, (Loader.IO.Config.ApplicationConfig)config);
+            ApplicationConfig.WriteConfiguration(applicationConfigFile, (Loader.IO.Config.ApplicationConfig)config);
 
             // Select this config.
             _lastConfigFileLocation = applicationConfigFile;
