@@ -1,15 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Misc;
+using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.Tests.SETUP
 {
     public class TestData : IDisposable
     {
+        /// <summary>
+        /// Represents the ID of the executing test application.
+        /// </summary>
+        public const string     IdOfThisApp = "reloaded.mod.loader.tests";
+
+        /// <summary>
+        /// Represents the configuration path of this application's configuration.
+        /// </summary>
+        public string           ConfigurationPathOfThisApp { get; set; }
+
         /// <summary>
         /// (Manually defined) List of non-existing dependencies.
         /// </summary>
@@ -40,6 +53,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
         public ModConfig        TestModConfigA => ModConfigurations.First(x => x.ModId == "TestModA"); 
         public ModConfig        TestModConfigB => ModConfigurations.First(x => x.ModId == "TestModB");
         public ModConfig        TestModConfigC => ModConfigurations.First(x => x.ModId == "TestModC");
+        public ApplicationConfig ThisApplication;
 
         public TestData()
         {
@@ -56,6 +70,14 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
                 // Populate configurations.
                 ModConfigurations = ModConfig.GetAllMods().Select(x => x.Object).ToArray();
                 AppConfigurations = ApplicationConfig.GetAllApplications().Select(x => x.Object).ToArray();
+
+                ThisApplication = new ApplicationConfig(IdOfThisApp,
+                                                        "Reloaded Mod Loader Tests",
+                                                        Process.GetCurrentProcess().GetExecutablePath(),
+                                                        new[] { TestModConfigA.ModId, TestModConfigB.ModId });
+
+                ConfigurationPathOfThisApp = Path.Combine(TestConfig.ApplicationConfigDirectory, IdOfThisApp, ApplicationConfig.ConfigFileName);
+                ApplicationConfig.WriteConfiguration(ConfigurationPathOfThisApp, ThisApplication);
 
                 // Populate nonexisting dependencies.
                 NonexistingDependencies.Add(TestModB.Program.NonexistingDependencyName);

@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Other\TestInterfaces\TestInterfaces.csproj" />
   </ItemGroup>
 
 </Project>

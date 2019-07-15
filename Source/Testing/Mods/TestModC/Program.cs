@@ -1,11 +1,13 @@
 ﻿using System;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
+using TestInterfaces;
 
 namespace TestModC
 {
-    public class Program : IMod
+    public class Program : IMod, IIdentifyMyself
     {
+        public string MyId { get; set; } = "TestModC";
         public const string NonexistingDependencyName = "TestModZ";
 
         /* Entry point. */
@@ -18,20 +20,20 @@ namespace TestModC
         /* Suspend/Unload */
         public void Suspend()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void Resume()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void Unload()
         {
-            throw new NotImplementedException();
+            
         }
 
-        public bool CanUnload() => false;
-        public bool CanSuspend() => false;
+        public bool CanUnload() => true;
+        public bool CanSuspend() => true;
     }
 }

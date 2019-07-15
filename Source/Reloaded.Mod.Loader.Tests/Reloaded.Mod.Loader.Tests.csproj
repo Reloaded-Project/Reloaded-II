@@ -25,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.DotMemoryUnit" Version="3.0.20171219.105559" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.0-preview-20181205-02" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
@@ -39,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Loader\" />
+    <Folder Include="Server\" />
   </ItemGroup>
 
 </Project>

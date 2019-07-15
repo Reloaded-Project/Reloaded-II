@@ -20,7 +20,7 @@ namespace Reloaded.Mod.Loader.Mods
     /// <summary>
     /// A general loader based on <see cref="McMaster.NETCore.Plugins"/> that loads individual mods as plugins.
     /// </summary>
-    public class PluginManager
+    public class PluginManager : IDisposable
     {
         public LoaderAPI LoaderApi { get; }
         private readonly Dictionary<string, ModInstance> _modifications = new Dictionary<string, ModInstance>();
@@ -41,6 +41,14 @@ namespace Reloaded.Mod.Loader.Mods
             }
         }
 
+        public void Dispose()
+        {
+            foreach (var modification in _modifications.Values)
+            {
+                modification.Dispose();
+            }
+        }
+
         /// <summary>
         /// Retrieves a list of all loaded modifications.
         /// </summary>
@@ -54,13 +62,16 @@ namespace Reloaded.Mod.Loader.Mods
         {
             // Check if mod with ID already loaded.
             if (_modifications.ContainsKey(tuple.Object.ModId))
-                throw new ArgumentException("Mod with specified ID is already loaded.");
+                throw new ReloadedException(Errors.ModAlreadyLoaded(tuple.Object.ModId));
             
             // TODO: Native mod loading support.
-            var loaderOptions = PluginLoaderOptions.PreferSharedTypes | PluginLoaderOptions.IsUnloadable;
             var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path, 
                 new []{ typeof(IModLoaderV1), typeof(IModV1) },
-                loaderOptions);
+                config =>
+                {
+                    config.IsUnloadable = true;
+                    config.PreferSharedTypes = true;
+                });
 
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types = defaultAssembly.GetTypes();
@@ -81,15 +92,22 @@ namespace Reloaded.Mod.Loader.Mods
         public void UnloadMod(string modId)
         {
             var mod = _modifications[modId];
-            if (mod != null && mod.Mod.CanUnload())
+            if (mod != null)
             {
-                LoaderApi.ModUnloading(mod.Mod, mod.ModConfig);
-                _modifications.Remove(modId);
-                mod.Dispose();
+                if (mod.Mod.CanUnload())
+                {
+                    LoaderApi.ModUnloading(mod.Mod, mod.ModConfig);
+                    _modifications.Remove(modId);
+                    mod.Dispose();
+                }
+                else
+                {
+                    throw new ReloadedException(Errors.ModUnloadNotSupported(modId));
+                }
             }
             else
             {
-                throw new ReloadedException(Errors.ModToUnloadNotFound);
+                throw new ReloadedException(Errors.ModToUnloadNotFound(modId));
             }
         }
 
@@ -99,16 +117,22 @@ namespace Reloaded.Mod.Loader.Mods
         public void SuspendMod(string modId)
         {
             var mod = _modifications[modId];
-            if (mod != null && mod.Mod.CanSuspend())
+            if (mod != null)
             {
-                mod.Suspend();
+                if (mod.Mod.CanSuspend())
+                {
+                    mod.Suspend();
+                }
+                else
+                {
+                    throw new ReloadedException(Errors.ModSuspendNotSupported(modId));
+                }
             }
             else
             {
-                throw new ReloadedException(Errors.ModToSuspendNotFound);
+                throw new ReloadedException(Errors.ModToSuspendNotFound(modId));
             }
         }
-
 
         /// <summary>
         /// Resumes an individual mod.
@@ -116,29 +140,42 @@ namespace Reloaded.Mod.Loader.Mods
         public void ResumeMod(string modId)
         {
             var mod = _modifications[modId];
-            if (mod != null && mod.Mod.CanSuspend())
+            if (mod != null)
             {
-                mod.Resume();
+                if (mod.Mod.CanSuspend())
+                {
+                    mod.Resume();
+                }
+                else
+                {
+                    throw new ReloadedException(Errors.ModSuspendNotSupported(modId));
+                }
             }
             else
             {
-                throw new ReloadedException(Errors.ModToResumeNotFound);
+                throw new ReloadedException(Errors.ModToResumeNotFound(modId));
             }
         }
 
         /// <summary>
-        /// Retrieves a list of all loaded mods.
+        /// Returns a summary of all of the loaded mods in this process.
         /// </summary>
-        public void GetLoadedMods(ref NetMessage<GetLoadedMods> message)
+        public ModInstance[] GetLoadedMods()
+        {
+            return _modifications.Values.ToArray();
+        }
+
+        /// <summary>
+        /// Returns a summary of all of the loaded mods in this process.
+        /// </summary>
+        public List<ModInfo> GetLoadedModSummary()
         {
             var allModInfo = new List<ModInfo>();
-            foreach (var entry in _modifications)
-            {
-                allModInfo.Add(new ModInfo(entry.Value.State, entry.Key, entry.Value.CanSuspend, entry.Value.CanSuspend));
-            }
 
-            var messageToSend = new Message<MessageType, GetLoadedModsResponse>(new GetLoadedModsResponse(allModInfo.ToArray()));
-            message.Peer.Send(messageToSend.Serialize(), DeliveryMethod.ReliableOrdered);
+            foreach (var entry in _modifications)
+                allModInfo.Add(new ModInfo(entry.Value.State, entry.Key, entry.Value.CanSuspend, entry.Value.CanSuspend));
+
+            return allModInfo;
         }
 
         /* Helper methods. */

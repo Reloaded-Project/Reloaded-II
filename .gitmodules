@@ -4,3 +4,6 @@
 	url = https://github.com/Sewer56/Reloaded.WPF.git
 [submodule "Submodules/Rock.Collections"]
 	url = https://github.com/Sewer56/Rock.Collections.git
+[submodule "Submodules/DotNetCorePlugins"]
+	path = Submodules/DotNetCorePlugins
+	url = https://github.com/Sewer56/DotNetCorePlugins.git

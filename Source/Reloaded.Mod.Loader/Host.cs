@@ -58,7 +58,9 @@ namespace Reloaded.Mod.Loader
         /* Message Handlers */
         void GetLoadedMods(ref NetMessage<GetLoadedMods> message)
         {
-            _loader.GetLoadedMods(ref message);
+            var summary = _loader.GetLoadedModSummary();
+            var messageToSend = new Message<MessageType, GetLoadedModsResponse>(new GetLoadedModsResponse(summary.ToArray()));
+            message.Peer.Send(messageToSend.Serialize(), DeliveryMethod.ReliableOrdered);
         }
 
         void UnloadMod(ref NetMessage<UnloadMod> netmessage)

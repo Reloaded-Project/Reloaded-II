@@ -37,14 +37,16 @@ namespace Reloaded.Mod.Loader.Mods.Structs
 
         public void Dispose()
         {
-            Mod.Disposing();
-            Mod = null;
-            Loader?.Dispose();
-            GC.SuppressFinalize(this);
+            if (CanUnload)
+            {
+                Mod.Disposing?.Invoke();
+                Mod = null;
+                Loader?.Dispose();
+                GC.SuppressFinalize(this);
 
-            // Blocking GC happens here to ensure no reference to unloaded assembly still exists.
-            GC.Collect(2, GCCollectionMode.Forced, true);
-            
+                // Blocking GC happens here to ensure no reference to unloaded assembly still exists.
+                GC.Collect(2, GCCollectionMode.Forced, true);
+            }
         }
 
         public void Start(IModLoader loader)

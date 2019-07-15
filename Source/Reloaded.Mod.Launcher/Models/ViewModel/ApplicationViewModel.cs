@@ -5,10 +5,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.WPF.MVVM;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
+using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
@@ -55,13 +57,24 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             InitializeClassTask = Task.Run(() =>
             {
-                InstanceTracker = new ApplicationInstanceTracker(tuple.ApplicationConfig.AppLocation, _initializeClassTaskTokenSource.Token);
-                ManageModsViewModel.ModsChanged += OnModsChanged;
-                InstanceTracker.OnProcessesChanged += InstanceTrackerOnProcessesChanged;
+                try
+                {
+                    InstanceTracker = new ApplicationInstanceTracker(tuple.ApplicationConfig.AppLocation, _initializeClassTaskTokenSource.Token);
+                    ManageModsViewModel.ModsChanged += OnModsChanged;
+                    InstanceTracker.OnProcessesChanged += InstanceTrackerOnProcessesChanged;
 
-                InstanceTrackerOnProcessesChanged(new Process[0]);
-                OnModsChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                Page = ApplicationSubPage.ApplicationSummary;
+                    InstanceTrackerOnProcessesChanged(new Process[0]);
+                    OnModsChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                    Page = ApplicationSubPage.ApplicationSummary;
+                }
+                catch (Exception ex)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var box = new MessageBox(Errors.Error, ex.Message);
+                        box.ShowDialog();
+                    });
+                }
             });
         }
 
@@ -80,8 +93,12 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             }
 
             ManageModsViewModel.ModsChanged -= OnModsChanged;
-            InstanceTracker.OnProcessesChanged -= InstanceTrackerOnProcessesChanged;
-            InstanceTracker.Dispose();
+            if (InstanceTracker != null)
+            {
+                InstanceTracker.OnProcessesChanged -= InstanceTrackerOnProcessesChanged;
+                InstanceTracker.Dispose();
+            }
+
             GC.SuppressFinalize(this);
         }
 

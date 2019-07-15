@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using Reloaded.Mod.Launcher.Misc;
+using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -17,9 +18,6 @@ namespace Reloaded.Mod.Launcher.Utility
     /// </summary>
     public class ApplicationInstanceTracker : IDisposable
     {
-        public const int ProcessQueryLimitedInformation = 0x1000;
-        public const int MaxPath = 32767;
-
         /// <summary>
         /// Fired whenever the list of processes satisfying the application path changes.
         /// </summary>
@@ -28,12 +26,14 @@ namespace Reloaded.Mod.Launcher.Utility
         private HashSet<Process> _processes; // All processes that satisfy file path filter.
         private readonly string _applicationPath;
         private readonly ProcessWatcher _processWatcher;
-        private readonly StringBuilder _buffer = new StringBuilder(MaxPath);
 
         /* Class Setup and Teardown */
 
         public ApplicationInstanceTracker(string applicationPath, CancellationToken token = default)
         {
+            if (String.IsNullOrEmpty(applicationPath))
+                throw new ArgumentException(Errors.PathNullOrEmpty);
+
             _applicationPath = Path.GetFullPath(applicationPath);
             BuildInitialProcesses(token);
 
@@ -68,7 +68,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
                 ActionWrappers.TryCatch(() =>
                 {
-                    var processPath = Path.GetFullPath(GetExecutablePath(process.Id));
+                    var processPath = Path.GetFullPath(process.GetExecutablePath());
 
                     if (string.Equals(processPath, _applicationPath, StringComparison.OrdinalIgnoreCase))
                         _processes.Add(process);
@@ -133,42 +133,7 @@ namespace Reloaded.Mod.Launcher.Utility
         private void ProcessWatcherOnOnRemovedProcess(int processid)  => RemoveProcess(processid);
         private void ProcessWatcherOnOnNewProcess(Process newprocess) => AddProcess(newprocess);
 
-        /* Helpers */
-        private string GetExecutablePath(int processId)
-        {
-            /* Vista+ implementation that is faster and allows to query system processes. */
-            var processHandle   = OpenProcess(ProcessQueryLimitedInformation, false, processId);
-            
-            // Note: We can re-use the buffer without clearing because the returned string is null-terminated.
-
-            if (processHandle != IntPtr.Zero)
-            {
-                try
-                {
-                    // ReSharper disable once NotAccessedVariable
-                    int size = _buffer.Capacity;
-                    if (QueryFullProcessImageNameW(processHandle, 0, _buffer, out size))
-                        return _buffer.ToString();
-                }
-                finally
-                {
-                    CloseHandle(processHandle);
-                }
-            }
-
-            throw new Win32Exception(Marshal.GetLastWin32Error());
-        }
-
         /* Definitions */
         public delegate void ProcessesChanged(Process[] newProcesses);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        private static extern bool QueryFullProcessImageNameW(IntPtr hprocess, int dwFlags, StringBuilder lpExeName, out int size);
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool CloseHandle(IntPtr hHandle);
     }
 }

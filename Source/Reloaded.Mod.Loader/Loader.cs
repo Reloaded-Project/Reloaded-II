@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using LiteNetLib;
 using Reloaded.Messaging.Structs;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.Exceptions;
@@ -9,12 +11,14 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Mods;
 using Reloaded.Mod.Loader.Server.Messages.Server;
+using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Utilities;
+using Reloaded.Mod.Shared;
 using Console = Reloaded.Mod.Loader.Logging.Console;
 
 namespace Reloaded.Mod.Loader
 {
-    public class Loader
+    public class Loader : IDisposable
     {
         public bool IsLoaded { get; private set; }
         public IApplicationConfig Application { get; private set; }
@@ -29,13 +33,18 @@ namespace Reloaded.Mod.Loader
             Console = new Console();
         }
 
-        /* Public Interface */
-
-        public void GetLoadedMods(ref NetMessage<GetLoadedMods> message)
+        ~Loader()
         {
-            Wrappers.ThrowIfENotEqual(IsLoaded, true, Errors.ModLoaderNotInitialized);
-            Manager.GetLoadedMods(ref message);
+            Dispose();
         }
+
+        public void Dispose()
+        {
+            Manager?.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        /* Public Interface */
 
         public void LoadMod(string modId)
         {
@@ -61,6 +70,12 @@ namespace Reloaded.Mod.Loader
             Manager.ResumeMod(modId);
         }
 
+        public List<ModInfo> GetLoadedModSummary()
+        {
+            Wrappers.ThrowIfENotEqual(IsLoaded, true, Errors.ModLoaderNotInitialized);
+            return Manager.GetLoadedModSummary();
+        }
+
         /* Methods */
 
         public void LoadForCurrentProcess()
@@ -75,6 +90,7 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         public void LoadForAppConfig(IApplicationConfig applicationConfig)
         {
+            Wrappers.ThrowIfENotEqual(IsLoaded, false, Errors.ModLoaderAlreadyInitialized);
             Application = applicationConfig;
 
             // Get all mods and their paths.
@@ -85,8 +101,8 @@ namespace Reloaded.Mod.Loader
                 configToPathDictionary[mod.Generic.Object] = mod.Generic.Path;
 
             // Get list of mods to load and load them.
-            var modsToLoad          = allMods.Where(x => x.Enabled).Select(x => x.Generic.Object).ToArray();
-            var dependenciesToLoad  = ModConfig.GetDependencies(modsToLoad).Configurations.ToArray();
+            var modsToLoad          = allMods.Where(x => x.Enabled).Select(x => x.Generic.Object);
+            var dependenciesToLoad  = ModConfig.GetDependencies(modsToLoad).Configurations;
             var allUniqueModsToLoad = modsToLoad.Concat(dependenciesToLoad).Distinct();
             var allSortedModsToLoad = ModConfig.SortMods(allUniqueModsToLoad);
 
@@ -120,7 +136,7 @@ namespace Reloaded.Mod.Loader
                 return new PathGenericTuple<IModConfig>(modPathTuple.Path, modPathTuple.Object);
             }
 
-            throw new ReloadedException(Errors.ModToLoadNotFound);
+            throw new ReloadedException(Errors.ModToLoadNotFound(modId));
         }
 
         /// <summary>
@@ -130,16 +146,19 @@ namespace Reloaded.Mod.Loader
         private IApplicationConfig FindThisApplication()
         {
             var configurations = ApplicationConfig.GetAllApplications();
-            var fullPath = Path.GetFullPath(Process.GetCurrentProcess().MainModule?.FileName);
+            var fullPath = Path.GetFullPath(Process.GetCurrentProcess().GetExecutablePath());
 
             foreach (var configuration in configurations)
             {
                 var application = configuration.Object;
-                var appLocation = Path.GetFullPath(application.AppLocation);
-                if (appLocation == fullPath)
-                {
+                var appLocation = application.AppLocation;
+
+                if (String.IsNullOrEmpty(appLocation))
+                    continue;
+
+                var fullAppLocation = Path.GetFullPath(application.AppLocation);
+                if (fullAppLocation == fullPath)
                     return application;
-                }
             }
 
             return null;
