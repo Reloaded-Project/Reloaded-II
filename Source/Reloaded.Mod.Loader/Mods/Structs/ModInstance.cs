@@ -40,6 +40,7 @@ namespace Reloaded.Mod.Loader.Mods.Structs
             if (CanUnload)
             {
                 Mod.Disposing?.Invoke();
+                Mod.Unload();
                 Mod = null;
                 Loader?.Dispose();
                 GC.SuppressFinalize(this);
