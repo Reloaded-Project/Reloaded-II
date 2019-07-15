@@ -120,20 +120,20 @@ namespace Reloaded.Mod.Loader
         }
 
         /// <summary>
-        /// Gets a list of all mods from filesystem and returns a mod with a matching ModId
+        /// Gets a list of all mods from filesystem and returns a mod with a matching ModId.
         /// </summary>
         /// <param name="modId">The modId to find.</param>
         /// <exception cref="ReloadedException">A mod to load has not been found.</exception>
-        private PathGenericTuple<IModConfig> FindMod(string modId)
+        public PathGenericTuple<IModConfig> FindMod(string modId)
         {
             // Get mod with ID
-            var allMods = ApplicationConfig.GetAllMods(Application);
-            var mod = allMods.FirstOrDefault(x => x.Generic.Object.ModId == modId);
+            var allMods = ModConfig.GetAllMods();
+            var mod = allMods.FirstOrDefault(x => x.Object.ModId == modId);
 
             if (mod != null)
             {
-                var modPathTuple = mod.Generic;
-                return new PathGenericTuple<IModConfig>(modPathTuple.Path, modPathTuple.Object);
+                var dllPath = ModConfig.GetDllPath(mod.Path, mod.Object);
+                return new PathGenericTuple<IModConfig>(dllPath, mod.Object);
             }
 
             throw new ReloadedException(Errors.ModToLoadNotFound(modId));
