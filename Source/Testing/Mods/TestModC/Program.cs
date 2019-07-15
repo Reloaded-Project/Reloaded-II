@@ -5,9 +5,12 @@ using TestInterfaces;
 
 namespace TestModC
 {
-    public class Program : IMod, IIdentifyMyself
+    public class Program : IMod, ITestHelper
     {
         public string MyId { get; set; } = "TestModC";
+        public bool ResumeExecuted { get; set; }
+        public bool SuspendExecuted { get; set; }
+
         public const string NonexistingDependencyName = "TestModZ";
 
         /* Entry point. */
@@ -20,12 +23,12 @@ namespace TestModC
         /* Suspend/Unload */
         public void Suspend()
         {
-            
+            SuspendExecuted = true;
         }
 
         public void Resume()
         {
-            
+            ResumeExecuted = true;
         }
 
         public void Unload()

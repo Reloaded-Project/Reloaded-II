@@ -1,4 +1,6 @@
 ﻿using System;
+using Reloaded.Mod.Loader.Exceptions;
+using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Tests.SETUP;
 using TestInterfaces;
 using Xunit;
@@ -31,14 +33,14 @@ namespace Reloaded.Mod.Loader.Tests.Loader
             foreach (var mod in loadedMods)
             {
                 var iMod = mod.Mod;
-                IIdentifyMyself sayHello = iMod as IIdentifyMyself;
+                ITestHelper sayHello = iMod as ITestHelper;
                 if (sayHello == null)
                     Assert.True(false, "Failed to cast Test Mod.");
 
                 bool isKnownConfig = sayHello.MyId == _testData.TestModConfigA.ModId ||
-                                     sayHello.MyId == _testData.TestModConfigB.ModId ||
-                                     sayHello.MyId == _testData.TestModConfigC.ModId;
+                                     sayHello.MyId == _testData.TestModConfigB.ModId;
 
+                // TestMod C is unloaded, do not check for it.
                 Assert.True(isKnownConfig);
             }
         }
@@ -55,11 +57,70 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         {
             var loadedMods = _loader.Manager.GetLoadedMods();
 
-            var testModA = (IIdentifyMyself) loadedMods[0].Mod;
+            var testModA = (ITestHelper) loadedMods[0].Mod;
             Assert.Equal(_testData.TestModConfigA.ModId, testModA.MyId);
 
-            var testModB = (IIdentifyMyself) loadedMods[1].Mod;
+            var testModB = (ITestHelper) loadedMods[1].Mod;
             Assert.Equal(_testData.TestModConfigB.ModId, testModB.MyId);
+        }
+
+        [Fact]
+        public void LoadNewMod()
+        {
+            _loader.LoadMod(_testData.TestModConfigC.ModId);
+            var loadedMods = _loader.Manager.GetLoadedMods();
+
+            // Should be loaded last.
+            var testModC = (ITestHelper)loadedMods[2].Mod;
+            Assert.Equal(_testData.TestModConfigC.ModId, testModC.MyId);
+
+            // Check state consistency
+            Assert.Equal(ModState.Running, loadedMods[2].State);
+        }
+
+        [Fact]
+        public void CheckDefaultState()
+        {
+            foreach (var modInstance in _loader.Manager.GetLoadedMods())
+            {
+                Assert.Equal(ModState.Running, modInstance.State);
+            }
+        }
+
+        [Fact]
+        public void SuspendAll()
+        {
+            foreach (var modInstance in _loader.Manager.GetLoadedMods())
+            {
+                modInstance.Suspend();
+                Assert.Equal(ModState.Suspended, modInstance.State);
+                Assert.True(((ITestHelper)modInstance.Mod).SuspendExecuted);
+            }
+        }
+
+        [Fact]
+        public void SuspendAndResumeAll()
+        {
+            foreach (var modInstance in _loader.Manager.GetLoadedMods())
+            {
+                modInstance.Suspend();
+                modInstance.Resume();
+                Assert.Equal(ModState.Running, modInstance.State);
+                Assert.True(((ITestHelper)modInstance.Mod).SuspendExecuted);
+                Assert.True(((ITestHelper)modInstance.Mod).ResumeExecuted);
+            }
+        }
+
+        [Fact]
+        public void LoadInvalidMod()
+        {
+            Assert.Throws<ReloadedException>(() => _loader.LoadMod(""));
+        }
+
+        [Fact]
+        public void LoadDuplicate()
+        {
+            Assert.Throws<ReloadedException>(() => _loader.LoadMod(_testData.TestModConfigB.ModId));
         }
     }
 }

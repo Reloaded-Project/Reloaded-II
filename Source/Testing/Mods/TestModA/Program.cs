@@ -5,9 +5,11 @@ using TestInterfaces;
 
 namespace TestModA
 {
-    public class Program : IMod, IIdentifyMyself
+    public class Program : IMod, ITestHelper
     {
         public string MyId { get; set; } = "TestModA";
+        public bool ResumeExecuted { get; set; }
+        public bool SuspendExecuted { get; set; }
 
         /* Entry point. */
         public Action Disposing { get; }
@@ -19,12 +21,12 @@ namespace TestModA
         /* Suspend/Unload */
         public void Suspend()
         {
-            
+            SuspendExecuted = true;
         }
 
         public void Resume()
         {
-            
+            ResumeExecuted = true;
         }
 
         public void Unload()
