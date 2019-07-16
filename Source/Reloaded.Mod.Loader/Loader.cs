@@ -114,7 +114,8 @@ namespace Reloaded.Mod.Loader
                 modPaths.Add(new PathGenericTuple<IModConfig>(dllPath, modToLoad));
             }
 
-            Manager = new PluginManager(modPaths, this);
+            Manager = new PluginManager(this);
+            Manager.LoadMods(modPaths);
             Manager.LoaderApi.OnModLoaderInitialized();
             IsLoaded = true;
         }

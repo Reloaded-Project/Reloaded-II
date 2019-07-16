@@ -29,16 +29,11 @@ namespace Reloaded.Mod.Loader.Mods
         /// <summary>
         /// Initializes the <see cref="PluginManager"/>
         /// </summary>
-        /// <param name="modPaths">List of all DLLs to load during initialization</param>
-        /// <param name="loader"></param>
-        public PluginManager(IEnumerable<PathGenericTuple<IModConfig>> modPaths, Loader loader)
+        /// <param name="loader">Instance of the mod loader.</param>
+        public PluginManager(Loader loader)
         {
             _loader = loader;
             LoaderApi = new LoaderAPI(_loader);
-            foreach (var modPath in modPaths)
-            {
-                LoadMod(modPath);
-            }
         }
 
         public void Dispose()
@@ -53,6 +48,18 @@ namespace Reloaded.Mod.Loader.Mods
         /// Retrieves a list of all loaded modifications.
         /// </summary>
         public IReadOnlyCollection<ModInstance> GetModifications() => _modifications.Values;
+
+        /// <summary>
+        /// Loads a collection of mods from a given set of paths.
+        /// </summary>
+        /// <param name="modPaths">List of paths to load mods from.</param>
+        public void LoadMods(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
+        {
+            foreach (var modPath in modPaths)
+            {
+                LoadMod(modPath);
+            }
+        }
 
         /// <summary>
         /// Loads an individual DLL/mod.

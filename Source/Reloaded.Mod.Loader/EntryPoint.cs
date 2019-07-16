@@ -13,7 +13,6 @@ namespace Reloaded.Mod.Loader
     {
         // DO NOT RENAME THIS CLASS OR ITS PUBLIC METHODS
         private static Loader _loader;
-        private static Task _setupServerTask;
         private static Host _server;
 
         /* Ensures DLL Resolution */
@@ -35,15 +34,6 @@ namespace Reloaded.Mod.Loader
             // Setup mod loader.
             _loader = new Loader();
             _loader.LoadForCurrentProcess();
-
-            // Setup host.
-            // Done on another thread via Task library to avoid
-            // JIT overhead affecting startup times by around ~30-70ms.
-            _setupServerTask = Task.Run(SetupServer);
-        }
-
-        private static void SetupServer()
-        {
             _server = new Host(_loader);
         }
 
@@ -54,7 +44,6 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         public static int GetPort()
         {
-            _setupServerTask.Wait();
             return _server.Port;
         }
     }

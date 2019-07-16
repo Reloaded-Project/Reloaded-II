@@ -23,7 +23,7 @@ namespace Reloaded.Mod.Loader
             _loader = loader;
             _simpleHost = new SimpleHost<MessageType>(true);
             RegisterFunctions();
-            _simpleHost.NetManager.Start(IPAddress.IPv6Loopback, IPAddress.Loopback, 0);
+            _simpleHost.NetManager.Start(IPAddress.Loopback, IPAddress.IPv6Loopback, 0);
         }
 
         private void RegisterFunctions()
@@ -63,24 +63,35 @@ namespace Reloaded.Mod.Loader
             message.Peer.Send(messageToSend.Serialize(), DeliveryMethod.ReliableOrdered);
         }
 
-        void UnloadMod(ref NetMessage<UnloadMod> netmessage)
+        void UnloadMod(ref NetMessage<UnloadMod> netMessage)
         {
-            _loader.UnloadMod(netmessage.Message.ModId);
+            _loader.UnloadMod(netMessage.Message.ModId);
+            SendAck(netMessage.Peer);
         }
 
-        void SuspendMod(ref NetMessage<SuspendMod> netmessage)
+        void SuspendMod(ref NetMessage<SuspendMod> netMessage)
         {
-            _loader.SuspendMod(netmessage.Message.ModId);
+            _loader.SuspendMod(netMessage.Message.ModId);
+            SendAck(netMessage.Peer);
         }
 
-        void LoadMod(ref NetMessage<LoadMod> netmessage)
+        void LoadMod(ref NetMessage<LoadMod> netMessage)
         {
-            _loader.LoadMod(netmessage.Message.ModId);
+            _loader.LoadMod(netMessage.Message.ModId);
+            SendAck(netMessage.Peer);
         }
 
-        void ResumeMod(ref NetMessage<ResumeMod> netmessage)
+        void ResumeMod(ref NetMessage<ResumeMod> netMessage)
         {
-            _loader.ResumeMod(netmessage.Message.ModId);
+            _loader.ResumeMod(netMessage.Message.ModId);
+            SendAck(netMessage.Peer);
+        }
+
+        /* Helpers */
+        private void SendAck(NetPeer peer)
+        {
+            var message = new Message<MessageType, Acknowledgement>(new Acknowledgement());
+            peer.Send(message.Serialize(), DeliveryMethod.ReliableOrdered);
         }
     }
 }

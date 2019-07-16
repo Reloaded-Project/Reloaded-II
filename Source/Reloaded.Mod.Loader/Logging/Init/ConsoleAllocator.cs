@@ -22,7 +22,6 @@ namespace Reloaded.Mod.Loader.Logging.Init
         /// <summary>
         /// If the process has an associated console, it will be detached and no longer visible.
         /// </summary>
-        // ReSharper disable once UnusedMember.Global
         public static void Free()
         {
             if (ConsoleExists)

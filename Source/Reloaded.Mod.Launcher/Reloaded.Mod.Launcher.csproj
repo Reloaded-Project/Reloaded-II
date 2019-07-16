@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
@@ -119,6 +119,7 @@
     <ProjectReference Include="..\..\Submodules\Reloaded.WPF\Source\Reloaded.WPF.Theme.Default\Reloaded.WPF.Theme.Default.csproj" />
     <ProjectReference Include="..\..\Submodules\Rock.Collections\Rock.Collections\Rock.Collections.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
+    <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
   </ItemGroup>
 
