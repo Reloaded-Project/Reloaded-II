@@ -35,9 +35,9 @@ namespace Reloaded.Mod.Launcher.Pages
             if (!_loaded)
             {
                 _loaded = true;
-                Task.Run(() => Setup.SetupApplication(GetText, UpdateText, (int)Application.Current.Resources[XAML_SplashMinimumTime]))
-                    .ContinueWith(ChangeToMainPage)
-                    .ContinueWith(DisplayFirstLaunchWarningIfNeeded);
+                var task = Task.Run(() => Setup.SetupApplication(GetText, UpdateText, (int)Application.Current.Resources[XAML_SplashMinimumTime]))
+                            .ContinueWith(ChangeToMainPage)
+                            .ContinueWith(DisplayFirstLaunchWarningIfNeeded);
             }
         }
 

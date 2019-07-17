@@ -17,10 +17,10 @@ namespace Reloaded.Mod.Launcher
     {
         #region XAML String Resource Constants
         // ReSharper disable InconsistentNaming
-        private const string XAML_SplashCreatingDefaultConfig = "SplashCreatingDefaultConfig";
-        private const string XAML_SplashCleaningConfigurations = "SplashCleaningConfigurations";
-        private const string XAML_SplashPreparingViewModels = "SplashPreparingViewModels";
-        private const string XAML_SplashLoadCompleteIn = "SplashLoadCompleteIn";
+        private const string XAML_SplashCreatingDefaultConfig   = "SplashCreatingDefaultConfig";
+        private const string XAML_SplashCleaningConfigurations  = "SplashCleaningConfigurations";
+        private const string XAML_SplashPreparingViewModels     = "SplashPreparingViewModels";
+        private const string XAML_SplashLoadCompleteIn          = "SplashLoadCompleteIn";
         // ReSharper restore InconsistentNaming
         #endregion XAML String Resource Constants
 
@@ -68,7 +68,10 @@ namespace Reloaded.Mod.Launcher
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Debugger.Launch();
+            if (!Debugger.IsAttached)
+                Debugger.Launch();
+            else 
+                Debugger.Break();
         }
 
         /// <summary>
@@ -100,12 +103,35 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static void SetupViewModels()
         {
-            IoC.Kernel.Bind<LoaderConfig>().ToConstant(LoaderConfigReader.ReadConfiguration());
+            var loaderConfig = LoaderConfigReader.ReadConfiguration();
+            IoC.Kernel.Bind<LoaderConfig>().ToConstant(loaderConfig);
             IoC.GetConstant<MainPageViewModel>();
             IoC.GetConstant<AddAppViewModel>();     // Consumes MainPageViewModel, make sure it goes after it.
             IoC.GetConstant<ManageModsViewModel>(); // Consumes MainPageViewModel, LoaderConfig
 
             IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, AddAppViewModel
+
+            /* Set loader DLL path. */
+            loaderConfig.LoaderPath = GetLoaderPath(Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
+            LoaderConfigReader.WriteConfiguration(loaderConfig);
+        }
+
+        /// <summary>
+        /// Retrieves the path to the Reloaded Mod Loader DLL.
+        /// </summary>
+        /// <param name="launcherDirectory"></param>
+        /// <returns></returns>
+        private static string GetLoaderPath(string launcherDirectory)
+        {
+            if (String.IsNullOrEmpty(launcherDirectory))
+                throw new DllNotFoundException("The provided launcher directory is null or empty.");
+
+            var path = Path.Combine(launcherDirectory, $"Loader\\{LoaderConfig.LoaderDllName}");
+
+            if (! File.Exists(path))
+                throw new DllNotFoundException($"{LoaderConfig.LoaderDllName} was not found. This may be caused by Antivirus software deleting and/or breaking changes in Github repository.");
+
+            return path;
         }
     }
 }

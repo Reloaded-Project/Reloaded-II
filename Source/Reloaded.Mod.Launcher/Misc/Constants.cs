@@ -2,7 +2,6 @@
 {
     public static class Constants
     {
-        public const string LoaderDllName = "Reloaded.Mod.Loader.dll";
         public const string WpfSupportedFormatsFilter = "(*.jpg, *.jpeg, *.jpe, *.jfif, *.png)|*.jpg; *.jpeg; *.jpe; *.jfif; *.png";
 
         public static string[] EmptyStringArray = new string[0];

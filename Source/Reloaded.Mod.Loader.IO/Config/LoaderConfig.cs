@@ -11,19 +11,22 @@ namespace Reloaded.Mod.Loader.IO.Config
 {
     public class LoaderConfig : ObservableObject
     {
+        public const string LoaderDllName = "Reloaded.Mod.Loader.dll";
+
         /// <summary>
         /// The name of the configuration file as stored on disk.
         /// </summary>
         public const string ConfigFileName = "ReloadedII.json";
 
-        private const string DefaultApplicationConfigDirectory = "Apps";
-        private const string DefaultModConfigDirectory = "Mods";
-        private const string DefaultPluginConfigDirectory = "Plugins";
+        private const string DefaultApplicationConfigDirectory  = "Apps";
+        private const string DefaultModConfigDirectory          = "Mods";
+        private const string DefaultPluginConfigDirectory       = "Plugins";
 
         /// <summary>
-        /// Contains the location of the last directory that launched Reloaded Mod Loader II.
+        /// Contains the path to the Reloaded Mod Loader DLL.
         /// </summary>
-        public string InstallDirectory { get; set; } = String.Empty;
+        [JsonPropertyName("LoaderPath")] // Just a safeguard in case someone decides to refactor and native bootstrapper fails to find property.
+        public string LoaderPath { get; set; } = String.Empty;
 
         /// <summary>
         /// The directory which houses all Reloaded Application information (e.g. Games etc.)
@@ -64,9 +67,16 @@ namespace Reloaded.Mod.Loader.IO.Config
         // Creates directories/folders if they do not exist.
         public void ResetMissingDirectories()
         {
-            ApplicationConfigDirectory = IfNotExistsMakeDefaultDirectory(ApplicationConfigDirectory, DefaultApplicationConfigDirectory);
-            ModConfigDirectory = IfNotExistsMakeDefaultDirectory(ModConfigDirectory, DefaultModConfigDirectory);
-            PluginConfigDirectory = IfNotExistsMakeDefaultDirectory(PluginConfigDirectory, DefaultPluginConfigDirectory);
+            try
+            {
+                ApplicationConfigDirectory  = IfNotExistsMakeDefaultDirectory(ApplicationConfigDirectory, DefaultApplicationConfigDirectory);
+                ModConfigDirectory          = IfNotExistsMakeDefaultDirectory(ModConfigDirectory, DefaultModConfigDirectory);
+                PluginConfigDirectory       = IfNotExistsMakeDefaultDirectory(PluginConfigDirectory, DefaultPluginConfigDirectory);
+            }
+            catch (Exception)
+            {
+                /* Access not allowed to directories.*/
+            }
         }
 
         // Sets default directory if does not exist.
@@ -93,7 +103,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         protected bool Equals(LoaderConfig other)
         {
-            return string.Equals(InstallDirectory, other.InstallDirectory) &&
+            return string.Equals(LoaderPath, other.LoaderPath) &&
                    string.Equals(ApplicationConfigDirectory, other.ApplicationConfigDirectory) &&
                    string.Equals(ModConfigDirectory, other.ModConfigDirectory) &&
                    string.Equals(PluginConfigDirectory, other.PluginConfigDirectory) &&
@@ -118,7 +128,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         {
             unchecked
             {
-                var hashCode = (InstallDirectory != null ? InstallDirectory.GetHashCode() : 0);
+                var hashCode = (LoaderPath != null ? LoaderPath.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ApplicationConfigDirectory != null ? ApplicationConfigDirectory.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ModConfigDirectory != null ? ModConfigDirectory.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (PluginConfigDirectory != null ? PluginConfigDirectory.GetHashCode() : 0);

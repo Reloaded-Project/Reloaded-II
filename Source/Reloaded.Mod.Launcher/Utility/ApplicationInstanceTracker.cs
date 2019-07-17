@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using Reloaded.Mod.Launcher.Misc;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Launcher.Utility
@@ -96,7 +97,7 @@ namespace Reloaded.Mod.Launcher.Utility
         {
             foreach (ProcessModule module in process.Modules)
             {
-                if (module.ModuleName == Constants.LoaderDllName)
+                if (module.ModuleName == LoaderConfig.LoaderDllName)
                 {
                     return true;
                 }

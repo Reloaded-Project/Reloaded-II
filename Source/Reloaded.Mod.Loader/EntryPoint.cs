@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Loader.Bootstrap;
@@ -34,6 +35,7 @@ namespace Reloaded.Mod.Loader
             // Setup mod loader.
             _loader = new Loader();
             _loader.LoadForCurrentProcess();
+
             _server = new Host(_loader);
         }
 
@@ -42,9 +44,9 @@ namespace Reloaded.Mod.Loader
         /// <summary>
         /// Returns the port on the local machine
         /// </summary>
-        public static int GetPort()
+        public static int GetPort(IntPtr unusedPtr, int unusedSize)
         {
-            return _server.Port;
+            return _server?.Port ?? 0;
         }
     }
     // ReSharper restore UnusedMember.Global

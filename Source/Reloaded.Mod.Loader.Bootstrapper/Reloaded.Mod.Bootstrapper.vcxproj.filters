@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\nethost">
+      <UniqueIdentifier>{afb1b884-50ca-47ca-9b9c-8d0b39f3719c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nethost\x86-libs">
+      <UniqueIdentifier>{df759a42-af6f-4b8d-8781-aafdcbf8ddf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nethost\x64-libs">
+      <UniqueIdentifier>{609e640f-9856-4ce2-b3f2-a6a7235c860c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core-setup">
+      <UniqueIdentifier>{4c4bb2b8-9685-4b64-9e37-876edd98b4f3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ReloadedPaths.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nethost\nethost.h">
+      <Filter>Header Files\nethost</Filter>
+    </ClInclude>
+    <ClInclude Include="core-setup\coreclr_delegates.h">
+      <Filter>Header Files\core-setup</Filter>
+    </ClInclude>
+    <ClInclude Include="core-setup\hostfxr.h">
+      <Filter>Header Files\core-setup</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreCLR.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CoreCLR.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files\project-template</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files\project-template</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files\project-template</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files\project-template</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="nethost\x86-libs\nethost.lib">
+      <Filter>Header Files\nethost\x86-libs</Filter>
+    </Library>
+    <Library Include="nethost\x64-libs\nethost.lib">
+      <Filter>Header Files\nethost\x64-libs</Filter>
+    </Library>
+  </ItemGroup>
+</Project>
