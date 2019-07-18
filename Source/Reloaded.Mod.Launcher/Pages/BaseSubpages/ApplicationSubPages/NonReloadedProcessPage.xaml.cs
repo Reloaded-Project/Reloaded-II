@@ -1,4 +1,5 @@
 ﻿using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
+using Reloaded.Mod.Launcher.Utility;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
 {
@@ -17,7 +18,11 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            // TODO: Inject Reloaded II
+            var injector = new ApplicationInjector(ViewModel.ApplicationViewModel.SelectedProcess);
+            injector.Inject();
+
+            // Exit page.
+            ViewModel.ApplicationViewModel.Page = Enum.ApplicationSubPage.ApplicationSummary;
         }
     }
 }

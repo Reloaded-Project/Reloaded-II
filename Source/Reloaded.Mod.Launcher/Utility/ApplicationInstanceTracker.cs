@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using Reloaded.Injector;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Shared;
@@ -95,14 +96,22 @@ namespace Reloaded.Mod.Launcher.Utility
 
         private bool IsModLoaderPresent(Process process)
         {
-            foreach (ProcessModule module in process.Modules)
+            try
             {
-                if (module.ModuleName == LoaderConfig.LoaderDllName)
+                foreach (var module in Safety.TryGetModules(process))
                 {
-                    return true;
+                    if (Path.GetFileName(module.ModulePath) == LoaderConfig.LoaderDllName)
+                    {
+                        return true;
+                    }
                 }
+
+                return false;
             }
-            return false;
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /* This section: Active maintenance of list based off of process add/remove events. */

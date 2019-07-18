@@ -95,7 +95,7 @@
             <DockPanel Grid.Column="1" LastChildFill="False">
                 <StackPanel DockPanel.Dock="Top"
                             Margin="{DynamicResource PanelMargin}">
-                    <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModId, UpdateSourceTrigger=PropertyChanged, FallbackValue='reloaded.somerandom.modid'}" 
+                    <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModId, UpdateSourceTrigger=PropertyChanged, FallbackValue='reloaded.this.is.dummytext'}" 
                                HorizontalAlignment="Center"
                                Style="{DynamicResource TextblockWithColourChange}" 
                                TextWrapping="Wrap"/>
@@ -111,7 +111,7 @@
                                TextWrapping="Wrap"/>
                 </StackPanel>
 
-                <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModDescription, UpdateSourceTrigger=PropertyChanged, FallbackValue='Uses Reloaded library to feed Heroes inputs. Supports all players P1-P4. See mod folder after first run for config files allowing rebinding.'}" 
+                <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModDescription, UpdateSourceTrigger=PropertyChanged, FallbackValue='Uses Reloaded to tell you to get some mods. Reloaded-II is cool! Cuteness is justice, it\'s the law!.'}" 
                            DockPanel.Dock="Bottom"
                            HorizontalAlignment="Center"
                            Margin="{DynamicResource PanelMargin}"

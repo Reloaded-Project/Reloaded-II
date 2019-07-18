@@ -7,6 +7,7 @@ using LiteNetLib;
 using Reloaded.Messaging.Structs;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.Exceptions;
+using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Mods;

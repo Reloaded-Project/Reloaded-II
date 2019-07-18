@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,14 +19,16 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
     {
         public const string ModsForThisAppPropertyName = nameof(ModsForThisApp);
         private static readonly object Lock = new object();
+        private static Process[] _emptyProcessArray = new Process[0];
 
         public ImageApplicationPathTuple ApplicationTuple { get; }
         public ManageModsViewModel ManageModsViewModel { get; }
         public ApplicationInstanceTracker InstanceTracker { get; private set; }
 
-        public ObservableCollection<ImageModPathTuple> ModsForThisApp { get; set; }
-        public ObservableCollection<Process> ProcessesWithReloaded { get; set; }
-        public ObservableCollection<Process> ProcessesWithoutReloaded { get; set; }
+        public ObservableCollection<ImageModPathTuple> ModsForThisApp { get; private set; }
+        public ObservableCollection<Process> ProcessesWithReloaded { get; private set; }
+        public ObservableCollection<Process> ProcessesWithoutReloaded { get; private set; }
+        public Timer RefreshProcessesWithLoaderTimer { get; private set; }
 
         public int ReloadedApps { get; set; }
         public int NonReloadedApps { get; set; }
@@ -62,6 +65,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                     InstanceTracker = new ApplicationInstanceTracker(tuple.ApplicationConfig.AppLocation, _initializeClassTaskTokenSource.Token);
                     ManageModsViewModel.ModsChanged += OnModsChanged;
                     InstanceTracker.OnProcessesChanged += InstanceTrackerOnProcessesChanged;
+                    RefreshProcessesWithLoaderTimer = new Timer(state => { InstanceTrackerOnProcessesChanged(_emptyProcessArray); }, null, 1000, 1000);
 
                     InstanceTrackerOnProcessesChanged(new Process[0]);
                     OnModsChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -92,6 +96,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 InitializeClassTask.Wait();
             }
 
+            RefreshProcessesWithLoaderTimer?.Dispose();
             ManageModsViewModel.ModsChanged -= OnModsChanged;
             if (InstanceTracker != null)
             {
