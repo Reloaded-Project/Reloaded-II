@@ -21,9 +21,9 @@ HMODULE thisProcessModule;
 
 // Reloaded Init Functions
 ReloadedPaths find_reloaded(int& success);
-
 extern "C" __declspec(dllexport) void launch_reloaded();
 bool load_reloaded(ReloadedPaths& reloadedPaths);
+DWORD WINAPI launch_reloaded_async(LPVOID lpParam);
 
 // Utility Functions
 string_t get_directory_name(string_t filePath);
@@ -40,7 +40,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
     {
 		case DLL_PROCESS_ATTACH:
 			thisProcessModule = hModule;
-			//launch_reloaded();
+			CreateThread(NULL, 0, &launch_reloaded_async, 0, 0, nullptr);
 			break;
 
 		case DLL_THREAD_ATTACH:
@@ -52,6 +52,12 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 			break;
     }
     return TRUE;
+}
+
+DWORD WINAPI launch_reloaded_async(LPVOID lpParam)
+{
+	launch_reloaded();
+	return 0;
 }
 
 void launch_reloaded()
@@ -73,6 +79,8 @@ void launch_reloaded()
 
 		/* Load Reloaded*/
 		load_reloaded(paths);
+
+
 	}
 }
 
