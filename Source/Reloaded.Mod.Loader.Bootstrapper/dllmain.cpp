@@ -77,10 +77,8 @@ void launch_reloaded()
 		if (findResult == 0)
 			return;
 
-		/* Load Reloaded*/
+		/* Load Reloaded */
 		load_reloaded(paths);
-
-
 	}
 }
 

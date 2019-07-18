@@ -12,6 +12,9 @@ namespace Reloaded.Mod.Loader.IO.Config
     public class LoaderConfig : ObservableObject
     {
         public const string LoaderDllName = "Reloaded.Mod.Loader.dll";
+        public const string Bootstrapper32Name = "Reloaded.Mod.Loader.Bootstrapper.dll";
+        public const string Bootstrapper64Name = "Reloaded.Mod.Loader.Bootstrapper.dll";
+        public const string Kernel32AddressDumperName = "Kernel32AddressDumper.exe";
 
         /// <summary>
         /// The name of the configuration file as stored on disk.
@@ -27,6 +30,16 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         [JsonPropertyName("LoaderPath")] // Just a safeguard in case someone decides to refactor and native bootstrapper fails to find property.
         public string LoaderPath { get; set; } = String.Empty;
+
+        /// <summary>
+        /// Path to the mod loader bootstrapper for X86 processes.
+        /// </summary>
+        public string Bootstrapper32Path { get; set; } = String.Empty;
+
+        /// <summary>
+        /// Path to the mod loader bootstrapper for X64 processes.
+        /// </summary>
+        public string Bootstrapper64Path { get; set; } = String.Empty;
 
         /// <summary>
         /// The directory which houses all Reloaded Application information (e.g. Games etc.)
@@ -54,6 +67,12 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         public bool FirstLaunch { get; set; } = true;
         public bool AutoAcceptUpdates { get; set; } = false;
+
+        /// <summary>
+        /// If false, Reloaded Bootstrapper DLL tells the launcher to reload process and kill current process.
+        /// If true, Reloaded Bootstrapper will launch mod loader in parallel.
+        /// </summary>
+        public bool DllLoadAsynchronously { get; set; } = false;
 
         private string[] _enabledPlugins;
 

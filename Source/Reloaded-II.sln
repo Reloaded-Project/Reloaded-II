@@ -51,6 +51,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Shared", "Relo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "McMaster.NETCore.Plugins", "..\..\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj", "{5C8A14C5-70D2-4652-806D-224CF616B6BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Launcher.Kernel32AddressDumper", "Reloaded.Mod.Launcher.Kernel32AddressDumper\Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj", "{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AnyCPU = Debug|AnyCPU
@@ -195,6 +197,14 @@ Global
 		{5C8A14C5-70D2-4652-806D-224CF616B6BA}.Release|AnyCPU.Build.0 = Release|Any CPU
 		{5C8A14C5-70D2-4652-806D-224CF616B6BA}.Release|AnyCPU (X86-only).ActiveCfg = Release|Any CPU
 		{5C8A14C5-70D2-4652-806D-224CF616B6BA}.Release|AnyCPU (X86-only).Build.0 = Release|Any CPU
+		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Debug|AnyCPU.ActiveCfg = Debug|x86
+		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Debug|AnyCPU.Build.0 = Debug|x86
+		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Debug|AnyCPU (X86-only).ActiveCfg = Debug|x86
+		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Debug|AnyCPU (X86-only).Build.0 = Debug|x86
+		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Release|AnyCPU.ActiveCfg = Release|x86
+		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Release|AnyCPU.Build.0 = Release|x86
+		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Release|AnyCPU (X86-only).ActiveCfg = Release|x86
+		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Release|AnyCPU (X86-only).Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

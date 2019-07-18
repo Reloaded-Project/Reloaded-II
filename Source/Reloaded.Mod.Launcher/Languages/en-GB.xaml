@@ -15,7 +15,7 @@
     <!-- Splash Screen: Progress Messages -->
     <sys:String x:Key="SplashCreatingDefaultConfig">Creating Default Config</sys:String>
     <sys:String x:Key="SplashCleaningConfigurations">Cleaning App/Loader/Mod Configurations</sys:String>
-    <sys:String x:Key="SplashPreparingViewModels">Setting up ViewModels</sys:String>
+    <sys:String x:Key="SplashPreparingResources">Setting up Resources</sys:String>
     <sys:String x:Key="SplashLoadCompleteIn">Load Complete in:</sys:String>
 
     <!-- Add Application Page -->
@@ -112,8 +112,11 @@
     <!-- Errors -->
     <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->
     <sys:String x:Key="ErrorPathNullOrEmpty">The path to this application is either null or empty. Please fix the path.</sys:String>
-    <sys:String x:Key="FailedToGetDirectoryOfMod">Failed to get directory of mod to delete.</sys:String>
-    <sys:String x:Key="FailedToGetDirectoryOfApplication">Failed to get directory of application to delete.</sys:String>
-    <sys:String x:Key="LoaderNotFound">was not found. This may be caused by Antivirus software deleting and/or breaking changes in Github repository.</sys:String> <!-- Loader DLL Name displays before this message -->
-    <sys:String x:Key="FailedToStartProcess">Failed to start the process. Is your path correct?</sys:String>
+    <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">Failed to get directory of mod to delete.</sys:String>
+    <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">Failed to get directory of application to delete.</sys:String>
+    <sys:String x:Key="ErrorLoaderNotFound">was not found. This may be caused by Antivirus software deleting and/or breaking changes in Github repository.</sys:String> <!-- Loader DLL Name displays before this message -->
+    <sys:String x:Key="ErrorFailedToStartProcess">Failed to start the process. Is your path correct?</sys:String>
+    <sys:String x:Key="ErrorDllInjectionFailed">Failed to DLL inject into application process.</sys:String>
+    <sys:String x:Key="ErrorPathToApplicationInvalid">The path to the application to be launched is invalid. Please re-check your application configuration.</sys:String>
+
 </ResourceDictionary>

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -22,17 +23,21 @@ namespace Reloaded.Mod.Launcher.Utility
         /// <summary>
         /// Creates an <see cref="ApplicationLauncher"/> given a full path to an executable.
         /// </summary>
-        public ApplicationLauncher FromLocation(string location)
+        public static ApplicationLauncher FromLocation(string location)
         {
             var launcher = new ApplicationLauncher();
             launcher._location = Path.GetFullPath(location);
+
+            if (!File.Exists(launcher._location))
+                throw new ArgumentException(Errors.PathToApplicationInvalid());
+
             return launcher;
         }
 
         /// <summary>
         /// Creates an <see cref="ApplicationLauncher"/> from a whole commandline, i.e. path and arguments.
         /// </summary>
-        public ApplicationLauncher FromCommandline(string commandline)
+        public static ApplicationLauncher FromCommandline(string commandline)
         {
             var launcher = new ApplicationLauncher();
             launcher._commandline = commandline;
@@ -61,7 +66,7 @@ namespace Reloaded.Mod.Launcher.Utility
             }
             else if (!String.IsNullOrEmpty(_location))
             {
-                success = Native.CreateProcessW(null, _commandline, ref lpProcessAttributes,
+                success = Native.CreateProcessW(_location, null, ref lpProcessAttributes,
                                                 ref lpThreadAttributes, false, Native.ProcessCreationFlags.CREATE_SUSPENDED,
                                                 IntPtr.Zero, Path.GetDirectoryName(_location), ref startupInfo, ref processInformation);
             }
@@ -69,13 +74,29 @@ namespace Reloaded.Mod.Launcher.Utility
             if (!success)
                 throw new ArgumentException(Errors.FailedToStartProcess());
 
-            // TODO: DLL Injection
+            // DLL Injection
+            var process         = Process.GetProcessById((int) processInformation.dwProcessId);
+            var injector        = new ApplicationInjector(process);
 
+            try
+            {
+                injector.Inject();
+            }
+            catch (Exception)
+            {
+                Native.ResumeThread(processInformation.hThread);
+                throw;
+            }
+
+            Native.ResumeThread(processInformation.hThread);
         }
 
         #region Native Imports
         private class Native
         {
+            [DllImport("kernel32.dll")]
+            public static extern uint ResumeThread(IntPtr hThread);
+
             [DllImport("kernel32.dll")]
             public static extern bool CreateProcessW([MarshalAs(UnmanagedType.LPWStr)] string lpApplicationName, [MarshalAs(UnmanagedType.LPWStr)] string lpCommandLine,
                 ref SECURITY_ATTRIBUTES lpProcessAttributes, ref SECURITY_ATTRIBUTES lpThreadAttributes, bool bInheritHandles, ProcessCreationFlags dwCreationFlags, IntPtr lpEnvironment,

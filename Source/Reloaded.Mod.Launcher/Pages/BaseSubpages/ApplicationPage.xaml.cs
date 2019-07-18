@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.WPF.Pages.Animations;
 using Reloaded.WPF.Pages.Animations.Enum;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
@@ -65,6 +66,16 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             }
         }
 
+        private void LaunchApplication_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var location = ViewModel.ApplicationTuple.ApplicationConfig.AppLocation;
+                var launcher = ApplicationLauncher.FromLocation(location);
+                launcher.Start();
+            }
+        }
+
         /* Animation/Title/Setup overrides */
 
         protected override Animation[] MakeExitAnimations()
@@ -80,12 +91,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             if (!String.IsNullOrEmpty(this.Title))
                 IoC.Get<WindowViewModel>().WindowTitle = $"{this.Title}: {ViewModel.ApplicationTuple.ApplicationConfig.AppName}";
-        }
-
-        private void LaunchApplication_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // TODO: Implement Launch Application
-
         }
     }
 }

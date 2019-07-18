@@ -15,7 +15,7 @@
     <!-- Splash Screen: Progress Messages -->
     <sys:String x:Key="SplashCreatingDefaultConfig">Stwarzanie Domyślnych Konfiguracji</sys:String>
     <sys:String x:Key="SplashCleaningConfigurations">Czysczenie App/Loader/Mod Konfiguracji</sys:String>
-    <sys:String x:Key="SplashPreparingViewModels">Przygotowanie ViewModelów</sys:String>
+    <sys:String x:Key="SplashPreparingResources">Przygotowanie Resource</sys:String>
     <sys:String x:Key="SplashLoadCompleteIn">Ładowanie Zakończone w:</sys:String>
 
     <!-- Add Application Page -->

@@ -14,7 +14,7 @@
     <!-- Splash Screen: Progress Messages -->
     <sys:String x:Key="SplashCreatingDefaultConfig">Создание стандартной конфигурации</sys:String>
     <sys:String x:Key="SplashCleaningConfigurations">Удаление конфигурации приложения\загрузчика\модов</sys:String> <!-- Cleaning App/Loader/Mod Configurations -->
-    <sys:String x:Key="SplashPreparingViewModels">Создать ViewModels</sys:String>
+    <sys:String x:Key="SplashPreparingResources">Создать Resource</sys:String>
     <sys:String x:Key="SplashLoadCompleteIn">Завершение загрузки:</sys:String>
 
     <!-- Add Application Page -->

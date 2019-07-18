@@ -15,7 +15,7 @@
     <!-- Splash Screen: Progress Messages -->
     <sys:String x:Key="SplashCreatingDefaultConfig">Varsayılan Yapılandırma Oluşturuluyor</sys:String>
     <sys:String x:Key="SplashCleaningConfigurations">Uygulama/Yükleyici/Mod Yapılandırmaları Temizleniyor</sys:String>
-    <sys:String x:Key="SplashPreparingViewModels">ViewModel Ayarlanıyor</sys:String>
+    <sys:String x:Key="SplashPreparingResources">Resource Ayarlanıyor</sys:String>
     <sys:String x:Key="SplashLoadCompleteIn">Yüklenme Süresi:</sys:String>
 
     <!-- Add Application Page -->

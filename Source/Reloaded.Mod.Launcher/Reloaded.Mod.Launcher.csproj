@@ -112,12 +112,15 @@
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="1.1.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.5.14" />
+    <PackageReference Include="Reloaded.Assembler" Version="1.0.6" />
+    <PackageReference Include="Reloaded.Injector" Version="1.2.0" />
     <PackageReference Include="System.Management" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Submodules\Reloaded.WPF\Source\Reloaded.WPF.Theme.Default\Reloaded.WPF.Theme.Default.csproj" />
     <ProjectReference Include="..\..\Submodules\Rock.Collections\Rock.Collections\Rock.Collections.csproj" />
+    <ProjectReference Include="..\Reloaded.Mod.Launcher.Kernel32AddressDumper\Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />

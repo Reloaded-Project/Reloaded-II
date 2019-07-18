@@ -14,7 +14,14 @@ namespace Reloaded.Mod.Launcher.Converters
         {
             if (value is Process process)
             {
-                return $"({process.Id}) {process.MainModule.ModuleName}";
+                try
+                {
+                    return $"({process.Id}) {process.MainModule.ModuleName}";
+                }
+                catch (Exception ex)
+                {
+                    return "ERROR";
+                }
             }
 
             return "ERROR";

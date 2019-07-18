@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 
@@ -19,7 +20,7 @@ namespace Reloaded.Mod.Launcher
         // ReSharper disable InconsistentNaming
         private const string XAML_SplashCreatingDefaultConfig   = "SplashCreatingDefaultConfig";
         private const string XAML_SplashCleaningConfigurations  = "SplashCleaningConfigurations";
-        private const string XAML_SplashPreparingViewModels     = "SplashPreparingViewModels";
+        private const string XAML_SplashPreparingResources      = "SplashPreparingResources";
         private const string XAML_SplashLoadCompleteIn          = "SplashLoadCompleteIn";
         // ReSharper restore InconsistentNaming
         #endregion XAML String Resource Constants
@@ -53,7 +54,7 @@ namespace Reloaded.Mod.Launcher
                 CreateNewConfigIfNotExist();
 
                 // Preparing viewmodels.
-                updateText(getText(XAML_SplashPreparingViewModels));
+                updateText(getText(XAML_SplashPreparingResources));
                 SetupViewModels();
 
                 // Wait until splash screen time.
@@ -111,27 +112,40 @@ namespace Reloaded.Mod.Launcher
 
             IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, AddAppViewModel
 
+            // Preload.
+            BasicDllInjector.PreloadAddresses();
+
             /* Set loader DLL path. */
-            loaderConfig.LoaderPath = GetLoaderPath(Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
+            SetLoaderPaths(loaderConfig, Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
             LoaderConfigReader.WriteConfiguration(loaderConfig);
         }
 
         /// <summary>
-        /// Retrieves the path to the Reloaded Mod Loader DLL.
+        /// Sets the Reloaded Mod Loader DLL paths for a launcher config.
         /// </summary>
-        /// <param name="launcherDirectory"></param>
-        /// <returns></returns>
-        private static string GetLoaderPath(string launcherDirectory)
+        private static void SetLoaderPaths(LoaderConfig config, string launcherDirectory)
         {
             if (String.IsNullOrEmpty(launcherDirectory))
                 throw new DllNotFoundException("The provided launcher directory is null or empty. This is a bug. Report this to the developer.");
 
-            var path = Path.Combine(launcherDirectory, $"Loader\\{LoaderConfig.LoaderDllName}");
-
-            if (! File.Exists(path))
+            // Loader configuration.
+            var loaderPath = Path.Combine(launcherDirectory, $"Loader\\{LoaderConfig.LoaderDllName}");
+            if (! File.Exists(loaderPath))
                 throw new DllNotFoundException($"{LoaderConfig.LoaderDllName} {Errors.LoaderNotFound()}");
 
-            return path;
+            // Bootstrappers.
+            var bootstrapper32Path = Path.Combine(launcherDirectory, $"Loader\\X86\\{LoaderConfig.Bootstrapper32Name}");
+            if (!File.Exists(bootstrapper32Path))
+                throw new DllNotFoundException($"{LoaderConfig.Bootstrapper32Name} {Errors.LoaderNotFound()}");
+
+            var bootstrapper64Path = Path.Combine(launcherDirectory, $"Loader\\X64\\{LoaderConfig.Bootstrapper64Name}");
+            if (!File.Exists(bootstrapper64Path))
+                throw new DllNotFoundException($"{LoaderConfig.Bootstrapper64Name} {Errors.LoaderNotFound()}");
+
+            // Set to config.
+            config.LoaderPath = loaderPath;
+            config.Bootstrapper32Path = bootstrapper32Path;
+            config.Bootstrapper64Path = bootstrapper64Path;
         }
     }
 }
