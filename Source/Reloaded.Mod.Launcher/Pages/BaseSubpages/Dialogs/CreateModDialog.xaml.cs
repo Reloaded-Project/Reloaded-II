@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.WPF.Theme.Default;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
@@ -55,8 +56,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
             var modsViewModel = IoC.Get<ManageModsViewModel>();
             if (modsViewModel.Mods.Count(x => x.ModConfig.ModId.Equals(RealViewModel.Config.ModId)) > 0)
             {
-                var messageBoxDialog = new MessageBox((string)Application.Current.Resources[XAML_TitleCreateModNonUniqueId],
-                                                      (string)Application.Current.Resources[XAML_MessageCreateModNonUniqueId]);
+                var messageBoxDialog = new MessageBox(  ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_TitleCreateModNonUniqueId),
+                                                        ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_MessageCreateModNonUniqueId));
                 messageBoxDialog.Owner = this;
                 messageBoxDialog.ShowDialog();
                 return false;

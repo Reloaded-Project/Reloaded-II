@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 
@@ -110,8 +111,8 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         private string SelectEXEFile()
         {
             var dialog = new VistaOpenFileDialog();
-            dialog.Title = (string) Application.Current.Resources[XAML_AddAppExecutableTitle];
-            dialog.Filter = $"{(string)Application.Current.Resources[XAML_AddAppExecutableFilter]} (*.exe)|*.exe";
+            dialog.Title = ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_AddAppExecutableTitle);
+            dialog.Filter = $"{ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_AddAppExecutableFilter)} (*.exe)|*.exe";
 
             if ((bool) dialog.ShowDialog())
             {

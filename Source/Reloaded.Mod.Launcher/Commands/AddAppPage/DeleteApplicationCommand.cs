@@ -63,7 +63,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             _addAppViewModel.MainPageViewModel.Applications.Remove(entry);
 
             // Delete folder contents.
-            var directory = Path.GetDirectoryName(entry.ApplicationConfigPath) ?? throw new InvalidOperationException("Failed to obtain directory of Application to delete.");
+            var directory = Path.GetDirectoryName(entry.ApplicationConfigPath) ?? throw new InvalidOperationException(Errors.FailedToGetDirectoryOfApplication());
             Directory.Delete(directory, true);
 
             // File system watcher automatically updates collection in MainPageViewModel.Applications

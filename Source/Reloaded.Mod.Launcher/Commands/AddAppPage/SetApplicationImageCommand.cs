@@ -8,6 +8,7 @@ using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Utility;
 
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
@@ -75,8 +76,8 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         private string SelectImageFile()
         {
             var dialog = new VistaOpenFileDialog();
-            dialog.Title = (string) Application.Current.Resources[XAML_AddAppImageExecutableTitle];
-            dialog.Filter = $"{(string)Application.Current.Resources[XAML_AddAppImageSelectorFilter]} {Constants.WpfSupportedFormatsFilter}";
+            dialog.Title = ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_AddAppImageExecutableTitle);
+            dialog.Filter = $"{ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_AddAppImageSelectorFilter)} {Constants.WpfSupportedFormatsFilter}";
             if ((bool) dialog.ShowDialog())
             {
                 return dialog.FileName;

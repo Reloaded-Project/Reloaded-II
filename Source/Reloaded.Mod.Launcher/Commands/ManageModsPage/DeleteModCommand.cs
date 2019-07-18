@@ -57,7 +57,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
             _manageModsViewModel.Mods.Remove(entry);
 
             // Delete folder contents.
-            var directory = Path.GetDirectoryName(entry.ModConfigPath) ?? throw new InvalidOperationException("Failed to get directory of mod to delete.");
+            var directory = Path.GetDirectoryName(entry.ModConfigPath) ?? throw new InvalidOperationException(Errors.FailedToGetDirectoryOfMod());
             Directory.Delete(directory, true);
 
             // File system watcher automatically updates collection in MainPageViewModel.Applications

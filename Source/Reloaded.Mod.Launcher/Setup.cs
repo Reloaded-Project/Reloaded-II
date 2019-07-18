@@ -124,12 +124,12 @@ namespace Reloaded.Mod.Launcher
         private static string GetLoaderPath(string launcherDirectory)
         {
             if (String.IsNullOrEmpty(launcherDirectory))
-                throw new DllNotFoundException("The provided launcher directory is null or empty.");
+                throw new DllNotFoundException("The provided launcher directory is null or empty. This is a bug. Report this to the developer.");
 
             var path = Path.Combine(launcherDirectory, $"Loader\\{LoaderConfig.LoaderDllName}");
 
             if (! File.Exists(path))
-                throw new DllNotFoundException($"{LoaderConfig.LoaderDllName} was not found. This may be caused by Antivirus software deleting and/or breaking changes in Github repository.");
+                throw new DllNotFoundException($"{LoaderConfig.LoaderDllName} {Errors.LoaderNotFound()}");
 
             return path;
         }

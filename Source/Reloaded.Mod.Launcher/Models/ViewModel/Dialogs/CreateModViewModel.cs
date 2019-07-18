@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Misc;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -87,8 +88,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
         private string SelectImageFile()
         {
             var dialog = new VistaOpenFileDialog();
-            dialog.Title = (string)Application.Current.Resources[XAML_CreateModDialogImageSelectorTitle];
-            dialog.Filter = $"{(string)Application.Current.Resources[XAML_CreateModDialogImageSelectorFilter]} {Constants.WpfSupportedFormatsFilter}";
+            dialog.Title = ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_CreateModDialogImageSelectorTitle);
+            dialog.Filter = $"{ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_CreateModDialogImageSelectorFilter)} {Constants.WpfSupportedFormatsFilter}";
 
             if ((bool)dialog.ShowDialog())
                 return dialog.FileName;

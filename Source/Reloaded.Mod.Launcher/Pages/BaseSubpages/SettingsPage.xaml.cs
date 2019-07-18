@@ -2,6 +2,7 @@
 using Reloaded.Mod.Launcher.Commands.Dialog;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
@@ -34,8 +35,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var messageBox = new MessageBoxOkCancel((string)Application.Current.Resources[XAML_LoaderSettingsCleanup],
-                                                    (string)Application.Current.Resources[XAML_LoaderSettingsCleanupWarning]);
+            var messageBox = new MessageBoxOkCancel(ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_LoaderSettingsCleanup),
+                                                    ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_LoaderSettingsCleanupWarning));
             messageBox.Owner = Window.GetWindow(this);
             messageBox.ShowDialog();
 

@@ -109,5 +109,11 @@
     <sys:String x:Key="ApplicationLaunch">Launch Application</sys:String>
     <sys:String x:Key="ConfigureModsListItemTooltip">Drag and drop items to change the load order of mods. Mods are loaded starting with top mod first and bottom mod last.</sys:String>
 
-
+    <!-- Errors -->
+    <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->
+    <sys:String x:Key="ErrorPathNullOrEmpty">The path to this application is either null or empty. Please fix the path.</sys:String>
+    <sys:String x:Key="FailedToGetDirectoryOfMod">Failed to get directory of mod to delete.</sys:String>
+    <sys:String x:Key="FailedToGetDirectoryOfApplication">Failed to get directory of application to delete.</sys:String>
+    <sys:String x:Key="LoaderNotFound">was not found. This may be caused by Antivirus software deleting and/or breaking changes in Github repository.</sys:String> <!-- Loader DLL Name displays before this message -->
+    <sys:String x:Key="FailedToStartProcess">Failed to start the process. Is your path correct?</sys:String>
 </ResourceDictionary>

@@ -33,7 +33,7 @@ namespace Reloaded.Mod.Launcher.Utility
         public ApplicationInstanceTracker(string applicationPath, CancellationToken token = default)
         {
             if (String.IsNullOrEmpty(applicationPath))
-                throw new ArgumentException(Errors.PathNullOrEmpty);
+                throw new ArgumentException(Errors.PathNullOrEmpty());
 
             _applicationPath = Path.GetFullPath(applicationPath);
             BuildInitialProcesses(token);

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using WindowViewModel = Reloaded.Mod.Launcher.Models.ViewModel.WindowViewModel;
@@ -35,7 +36,7 @@ namespace Reloaded.Mod.Launcher.Pages
             if (!_loaded)
             {
                 _loaded = true;
-                var task = Task.Run(() => Setup.SetupApplication(GetText, UpdateText, (int)Application.Current.Resources[XAML_SplashMinimumTime]))
+                var task = Task.Run(() => Setup.SetupApplication(GetText, UpdateText, ApplicationResourceAcquirer.GetTypeOrDefault<int>(XAML_SplashMinimumTime)))
                             .ContinueWith(ChangeToMainPage)
                             .ContinueWith(DisplayFirstLaunchWarningIfNeeded);
             }
@@ -72,7 +73,7 @@ namespace Reloaded.Mod.Launcher.Pages
         /// </summary>
         private string GetText(string arg)
         {
-            return (string) Application.Current.Resources[arg];
+            return ApplicationResourceAcquirer.GetTypeOrDefault<string>(arg);
         }
 
         /// <summary>
