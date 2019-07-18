@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -80,7 +81,6 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         public LoaderConfig()
         {
-            ResetMissingDirectories();
         }
 
         // Creates directories/folders if they do not exist.
