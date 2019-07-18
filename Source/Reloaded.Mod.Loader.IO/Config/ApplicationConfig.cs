@@ -87,9 +87,10 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Note: Dependencies are not taken into account in load order - but the mod loader itself does reorder the list taking them into account.
         /// </summary>
         /// <param name="config">The application to get all mods for.</param>
-        public static List<BooleanGenericTuple<PathGenericTuple<ModConfig>>> GetAllMods(IApplicationConfig config)
+        /// <param name="modDirectory">(Optional) Directory containing all of the mods.</param>
+        public static List<BooleanGenericTuple<PathGenericTuple<ModConfig>>> GetAllMods(IApplicationConfig config, string modDirectory = null)
         {
-            var modifications = ModConfig.GetAllMods();
+            var modifications = ModConfig.GetAllMods(modDirectory);
             return GetAllMods(config, modifications);
         }
 

@@ -86,10 +86,11 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         /// <param name="configurations">The mod configurations.</param>
         /// <param name="allMods">(Optional) List of all available mods.</param>
+        /// <param name="modDirectory">(Optional) Directory containing all of the mods.</param>
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public static ModDependencySet GetDependencies(IEnumerable<ModConfig> configurations, IEnumerable<ModConfig> allMods = null)
+        public static ModDependencySet GetDependencies(IEnumerable<ModConfig> configurations, IEnumerable<ModConfig> allMods = null, string modDirectory = null)
         {
-            var allModsCollection   = allMods ?? GetAllMods().Select(x => x.Object);
+            var allModsCollection   = allMods ?? GetAllMods(modDirectory).Select(x => x.Object);
             var dependencySets      = new List<ModDependencySet>();
 
             foreach (var config in configurations)

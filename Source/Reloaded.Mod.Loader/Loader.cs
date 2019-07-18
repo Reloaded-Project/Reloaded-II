@@ -25,6 +25,7 @@ namespace Reloaded.Mod.Loader
         public IApplicationConfig Application { get; private set; }
         public Console Console { get; }
         public PluginManager Manager { get; private set; }
+        public LoaderConfig LoaderConfig { get; private set; }
 
         /// <summary>
         /// Initialize loader in constructor.
@@ -32,6 +33,7 @@ namespace Reloaded.Mod.Loader
         public Loader()
         {
             Console = new Console();
+            LoaderConfig = LoaderConfigReader.ReadConfiguration();
         }
 
         ~Loader()
@@ -95,7 +97,7 @@ namespace Reloaded.Mod.Loader
             Application = applicationConfig;
 
             // Get all mods and their paths.
-            var allMods = ApplicationConfig.GetAllMods(Application);
+            var allMods = ApplicationConfig.GetAllMods(Application, LoaderConfig.ModConfigDirectory);
             var configToPathDictionary = new Dictionary<ModConfig, string>();
 
             foreach (var mod in allMods)
@@ -103,7 +105,7 @@ namespace Reloaded.Mod.Loader
 
             // Get list of mods to load and load them.
             var modsToLoad          = allMods.Where(x => x.Enabled).Select(x => x.Generic.Object);
-            var dependenciesToLoad  = ModConfig.GetDependencies(modsToLoad).Configurations;
+            var dependenciesToLoad  = ModConfig.GetDependencies(modsToLoad, null, LoaderConfig.ModConfigDirectory).Configurations;
             var allUniqueModsToLoad = modsToLoad.Concat(dependenciesToLoad).Distinct();
             var allSortedModsToLoad = ModConfig.SortMods(allUniqueModsToLoad);
 
@@ -129,7 +131,7 @@ namespace Reloaded.Mod.Loader
         public PathGenericTuple<IModConfig> FindMod(string modId)
         {
             // Get mod with ID
-            var allMods = ModConfig.GetAllMods();
+            var allMods = ModConfig.GetAllMods(LoaderConfig.ModConfigDirectory);
             var mod = allMods.FirstOrDefault(x => x.Object.ModId == modId);
 
             if (mod != null)
@@ -147,7 +149,7 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         private IApplicationConfig FindThisApplication()
         {
-            var configurations = ApplicationConfig.GetAllApplications();
+            var configurations = ApplicationConfig.GetAllApplications(LoaderConfig.ApplicationConfigDirectory);
             var fullPath = Path.GetFullPath(Process.GetCurrentProcess().GetExecutablePath());
 
             foreach (var configuration in configurations)
