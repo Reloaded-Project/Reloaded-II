@@ -54,13 +54,13 @@
                     <!-- Application Image -->
                     <Viewbox Width="{StaticResource DetailsImageSize}"
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                             Margin="{DynamicResource CommonItemMargin}">
+                             Margin="{DynamicResource CommonItemVerticalMargin}">
                         <Image d:DataContext="{x:Static designTimeModels:ModIcon.Instance}"
                                Source="{Binding Icon}" />
                     </Viewbox>
 
                     <!-- Add / Delete Mod -->
-                    <Grid Margin="{DynamicResource CommonItemMargin}">
+                    <Grid Margin="{DynamicResource CommonItemVerticalMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -79,19 +79,19 @@
 
                     <!-- Mod Properties -->
                     <TextBox Text="{Binding Path=SelectedModPathTuple.ModConfig.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         Margin="{DynamicResource CommonItemMargin}" 
+                         Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogName}"/>
 
                     <TextBox Text="{Binding Path=SelectedModPathTuple.ModConfig.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Margin="{DynamicResource CommonItemMargin}" 
+                         Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogAuthor}"/>
 
                     <TextBox Text="{Binding Path=SelectedModPathTuple.ModConfig.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         Margin="{DynamicResource CommonItemMargin}" 
+                         Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogVersion}"/>
 
                     <TextBox Text="{Binding Path=SelectedModPathTuple.ModConfig.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         Margin="{DynamicResource CommonItemMargin}" 
+                         Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogDescription}"/>
 
                     <!-- Open Mod Folder & Manage Dependencies -->
@@ -103,12 +103,12 @@
                             <StackPanel>
                                 <Button Style="{DynamicResource UnpaddedStretchedButton}"
                                         Content="{DynamicResource ModManagerOpenModDirectory}" 
-                                        Margin="{DynamicResource CommonItemMarginSmall}"
+                                        Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                         Command="{StaticResource OpenModFolderCommand}"/>
 
                                 <Button Style="{DynamicResource UnpaddedStretchedButton}"
                                         Content="{DynamicResource ModManagerManageDependencies}" 
-                                        Margin="{DynamicResource CommonItemMarginSmall}"
+                                        Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                         Command="{StaticResource ManageDependenciesCommand}"/>
                             </StackPanel>
                         </controls:PopupLabel.HiddenContent>

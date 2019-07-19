@@ -76,6 +76,8 @@
     <sys:String x:Key="LoaderSettingsAndDocumentation">User Guide + Docs.</sys:String>
     <sys:String x:Key="LoaderSettingsCopyright">Reloaded II is Free Software Licensed under GNU GPL V3</sys:String>
     <sys:String x:Key="LoaderSettingsEnableAutomaticUpdates">Automatic Updates</sys:String>
+    <sys:String x:Key="LoaderSettingsShowConsole">Show Console</sys:String>
+    <sys:String x:Key="LoaderSettingsLoadAsynchronously">Load Asynchronously</sys:String>
 
     <!-- Application Entry -->
     <sys:String x:Key="TitleApplication">Application Hub</sys:String>

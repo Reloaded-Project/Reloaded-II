@@ -28,7 +28,7 @@
                        Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
 
             <!-- Docs / User Guide -->
-            <Grid Margin="{DynamicResource CommonItemMargin}"
+            <Grid Margin="{DynamicResource CommonItemVerticalMargin}"
                   Width="{Binding ActualWidth, ElementName=Banner}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -59,11 +59,25 @@
             </Grid>
 
             <!-- Toggle Auto Accept Updates -->
-            <CheckBox Margin="{DynamicResource CommonItemMargin}" 
-                      HorizontalAlignment="Center" 
-                      IsChecked="{Binding LoaderConfig.AutoAcceptUpdates}"
-                      Content="{DynamicResource LoaderSettingsEnableAutomaticUpdates}"
-                      Style="{DynamicResource DefaultCheckBox}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
+                          HorizontalAlignment="Center" 
+                          IsChecked="{Binding LoaderConfig.AutoAcceptUpdates}"
+                          Content="{DynamicResource LoaderSettingsEnableAutomaticUpdates}"
+                          Style="{DynamicResource DefaultCheckBox}"/>
+
+                <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
+                          HorizontalAlignment="Center" 
+                          IsChecked="{Binding LoaderConfig.DllLoadAsynchronously}"
+                          Content="{DynamicResource LoaderSettingsLoadAsynchronously}"
+                          Style="{DynamicResource DefaultCheckBox}"/>
+
+                <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
+                          HorizontalAlignment="Center" 
+                          IsChecked="{Binding LoaderConfig.ShowConsole}"
+                          Content="{DynamicResource LoaderSettingsShowConsole}"
+                          Style="{DynamicResource DefaultCheckBox}"/>
+            </StackPanel>
 
         </StackPanel>
 

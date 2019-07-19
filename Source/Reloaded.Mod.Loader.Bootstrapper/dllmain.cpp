@@ -169,7 +169,7 @@ bool load_reloaded(ReloadedPaths& reloadedPaths)
 	}
 
 	const string_t typeName = L"Reloaded.Mod.Loader.EntryPoint, Reloaded.Mod.Loader";
-	const string_t methodName = L"GetPort";
+	const string_t methodName = L"Initialize";
 	component_entry_point_fn getPort = nullptr;
 
 	if (!CLR->load_assembly_and_get_function_pointer(reloadedPaths.dllPath.c_str(), typeName.c_str(), methodName.c_str(),

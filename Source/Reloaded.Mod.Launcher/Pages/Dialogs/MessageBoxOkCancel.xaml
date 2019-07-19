@@ -17,7 +17,7 @@
                            VerticalAlignment="Center"
                            DockPanel.Dock="Top"
                            x:Name="Message"
-                           Margin="{DynamicResource CommonItemMargin}">
+                           Margin="{DynamicResource CommonItemVerticalMargin}">
                     This is a sample message.<LineBreak/>
                     It may or may not be important.
                 </TextBlock>

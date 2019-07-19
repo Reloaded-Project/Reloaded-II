@@ -43,7 +43,7 @@
                     <!-- Application Image -->
                     <Viewbox Width="{StaticResource DetailsImageWidth}" 
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                             Margin="{DynamicResource CommonItemMarginSmall}">
+                             Margin="{DynamicResource CommonItemVerticalMarginSmall}">
                         <Image x:Name="ModIcon"
                                Source="{Binding Image}" 
                                ToolTip="{DynamicResource AddAppImageTooltip}" PreviewMouseDown="ModIcon_PreviewMouseDown"/>
@@ -54,7 +54,7 @@
                         Tag="{DynamicResource CreateModDialogId}" 
                         ToolTip="{DynamicResource CreateModDialogId}"
                         Text="{Binding Config.ModId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Margin="{DynamicResource CommonItemMarginSmall}" 
+                        Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
                         Width="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
@@ -64,7 +64,7 @@
                         Tag="{DynamicResource CreateModDialogName}" 
                         Text="{Binding Config.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Width="{StaticResource DetailsColumnWidth}"
-                        Margin="{DynamicResource CommonItemMarginSmall}"
+                        Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                         ToolTip="{DynamicResource CreateModDialogName}"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
@@ -73,7 +73,7 @@
                              Text="{Binding Config.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Tag="{DynamicResource CreateModDialogAuthor}" 
                         ToolTip="{DynamicResource CreateModDialogAuthor}"
-                        Margin="{DynamicResource CommonItemMarginSmall}" 
+                        Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
                         Width="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
@@ -82,7 +82,7 @@
                              Text="{Binding Config.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Tag="{DynamicResource CreateModDialogVersion}" 
                              ToolTip="{DynamicResource CreateModDialogVersion}"
-                             Margin="{DynamicResource CommonItemMarginSmall}" 
+                             Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
                              Width="{StaticResource DetailsColumnWidth}"
                              HorizontalAlignment="Center" 
                              VerticalAlignment="Center"/>
@@ -91,13 +91,13 @@
                              Text="{Binding Config.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Tag="{DynamicResource CreateModDialogDescription}" 
                              ToolTip="{DynamicResource CreateModDialogDescription}"
-                             Margin="{DynamicResource CommonItemMarginSmall}" 
+                             Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
                              Width="{StaticResource DetailsColumnWidth}"
                              HorizontalAlignment="Center" 
                              VerticalAlignment="Center"/>
 
                     <Button Content="Create Mod"
-                            Margin="{DynamicResource CommonItemMarginSmall}"
+                            Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                             Style="{DynamicResource UnpaddedStretchedGridButton}"
                             PreviewMouseDown="Save_PreviewMouseDown">
                     </Button>
@@ -105,11 +105,11 @@
                     <!-- Supported Dependencies -->
                     <controls:PopupLabel ButtonText="{DynamicResource CreateModDialogDependencies}"
                                          FontSize="{DynamicResource FontSizeSmall}"
-                                         Margin="{DynamicResource CommonItemMarginSmall}"
+                                         Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                          HiddenVisibilityType="Collapsed"
                                          IsOpen="False">
                         <controls:PopupLabel.HiddenContent>
-                            <ListView ItemsSource="{Binding Source={StaticResource SortedDependencies}}" Margin="{DynamicResource CommonItemMarginSmall}">
+                            <ListView ItemsSource="{Binding Source={StaticResource SortedDependencies}}" Margin="{DynamicResource CommonItemVerticalMarginSmall}">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">

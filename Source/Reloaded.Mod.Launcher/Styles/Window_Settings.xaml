@@ -8,10 +8,21 @@
     <Thickness x:Key="PanelMargin">10</Thickness>      <!-- Space between individual panels/grids of a page when/if multiple panels exist. -->
     
     <!-- Control Layout Properties -->
-    <Thickness x:Key="CommonItemMargin">0,10</Thickness>
-    <Thickness x:Key="CommonItemMarginSmall">0,7.5</Thickness>
-    <Thickness x:Key="CommonItemMarginSmaller">0,5</Thickness>
-    <Thickness x:Key="CommonItemMarginSmallest">0,2.5</Thickness>
+    <Thickness x:Key="CommonItemVerticalMargin">0,10</Thickness>
+    <Thickness x:Key="CommonItemVerticalMarginSmall">0,7.5</Thickness>
+    <Thickness x:Key="CommonItemVerticalMarginSmaller">0,5</Thickness>
+    <Thickness x:Key="CommonItemVerticalMarginSmallest">0,2.5</Thickness>
+
+    <Thickness x:Key="CommonItemHorizontalMargin">10,0</Thickness>
+    <Thickness x:Key="CommonItemHorizontalMarginSmall">0,7.5</Thickness>
+    <Thickness x:Key="CommonItemHorizontalMarginSmaller">0,5</Thickness>
+    <Thickness x:Key="CommonItemHorizontalMarginSmallest">0,2.5</Thickness>
+
+    <Thickness x:Key="CommonItemCombinedMargin">10,10</Thickness>
+    <Thickness x:Key="CommonItemCombinedMarginSmall">7.5,7.5</Thickness>
+    <Thickness x:Key="CommonItemCombinedMarginSmaller">5,5</Thickness>
+    <Thickness x:Key="CommonItemCombinedMarginSmallest">2.5,2.5</Thickness>
+
     <Thickness x:Key="ListEntryItemMarginSmall">5,0</Thickness>
     <sys:Double x:Key="ListEntryCheckboxHeightSmall">18</sys:Double>
 

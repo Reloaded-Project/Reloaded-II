@@ -57,7 +57,7 @@
     <!-- Settings Page Specific -->
     <Style x:Key="StatisticsTextblock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextblockWithColourChange}">
         <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
-        <Setter Property="Margin" Value="{DynamicResource CommonItemMarginSmall}"/>
+        <Setter Property="Margin" Value="{DynamicResource CommonItemVerticalMarginSmall}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
@@ -69,7 +69,7 @@
 
     <Style x:Key="BuildTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextblockWithColourChange}">
         <Setter Property="FontSize" Value="{DynamicResource FontSizeLargest}"/>
-        <Setter Property="Margin" Value="{DynamicResource CommonItemMarginSmall}"/>
+        <Setter Property="Margin" Value="{DynamicResource CommonItemVerticalMarginSmall}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 

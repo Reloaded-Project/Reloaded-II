@@ -12,13 +12,13 @@
     <Grid Margin="{DynamicResource PanelMargin}">
         <StackPanel VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource NonReloadedProcessMessageOne}" 
-                       Margin="{DynamicResource CommonItemMarginSmallest}"
+                       Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
                        TextWrapping="Wrap" HorizontalAlignment="Center"/>
             <TextBlock Text="{DynamicResource NonReloadedProcessMessageTwo}" 
-                       Margin="{DynamicResource CommonItemMarginSmallest}"
+                       Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
                        TextWrapping="Wrap" HorizontalAlignment="Center"/>
             <Button Content="{DynamicResource NonReloadedProcessInject}" 
-                    Margin="{DynamicResource CommonItemMargin}"
+                    Margin="{DynamicResource CommonItemVerticalMargin}"
                     HorizontalAlignment="Center" Click="Button_Click"/>
         </StackPanel>
 

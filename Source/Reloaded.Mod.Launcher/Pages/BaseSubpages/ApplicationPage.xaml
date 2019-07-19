@@ -28,7 +28,7 @@
                                HorizontalAlignment="Center" 
                                FontSize="{DynamicResource FontSizeSmaller}"
                                Text="{DynamicResource ApplicationLaunch}"
-                               Margin="{DynamicResource CommonItemMarginSmall}"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                PreviewMouseDown="LaunchApplication_PreviewMouseDown"/>
 
                     <!-- Main Page -->
@@ -36,11 +36,11 @@
                                HorizontalAlignment="Center" 
                                FontSize="{DynamicResource FontSizeSmaller}"
                                Text="{DynamicResource TitleConfigureMods}"
-                               Margin="{DynamicResource CommonItemMarginSmall}"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                PreviewMouseDown="Summary_PreviewMouseDown"/>
 
                     <!-- Reloaded Processes -->
-                    <controls:PopupLabel Margin="{DynamicResource CommonItemMarginSmall}"
+                    <controls:PopupLabel Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                          FontFamily="{DynamicResource FontThin}"
                                          Foreground="{DynamicResource TextColorBrush}"
                                          ButtonText="{DynamicResource ApplicationReloadedInstances}"
@@ -81,7 +81,7 @@
                     </controls:PopupLabel>
 
                     <!-- Non-Reloaded Processes -->
-                    <controls:PopupLabel Margin="{DynamicResource CommonItemMarginSmall}"
+                    <controls:PopupLabel Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                          FontFamily="{DynamicResource FontThin}"
                                          Foreground="{DynamicResource TextColorBrush}"
                                          ButtonText="{DynamicResource ApplicationOtherInstances}"
@@ -127,7 +127,7 @@
                 <DockPanel LastChildFill="False">
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
                         <TextBlock Text="{DynamicResource ApplicationOtherInstances}"
-                                   Margin="{DynamicResource CommonItemMarginSmallest}"
+                                   Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
                                    FontFamily="{DynamicResource FontBold}"
                                    VerticalAlignment="Center"/>
 
@@ -143,7 +143,7 @@
 
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
                         <TextBlock Text="{DynamicResource ApplicationReloadedInstances}"
-                                   Margin="{DynamicResource CommonItemMarginSmallest}"
+                                   Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
                                    FontFamily="{DynamicResource FontBold}"
                                    VerticalAlignment="Center"/>
 
@@ -159,7 +159,7 @@
 
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
                         <TextBlock Text="{DynamicResource ApplicationTotalMods}"
-                                   Margin="{DynamicResource CommonItemMarginSmallest}"
+                                   Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
                                    FontFamily="{DynamicResource FontBold}"
                                    VerticalAlignment="Center"/>
 

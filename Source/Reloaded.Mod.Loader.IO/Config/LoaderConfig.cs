@@ -75,6 +75,11 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         public bool DllLoadAsynchronously { get; set; } = false;
 
+        /// <summary>
+        /// Shows the console window if set to true, else false.
+        /// </summary>
+        public bool ShowConsole { get; set; } = true;
+
         private string[] _enabledPlugins;
 
         /* Some mods are universal :wink: */

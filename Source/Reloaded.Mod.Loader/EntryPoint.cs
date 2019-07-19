@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Loader.Bootstrap;
+using Reloaded.Mod.Loader.Server;
 
 namespace Reloaded.Mod.Loader
 {
@@ -15,6 +18,7 @@ namespace Reloaded.Mod.Loader
         // DO NOT RENAME THIS CLASS OR ITS PUBLIC METHODS
         private static Loader _loader;
         private static Host _server;
+        private static MemoryMappedFile _memoryMappedFile;
 
         /* Ensures DLL Resolution */
         static EntryPoint()
@@ -42,10 +46,18 @@ namespace Reloaded.Mod.Loader
         /* Initialize Mod Loader (DLL_PROCESS_ATTACH) */
 
         /// <summary>
-        /// Returns the port on the local machine
+        /// Initializes the mod loader.
+        /// Returns the port on the local machine (but that wouldn't probably be used).
         /// </summary>
-        public static int GetPort(IntPtr unusedPtr, int unusedSize)
+        public static int Initialize(IntPtr unusedPtr, int unusedSize)
         {
+            // Write port as a Memory Mapped File, to allow Mod Loader's Launcher to discover the mod port.
+            var pid             = Process.GetCurrentProcess().Id;
+            _memoryMappedFile   = MemoryMappedFile.CreateOrOpen(ServerUtility.GetMappedFileNameForPid(pid), sizeof(long));
+            var view            = _memoryMappedFile.CreateViewStream();
+            var binaryWriter    = new BinaryWriter(view);
+            binaryWriter.Write(_server.Port);
+
             return _server?.Port ?? 0;
         }
     }

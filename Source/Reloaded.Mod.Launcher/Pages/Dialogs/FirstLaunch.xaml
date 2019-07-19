@@ -17,11 +17,11 @@
         <Grid Margin="{DynamicResource PageMarginSmall}">
         
             <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="{DynamicResource FirstLaunchLineOne}" Margin="{DynamicResource CommonItemMargin}" TextWrapping="Wrap"/>
-                <TextBlock Text="{DynamicResource FirstLaunchLineTwo}" Margin="{DynamicResource CommonItemMargin}" TextWrapping="Wrap"/>
+                <TextBlock Text="{DynamicResource FirstLaunchLineOne}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"/>
+                <TextBlock Text="{DynamicResource FirstLaunchLineTwo}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"/>
 
                 <!-- Buttons -->
-                <Grid Margin="{DynamicResource CommonItemMargin}">
+                <Grid Margin="{DynamicResource CommonItemVerticalMargin}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -55,10 +55,10 @@
                 </Grid>
 
                 <!-- Text -->
-                <TextBlock Text="{DynamicResource FirstLaunchLineThree}" Margin="{DynamicResource CommonItemMargin}" TextWrapping="Wrap"/>
+                <TextBlock Text="{DynamicResource FirstLaunchLineThree}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"/>
 
                 <!-- OK -->
-                <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource UnpaddedStretchedButton}" Margin="{DynamicResource CommonItemMargin}" 
+                <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource UnpaddedStretchedButton}" Margin="{DynamicResource CommonItemVerticalMargin}" 
                         Click="OK_Click"/>
             </StackPanel>
         </Grid>
