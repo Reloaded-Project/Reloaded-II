@@ -33,7 +33,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
         private void ManageModsViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_manageModsViewModel.SelectedModPathTuple))
+            if (e.PropertyName == nameof(_manageModsViewModel.SelectedModTuple))
                 RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
@@ -41,7 +41,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
         public bool CanExecute(object parameter)
         {
-            if (_manageModsViewModel.SelectedModPathTuple == null)
+            if (_manageModsViewModel.SelectedModTuple == null)
                 return false;
 
             return true;

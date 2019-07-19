@@ -110,6 +110,7 @@
     <sys:String x:Key="TitleConfigureMods">Configure Mods</sys:String>
     <sys:String x:Key="ApplicationLaunch">Launch Application</sys:String>
     <sys:String x:Key="ConfigureModsListItemTooltip">Drag and drop items to change the load order of mods. Mods are loaded starting with top mod first and bottom mod last.</sys:String>
+    <sys:String x:Key="ConfigureModsDummyText">Uses Reloaded to tell you to get some mods. Reloaded-II is cool! Cuteness is justice, its the law!.</sys:String> <!-- Unused for now, will be used down the road. -->
 
     <!-- Errors -->
     <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->

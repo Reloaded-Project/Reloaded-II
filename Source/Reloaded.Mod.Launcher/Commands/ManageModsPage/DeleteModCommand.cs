@@ -34,7 +34,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
         private void ManageModsViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_manageModsViewModel.SelectedModPathTuple))
+            if (e.PropertyName == nameof(_manageModsViewModel.SelectedModTuple))
                 RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
@@ -43,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
         public bool CanExecute(object parameter)
         {
-            if (_manageModsViewModel.SelectedModPathTuple == null)
+            if (_manageModsViewModel.SelectedModTuple == null)
                 return false;
 
             return true;
@@ -52,7 +52,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
         public void Execute(object parameter)
         {
             // Find Application in Viewmodel's list and remove it.
-            var app = _manageModsViewModel.SelectedModPathTuple;
+            var app = _manageModsViewModel.SelectedModTuple;
             var entry = _manageModsViewModel.Mods.First(x => x.ModConfig.Equals(app.ModConfig));
             _manageModsViewModel.Mods.Remove(entry);
 

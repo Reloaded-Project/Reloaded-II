@@ -51,6 +51,14 @@ namespace Reloaded.Mod.Loader.Mods
         public IReadOnlyCollection<ModInstance> GetModifications() => _modifications.Values;
 
         /// <summary>
+        /// Returns true if a mod is loaded, else false.
+        /// </summary>
+        public bool IsModLoaded(string modId)
+        {
+            return _modifications.ContainsKey(modId);
+        }
+
+        /// <summary>
         /// Loads a collection of mods from a given set of paths.
         /// </summary>
         /// <param name="modPaths">List of paths to load mods from.</param>
@@ -69,7 +77,7 @@ namespace Reloaded.Mod.Loader.Mods
         public void LoadMod(PathGenericTuple<IModConfig> tuple)
         {
             // Check if mod with ID already loaded.
-            if (_modifications.ContainsKey(tuple.Object.ModId))
+            if (IsModLoaded(tuple.Object.ModId))
                 throw new ReloadedException(Errors.ModAlreadyLoaded(tuple.Object.ModId));
 
             // Load DLL or non-dll mod.
@@ -91,7 +99,7 @@ namespace Reloaded.Mod.Loader.Mods
             var mod = _modifications[modId];
             if (mod != null)
             {
-                if (mod.Mod.CanUnload())
+                if (mod.CanUnload)
                 {
                     LoaderApi.ModUnloading(mod.Mod, mod.ModConfig);
                     _modifications.Remove(modId);
@@ -116,7 +124,7 @@ namespace Reloaded.Mod.Loader.Mods
             var mod = _modifications[modId];
             if (mod != null)
             {
-                if (mod.Mod.CanSuspend())
+                if (mod.CanSuspend)
                 {
                     mod.Suspend();
                 }
@@ -139,7 +147,7 @@ namespace Reloaded.Mod.Loader.Mods
             var mod = _modifications[modId];
             if (mod != null)
             {
-                if (mod.Mod.CanSuspend())
+                if (mod.CanSuspend)
                 {
                     mod.Resume();
                 }
@@ -170,7 +178,7 @@ namespace Reloaded.Mod.Loader.Mods
             var allModInfo = new List<ModInfo>();
 
             foreach (var entry in _modifications)
-                allModInfo.Add(new ModInfo(entry.Value.State, entry.Key, entry.Value.CanSuspend, entry.Value.CanSuspend));
+                allModInfo.Add(new ModInfo(entry.Value.State, entry.Key, entry.Value.CanSuspend, entry.Value.CanUnload));
 
             return allModInfo;
         }

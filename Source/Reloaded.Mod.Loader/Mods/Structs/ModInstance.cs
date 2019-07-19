@@ -25,7 +25,7 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         {
             ModConfig = config;
             CanSuspend = false;
-            CanUnload = false;
+            CanUnload = true;
         }
 
         /* Dll Mods */
@@ -48,14 +48,17 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         {
             if (CanUnload)
             {
-                Mod.Disposing?.Invoke();
-                Mod.Unload();
-                Mod = null;
+                Mod?.Disposing?.Invoke();
+                Mod?.Unload();
                 Loader?.Dispose();
+
+                // Clean up references.
+                Loader = null;
+                Mod = null;
+                GC.Collect(2, GCCollectionMode.Forced, true);
                 GC.SuppressFinalize(this);
 
                 // Blocking GC happens here to ensure no reference to unloaded assembly still exists.
-                GC.Collect(2, GCCollectionMode.Forced, true);
             }
         }
 

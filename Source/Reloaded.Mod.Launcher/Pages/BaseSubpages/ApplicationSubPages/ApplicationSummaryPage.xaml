@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages"
       xmlns:system="clr-namespace:System;assembly=mscorlib"
       xmlns:dd="urn:gong-wpf-dragdrop"
+      xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
       mc:Ignorable="d" 
       d:DesignHeight="600" 
       d:DesignWidth="576"
@@ -17,6 +18,7 @@
 
         <!-- Resources -->
         <Grid.Resources>
+            <system:String x:Key="DummyText">Uses Reloaded to tell you to get some mods. Reloaded-II is cool! Cuteness is justice, its the law!.</system:String>
             <system:Double x:Key="ImageSize">180</system:Double>
 
             <!-- Filtered Mod List -->
@@ -111,7 +113,7 @@
                                TextWrapping="Wrap"/>
                 </StackPanel>
 
-                <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModDescription, UpdateSourceTrigger=PropertyChanged, FallbackValue='Uses Reloaded to tell you to get some mods. Reloaded-II is cool! Cuteness is justice, it\'s the law!.'}" 
+                <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModDescription, UpdateSourceTrigger=PropertyChanged, FallbackValue={StaticResource DummyText}}" 
                            DockPanel.Dock="Bottom"
                            HorizontalAlignment="Center"
                            Margin="{DynamicResource PanelMargin}"

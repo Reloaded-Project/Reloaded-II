@@ -35,7 +35,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
         private void ManageModsViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_manageModsViewModel.SelectedModPathTuple))
+            if (e.PropertyName == nameof(_manageModsViewModel.SelectedModTuple))
                 RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
@@ -43,9 +43,9 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
         public bool CanExecute(object parameter)
         {
-            if (_manageModsViewModel.SelectedModPathTuple != null)
+            if (_manageModsViewModel.SelectedModTuple != null)
             {
-                string directoryPath = Path.GetDirectoryName(_manageModsViewModel.SelectedModPathTuple.ModConfigPath);
+                string directoryPath = Path.GetDirectoryName(_manageModsViewModel.SelectedModTuple.ModConfigPath);
                 if (Directory.Exists(directoryPath))
                     return true;
             }
@@ -56,7 +56,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
         public void Execute(object parameter)
         {
-            string directoryPath = Path.GetDirectoryName(_manageModsViewModel.SelectedModPathTuple.ModConfigPath);
+            string directoryPath = Path.GetDirectoryName(_manageModsViewModel.SelectedModTuple.ModConfigPath);
             Process.Start(directoryPath);
         }
     }

@@ -83,6 +83,19 @@ namespace Reloaded.Mod.Loader.IO.Config
         }
 
         /// <summary>
+        /// Returns all mods for this application in load order. This overload also provides list of all mods.
+        /// Note: Dependencies are not taken into account in load order - but the mod loader itself does reorder the list taking them into account.
+        /// </summary>
+        /// <param name="config">The application to get all mods for.</param>
+        /// <param name="allMods">A list of all available modifications, including those not in use by the config.</param>
+        /// <param name="modDirectory">(Optional) Directory containing all of the mods.</param>
+        public static List<BooleanGenericTuple<PathGenericTuple<ModConfig>>> GetAllMods(IApplicationConfig config, out List<PathGenericTuple<ModConfig>> allMods, string modDirectory = null)
+        {
+            allMods = ModConfig.GetAllMods(modDirectory);
+            return GetAllMods(config, allMods);
+        }
+
+        /// <summary>
         /// Returns all mods for this application in load order.
         /// Note: Dependencies are not taken into account in load order - but the mod loader itself does reorder the list taking them into account.
         /// </summary>

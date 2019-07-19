@@ -36,6 +36,8 @@
     <ProjectReference Include="..\Testing\Mods\TestModA\TestModA.csproj" />
     <ProjectReference Include="..\Testing\Mods\TestModB\TestModB.csproj" />
     <ProjectReference Include="..\Testing\Mods\TestModC\TestModC.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModD\TestModD.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModE\TestModE.csproj" />
   </ItemGroup>
 
   <ItemGroup>

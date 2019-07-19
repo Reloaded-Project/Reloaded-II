@@ -18,11 +18,15 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var injector = new ApplicationInjector(ViewModel.ApplicationViewModel.SelectedProcess);
-            injector.Inject();
+            var process = ViewModel.ApplicationViewModel.SelectedProcess;
+            if (!process.HasExited)
+            {
+                var injector = new ApplicationInjector(ViewModel.ApplicationViewModel.SelectedProcess);
+                injector.Inject();
 
-            // Exit page.
-            ViewModel.ApplicationViewModel.Page = Enum.ApplicationSubPage.ReloadedProcess;
+                // Exit page.
+                ViewModel.ApplicationViewModel.Page = Enum.ApplicationSubPage.ReloadedProcess;
+            }
         }
     }
 }

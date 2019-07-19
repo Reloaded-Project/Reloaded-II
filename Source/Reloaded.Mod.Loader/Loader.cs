@@ -34,6 +34,7 @@ namespace Reloaded.Mod.Loader
         {
             LoaderConfig = LoaderConfigReader.ReadConfiguration();
             Console = new Console();
+            Manager = new PluginManager(this);
 
             if (LoaderConfig.ShowConsole)
                 Console.ShowConsole();
@@ -55,7 +56,16 @@ namespace Reloaded.Mod.Loader
         public void LoadMod(string modId)
         {
             Wrappers.ThrowIfENotEqual(IsLoaded, true, Errors.ModLoaderNotInitialized);
-            Manager.LoadMod(FindMod(modId));
+
+            // Check for duplicate.
+            if (Manager.IsModLoaded(modId))
+                throw new ReloadedException(Errors.ModAlreadyLoaded(modId));
+
+            // Note: Code below already ensures no duplicates but it would be nice to
+            // throw for the end users of the loader servers so they can see the error.
+            var mod      = FindMod(modId, out var allMods);
+            var modArray = new[] {(ModConfig) mod.Object};
+            LoadModsWithDependencies(modArray, allMods);
         }
 
         public void UnloadMod(string modId)
@@ -97,31 +107,14 @@ namespace Reloaded.Mod.Loader
         public void LoadForAppConfig(IApplicationConfig applicationConfig)
         {
             Wrappers.ThrowIfENotEqual(IsLoaded, false, Errors.ModLoaderAlreadyInitialized);
-            Application = applicationConfig;
+            Application   = applicationConfig;
 
             // Get all mods and their paths.
-            var allMods = ApplicationConfig.GetAllMods(Application, LoaderConfig.ModConfigDirectory);
-            var configToPathDictionary = new Dictionary<ModConfig, string>();
-
-            foreach (var mod in allMods)
-                configToPathDictionary[mod.Generic.Object] = mod.Generic.Path;
+            var allModsForApplication  = ApplicationConfig.GetAllMods(Application, out var allMods, LoaderConfig.ModConfigDirectory);
 
             // Get list of mods to load and load them.
-            var modsToLoad          = allMods.Where(x => x.Enabled).Select(x => x.Generic.Object);
-            var dependenciesToLoad  = ModConfig.GetDependencies(modsToLoad, null, LoaderConfig.ModConfigDirectory).Configurations;
-            var allUniqueModsToLoad = modsToLoad.Concat(dependenciesToLoad).Distinct();
-            var allSortedModsToLoad = ModConfig.SortMods(allUniqueModsToLoad);
-
-            var modPaths            = new List<PathGenericTuple<IModConfig>>();
-            foreach (var modToLoad in allSortedModsToLoad)
-            {
-                string configPath = configToPathDictionary[modToLoad];
-                string dllPath = ModConfig.GetDllPath(configPath, modToLoad);
-                modPaths.Add(new PathGenericTuple<IModConfig>(dllPath, modToLoad));
-            }
-
-            Manager = new PluginManager(this);
-            Manager.LoadMods(modPaths);
+            var modsToLoad = allModsForApplication.Where(x => x.Enabled).Select(x => x.Generic.Object);
+            LoadModsWithDependencies(modsToLoad, allMods);
             Manager.LoaderApi.OnModLoaderInitialized();
             IsLoaded = true;
         }
@@ -130,11 +123,12 @@ namespace Reloaded.Mod.Loader
         /// Gets a list of all mods from filesystem and returns a mod with a matching ModId.
         /// </summary>
         /// <param name="modId">The modId to find.</param>
+        /// <param name="allMods">List of all mod configurations, read during the operation.</param>
         /// <exception cref="ReloadedException">A mod to load has not been found.</exception>
-        public PathGenericTuple<IModConfig> FindMod(string modId)
+        public PathGenericTuple<IModConfig> FindMod(string modId, out List<PathGenericTuple<ModConfig>> allMods)
         {
             // Get mod with ID
-            var allMods = ModConfig.GetAllMods(LoaderConfig.ModConfigDirectory);
+            allMods = ModConfig.GetAllMods(LoaderConfig.ModConfigDirectory);
             var mod = allMods.FirstOrDefault(x => x.Object.ModId == modId);
 
             if (mod != null)
@@ -144,6 +138,39 @@ namespace Reloaded.Mod.Loader
             }
 
             throw new ReloadedException(Errors.ModToLoadNotFound(modId));
+        }
+
+        /// <summary>
+        /// Loads a collection of mods with their associated dependencies.
+        /// </summary>
+        private void LoadModsWithDependencies(IEnumerable<ModConfig> modsToLoad, List<PathGenericTuple<ModConfig>> allMods = null)
+        {
+            // Cache configuration paths for all mods.
+            if (allMods == null)
+                allMods = ModConfig.GetAllMods(LoaderConfig.ModConfigDirectory);
+
+            var configToPathDictionary = new Dictionary<ModConfig, string>();
+            foreach (var mod in allMods)
+                configToPathDictionary[mod.Object] = mod.Path;
+
+            // Get dependencies, sort and load in order.
+            var dependenciesToLoad  = ModConfig.GetDependencies(modsToLoad, null, LoaderConfig.ModConfigDirectory).Configurations;
+            var allUniqueModsToLoad = modsToLoad.Concat(dependenciesToLoad).Distinct();
+            var allSortedModsToLoad = ModConfig.SortMods(allUniqueModsToLoad);
+
+            var modPaths            = new List<PathGenericTuple<IModConfig>>();
+            foreach (var modToLoad in allSortedModsToLoad)
+            {
+                // Reloaded does not allow loading same mod multiple times.
+                if (! Manager.IsModLoaded(modToLoad.ModId))
+                {
+                    string configPath = configToPathDictionary[modToLoad];
+                    string dllPath = ModConfig.GetDllPath(configPath, modToLoad);
+                    modPaths.Add(new PathGenericTuple<IModConfig>(dllPath, modToLoad));
+                }
+            }
+
+            Manager.LoadMods(modPaths);
         }
 
         /// <summary>

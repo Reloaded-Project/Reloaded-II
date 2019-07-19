@@ -31,7 +31,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         /* Fields */
         public int SelectedIndex { get; set; } = 0;
-        public ImageModPathTuple SelectedModPathTuple { get; set; }
+        public ImageModPathTuple SelectedModTuple { get; set; }
         public ImageSource Icon { get; set; }
 
         public ObservableCollection<BooleanGenericTuple<ApplicationConfig>> EnabledAppIds { get; set; }
@@ -76,23 +76,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         {
             // Save old collection.
             if (oldModTuple != null)
-            {
-                if (EnabledAppIds != null)
-                {
-                    var supportedApps = new List<string>();
-                    foreach (var booleanAppTuple in EnabledAppIds)
-                    {
-                        if (booleanAppTuple.Enabled)
-                            supportedApps.Add(booleanAppTuple.Generic.AppId);
-                    }
-
-                    oldModTuple.ModConfig.SupportedAppId = supportedApps.ToArray();
-                }
-
-                // Make sure not to refresh the collection, we will lose our index.
-                // Note: Saving regardless of action because of possible other changes.
-                InvokeWithoutMonitoringMods(oldModTuple.Save);
-            }
+                SaveMod(oldModTuple);
 
             // Make new collection.
             if (newModTuple != null)
@@ -107,6 +91,25 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 }
                 EnabledAppIds = booleanAppTuples;
             }
+        }
+
+        public void SaveMod(ImageModPathTuple oldModTuple)
+        {
+            if (EnabledAppIds != null)
+            {
+                var supportedApps = new List<string>();
+                foreach (var booleanAppTuple in EnabledAppIds)
+                {
+                    if (booleanAppTuple.Enabled)
+                        supportedApps.Add(booleanAppTuple.Generic.AppId);
+                }
+
+                oldModTuple.ModConfig.SupportedAppId = supportedApps.ToArray();
+            }
+
+            // Make sure not to refresh the collection, we will lose our index.
+            // Note: Saving regardless of action because of possible other changes.
+            InvokeWithoutMonitoringMods(oldModTuple.Save);
         }
 
         public void InvokeWithoutMonitoringMods(Action action)

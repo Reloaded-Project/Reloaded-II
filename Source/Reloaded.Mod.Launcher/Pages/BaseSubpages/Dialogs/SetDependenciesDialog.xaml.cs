@@ -26,7 +26,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         {
             InitializeComponent();
             ManageModsViewModel = manageModsViewModel;
-            CurrentMod = manageModsViewModel.SelectedModPathTuple;
+            CurrentMod = manageModsViewModel.SelectedModTuple;
 
             PopulateDependencies();
             this.Closed += OnClosed;

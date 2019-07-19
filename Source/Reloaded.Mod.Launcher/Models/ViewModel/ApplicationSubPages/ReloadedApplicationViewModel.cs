@@ -10,14 +10,16 @@ using System.Threading.Tasks;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
+using Reloaded.WPF.MVVM;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 {
-    public class ReloadedApplicationViewModel
+    public class ReloadedApplicationViewModel : ObservableObject
     {
         public ApplicationViewModel ApplicationViewModel { get; set; }
-        public Client Client { get; set; }
-        public ModInfo[] LoadedMods { get; set; }
+        public Client Client            { get; set; }
+        public ModInfo[]    LoadedMods  { get; set; }
+        public ModInfo      SelectedMod { get; set; }
 
         private Task _connectToServer;
         private CancellationTokenSource _cancellationTokenSource;
@@ -45,6 +47,14 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         public void CancelToken()
         {
             _cancellationTokenSource.Cancel();
+        }
+
+        /// <summary>
+        /// Retrieves the list of loaded mods.
+        /// </summary>
+        public void RefreshLoadedMods()
+        {
+            LoadedMods = Client?.GetLoadedModsAsync().Result.Mods;
         }
 
         /// <summary>

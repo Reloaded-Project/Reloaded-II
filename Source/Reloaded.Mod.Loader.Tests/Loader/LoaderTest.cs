@@ -67,7 +67,7 @@ namespace Reloaded.Mod.Loader.Tests.Loader
             // D cannot.
             var modConfigD = loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigD.ModId);
             Assert.False(modConfigD.CanSuspend);
-            Assert.False(modConfigD.CanUnload);
+            Assert.True(modConfigD.CanUnload);
         }
 
         [Fact]
@@ -102,6 +102,40 @@ namespace Reloaded.Mod.Loader.Tests.Loader
 
             // Check state consistency
             Assert.Equal(ModState.Running, loadedMods.Last().State);
+        }
+
+        [Fact]
+        public void LoadNewModWithDependencies()
+        {
+            // TestModE depends on TestModC
+            _loader.LoadMod(_testData.TestModConfigE.ModId);
+            var loadedMods = _loader.Manager.GetLoadedMods();
+
+            // Mod should load last after dependency.
+            var testModE = loadedMods.Last(); // TestModE has no DLL.
+            Assert.Equal(_testData.TestModConfigE.ModId, testModE.ModConfig.ModId);
+
+            // Dependency should load before mod.
+            var testModC = loadedMods[^2];
+            Assert.Equal(_testData.TestModConfigC.ModId, testModC.ModConfig.ModId);
+
+            // Check state consistency
+            Assert.Equal(ModState.Running, testModE.State);
+            Assert.Equal(ModState.Running, testModC.State);
+        }
+
+
+        [Fact]
+        public void UnloadModWithDependencies()
+        {
+            // Now load and unload TestModE
+            // TestModE depends on TestModC
+            // TestModC should stay loaded.
+            _loader.LoadMod(_testData.TestModConfigE.ModId);
+            _loader.UnloadMod(_testData.TestModConfigE.ModId);
+
+            // Test Mod C should still be loaded.
+            Assert.True(_loader.Manager.IsModLoaded(_testData.TestModConfigC.ModId));
         }
 
         [Fact]

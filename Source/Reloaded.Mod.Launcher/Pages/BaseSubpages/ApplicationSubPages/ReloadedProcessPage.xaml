@@ -9,7 +9,57 @@
       d:DesignWidth="576"
       Title="{DynamicResource TitleReloadedProcess}">
 
-    <Grid>
-        
+    <Grid x:Name="Contents"
+          Margin="{DynamicResource PageMargin}"
+          DataContext="{Binding ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+
+        <!-- Layout -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- List of mods -->
+        <ListView 
+            x:Name="ModListView"
+            HorizontalAlignment="Stretch"
+            ItemsSource="{Binding LoadedMods, UpdateSourceTrigger=PropertyChanged}"
+            SelectedValue="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Top">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ModId, UpdateSourceTrigger=PropertyChanged}" 
+                                   VerticalAlignment="Center" 
+                                   HorizontalAlignment="Center" 
+                                   Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+
+                        <TextBlock Text="{Binding State, UpdateSourceTrigger=PropertyChanged}" 
+                                   VerticalAlignment="Center" 
+                                   HorizontalAlignment="Center" 
+                                   Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+
+                        <CheckBox IsChecked="{Binding CanSuspend, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEnabled="False"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                  Height="{DynamicResource ListEntryCheckboxHeightSmall}"/>
+
+                        <CheckBox IsChecked="{Binding CanUnload, UpdateSourceTrigger=PropertyChanged}" 
+                                  IsEnabled="False"
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                  Height="{DynamicResource ListEntryCheckboxHeightSmall}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Buttons -->
+
+
     </Grid>
 </local:ApplicationSubPage>

@@ -78,19 +78,19 @@
                     </Grid>
 
                     <!-- Mod Properties -->
-                    <TextBox Text="{Binding Path=SelectedModPathTuple.ModConfig.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Text="{Binding Path=SelectedModTuple.ModConfig.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogName}"/>
 
-                    <TextBox Text="{Binding Path=SelectedModPathTuple.ModConfig.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox Text="{Binding Path=SelectedModTuple.ModConfig.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogAuthor}"/>
 
-                    <TextBox Text="{Binding Path=SelectedModPathTuple.ModConfig.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Text="{Binding Path=SelectedModTuple.ModConfig.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogVersion}"/>
 
-                    <TextBox Text="{Binding Path=SelectedModPathTuple.ModConfig.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Text="{Binding Path=SelectedModTuple.ModConfig.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogDescription}"/>
 
@@ -160,7 +160,7 @@
                             x:Name="ModListView"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding Source={StaticResource SortedMods}}"
-                            SelectedValue="{Binding SelectedModPathTuple}" 
+                            SelectedValue="{Binding SelectedModTuple}" 
                             SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             ToolTip="{DynamicResource ModManagerSelectMod}"
                             SelectionChanged="ListView_SelectionChanged" 

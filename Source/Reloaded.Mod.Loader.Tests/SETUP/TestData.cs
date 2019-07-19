@@ -54,6 +54,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
         public ModConfig        TestModConfigB => ModConfigurations.First(x => x.ModId == "TestModB");
         public ModConfig        TestModConfigC => ModConfigurations.First(x => x.ModId == "TestModC");
         public ModConfig        TestModConfigD => ModConfigurations.First(x => x.ModId == "TestModD"); // This config is a no DLL mod.
+        public ModConfig        TestModConfigE => ModConfigurations.First(x => x.ModId == "TestModE"); // This config is a no DLL mod.
         public ApplicationConfig ThisApplication;
 
         public TestData()
