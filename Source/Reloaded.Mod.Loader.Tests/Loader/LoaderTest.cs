@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Reloaded.Mod.Loader.Exceptions;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Tests.SETUP;
@@ -33,24 +34,49 @@ namespace Reloaded.Mod.Loader.Tests.Loader
             foreach (var mod in loadedMods)
             {
                 var iMod = mod.Mod;
-                ITestHelper sayHello = iMod as ITestHelper;
-                if (sayHello == null)
-                    Assert.True(false, "Failed to cast Test Mod.");
 
-                bool isKnownConfig = sayHello.MyId == _testData.TestModConfigA.ModId ||
-                                     sayHello.MyId == _testData.TestModConfigB.ModId;
+                // Tests may include mods without code.
+                if (iMod != null)
+                {
+                    ITestHelper sayHello = iMod as ITestHelper;
+                    if (sayHello == null)
+                        Assert.True(false, "Failed to cast Test Mod.");
 
-                // TestMod C is unloaded, do not check for it.
-                Assert.True(isKnownConfig);
+                    bool isKnownConfig = sayHello.MyId == _testData.TestModConfigA.ModId ||
+                                         sayHello.MyId == _testData.TestModConfigB.ModId;
+
+                    // TestMod C is unloaded, do not check for it.
+                    Assert.True(isKnownConfig);
+                }
             }
+        }
+
+        [Fact]
+        public void AssertSuspendUnloadState()
+        {
+            // A & B can suspend/unload.
+            var loadedMods = _loader.Manager.GetLoadedMods();
+            var modConfigA = loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigA.ModId);
+            var modConfigB = loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId);
+
+            Assert.True(modConfigA.CanSuspend);
+            Assert.True(modConfigB.CanSuspend);
+            Assert.True(modConfigA.CanUnload);
+            Assert.True(modConfigA.CanUnload);
+
+            // D cannot.
+            var modConfigD = loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigD.ModId);
+            Assert.False(modConfigD.CanSuspend);
+            Assert.False(modConfigD.CanUnload);
         }
 
         [Fact]
         public void CountLoadedMods()
         {
             var loadedMods = _loader.Manager.GetLoadedMods();
-            Assert.Equal(2, loadedMods.Length);
+            Assert.Equal(3, loadedMods.Length);
         }
+
 
         [Fact]
         public void CheckLoadOrder()
@@ -71,11 +97,11 @@ namespace Reloaded.Mod.Loader.Tests.Loader
             var loadedMods = _loader.Manager.GetLoadedMods();
 
             // Should be loaded last.
-            var testModC = (ITestHelper)loadedMods[2].Mod;
+            var testModC = (ITestHelper)loadedMods.Last().Mod;
             Assert.Equal(_testData.TestModConfigC.ModId, testModC.MyId);
 
             // Check state consistency
-            Assert.Equal(ModState.Running, loadedMods[2].State);
+            Assert.Equal(ModState.Running, loadedMods.Last().State);
         }
 
         [Fact]
@@ -92,9 +118,12 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         {
             foreach (var modInstance in _loader.Manager.GetLoadedMods())
             {
-                modInstance.Suspend();
-                Assert.Equal(ModState.Suspended, modInstance.State);
-                Assert.True(((ITestHelper)modInstance.Mod).SuspendExecuted);
+                if (modInstance.CanSuspend)
+                {
+                    modInstance.Suspend();
+                    Assert.Equal(ModState.Suspended, modInstance.State);
+                    Assert.True(((ITestHelper)modInstance.Mod).SuspendExecuted);
+                }
             }
         }
 
@@ -103,11 +132,14 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         {
             foreach (var modInstance in _loader.Manager.GetLoadedMods())
             {
-                modInstance.Suspend();
-                modInstance.Resume();
-                Assert.Equal(ModState.Running, modInstance.State);
-                Assert.True(((ITestHelper)modInstance.Mod).SuspendExecuted);
-                Assert.True(((ITestHelper)modInstance.Mod).ResumeExecuted);
+                if (modInstance.CanSuspend)
+                {
+                    modInstance.Suspend();
+                    modInstance.Resume();
+                    Assert.Equal(ModState.Running, modInstance.State);
+                    Assert.True(((ITestHelper)modInstance.Mod).SuspendExecuted);
+                    Assert.True(((ITestHelper)modInstance.Mod).ResumeExecuted);
+                }
             }
         }
 

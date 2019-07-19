@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using LiteNetLib;
 using McMaster.NETCore.Plugins;
@@ -70,25 +71,16 @@ namespace Reloaded.Mod.Loader.Mods
             // Check if mod with ID already loaded.
             if (_modifications.ContainsKey(tuple.Object.ModId))
                 throw new ReloadedException(Errors.ModAlreadyLoaded(tuple.Object.ModId));
-            
-            // TODO: Native mod loading support.
-            var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path, 
-                new []{ typeof(IModLoaderV1), typeof(IModV1) },
-                config =>
-                {
-                    config.IsUnloadable = true;
-                    config.PreferSharedTypes = true;
-                });
 
-            var defaultAssembly = loader.LoadDefaultAssembly();
-            var types = defaultAssembly.GetTypes();
-            var entryPoint = types.FirstOrDefault(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
-
-            // Load entrypoint.
-            var plugin = (IModV1)Activator.CreateInstance(entryPoint);
-            var modInstance = new ModInstance(loader, plugin, tuple.Object);
-            StartModInstance(modInstance);
-            _modifications[tuple.Object.ModId] = modInstance;
+            // Load DLL or non-dll mod.
+            if (File.Exists(tuple.Path))
+            {
+                LoadDllMod(tuple);
+            }
+            else
+            {
+                LoadNonDllMod(tuple);
+            }
         }
 
         /// <summary>
@@ -184,8 +176,37 @@ namespace Reloaded.Mod.Loader.Mods
         }
 
         /* Helper methods. */
+        private void LoadDllMod(PathGenericTuple<IModConfig> tuple)
+        {
+            // TODO: Native mod loading support.
+            var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path,
+                new[] { typeof(IModLoaderV1), typeof(IModV1) },
+                config =>
+                {
+                    config.IsUnloadable = true;
+                    config.PreferSharedTypes = true;
+                });
+
+            var defaultAssembly = loader.LoadDefaultAssembly();
+            var types = defaultAssembly.GetTypes();
+            var entryPoint = types.FirstOrDefault(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
+
+            // Load entrypoint.
+            var plugin = (IModV1)Activator.CreateInstance(entryPoint);
+            var modInstance = new ModInstance(loader, plugin, tuple.Object);
+            StartModInstance(modInstance);
+        }
+
+        private void LoadNonDllMod(PathGenericTuple<IModConfig> tuple)
+        {
+            var modInstance = new ModInstance(tuple.Object);
+            StartModInstance(modInstance);
+        }
+
         private void StartModInstance(ModInstance instance)
         {
+            _modifications[instance.ModConfig.ModId] = instance;
+
             LoaderApi.ModLoading(instance.Mod, instance.ModConfig);
             instance.Start(LoaderApi);
             LoaderApi.ModLoaded(instance.Mod, instance.ModConfig);

@@ -10,7 +10,9 @@ namespace Reloaded.Mod.Loader.Logging
         public event EventHandler<string> OnPrintMessage = (sender, s) => { };
 
         /* Default constructor */
-        public Console()
+        public Console() { }
+
+        public void ShowConsole()
         {
             ConsoleAllocator.Alloc();
         }

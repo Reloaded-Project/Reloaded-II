@@ -20,6 +20,15 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         public bool CanUnload;
         private bool _started;
 
+        /* Non-Dll Mods */
+        public ModInstance(IModConfig config)
+        {
+            ModConfig = config;
+            CanSuspend = false;
+            CanUnload = false;
+        }
+
+        /* Dll Mods */
         public ModInstance(PluginLoader loader, IModV1 mod, IModConfig config)
         {
             Loader = loader;
@@ -54,7 +63,7 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         {
             if (!_started)
             {
-                Mod.Start(loader);
+                Mod?.Start(loader);
                 State = ModState.Running;
                 _started = true;
             }
@@ -62,13 +71,13 @@ namespace Reloaded.Mod.Loader.Mods.Structs
 
         public void Resume()
         {
-            Mod.Resume();
+            Mod?.Resume();
             State = ModState.Running;
         }
 
         public void Suspend()
         {
-            Mod.Suspend();
+            Mod?.Suspend();
             State = ModState.Suspended;
         }
     }

@@ -32,8 +32,11 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         public Loader()
         {
-            Console = new Console();
             LoaderConfig = LoaderConfigReader.ReadConfiguration();
+            Console = new Console();
+
+            if (LoaderConfig.ShowConsole)
+                Console.ShowConsole();
         }
 
         ~Loader()

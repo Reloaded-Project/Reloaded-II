@@ -73,11 +73,11 @@ namespace Reloaded.Mod.Loader.Tests.Loader
 
             // Should be loaded last.
             var loadedMods = _loader.Manager.GetLoadedMods();
-            var testModC = (ITestHelper)   loadedMods[2].Mod;
+            var testModC = (ITestHelper)   loadedMods.Last().Mod;
             Assert.Equal(_testData.TestModConfigC.ModId, testModC.MyId);
 
             // Check state consistency
-            Assert.Equal(ModState.Running, loadedMods[2].State);
+            Assert.Equal(ModState.Running, loadedMods.Last().State);
         }
 
         [Fact]

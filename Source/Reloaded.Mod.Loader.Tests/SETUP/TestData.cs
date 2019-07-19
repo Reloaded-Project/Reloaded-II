@@ -53,6 +53,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
         public ModConfig        TestModConfigA => ModConfigurations.First(x => x.ModId == "TestModA"); 
         public ModConfig        TestModConfigB => ModConfigurations.First(x => x.ModId == "TestModB");
         public ModConfig        TestModConfigC => ModConfigurations.First(x => x.ModId == "TestModC");
+        public ModConfig        TestModConfigD => ModConfigurations.First(x => x.ModId == "TestModD"); // This config is a no DLL mod.
         public ApplicationConfig ThisApplication;
 
         public TestData()
@@ -74,7 +75,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
                 ThisApplication = new ApplicationConfig(IdOfThisApp,
                                                         "Reloaded Mod Loader Tests",
                                                         Process.GetCurrentProcess().GetExecutablePath(),
-                                                        new[] { TestModConfigA.ModId, TestModConfigB.ModId });
+                                                        new[] { TestModConfigA.ModId, TestModConfigB.ModId, TestModConfigD.ModId });
 
                 ConfigurationPathOfThisApp = Path.Combine(TestConfig.ApplicationConfigDirectory, IdOfThisApp, ApplicationConfig.ConfigFileName);
                 ApplicationConfig.WriteConfiguration(ConfigurationPathOfThisApp, ThisApplication);
