@@ -72,7 +72,8 @@
                                     <DataTemplate>
                                         <TextBlock Style="{DynamicResource TextblockWithColourChange}" HorizontalAlignment="Center" 
                                                    FontSize="{DynamicResource FontSizeSmaller}"
-                                                   Text="{Binding ., Converter={x:Static converters:ProcessToNameStringConverter.Instance}}"/>
+                                                   Text="{Binding ., Converter={x:Static converters:ProcessToNameStringConverter.Instance}}"
+                                                   PreviewMouseDown="ReloadedMod_PreviewMouseDown"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
 

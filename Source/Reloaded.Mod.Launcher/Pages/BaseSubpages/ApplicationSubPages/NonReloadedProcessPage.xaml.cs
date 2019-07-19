@@ -22,7 +22,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
             injector.Inject();
 
             // Exit page.
-            ViewModel.ApplicationViewModel.Page = Enum.ApplicationSubPage.ApplicationSummary;
+            ViewModel.ApplicationViewModel.Page = Enum.ApplicationSubPage.ReloadedProcess;
         }
     }
 }

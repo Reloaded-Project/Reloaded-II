@@ -52,8 +52,8 @@ namespace Reloaded.Mod.Loader
         public static int Initialize(IntPtr unusedPtr, int unusedSize)
         {
             // Write port as a Memory Mapped File, to allow Mod Loader's Launcher to discover the mod port.
-            var pid             = Process.GetCurrentProcess().Id;
-            _memoryMappedFile   = MemoryMappedFile.CreateOrOpen(ServerUtility.GetMappedFileNameForPid(pid), sizeof(long));
+            int pid             = Process.GetCurrentProcess().Id;
+            _memoryMappedFile   = MemoryMappedFile.CreateOrOpen(ServerUtility.GetMappedFileNameForPid(pid), sizeof(int));
             var view            = _memoryMappedFile.CreateViewStream();
             var binaryWriter    = new BinaryWriter(view);
             binaryWriter.Write(_server.Port);

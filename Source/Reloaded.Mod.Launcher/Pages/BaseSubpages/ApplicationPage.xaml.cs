@@ -41,6 +41,22 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             Dispose();
         }
 
+        private void ReloadedMod_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                if (sender is FrameworkElement element)
+                {
+                    if (element.DataContext is Process process)
+                    {
+                        ViewModel.SelectedProcess = process;
+                        ViewModel.Page = ApplicationSubPage.ReloadedProcess;
+                        ViewModel.RaisePagePropertyChanged();
+                    }
+                }
+            }
+        }
+
         private void NonReloadedMod_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)

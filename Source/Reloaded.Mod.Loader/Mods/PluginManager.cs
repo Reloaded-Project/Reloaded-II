@@ -82,15 +82,13 @@ namespace Reloaded.Mod.Loader.Mods
 
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types = defaultAssembly.GetTypes();
-            var entryPoints = types.Where(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
+            var entryPoint = types.FirstOrDefault(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
 
-            foreach (var entryPoint in entryPoints)
-            {
-                var plugin = (IModV1) Activator.CreateInstance(entryPoint);
-                var modInstance = new ModInstance(loader, plugin, tuple.Object);
-                StartModInstance(modInstance);
-                _modifications[tuple.Object.ModId] = modInstance;
-            }
+            // Load entrypoint.
+            var plugin = (IModV1)Activator.CreateInstance(entryPoint);
+            var modInstance = new ModInstance(loader, plugin, tuple.Object);
+            StartModInstance(modInstance);
+            _modifications[tuple.Object.ModId] = modInstance;
         }
 
         /// <summary>
