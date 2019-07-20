@@ -10,7 +10,7 @@ namespace Reloaded.Mod.Loader.Server.Messages.Response
 {
     public struct Acknowledgement : IMessage<MessageType>
     {
-        public MessageType GetMessageType() => MessageType.GetLoadedModsResponse;
+        public MessageType GetMessageType() => MessageType.Acknowledgement;
         public ISerializer GetSerializer() => new MsgPackSerializer(true);
         public ICompressor GetCompressor() => null;
 

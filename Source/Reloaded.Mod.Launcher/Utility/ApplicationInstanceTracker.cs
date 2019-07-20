@@ -83,7 +83,7 @@ namespace Reloaded.Mod.Launcher.Utility
         public Structs.ProcessCollection GetProcesses()
         {
             var processCollection = Structs.ProcessCollection.GetEmpty(_processes.Count);
-            foreach (var process in _processes)
+            foreach (var process in _processes.ToArray())
             {
                 if (IsModLoaderPresent(process))
                     processCollection.ReloadedProcesses.Add(process);
@@ -98,9 +98,10 @@ namespace Reloaded.Mod.Launcher.Utility
         {
             try
             {
-                foreach (var module in Safety.TryGetModules(process))
+                var moduleNames = FasterModuleCollector.CollectModuleNames(process);
+                foreach (var moduleName in moduleNames)
                 {
-                    if (Path.GetFileName(module.ModulePath) == LoaderConfig.LoaderDllName)
+                    if (Path.GetFileName(moduleName) == LoaderConfig.LoaderDllName)
                     {
                         return true;
                     }

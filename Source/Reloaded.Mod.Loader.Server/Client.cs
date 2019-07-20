@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -27,6 +29,11 @@ namespace Reloaded.Mod.Loader.Server
             _simpleHost = new SimpleHost<MessageType>(false);
             _simpleHost.NetManager.Start(IPAddress.Loopback, IPAddress.IPv6Loopback, 0);
             _simpleHost.NetManager.Connect(new IPEndPoint(IPAddress.Loopback, port), "");
+
+#if DEBUG
+            _simpleHost.NetManager.DisconnectTimeout = Int32.MaxValue;
+#endif
+
             _simpleHost.MessageHandler.AddOrOverrideHandler<GenericExceptionResponse>(ReceiveException);
         }
 
@@ -34,6 +41,19 @@ namespace Reloaded.Mod.Loader.Server
         private void ReceiveException(ref NetMessage<GenericExceptionResponse> message)
         {
             OnReceiveException?.Invoke(message.Message);
+        }
+
+        /* Utility functions. */
+
+        /// <summary>
+        /// Attempts to acquire the port to connect to a remote process with a specific id.
+        /// </summary>
+        public static int GetPort(int pid)
+        {
+            var mappedFile = MemoryMappedFile.OpenExisting(ServerUtility.GetMappedFileNameForPid(pid));
+            var view = mappedFile.CreateViewStream();
+            var binaryReader = new BinaryReader(view);
+            return binaryReader.ReadInt32();
         }
 
         /* Server calls without responses. */
@@ -47,17 +67,17 @@ namespace Reloaded.Mod.Loader.Server
             return SendMessageWithResponseAsync<LoadMod, Acknowledgement>(new LoadMod(modId), timeout, token);
         }
 
-        public Task<Acknowledgement> ResumeMod(string modId, int timeout = 1000, CancellationToken token = default)
+        public Task<Acknowledgement> ResumeModAsync(string modId, int timeout = 1000, CancellationToken token = default)
         {
             return SendMessageWithResponseAsync<ResumeMod, Acknowledgement>(new ResumeMod(modId), timeout, token);
         }
 
-        public Task<Acknowledgement> SuspendMod(string modId, int timeout = 1000, CancellationToken token = default)
+        public Task<Acknowledgement> SuspendModAsync(string modId, int timeout = 1000, CancellationToken token = default)
         {
             return SendMessageWithResponseAsync<SuspendMod, Acknowledgement>(new SuspendMod(modId), timeout, token);
         }
 
-        public Task<Acknowledgement> UnloadMod(string modId, int timeout = 1000, CancellationToken token = default)
+        public Task<Acknowledgement> UnloadModAsync(string modId, int timeout = 1000, CancellationToken token = default)
         {
             return SendMessageWithResponseAsync<UnloadMod, Acknowledgement>(new UnloadMod(modId), timeout, token);
         }

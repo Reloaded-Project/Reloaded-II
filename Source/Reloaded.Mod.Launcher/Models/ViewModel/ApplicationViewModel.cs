@@ -34,7 +34,12 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public int NonReloadedApps { get; set; }
         public int TotalMods { get; set; }
 
-        public ApplicationSubPage Page { get; set; }
+        public ApplicationSubPage Page
+        {
+            get => _page;
+            set => _page = value;
+        }
+
         public Process SelectedProcess { get; set; }
 
         /// <summary>
@@ -43,6 +48,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// </summary>
         public Task InitializeClassTask { get; }
         private readonly CancellationTokenSource _initializeClassTaskTokenSource;
+        private ApplicationSubPage _page;
 
         public ApplicationViewModel(ImageApplicationPathTuple tuple, ManageModsViewModel modsViewModel)
         {
@@ -65,7 +71,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                     InstanceTracker = new ApplicationInstanceTracker(tuple.ApplicationConfig.AppLocation, _initializeClassTaskTokenSource.Token);
                     ManageModsViewModel.ModsChanged += OnModsChanged;
                     InstanceTracker.OnProcessesChanged += InstanceTrackerOnProcessesChanged;
-                    RefreshProcessesWithLoaderTimer = new Timer(state => { InstanceTrackerOnProcessesChanged(_emptyProcessArray); }, null, 1000, 1000);
+                    RefreshProcessesWithLoaderTimer = new Timer(state => { InstanceTrackerOnProcessesChanged(_emptyProcessArray); }, null, 1000, 5000);
 
                     InstanceTrackerOnProcessesChanged(new Process[0]);
                     OnModsChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -107,8 +113,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             GC.SuppressFinalize(this);
         }
 
-        public void RaisePagePropertyChanged()
+        public void ChangePageProperty(ApplicationSubPage page)
         {
+            _page = page;
             RaisePropertyChangedEvent(nameof(Page));
         }
 

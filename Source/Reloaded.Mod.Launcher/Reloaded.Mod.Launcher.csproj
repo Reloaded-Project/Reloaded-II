@@ -39,6 +39,7 @@
     <None Remove="Languages\pl-PL.xaml" />
     <None Remove="Pages\BaseSubpages\ApplicationPage.xaml" />
     <None Remove="Pages\BaseSubpages\ApplicationSubPages\ApplicationSummaryPage.xaml" />
+    <None Remove="Pages\BaseSubpages\ApplicationSubPages\Dialogs\LoadModSelectDialog.xaml" />
     <None Remove="Pages\BaseSubpages\ApplicationSubPages\NonReloadedProcessPage.xaml" />
     <None Remove="Pages\BaseSubpages\ApplicationSubPages\ReloadedProcessPage.xaml" />
     <None Remove="Pages\BaseSubpages\Dialogs\SetDependenciesDialog.xaml" />
@@ -113,7 +114,7 @@
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="1.1.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.5.14" />
     <PackageReference Include="Reloaded.Assembler" Version="1.0.6" />
-    <PackageReference Include="Reloaded.Injector" Version="1.2.1" />
+    <PackageReference Include="Reloaded.Injector" Version="1.2.2" />
     <PackageReference Include="System.Management" Version="4.5.0" />
   </ItemGroup>
 

@@ -24,6 +24,10 @@ namespace Reloaded.Mod.Loader
             _simpleHost = new SimpleHost<MessageType>(true);
             RegisterFunctions();
             _simpleHost.NetManager.Start(IPAddress.Loopback, IPAddress.IPv6Loopback, 0);
+
+#if DEBUG
+            _simpleHost.NetManager.DisconnectTimeout = Int32.MaxValue;
+#endif
         }
 
         private void RegisterFunctions()
@@ -49,6 +53,7 @@ namespace Reloaded.Mod.Loader
                 {
                     var message = new Message<MessageType, GenericExceptionResponse>(new GenericExceptionResponse(ex.Message));
                     netMessage.Peer.Send(message.Serialize(), DeliveryMethod.ReliableOrdered);
+                    netMessage.Peer.Flush();
                 }
             }
 

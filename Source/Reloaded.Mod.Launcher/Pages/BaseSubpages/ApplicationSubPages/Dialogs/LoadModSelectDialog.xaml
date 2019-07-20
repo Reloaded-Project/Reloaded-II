@@ -1,0 +1,77 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs.LoadModSelectDialog"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+      xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+      mc:Ignorable="d" 
+      Title="ModSelectDialog"
+      Height="550" 
+      Width="700"
+      Style="{DynamicResource ReloadedWindow}">
+
+    <Grid DataContext="{Binding Path=., RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          Margin="{DynamicResource PageMargin}"
+          x:Name="Contents">
+
+        <!-- Grid Resources -->
+        <Grid.Resources>
+            <ResourceDictionary>
+
+                <!-- Sort the mod list -->
+                <CollectionViewSource x:Key="SortedMods" Source="{Binding ApplicationViewModel.ModsForThisApp, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
+                    <CollectionViewSource.SortDescriptions>
+                        <componentModel:SortDescription PropertyName="ModConfig.ModName"/>
+                    </CollectionViewSource.SortDescriptions>
+                </CollectionViewSource>
+            </ResourceDictionary>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Search Filter -->
+        <Grid Grid.Row="0" Margin="{DynamicResource PanelMargin}">
+            <TextBox x:Name="ModsFilter"
+                     Style="{DynamicResource TextboxWithPlaceholder}"
+                     Tag="{DynamicResource ModManagerSearchMods}"
+                     TextChanged="ModsFilter_TextChanged"/>
+        </Grid>
+
+        <!-- Mod List -->
+        <Grid Grid.Row="1" Margin="{DynamicResource PanelMargin}">
+            <DataGrid ItemsSource="{Binding Source={StaticResource SortedMods}}"
+                      SelectedItem="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      VerticalContentAlignment="Top"
+
+                      CanUserResizeColumns="False"
+                      CanUserResizeRows="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserSortColumns="False"
+                      CanUserReorderColumns="False"
+
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ModId" Binding="{Binding ModConfig.ModId}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="ModName" Binding="{Binding ModConfig.ModName}" Width="*" IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <!-- Buttons -->
+        <Grid Grid.Row="2" Margin="{DynamicResource PanelMargin}">
+            <Button HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Content="{DynamicResource ReloadedProcessLoadMod}"
+                    Click="LoadMod_Click"/>
+        </Grid>
+    </Grid>
+</default:ReloadedWindow>

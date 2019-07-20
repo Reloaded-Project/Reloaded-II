@@ -109,8 +109,17 @@
     <!-- Application & SubMenus -->
     <sys:String x:Key="TitleConfigureMods">Configure Mods</sys:String>
     <sys:String x:Key="ApplicationLaunch">Launch Application</sys:String>
+
     <sys:String x:Key="ConfigureModsListItemTooltip">Drag and drop items to change the load order of mods. Mods are loaded starting with top mod first and bottom mod last.</sys:String>
     <sys:String x:Key="ConfigureModsDummyText">Uses Reloaded to tell you to get some mods. Reloaded-II is cool! Cuteness is justice, its the law!.</sys:String> <!-- Unused for now, will be used down the road. -->
+
+    <!-- Reloaded Process -->
+    <sys:String x:Key="ReloadedProcessResume">Resume</sys:String>
+    <sys:String x:Key="ReloadedProcessSuspend">Suspend</sys:String>
+    <sys:String x:Key="ReloadedProcessUnload">Unload</sys:String>
+    <sys:String x:Key="ReloadedProcessRefresh">Refresh</sys:String>
+    <sys:String x:Key="ReloadedProcessLoadMod">Load Mod</sys:String>
+    <sys:String x:Key="ReloadedProcessNotice">Note: This menu is primarily intended for use by developers.</sys:String>
 
     <!-- Errors -->
     <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->

@@ -30,6 +30,7 @@ namespace Reloaded.Mod.Launcher.Utility
         /// <param name="timeout">The timeout in milliseconds.</param>
         /// <param name="sleepTime">Amount of sleep per iteration/attempt.</param>
         /// <param name="token">Token that allows for cancellation of the task.</param>
+        /// <exception cref="Exception">Timeout expired.</exception>
         public static T TryGetValue<T>(Func<T> getValue, int timeout, int sleepTime, CancellationToken token = default)
         {
             Stopwatch watch = new Stopwatch();

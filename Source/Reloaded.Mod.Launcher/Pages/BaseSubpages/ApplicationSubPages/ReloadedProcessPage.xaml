@@ -17,49 +17,64 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- List of mods -->
-        <ListView 
-            x:Name="ModListView"
-            HorizontalAlignment="Stretch"
-            ItemsSource="{Binding LoadedMods, UpdateSourceTrigger=PropertyChanged}"
-            SelectedValue="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            VerticalAlignment="Stretch"
-            VerticalContentAlignment="Top">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding ModId, UpdateSourceTrigger=PropertyChanged}" 
-                                   VerticalAlignment="Center" 
-                                   HorizontalAlignment="Center" 
-                                   Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+        <Grid Grid.Row="0" Margin="{DynamicResource PanelMargin}">
+            <DataGrid 
+                x:Name="ModListView"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding CurrentMods, UpdateSourceTrigger=PropertyChanged}"
+                SelectedValue="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Top"
+            
+                ColumnWidth="*" 
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                CanUserSortColumns="False"
+                CanUserReorderColumns="False"
 
-                        <TextBlock Text="{Binding State, UpdateSourceTrigger=PropertyChanged}" 
-                                   VerticalAlignment="Center" 
-                                   HorizontalAlignment="Center" 
-                                   Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-
-                        <CheckBox IsChecked="{Binding CanSuspend, UpdateSourceTrigger=PropertyChanged}"
-                                  IsEnabled="False"
-                                  VerticalAlignment="Center" 
-                                  HorizontalAlignment="Center" 
-                                  Margin="{DynamicResource ListEntryItemMarginSmall}"
-                                  Height="{DynamicResource ListEntryCheckboxHeightSmall}"/>
-
-                        <CheckBox IsChecked="{Binding CanUnload, UpdateSourceTrigger=PropertyChanged}" 
-                                  IsEnabled="False"
-                                  VerticalAlignment="Center" 
-                                  HorizontalAlignment="Center" 
-                                  Margin="{DynamicResource ListEntryItemMarginSmall}"
-                                  Height="{DynamicResource ListEntryCheckboxHeightSmall}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                IsReadOnly="True"
+                AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ModId" Binding="{Binding ModId}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="State" Binding="{Binding State}" Width="Auto" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Unload" Binding="{Binding CanUnload}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Suspend" Binding="{Binding CanSuspend}" Width="Auto" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
 
         <!-- Buttons -->
+        <StackPanel Grid.Row="1" Margin="{DynamicResource PanelMargin}" 
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button Content="{DynamicResource ReloadedProcessLoadMod}"   Margin="{DynamicResource CommonItemHorizontalMargin}" 
+                    Click="LoadMod_Click"
+            />
+            <Button Content="{DynamicResource ReloadedProcessResume}"   Margin="{DynamicResource CommonItemHorizontalMargin}" 
+                    IsEnabled="{Binding SelectedMod.CanSendResume, FallbackValue=False}"
+                    Click="Resume_Click"
+                    />
+            <Button Content="{DynamicResource ReloadedProcessSuspend}"  Margin="{DynamicResource CommonItemHorizontalMargin}" 
+                    IsEnabled="{Binding SelectedMod.CanSendSuspend, FallbackValue=False}"
+                    Click="Suspend_Click"
+                    />
+            <Button Content="{DynamicResource ReloadedProcessUnload}"   Margin="{DynamicResource CommonItemHorizontalMargin}" 
+                    IsEnabled="{Binding SelectedMod.CanUnload, FallbackValue=False}"
+                    Click="Unload_Click"
+                    />
+        </StackPanel>
 
+        <!-- Text -->
+        <Grid Grid.Row="2" Margin="{DynamicResource PanelMargin}">
+            <TextBlock Text="{DynamicResource ReloadedProcessNotice}"
+                       HorizontalAlignment="Center" />
+        </Grid>
 
     </Grid>
 </local:ApplicationSubPage>

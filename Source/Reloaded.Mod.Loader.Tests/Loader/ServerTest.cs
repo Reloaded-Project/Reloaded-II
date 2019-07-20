@@ -81,9 +81,24 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         }
 
         [Fact]
+        public void LoadDuplicateMod()
+        {
+            bool testPassed = false;
+            _client.OnReceiveException += response => { testPassed = true; };
+
+            Assert.Throws<AggregateException>(() =>
+            {
+                var result = _client.LoadMod(_testData.TestModConfigA.ModId);
+                result.Wait();
+            });
+            
+            Assert.True(testPassed);
+        }
+
+        [Fact]
         public void UnloadMod()
         {
-            var unloadModTask = _client.UnloadMod(_testData.TestModConfigB.ModId);
+            var unloadModTask = _client.UnloadModAsync(_testData.TestModConfigB.ModId);
             unloadModTask.Wait();
 
             // Should be loaded last.
@@ -96,7 +111,7 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         [Fact]
         public void SuspendMod()
         {
-            var suspendModTask = _client.SuspendMod(_testData.TestModConfigB.ModId);
+            var suspendModTask = _client.SuspendModAsync(_testData.TestModConfigB.ModId);
             suspendModTask.Wait();
 
             // Get instance for B
@@ -113,7 +128,7 @@ namespace Reloaded.Mod.Loader.Tests.Loader
             SuspendMod();
 
             // Now resume.
-            var resumeModTask = _client.ResumeMod(_testData.TestModConfigB.ModId);
+            var resumeModTask = _client.ResumeModAsync(_testData.TestModConfigB.ModId);
             resumeModTask.Wait();
 
             // Get instance for B

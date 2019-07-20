@@ -50,8 +50,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                     if (element.DataContext is Process process)
                     {
                         ViewModel.SelectedProcess = process;
-                        ViewModel.Page = ApplicationSubPage.ReloadedProcess;
-                        ViewModel.RaisePagePropertyChanged();
+                        ViewModel.ChangePageProperty(ApplicationSubPage.ReloadedProcess);
                     }
                 }
             }
@@ -66,8 +65,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                     if (element.DataContext is Process process)
                     {
                         ViewModel.SelectedProcess = process;
-                        ViewModel.Page = ApplicationSubPage.NonReloadedProcess;
-                        ViewModel.RaisePagePropertyChanged();
+                        ViewModel.ChangePageProperty(ApplicationSubPage.NonReloadedProcess);
                     }
                 }
             }
@@ -77,8 +75,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                ViewModel.Page = ApplicationSubPage.ApplicationSummary;
-                ViewModel.RaisePagePropertyChanged();
+                ViewModel.ChangePageProperty(ApplicationSubPage.ApplicationSummary);
             }
         }
 

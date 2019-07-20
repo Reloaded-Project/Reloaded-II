@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.Server;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -81,6 +82,16 @@ namespace Reloaded.Mod.Launcher.Utility
             try
             {
                 injector.Inject();
+                
+                // Wait for mod loader to initialize.
+                ActionWrappers.TryGetValue(() =>
+                {
+                    // Exit if application crashes while loading Reloaded..
+                    if (process.HasExited)
+                        return 0;
+
+                    return Client.GetPort((int) processInformation.dwProcessId);
+                }, 30000, 32);
             }
             catch (Exception)
             {
