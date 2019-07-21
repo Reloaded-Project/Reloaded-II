@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.Utilities;
 
@@ -47,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
             // Get file information and populate initial application details.
             var fileInfo = FileVersionInfo.GetVersionInfo(exePath);
-            IApplicationConfig config = new Loader.IO.Config.ApplicationConfig(Path.GetFileName(fileInfo.FileName), fileInfo.ProductName, exePath);
+            IApplicationConfig config = new ApplicationConfig(Path.GetFileName(fileInfo.FileName), fileInfo.ProductName, exePath);
 
             // Set AppName if empty & Ensure no duplicate ID.
             if (String.IsNullOrEmpty(config.AppName))
@@ -59,34 +55,14 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             var loaderConfig = IoC.Get<LoaderConfig>();
             string applicationConfigDirectory = loaderConfig.ApplicationConfigDirectory;
             string applicationDirectory = Path.Combine(applicationConfigDirectory, config.AppId);
-            string applicationConfigFile = Path.Combine(applicationDirectory, Loader.IO.Config.ApplicationConfig.ConfigFileName);
+            string applicationConfigFile = Path.Combine(applicationDirectory, ApplicationConfig.ConfigFileName);
 
             // Write file to disk.
             Directory.CreateDirectory(applicationDirectory);
-            ApplicationConfig.WriteConfiguration(applicationConfigFile, (Loader.IO.Config.ApplicationConfig)config);
+            ApplicationConfig.WriteConfiguration(applicationConfigFile, (ApplicationConfig)config);
 
             // Select this config.
             _lastConfigFileLocation = applicationConfigFile;
-            _addAppViewModel.MainPageViewModel.ApplicationsChanged += Handler;
-        }
-
-        // Note: New application config notification automatically received by the file system watcher.
-        // Select most recent application config.
-        async void Handler(object sender, NotifyCollectionChangedEventArgs args)
-        {
-            if (args.Action != NotifyCollectionChangedAction.Remove)
-            {
-                // Find index of entry to set.
-                var applicationsList = _addAppViewModel.MainPageViewModel.Applications.ToList();
-                int index = applicationsList.FindIndex(tuple => tuple.ApplicationConfigPath.Equals(_lastConfigFileLocation));
-
-                // TODO: Remove this hack. Problem is that the ItemsSource property of the combobox is changed as we replace Applications with a new list. This causes the selected index to be reset to 0 and that's no good!
-                await Task.Delay(100);
-                if (index >= 0)
-                    _addAppViewModel.SelectedIndex = index;
-
-                _addAppViewModel.MainPageViewModel.ApplicationsChanged -= Handler;
-            }
         }
 
         public event EventHandler CanExecuteChanged = (sender, args) => { };

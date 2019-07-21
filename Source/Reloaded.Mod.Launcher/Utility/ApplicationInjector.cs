@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
+using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Launcher.Utility
@@ -32,10 +34,21 @@ namespace Reloaded.Mod.Launcher.Utility
 
         private string GetBootstrapperPath(Process process)
         {
-            if (process.Is64Bit())
-                return IoC.Get<LoaderConfig>().Bootstrapper64Path;
+            // If the LoaderConfig is not bound, read it from disk.
+            if (! IoC.IsExplicitlyBound<LoaderConfig>())
+            {
+                if (process.Is64Bit())
+                    return LoaderConfigReader.ReadConfiguration().Bootstrapper64Path;
+                else
+                    return LoaderConfigReader.ReadConfiguration().Bootstrapper32Path;
+            }
             else
-                return IoC.Get<LoaderConfig>().Bootstrapper32Path;
+            {
+                if (process.Is64Bit())
+                    return IoC.Get<LoaderConfig>().Bootstrapper64Path;
+                else
+                    return IoC.Get<LoaderConfig>().Bootstrapper32Path;
+            }
         }
     }
 }

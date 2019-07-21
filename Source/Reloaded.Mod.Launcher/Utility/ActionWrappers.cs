@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -10,6 +11,11 @@ namespace Reloaded.Mod.Launcher.Utility
         {
             try { action(); }
             catch (Exception) { /* ignored */ }
+        }
+
+        public static void ExecuteWithApplicationDispatcher(Action action)
+        {
+            Application.Current.Dispatcher.Invoke(action);
         }
 
         /// <param name="condition">Stops sleeping if this condition returns true.</param>

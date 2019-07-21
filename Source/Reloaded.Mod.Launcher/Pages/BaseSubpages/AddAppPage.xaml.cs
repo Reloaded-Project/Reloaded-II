@@ -3,10 +3,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using Reloaded.Mod.Launcher.Commands.AddAppPage;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {
@@ -82,11 +84,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                 ViewModel.RaiseApplicationChangedEvent();
                 e.Handled = true;
             }
-        }
-
-        private void CreateShortcut_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            // TODO: Implement CreateShortcut
         }
     }
 }

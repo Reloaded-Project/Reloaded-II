@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -137,6 +138,7 @@ namespace Reloaded.Mod.Launcher
                 throw new DllNotFoundException($"{LoaderConfig.Bootstrapper64Name} {Errors.LoaderNotFound()}");
 
             // Set to config.
+            config.LauncherPath = Assembly.GetExecutingAssembly().Location;
             config.LoaderPath = loaderPath;
             config.Bootstrapper32Path = bootstrapper32Path;
             config.Bootstrapper64Path = bootstrapper64Path;

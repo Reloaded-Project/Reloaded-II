@@ -23,6 +23,7 @@
 
             <addAppPage1:DeleteApplicationCommand x:Key="DeleteApplicationCommand"/>
             <addAppPage1:AddApplicationCommand x:Key="AddApplicationCommand"/>
+            <addAppPage1:MakeShortcutCommand x:Key="MakeShortcutCommand"/>
 
             <!-- Sort the app list -->
             <CollectionViewSource Source="{Binding MainPageViewModel.Applications, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Key="SortedApps" IsLiveSortingRequested="True">
@@ -56,7 +57,7 @@
                               IsSynchronizedWithCurrentItem="True"
                               ItemsSource="{Binding Source={StaticResource SortedApps}}"
                               SelectedValuePath="ApplicationConfig"
-                              SelectedValue="{Binding Application}"
+                              SelectedValue="{Binding Application, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Text="Select a Game"
                               SelectionChanged="ComboBox_SelectionChanged"
                               SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -129,7 +130,7 @@
                             <Button Content="{DynamicResource AddAppCreateShortcut}" 
                                         Margin="{DynamicResource CommonItemVerticalMargin}" 
                                         HorizontalAlignment="Stretch"
-                                        Click="CreateShortcut_Click"/>
+                                        Command="{StaticResource MakeShortcutCommand}"/>
                         </StackPanel>
                     </controls:PopupLabel.HiddenContent>
                 </controls:PopupLabel>

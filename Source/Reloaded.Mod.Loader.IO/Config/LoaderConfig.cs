@@ -27,10 +27,16 @@ namespace Reloaded.Mod.Loader.IO.Config
         private const string DefaultPluginConfigDirectory       = "Plugins";
 
         /// <summary>
-        /// Contains the path to the Reloaded Mod Loader DLL.
+        /// Contains the path to the Reloaded Mod Loader II DLL.
         /// </summary>
         [JsonPropertyName("LoaderPath")] // Just a safeguard in case someone decides to refactor and native bootstrapper fails to find property.
         public string LoaderPath { get; set; } = String.Empty;
+
+        /// <summary>
+        /// Contains the path to the Reloaded Mod Loader II Launcher.
+        /// </summary>
+        [JsonPropertyName("LauncherPath")] // Just a safeguard in case someone decides to refactor and native bootstrapper fails to find property.
+        public string LauncherPath { get; set; } = String.Empty;
 
         /// <summary>
         /// Path to the mod loader bootstrapper for X86 processes.

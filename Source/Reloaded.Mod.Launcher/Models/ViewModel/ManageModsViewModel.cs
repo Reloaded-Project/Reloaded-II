@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using PropertyChanged;
 using Reloaded.Mod.Launcher.Commands;
 using Reloaded.Mod.Launcher.Models.Model;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -197,7 +198,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             foreach (var config in modConfigs)
                 mods.Add(new ImageModPathTuple(GetImageForModConfig(config), config.Object, config.Path));
 
-            Mods = mods;
+            if (Mods == null)
+                Mods = mods;
+            else
+                ActionWrappers.ExecuteWithApplicationDispatcher(() => { Collections.ModifyObservableCollection(_mods, mods); });
         }
 
         /// <summary>

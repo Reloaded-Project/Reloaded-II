@@ -21,7 +21,13 @@ namespace Reloaded.Mod.Launcher.Utility
         private static XamlResource<int> _xamlModLoaderSetupSleepTime = new XamlResource<int>("AppLauncherModLoaderSetupSleepTime");
 
         private string _location;
-        private string _commandline;
+        private string _arguments;
+
+        static ApplicationLauncher()
+        {
+            _xamlModLoaderSetupTimeout.DefaultValue = 30000;
+            _xamlModLoaderSetupSleepTime.DefaultValue = 32;
+        }
 
         private ApplicationLauncher() { }
 
@@ -42,10 +48,15 @@ namespace Reloaded.Mod.Launcher.Utility
         /// <summary>
         /// Creates an <see cref="ApplicationLauncher"/> from a whole commandline, i.e. path and arguments.
         /// </summary>
-        public static ApplicationLauncher FromCommandline(string commandline)
+        public static ApplicationLauncher FromLocationAndArguments(string location, string arguments)
         {
             var launcher = new ApplicationLauncher();
-            launcher._commandline = commandline;
+            launcher._arguments = arguments;
+            launcher._location = location;
+
+            if (!File.Exists(launcher._location))
+                throw new ArgumentException(Errors.PathToApplicationInvalid());
+
             return launcher;
         }
 
@@ -60,21 +71,12 @@ namespace Reloaded.Mod.Launcher.Utility
             Native.SECURITY_ATTRIBUTES lpThreadAttributes   = new Native.SECURITY_ATTRIBUTES();
             Native.PROCESS_INFORMATION processInformation   = new Native.PROCESS_INFORMATION();
 
-            bool success = false;
+            if (_arguments == null)
+                _arguments = "";
 
-            if (!String.IsNullOrEmpty(_commandline))
-            {
-                var pathToExecutable = _commandline.Split(' ')[0];
-                success = Native.CreateProcessW(null, _commandline, ref lpProcessAttributes,
-                                                ref lpThreadAttributes, false, Native.ProcessCreationFlags.CREATE_SUSPENDED,
-                                                IntPtr.Zero, Path.GetDirectoryName(pathToExecutable), ref startupInfo, ref processInformation);
-            }
-            else if (!String.IsNullOrEmpty(_location))
-            {
-                success = Native.CreateProcessW(_location, null, ref lpProcessAttributes,
+            bool success = Native.CreateProcessW(null, $"\"{_location}\" {_arguments}", ref lpProcessAttributes,
                                                 ref lpThreadAttributes, false, Native.ProcessCreationFlags.CREATE_SUSPENDED,
                                                 IntPtr.Zero, Path.GetDirectoryName(_location), ref startupInfo, ref processInformation);
-            }
 
             if (!success)
                 throw new ArgumentException(Errors.FailedToStartProcess());

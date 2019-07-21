@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Shared;
 using Reloaded.WPF.Pages.Animations;
 using Reloaded.WPF.Pages.Animations.Enum;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
@@ -83,8 +84,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                var location = ViewModel.ApplicationTuple.ApplicationConfig.AppLocation;
-                var launcher = ApplicationLauncher.FromLocation(location);
+                var appConfig = ViewModel.ApplicationTuple.ApplicationConfig;
+                var launcher = ApplicationLauncher.FromLocationAndArguments($"{appConfig.AppLocation}", $"{appConfig.AppArguments}");
                 launcher.Start();
             }
         }

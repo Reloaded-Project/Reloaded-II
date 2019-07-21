@@ -34,12 +34,20 @@ namespace Reloaded.Mod.Launcher
         {
             var value = Kernel.Get<T>();
 
-            if (Kernel.GetBindings(typeof(T)).All(x => x.IsImplicit))
+            if (! IsExplicitlyBound<T>())
             {
                 Kernel.Bind<T>().ToConstant(value);
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Returns true if a type has been bound by the user, else false.
+        /// </summary>
+        public static bool IsExplicitlyBound<T>()
+        {
+            return !Kernel.GetBindings(typeof(T)).All(x => x.IsImplicit);
         }
     }
 }

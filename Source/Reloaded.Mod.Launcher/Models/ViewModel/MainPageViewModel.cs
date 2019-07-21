@@ -14,6 +14,7 @@ using PropertyChanged;
 using Reloaded.Mod.Launcher.Commands;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -110,7 +111,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             foreach (var config in applicationConfigs)
                 applications.Add(new ImageApplicationPathTuple(GetImageForAppConfig(config), config.Object, config.Path));
 
-            Applications = applications;
+            if (Applications == null)
+                Applications = applications;
+            else
+                ActionWrappers.ExecuteWithApplicationDispatcher(() => { Collections.ModifyObservableCollection(_applications, applications); });
         }
 
         private void StartGetApplicationsTask()

@@ -27,13 +27,18 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         private static XamlResource<int> _xamlModLoaderRefreshInterval = new XamlResource<int>("ReloadedProcessModListRefreshInterval");
 
 
-        public ApplicationViewModel          ApplicationViewModel { get; set; }
-        public Client                        Client      { get; set; }
-        public ObservableCollection<ModInfo> CurrentMods { get; set; }
-        public ModInfo                       SelectedMod { get; set; }
+        public ApplicationViewModel          ApplicationViewModel   { get; set; }
+        public Client                        Client                 { get; set; }
+        public ModInfo                       SelectedMod            { get; set; }
+        public ObservableCollection<ModInfo> CurrentMods
+        {
+            get => _currentMods;
+            set => _currentMods = value;
+        }
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private System.Timers.Timer _refreshTimer;
+        private ObservableCollection<ModInfo> _currentMods;
 
         public ReloadedApplicationViewModel(ApplicationViewModel applicationViewModel)
         {
@@ -91,31 +96,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             try
             {
                 var loadedMods = await Task.Run(RefreshTask);
-                if (CurrentMods != null)
+                ActionWrappers.ExecuteWithApplicationDispatcher(() =>
                 {
-                    // Add new entries.
-                    // In new set but not old set: loadedMods \ currentSet
-                    var newMods = loadedMods.Mods.ToHashSet();
-                    newMods.ExceptWith(CurrentMods.ToHashSet());
-
-                    // Remove old entries.
-                    var oldMods = CurrentMods.ToHashSet();
-                    oldMods.ExceptWith(loadedMods.Mods.ToHashSet());
-
-                    // Modify list.
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        foreach (var newMod in newMods)
-                            CurrentMods.Add(newMod);
-
-                        foreach (var removedMod in oldMods)
-                            CurrentMods.Remove(removedMod);
-                    });
-                }
-                else
-                {
-                    CurrentMods = new ObservableCollection<ModInfo>(loadedMods.Mods);
-                }
+                    Collections.UpdateObservableCollection(ref _currentMods, loadedMods.Mods);
+                    RaisePropertyChangedEvent(nameof(CurrentMods));
+                });
             }
             catch (Exception) { }
         }

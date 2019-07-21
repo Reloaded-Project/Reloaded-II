@@ -30,7 +30,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
         public bool CanExecute(object parameter)
         {
-            if (_addAppViewModel.SelectedIndex != -1 && _addAppViewModel.Application != null)
+            if (_addAppViewModel.Application != null)
                 return true;
 
             return false;
