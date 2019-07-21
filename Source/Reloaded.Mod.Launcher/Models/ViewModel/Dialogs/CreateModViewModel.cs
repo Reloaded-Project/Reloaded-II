@@ -14,21 +14,18 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Resources;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
 {
     public class CreateModViewModel : ObservableObject
     {
-        #region XAML Strings
-        // ReSharper disable InconsistentNaming
-        private const string XAML_CreateModDialogImageSelectorTitle = "CreateModDialogImageSelectorTitle";
-        private const string XAML_CreateModDialogImageSelectorFilter = "CreateModDialogImageSelectorFilter";
-        // ReSharper restore InconsistentNaming
-        #endregion
-
         public IModConfig Config { get; set; } = new ModConfig();
         public ImageSource Image { get; set; } = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute));
         public ObservableCollection<BooleanGenericTuple<IModConfig>> Dependencies { get; set; } = new ObservableCollection<BooleanGenericTuple<IModConfig>>();
+
+        private XamlResource<string> _xamlCreateModDialogSelectorTitle = new XamlResource<string>("CreateModDialogImageSelectorTitle");
+        private XamlResource<string> _xamlCreateModDialogSelectorFilter = new XamlResource<string>("CreateModDialogImageSelectorFilter");
 
         public CreateModViewModel(ManageModsViewModel manageModsViewModel)
         {
@@ -67,7 +64,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
             }
         }
 
-
         /* Get Image To Display */
         public ImageSource GetImage()
         {
@@ -88,8 +84,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
         private string SelectImageFile()
         {
             var dialog = new VistaOpenFileDialog();
-            dialog.Title = ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_CreateModDialogImageSelectorTitle);
-            dialog.Filter = $"{ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_CreateModDialogImageSelectorFilter)} {Constants.WpfSupportedFormatsFilter}";
+            dialog.Title = _xamlCreateModDialogSelectorTitle.Get();
+            dialog.Filter = $"{_xamlCreateModDialogSelectorFilter.Get()} {Constants.WpfSupportedFormatsFilter}";
 
             if ((bool)dialog.ShowDialog())
                 return dialog.FileName;

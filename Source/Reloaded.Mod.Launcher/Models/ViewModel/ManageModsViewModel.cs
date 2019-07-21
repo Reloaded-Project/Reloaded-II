@@ -95,21 +95,24 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public void SaveMod(ImageModPathTuple oldModTuple)
         {
-            if (EnabledAppIds != null)
+            if (oldModTuple != null)
             {
-                var supportedApps = new List<string>();
-                foreach (var booleanAppTuple in EnabledAppIds)
+                if (EnabledAppIds != null)
                 {
-                    if (booleanAppTuple.Enabled)
-                        supportedApps.Add(booleanAppTuple.Generic.AppId);
+                    var supportedApps = new List<string>();
+                    foreach (var booleanAppTuple in EnabledAppIds)
+                    {
+                        if (booleanAppTuple.Enabled)
+                            supportedApps.Add(booleanAppTuple.Generic.AppId);
+                    }
+
+                    oldModTuple.ModConfig.SupportedAppId = supportedApps.ToArray();
                 }
 
-                oldModTuple.ModConfig.SupportedAppId = supportedApps.ToArray();
+                // Make sure not to refresh the collection, we will lose our index.
+                // Note: Saving regardless of action because of possible other changes.
+                InvokeWithoutMonitoringMods(oldModTuple.Save);
             }
-
-            // Make sure not to refresh the collection, we will lose our index.
-            // Note: Saving regardless of action because of possible other changes.
-            InvokeWithoutMonitoringMods(oldModTuple.Save);
         }
 
         public void InvokeWithoutMonitoringMods(Action action)

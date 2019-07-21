@@ -8,6 +8,7 @@ using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -16,25 +17,18 @@ namespace Reloaded.Mod.Launcher
     /// </summary>
     public static class Setup
     {
-        #region XAML String Resource Constants
-        // ReSharper disable InconsistentNaming
-        private const string XAML_SplashCreatingDefaultConfig   = "SplashCreatingDefaultConfig";
-        private const string XAML_SplashCleaningConfigurations  = "SplashCleaningConfigurations";
-        private const string XAML_SplashPreparingResources      = "SplashPreparingResources";
-        private const string XAML_SplashLoadCompleteIn          = "SplashLoadCompleteIn";
-        // ReSharper restore InconsistentNaming
-        #endregion XAML String Resource Constants
-
         private static bool _loadExecuted = false;
+        private static XamlResource<string> _xamlSplashCreatingDefaultConfig = new XamlResource<string>("SplashCreatingDefaultConfig");
+        private static XamlResource<string> _xamlSplashPreparingResources = new XamlResource<string>("SplashPreparingResources");
+        private static XamlResource<string> _xamlSplashLoadCompleteIn = new XamlResource<string>("SplashLoadCompleteIn");
 
         /// <summary>
         /// Sets up the overall application state for either running or testing.
         /// Note: This method uses Task.Delay for waiting the minimum splash delay without blocking the thread, it is synchronous.
         /// </summary>
-        /// <param name="getText">A function that accepts the name of a XAML resource and retrieves the text to update with.</param>
         /// <param name="updateText">A function that updates the visible text onscreen.</param>
         /// <param name="minimumSplashDelay">Minimum amount of time to wait to complete the loading process.</param>
-        public static async Task SetupApplication(Func<string, string> getText, Action<string> updateText, int minimumSplashDelay)
+        public static async Task SetupApplication(Action<string> updateText, int minimumSplashDelay)
         {
             if (!_loadExecuted)
             {
@@ -50,15 +44,15 @@ namespace Reloaded.Mod.Launcher
                 SetupLocalization();
 
                 // Make Default Config if Necessary.
-                updateText(getText(XAML_SplashCreatingDefaultConfig));
+                updateText(_xamlSplashCreatingDefaultConfig.Get());
                 CreateNewConfigIfNotExist();
 
                 // Preparing viewmodels.
-                updateText(getText(XAML_SplashPreparingResources));
+                updateText(_xamlSplashPreparingResources.Get());
                 SetupViewModels();
 
                 // Wait until splash screen time.
-                updateText($"{getText(XAML_SplashLoadCompleteIn)} {watch.ElapsedMilliseconds}ms");
+                updateText($"{_xamlSplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");
                 
                 while (watch.ElapsedMilliseconds < minimumSplashDelay)
                 {

@@ -5,6 +5,7 @@ using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.WPF.Theme.Default;
+using Reloaded.WPF.Utilities;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
@@ -14,14 +15,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
     /// </summary>
     public partial class CreateModDialog : ReloadedWindow
     {
-        #region XAML Strings
-        // ReSharper disable InconsistentNaming
-        private const string XAML_TitleCreateModNonUniqueId = "TitleCreateModNonUniqueId";
-        private const string XAML_MessageCreateModNonUniqueId = "MessageCreateModNonUniqueId";
-        // ReSharper restore InconsistentNaming
-        #endregion
-
         public CreateModViewModel RealViewModel { get; set; }
+        private XamlResource<string> _xamlTitleCreateModNonUniqueId = new XamlResource<string>("TitleCreateModNonUniqueId");
+        private XamlResource<string> _xamlMessageCreateModNonUniqueId = new XamlResource<string>("MessageCreateModNonUniqueId");
 
         public CreateModDialog()
         {
@@ -56,8 +52,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
             var modsViewModel = IoC.Get<ManageModsViewModel>();
             if (modsViewModel.Mods.Count(x => x.ModConfig.ModId.Equals(RealViewModel.Config.ModId)) > 0)
             {
-                var messageBoxDialog = new MessageBox(  ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_TitleCreateModNonUniqueId),
-                                                        ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_MessageCreateModNonUniqueId));
+                var messageBoxDialog = new MessageBox(_xamlTitleCreateModNonUniqueId.Get(),
+                                                      _xamlMessageCreateModNonUniqueId.Get());
                 messageBoxDialog.Owner = this;
                 messageBoxDialog.ShowDialog();
                 return false;

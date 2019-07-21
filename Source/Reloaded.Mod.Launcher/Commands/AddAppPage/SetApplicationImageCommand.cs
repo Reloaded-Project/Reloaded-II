@@ -9,6 +9,7 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
@@ -18,11 +19,8 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
     /// </summary>
     public class SetApplicationImageCommand : ICommand
     {
-        // ReSharper disable InconsistentNaming
-        private const string XAML_AddAppImageExecutableTitle = "AddAppImageSelectorTitle";
-        private const string XAML_AddAppImageSelectorFilter = "AddAppImageSelectorFilter";
-        // ReSharper restore InconsistentNaming
-
+        private XamlResource<string> _xamlAddAppImageExecutableTitle    = new XamlResource<string>("AddAppImageSelectorTitle");
+        private XamlResource<string> _xamlAddAppImageSelectorFilter     = new XamlResource<string>("AddAppImageSelectorFilter");
         private readonly AddAppViewModel _addAppViewModel;
 
         public SetApplicationImageCommand()
@@ -76,8 +74,8 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         private string SelectImageFile()
         {
             var dialog = new VistaOpenFileDialog();
-            dialog.Title = ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_AddAppImageExecutableTitle);
-            dialog.Filter = $"{ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_AddAppImageSelectorFilter)} {Constants.WpfSupportedFormatsFilter}";
+            dialog.Title = _xamlAddAppImageExecutableTitle.Get();
+            dialog.Filter = $"{_xamlAddAppImageSelectorFilter.Get()} {Constants.WpfSupportedFormatsFilter}";
             if ((bool) dialog.ShowDialog())
             {
                 return dialog.FileName;

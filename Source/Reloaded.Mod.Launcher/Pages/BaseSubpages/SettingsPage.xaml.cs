@@ -4,6 +4,7 @@ using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {
@@ -12,14 +13,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
     /// </summary>
     public partial class SettingsPage : ReloadedIIPage
     {
-        #region XAML_Constants
-        // ReSharper disable InconsistentNaming
-        public const string XAML_LoaderSettingsCleanup = "LoaderSettingsCleanup";
-        public const string XAML_LoaderSettingsCleanupWarning = "LoaderSettingsCleanupWarning";
-        // ReSharper restore InconsistentNaming
-        #endregion
-
         public SettingsPageViewModel ViewModel { get; set; }
+        private XamlResource<string> _xamlLoaderSettingsCleanup = new XamlResource<string>("LoaderSettingsCleanup");
+        private XamlResource<string> _xamlLoaderSettingsCleanupWarning = new XamlResource<string>("LoaderSettingsCleanupWarning");
 
         public SettingsPage()
         {
@@ -35,8 +31,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var messageBox = new MessageBoxOkCancel(ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_LoaderSettingsCleanup),
-                                                    ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_LoaderSettingsCleanupWarning));
+            var messageBox = new MessageBoxOkCancel(_xamlLoaderSettingsCleanup.Get(),
+                                                    _xamlLoaderSettingsCleanupWarning.Get());
             messageBox.Owner = Window.GetWindow(this);
             messageBox.ShowDialog();
 

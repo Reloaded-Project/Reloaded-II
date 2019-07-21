@@ -12,6 +12,7 @@ using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
@@ -21,11 +22,8 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
     /// </summary>
     public class AddApplicationCommand : ICommand
     {
-        // ReSharper disable InconsistentNaming
-        private const string XAML_AddAppExecutableTitle = "AddAppExecutableTitle";
-        private const string XAML_AddAppExecutableFilter = "AddAppExecutableFilter";
-        // ReSharper restore InconsistentNaming
-
+        private XamlResource<string> _xamlAddAppExecutableTitle = new XamlResource<string>("AddAppExecutableTitle");
+        private XamlResource<string> _xamlAddAppExecutableFilter = new XamlResource<string>("AddAppExecutableFilter");
         private string _lastConfigFileLocation;
         private readonly AddAppViewModel _addAppViewModel;
 
@@ -111,8 +109,8 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         private string SelectEXEFile()
         {
             var dialog = new VistaOpenFileDialog();
-            dialog.Title = ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_AddAppExecutableTitle);
-            dialog.Filter = $"{ApplicationResourceAcquirer.GetTypeOrDefault<string>(XAML_AddAppExecutableFilter)} (*.exe)|*.exe";
+            dialog.Title = _xamlAddAppExecutableTitle.Get();
+            dialog.Filter = $"{_xamlAddAppExecutableFilter.Get()} (*.exe)|*.exe";
 
             if ((bool) dialog.ShowDialog())
             {

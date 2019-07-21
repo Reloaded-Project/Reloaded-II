@@ -6,6 +6,7 @@ using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.WPF.Utilities;
 using WindowViewModel = Reloaded.Mod.Launcher.Models.ViewModel.WindowViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages
@@ -13,11 +14,10 @@ namespace Reloaded.Mod.Launcher.Pages
     /// <summary>
     /// The main page of the application.
     /// </summary>
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public partial class SplashPage : ReloadedIIPage
     {
-        private const string XAML_SplashMinimumTime = "SplashMinimumTime";
         private readonly SplashViewModel _splashViewModel;
+        private XamlResource<int> _xamlSplashMinimumTime = new XamlResource<int>("SplashMinimumTime");
         private bool _loaded = false;
 
         public SplashPage() : base()
@@ -36,7 +36,7 @@ namespace Reloaded.Mod.Launcher.Pages
             if (!_loaded)
             {
                 _loaded = true;
-                var task = Task.Run(() => Setup.SetupApplication(GetText, UpdateText, ApplicationResourceAcquirer.GetTypeOrDefault<int>(XAML_SplashMinimumTime)))
+                var task = Task.Run(() => Setup.SetupApplication(UpdateText, _xamlSplashMinimumTime.Get()))
                             .ContinueWith(ChangeToMainPage)
                             .ContinueWith(DisplayFirstLaunchWarningIfNeeded);
             }
@@ -66,14 +66,6 @@ namespace Reloaded.Mod.Launcher.Pages
                 }
 
             });
-        }
-
-        /// <summary>
-        /// Retrieves text from XAML resources given a specific argument.
-        /// </summary>
-        private string GetText(string arg)
-        {
-            return ApplicationResourceAcquirer.GetTypeOrDefault<string>(arg);
         }
 
         /// <summary>

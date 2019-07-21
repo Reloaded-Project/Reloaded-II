@@ -12,17 +12,13 @@ namespace Reloaded.Mod.Launcher.Controls
     /// </summary>
     public partial class PopupLabel : UserControl
     {
-        #region XAML Name Constants
-        // ReSharper disable InconsistentNaming
-        private const string XAML_PopupLabelSlideAnimationDuration = "PopupLabelSlideAnimationDuration";
-        private const string XAML_PopupLabelFadeAnimationDuration = "PopupLabelFadeAnimationDuration";
-        private const string XAML_PopupLabelFadeOpacityStart = "PopupLabelFadeOpacityStart";
+        private XamlResource<double> _xamlEntrySlideAnimationDuration;
+        private XamlResource<double> _xamlEntryFadeAnimationDuration;
+        private XamlResource<double> _xamlEntryFadeOpacityStart;
 
-        private const string XAML_PopupLabelExitSlideAnimationDuration = "PopupLabelExitSlideAnimationDuration";
-        private const string XAML_PopupLabelExitFadeAnimationDuration = "PopupLabelExitFadeAnimationDuration";
-        private const string XAML_PopupLabelExitFadeOpacityEnd = "PopupLabelExitFadeOpacityEnd";
-        // ReSharper restore InconsistentNaming
-        #endregion
+        private XamlResource<double> _xamlExitSlideAnimationDuration;
+        private XamlResource<double> _xamlExitFadeAnimationDuration;
+        private XamlResource<double> _xamlExitFadeOpacityEnd;
 
         public static readonly DependencyProperty ButtonTextProperty = DependencyProperty.Register(nameof(ButtonText), typeof(String), typeof(PopupLabel), new PropertyMetadata("Close Me!"));
         public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(PopupLabel), new PropertyMetadata(true, IsOpenChangedCallback));
@@ -36,7 +32,6 @@ namespace Reloaded.Mod.Launcher.Controls
         private const string EnabledRight = " ▲​";
 
         private bool _isWrapped = false;
-        private readonly ResourceManipulator _resourceManipulator;
 
         /// <summary>
         /// Gets or Sets the text displayed by the label.
@@ -81,7 +76,7 @@ namespace Reloaded.Mod.Launcher.Controls
 
             // Merge application resource dictionary (necessary to access XAML settings)
             this.Resources.MergedDictionaries.Add(Application.Current.Resources);
-            _resourceManipulator = new ResourceManipulator(this);
+            SetupXamlResources();
 
             // Update text and whether content is visible on load.
             this.Loaded += (sender, args) =>
@@ -93,6 +88,18 @@ namespace Reloaded.Mod.Launcher.Controls
                 else
                     this.HiddenContentContainer.Visibility = HiddenVisibilityType;
             };
+        }
+
+        private void SetupXamlResources()
+        {
+            var thisArray = new[] {this};
+            _xamlEntrySlideAnimationDuration = new XamlResource<double>("PopupLabelSlideAnimationDuration", thisArray, this);
+            _xamlEntryFadeAnimationDuration = new XamlResource<double>("PopupLabelFadeAnimationDuration", thisArray, this);
+            _xamlEntryFadeOpacityStart = new XamlResource<double>("PopupLabelFadeOpacityStart", thisArray, this);
+
+            _xamlExitSlideAnimationDuration = new XamlResource<double>("PopupLabelExitSlideAnimationDuration", thisArray, this);
+            _xamlExitFadeAnimationDuration = new XamlResource<double>("PopupLabelExitFadeAnimationDuration", thisArray, this);
+            _xamlExitFadeOpacityEnd = new XamlResource<double>("PopupLabelExitFadeOpacityEnd", thisArray, this);
         }
 
         private void Button_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -110,8 +117,8 @@ namespace Reloaded.Mod.Launcher.Controls
         {
             var animations = new Animation[]
             {
-                new RenderTransformAnimation(-this.HiddenContentContainer.ActualHeight, RenderTransformDirection.Vertical, RenderTransformTarget.Away, null, _resourceManipulator.Get<double>(XAML_PopupLabelExitSlideAnimationDuration)),
-                new OpacityAnimation(_resourceManipulator.Get<double>(XAML_PopupLabelExitFadeAnimationDuration), 1, _resourceManipulator.Get<double>(XAML_PopupLabelExitFadeOpacityEnd))
+                new RenderTransformAnimation(-this.HiddenContentContainer.ActualHeight, RenderTransformDirection.Vertical, RenderTransformTarget.Away, null, _xamlExitSlideAnimationDuration.Get()),
+                new OpacityAnimation(_xamlExitFadeAnimationDuration.Get(), 1, _xamlExitFadeOpacityEnd.Get())
             };
 
             Animation.Animate(animations, this.HiddenContentContainer);
@@ -123,8 +130,8 @@ namespace Reloaded.Mod.Launcher.Controls
             this.HiddenContentContainer.Visibility = Visibility.Visible;
             var animations = new Animation[]
             {
-                new RenderTransformAnimation(-this.HiddenContentContainer.ActualHeight, RenderTransformDirection.Vertical, RenderTransformTarget.Towards, null, _resourceManipulator.Get<double>(XAML_PopupLabelSlideAnimationDuration)),
-                new OpacityAnimation(_resourceManipulator.Get<double>(XAML_PopupLabelFadeAnimationDuration), _resourceManipulator.Get<double>(XAML_PopupLabelFadeOpacityStart), 1)
+                new RenderTransformAnimation(-this.HiddenContentContainer.ActualHeight, RenderTransformDirection.Vertical, RenderTransformTarget.Towards, null, _xamlEntrySlideAnimationDuration.Get()),
+                new OpacityAnimation(_xamlEntryFadeAnimationDuration.Get(), _xamlEntryFadeOpacityStart.Get(), 1)
             };
 
             Animation.Animate(animations, this.HiddenContentContainer);
