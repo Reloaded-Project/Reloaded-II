@@ -42,7 +42,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs
 
             // Setup filters
             var manipulator = new ResourceManipulator(this.Contents);
-            _modsViewSource = manipulator.Get<CollectionViewSource>("SortedMods");
+            _modsViewSource = manipulator.Get<CollectionViewSource>("FilteredMods");
             _modsViewSource.Filter += ModsViewSourceOnFilter;
         }
 
@@ -54,6 +54,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs
                 e.Accepted = true;
                 return;
             }
+
+            
 
             var tuple = (ImageModPathTuple) e.Item;
             e.Accepted = tuple.ModConfig.ModName.IndexOf(this.ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase) >= 0;

@@ -45,7 +45,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             int port = ActionWrappers.TryGetValue(GetPort, _xamlModLoaderSetupTimeout.Get(), _xamlModLoaderSetupSleepTime.Get());
 
             Client = new Client(port);
-            Client.OnReceiveException += ClientOnOnReceiveException;
+            Client.OnReceiveException += ClientOnReceiveException;
             Refresh();
 
             _refreshTimer = new System.Timers.Timer(_xamlModLoaderRefreshInterval.Get());
@@ -59,10 +59,13 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             ApplicationViewModel.Page = ApplicationSubPage.ApplicationSummary;
         }
 
-        private void ClientOnOnReceiveException(GenericExceptionResponse obj)
+        private void ClientOnReceiveException(GenericExceptionResponse obj)
         {
-            var box = new Pages.Dialogs.MessageBox(Errors.Error(), obj.Message);
-            box.ShowDialog();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var box = new Pages.Dialogs.MessageBox(Errors.Error(), obj.Message);
+                box.ShowDialog();
+            });
         }
 
         /// <summary>

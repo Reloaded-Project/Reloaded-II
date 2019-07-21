@@ -20,7 +20,7 @@
             <ResourceDictionary>
 
                 <!-- Sort the mod list -->
-                <CollectionViewSource x:Key="SortedMods" Source="{Binding ApplicationViewModel.ModsForThisApp, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
+                <CollectionViewSource x:Key="FilteredMods" Source="{Binding ApplicationViewModel.ModsForThisApp, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                     <CollectionViewSource.SortDescriptions>
                         <componentModel:SortDescription PropertyName="ModConfig.ModName"/>
                     </CollectionViewSource.SortDescriptions>
@@ -44,7 +44,7 @@
 
         <!-- Mod List -->
         <Grid Grid.Row="1" Margin="{DynamicResource PanelMargin}">
-            <DataGrid ItemsSource="{Binding Source={StaticResource SortedMods}}"
+            <DataGrid ItemsSource="{Binding Source={StaticResource FilteredMods}}"
                       SelectedItem="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch"
