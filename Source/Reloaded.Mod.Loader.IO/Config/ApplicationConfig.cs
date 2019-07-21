@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
@@ -67,6 +68,29 @@ namespace Reloaded.Mod.Loader.IO.Config
         {
             var applicationConfigLoader = new ConfigReader<ApplicationConfig>();
             applicationConfigLoader.WriteConfiguration(path, config);
+        }
+
+        /// <summary>
+        /// Attempts to obtain the location of the application icon.
+        /// </summary>
+        /// <param name="configPath">Path to the application configuration.</param>
+        /// <param name="config">The application configuration itself.</param>
+        /// <param name="logoFilePath">The file path to the logo. This returns a valid file path, even if the actual logo file does not exist.</param>
+        /// <returns>True if the logo file exists, else false.</returns>
+        public static bool TryGetApplicationIcon(string configPath, ApplicationConfig config, out string logoFilePath)
+        {
+            // Set default icon path if emptied.
+            if (String.IsNullOrEmpty(config.AppIcon))
+                config.AppIcon = DefaultIcon;
+
+            // Try find icon.
+            string logoDirectory = Path.GetDirectoryName(configPath);
+            logoFilePath = Path.Combine(logoDirectory, config.AppIcon);
+
+            if (File.Exists(logoFilePath))
+                return true;
+
+            return false;
         }
 
         /// <summary>

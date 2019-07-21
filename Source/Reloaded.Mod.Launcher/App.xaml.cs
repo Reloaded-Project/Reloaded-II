@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Windows;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
 
@@ -23,10 +24,10 @@ namespace Reloaded.Mod.Launcher
         public App()
         {
             PopulateCommandLineArgs();
-            if (_commandLineArguments.TryGetValue("--launch", out string applicationToLaunch))
+            if (_commandLineArguments.TryGetValue(Constants.ParameterLaunch, out string applicationToLaunch))
             {
                 // Acquire arguments
-                _commandLineArguments.TryGetValue("--arguments", out var arguments);
+                _commandLineArguments.TryGetValue(Constants.ParameterArguments, out var arguments);
                 if (arguments == null)
                     arguments = "";
 

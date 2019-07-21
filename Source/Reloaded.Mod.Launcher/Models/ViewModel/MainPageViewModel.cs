@@ -132,12 +132,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             // Check if custom icon exists.
             if (!String.IsNullOrEmpty(applicationConfig.Object.AppIcon))
             {
-                string logoDirectory = Path.GetDirectoryName(applicationConfig.Path);
-                Debug.Assert(logoDirectory != null, nameof(logoDirectory) + " != null");
-                string logoFilePath = Path.Combine(logoDirectory, applicationConfig.Object.AppIcon);
+                var hasIcon = ApplicationConfig.TryGetApplicationIcon(applicationConfig.Path, applicationConfig.Object, out var applicationIcon);
 
-                if (File.Exists(logoFilePath))
-                    return Misc.Imaging.BitmapFromUri(new Uri(logoFilePath, UriKind.Absolute));
+                if (hasIcon)
+                    return Misc.Imaging.BitmapFromUri(new Uri(applicationIcon, UriKind.Absolute));
             }
             
             // Otherwise extract new icon from executable.

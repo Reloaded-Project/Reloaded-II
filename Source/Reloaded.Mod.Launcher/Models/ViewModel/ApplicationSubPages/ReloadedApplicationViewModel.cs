@@ -69,6 +69,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             Application.Current.Dispatcher.Invoke(() =>
             {
                 var box = new Pages.Dialogs.MessageBox(Errors.Error(), obj.Message);
+                box.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 box.ShowDialog();
             });
         }

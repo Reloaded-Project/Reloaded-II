@@ -36,6 +36,9 @@
     <sys:String x:Key="AddAppExecutableTitle">Select an application to create the configuration for.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">Application Executable</sys:String>
 
+    <sys:String x:Key="AddAppShortcutCreatedTitle">Shortcut Created</sys:String>
+    <sys:String x:Key="AddAppShortcutCreatedMessage">Shortcut Created at:</sys:String>
+
     <!-- Mod Manager Page -->
     <sys:String x:Key="ModManagerSearchMods">Search Mods</sys:String>
     <sys:String x:Key="ModManagerSearchApps">Search Apps</sys:String>

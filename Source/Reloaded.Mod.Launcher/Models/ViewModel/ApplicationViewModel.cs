@@ -85,6 +85,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         var box = new MessageBox(Errors.Error(), $"{ex.Message} | {ex.StackTrace}");
+                        box.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         box.ShowDialog();
                     });
                 }

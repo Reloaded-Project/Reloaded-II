@@ -7,5 +7,7 @@
 
         public const string ParameterLaunch = "--launch";
         public const string ParameterArguments = "--arguments";
+        public const int    IcoMaxHeight = 256;
+        public const int    IcoMaxWidth = 256;
     }
 }
