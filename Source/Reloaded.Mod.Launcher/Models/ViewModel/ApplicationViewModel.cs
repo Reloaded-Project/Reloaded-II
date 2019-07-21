@@ -10,6 +10,7 @@ using System.Windows;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.WPF.MVVM;
+using Reloaded.WPF.Utilities;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
@@ -18,6 +19,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
     public class ApplicationViewModel : ObservableObject, IDisposable
     {
         public const string ModsForThisAppPropertyName = nameof(ModsForThisApp);
+        private static XamlResource<int> _xamlProcessRefreshInterval = new XamlResource<int>("ApplicationHubReloadedProcessRefreshInterval");
+
         private static readonly object Lock = new object();
         private static Process[] _emptyProcessArray = new Process[0];
 
@@ -71,10 +74,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                     InstanceTracker = new ApplicationInstanceTracker(tuple.ApplicationConfig.AppLocation, _initializeClassTaskTokenSource.Token);
                     ManageModsViewModel.ModsChanged += OnModsChanged;
                     InstanceTracker.OnProcessesChanged += InstanceTrackerOnProcessesChanged;
-                    RefreshProcessesWithLoaderTimer = new Timer(state => { InstanceTrackerOnProcessesChanged(_emptyProcessArray); }, null, 1000, 5000);
 
                     InstanceTrackerOnProcessesChanged(new Process[0]);
                     OnModsChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                    RefreshProcessesWithLoaderTimer = new Timer(state => { InstanceTrackerOnProcessesChanged(_emptyProcessArray); }, null, 500, _xamlProcessRefreshInterval.Get());
                     Page = ApplicationSubPage.ApplicationSummary;
                 }
                 catch (Exception ex)

@@ -46,6 +46,8 @@
     <None Remove="Pages\BaseSubpages\SettingsPage.xaml" />
     <None Remove="Pages\Dialogs\FirstLaunch.xaml" />
     <None Remove="Pages\Dialogs\MessageBoxOkCancel.xaml" />
+    <None Remove="Styles\Settings.xaml" />
+    <None Remove="Styles\Window_Settings.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,6 +59,7 @@
     <Page Remove="Languages\tr-TR.xaml" />
     <Page Remove="Properties\DesignTimeResources.xaml" />
     <Page Remove="Styles\Controls.xaml" />
+    <Page Remove="Styles\Settings.xaml" />
     <Page Remove="Styles\Window_Settings.xaml" />
   </ItemGroup>
 
@@ -89,6 +92,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Styles\Controls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Styles\Settings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    
+    <!-- All values given in Millisecond (ms) unless specified. -->
+
+    <!-- Application Hub -->
+    <system:Int32 x:Key="ApplicationHubReloadedProcessRefreshInterval">5000</system:Int32>  <!-- Time interval between launcher scanning which processes for a specific application have Reloaded running in them. -->
+
+    <!-- Reloaded Process Page (Process with Reloaded loaded-in) -->
+    <system:Int32 x:Key="ReloadedProcessModListRefreshInterval">100</system:Int32>  <!-- Time interval between launcher asking server to give a new updated mod list. -->
+
+    <system:Int32 x:Key="ReloadedProcessModLoaderSetupTimeout">1000</system:Int32>  <!-- Timeout to connect to server. -->
+    <system:Int32 x:Key="ReloadedProcessModLoaderSetupSleepTime">16</system:Int32>  <!-- Time between successive connection attempts. -->
+
+    <!-- Application Launcher -->
+    <system:Int32 x:Key="AppLauncherModLoaderSetupTimeout">30000</system:Int32> <!-- The amount of time given to the mod loader to setup all of its mods by the application launcher. -->
+    <system:Int32 x:Key="AppLauncherModLoaderSetupSleepTime">32</system:Int32>  <!-- Time between successive connection attempts. -->
+
+</ResourceDictionary>

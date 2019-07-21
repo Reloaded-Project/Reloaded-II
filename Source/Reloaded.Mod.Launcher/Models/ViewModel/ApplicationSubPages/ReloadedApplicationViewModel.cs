@@ -16,11 +16,17 @@ using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Server.Messages.Response;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.WPF.MVVM;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 {
     public class ReloadedApplicationViewModel : ObservableObject, IDisposable
     {
+        private static XamlResource<int> _xamlModLoaderSetupTimeout = new XamlResource<int>("ReloadedProcessModLoaderSetupTimeout");
+        private static XamlResource<int> _xamlModLoaderSetupSleepTime = new XamlResource<int>("ReloadedProcessModLoaderSetupSleepTime");
+        private static XamlResource<int> _xamlModLoaderRefreshInterval = new XamlResource<int>("ReloadedProcessModListRefreshInterval");
+
+
         public ApplicationViewModel          ApplicationViewModel { get; set; }
         public Client                        Client      { get; set; }
         public ObservableCollection<ModInfo> CurrentMods { get; set; }
@@ -36,13 +42,13 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             ApplicationViewModel.SelectedProcess.Exited += SelectedProcessOnExited;
 
             /* Try establish connection. */
-            int port = ActionWrappers.TryGetValue(GetPort, 1000, 16);
+            int port = ActionWrappers.TryGetValue(GetPort, _xamlModLoaderSetupTimeout.Get(), _xamlModLoaderSetupSleepTime.Get());
 
             Client = new Client(port);
             Client.OnReceiveException += ClientOnOnReceiveException;
             Refresh();
 
-            _refreshTimer = new System.Timers.Timer(100);
+            _refreshTimer = new System.Timers.Timer(_xamlModLoaderRefreshInterval.Get());
             _refreshTimer.AutoReset = true;
             _refreshTimer.Elapsed += (sender, args) => Refresh();
             _refreshTimer.Enabled = true;

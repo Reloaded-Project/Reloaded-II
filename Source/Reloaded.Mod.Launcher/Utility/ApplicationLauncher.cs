@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Server;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -16,6 +17,9 @@ namespace Reloaded.Mod.Launcher.Utility
     /// </summary>
     public class ApplicationLauncher
     {
+        private static XamlResource<int> _xamlModLoaderSetupTimeout   = new XamlResource<int>("AppLauncherModLoaderSetupTimeout");
+        private static XamlResource<int> _xamlModLoaderSetupSleepTime = new XamlResource<int>("AppLauncherModLoaderSetupSleepTime");
+
         private string _location;
         private string _commandline;
 
@@ -91,7 +95,7 @@ namespace Reloaded.Mod.Launcher.Utility
                         return 0;
 
                     return Client.GetPort((int) processInformation.dwProcessId);
-                }, 30000, 32);
+                }, _xamlModLoaderSetupTimeout.Get(), _xamlModLoaderSetupSleepTime.Get());
             }
             catch (Exception)
             {
