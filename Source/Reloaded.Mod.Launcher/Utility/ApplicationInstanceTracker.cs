@@ -11,6 +11,7 @@ using System.Windows;
 using Reloaded.Injector;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Launcher.Utility
@@ -98,16 +99,8 @@ namespace Reloaded.Mod.Launcher.Utility
         {
             try
             {
-                var moduleNames = FasterModuleCollector.CollectModuleNames(process);
-                foreach (var moduleName in moduleNames)
-                {
-                    if (Path.GetFileName(moduleName) == LoaderConfig.LoaderDllName)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                Client.GetPort(process.Id);
+                return true;
             }
             catch (Exception)
             {

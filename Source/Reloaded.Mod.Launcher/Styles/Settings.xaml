@@ -5,7 +5,7 @@
     <!-- All values given in Millisecond (ms) unless specified. -->
 
     <!-- Application Hub -->
-    <system:Int32 x:Key="ApplicationHubReloadedProcessRefreshInterval">5000</system:Int32>  <!-- Time interval between launcher scanning which processes for a specific application have Reloaded running in them. -->
+    <system:Int32 x:Key="ApplicationHubReloadedProcessRefreshInterval">100</system:Int32>  <!-- Time interval between launcher scanning which processes for a specific application have Reloaded running in them. -->
 
     <!-- Reloaded Process Page (Process with Reloaded loaded-in) -->
     <system:Int32 x:Key="ReloadedProcessModListRefreshInterval">100</system:Int32>  <!-- Time interval between launcher asking server to give a new updated mod list. -->
