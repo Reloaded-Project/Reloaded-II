@@ -29,6 +29,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         /* Fired when the available mods collection changes. */
         public event NotifyCollectionChangedEventHandler ModsChanged = (sender, args) => { };
+        public event Action<ImageModPathTuple> ModSaving = tuple => { }; // When a mod is about to be saved.
 
         /* Fields */
         public int SelectedIndex { get; set; } = 0;
@@ -113,6 +114,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 // Make sure not to refresh the collection, we will lose our index.
                 // Note: Saving regardless of action because of possible other changes.
                 InvokeWithoutMonitoringMods(oldModTuple.Save);
+                ModSaving(oldModTuple);
             }
         }
 

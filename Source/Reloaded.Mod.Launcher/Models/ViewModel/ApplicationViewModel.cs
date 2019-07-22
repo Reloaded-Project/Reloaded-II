@@ -18,7 +18,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
     public class ApplicationViewModel : ObservableObject, IDisposable
     {
-        public const string ModsForThisAppPropertyName = nameof(ModsForThisApp);
         private static XamlResource<int> _xamlProcessRefreshInterval = new XamlResource<int>("ApplicationHubReloadedProcessRefreshInterval");
 
         private static readonly object Lock = new object();
@@ -73,6 +72,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 {
                     InstanceTracker = new ApplicationInstanceTracker(tuple.ApplicationConfig.AppLocation, _initializeClassTaskTokenSource.Token);
                     ManageModsViewModel.ModsChanged += OnModsChanged;
+                    ManageModsViewModel.ModSaving += OnModSaving;
                     InstanceTracker.OnProcessesChanged += InstanceTrackerOnProcessesChanged;
 
                     InstanceTrackerOnProcessesChanged(new Process[0]);
@@ -158,6 +158,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             // Set count.
             ModsForThisApp = newMods;
             TotalMods = newMods.Count;
+        }
+
+        private void OnModSaving(ImageModPathTuple obj)
+        {
+            OnModsChanged(null, null);
         }
     }
 }
