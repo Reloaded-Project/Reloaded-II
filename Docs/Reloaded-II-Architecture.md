@@ -39,9 +39,8 @@ The Loader application would then also act as a local server that can be used fo
 
 - *Reloaded Mod DLLs supported by other mod loaders.*
   - Because of AppDomain plumbing code (see below) and use of DLL Exports.
-  - On the flipside developer must either export `DllMain` or mod loader must know to run the exported `Main` method.
-- Reloaded-II will support an `Inversion of Control`. A DLL is planned to be available that will locate and load `Reloaded's` loader DLL. Thus loading Reloaded from other mod loaders.
-  
+  - On the flipside developer must either export make their own C++ bootstrapper and export `DllMain`  or mod loader must know to run the exported `Main` method.
+  - Reloaded-II can also be bootstrapped via the "DLL Loader" method to be executed by other loaders itself, nullifying this point entirely.
 - *Support of DLLs programmed in arbitrary Native/Managed programming languages* (provided DLL exports are supported).
   - In theory there is no reason that Reloaded II's architecture couldn't support native DLLs. Only catch is that it will have to distinguish them from .NET ones so a bit more code.
 
@@ -69,15 +68,15 @@ The Loader application would then also act as a local server that can be used fo
 
 In the case of Reloaded II, things change considerably as there is only one standalone application, the WPF Graphical User Interface.
 
-What instead happens is that rather than the Launcher running the Loader as a separate standalone application, the loader instead ships in the form of an injectable DLL with various DLL exports. In this case the actual loader itself is injected into the target application, which will in turn initialize and load successive mods using the native .NET APIs.
+What instead happens is that rather than the Launcher running the Loader as a separate standalone application, the loader instead ships in the form of an injectable DLL. In this case the actual loader itself is injected into the target application, which will in turn initialize and load successive mods using the native .NET APIs.
 
 Once Reloaded is injected, the WPF Graphical User Interface (as well as other programs) can check if Reloaded is present by looking in the modules list of the target. If the Reloaded DLL is there, it can be assumed mods are loaded. 
 
 ### Interacting with Reloaded II
 
-Injected Reloaded inside the target process can be interacted by executing functions remotely from the WPF GUI `(CreateRemoteThread)`, with memory writes used to pass parameters and return values. (This allows us to pass structs etc.)
+Injected Reloaded inside the target process hosts a local UDP server which can easily be interacted with by connecting. As opposed to having a one server and then a client for every single loaded mod, there is only one server (and one client if the Launcher is connected).
 
-`Reloaded.Injector` already provides the function call and parameter pass functionality. It uses `Reloaded.Memory`'s `CircularBuffer`  class as the backing storage to pass parameters. Injected Reloaded would also maintain its own `CircularBuffer` used for writing return values to process memory efficiently.
+Having to create only one host significantly reduces startup time.
 
 ### Reloaded II vs Reloaded I 
 
