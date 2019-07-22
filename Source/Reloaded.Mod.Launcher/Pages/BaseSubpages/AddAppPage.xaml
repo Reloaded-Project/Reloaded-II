@@ -136,7 +136,8 @@
                                     Margin="{DynamicResource CommonItemVerticalMargin}" 
                                     HorizontalAlignment="Center"
                                     Content="{DynamicResource AddAppAutoInject}"
-                                    ToolTip="{DynamicResource AddAppAutoInjectMessage}"/>
+                                    ToolTip="{DynamicResource AddAppAutoInjectMessage}"
+                                    ToolTipService.InitialShowDelay = "0"/>
                         </StackPanel>
                     </controls:PopupLabel.HiddenContent>
                 </controls:PopupLabel>
