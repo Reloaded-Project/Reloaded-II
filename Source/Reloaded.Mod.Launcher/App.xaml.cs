@@ -24,6 +24,14 @@ namespace Reloaded.Mod.Launcher
         public App()
         {
             PopulateCommandLineArgs();
+            if (_commandLineArguments.TryGetValue(Constants.ParameterKill, out string processId))
+            {
+                var process = Process.GetProcessById(Convert.ToInt32(processId));
+                process.Kill();
+
+                ActionWrappers.SleepOnConditionWithTimeout(() => process.HasExited, 1000, 32);
+            }
+
             if (_commandLineArguments.TryGetValue(Constants.ParameterLaunch, out string applicationToLaunch))
             {
                 // Acquire arguments

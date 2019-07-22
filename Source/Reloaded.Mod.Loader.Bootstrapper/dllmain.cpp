@@ -10,28 +10,29 @@
 #include <locale>
 #include <codecvt>
 #include <string>
+#include "Utilities.h"
+#include "LoaderConfig.h"
+#include <shellapi.h>
 
 using json = nlohmann::json;
-using string_t = std::basic_string<char_t>;
+
+// Constants
+static string_t PORTABLE_MODE_FILE	= L"ReloadedPortable.txt";
+const string_t PARAMETER_LAUNCH		= L"--launch";
+const string_t PARAMETER_ARGUMENTS	= L"--arguments";
+const string_t PARAMETER_KILL		= L"--kill";
 
 // Global Variables
 CoreCLR* CLR;
-bool launchExecuted = false;
 HMODULE thisProcessModule;
 
 // Reloaded Init Functions
-ReloadedPaths find_reloaded(int& success);
-extern "C" __declspec(dllexport) void launch_reloaded();
+DWORD WINAPI setup_reloaded_async(LPVOID lpParam);
+void setup_reloaded();
+
+void reboot_via_launcher(); // If ReloadedPortable.txt exists in DLL directory.
+bool is_reloaded_already_loaded();
 bool load_reloaded(ReloadedPaths& reloadedPaths);
-DWORD WINAPI launch_reloaded_async(LPVOID lpParam);
-
-// Utility Functions
-string_t get_directory_name(string_t filePath);
-string_t get_current_directory(HMODULE hModule);
-bool file_exists(string_t file_path);
-
-// For exports.
-int port;
 
 /* Entry point */
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
@@ -40,7 +41,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
     {
 		case DLL_PROCESS_ATTACH:
 			thisProcessModule = hModule;
-			CreateThread(NULL, 0, &launch_reloaded_async, 0, 0, nullptr);
+			CreateThread(nullptr, 0, &setup_reloaded_async, 0, 0, nullptr);
 			break;
 
 		case DLL_THREAD_ATTACH:
@@ -54,96 +55,86 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
     return TRUE;
 }
 
-DWORD WINAPI launch_reloaded_async(LPVOID lpParam)
+DWORD WINAPI setup_reloaded_async(LPVOID lpParam)
 {
-	launch_reloaded();
+	setup_reloaded();
 	return 0;
 }
 
-void launch_reloaded()
+void setup_reloaded()
 {
-	if (!launchExecuted)
+	try
 	{
-		launchExecuted = true;
+		if (! is_reloaded_already_loaded())
+		{
+			/* Reboot via launcher if in portable mode. */
+			auto dllDirectory = Utilities::get_current_directory(thisProcessModule);
+			if (Utilities::file_exists(dllDirectory + L"\\" + PORTABLE_MODE_FILE))
+				reboot_via_launcher();
+				
+			/* Add current directory to list of DLL paths. */
+			SetDllDirectoryW(dllDirectory.c_str());
 
-		/* Add current directory to list of DLL paths. */
-		auto dllDirectory = get_current_directory(thisProcessModule);
-		SetDllDirectoryW(dllDirectory.c_str());
+			/* Find Reloaded */
+			LoaderConfig config = LoaderConfig();
 
-		/* Find Reloaded */
-		int findResult = 0;
-		ReloadedPaths paths = find_reloaded(findResult);
-
-		if (findResult == 0)
-			return;
-
-		/* Load Reloaded */
-		load_reloaded(paths);
+			/* Load Reloaded */
+			ReloadedPaths loaderPaths = config.get_loader_paths();
+			load_reloaded(loaderPaths);
+		}
+	}
+	catch (std::exception& exception)
+	{
+		std::cerr << exception.what() << std::endl;
+		MessageBoxA(nullptr, exception.what(), "[Bootstraper] Failed to Load Reloaded-II", MB_OK);
 	}
 }
+
 
 /**
- * \brief Finds the path to Reloaded Mod Loader components.
- * \param success Returns 1 if the operation succeeds, else 0.
- * \return The path to Reloaded Mod Loader components. This path is null if the components are not found.
+ * \brief Reboots the application through the use of the launcher.
  */
-ReloadedPaths find_reloaded(int& success)
+void reboot_via_launcher()
 {
-	// Get path to AppData
-	char_t buffer[MAX_PATH];
-	BOOL result = SHGetSpecialFolderPath(nullptr, buffer, CSIDL_APPDATA, false);
+	// Output
+	int numArgs;
+	LPWSTR* args = nullptr;
 
-	if (!result)
+	// Get Command Line
+	LPWSTR rawCommandLine = GetCommandLineW();
+	args = CommandLineToArgvW(rawCommandLine, &numArgs);
+
+	// Assemble commandline components.
+	std::wstring launchPath = args[0];
+	std::wstring arguments;
+
+	for (int x = 1; x < numArgs; x++)
 	{
-		success = 0;
-		std::cerr << "Failed to obtain the path of the AppData folder." << std::endl;
-		return ReloadedPaths();
+		arguments += L" ";
+		arguments += args[x];
 	}
 
-	// Get path to Reloaded Config
-	string_t appData = string_t(buffer);
-	string_t reloadedConfigPath = appData + L"\\Reloaded-Mod-Loader-II\\ReloadedII.json";
+	// Make launcher commandline.
+	LoaderConfig config = LoaderConfig();
+	std::wstring commandLine = L"\"" + config.get_launcher_path() + L"\" "; // Reloaded Launcher
+	commandLine += PARAMETER_LAUNCH + L" \"" + launchPath + L"\" "; // Launch path
+	commandLine += PARAMETER_ARGUMENTS + L" \"" + arguments + L"\" "; // Arguments
+	commandLine += PARAMETER_KILL + L" \"" + std::to_wstring(GetCurrentProcessId()) + L"\" "; // Kill this process.
 
-	if (!file_exists(reloadedConfigPath))
+	// Launch launcher.
+	STARTUPINFOW si;
+	PROCESS_INFORMATION pi;
+
+	ZeroMemory(&si, sizeof(si));
+	si.cb = sizeof(si);
+	ZeroMemory(&pi, sizeof(pi));
+
+	if (CreateProcessW(nullptr, (LPWSTR) commandLine.c_str(), nullptr, nullptr, false, DETACHED_PROCESS, nullptr, nullptr, &si, &pi))
 	{
-		success = 0;
-		std::cerr << "Reloaded config has not been found." << std::endl;
-		return ReloadedPaths();
+		CloseHandle(pi.hProcess);
+		CloseHandle(pi.hThread);
 	}
-
-	// Get loader path.
-	std::ifstream configFile = std::ifstream(reloadedConfigPath);
-	json configJson = json::parse(configFile);
-	std::string stringLoaderPath = configJson["LoaderPath"];
-
-	/* std::string is non-wide and will not handle unicode characters on Windows. 
-	 * Need to convert back to wide characters. 
-	 * 
-	 * This is to support file paths with international locale e.g. Cyrillic, Chinese, Japanese.
-	*/
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-	string_t loaderPath = converter.from_bytes(stringLoaderPath);
-
-	if (!file_exists(loaderPath))
-	{
-		success = 0;
-		std::cerr << "Reloaded Mod Loader DLL has not been found." << std::endl;
-		return ReloadedPaths();
-	}
-
-	// Get runtime configuration path.
-	string_t runtimeConfigPath = loaderPath.substr(0, loaderPath.size() - 4) + L".runtimeconfig.json";
-	if (!file_exists(runtimeConfigPath))
-	{
-		success = 0;
-		std::cerr << "Reloaded Mod Loader runtime configuration has not been found." << std::endl;
-		return ReloadedPaths();
-	}
-
-	success = 1;
-	return ReloadedPaths(loaderPath, runtimeConfigPath);
 }
-
 
 /**
  * \brief Loads the Reloaded Mod Loader into the current process given a set of paths.
@@ -156,68 +147,53 @@ bool load_reloaded(ReloadedPaths& reloadedPaths)
 	CLR = new CoreCLR(&success);
 
 	if (!success)
-	{
-		std::cerr << "Failed to load the `hostfxr` library." << std::endl;
-		return false;
-	}
+		throw std::exception("Failed to load the `hostfxr` library. Did you copy nethost.dll?");
 
 	// Load runtime and execute our method.
 	if (!CLR->load_runtime(reloadedPaths.runtimeConfigPath))
-	{
-		std::cerr << "Failed to load .NET Core Runtime" << std::endl;
-		return false;
-	}
+		throw std::exception("Failed to load .NET Core Runtime");
 
 	const string_t typeName = L"Reloaded.Mod.Loader.EntryPoint, Reloaded.Mod.Loader";
 	const string_t methodName = L"Initialize";
-	component_entry_point_fn getPort = nullptr;
+	component_entry_point_fn initialize = nullptr;
 
 	if (!CLR->load_assembly_and_get_function_pointer(reloadedPaths.dllPath.c_str(), typeName.c_str(), methodName.c_str(),
-		nullptr, nullptr, (void**) &getPort))
+		nullptr, nullptr, (void**) &initialize))
 	{
-		std::cerr << "Failed to load C# assembly." << std::endl;
+		throw std::exception("Failed to load .NET assembly.");
 	}
 
-	port = getPort(nullptr, 0);
+	initialize(nullptr, 0);
 	return true;
 }
 
-/* Utility functions. */
-
 /**
- * \brief Returns true if a file with a given path exists.
- * \param file_path The absolute path to the file.
- * \return True if the file exists, else false.
+ * \brief Returns true if Reloaded is already loaded, else false.
  */
-bool file_exists(string_t file_path)
+bool is_reloaded_already_loaded()
 {
-	std::ifstream file_stream;
-	file_stream.open(file_path);
-	return file_stream.good();
+	const std::wstring memoryMappedFileName = L"Reloaded-Mod-Loader-Server-PID-" + std::to_wstring(GetCurrentProcessId());
+	const HANDLE hMapFile = OpenFileMappingW(FILE_MAP_ALL_ACCESS, FALSE, memoryMappedFileName.c_str());
+
+	const bool loaded = (hMapFile != nullptr);
+	if (hMapFile != nullptr)
+		CloseHandle(hMapFile);
+	
+	return loaded;
 }
 
-
-/**
- * \brief Returns the absolute path to the current directory
- * \return The absolute path to the current directory.
- */
-string_t get_current_directory(HMODULE hModule)
+/* Exports for different mod loaders. */
+struct ModInfoDummy
 {
-	char_t host_path[MAX_PATH];
-	int bufferSize = sizeof(host_path) / sizeof(char_t);
-	GetModuleFileNameW(hModule, host_path, bufferSize);
+	int version;
+	char padding[256];
+};
 
-	return get_directory_name(host_path);
-}
-
-/**
- * \brief Returns the full path to a directory referenced by a file.
- * \param filePath The full path to a file.
- * \return The full path to a directory referenced by a file.
- */
-string_t get_directory_name(string_t filePath)
+extern "C"
 {
-	auto pos = filePath.find_last_of('\\');
-	filePath = filePath.substr(0, pos + 1);
-	return filePath;
+	__declspec(dllexport) ModInfoDummy SA2ModInfo { 1 };
+	__declspec(dllexport) ModInfoDummy SADXModInfo { 1 };
+	__declspec(dllexport) ModInfoDummy SonicRModInfo { 1 };
+	__declspec(dllexport) ModInfoDummy ManiaModInfo { 1 };
+	__declspec(dllexport) ModInfoDummy SKCModInfo { 1 };
 }

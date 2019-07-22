@@ -68,12 +68,6 @@
 
                 <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
                           HorizontalAlignment="Center" 
-                          IsChecked="{Binding LoaderConfig.DllLoadAsynchronously}"
-                          Content="{DynamicResource LoaderSettingsLoadAsynchronously}"
-                          Style="{DynamicResource DefaultCheckBox}"/>
-
-                <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
-                          HorizontalAlignment="Center" 
                           IsChecked="{Binding LoaderConfig.ShowConsole}"
                           Content="{DynamicResource LoaderSettingsShowConsole}"
                           Style="{DynamicResource DefaultCheckBox}"/>

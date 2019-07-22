@@ -5,6 +5,7 @@
         public const string WpfSupportedFormatsFilter = "(*.jpg, *.jpeg, *.jpe, *.jfif, *.png)|*.jpg; *.jpeg; *.jpe; *.jfif; *.png";
         public static string[] EmptyStringArray = new string[0];
 
+        public const string ParameterKill = "--kill";
         public const string ParameterLaunch = "--launch";
         public const string ParameterArguments = "--arguments";
         public const int    IcoMaxHeight = 256;

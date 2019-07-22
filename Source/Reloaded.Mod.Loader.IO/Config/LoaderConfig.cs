@@ -20,7 +20,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// The name of the configuration file as stored on disk.
         /// </summary>
-        public const string ConfigFileName = "ReloadedII.json";
+        public const string ConfigFileName = "ReloadedII.json"; // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
 
         private const string DefaultApplicationConfigDirectory  = "Apps";
         private const string DefaultModConfigDirectory          = "Mods";
@@ -74,12 +74,6 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         public bool FirstLaunch { get; set; } = true;
         public bool AutoAcceptUpdates { get; set; } = false;
-
-        /// <summary>
-        /// If false, Reloaded Bootstrapper DLL tells the launcher to reload process and kill current process.
-        /// If true, Reloaded Bootstrapper will launch mod loader in parallel.
-        /// </summary>
-        public bool DllLoadAsynchronously { get; set; } = false;
 
         /// <summary>
         /// Shows the console window if set to true, else false.

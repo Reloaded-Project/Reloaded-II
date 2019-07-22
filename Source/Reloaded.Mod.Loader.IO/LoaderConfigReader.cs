@@ -14,7 +14,7 @@ namespace Reloaded.Mod.Loader.IO
         /// <summary>
         /// Name of Reloaded's folder inside AppData/Roaming.
         /// </summary>
-        private const string ReloadedFolderName = "Reloaded-Mod-Loader-II";
+        private const string ReloadedFolderName = "Reloaded-Mod-Loader-II"; // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
 
         /// <summary>
         /// Location of the static configuration file, used to locate the mod loader install.
