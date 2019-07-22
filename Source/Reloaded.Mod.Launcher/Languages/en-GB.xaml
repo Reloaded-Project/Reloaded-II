@@ -3,6 +3,7 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!-- This file contains the English Language Text for Reloaded II -->
+    <!-- xml:space="preserve" allows for new line. &#x0a; is new line (ASCII character). -->
 
     <!-- Page Titles -->
     <sys:String x:Key="TitleAddApplication">Add an Application</sys:String>
@@ -32,6 +33,8 @@
 
     <sys:String x:Key="AddAppAdvancedOptions">Advanced Tools &amp; Options</sys:String>
     <sys:String x:Key="AddAppCreateShortcut">Create Shortcut</sys:String>
+    <sys:String x:Key="AddAppAutoInject">Auto-Inject</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage" xml:space="preserve">Note: Auto-inject is provided but not recommended as no guarantee can be made that mods will execute code before the application.&#x0a;Please instead use regular "Launch Application" from Reloaded or the "DLL Loader" method described in the Github documentation.&#x0a;Please do not submit bugs for mods that do not work using Auto-inject mode.</sys:String>
 
     <sys:String x:Key="AddAppExecutableTitle">Select an application to create the configuration for.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">Application Executable</sys:String>
@@ -65,8 +68,6 @@
 
     <sys:String x:Key="TitleCreateModNonUniqueId">Non-Unique ID</sys:String>
     <sys:String x:Key="MessageCreateModNonUniqueId" xml:space="preserve">The ModId for the mod you are creating is not unique.&#x0a;Please make the ModId unique.</sys:String>
-
-    <!-- xml:space="preserve" allows for new line. &#x0a; is new line (ASCII character). -->
 
     <!-- Mod Loader Settings -->
     <sys:String x:Key="LoaderSettingsCleanup">Cleanup Configurations</sys:String>
@@ -105,6 +106,7 @@
     <sys:String x:Key="NonReloadedProcessMessageOne">Reloaded is not managing this particular process.</sys:String>
     <sys:String x:Key="NonReloadedProcessMessageTwo">You can load Reloaded by pressing the following button below.</sys:String>
     <sys:String x:Key="NonReloadedProcessInject">Inject</sys:String>
+    <sys:String x:Key="NonReloadedProcessInjectWarning" xml:space="preserve">Note: Not all mods may function as expected if they are loaded while the application is running and not suspended. Please do not submit bugs for mods that do not work using this function.</sys:String>
 
     <!-- Reloaded Process -->
     <sys:String x:Key="TitleReloadedProcess">Reloaded Process</sys:String>

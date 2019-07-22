@@ -29,6 +29,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string AppLocation           { get; set; } = String.Empty;
         public string AppArguments          { get; set; } = String.Empty;
         public string AppIcon               { get; set; } = DefaultIcon;
+        public bool   AutoInject            { get; set; } = false;
         public string[] EnabledMods
         {
             get => _enabledMods;

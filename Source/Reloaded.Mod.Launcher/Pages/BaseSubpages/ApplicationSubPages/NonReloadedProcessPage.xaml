@@ -22,5 +22,15 @@
                     HorizontalAlignment="Center" Click="Button_Click"/>
         </StackPanel>
 
+        <DockPanel LastChildFill="False">
+            <TextBlock 
+                DockPanel.Dock="Bottom"
+                Text="{DynamicResource NonReloadedProcessInjectWarning}" 
+                Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
+                TextWrapping="Wrap" 
+                HorizontalAlignment="Center"/>
+
+        </DockPanel>
+
     </Grid>
 </local:ApplicationSubPage>

@@ -69,6 +69,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /* Application Monitoring */
         private ObservableCollection<ImageApplicationPathTuple> _applications;
         private FileSystemWatcher _applicationWatcher; /* Monitors for additions/changes in available applications. */
+        private AutoInjector _autoInjector;
 
         /* Get Applications Task */
         private readonly SerialTaskCommand _getApplicationsTaskCommand = new SerialTaskCommand();
@@ -79,6 +80,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             string appConfigDirectory = IoC.Get<LoaderConfig>().ApplicationConfigDirectory;
             _applicationWatcher = FileSystemWatcherFactory.CreateGeneric(appConfigDirectory, StartGetApplicationsTask, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed | FileSystemWatcherFactory.FileSystemWatcherEvents.Renamed | FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted);
+            _autoInjector = new AutoInjector(this);
         }
 
         /// <summary>

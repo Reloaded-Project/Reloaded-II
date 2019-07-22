@@ -61,6 +61,14 @@ namespace Reloaded.Mod.Launcher.Utility
         }
 
         /// <summary>
+        /// Creates an <see cref="ApplicationLauncher"/> from an application config.
+        /// </summary>
+        public static ApplicationLauncher FromApplicationConfig(ApplicationConfig config)
+        {
+            return FromLocationAndArguments($"{config.AppLocation}", $"{config.AppArguments}");
+        }
+
+        /// <summary>
         /// Starts the application, injecting Reloaded into it.
         /// </summary>
         public void Start()

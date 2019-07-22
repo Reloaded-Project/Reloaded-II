@@ -85,7 +85,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var appConfig = ViewModel.ApplicationTuple.ApplicationConfig;
-                var launcher = ApplicationLauncher.FromLocationAndArguments($"{appConfig.AppLocation}", $"{appConfig.AppArguments}");
+                var launcher = ApplicationLauncher.FromApplicationConfig(appConfig);
                 launcher.Start();
             }
         }
