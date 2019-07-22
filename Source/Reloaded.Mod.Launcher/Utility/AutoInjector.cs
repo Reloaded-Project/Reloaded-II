@@ -34,8 +34,11 @@ namespace Reloaded.Mod.Launcher.Utility
                 var config = _mainPageViewModel.Applications.FirstOrDefault(x => string.Equals(x.ApplicationConfig.AppLocation, fullPath, StringComparison.OrdinalIgnoreCase));
                 if (config != null)
                 {
-                    var appInjector = new ApplicationInjector(newProcess);
-                    appInjector.Inject();
+                    if (config.ApplicationConfig.AutoInject)
+                    {
+                        var appInjector = new ApplicationInjector(newProcess);
+                        appInjector.Inject();
+                    }
                 }
             }
             catch (Exception ex) { }
