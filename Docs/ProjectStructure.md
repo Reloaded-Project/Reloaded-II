@@ -1,5 +1,5 @@
 <div align="center">
-	<h1>Reloaded II: Architecture</h1>
+	<h1>Reloaded II: Project Structure</h1>
 	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
 	<br/> <br/>
 	<strong>Who, what, when, where and why?</strong>

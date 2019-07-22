@@ -41,7 +41,7 @@
 - [Inter Mod Communication](./Docs/InterModCommunication.md)
 
 ## Reloaded: For Potential Contributors
-- Getting Started: Building Reloaded (TBD)
+- [Getting Started: Building Reloaded](./Docs/BuildingReloaded.md)
 
 - [Getting Started: Project Structure](./Docs/ProjectStructure.md)
 
