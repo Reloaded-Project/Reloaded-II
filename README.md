@@ -15,8 +15,14 @@
 
 (TBD)
 
-## Features
+## Prerequisites
+- Windows 7, 8.1, 10 or above.
+- [.NET Core 3.0 Preview 6 Runtime (x64 & x86)*](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+- Visual C++ Redist 2015/17/19 [(x64)](https://aka.ms/vs/16/release/VC_redist.x64.exe) and [(x86)](https://aka.ms/vs/16/release/VC_redist.x86.exe)
 
+\*The fastest way to install this is just to get the `Runtime & Hosting Bundle`, which includes both the x64 and x86 runtimes.
+
+## Features
 (TBD)
 
 ## Reloaded: For End Users
@@ -27,13 +33,16 @@
 ## Reloaded: For Casual Modders
 - Getting Started: Modifications (TBD)
 
-## Reloaded: For Developers & Potential Contributors
+## Reloaded: For Mod Developers 
 - Getting Started: Programmers (TBD)
-
-- Getting Started: Project Structure (TBD)
 
 - [API Overview](./Docs/APIOverview.md)
 
 - [Inter Mod Communication](./Docs/InterModCommunication.md)
+
+## Reloaded: For Potential Contributors
+- Getting Started: Building Reloaded (TBD)
+
+- [Getting Started: Project Structure](./Docs/ProjectStructure.md)
 
 - [Reloaded II's Architecture: Behind the Scenes.](./Docs/Reloaded-II-Architecture.md)
