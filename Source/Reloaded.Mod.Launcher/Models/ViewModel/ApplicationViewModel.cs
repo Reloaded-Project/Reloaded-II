@@ -126,8 +126,20 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void InstanceTrackerOnProcessesChanged(Process[] newProcesses)
         {
             var result = InstanceTracker.GetProcesses();
-            ProcessesWithReloaded = new ObservableCollection<Process>(result.ReloadedProcesses);
-            ProcessesWithoutReloaded = new ObservableCollection<Process>(result.NonReloadedProcesses);
+            if (ProcessesWithReloaded == null || ProcessesWithoutReloaded == null)
+            {
+                ProcessesWithReloaded = new ObservableCollection<Process>(result.ReloadedProcesses);
+                ProcessesWithoutReloaded = new ObservableCollection<Process>(result.NonReloadedProcesses);
+            }
+            else
+            {
+                ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+                {
+                    Collections.ModifyObservableCollection(ProcessesWithReloaded, result.ReloadedProcesses);
+                    Collections.ModifyObservableCollection(ProcessesWithoutReloaded, result.NonReloadedProcesses);
+                });
+            }
+
             ReloadedApps = ProcessesWithReloaded.Count;
             NonReloadedApps = ProcessesWithoutReloaded.Count;
         }
