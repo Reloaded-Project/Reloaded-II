@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using Reloaded.Mod.Loader.IO.Config;
@@ -55,7 +56,7 @@ namespace Reloaded.Mod.Loader.IO
         public TConfigType ReadConfiguration(string path)
         {
             string jsonFile = File.ReadAllText(path);
-            return JsonSerializer.Parse<TConfigType>(jsonFile, Options);
+            return JsonSerializer.Deserialize<TConfigType>(jsonFile, Options);
         }
 
         public void WriteConfiguration(string path, TConfigType config)
@@ -65,7 +66,7 @@ namespace Reloaded.Mod.Loader.IO
             if (!Directory.Exists(directoryOfPath))
                 Directory.CreateDirectory(directoryOfPath);
 
-            string jsonFile = JsonSerializer.ToString(config, Options);
+            string jsonFile = JsonSerializer.Serialize(config, Options);
             File.WriteAllText(path, jsonFile);
         }
     }
