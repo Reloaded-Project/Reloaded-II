@@ -1,7 +1,3 @@
-
-
-
-
 <div align="center">
 	<h1>Reloaded II: Injection Methods</h1>
 	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />

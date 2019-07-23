@@ -33,8 +33,8 @@
 ## Reloaded: For Casual Modders
 - Getting Started: Modifications (TBD)
 
-## Reloaded: For Mod Developers 
-- Getting Started: Programmers (TBD)
+## Reloaded: For Developers 
+- [Getting Started: Developer Mod Guide](./Docs/DeveloperModGuide.md)
 
 - [API Overview](./Docs/APIOverview.md)
 
