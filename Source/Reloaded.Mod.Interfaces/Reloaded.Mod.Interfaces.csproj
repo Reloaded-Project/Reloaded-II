@@ -4,6 +4,23 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Reloaded.Mod.Interfaces</AssemblyName>
     <RootNamespace>Reloaded.Mod.Interfaces</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Sewer56</Authors>
+    <Company />
+    <Description>Contains interfaces for Reloaded classes to be shared between the mod loader and other external components such as mods.</Description>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
+    <PackageIconUrl>https://avatars1.githubusercontent.com/u/45473408</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
