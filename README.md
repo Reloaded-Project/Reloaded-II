@@ -28,7 +28,7 @@
 ## Reloaded: For End Users
 
 - User Guide (TBD)
-- Installation/Injection Methods (TBD) (Recommended for Power Users)
+- [Installation/Injection Methods](./Docs/InjectionMethods.md) (Recommended Read for Power Users)
 
 ## Reloaded: For Casual Modders
 - Getting Started: Modifications (TBD)
