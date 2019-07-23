@@ -118,11 +118,36 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             }
         }
 
+        /// <summary>
+        /// Obtains an image to represent a given mod.
+        /// The image is either a custom one or the default placeholder.
+        /// </summary>
+        public string GetImageForModConfig(PathGenericTuple<ModConfig> modConfig)
+        {
+            // Check if custom icon exists.
+            if (!String.IsNullOrEmpty(modConfig.Object.ModIcon))
+            {
+                string logoDirectory = Path.GetDirectoryName(modConfig.Path);
+                Debug.Assert(logoDirectory != null, nameof(logoDirectory) + " != null");
+                string logoFilePath = Path.Combine(logoDirectory, modConfig.Object.ModIcon);
+
+                if (File.Exists(logoFilePath))
+                    return logoFilePath;
+            }
+
+            return Paths.PLACEHOLDER_IMAGE;
+        }
+
         public void InvokeWithoutMonitoringMods(Action action)
         {
             MonitorNewMods = false;
             action();
             MonitorNewMods = true;
+        }
+
+        public void RaiseSelectedModChangedEvent()
+        {
+            this.RaisePropertyChangedEvent(nameof(SelectedModTuple));
         }
 
         private void InvokeAsync(Action action)
@@ -204,26 +229,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 Mods = mods;
             else
                 ActionWrappers.ExecuteWithApplicationDispatcher(() => { Collections.ModifyObservableCollection(_mods, mods); });
-        }
-
-        /// <summary>
-        /// Obtains an image to represent a given mod.
-        /// The image is either a custom one or the default placeholder.
-        /// </summary>
-        private string GetImageForModConfig(PathGenericTuple<ModConfig> modConfig)
-        {
-            // Check if custom icon exists.
-            if (!String.IsNullOrEmpty(modConfig.Object.ModIcon))
-            {
-                string logoDirectory = Path.GetDirectoryName(modConfig.Path);
-                Debug.Assert(logoDirectory != null, nameof(logoDirectory) + " != null");
-                string logoFilePath = Path.Combine(logoDirectory, modConfig.Object.ModIcon);
-
-                if (File.Exists(logoFilePath))
-                    return logoFilePath;
-            }
-            
-            return Paths.PLACEHOLDER_IMAGE;
         }
     }
 }

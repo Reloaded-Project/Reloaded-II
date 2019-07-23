@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using Reloaded.Mod.Launcher.Commands.ManageModsPage;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
@@ -20,6 +21,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         public ManageModsViewModel ViewModel { get; set; }
         private readonly CollectionViewSource _modsViewSource;
         private readonly CollectionViewSource _appsViewSource;
+        private readonly SetModImageCommand _setModImageCommand;
 
         public ManageModsPage() : base()
         {
@@ -34,6 +36,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             _appsViewSource = manipulator.Get<CollectionViewSource>("SortedApps");
             _modsViewSource.Filter += ModsViewSourceOnFilter;
             _appsViewSource.Filter += AppsViewSourceOnFilter;
+            _setModImageCommand = new SetModImageCommand();
         }
 
         private void AppsViewSourceOnFilter(object sender, FilterEventArgs e)
@@ -98,9 +101,20 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             _appsViewSource.View.Refresh();
         }
 
+
+
         private void SaveCurrentMod()
         {
             ViewModel.SaveMod(ViewModel.SelectedModTuple);
+        }
+
+        private void Image_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_setModImageCommand.CanExecute(null))
+            {
+                _setModImageCommand.Execute(null);
+                e.Handled = true;
+            }
         }
     }
 }

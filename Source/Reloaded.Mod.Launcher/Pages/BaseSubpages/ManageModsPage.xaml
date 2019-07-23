@@ -56,7 +56,9 @@
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
                              Margin="{DynamicResource CommonItemVerticalMargin}">
                         <Image d:DataContext="{x:Static designTimeModels:ModIcon.Instance}"
-                               Source="{Binding Icon}" />
+                               Source="{Binding Icon}"
+                               ToolTip="{DynamicResource AddAppImageTooltip}"
+                               PreviewMouseDown="Image_PreviewMouseDown"/>
                     </Viewbox>
 
                     <!-- Add / Delete Mod -->
