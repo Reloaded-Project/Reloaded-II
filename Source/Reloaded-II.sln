@@ -49,7 +49,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestInterfaces", "Testing\O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Shared", "Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj", "{85C2C4F7-AFC2-4745-A6E4-804B81EAE262}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "McMaster.NETCore.Plugins", "..\..\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj", "{5C8A14C5-70D2-4652-806D-224CF616B6BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "McMaster.NETCore.Plugins", "..\Submodules\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj", "{5C8A14C5-70D2-4652-806D-224CF616B6BA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Launcher.Kernel32AddressDumper", "Reloaded.Mod.Launcher.Kernel32AddressDumper\Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj", "{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}"
 EndProject
