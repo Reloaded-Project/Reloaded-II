@@ -42,6 +42,8 @@ Then proceed to replace the mod preview image `Preview.png`.
 
 ![Config](./Images/JsonFile.png)
 
+**Make sure to set ModDll to the file name of your output DLL file**.
+
 ### 3. Debug Your Mods!
 
 To debug your mods, by far the best and easiest option is to simply add `Debugger.Launch();` to the start of your program: This will automatically provide you with a prompt to start or use running version of Visual Studio.
