@@ -57,7 +57,8 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
         public void Execute(object parameter)
         {
             string directoryPath = Path.GetDirectoryName(_manageModsViewModel.SelectedModTuple.ModConfigPath);
-            Process.Start(directoryPath);
+            var explorerPath = $"{Environment.GetEnvironmentVariable("WINDIR")}\\explorer.exe";
+            Process.Start(explorerPath, directoryPath);
         }
     }
 }
