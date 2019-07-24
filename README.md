@@ -25,14 +25,10 @@
 
 ## Reloaded: For Programmers 
 - [Getting Started: Developer Mod Guide](./Docs/DeveloperModGuide.md)
-
 - [API Overview](./Docs/APIOverview.md)
-
 - [Inter Mod Communication](./Docs/InterModCommunication.md)
 
 ## Reloaded: For Potential Contributors
 - [Getting Started: Building Reloaded](./Docs/BuildingReloaded.md)
-
 - [Getting Started: Project Structure](./Docs/ProjectStructure.md)
-
 - [Reloaded II's Architecture: Behind the Scenes.](./Docs/Reloaded-II-Architecture.md)
