@@ -44,6 +44,12 @@ namespace Reloaded.Mod.Shared
             throw new Win32Exception(Marshal.GetLastWin32Error());
         }
 
+        /* Open browser page */
+        public static void OpenFileWithDefaultProgram(string url)
+        {
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
+        }
+
         /* Definitions */
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]

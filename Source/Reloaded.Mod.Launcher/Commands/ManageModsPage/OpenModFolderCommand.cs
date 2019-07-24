@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 {
@@ -57,8 +58,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
         public void Execute(object parameter)
         {
             string directoryPath = Path.GetDirectoryName(_manageModsViewModel.SelectedModTuple.ModConfigPath);
-            var explorerPath = $"{Environment.GetEnvironmentVariable("WINDIR")}\\explorer.exe";
-            Process.Start(explorerPath, directoryPath);
+            ProcessExtensions.OpenFileWithDefaultProgram(directoryPath);
         }
     }
 }
