@@ -5,7 +5,7 @@ using TestInterfaces;
 
 namespace TestModA
 {
-    public class Program : IMod, ITestHelper, ITestModA
+    public class Program : IModV1, ITestHelper, ITestModA
     {
         public string MyId { get; set; } = "TestModA";
         public bool ResumeExecuted { get; set; }
@@ -18,7 +18,7 @@ namespace TestModA
         public void Start(IModLoaderV1 loader)
         {
             _controller = new Controller();
-            loader.AddOrReplaceController(this, _controller);
+            loader.AddOrReplaceController<IController>(this, _controller);
         }
 
         /* Suspend/Unload */

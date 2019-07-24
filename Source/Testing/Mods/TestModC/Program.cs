@@ -5,7 +5,7 @@ using TestInterfaces;
 
 namespace TestModC
 {
-    public class Program : IMod, ITestHelper
+    public class Program : IModV1, ITestHelper
     {
         public string MyId { get; set; } = "TestModC";
         public bool ResumeExecuted { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using LiteNetLib;
@@ -24,6 +25,8 @@ namespace Reloaded.Mod.Loader.Mods
     public class PluginManager : IDisposable
     {
         public LoaderAPI LoaderApi { get; }
+        private static Type[] _sharedTypes = { typeof(IModLoader), typeof(IMod) };
+
         private readonly Dictionary<string, ModInstance> _modifications = new Dictionary<string, ModInstance>();
         private readonly Dictionary<string, string> _modIdToFolder = new Dictionary<string, string>(); // Maps Mod ID to folder containing mod.
         private readonly Loader _loader;
@@ -202,7 +205,7 @@ namespace Reloaded.Mod.Loader.Mods
 
             // TODO: Native mod loading support.
             var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path,
-                new[] { typeof(IModLoaderV1), typeof(IModV1) },
+                _sharedTypes,
                 config =>
                 {
                     config.IsUnloadable = true;
@@ -214,8 +217,9 @@ namespace Reloaded.Mod.Loader.Mods
             var entryPoint = types.FirstOrDefault(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
 
             // Load entrypoint.
-            var plugin = (IModV1)Activator.CreateInstance(entryPoint);
+            var plugin = (IModV1) Activator.CreateInstance(entryPoint);
             var modInstance = new ModInstance(loader, plugin, tuple.Object);
+
             StartModInstance(modInstance);
         }
 
