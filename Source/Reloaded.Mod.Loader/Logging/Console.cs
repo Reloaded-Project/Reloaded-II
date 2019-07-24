@@ -19,7 +19,6 @@ namespace Reloaded.Mod.Loader.Logging
 
         public void PrintMessage(string message, Color color)
         {
-            message = $"{GetCurrentTime()} {message}";
             Colorful.Console.WriteLine(message, color);
         }
 
@@ -44,11 +43,5 @@ namespace Reloaded.Mod.Loader.Logging
 
         public Color ColorLightBlue     { get; set; } = Color.FromArgb(154, 237, 254);
         public Color ColorLightBlueLight { get; set; } = Color.FromArgb(147, 224, 227);
-
-        // Implementation
-        private string GetCurrentTime()
-        {
-            return $"[{DateTime.Now:hh:mm:ss}]";
-        }
     }
 }
