@@ -9,11 +9,6 @@
     Works with anything X86, X64.
 </div>
 
-
-# Table of Contents
-
-(TBD)
-
 ## Prerequisites
 - Windows 7, 8.1, 10 or above.
 - [.NET Core 3.0 Preview 7 Runtime (x64 & x86)*](https://dotnet.microsoft.com/download/dotnet-core/3.0)
@@ -22,7 +17,6 @@
 \*The fastest way to install this is just to get the `Runtime & Hosting Bundle`, which includes both the x64 and x86 runtimes.
 
 ## Reloaded: For End Users
-
 - [Quick Start](./Docs/QuickStart.md)
 - [Installation/Injection Methods](./Docs/InjectionMethods.md) (Recommended Read for Power Users)
 
