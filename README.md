@@ -10,7 +10,6 @@
 </div>
 
 
-
 # Table of Contents
 
 (TBD)
@@ -24,7 +23,7 @@
 
 ## Reloaded: For End Users
 
-- Getting Started (TBD)
+- [Quick Start](./Docs/QuickStart.md)
 - [Installation/Injection Methods](./Docs/InjectionMethods.md) (Recommended Read for Power Users)
 
 ## Reloaded: For Modders
