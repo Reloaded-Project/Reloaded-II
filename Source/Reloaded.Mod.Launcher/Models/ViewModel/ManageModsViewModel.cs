@@ -68,7 +68,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             _mainPageViewModel = mainPageViewModel;
             string modDirectory = loaderConfig.ModConfigDirectory;
 
-            _createWatcher = FileSystemWatcherFactory.CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed, true, "*.*");
+            _createWatcher = FileSystemWatcherFactory.CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed | FileSystemWatcherFactory.FileSystemWatcherEvents.Created, true, "*.*");
             _deleteFileWatcher = FileSystemWatcherFactory.CreateChangeCreateDelete(modDirectory, OnDeleteFile, FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted);
             _deleteDirectoryWatcher = FileSystemWatcherFactory.CreateChangeCreateDelete(modDirectory, OnDeleteDirectory, FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted, false, "*.*");
             InvokeAsync(() => Icon = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute)));
