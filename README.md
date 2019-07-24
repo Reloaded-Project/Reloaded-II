@@ -22,18 +22,15 @@
 
 \*The fastest way to install this is just to get the `Runtime & Hosting Bundle`, which includes both the x64 and x86 runtimes.
 
-## Features
-(TBD)
-
 ## Reloaded: For End Users
 
-- User Guide (TBD)
+- Getting Started (TBD)
 - [Installation/Injection Methods](./Docs/InjectionMethods.md) (Recommended Read for Power Users)
 
-## Reloaded: For Casual Modders
-- Getting Started: Modifications (TBD)
+## Reloaded: For Modders
+- [Getting Started: Modifications](./Docs/GettingStartedMods.md)
 
-## Reloaded: For Developers 
+## Reloaded: For Programmers 
 - [Getting Started: Developer Mod Guide](./Docs/DeveloperModGuide.md)
 
 - [API Overview](./Docs/APIOverview.md)
