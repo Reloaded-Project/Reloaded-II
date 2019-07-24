@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,13 +49,13 @@ namespace Reloaded.Mod.Loader.Mods
             }
         }
 
-        /* Interface Implementation */
+        /* IModLoader V1 */
 
         /* Events */
-        public Action OnModLoaderInitialized                { get; } = () => { };
-        public Action<IModV1, IModConfigV1> ModLoading      { get; } = (a, b) => { };
-        public Action<IModV1, IModConfigV1> ModLoaded       { get; } = (a, b) => { };
-        public Action<IModV1, IModConfigV1> ModUnloading    { get; } = (a, b) => { };
+        public Action OnModLoaderInitialized                { get; set; } = () => { };
+        public Action<IModV1, IModConfigV1> ModLoading      { get; set; } = (a, b) => { };
+        public Action<IModV1, IModConfigV1> ModLoaded       { get; set; } = (a, b) => { };
+        public Action<IModV1, IModConfigV1> ModUnloading    { get; set; } = (a, b) => { };
 
         /* Properties */
         public Version GetLoaderVersion()           => Assembly.GetExecutingAssembly().GetName().Version;
@@ -126,6 +126,12 @@ namespace Reloaded.Mod.Loader.Mods
             }
 
             return null;
+        }
+
+        /* IModLoader V2 */
+        public string GetDirectoryForModId(string modId)
+        {
+            return _loader.Manager.GetDirectoryForModId(modId);
         }
     }
 }

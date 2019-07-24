@@ -34,22 +34,22 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// <summary>
         /// This method is automatically called by the mod loader when all mods have finished loading.
         /// </summary>
-        Action OnModLoaderInitialized { get; }
+        Action OnModLoaderInitialized { get; set; }
         
         /// <summary>
         /// This method is automatically called by the mod loader before a mod is unloaded.
         /// </summary>
-        Action<IModV1, IModConfigV1> ModUnloading { get; }
+        Action<IModV1, IModConfigV1> ModUnloading { get; set; }
 
         /// <summary>
         /// This method is automatically called by the mod loader before a mod is loaded.
         /// </summary>
-        Action<IModV1, IModConfigV1> ModLoading { get; }
+        Action<IModV1, IModConfigV1> ModLoading { get; set; }
 
         /// <summary>
         /// This method is automatically called by the mod loader after a mod is loaded.
         /// </summary>
-        Action<IModV1, IModConfigV1> ModLoaded { get; }
+        Action<IModV1, IModConfigV1> ModLoaded { get; set; }
 
         /* Plugins and Extensibility */
 

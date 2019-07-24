@@ -25,6 +25,7 @@ namespace Reloaded.Mod.Loader.Mods
     {
         public LoaderAPI LoaderApi { get; }
         private readonly Dictionary<string, ModInstance> _modifications = new Dictionary<string, ModInstance>();
+        private readonly Dictionary<string, string> _modIdToFolder = new Dictionary<string, string>(); // Maps Mod ID to folder containing mod.
         private readonly Loader _loader;
 
         /// <summary>
@@ -49,6 +50,16 @@ namespace Reloaded.Mod.Loader.Mods
         /// Retrieves a list of all loaded modifications.
         /// </summary>
         public IReadOnlyCollection<ModInstance> GetModifications() => _modifications.Values;
+
+        /// <summary>
+        /// Retrieves the directory of a mod with a specific Mod ID.
+        /// </summary>
+        /// <param name="modId">The mod id of the mod.</param>
+        /// <returns>The directory containing the mod.</returns>
+        public string GetDirectoryForModId(string modId)
+        {
+            return _modIdToFolder[modId];
+        }
 
         /// <summary>
         /// Returns true if a mod is loaded, else false.
@@ -102,6 +113,7 @@ namespace Reloaded.Mod.Loader.Mods
                 if (mod.CanUnload)
                 {
                     LoaderApi.ModUnloading(mod.Mod, mod.ModConfig);
+                    _modIdToFolder.Remove(modId);
                     _modifications.Remove(modId);
                     mod.Dispose();
                 }
@@ -186,6 +198,8 @@ namespace Reloaded.Mod.Loader.Mods
         /* Helper methods. */
         private void LoadDllMod(PathGenericTuple<IModConfig> tuple)
         {
+            _modIdToFolder[tuple.Object.ModId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
+
             // TODO: Native mod loading support.
             var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path,
                 new[] { typeof(IModLoaderV1), typeof(IModV1) },
@@ -207,6 +221,13 @@ namespace Reloaded.Mod.Loader.Mods
 
         private void LoadNonDllMod(PathGenericTuple<IModConfig> tuple)
         {
+            // If invalid file path, get directory.
+            // If directory, use directory.
+            if (Directory.Exists(tuple.Path))
+                _modIdToFolder[tuple.Object.ModId] = Path.GetFullPath(tuple.Path);
+            else
+                _modIdToFolder[tuple.Object.ModId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
+
             var modInstance = new ModInstance(tuple.Object);
             StartModInstance(modInstance);
         }
