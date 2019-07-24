@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,9 +69,9 @@ namespace Reloaded.Mod.Loader.Mods
             var activeMods      = new ModGenericTuple<IModConfigV1>[modifications.Count];
             using (var enumerator = modifications.GetEnumerator())
             {
-                enumerator.MoveNext();
                 for (int x = 0; x < modifications.Count; x++)
                 {
+                    enumerator.MoveNext();
                     var current = enumerator.Current;
                     activeMods[x] = new ModGenericTuple<IModConfigV1>(current.Mod, current.ModConfig);
                 }
