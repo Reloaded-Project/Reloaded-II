@@ -9,6 +9,13 @@
     Deja vu! It feels like I've read this piece before!
 </div>
 
+# Table of Contents
+
+- [Creating A Mod](#creating-a-mod)
+    - [1. Create A Configuration File](#1-create-a-configuration-file)
+    - [2. Update your Preview Image.](#2-update-your-preview-image)
+    - [3. Make it Do Things.](#3-make-it-do-things)
+
 # Creating A Mod
 
 ### 1. Create A Configuration File

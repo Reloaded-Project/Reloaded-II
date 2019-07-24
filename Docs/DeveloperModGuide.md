@@ -9,6 +9,14 @@
     So to bring balance to the universe, I just cut them out.
 </div>
 
+# Table of Contents
+- [Prerequisites](#prerequisites)
+- [Creating Project from Template](#creating-project-from-template)
+    - [1. Import the Visual Studio Template](#1-import-the-visual-studio-template)
+    - [2. Update Mod Configuration and Image](#2-update-mod-configuration-and-image)
+    - [3. Debug Your Mods!](#3-debug-your-mods)
+- [Creating Project From Scratch](#creating-project-from-scratch)
+
 # Prerequisites
 
 - Visual Studio 2017+
