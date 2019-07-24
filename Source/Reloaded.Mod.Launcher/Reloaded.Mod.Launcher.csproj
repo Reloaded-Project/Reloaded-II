@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
@@ -134,7 +134,8 @@
     <PackageReference Include="PropertyChanged.Fody" Version="2.5.14" />
     <PackageReference Include="Reloaded.Assembler" Version="1.0.6" />
     <PackageReference Include="Reloaded.Injector" Version="1.2.2" />
-    <PackageReference Include="System.Management" Version="4.5.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0-preview7.19362.9" />
+    <PackageReference Include="System.Management" Version="4.6.0-preview7.19362.9" />
   </ItemGroup>
 
   <ItemGroup>
