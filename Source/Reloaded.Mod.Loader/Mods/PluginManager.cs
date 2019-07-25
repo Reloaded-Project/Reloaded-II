@@ -200,13 +200,14 @@ namespace Reloaded.Mod.Loader.Mods
             _modIdToFolder[tuple.Object.ModId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
             // TODO: Native mod loading support.
-            Debugger.Launch();
-            IEnumerable<Type> sharedTypes = GetAllKnownExports();
+            IEnumerable<Type> externalExports = GetAllExternalExports();
             if (TryGetExports(tuple.Path, out var exports))
-                sharedTypes = sharedTypes.Concat(exports);
+                externalExports = externalExports.Concat(exports);
+
+            LoadTypesIntoDefaultContext(externalExports);
 
             var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path,
-                sharedTypes.ToArray(),
+                _sharedTypes,
                 config =>
                 {
                     config.IsUnloadable = true;
@@ -224,9 +225,9 @@ namespace Reloaded.Mod.Loader.Mods
             StartModInstance(modInstance);
         }
 
-        private IEnumerable<Type> GetAllKnownExports()
+        private IEnumerable<Type> GetAllExternalExports()
         {
-            IEnumerable<Type> types = _sharedTypes;
+            IEnumerable<Type> types = new List<Type>();
             foreach (var values in _modifications.Values)
             {
                 if (values.Exports != null)
@@ -248,18 +249,22 @@ namespace Reloaded.Mod.Loader.Mods
             {
                 var plugin = (IExports) Activator.CreateInstance(entryPoint);
                 exports = plugin.GetTypes();
-                foreach (var export in exports)
-                {
-                    var path = new Uri(export.Module.Assembly.CodeBase).AbsolutePath; 
-                    AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
-                }
-
+                loader.Dispose();
                 return true;
             }
 
             exports = null;
             loader.Dispose();
             return false;
+        }
+
+        private void LoadTypesIntoDefaultContext(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+            {
+                var path = new Uri(type.Module.Assembly.CodeBase).LocalPath;
+                AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+            }
         }
 
         private void LoadNonDllMod(PathGenericTuple<IModConfig> tuple)
