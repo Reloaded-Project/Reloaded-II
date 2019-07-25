@@ -11,6 +11,7 @@
 
 - [Introduction](#introduction)
   - [Plugins and Controllers: Similarities and Differences](#plugins-and-controllers-similarities-and-differences)
+    - [Sharing Interfaces (Important!)](#sharing-interfaces-important)
     - [Instantiation](#instantiation)
       - [Required Dependencies](#required-dependencies)
       - [Optional Dependencies](#optional-dependencies)
@@ -25,6 +26,12 @@
     - [Registering](#registering)
     - [Acquiring](#acquiring)
     - [Disposing](#disposing)
+  - [Recommendations & Limitations](#recommendations-limitations)
+    - [Interface DLLs are Immutable](#interface-dlls-are-immutable)
+    - [Keep all your Interfaces in a separate library](#keep-all-your-interfaces-in-a-separate-library)
+    - [Upgrading Interfaces used with Controllers/Plugins](#upgrading-interfaces-used-with-controllersplugins)
+  - [Examples](#examples)
+
 
 # Introduction
 
@@ -37,6 +44,27 @@ Reloaded-II provides two mechanisms for what it considers "Inter Mod Communicati
 To make use of these, you first require an instance of the `IModLoader` interface, normally obtained as a parameter to your mod's entry point that allows for interaction with the mod loader.
 
 ## Plugins and Controllers: Similarities and Differences 
+
+### Sharing Interfaces (Important!)
+
+Before you get started with `Controllers` and `Plugins`, there is a very important piece of information that must be addressed.
+
+If you are a developer of a mod which will share interfaces to be used by other mods, 
+*you must first share the interface with the mod loader*. 
+
+This can be done by inheriting the interface `IExports` (from `Reloaded.Mod.Interfaces`) in your main mod, with single method `GetTypes` which should return an array of interfaces to be consumed by other mods.
+
+**Example:**
+```csharp
+public class Exports : IExports 
+{
+    public Type[] GetTypes() => new[] { typeof(IController) };
+}
+```
+
+Sharing forces other mods to load the same instance of the DLL containing the shared interfaces (regardless of whether the version is newer or older!). If you do not share your interfaces other mods wouldn't be able to find it when making calls to the mod loader. 
+
+**If you do not do this, `MakeInterfaces` and `GetController` will not work for other mods.**
 
 ### Instantiation
 
@@ -127,12 +155,11 @@ void AcquireController()
 ```csharp
 void DoSomethingWithController() 
 {
-	if (! _controller.IsAlive) 
+	if (_controller != null && 
+        _controller.TryGetTarget(out var controller))
     {
-    	// Re-acquire controller or exit the method. 
-    } 
-    
-	// Do something with controller
+    	// Do something with controller
+    }
 }
 ```
 
@@ -189,3 +216,41 @@ void Unload()
 ```
 
 You may force a Garbage Collection with `GC.Collect()` to ensure other mods no longer have access to/acquire a new controller should you ever remove or override an existing controller.
+
+## Recommendations & Limitations
+
+### Interface DLLs are Immutable
+Once a DLL containing interfaces has been loaded into the process, it cannot be unloaded.
+
+e.g. If you recompile `SomeMod.Interfaces`, it cannot be swapped out without restarting the application/process. 
+
+This is unfortunately a limitation of .NET Core, as DLLs cannot be unloaded from AssemblyLoadContext(s), only whole load contexts.
+
+**Note:** This does not mean mods using the interface DLLs cannot be unloaded. Said mods can be loaded and unloaded during runtime as usual without any problems.
+
+### Keep all your Interfaces in a separate library
+
+Anyone using your interfaces will need to reference them from the project which contains the definitions.
+
+*This means that if you store your interfaces in the same DLL as your main mod, others would need to reference your mod. Anyone using your interfaces will have your entire mod compiled and copied to their output! (Not good!)*
+
+Therefore it is recommended that you make a separate library for storing only your shared interfaces. Both the main mod, and other mods using your **Controllers/Plugins** should reference that same library.
+
+Ideally interface libraries should be 4-10KB and contain no external references (single DLL).
+
+### Upgrading Interfaces used with Controllers/Plugins
+Changes to existing interfaces will break mods using the interfaces. This should be fairly obvious to anyone who has used a plugin or a plugin-like system before.
+
+If you want to add more functionality to existing interfaces, either make a new interface or extend the current interface via inheritance.
+
+**Example:** Registering upgraded controller via inheritance:
+
+```csharp
+// Controller implements IControllerV2 which inherits IControllerV1.
+ModLoader.AddOrReplaceController<IControllerV1>(this, _controller); ModLoader.AddOrReplaceController<IControllerV2>(this, _controller);
+```
+
+## Examples
+The following examples contain mods that either export interfaces to be used by other mods and/or consume interfaces from other mods.
+
+- [Reloaded Universal File Redirector](https://github.com/Reloaded-Project/Reloaded.Mod.Universal.Redirector)
