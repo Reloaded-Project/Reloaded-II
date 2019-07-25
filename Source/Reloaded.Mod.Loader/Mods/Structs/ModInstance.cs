@@ -18,6 +18,8 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         public ModState State;
         public bool CanSuspend;
         public bool CanUnload;
+        public Type[] Exports;
+
         private bool _started;
 
         /* Non-Dll Mods */
@@ -29,11 +31,12 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         }
 
         /* Dll Mods */
-        public ModInstance(PluginLoader loader, IModV1 mod, IModConfig config)
+        public ModInstance(PluginLoader loader, IModV1 mod, IModConfig config, Type[] exports)
         {
             Loader = loader;
             Mod = mod;
             ModConfig = config;
+            Exports = exports;
 
             CanSuspend = mod.CanSuspend();
             CanUnload = mod.CanUnload();
