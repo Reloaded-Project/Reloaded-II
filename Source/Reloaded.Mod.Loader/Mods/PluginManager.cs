@@ -21,8 +21,8 @@ namespace Reloaded.Mod.Loader.Mods
     public class PluginManager : IDisposable
     {
         public LoaderAPI LoaderApi { get; }
-        private static Type[] _sharedTypes = { typeof(IModLoader), typeof(IMod) };
 
+        private HashSet<Type> _sharedTypes = new HashSet<Type>() { typeof(IModLoader), typeof(IMod) };
         private readonly Dictionary<string, ModInstance> _modifications = new Dictionary<string, ModInstance>();
         private readonly Dictionary<string, string> _modIdToFolder = new Dictionary<string, string>(); // Maps Mod ID to folder containing mod.
         private readonly Loader _loader;
@@ -74,6 +74,9 @@ namespace Reloaded.Mod.Loader.Mods
         /// <param name="modPaths">List of paths to load mods from.</param>
         public void LoadMods(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
         {
+            PreloadExports(modPaths);
+
+            /* Load mods. */
             foreach (var modPath in modPaths)
             {
                 LoadMod(modPath);
@@ -194,20 +197,14 @@ namespace Reloaded.Mod.Loader.Mods
             return allModInfo;
         }
 
-        /* Helper methods. */
+        /* Mod Loading */
         private void LoadDllMod(PathGenericTuple<IModConfig> tuple)
         {
             _modIdToFolder[tuple.Object.ModId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
             // TODO: Native mod loading support.
-            IEnumerable<Type> externalExports = GetAllExternalExports();
-            if (TryGetExports(tuple.Path, out var exports))
-                externalExports = externalExports.Concat(exports);
-
-            LoadTypesIntoDefaultContext(externalExports);
-
             var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path,
-                _sharedTypes,
+                _sharedTypes.ToArray(),
                 config =>
                 {
                     config.IsUnloadable = true;
@@ -220,51 +217,9 @@ namespace Reloaded.Mod.Loader.Mods
 
             // Load entrypoint.
             var plugin = (IModV1) Activator.CreateInstance(entryPoint);
-            var modInstance = new ModInstance(loader, plugin, tuple.Object, exports);
+            var modInstance = new ModInstance(loader, plugin, tuple.Object);
 
             StartModInstance(modInstance);
-        }
-
-        private IEnumerable<Type> GetAllExternalExports()
-        {
-            IEnumerable<Type> types = new List<Type>();
-            foreach (var values in _modifications.Values)
-            {
-                if (values.Exports != null)
-                    types = types.Concat(values.Exports);
-            }
-
-            return types;
-        }
-
-        private bool TryGetExports(string dllPath, out Type[] exports)
-        {
-            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, _sharedTypes);
-
-            var defaultAssembly = loader.LoadDefaultAssembly();
-            var types           = defaultAssembly.GetTypes();
-            var entryPoint      = types.FirstOrDefault(t => typeof(IExports).IsAssignableFrom(t) && !t.IsAbstract);
-
-            if (entryPoint != null)
-            {
-                var plugin = (IExports) Activator.CreateInstance(entryPoint);
-                exports = plugin.GetTypes();
-                loader.Dispose();
-                return true;
-            }
-
-            exports = null;
-            loader.Dispose();
-            return false;
-        }
-
-        private void LoadTypesIntoDefaultContext(IEnumerable<Type> types)
-        {
-            foreach (var type in types)
-            {
-                var path = new Uri(type.Module.Assembly.CodeBase).LocalPath;
-                AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
-            }
         }
 
         private void LoadNonDllMod(PathGenericTuple<IModConfig> tuple)
@@ -287,6 +242,56 @@ namespace Reloaded.Mod.Loader.Mods
             LoaderApi.ModLoading(instance.Mod, instance.ModConfig);
             instance.Start(LoaderApi);
             LoaderApi.ModLoaded(instance.Mod, instance.ModConfig);
+        }
+
+        /* Setup for mod loading */
+        private void PreloadExports(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
+        {
+            foreach (var modPath in modPaths)
+            {
+                if (!File.Exists(modPath.Path))
+                    continue;
+
+                if (!PreloadExportsForDllMod(modPath.Path, out var exports))
+                    continue;
+
+                foreach (var export in exports)
+                {
+                    _sharedTypes.Add(export);
+                }
+            }
+        }
+
+        private bool PreloadExportsForDllMod(string dllPath, out Type[] exports)
+        {
+            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, _sharedTypes.ToArray());
+
+            var defaultAssembly = loader.LoadDefaultAssembly();
+            var types = defaultAssembly.GetTypes();
+            var entryPoint = types.FirstOrDefault(t => typeof(IExports).IsAssignableFrom(t) && !t.IsAbstract);
+
+            if (entryPoint != null)
+            {
+                var plugin = (IExports)Activator.CreateInstance(entryPoint);
+                exports = plugin.GetTypes();
+                loader.Dispose();
+
+                LoadTypesIntoDefaultContext(exports);
+                return true;
+            }
+
+            exports = null;
+            loader.Dispose();
+            return false;
+        }
+
+        private void LoadTypesIntoDefaultContext(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+            {
+                var path = new Uri(type.Module.Assembly.CodeBase).LocalPath;
+                AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+            }
         }
     }
 }
