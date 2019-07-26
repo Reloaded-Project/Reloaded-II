@@ -53,9 +53,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "McMaster.NETCore.Plugins", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Launcher.Kernel32AddressDumper", "Reloaded.Mod.Launcher.Kernel32AddressDumper\Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj", "{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestModD", "Testing\Mods\TestModD\TestModD.csproj", "{E036F18E-312A-4C78-A8E9-5E37E5EBA9B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestModD", "Testing\Mods\TestModD\TestModD.csproj", "{E036F18E-312A-4C78-A8E9-5E37E5EBA9B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestModE", "Testing\Mods\TestModE\TestModE.csproj", "{0C911851-C2F3-4E84-BF0D-413DAD7887A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestModE", "Testing\Mods\TestModE\TestModE.csproj", "{0C911851-C2F3-4E84-BF0D-413DAD7887A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Loader.Update", "Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj", "{C374EC95-D1AB-4C30-8BF1-5BAA23754716}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -225,6 +227,14 @@ Global
 		{0C911851-C2F3-4E84-BF0D-413DAD7887A7}.Release|AnyCPU.Build.0 = Release|Any CPU
 		{0C911851-C2F3-4E84-BF0D-413DAD7887A7}.Release|AnyCPU (X86-only).ActiveCfg = Release|Any CPU
 		{0C911851-C2F3-4E84-BF0D-413DAD7887A7}.Release|AnyCPU (X86-only).Build.0 = Release|Any CPU
+		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Debug|AnyCPU (X86-only).ActiveCfg = Debug|Any CPU
+		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Debug|AnyCPU (X86-only).Build.0 = Debug|Any CPU
+		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Release|AnyCPU.Build.0 = Release|Any CPU
+		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Release|AnyCPU (X86-only).ActiveCfg = Release|Any CPU
+		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Release|AnyCPU (X86-only).Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

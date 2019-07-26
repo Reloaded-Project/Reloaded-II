@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 
-namespace Reloaded.Mod.Launcher.Misc
+namespace Reloaded.Mod.Shared
 {
     public static class PathSanitizer
     {

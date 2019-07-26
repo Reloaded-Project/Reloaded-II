@@ -26,6 +26,8 @@
     <Thickness x:Key="ListEntryItemMarginSmall">5,0</Thickness>
     <sys:Double x:Key="ListEntryCheckboxHeightSmall">18</sys:Double>
 
+    <GridLength x:Key="UpdateModsMenuMargin">20</GridLength> <!-- Spacing between the items in the bottom row. -->
+
     <!-- Splash Properties -->
     <Thickness x:Key="SplashImageMargin">100</Thickness>           <!-- Space between the splash image and edges of the window. -->
     <sys:Double x:Key="SplashFontSize">28</sys:Double>             <!-- Size of the font used in the splash screen. -->

@@ -18,6 +18,8 @@
     <sys:String x:Key="SplashCleaningConfigurations">Cleaning App/Loader/Mod Configurations</sys:String>
     <sys:String x:Key="SplashPreparingResources">Setting up Resources</sys:String>
     <sys:String x:Key="SplashLoadCompleteIn">Load Complete in:</sys:String>
+    <sys:String x:Key="SplashCreatingTemplates">Creating Templates</sys:String>
+    <sys:String x:Key="SplashCheckingForUpdates">Checking for Updates</sys:String>
 
     <!-- Add Application Page -->
     <sys:String x:Key="AddAppImageTooltip">Click this image to import a custom logo.</sys:String>
@@ -125,6 +127,13 @@
     <sys:String x:Key="ReloadedProcessRefresh">Refresh</sys:String>
     <sys:String x:Key="ReloadedProcessLoadMod">Load Mod</sys:String>
     <sys:String x:Key="ReloadedProcessNotice">Note: This menu is primarily intended for use by developers.</sys:String>
+
+    <!-- Update Mod Dialog -->
+    <sys:String x:Key="UpdateModDownload">Download</sys:String>
+    <sys:String x:Key="UpdateModModId">Mod Id</sys:String>
+    <sys:String x:Key="UpdateModSize">Size (MB)</sys:String>
+    <sys:String x:Key="UpdateModOldVersion">Old Version</sys:String>
+    <sys:String x:Key="UpdateModNewVersion">New Version</sys:String>
 
     <!-- Errors -->
     <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->

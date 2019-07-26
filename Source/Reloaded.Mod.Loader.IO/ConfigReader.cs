@@ -67,7 +67,7 @@ namespace Reloaded.Mod.Loader.IO
                 Directory.CreateDirectory(directoryOfPath);
 
             string jsonFile = JsonSerializer.Serialize(config, Options);
-            File.WriteAllText(path, jsonFile);
+            File.WriteAllText(fullPath, jsonFile);
         }
     }
 }

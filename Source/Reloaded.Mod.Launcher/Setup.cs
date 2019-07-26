@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.Update;
+using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher
@@ -21,7 +26,9 @@ namespace Reloaded.Mod.Launcher
         private static bool _loadExecuted = false;
         private static XamlResource<string> _xamlSplashCreatingDefaultConfig = new XamlResource<string>("SplashCreatingDefaultConfig");
         private static XamlResource<string> _xamlSplashPreparingResources = new XamlResource<string>("SplashPreparingResources");
+        private static XamlResource<string> _xamlCheckingForUpdates = new XamlResource<string>("CheckingForUpdates");
         private static XamlResource<string> _xamlSplashLoadCompleteIn = new XamlResource<string>("SplashLoadCompleteIn");
+        private static XamlResource<string> _xamlCreatingTemplates = new XamlResource<string>("SplashCreatingTemplates");
 
         /// <summary>
         /// Sets up the overall application state for either running or testing.
@@ -44,13 +51,17 @@ namespace Reloaded.Mod.Launcher
                 // Setting up localization.
                 SetupLocalization();
 
-                // Make Default Config if Necessary.
                 updateText(_xamlSplashCreatingDefaultConfig.Get());
                 CreateNewConfigIfNotExist();
 
-                // Preparing viewmodels.
                 updateText(_xamlSplashPreparingResources.Get());
                 SetupViewModels();
+
+                updateText(_xamlCreatingTemplates.Get());
+                CreateTemplates();
+
+                updateText(_xamlCheckingForUpdates.Get());
+                CheckForUpdates();
 
                 // Wait until splash screen time.
                 updateText($"{_xamlSplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");
@@ -142,6 +153,50 @@ namespace Reloaded.Mod.Launcher
             config.LoaderPath = loaderPath;
             config.Bootstrapper32Path = bootstrapper32Path;
             config.Bootstrapper64Path = bootstrapper64Path;
+        }
+
+        /// <summary>
+        /// Creates templates for configurations not available in the GUI.
+        /// </summary>
+        private static void CreateTemplates()
+        {
+            var templatesDirectory = Path.GetFullPath("Templates");
+            if (!Directory.Exists(templatesDirectory))
+                Directory.CreateDirectory(templatesDirectory);
+            
+            GithubLatestUpdateResolver.GithubConfig.ToPath(new GithubLatestUpdateResolver.GithubConfig(), $"{GithubLatestUpdateResolver.GithubConfig.GetFilePath(templatesDirectory)}");
+        }
+
+        /// <summary>
+        /// Checks for mod loader updates.
+        /// </summary>
+        private static async void CheckForUpdates()
+        {
+
+            // Check for mod updates.
+            var manageModsViewModel = IoC.Get<ManageModsViewModel>();
+            var allMods = manageModsViewModel.Mods.Select(x => new PathGenericTuple<ModConfig>(x.ModConfigPath, (ModConfig)x.ModConfig)).ToArray();
+            await Task.Run(async () =>
+            {
+                try
+                {
+                    var updater = new Updater(allMods);
+                    var updateDetails = await updater.GetUpdateDetails();
+
+                    if (updateDetails.HasUpdates())
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            var dialog = new ModUpdateDialog(updater, updateDetails);
+                            dialog.ShowDialog();
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Windows.MessageBox.Show(e.Message + "|" + e.StackTrace);
+                }
+            });
         }
     }
 }

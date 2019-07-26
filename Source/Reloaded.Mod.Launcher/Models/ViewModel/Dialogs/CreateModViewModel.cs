@@ -15,6 +15,7 @@ using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Resources;
 using Reloaded.WPF.Utilities;
+using PathSanitizer = Reloaded.Mod.Shared.PathSanitizer;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
 {

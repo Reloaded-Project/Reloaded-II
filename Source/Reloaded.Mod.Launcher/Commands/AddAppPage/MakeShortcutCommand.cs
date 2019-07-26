@@ -19,6 +19,7 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.Utilities;
 using File = System.IO.File;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
+using PathSanitizer = Reloaded.Mod.Shared.PathSanitizer;
 
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 {
