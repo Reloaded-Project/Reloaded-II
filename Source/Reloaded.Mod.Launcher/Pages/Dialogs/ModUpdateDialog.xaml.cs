@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
-using Reloaded.Mod.Launcher.Commands.Dialog;
+using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs
 {
@@ -14,6 +16,9 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
     /// </summary>
     public partial class ModUpdateDialog : ReloadedWindow
     {
+        private static XamlResource<string> _xamlUpdateModConfirmTitle = new XamlResource<string>("UpdateModConfirmTitle");
+        private static XamlResource<string> _xamlUpdateModConfirmMessage = new XamlResource<string>("UpdateModConfirmMessage");
+
         public ModUpdateDialogViewModel ViewModel { get; set; }
 
         public ModUpdateDialog(Updater updater, ModUpdateSummary summary)
@@ -24,10 +29,41 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var updateTask = ViewModel.Updater.Update(ViewModel.Summary, new Progress<double>(d =>
+            this.Dispatcher.Invoke(() =>
             {
-                ViewModel.Progress = (int)(d * 100);
-            })).ContinueWith(x => this.Dispatcher.Invoke(this.Close));
+                void Update()
+                {
+                    ViewModel.Updater
+                        .Update(ViewModel.Summary, new Progress<double>(d => { ViewModel.Progress = (int)(d * 100); }))
+                        .ContinueWith(x => this.Dispatcher.Invoke(this.Close));
+                }
+                
+                if (HasRunningProcesses())
+                {
+                    var messageBox = new MessageBoxOkCancel(_xamlUpdateModConfirmTitle.Get(), _xamlUpdateModConfirmMessage.Get());
+                    messageBox.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                    messageBox.ShowDialog();
+
+                    if (messageBox.DialogResult.HasValue && messageBox.DialogResult.Value)
+                        Update();
+                }
+                else
+                {
+                    Update();   
+                }
+            });
+        }
+
+        private bool HasRunningProcesses()
+        {
+            var applications = ApplicationConfig.GetAllApplications();
+            var trackers     = applications.Select(x => new ApplicationInstanceTracker(x.Object.AppLocation));
+            var reloadedProcesses = trackers.Sum(x => x.GetProcesses().ReloadedProcesses.Count);
+
+            if (reloadedProcesses > 0)
+                return true;
+
+            return false;
         }
     }
 
