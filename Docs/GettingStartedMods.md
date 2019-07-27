@@ -56,6 +56,7 @@ If you're a programmer and wish to implement such mods, please read the [Develop
 
 If you're not a programmer, here is a list of mods providing various functionalities you could use to get started:
 
-- File Redirection: Link (TBA)
+- File Redirection: - [Reloaded Universal File Redirector](https://github.com/Reloaded-Project/Reloaded.Mod.Universal.Redirector)
 
 *PS. You should set those as dependencies and include links to in your mod releases.*
+
