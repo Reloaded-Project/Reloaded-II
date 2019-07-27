@@ -12,7 +12,7 @@
         Height="450" 
         Width="800"
         WindowStartupLocation="CenterScreen"
-        Title="{DynamicResource TitleFirstLaunch}"
+        Title="{DynamicResource UpdateModTitle}"
         Style="{DynamicResource ReloadedWindow}">
     <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
 
