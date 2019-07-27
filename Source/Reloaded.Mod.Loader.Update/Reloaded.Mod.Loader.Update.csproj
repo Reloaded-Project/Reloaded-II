@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Octokit" Version="0.32.0" />
-    <PackageReference Include="Onova" Version="2.4.3" />
     <PackageReference Include="SharpCompress" Version="0.23.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Submodules\Onova\Onova\Onova.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
   </ItemGroup>
