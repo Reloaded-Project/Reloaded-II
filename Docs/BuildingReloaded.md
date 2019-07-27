@@ -42,8 +42,13 @@ git submodule update --init --recursive
 
 # Releasing Reloaded
 
-To distribute Reloaded, simply build it as shown above.
-After building, run the batch script  `CleanForDeployment.cmd` which can be found alongside `Reloaded-II.sln`.
+To distribute Reloaded, build it using the publish script `Publish.ps1`.
 
-You may then zip up and distribute the `Launcher` folder inside `Output`, that contains everything you need.
+1. Open Developer Command Prompt for VS 2019
+2. Change current directory to the `Source` directory.
+3. Open Powershell by typing in `powershell`.
+4. Execute `.\Publish.ps1`
 
+The output should reside in the `Publish` folder.
+
+Note: This action wipes the Output folder, i.e. it will remove your files.
