@@ -31,7 +31,6 @@ namespace Reloaded.Mod.Launcher.Utility
         private readonly ProcessWatcher _processWatcher;
 
         /* Class Setup and Teardown */
-
         public ApplicationInstanceTracker(string applicationPath, CancellationToken token = default)
         {
             if (String.IsNullOrEmpty(applicationPath))
@@ -79,8 +78,26 @@ namespace Reloaded.Mod.Launcher.Utility
             }
         }
 
-        /* Public API */
+        /* Static API */
 
+        /// <summary>
+        /// Returns a complete list of all processes running Reloaded.
+        /// </summary>
+        /// <param name="processes">List of all processes running Reloaded.</param>
+        /// <returns>True if there is more than one process, else false.</returns>
+        public static bool GetAllProcesses(out IEnumerable<Process> processes)
+        {
+            var applications        = ApplicationConfig.GetAllApplications();
+            var trackers            = applications.Select(x => new ApplicationInstanceTracker(x.Object.AppLocation));
+            processes               = trackers.SelectMany(x => x.GetProcesses().ReloadedProcesses);
+
+            if (processes.Any())
+                return true;
+
+            return false;
+        }
+
+        /* Public API */
         public Structs.ProcessCollection GetProcesses()
         {
             var processCollection = Structs.ProcessCollection.GetEmpty(_processes.Count);
@@ -108,7 +125,7 @@ namespace Reloaded.Mod.Launcher.Utility
             }
         }
 
-        /* This section: Active maintenance of list based off of process add/remove events. */
+        /* Active maintenance of list based off of process add/remove events. */
         private void RaiseOnProcessesChanged()
         {
             OnProcessesChanged(_processes.ToArray());

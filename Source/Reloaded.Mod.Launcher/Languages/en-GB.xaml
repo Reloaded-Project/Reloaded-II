@@ -140,6 +140,20 @@
     <sys:String x:Key="UpdateModConfirmTitle">Applications Running</sys:String>
     <sys:String x:Key="UpdateModConfirmMessage" xml:space="preserve">You have applications currently running Reloaded.&#x0a;Updates will download however will not be applied until all applications are closed.</sys:String>
 
+    <!-- Update Loader Dialog -->
+    <sys:String x:Key="UpdateLoaderTitle">Update Available</sys:String>
+    <sys:String x:Key="UpdateLoaderCurrentVersion">Current Version</sys:String>
+    <sys:String x:Key="UpdateLoaderNewVersion">New Version</sys:String>
+
+    <sys:String x:Key="UpdateLoaderChangelog">View Changelog</sys:String>
+    <sys:String x:Key="UpdateLoaderUpdate">Update</sys:String>
+
+    <sys:String x:Key="UpdateLoaderRunningTitle">Applications Running</sys:String>
+    <sys:String x:Key="UpdateLoaderRunningMessage" xml:space="preserve">You have applications currently running Reloaded.&#x0a;Update cannot be performed, please close all applications.</sys:String>
+    <sys:String x:Key="UpdateLoaderProcessList">Process List</sys:String>
+
+
+    
     <!-- Errors -->
     <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->
     <sys:String x:Key="ErrorPathNullOrEmpty">The path to this application is either null or empty. Please fix the path.</sys:String>

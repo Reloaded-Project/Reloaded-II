@@ -14,9 +14,9 @@
     <Thickness x:Key="CommonItemVerticalMarginSmallest">0,2.5</Thickness>
 
     <Thickness x:Key="CommonItemHorizontalMargin">10,0</Thickness>
-    <Thickness x:Key="CommonItemHorizontalMarginSmall">0,7.5</Thickness>
-    <Thickness x:Key="CommonItemHorizontalMarginSmaller">0,5</Thickness>
-    <Thickness x:Key="CommonItemHorizontalMarginSmallest">0,2.5</Thickness>
+    <Thickness x:Key="CommonItemHorizontalMarginSmall">7.5,0</Thickness>
+    <Thickness x:Key="CommonItemHorizontalMarginSmaller">5,0</Thickness>
+    <Thickness x:Key="CommonItemHorizontalMarginSmallest">2.5,0</Thickness>
 
     <Thickness x:Key="CommonItemCombinedMargin">10,10</Thickness>
     <Thickness x:Key="CommonItemCombinedMarginSmall">7.5,7.5</Thickness>
@@ -27,6 +27,8 @@
     <sys:Double x:Key="ListEntryCheckboxHeightSmall">18</sys:Double>
 
     <GridLength x:Key="UpdateModsMenuMargin">20</GridLength> <!-- Spacing between the items in the bottom row. -->
+    <GridLength x:Key="UpdateLoaderMenuMargin">20</GridLength> <!-- Spacing between the items in the bottom row. -->
+    <sys:Double x:Key="UpdateLoaderProgressbarHeight">25</sys:Double> <!-- Height of Progressbar in update loader menu. -->
 
     <!-- Splash Properties -->
     <Thickness x:Key="SplashImageMargin">100</Thickness>           <!-- Space between the splash image and edges of the window. -->

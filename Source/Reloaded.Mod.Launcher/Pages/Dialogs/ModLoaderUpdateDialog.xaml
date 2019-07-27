@@ -1,0 +1,63 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.ModLoaderUpdateDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+        mc:Ignorable="d"
+        MinHeight="10"
+        MinWidth="10"
+        SizeToContent="WidthAndHeight"
+        Height="Auto" 
+        Width="328"
+        WindowStartupLocation="CenterScreen"
+        Title="{DynamicResource UpdateLoaderTitle}"
+        Style="{DynamicResource ReloadedWindow}">
+    <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Progress Bar -->
+        <Grid Grid.Row="0" Margin="{DynamicResource CommonItemVerticalMarginSmaller}">
+            <ProgressBar Height="{DynamicResource UpdateLoaderProgressbarHeight}"
+                         Value="{Binding Progress}" />
+        </Grid>
+
+        <!-- Current and New Version -->
+        <Grid Grid.Row="1" Margin="{DynamicResource CommonItemVerticalMarginSmaller}">
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="{DynamicResource UpdateLoaderCurrentVersion}"/>
+                <TextBlock Text="{Binding CurrentVersion, FallbackValue=1.0.0}" DockPanel.Dock="Right"/>
+            </DockPanel>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="{DynamicResource CommonItemVerticalMarginSmaller}">
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="{DynamicResource UpdateLoaderNewVersion}"/>
+                <TextBlock Text="{Binding NewVersion, FallbackValue=1.0.1}" DockPanel.Dock="Right"/>
+            </DockPanel>
+        </Grid>
+
+        <!-- Final Buttons -->
+        <Grid Grid.Row="3" Margin="{DynamicResource CommonItemVerticalMarginSmaller}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"   />
+                <ColumnDefinition Width="{DynamicResource UpdateModsMenuMargin}" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Content="{DynamicResource UpdateLoaderChangelog}" 
+                    HorizontalAlignment="Stretch" Click="ViewChangelogClick"/>
+
+            <Button Grid.Column="2"
+                    Content="{DynamicResource UpdateLoaderUpdate}" Click="UpdateClick"/>
+        </Grid>
+    </Grid>
+</default:ReloadedWindow>

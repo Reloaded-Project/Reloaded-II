@@ -73,7 +73,6 @@ namespace Reloaded.Mod.Loader.IO.Config
         }
 
         public bool FirstLaunch { get; set; } = true;
-        public bool AutoAcceptUpdates { get; set; } = false;
 
         /// <summary>
         /// Shows the console window if set to true, else false.

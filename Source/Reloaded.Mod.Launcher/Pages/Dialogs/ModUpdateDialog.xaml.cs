@@ -38,7 +38,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
                         .ContinueWith(x => this.Dispatcher.Invoke(this.Close));
                 }
                 
-                if (HasRunningProcesses())
+                if (ApplicationInstanceTracker.GetAllProcesses(out _))
                 {
                     var messageBox = new MessageBoxOkCancel(_xamlUpdateModConfirmTitle.Get(), _xamlUpdateModConfirmMessage.Get());
                     messageBox.WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -52,18 +52,6 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
                     Update();   
                 }
             });
-        }
-
-        private bool HasRunningProcesses()
-        {
-            var applications = ApplicationConfig.GetAllApplications();
-            var trackers     = applications.Select(x => new ApplicationInstanceTracker(x.Object.AppLocation));
-            var reloadedProcesses = trackers.Sum(x => x.GetProcesses().ReloadedProcesses.Count);
-
-            if (reloadedProcesses > 0)
-                return true;
-
-            return false;
         }
     }
 

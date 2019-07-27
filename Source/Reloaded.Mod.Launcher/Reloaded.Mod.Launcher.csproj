@@ -6,8 +6,8 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
-    <Version>0.2.0</Version>
-    <Copyright>Sewer56 ~ 2019 | $([System.DateTime]::UtcNow.ToString("s"))</Copyright>
+    <Version>0.9.0</Version>
+    <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | $([System.DateTime]::UtcNow.ToString("s"))</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
   </PropertyGroup>
@@ -166,6 +166,9 @@
 
   <ItemGroup>
     <Page Update="Controls\PopupLabel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Dialogs\ModLoaderUpdateDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\SplashPage.xaml">

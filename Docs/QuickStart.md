@@ -30,6 +30,8 @@ From there, select the mod that you have just extracted and enable it for the cu
 
 ![Download Mod and Unhide](./Images/DownloadModAndUnhide.gif)
 
+If the mod download doesn't contain a directory in the zip/7z/rar archive etc. just create a new folder in the mods directory yourself.
+
 ### Enable Mod and Launch Application
 From there, simply enter the `Application Portal`, enable the mod and launch the application. 
 

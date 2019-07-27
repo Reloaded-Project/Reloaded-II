@@ -62,12 +62,6 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
                           HorizontalAlignment="Center" 
-                          IsChecked="{Binding LoaderConfig.AutoAcceptUpdates}"
-                          Content="{DynamicResource LoaderSettingsEnableAutomaticUpdates}"
-                          Style="{DynamicResource DefaultCheckBox}"/>
-
-                <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
-                          HorizontalAlignment="Center" 
                           IsChecked="{Binding LoaderConfig.ShowConsole}"
                           Content="{DynamicResource LoaderSettingsShowConsole}"
                           Style="{DynamicResource DefaultCheckBox}"/>

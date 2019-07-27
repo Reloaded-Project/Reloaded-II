@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Onova;
+using Onova.Services;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
@@ -13,6 +15,7 @@ using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update;
+using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.WPF.Utilities;
 
@@ -172,6 +175,22 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static async void CheckForUpdates()
         {
+            // Check for loader updates.
+            using (var manager = new UpdateManager(
+                new GithubPackageResolver("Reloaded-Project", "Reloaded-II", "Release.zip"),
+                new ArchiveExtractor()))
+            {
+                // Check for new version and, if available, perform full update and restart
+                var result = await manager.CheckForUpdatesAsync();
+                if (result.CanUpdate)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var dialog = new ModLoaderUpdateDialog(manager, result.LastVersion);
+                        dialog.ShowDialog();
+                    });
+                }
+            }
 
             // Check for mod updates.
             var manageModsViewModel = IoC.Get<ManageModsViewModel>();
