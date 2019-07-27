@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Onova;
 using Onova.Models;
@@ -43,7 +44,11 @@ namespace Reloaded.Mod.Loader.Update
                     var modTuple = resolverTuple.ModTuple;
                     var version  = resolverTuple.Resolver.GetCurrentVersion();
 
-                    var metadata = new AssemblyMetadata(PathSanitizer.ForceValidFilePath(modTuple.Object.ModName), version, modTuple.Path);
+                    /* Onova will wait until DLL no longer in use ;) */
+                    string dllPath  = ModConfig.GetDllPath(modTuple.Path, modTuple.Object);
+                    string filePath = File.Exists(dllPath) ? dllPath : modTuple.Path;
+
+                    var metadata = new AssemblyMetadata(PathSanitizer.ForceValidFilePath(modTuple.Object.ModName), version, filePath);
 
                     var manager         = new UpdateManager(metadata, resolverTuple.Resolver, new ArchiveExtractor());
                     var updateResult    = await manager.CheckForUpdatesAsync();
