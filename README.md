@@ -22,6 +22,7 @@
 
 ## Reloaded: For Modders
 - [Getting Started: Modifications](./Docs/GettingStartedMods.md)
+- [Getting Started: Update Support](./Docs/UpdateSupport.md)
 
 ## Reloaded: For Programmers 
 - [Getting Started: Developer Mod Guide](./Docs/DeveloperModGuide.md)

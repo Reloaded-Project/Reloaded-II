@@ -192,7 +192,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         /* Github Config. */
         public class GithubUserConfig : JsonSerializable<GithubUserConfig>
         {
-            public const string     ConfigFileName = "ReloadedGithubTimestamp.json";
+            public const string     ConfigFileName = "ReloadedGithubUserConfig.json";
             public static string    GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";
 
             public long LastCheckTimestamp { get; set; }
