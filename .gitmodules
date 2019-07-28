@@ -7,6 +7,3 @@
 [submodule "Submodules/DotNetCorePlugins"]
 	path = Submodules/DotNetCorePlugins
 	url = https://github.com/Sewer56/DotNetCorePlugins.git
-[submodule "Submodules/Onova"]
-	path = Submodules/Onova
-	url = https://github.com/Sewer56/Onova
