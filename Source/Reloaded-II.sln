@@ -59,10 +59,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestModE", "Testing\Mods\Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.Update", "Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj", "{C374EC95-D1AB-4C30-8BF1-5BAA23754716}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Onova", "..\Submodules\Onova\Onova\Onova.csproj", "{CD28ED53-0ABC-4AA8-B9E3-D07E56A1164F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Onova.Updater", "..\Submodules\Onova\Onova.Updater\Onova.Updater.csproj", "{3E81CD18-A91A-446D-A496-928888C7C967}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AnyCPU = Debug|AnyCPU
@@ -239,22 +235,6 @@ Global
 		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Release|AnyCPU.Build.0 = Release|Any CPU
 		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Release|AnyCPU (X86-only).ActiveCfg = Release|Any CPU
 		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Release|AnyCPU (X86-only).Build.0 = Release|Any CPU
-		{CD28ED53-0ABC-4AA8-B9E3-D07E56A1164F}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{CD28ED53-0ABC-4AA8-B9E3-D07E56A1164F}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{CD28ED53-0ABC-4AA8-B9E3-D07E56A1164F}.Debug|AnyCPU (X86-only).ActiveCfg = Debug|Any CPU
-		{CD28ED53-0ABC-4AA8-B9E3-D07E56A1164F}.Debug|AnyCPU (X86-only).Build.0 = Debug|Any CPU
-		{CD28ED53-0ABC-4AA8-B9E3-D07E56A1164F}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{CD28ED53-0ABC-4AA8-B9E3-D07E56A1164F}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{CD28ED53-0ABC-4AA8-B9E3-D07E56A1164F}.Release|AnyCPU (X86-only).ActiveCfg = Release|Any CPU
-		{CD28ED53-0ABC-4AA8-B9E3-D07E56A1164F}.Release|AnyCPU (X86-only).Build.0 = Release|Any CPU
-		{3E81CD18-A91A-446D-A496-928888C7C967}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{3E81CD18-A91A-446D-A496-928888C7C967}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{3E81CD18-A91A-446D-A496-928888C7C967}.Debug|AnyCPU (X86-only).ActiveCfg = Debug|Any CPU
-		{3E81CD18-A91A-446D-A496-928888C7C967}.Debug|AnyCPU (X86-only).Build.0 = Debug|Any CPU
-		{3E81CD18-A91A-446D-A496-928888C7C967}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{3E81CD18-A91A-446D-A496-928888C7C967}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{3E81CD18-A91A-446D-A496-928888C7C967}.Release|AnyCPU (X86-only).ActiveCfg = Release|Any CPU
-		{3E81CD18-A91A-446D-A496-928888C7C967}.Release|AnyCPU (X86-only).Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -273,8 +253,6 @@ Global
 		{5C8A14C5-70D2-4652-806D-224CF616B6BA} = {3ACEF67A-59F3-445F-BBDF-8960B11D6557}
 		{E036F18E-312A-4C78-A8E9-5E37E5EBA9B9} = {A4CECC87-3188-4D37-A64B-D15F5B001A9D}
 		{0C911851-C2F3-4E84-BF0D-413DAD7887A7} = {A4CECC87-3188-4D37-A64B-D15F5B001A9D}
-		{CD28ED53-0ABC-4AA8-B9E3-D07E56A1164F} = {3ACEF67A-59F3-445F-BBDF-8960B11D6557}
-		{3E81CD18-A91A-446D-A496-928888C7C967} = {3ACEF67A-59F3-445F-BBDF-8960B11D6557}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {29C01A02-5EA4-442B-92BD-67EC119B4356}
