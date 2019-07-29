@@ -65,5 +65,44 @@ namespace Reloaded.Mod.Launcher.Utility
 
             return value;
         }
+
+        /// <summary>
+        /// Attempts to obtain a value while either the timeout has not expired or the <see cref="whileFunction"/> returns
+        /// true.
+        /// </summary>
+        /// <param name="getValue">Function that retrieves the value.</param>
+        /// <param name="whileFunction">Keep trying while this condition is true.</param>
+        /// <param name="timeout">The timeout in milliseconds.</param>
+        /// <param name="sleepTime">Amount of sleep per iteration/attempt.</param>
+        /// <param name="token">Token that allows for cancellation of the task.</param>
+        /// <exception cref="Exception">Timeout expired.</exception>
+        public static T TryGetValueWhile<T>(Func<T> getValue, Func<bool> whileFunction, int timeout, int sleepTime, CancellationToken token = default)
+        {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            bool valueSet = false;
+            T value = default;
+
+            while (watch.ElapsedMilliseconds < timeout || whileFunction())
+            {
+                if (token.IsCancellationRequested)
+                    return value;
+
+                try
+                {
+                    value = getValue();
+                    valueSet = true;
+                    break;
+                }
+                catch (Exception e) { /* Ignored */ }
+
+                Thread.Sleep(sleepTime);
+            }
+
+            if (valueSet == false)
+                throw new Exception($"Timeout limit {timeout} exceeded.");
+
+            return value;
+        }
     }
 }

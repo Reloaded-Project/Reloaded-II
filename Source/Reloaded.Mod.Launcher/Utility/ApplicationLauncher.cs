@@ -17,17 +17,8 @@ namespace Reloaded.Mod.Launcher.Utility
     /// </summary>
     public class ApplicationLauncher
     {
-        private static XamlResource<int> _xamlModLoaderSetupTimeout   = new XamlResource<int>("AppLauncherModLoaderSetupTimeout");
-        private static XamlResource<int> _xamlModLoaderSetupSleepTime = new XamlResource<int>("AppLauncherModLoaderSetupSleepTime");
-
         private string _location;
         private string _arguments;
-
-        static ApplicationLauncher()
-        {
-            _xamlModLoaderSetupTimeout.DefaultValue = 30000;
-            _xamlModLoaderSetupSleepTime.DefaultValue = 32;
-        }
 
         private ApplicationLauncher() { }
 
@@ -96,16 +87,6 @@ namespace Reloaded.Mod.Launcher.Utility
             try
             {
                 injector.Inject();
-                
-                // Wait for mod loader to initialize.
-                ActionWrappers.TryGetValue(() =>
-                {
-                    // Exit if application crashes while loading Reloaded..
-                    if (process.HasExited)
-                        return 0;
-
-                    return Client.GetPort((int) processInformation.dwProcessId);
-                }, _xamlModLoaderSetupTimeout.Get(), _xamlModLoaderSetupSleepTime.Get());
             }
             catch (Exception)
             {
