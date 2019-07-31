@@ -19,6 +19,7 @@ using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.WPF.Utilities;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -33,6 +34,9 @@ namespace Reloaded.Mod.Launcher
         private static XamlResource<string> _xamlCheckingForUpdates = new XamlResource<string>("CheckingForUpdates");
         private static XamlResource<string> _xamlSplashLoadCompleteIn = new XamlResource<string>("SplashLoadCompleteIn");
         private static XamlResource<string> _xamlCreatingTemplates = new XamlResource<string>("SplashCreatingTemplates");
+
+        private static XamlResource<string> _xamlCheckUpdatesFailed = new XamlResource<string>("ErrorCheckUpdatesFailed");
+
 
         /// <summary>
         /// Sets up the overall application state for either running or testing.
@@ -177,20 +181,27 @@ namespace Reloaded.Mod.Launcher
         private static async void CheckForUpdates()
         {
             // Check for loader updates.
-            using (var manager = new UpdateManager(
-                new GithubPackageResolver("Reloaded-Project", "Reloaded-II", "Release.zip"),
-                new ArchiveExtractor()))
+            try
             {
-                // Check for new version and, if available, perform full update and restart
-                var result = await manager.CheckForUpdatesAsync();
-                if (result.CanUpdate)
+                using (var manager = new UpdateManager(
+                    new GithubPackageResolver("Reloaded-Project", "Reloaded-II", "Release.zip"),
+                    new ArchiveExtractor()))
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
+                    // Check for new version and, if available, perform full update and restart
+                    var result = await manager.CheckForUpdatesAsync();
+                    if (result.CanUpdate)
                     {
-                        var dialog = new ModLoaderUpdateDialog(manager, result.LastVersion);
-                        dialog.ShowDialog();
-                    });
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            var dialog = new ModLoaderUpdateDialog(manager, result.LastVersion);
+                            dialog.ShowDialog();
+                        });
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(_xamlCheckUpdatesFailed.Get());
             }
 
             // Check for mod updates.

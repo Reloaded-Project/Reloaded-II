@@ -164,4 +164,6 @@
     <sys:String x:Key="ErrorDllInjectionFailed">Failed to DLL inject into application process.</sys:String>
     <sys:String x:Key="ErrorPathToApplicationInvalid">The path to the application to be launched is invalid. Please re-check your application configuration.</sys:String>
 
+    <sys:String x:Key="ErrorCheckUpdatesFailed">Failed to check for updates. Are you connected to the internet?</sys:String>
+
 </ResourceDictionary>
