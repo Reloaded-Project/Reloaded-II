@@ -23,9 +23,15 @@ namespace Reloaded.Mod.Loader.Logging
             PrintBanner();
         }
 
+        public void PrintMessage(string message)
+        {
+            PrintMessage(message, TextColor);
+        }
+
         public void PrintMessage(string message, Color color)
         {
             Colorful.Console.WriteLine(message, color);
+            OnPrintMessage?.Invoke(this, message);
         }
 
         // Default Colours
