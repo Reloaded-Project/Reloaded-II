@@ -24,7 +24,7 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         {
             _testData = new TestData();
 
-            _loader = new Mod.Loader.Loader();
+            _loader = new Mod.Loader.Loader(true);
             _loader.LoadForCurrentProcess();
 
             _host = new Host(_loader);

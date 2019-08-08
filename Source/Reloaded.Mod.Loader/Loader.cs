@@ -28,10 +28,16 @@ namespace Reloaded.Mod.Loader
         public LoaderConfig LoaderConfig { get; private set; }
 
         /// <summary>
+        /// This flag suppresses certain exceptions and should only be set to true in unit tests.
+        /// </summary>
+        public bool IsTesting { get; private set; }
+
+        /// <summary>
         /// Initialize loader in constructor.
         /// </summary>
-        public Loader()
+        public Loader(bool isTesting = false)
         {
+            IsTesting = isTesting;
             LoaderConfig = LoaderConfigReader.ReadConfiguration();
             Console = new Console();
             Manager = new PluginManager(this);
@@ -183,7 +189,7 @@ namespace Reloaded.Mod.Loader
                 allMods = ModConfig.GetAllMods(LoaderConfig.ModConfigDirectory).Select(x => x.Object);
 
             var dependencies = ModConfig.GetDependencies(mods, allMods, modDirectory);
-            if (dependencies.MissingConfigurations.Count > 0)
+            if (dependencies.MissingConfigurations.Count > 0 && !IsTesting)
             {
                 string missingMods = String.Join(",", dependencies.MissingConfigurations);
                 throw new FileNotFoundException($"Reloaded II was unable to find all dependencies for the mod(s) to be loaded.\n" +
