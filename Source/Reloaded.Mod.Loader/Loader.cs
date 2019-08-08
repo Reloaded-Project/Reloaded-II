@@ -154,7 +154,7 @@ namespace Reloaded.Mod.Loader
                 configToPathDictionary[mod.Object] = mod.Path;
 
             // Get dependencies, sort and load in order.
-            var dependenciesToLoad  = ModConfig.GetDependencies(modsToLoad, null, LoaderConfig.ModConfigDirectory).Configurations;
+            var dependenciesToLoad  = GetDependenciesForMods(modsToLoad, allMods.Select(x => x.Object), LoaderConfig.ModConfigDirectory);
             var allUniqueModsToLoad = modsToLoad.Concat(dependenciesToLoad).Distinct();
             var allSortedModsToLoad = ModConfig.SortMods(allUniqueModsToLoad);
 
@@ -171,6 +171,27 @@ namespace Reloaded.Mod.Loader
             }
 
             Manager.LoadMods(modPaths);
+        }
+
+        /// <summary>
+        /// Retrieves all of the dependencies for a given set of mods.
+        /// </summary>
+        /// <exception cref="FileNotFoundException">A dependency for any of the mods has not been found.</exception>
+        private HashSet<ModConfig> GetDependenciesForMods(IEnumerable<ModConfig> mods, IEnumerable<ModConfig> allMods, string modDirectory)
+        {
+            if (allMods == null)
+                allMods = ModConfig.GetAllMods(LoaderConfig.ModConfigDirectory).Select(x => x.Object);
+
+            var dependencies = ModConfig.GetDependencies(mods, allMods, modDirectory);
+            if (dependencies.MissingConfigurations.Count > 0)
+            {
+                string missingMods = String.Join(",", dependencies.MissingConfigurations);
+                throw new FileNotFoundException($"Reloaded II was unable to find all dependencies for the mod(s) to be loaded.\n" +
+                                                $"Aborting load.\n" +
+                                                $"Missing dependencies: {missingMods}");
+            }
+
+            return dependencies.Configurations;
         }
 
         /// <summary>
