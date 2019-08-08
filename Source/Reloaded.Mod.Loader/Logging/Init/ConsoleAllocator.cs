@@ -13,19 +13,23 @@ namespace Reloaded.Mod.Loader.Logging.Init
         /// <summary>
         /// Creates a new console instance if no console is present for the console.
         /// </summary>
-        public static void Alloc()
+        public static bool Alloc()
         {
             if (!ConsoleExists)
-                AllocConsole();
+                return AllocConsole();
+
+            return true;
         }
 
         /// <summary>
         /// If the process has an associated console, it will be detached and no longer visible.
         /// </summary>
-        public static void Free()
+        public static bool Free()
         {
             if (ConsoleExists)
-                FreeConsole();
+                return FreeConsole();
+
+            return false;
         }
 
         [DllImport("kernel32.dll")]

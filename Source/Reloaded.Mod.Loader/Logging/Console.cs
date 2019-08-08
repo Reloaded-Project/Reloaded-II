@@ -9,18 +9,22 @@ namespace Reloaded.Mod.Loader.Logging
     public class Console : ILogger
     {
         public event EventHandler<string> OnPrintMessage = (sender, s) => { };
+        private bool _consoleEnabled = false;
 
         /* Default constructor */
         public Console() { }
 
         public void ShowConsole()
         {
-            ConsoleAllocator.Alloc();
+            _consoleEnabled = ConsoleAllocator.Alloc();
+            if (_consoleEnabled)
+            {
+                Colorful.Console.BackgroundColor = BackgroundColor;
+                Colorful.Console.ForegroundColor = TextColor;
 
-            Colorful.Console.BackgroundColor = BackgroundColor;
-            Colorful.Console.ForegroundColor = TextColor;
-            System.Console.Clear();
-            PrintBanner();
+                System.Console.Clear();
+                PrintBanner();
+            }
         }
 
         public void PrintMessage(string message, Color color)   => WriteLine(message, color);
@@ -29,14 +33,20 @@ namespace Reloaded.Mod.Loader.Logging
 
         public void WriteLine(string message, Color color)
         {
-            Colorful.Console.WriteLine(message, color);
-            OnPrintMessage?.Invoke(this, message);
+            if (_consoleEnabled)
+            {
+                Colorful.Console.WriteLine(message, color);
+                OnPrintMessage?.Invoke(this, message);
+            }
         }
 
         public void Write(string message, Color color)
         {
-            Colorful.Console.Write(message, color);
-            OnPrintMessage?.Invoke(this, message);
+            if (_consoleEnabled)
+            {
+                Colorful.Console.Write(message, color);
+                OnPrintMessage?.Invoke(this, message);
+            }
         }
 
         // Default Colours
