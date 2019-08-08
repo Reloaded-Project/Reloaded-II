@@ -27,6 +27,8 @@ namespace Reloaded.Mod.Loader.Mods
         private readonly Dictionary<string, string> _modIdToFolder = new Dictionary<string, string>(); // Maps Mod ID to folder containing mod.
         private readonly Loader _loader;
 
+        private readonly Stopwatch _stopWatch = new Stopwatch();
+
         /// <summary>
         /// Initializes the <see cref="PluginManager"/>
         /// </summary>
@@ -79,7 +81,7 @@ namespace Reloaded.Mod.Loader.Mods
             /* Load mods. */
             foreach (var modPath in modPaths)
             {
-                LoadMod(modPath);
+                ExecuteWithStopwatch($"Loading Mod: {modPath.Object.ModId}", LoadMod, modPath);
             }
         }
 
@@ -247,19 +249,22 @@ namespace Reloaded.Mod.Loader.Mods
         /* Setup for mod loading */
         private void PreloadExports(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
         {
-            foreach (var modPath in modPaths)
+            ExecuteWithStopwatch("Loading Exported Types for Inter Mod Communication.", (paths) =>
             {
-                if (!File.Exists(modPath.Path))
-                    continue;
-
-                if (!PreloadExportsForDllMod(modPath.Path, out var exports))
-                    continue;
-
-                foreach (var export in exports)
+                foreach (var modPath in paths)
                 {
-                    _sharedTypes.Add(export);
+                    if (!File.Exists(modPath.Path))
+                        continue;
+
+                    if (!PreloadExportsForDllMod(modPath.Path, out var exports))
+                        continue;
+
+                    foreach (var export in exports)
+                    {
+                        _sharedTypes.Add(export);
+                    }
                 }
-            }
+            }, modPaths);
         }
 
         private bool PreloadExportsForDllMod(string dllPath, out Type[] exports)
@@ -292,6 +297,21 @@ namespace Reloaded.Mod.Loader.Mods
                 var path = new Uri(type.Module.Assembly.CodeBase).LocalPath;
                 AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
             }
+        }
+
+        /* Utility */
+        private void WriteLine(string message, string prefix = "[Reloaded] ")
+        {
+            _loader.Console.WriteLine($"{prefix}{message}");
+        }
+
+        private void ExecuteWithStopwatch<T>(string message, Action<T> code, T parameter)
+        {
+            WriteLine($"{message}");
+            _stopWatch.Restart();
+            code(parameter);
+            _stopWatch.Stop();
+            WriteLine($"... {_stopWatch.ElapsedMilliseconds}ms");
         }
     }
 }

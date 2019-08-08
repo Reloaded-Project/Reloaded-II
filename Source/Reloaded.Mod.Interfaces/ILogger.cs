@@ -2,7 +2,7 @@
 
 namespace Reloaded.Mod.Interfaces
 {
-    public interface ILogger : ILoggerV1
+    public interface ILogger : ILoggerV1, ILoggerV2
     {
 
 

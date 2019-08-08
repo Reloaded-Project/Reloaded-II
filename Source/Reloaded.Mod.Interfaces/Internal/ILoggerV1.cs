@@ -15,10 +15,10 @@ namespace Reloaded.Mod.Interfaces.Internal
         // Print Message
 
         /// <summary>
-        /// Prints a message to the console.
+        /// This is an alias for <see cref="ILoggerV2.WriteLine"/>
         /// </summary>
         /// <param name="message">The message to print.</param>
-        /// <param name="color">The colour to print the message in.</param>
+        /// <param name="color">The color to print the message in.</param>
         void PrintMessage(string message, Color color);
 
         // Console Colours
