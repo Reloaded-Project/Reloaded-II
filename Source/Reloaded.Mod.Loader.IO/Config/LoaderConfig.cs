@@ -66,11 +66,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
         /// </summary>
-        public string[] EnabledPlugins
-        {
-            get => _enabledPlugins;
-            set => _enabledPlugins = value ?? Constants.EmptyStringArray;
-        }
+        public string[] EnabledPlugins { get; set; }
 
         public bool FirstLaunch { get; set; } = true;
 
@@ -78,8 +74,6 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Shows the console window if set to true, else false.
         /// </summary>
         public bool ShowConsole { get; set; } = true;
-
-        private string[] _enabledPlugins;
 
         /* Some mods are universal :wink: */
 

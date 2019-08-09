@@ -68,7 +68,13 @@ Sharing forces other mods to load the same instance of the DLL containing the sh
 
 ### Instantiation
 
+In order to be able to consume a **Plugin** or **Controller** from another mod, you must first set that mod's id as either a **required** or **optional** dependency.
+
+This is a safeguard in order to ensure that unintended libraries do not get unified between otherwise isolated mod instances and allows for the safe use of Shared Libraries..
+
 #### Required Dependencies
+
+(Mods specified as `ModDependencies` in `ModConfig.json`)
 
 Reloaded-II re-sorts the order at which the mods are loaded on launch, guaranteeing that any required dependency of your mod will be loaded before your mod. As such, you are free to obtain Controllers and/or Plugins immediately in the entry point of your mod.
 
@@ -81,6 +87,8 @@ void Start(IModLoaderV1 loader)
 ```
 
 #### Optional Dependencies
+
+(i.e. Mods specified as `OptionalDependencies` in `ModConfig.json`)
 
 If the mod is an optional dependency (i.e. not in the mod's dependencies list), then the preferred option is to acquire Controllers/Plugins after the mod loader has finished initializing (all mods are loaded).
 

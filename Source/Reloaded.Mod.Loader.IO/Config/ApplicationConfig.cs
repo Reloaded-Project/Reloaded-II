@@ -30,13 +30,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string AppArguments          { get; set; } = String.Empty;
         public string AppIcon               { get; set; } = DefaultIcon;
         public bool   AutoInject            { get; set; } = false;
-        public string[] EnabledMods
-        {
-            get => _enabledMods;
-            set => _enabledMods = value ?? Constants.EmptyStringArray;
-        }
-
-        private string[] _enabledMods;
+        public string[] EnabledMods         { get; set; }
 
         public ApplicationConfig()
         {
@@ -53,7 +47,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         public ApplicationConfig(string appId, string appName, string appLocation, string[] enabledMods) : this(appId, appName, appLocation)
         {
-            _enabledMods = enabledMods;
+            EnabledMods = enabledMods;
         }
 
         /*
@@ -192,7 +186,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         protected bool Equals(ApplicationConfig other)
         {
-            return _enabledMods.SequenceEqualWithNullSupport(other._enabledMods) && 
+            return EnabledMods.SequenceEqualWithNullSupport(other.EnabledMods) && 
                    string.Equals(AppId, other.AppId) && 
                    string.Equals(AppName, other.AppName) && 
                    string.Equals(AppLocation, other.AppLocation) && 

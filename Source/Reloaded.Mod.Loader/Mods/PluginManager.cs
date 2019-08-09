@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Loader;
 using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
@@ -21,12 +20,12 @@ namespace Reloaded.Mod.Loader.Mods
     public class PluginManager : IDisposable
     {
         public LoaderAPI LoaderApi { get; }
+        private static readonly Type[] SharedTypes = { typeof(IModLoader), typeof(IMod) };
 
-        private HashSet<Type> _sharedTypes = new HashSet<Type>() { typeof(IModLoader), typeof(IMod) };
+        private readonly Dictionary<string, Type[]>      _modIdToExports = new Dictionary<string, Type[]>();  
         private readonly Dictionary<string, ModInstance> _modifications = new Dictionary<string, ModInstance>();
-        private readonly Dictionary<string, string> _modIdToFolder = new Dictionary<string, string>(); // Maps Mod ID to folder containing mod.
+        private readonly Dictionary<string, string>      _modIdToFolder = new Dictionary<string, string>(); // Maps Mod ID to folder containing mod.
         private readonly Loader _loader;
-
         private readonly Stopwatch _stopWatch = new Stopwatch();
 
         /// <summary>
@@ -118,6 +117,7 @@ namespace Reloaded.Mod.Loader.Mods
                 {
                     LoaderApi.ModUnloading(mod.Mod, mod.ModConfig);
                     _modIdToFolder.Remove(modId);
+                    _modIdToExports.Remove(modId);
                     _modifications.Remove(modId);
                     mod.Dispose();
                 }
@@ -206,7 +206,7 @@ namespace Reloaded.Mod.Loader.Mods
 
             // TODO: Native mod loading support.
             var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path,
-                _sharedTypes.ToArray(),
+                GetExportsForModConfig(tuple.Object),
                 config =>
                 {
                     config.IsUnloadable = true;
@@ -247,6 +247,24 @@ namespace Reloaded.Mod.Loader.Mods
         }
 
         /* Setup for mod loading */
+        private Type[] GetExportsForModConfig(IModConfig modConfig)
+        {
+            var exports = SharedTypes.AsEnumerable();
+            foreach (var dep in modConfig.ModDependencies)
+            {
+                if (_modIdToExports.ContainsKey(dep))
+                    exports = exports.Concat(_modIdToExports[dep]);
+            }
+
+            foreach (var optionalDep in modConfig.OptionalDependencies)
+            {
+                if (_modIdToExports.ContainsKey(optionalDep))
+                    exports = exports.Concat(_modIdToExports[optionalDep]);
+            }
+
+            return exports.ToArray();
+        }
+
         private void PreloadExports(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
         {
             ExecuteWithStopwatch("Loading Exported Types for Inter Mod Communication.", (paths) =>
@@ -259,17 +277,14 @@ namespace Reloaded.Mod.Loader.Mods
                     if (!PreloadExportsForDllMod(modPath.Path, out var exports))
                         continue;
 
-                    foreach (var export in exports)
-                    {
-                        _sharedTypes.Add(export);
-                    }
+                    _modIdToExports[modPath.Object.ModId] = exports;
                 }
             }, modPaths);
         }
 
         private bool PreloadExportsForDllMod(string dllPath, out Type[] exports)
         {
-            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, _sharedTypes.ToArray());
+            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes.ToArray());
 
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types = defaultAssembly.GetTypes();

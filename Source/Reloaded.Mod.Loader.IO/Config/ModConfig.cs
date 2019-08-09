@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Misc;
@@ -37,20 +38,9 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string ModDll            { get; set; } = String.Empty;
         public string ModIcon           { get; set; } = String.Empty;
 
-        public string[] ModDependencies
-        {
-            get => _modDependencies;
-            set => _modDependencies = value ?? Constants.EmptyStringArray;
-        }
-
-        public string[] SupportedAppId
-        {
-            get => _supportedAppId;
-            set => _supportedAppId = value ?? Constants.EmptyStringArray;
-        }
-
-        private string[] _modDependencies;
-        private string[] _supportedAppId;
+        public string[] ModDependencies         { get; set; }
+        public string[] OptionalDependencies    { get; set; }
+        public string[] SupportedAppId          { get; set; }
 
         /*
            ---------
@@ -83,6 +73,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         /// <summary>
         /// Returns a list of all of present and missing dependencies for a set of configurations.
+        /// Note: Does not include optional dependencies.
         /// </summary>
         /// <param name="configurations">The mod configurations.</param>
         /// <param name="allMods">(Optional) List of all available mods.</param>
@@ -101,6 +92,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         /// <summary>
         /// Returns a list of all of present and missing dependencies for a given configuration.
+        /// Note: Does not include optional dependencies.
         /// </summary>
         /// <param name="config">The mod configuration.</param>
         /// <param name="allMods">(Optional) List of all available mods.</param>
@@ -132,6 +124,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         /// <summary>
         /// Sorts a list of mods, taking into account individual dependencies between mods.
+        /// Note: Does not include optional dependencies.
         /// </summary>
         public static List<ModConfig> SortMods(IEnumerable<ModConfig> mods)
         {
@@ -238,8 +231,9 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         protected bool Equals(ModConfig other)
         {
-            return _modDependencies.SequenceEqualWithNullSupport(other._modDependencies) && 
-                   _supportedAppId.SequenceEqualWithNullSupport(other._supportedAppId) && 
+            return ModDependencies.SequenceEqualWithNullSupport(other.ModDependencies) &&
+                   SupportedAppId.SequenceEqualWithNullSupport(other.SupportedAppId) &&
+                   OptionalDependencies.SequenceEqualWithNullSupport(other.OptionalDependencies) &&
                    string.Equals(ModId, other.ModId) && 
                    string.Equals(ModName, other.ModName) && 
                    string.Equals(ModAuthor, other.ModAuthor) && 

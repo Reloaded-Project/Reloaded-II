@@ -151,7 +151,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             string appId = ApplicationTuple.ApplicationConfig.AppId;
             foreach (var mod in ManageModsViewModel.Mods)
             {
-                if (mod.ModConfig.SupportedAppId.Contains(appId))
+                if (mod.ModConfig.SupportedAppId?.Contains(appId) == true)
                     newMods.Add(mod);
             }
 
