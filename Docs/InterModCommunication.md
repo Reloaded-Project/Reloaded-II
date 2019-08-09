@@ -70,7 +70,7 @@ Sharing forces other mods to load the same instance of the DLL containing the sh
 
 In order to be able to consume a **Plugin** or **Controller** from another mod, you must first set that mod's id as either a **required** or **optional** dependency.
 
-This is a safeguard in order to ensure that unintended libraries do not get unified between otherwise isolated mod instances and allows for the safe use of Shared Libraries..
+This is a safeguard in order to ensure that unintended libraries do not get unified between otherwise isolated mod instances. This allows for the safe use of Shared Libraries..
 
 #### Required Dependencies
 
@@ -109,6 +109,8 @@ void Initialized()
 	_controller = _loader.GetController<IController>();
 }
 ```
+
+*Unlike required dependencies, the mod loader does not take load order into account with optional dependencies.*
 
 ### Number of Instances
 **Plugins** are considered a `0 - *` relationship, whereby a request for plugins which inherit from a specific interface may return anywhere between 0 to many plugins originating from various different mods.
