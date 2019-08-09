@@ -28,8 +28,11 @@
 - [Getting Started: Developer Mod Guide](./Docs/DeveloperModGuide.md)
 - [API Overview](./Docs/APIOverview.md)
 - [Inter Mod Communication](./Docs/InterModCommunication.md)
+- [Shared Libraries](https://github.com/Sewer56/Reloaded.SharedLib.Hooks)
+- [Writing Mods For Actively Developed Games/Applications](https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications)
 
 ## Reloaded: For Potential Contributors
 - [Getting Started: Building Reloaded](./Docs/BuildingReloaded.md)
 - [Getting Started: Project Structure](./Docs/ProjectStructure.md)
 - [Reloaded II's Architecture: Behind the Scenes.](./Docs/Reloaded-II-Architecture.md)
+
