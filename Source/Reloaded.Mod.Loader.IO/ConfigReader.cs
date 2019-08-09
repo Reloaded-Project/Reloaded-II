@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text.Json;
@@ -56,7 +57,9 @@ namespace Reloaded.Mod.Loader.IO
         public TConfigType ReadConfiguration(string path)
         {
             string jsonFile = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<TConfigType>(jsonFile, Options);
+            var result = JsonSerializer.Deserialize<TConfigType>(jsonFile, Options);
+            Utility.SetNullPropertyValues(result);
+            return result;
         }
 
         public void WriteConfiguration(string path, TConfigType config)

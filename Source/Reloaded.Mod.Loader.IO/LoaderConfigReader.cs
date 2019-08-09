@@ -44,6 +44,7 @@ namespace Reloaded.Mod.Loader.IO
             string jsonFile = File.ReadAllText(StaticConfigFilePath);
             var config = JsonSerializer.Deserialize<LoaderConfig>(jsonFile);
             config.ResetMissingDirectories();
+            Utility.SetNullPropertyValues(config);
             return config;
         }
 
