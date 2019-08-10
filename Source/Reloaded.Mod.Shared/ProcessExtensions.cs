@@ -45,6 +45,11 @@ namespace Reloaded.Mod.Shared
         }
 
         /* Open browser page */
+        public static void OpenFileWithExplorer(string url)
+        {
+            Process.Start(new ProcessStartInfo("cmd", $"/c start explorer \"{url}\""));
+        }
+
         public static void OpenFileWithDefaultProgram(string url)
         {
             Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
