@@ -32,7 +32,7 @@ namespace Reloaded.Mod.Loader
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to Load Reloaded-II.\n{ex.Message}");
+                MessageBox.Show($"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}");
             }
         }
 
