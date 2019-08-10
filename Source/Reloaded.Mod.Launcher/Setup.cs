@@ -157,7 +157,7 @@ namespace Reloaded.Mod.Launcher
                 throw new DllNotFoundException($"{LoaderConfig.Bootstrapper64Name} {Errors.LoaderNotFound()}");
 
             // Set to config.
-            config.LauncherPath = Assembly.GetExecutingAssembly().Location;
+            config.LauncherPath = Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, ".exe");
             config.LoaderPath = loaderPath;
             config.Bootstrapper32Path = bootstrapper32Path;
             config.Bootstrapper64Path = bootstrapper64Path;
