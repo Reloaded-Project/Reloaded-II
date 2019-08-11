@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
@@ -36,6 +37,11 @@ namespace Reloaded.Mod.Launcher.Pages
             _mainPageViewModel.Page = BaseSubPage.SettingsPage;
         }
 
+        private void DownloadMods_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _mainPageViewModel.Page = BaseSubPage.DownloadMods;
+        }
+
         private void Application_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             // Prepare for parameter transfer.
@@ -57,5 +63,6 @@ namespace Reloaded.Mod.Launcher.Pages
                 }
             }
         }
+
     }
 }

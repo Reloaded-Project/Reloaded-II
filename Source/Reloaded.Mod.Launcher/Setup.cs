@@ -7,6 +7,7 @@ using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using NuGet.Configuration;
 using Onova;
 using Onova.Services;
 using Reloaded.Mod.Launcher.Models.ViewModel;
@@ -18,6 +19,7 @@ using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Resolvers;
+using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.WPF.Utilities;
 using MessageBox = System.Windows.MessageBox;
 
@@ -31,12 +33,9 @@ namespace Reloaded.Mod.Launcher
         private static bool _loadExecuted = false;
         private static XamlResource<string> _xamlSplashCreatingDefaultConfig = new XamlResource<string>("SplashCreatingDefaultConfig");
         private static XamlResource<string> _xamlSplashPreparingResources = new XamlResource<string>("SplashPreparingResources");
-        private static XamlResource<string> _xamlCheckingForUpdates = new XamlResource<string>("CheckingForUpdates");
+        private static XamlResource<string> _xamlCheckingForUpdates = new XamlResource<string>("SplashCheckingForUpdates");
         private static XamlResource<string> _xamlSplashLoadCompleteIn = new XamlResource<string>("SplashLoadCompleteIn");
         private static XamlResource<string> _xamlCreatingTemplates = new XamlResource<string>("SplashCreatingTemplates");
-
-        private static XamlResource<string> _xamlCheckUpdatesFailed = new XamlResource<string>("ErrorCheckUpdatesFailed");
-
 
         /// <summary>
         /// Sets up the overall application state for either running or testing.
@@ -62,14 +61,14 @@ namespace Reloaded.Mod.Launcher
                 updateText(_xamlSplashCreatingDefaultConfig.Get());
                 CreateNewConfigIfNotExist();
 
-                updateText(_xamlSplashPreparingResources.Get());
-                SetupViewModels();
-
                 updateText(_xamlCreatingTemplates.Get());
                 CreateTemplates();
 
+                updateText(_xamlSplashPreparingResources.Get());
+                await SetupViewModelsAsync();
+
                 updateText(_xamlCheckingForUpdates.Get());
-                CheckForUpdates();
+                CheckForUpdatesAsync();
 
                 // Wait until splash screen time.
                 updateText($"{_xamlSplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");
@@ -116,17 +115,20 @@ namespace Reloaded.Mod.Launcher
         /// <summary>
         /// Sets up viewmodels to be used in the individual mod loader pages.
         /// </summary>
-        private static void SetupViewModels()
+        private static async Task SetupViewModelsAsync()
         {
             var loaderConfig = LoaderConfigReader.ReadConfiguration();
             IoC.Kernel.Bind<LoaderConfig>().ToConstant(loaderConfig);
             IoC.GetConstant<MainPageViewModel>();
-            IoC.GetConstant<AddAppViewModel>();     // Consumes MainPageViewModel, make sure it goes after it.
-            IoC.GetConstant<ManageModsViewModel>(); // Consumes MainPageViewModel, LoaderConfig
-
+            IoC.GetConstant<AddAppViewModel>();       // Consumes MainPageViewModel, make sure it goes after it.
+            IoC.GetConstant<ManageModsViewModel>();   // Consumes MainPageViewModel, LoaderConfig
             IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, AddAppViewModel
 
-            // Preload.
+            var helper = await NugetHelper.FromSourceUrlAsync("https://www.myget.org/F/reloaded-ii-community/api/v3/index.json");
+            IoC.Kernel.Rebind<NugetHelper>().ToConstant(helper);
+            IoC.GetConstant<DownloadModsViewModel>(); // Consumes ManageModsViewModel, NugetHelper
+
+            // Preload DLL Injector Addresses.
             BasicDllInjector.PreloadAddresses();
 
             /* Set loader DLL path. */
@@ -178,56 +180,21 @@ namespace Reloaded.Mod.Launcher
         /// <summary>
         /// Checks for mod loader updates.
         /// </summary>
-        private static async void CheckForUpdates()
+        private static async Task CheckForUpdatesAsync()
         {
-            // Check for loader updates.
-            try
-            {
-                using (var manager = new UpdateManager(
-                    new GithubPackageResolver("Reloaded-Project", "Reloaded-II", "Release.zip"),
-                    new ArchiveExtractor()))
-                {
-                    // Check for new version and, if available, perform full update and restart
-                    var result = await manager.CheckForUpdatesAsync();
-                    if (result.CanUpdate)
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            var dialog = new ModLoaderUpdateDialog(manager, result.LastVersion);
-                            dialog.ShowDialog();
-                        });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(_xamlCheckUpdatesFailed.Get());
-            }
-
-            // Check for mod updates.
-            var manageModsViewModel = IoC.Get<ManageModsViewModel>();
-            var allMods = manageModsViewModel.Mods.Select(x => new PathGenericTuple<ModConfig>(x.ModConfigPath, (ModConfig)x.ModConfig)).ToArray();
-            await Task.Run(async () =>
+            await Update.CheckForLoaderUpdatesAsync();
+            await Task.Run(Update.CheckForModUpdatesAsync);
+            if (Update.CheckMissingDependencies(out var missingDependencies))
             {
                 try
                 {
-                    var updater = new Updater(allMods);
-                    var updateDetails = await updater.GetUpdateDetails();
-
-                    if (updateDetails.HasUpdates())
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            var dialog = new ModUpdateDialog(updater, updateDetails);
-                            dialog.ShowDialog();
-                        });
-                    }
+                    await Update.DownloadPackagesAsync(missingDependencies, false, false);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    System.Windows.MessageBox.Show(e.Message + "|" + e.StackTrace);
+
                 }
-            });
+            }
         }
     }
 }

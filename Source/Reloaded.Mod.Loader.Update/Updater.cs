@@ -50,7 +50,7 @@ namespace Reloaded.Mod.Loader.Update
 
                     var metadata = new AssemblyMetadata(PathSanitizer.ForceValidFilePath(modTuple.Object.ModName), version, filePath);
 
-                    var manager         = new UpdateManager(metadata, resolverTuple.Resolver, new ArchiveExtractor());
+                    var manager         = new UpdateManager(metadata, resolverTuple.Resolver, resolverTuple.Resolver.Extractor);
                     var updateResult    = await manager.CheckForUpdatesAsync();
 
                     if (updateResult.CanUpdate)

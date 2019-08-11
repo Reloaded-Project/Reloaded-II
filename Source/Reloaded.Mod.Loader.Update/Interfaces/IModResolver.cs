@@ -8,6 +8,11 @@ namespace Reloaded.Mod.Loader.Update.Interfaces
     public interface IModResolver : IPackageResolver
     {
         /// <summary>
+        /// Retrieves the package extractor for this package resolver.
+        /// </summary>
+        IPackageExtractor Extractor { get; set; }
+
+        /// <summary>
         /// Returns true if this mod is compatible to be updated. 
         /// </summary>
         /// <param name="mod">The mod to check.</param>

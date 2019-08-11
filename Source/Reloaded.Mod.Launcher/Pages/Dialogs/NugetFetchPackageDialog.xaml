@@ -1,0 +1,87 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.NugetFetchPackageDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
+        xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="Height"
+        Width="500"
+        Title="{DynamicResource FetchNugetTitle}"
+        Style="{DynamicResource ReloadedWindow}">
+    <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Text -->
+        <TextBlock Text="{DynamicResource FetchNugetMessage}" Grid.Row="0" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"/>
+
+        <!-- List Of Deps -->
+        <DataGrid 
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            ItemsSource="{Binding Packages, UpdateSourceTrigger=PropertyChanged}"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Top"
+            
+            CanUserResizeColumns="False"
+            CanUserResizeRows="False"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            CanUserSortColumns="False"
+            CanUserReorderColumns="False"
+
+            IsReadOnly="True"
+            AutoGenerateColumns="False"
+            Margin="{DynamicResource CommonItemVerticalMargin}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource UpdateModModId}" Binding="{Binding Identity.Id}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Identity.Version}" Width="Auto" IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Text -->
+        <TextBlock Text="{DynamicResource FetchNugetNotFoundMessage}" Grid.Row="2" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"
+                   Visibility="{Binding ShowMissingPackages}"/>
+
+        <ListView 
+            Grid.Row="3"
+            HorizontalAlignment="Stretch"
+            ItemsSource="{Binding MissingPackages, UpdateSourceTrigger=PropertyChanged}"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Top"
+            Margin="{DynamicResource CommonItemVerticalMargin}"
+            Visibility="{Binding ShowMissingPackages}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Fetch NuGet -->
+        <TextBlock Text="{DynamicResource FetchNugetNotFoundAdvice}" Grid.Row="4" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"
+                   Visibility="{Binding ShowMissingPackages}"/>
+
+        <!-- Options -->
+        <StackPanel Grid.Row="5"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Margin="{DynamicResource CommonItemVerticalMargin}">
+            <Button Content="{Binding DownloadModStatus, Converter={x:Static converters:DownloadModStatusToString.Instance}, FallbackValue='Download'}" 
+                    IsEnabled="{Binding DownloadEnabled, UpdateSourceTrigger=PropertyChanged}"
+                    Click="OK_Click"/>
+        </StackPanel>
+
+    </Grid>
+</default:ReloadedWindow>

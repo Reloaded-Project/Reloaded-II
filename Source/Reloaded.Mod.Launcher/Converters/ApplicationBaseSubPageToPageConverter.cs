@@ -26,6 +26,8 @@ namespace Reloaded.Mod.Launcher.Converters
                     return IoC.GetConstant<SettingsPage>();
                 case BaseSubPage.Application:
                     return IoC.Get<ApplicationPage>();
+                case BaseSubPage.DownloadMods:
+                    return IoC.GetConstant<DownloadModsPage>();
                 default:
                     Debugger.Break();
                     return null;

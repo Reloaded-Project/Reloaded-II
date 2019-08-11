@@ -8,6 +8,7 @@
     <!-- Page Titles -->
     <sys:String x:Key="TitleAddApplication">Add an Application</sys:String>
     <sys:String x:Key="TitleManageMods">Manage Mods</sys:String>
+    <sys:String x:Key="TitleDownloadMods">Download Mods</sys:String>
     <sys:String x:Key="TitleLoaderSettings">Mod Loader Settings</sys:String>
     <sys:String x:Key="TitleMainPage">Main Page</sys:String>
     <sys:String x:Key="TitleSearchApplications">Search/Filter Applications</sys:String> <!-- Sidebar button to search applications. Removed. Might be brought back someday. -->
@@ -152,8 +153,24 @@
     <sys:String x:Key="UpdateLoaderRunningMessage" xml:space="preserve">You have applications currently running Reloaded.&#x0a;Update cannot be performed, please close all applications.</sys:String>
     <sys:String x:Key="UpdateLoaderProcessList">Process List</sys:String>
 
+    <!-- Download Mods Page -->
+    <sys:String x:Key="DownloadModsDownload">Download</sys:String>
+    <sys:String x:Key="DownloadModsDownloading">Downloading</sys:String>
+    <sys:String x:Key="DownloadModsAlreadyDownloaded">Already Downloaded</sys:String>
 
-    
+    <sys:String x:Key="DownloadModsCheckUpdates">Check for Updates</sys:String>
+    <sys:String x:Key="DownloadModsCheckDependencies">Check Dependencies</sys:String>
+
+    <!-- No Update Dialog -->
+    <sys:String x:Key="NoUpdateDialogTitle">Hooray!</sys:String>
+    <sys:String x:Key="NoUpdateDialogMessage">Nothing to do here. All mods in check!</sys:String>
+
+    <!-- Fetch Nuget Dialog -->
+    <sys:String x:Key="FetchNugetTitle">Download Packages</sys:String>
+    <sys:String x:Key="FetchNugetMessage">The following packages will be installed:</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundMessage">The following packages have not been found:</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundAdvice">You will need to find them yourself :/</sys:String>
+
     <!-- Errors -->
     <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->
     <sys:String x:Key="ErrorPathNullOrEmpty">The path to this application is either null or empty. Please fix the path.</sys:String>

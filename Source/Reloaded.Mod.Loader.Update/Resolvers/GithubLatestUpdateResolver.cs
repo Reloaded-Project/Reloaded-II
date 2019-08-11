@@ -4,15 +4,18 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Octokit;
 using Onova.Exceptions;
+using Onova.Services;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Abstract;
+using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Utilities;
 
@@ -28,7 +31,21 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         // AllowedMods contains the first <UnregisteredRateLimit> mods, ordered by ones checked longest time ago.
         private static HashSet<ModConfig> AllowedMods { get; set; }
         private static GitHubClient GithubClient { get; set; }
-        private static int RateLimit => GithubClient.Miscellaneous.GetRateLimits().Result.Resources.Core.Remaining;
+
+        private static int          CachedRateLimit { get; set; }
+        private static bool         ValidRateLimit  { get; set; } = false;
+
+        private static async Task<int> GetRateLimit()
+        {
+            if (ValidRateLimit)
+                return CachedRateLimit;
+
+            var rateLimits = await GithubClient.Miscellaneous.GetRateLimits();
+            CachedRateLimit = rateLimits.Resources.Core.Remaining;
+            ValidRateLimit  = true;
+
+            return CachedRateLimit;
+        }
 
         private PathGenericTuple<ModConfig> _modTuple;
         private GithubConfig _githubConfig;
@@ -59,11 +76,12 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         }
 
         /* Interface Implementation */
+        public IPackageExtractor Extractor { get; set; } = new ArchiveExtractor();
         public bool IsCompatible(PathGenericTuple<ModConfig> mod)
         {
             try
             {
-                if (AssertGithubOK())
+                if (Task.Run(AssertGithubOK).Result)
                 {
                     string path = GithubConfig.GetFilePath(GetModDirectory(mod));
 
@@ -156,12 +174,13 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             return Path.GetDirectoryName(mod.Path);
         }
 
-        private bool AssertGithubOK()
+        private async Task<bool> AssertGithubOK()
         {
             if (GithubClient == null)
                 return false;
 
-            if (RateLimit <= 0)
+            var rateLimit = await GetRateLimit();
+            if (rateLimit <= 0)
                 return false;
 
             return true;
@@ -181,6 +200,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             try
             {
                 var releases = await GithubClient.Repository.Release.GetAll(configuration.UserName, configuration.RepositoryName);
+                ValidRateLimit = false;
                 if (!_githubUserConfig.EnablePrereleases)
                     releases = releases.Where(x => x.Prerelease == false).ToList();
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>NET472</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <None Remove="Assets\Images\Add-App-Icon.png" />
+    <None Remove="Assets\Images\Download-Mods-Icon.png" />
     <None Remove="Assets\Images\Github-Icon.png" />
     <None Remove="Assets\Images\Icons-1.png" />
     <None Remove="Assets\Images\Icons-2.png" />
@@ -164,6 +165,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\Images\Add-App-Icon.png" />
+    <Resource Include="Assets\Images\Download-Mods-Icon.png" />
     <Resource Include="Assets\Images\Github-Icon.png" />
     <Resource Include="Assets\Images\Info-Icon.png" />
     <Resource Include="Assets\Images\Mods-Icon.png" />

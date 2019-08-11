@@ -1,0 +1,90 @@
+﻿<launcher:ReloadedIIPage x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.DownloadModsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages"
+      xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
+      xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+      xmlns:downloadModsPage="clr-namespace:Reloaded.Mod.Launcher.Commands.DownloadModsPage"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="756"
+      Title="{DynamicResource TitleDownloadMods}">
+    <Grid Margin="{DynamicResource PageMargin}" x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+
+        <Grid.Resources>
+            <downloadModsPage:DownloadModCommand x:Key="DownloadModCommand"/>
+            <downloadModsPage:CheckForUpdatesCommand x:Key="CheckForUpdatesCommand"/>
+            <downloadModsPage:CheckForDependenciesCommand x:Key="CheckForDependenciesCommand"/>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Search -->
+        <TextBox Grid.Row="0"
+                 Style="{DynamicResource TextboxWithPlaceholder}" 
+                 Tag="{DynamicResource ModManagerSearchMods}"
+                 Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Margin="{DynamicResource CommonItemVerticalMargin}"/>
+
+        <!-- List -->
+        <DataGrid 
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            ItemsSource="{Binding DownloadModEntries, UpdateSourceTrigger=PropertyChanged}"
+            SelectedValue="{Binding DownloadModEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Top"
+            
+            ColumnWidth="*" 
+            CanUserResizeColumns="False"
+            CanUserResizeRows="False"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            CanUserSortColumns="False"
+            CanUserReorderColumns="False"
+
+            IsReadOnly="True"
+            AutoGenerateColumns="False"
+            Margin="{DynamicResource CommonItemVerticalMargin}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource UpdateModModId}" Binding="{Binding Id}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogDescription}" Binding="{Binding Description}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version}" Width="Auto" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Full Description -->
+        <TextBlock Grid.Row="2" 
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="{DynamicResource CommonItemVerticalMargin}" 
+                   Text="{Binding DownloadModEntry.Description, UpdateSourceTrigger=PropertyChanged}"
+                   TextWrapping="Wrap"/>
+
+        <!-- Actions -->
+        <StackPanel Grid.Row="3"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal" 
+                    Margin="{DynamicResource CommonItemVerticalMargin}">
+            
+            <Button Content="{DynamicResource DownloadModsCheckUpdates}"
+                    Margin="{DynamicResource CommonItemHorizontalMargin}" 
+                    Command="{DynamicResource CheckForUpdatesCommand}"
+            />
+            <Button Content="{DynamicResource DownloadModsCheckDependencies}"
+                    Margin="{DynamicResource CommonItemHorizontalMargin}" 
+                    Command="{DynamicResource CheckForDependenciesCommand}"
+            />
+            <Button Content="{Binding DownloadModStatus, Converter={x:Static converters:DownloadModStatusToString.Instance}, FallbackValue='Download Mod'}" 
+                    Margin="{DynamicResource CommonItemHorizontalMargin}" 
+                    Command="{DynamicResource DownloadModCommand}"
+            />
+        </StackPanel>
+    </Grid>
+</launcher:ReloadedIIPage>

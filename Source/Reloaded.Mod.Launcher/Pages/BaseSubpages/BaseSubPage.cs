@@ -6,6 +6,7 @@
         AddApp,
         ManageMods,
         SettingsPage,
-        Application
+        Application,
+        DownloadMods
     }
 }
