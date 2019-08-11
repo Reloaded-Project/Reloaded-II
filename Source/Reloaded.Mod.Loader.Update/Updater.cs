@@ -75,10 +75,18 @@ namespace Reloaded.Mod.Loader.Update
         {
             // Guard against null.
             int pairCount = summary.ResolverManagerResultPairs.Count;
+
+            var completeMods                = new Box<int>(0);
+            float completeModSegmentLength  = (float) 1 / pairCount;
             Progress<double> totalProgressHandler = null;
 
             if (progressHandler != null)
-                totalProgressHandler = new Progress<double>(progress => { progressHandler.Report(progress / pairCount); });
+            {
+                totalProgressHandler = new Progress<double>(progress =>
+                {
+                    progressHandler.Report((progress / pairCount) + (completeModSegmentLength * completeMods.Value));
+                });
+            }
 
             foreach (var pair in summary.ResolverManagerResultPairs)
             {
@@ -89,6 +97,7 @@ namespace Reloaded.Mod.Loader.Update
                     await manager.PrepareUpdateAsync(version, totalProgressHandler);
                     manager.LaunchUpdater(version, false);
                     pair.Resolver.PostUpdateCallback(true);
+                    completeMods.Value += 1;
                 }
                 catch (Exception e)
                 {
@@ -111,6 +120,15 @@ namespace Reloaded.Mod.Loader.Update
             }
 
             return modResolverPairs;
+        }
+
+        private class Box<T>
+        {
+            public T Value { get; set; }
+            public Box(T value)
+            {
+                Value = value;
+            }
         }
     }
 }
