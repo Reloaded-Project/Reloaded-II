@@ -124,9 +124,16 @@ namespace Reloaded.Mod.Launcher
             IoC.GetConstant<ManageModsViewModel>();   // Consumes MainPageViewModel, LoaderConfig
             IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, AddAppViewModel
 
-            var helper = await NugetHelper.FromSourceUrlAsync("https://www.myget.org/F/reloaded-ii-community/api/v3/index.json");
-            IoC.Kernel.Rebind<NugetHelper>().ToConstant(helper);
-            IoC.GetConstant<DownloadModsViewModel>(); // Consumes ManageModsViewModel, NugetHelper
+            try
+            {
+                var helper = await NugetHelper.FromSourceUrlAsync("https://www.myget.org/F/reloaded-ii-community/api/v3/index.json");
+                IoC.Kernel.Rebind<NugetHelper>().ToConstant(helper);
+                IoC.GetConstant<DownloadModsViewModel>(); // Consumes ManageModsViewModel, NugetHelper
+            }
+            catch (Exception ex)
+            {
+                // Probably no internet access. 
+            }
 
             // Preload DLL Injector Addresses.
             BasicDllInjector.PreloadAddresses();

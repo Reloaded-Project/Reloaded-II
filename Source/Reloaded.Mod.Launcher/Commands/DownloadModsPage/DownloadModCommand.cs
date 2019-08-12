@@ -22,10 +22,17 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
         /* Create & Dispose */
         public DownloadModCommand()
         {
-            _downloadModsViewModel = IoC.Get<DownloadModsViewModel>();
-            _manageModsViewModel   = IoC.Get<ManageModsViewModel>();
-            _downloadModsViewModel.PropertyChanged += DownloadModsPropertyChanged;
-            _manageModsViewModel.Mods.CollectionChanged += ModsOnCollectionChanged;
+            try
+            {
+                _downloadModsViewModel = IoC.Get<DownloadModsViewModel>();
+                _manageModsViewModel = IoC.Get<ManageModsViewModel>();
+                _downloadModsViewModel.PropertyChanged += DownloadModsPropertyChanged;
+                _manageModsViewModel.Mods.CollectionChanged += ModsOnCollectionChanged;
+            }
+            catch (Exception ex)
+            {
+                // Probably no internet
+            }
         }
 
         ~DownloadModCommand()
