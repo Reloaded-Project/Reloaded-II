@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Converters\NuGet\Structures\" />
+  </ItemGroup>
+
 </Project>

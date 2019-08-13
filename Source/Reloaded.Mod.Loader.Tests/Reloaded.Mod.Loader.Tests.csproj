@@ -15,10 +15,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="HeroesControllerPostProcess.zip" />
+    <None Remove="HeroesControllerPostProcessBad.zip" />
     <None Remove="xunit.runner.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="HeroesControllerPostProcess.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HeroesControllerPostProcessBad.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="xunit.runner.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
