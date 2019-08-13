@@ -24,7 +24,15 @@ See: [SharpCompress Supported Format Table](https://github.com/adamhathcock/shar
 
 # Existing Services
 
+**Note:** When the mod loader checks for updates, it will only use maximum one of the compatible sources below.
+
+The mod loader goes through each of the sources, listed in the exact same order as sections below and picks the first appropriate service which is supported.
+
+This is to speed up the time it takes to check for updates, as asking every source for every mod could otherwise take significant amount of time.
+
 ### Reloaded II Repository
+
+**Support:** A package is considered as "supported" if it is uploaded to this service.
 
 This is a self hosted official service for distributing Reloaded-II mods. When any dependencies of a given mod are missing, this is also the repository used for resolving dependencies. 
 
@@ -47,6 +55,8 @@ Before you upload however, you **must** read the [Upload Page](http://167.71.128
 Please be respectful and also follow the [Site Rules](http://167.71.128.50:5000/home).
 
 ### Github
+
+**Support:** A package is considered as "supported" if the file below exists.
 
 Support for mod updates from Github Releases can be added by copying the `ReloadedGithubUpdater.json` file from the Launcher's `Template` folder the to mod loader folder.
 
