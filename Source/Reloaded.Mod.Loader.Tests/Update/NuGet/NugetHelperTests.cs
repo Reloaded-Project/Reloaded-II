@@ -10,7 +10,7 @@ namespace Reloaded.Mod.Loader.Tests.Update.NuGet
 {
     public class NugetHelperTests
     {
-        private const string TestNugetFeed              = "https://www.myget.org/F/reloaded-ii-tests/api/v3/index.json";
+        private const string TestNugetFeed              = "http://167.71.128.50:5000/v3/index.json";
         private const string TestPackageName            = "sonicheroes.skins.midnighthill";
         private const string DependencyId               = "reloaded.universal.redirector";
         private const string TransitiveDependencyId     = "reloaded.sharedlib.hooks";
