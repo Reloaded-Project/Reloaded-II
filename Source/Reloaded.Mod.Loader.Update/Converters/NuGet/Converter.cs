@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Xml.Serialization;
 using Reloaded.Mod.Interfaces;
@@ -14,29 +15,16 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
     /// </summary>
     public class Converter
     {
-        private const string NugetPackageExtension = ".nupkg";
         private const string NugetContentDirectory = "content";
 
-        private string _archivePath;
-        private ArchiveFile _archiveFile;
-
         /// <summary>
-        /// Converts a packaged mod archive into a NuGet Package.
+        /// Converts a mod archive (zip) into a NuGet package.
         /// </summary>
-        public Converter(string archivePath)
+        /// <returns>The location of the newly created package.</returns>
+        public string ConvertFromArchiveFile(string archivePath, string outputDirectory)
         {
-            _archivePath = Path.GetFullPath(archivePath);
-            _archiveFile = new ArchiveFile(_archivePath);
-        }
-
-        /// <summary>
-        /// Converts the archive into a NuGet package.
-        /// </summary>
-        /// <returns>The location the NuGet package was extracted to.</returns>
-        public string Convert()
-        {
-            var modConfig     = JsonSerializer.Deserialize<ModConfig>(_archiveFile.ExtractModConfig());
-            var xmlSerializer = new XmlSerializer(typeof(Package), "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd");
+            var archiveFile   = new ArchiveFile(archivePath);
+            var modConfig     = JsonSerializer.Deserialize<ModConfig>(archiveFile.ExtractModConfig());
             SetNullPropertyValues(modConfig);
 
             // Create output directories.
@@ -48,19 +36,32 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
             Directory.CreateDirectory(contentDirectory);
 
             // Extract
-            _archiveFile.ExtractToDirectory(contentDirectory);
+            archiveFile.ExtractToDirectory(contentDirectory);
+            var nugetPackageOutput = FromModDirectory(contentDirectory, outputDirectory, modConfig);
+            Directory.Delete(directory, true);
+            return nugetPackageOutput;
+        }
+
+        /// <summary>
+        /// Creates a NuGet package given the directory of a mod.
+        /// </summary>
+        /// <param name="modDirectory">Full path to the directory containing the mod.</param>
+        /// <param name="outputDirectory">The path to the folder where the NuGet package should be output.</param>
+        /// <param name="modConfig">The mod configuration for which to create the NuGet package.</param>
+        /// <returns>The path of the generated .nupkg file.</returns>
+        public string FromModDirectory(string modDirectory, string outputDirectory, IModConfig modConfig)
+        {
+            var xmlSerializer = new XmlSerializer(typeof(Package), "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd");
 
             // Write .nuspec
-            using (TextWriter writer = new StreamWriter($"{directory}\\{modConfig.ModId}.nuspec"))
+            using (TextWriter writer = new StreamWriter($"{modDirectory}\\{modConfig.ModId}.nuspec"))
             {
                 xmlSerializer.Serialize(writer, FromModConfig(modConfig));
             }
 
             // Compress
-            string nupkgPath = Path.ChangeExtension(_archivePath, NugetPackageExtension);
-            _archiveFile.CompressDirectory(directory, nupkgPath);
-
-            Directory.Delete(directory, true);
+            string nupkgPath = Path.Combine(outputDirectory, $"{modConfig.ModId}.nupkg");
+            ArchiveFile.CompressDirectory(modDirectory, nupkgPath);
             return nupkgPath;
         }
 
@@ -75,7 +76,7 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
             return new Package(metadata);
         }
 
-        private string GetDirectory => $"{Path.GetTempPath()}\\{Path.GetFileNameWithoutExtension(_archivePath)}";
+        private string GetDirectory => $"{Path.GetTempPath()}\\{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
         private void SetNullPropertyValues(object obj)
         {
             foreach (var property in obj.GetType().GetProperties())

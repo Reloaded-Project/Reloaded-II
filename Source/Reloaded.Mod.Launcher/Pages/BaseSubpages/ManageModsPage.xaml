@@ -23,6 +23,7 @@
             <!-- Functionality -->
             <manageModsPageCommands:DeleteModCommand x:Key="DeleteModCommand"/>
             <manageModsPageCommands:OpenModFolderCommand x:Key="OpenModFolderCommand"/>
+            <manageModsPageCommands:ConvertToNugetCommand x:Key="ConvertToNugetCommand"/>
             <manageModsPageCommands:ManageDependenciesCommand x:Key="ManageDependenciesCommand"/>
 
             <!-- Sort the mod list -->
@@ -107,6 +108,11 @@
                                         Content="{DynamicResource ModManagerOpenModDirectory}" 
                                         Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                         Command="{StaticResource OpenModFolderCommand}"/>
+
+                                <Button Style="{DynamicResource UnpaddedStretchedButton}"
+                                        Content="{DynamicResource ModManagerConvertToNuget}" 
+                                        Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                                        Command="{StaticResource ConvertToNugetCommand}"/>
 
                                 <Button Style="{DynamicResource UnpaddedStretchedButton}"
                                         Content="{DynamicResource ModManagerManageDependencies}" 

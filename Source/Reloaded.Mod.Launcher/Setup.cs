@@ -30,6 +30,8 @@ namespace Reloaded.Mod.Launcher
     /// </summary>
     public static class Setup
     {
+        private const string NuGetApiEndpoint = "localhost:50561/api/v3/index.json";
+
         private static bool _loadExecuted = false;
         private static XamlResource<string> _xamlSplashCreatingDefaultConfig = new XamlResource<string>("SplashCreatingDefaultConfig");
         private static XamlResource<string> _xamlSplashPreparingResources = new XamlResource<string>("SplashPreparingResources");
@@ -126,7 +128,7 @@ namespace Reloaded.Mod.Launcher
 
             try
             {
-                var helper = await NugetHelper.FromSourceUrlAsync("https://www.myget.org/F/reloaded-ii-community/api/v3/index.json");
+                var helper = await NugetHelper.FromSourceUrlAsync(NuGetApiEndpoint);
                 IoC.Kernel.Rebind<NugetHelper>().ToConstant(helper);
                 IoC.GetConstant<DownloadModsViewModel>(); // Consumes ManageModsViewModel, NugetHelper
             }

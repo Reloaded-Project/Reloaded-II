@@ -50,6 +50,7 @@
     <sys:String x:Key="ModManagerSearchApps">Search Apps</sys:String>
     <sys:String x:Key="ModManagerExtraOptions">Extra Options</sys:String>
     <sys:String x:Key="ModManagerOpenModDirectory">Open Mod Directory</sys:String>
+    <sys:String x:Key="ModManagerConvertToNuget">Convert to NuGet format</sys:String>
     <sys:String x:Key="ModManagerManageDependencies">Manage Dependencies</sys:String>
     <sys:String x:Key="ModManagerSelectMod">Select the mod to change the details of.</sys:String>
     <sys:String x:Key="ModManagerSelectApp">Select the applications that are compatible with this mod.</sys:String>

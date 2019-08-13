@@ -17,15 +17,15 @@ namespace Reloaded.Mod.Loader.Tests.Update.NuGet.Convert
         [Fact]
         public void TryConvertBad()
         {
-            var converter = new Converter(TestArchiveFileBad);
-            Assert.Throws<BadArchiveException>(() => converter.Convert());
+            var converter = new Converter();
+            Assert.Throws<BadArchiveException>(() => converter.ConvertFromArchiveFile(TestArchiveFileBad, Environment.CurrentDirectory));
         }
 
         [Fact]
         public void TryConvert()
         {
-            var converter = new Converter(TestArchiveFile);
-            var converted = converter.Convert();
+            var converter = new Converter();
+            var converted = converter.ConvertFromArchiveFile(TestArchiveFile, Environment.CurrentDirectory);
 
             Assert.True(File.Exists(converted));
             Assert.True(IsZipValid(converted));

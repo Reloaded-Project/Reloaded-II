@@ -77,7 +77,7 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
         /// </summary>
         /// <param name="directoryPath">The full path of the folder to compress.</param>
         /// <param name="outputPath">The path where the output file should be copied to.</param>
-        public void CompressDirectory(string directoryPath, string outputPath)
+        public static void CompressDirectory(string directoryPath, string outputPath)
         {
             using (var archive = ZipArchive.Create())
             {
