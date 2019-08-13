@@ -159,8 +159,8 @@
     <sys:String x:Key="DownloadModsDownloading">Downloading</sys:String>
     <sys:String x:Key="DownloadModsAlreadyDownloaded">Already Downloaded</sys:String>
 
-    <sys:String x:Key="DownloadModsCheckUpdates">Check for Updates</sys:String>
-    <sys:String x:Key="DownloadModsCheckDependencies">Check Dependencies</sys:String>
+    <sys:String x:Key="DownloadModsVisitWebsite">Visit Website</sys:String>
+    <sys:String x:Key="DownloadModsCheckUpdatesAndDependencies">Check Updates &amp; Dependencies</sys:String>
 
     <!-- No Update Dialog -->
     <sys:String x:Key="NoUpdateDialogTitle">Hooray!</sys:String>

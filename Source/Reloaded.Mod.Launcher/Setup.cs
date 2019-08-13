@@ -30,7 +30,8 @@ namespace Reloaded.Mod.Launcher
     /// </summary>
     public static class Setup
     {
-        private const string NuGetApiEndpoint = "http://167.71.128.50:5000/v3/index.json";
+        public const string NuGetApiEndpoint = "http://167.71.128.50:5000/v3/index.json";
+        public const string NuGetApiWebsite  = "http://167.71.128.50:5000/home";
 
         private static bool _loadExecuted = false;
         private static XamlResource<string> _xamlSplashCreatingDefaultConfig = new XamlResource<string>("SplashCreatingDefaultConfig");

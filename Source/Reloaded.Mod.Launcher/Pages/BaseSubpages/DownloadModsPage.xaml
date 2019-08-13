@@ -14,8 +14,9 @@
 
         <Grid.Resources>
             <downloadModsPage:DownloadModCommand x:Key="DownloadModCommand"/>
-            <downloadModsPage:CheckForUpdatesCommand x:Key="CheckForUpdatesCommand"/>
-            <downloadModsPage:CheckForDependenciesCommand x:Key="CheckForDependenciesCommand"/>
+            <downloadModsPage:CheckForUpdatesAndDependenciesCommand x:Key="CheckForUpdatesAndDependenciesCommand"/>
+            <downloadModsPage:VisitWebsiteCommand x:Key="VisitWebsiteCommand"/>
+
         </Grid.Resources>
 
         <Grid.RowDefinitions>
@@ -72,14 +73,14 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal" 
                     Margin="{DynamicResource CommonItemVerticalMargin}">
-            
-            <Button Content="{DynamicResource DownloadModsCheckUpdates}"
+
+            <Button Content="{DynamicResource DownloadModsVisitWebsite}"
                     Margin="{DynamicResource CommonItemHorizontalMargin}" 
-                    Command="{DynamicResource CheckForUpdatesCommand}"
+                    Command="{DynamicResource VisitWebsiteCommand}"
             />
-            <Button Content="{DynamicResource DownloadModsCheckDependencies}"
+            <Button Content="{DynamicResource DownloadModsCheckUpdatesAndDependencies}"
                     Margin="{DynamicResource CommonItemHorizontalMargin}" 
-                    Command="{DynamicResource CheckForDependenciesCommand}"
+                    Command="{DynamicResource CheckForUpdatesAndDependenciesCommand}"
             />
             <Button Content="{Binding DownloadModStatus, Converter={x:Static converters:DownloadModStatusToString.Instance}, FallbackValue='Download Mod'}" 
                     Margin="{DynamicResource CommonItemHorizontalMargin}" 
