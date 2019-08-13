@@ -80,26 +80,19 @@ namespace Reloaded.Mod.Loader.Update.Utilities
         public static void ExtractPackageContent(Stream nugetPackageStream, string targetDirectory, CancellationToken token = default)
         {
             PackageReaderBase packageReader = new PackageArchiveReader(nugetPackageStream);
-            var anyFrameworkGroup = packageReader.GetContentItems().FirstOrDefault();
-            if (anyFrameworkGroup != null)
-            {
-                var items = anyFrameworkGroup.Items;
-                var tempDirectory = $"{Path.GetTempPath()}\\{packageReader.NuspecReader.GetId()}";
-                
-                // Remove all items ending with a front or backslash (directories)
-                items = items.Where(x => !(x.EndsWith("\\") || x.EndsWith("/")) );
+            var items = packageReader.GetFiles();
+            var tempDirectory = $"{Path.GetTempPath()}\\{packageReader.NuspecReader.GetId()}";
 
-                if (Directory.Exists(tempDirectory))
-                    Directory.Delete(tempDirectory, true);
+            // Remove all items ending with a front or backslash (directories)
+            items = items.Where(x => !(x.EndsWith("\\") || x.EndsWith("/")));
 
-                packageReader.CopyFiles(tempDirectory, items, ExtractFile, _nullLogger, token);
-
-                var contentDirectory = Path.Combine(tempDirectory, Path.GetDirectoryName(anyFrameworkGroup.Items.First()) ?? throw new InvalidOperationException());
-                var fullTargetDirectory = Path.GetFullPath(targetDirectory);
-                IOEx.MoveDirectory(contentDirectory, fullTargetDirectory);
-
+            if (Directory.Exists(tempDirectory))
                 Directory.Delete(tempDirectory, true);
-            }
+
+            packageReader.CopyFiles(tempDirectory, items, ExtractFile, _nullLogger, token);
+
+            var fullTargetDirectory = Path.GetFullPath(targetDirectory);
+            IOEx.MoveDirectory(tempDirectory, fullTargetDirectory);
         }
 
         /// <summary>
