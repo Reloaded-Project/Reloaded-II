@@ -10,7 +10,7 @@ namespace Reloaded.Mod.Loader.Tests.Update.NuGet
 {
     public class NugetHelperTests
     {
-        private const string TestNugetFeed              = "https://www.myget.org/feed/Packages/reloaded-ii-tests";
+        private const string TestNugetFeed              = "https://www.myget.org/F/reloaded-ii-tests/api/v3/index.json";
         private const string TestPackageName            = "sonicheroes.skins.midnighthill";
         private const string DependencyId               = "reloaded.universal.redirector";
         private const string TransitiveDependencyId     = "reloaded.sharedlib.hooks";
@@ -22,7 +22,6 @@ namespace Reloaded.Mod.Loader.Tests.Update.NuGet
             _nugetHelper = NugetHelper.FromSourceUrlAsync(TestNugetFeed).Result;
         }
 
-        /* If these tests fail, consider the fact the test server could be down. Try the URL above. This is OK. */
         [Fact]
         public void Search()
         {
