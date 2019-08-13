@@ -10,7 +10,7 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
         public bool CanExecute(object parameter) => true;
         public void Execute(object parameter)
         {
-            ProcessExtensions.OpenFileWithDefaultProgram(Setup.NuGetApiWebsite);
+            ProcessExtensions.OpenFileWithDefaultProgram(SharedConstants.NuGetApiWebsite);
         }
 
         public event EventHandler CanExecuteChanged;

@@ -20,6 +20,7 @@ using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
 using MessageBox = System.Windows.MessageBox;
 
@@ -30,9 +31,6 @@ namespace Reloaded.Mod.Launcher
     /// </summary>
     public static class Setup
     {
-        public const string NuGetApiEndpoint = "http://167.71.128.50:5000/v3/index.json";
-        public const string NuGetApiWebsite  = "http://167.71.128.50:5000/home";
-
         private static bool _loadExecuted = false;
         private static XamlResource<string> _xamlSplashCreatingDefaultConfig = new XamlResource<string>("SplashCreatingDefaultConfig");
         private static XamlResource<string> _xamlSplashPreparingResources = new XamlResource<string>("SplashPreparingResources");
@@ -129,7 +127,7 @@ namespace Reloaded.Mod.Launcher
 
             try
             {
-                var helper = await NugetHelper.FromSourceUrlAsync(NuGetApiEndpoint);
+                var helper = await NugetHelper.FromSourceUrlAsync(SharedConstants.NuGetApiEndpoint);
                 IoC.Kernel.Rebind<NugetHelper>().ToConstant(helper);
                 IoC.GetConstant<DownloadModsViewModel>(); // Consumes ManageModsViewModel, NugetHelper
             }

@@ -12,6 +12,7 @@ using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.Update.Resolvers
 {
@@ -23,7 +24,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 
         static NugetRepositoryResolver()
         {
-            _nugetHelper = Task.Run(() => NugetHelper.FromSourceUrlAsync("https://www.myget.org/F/reloaded-ii-community/api/v3/index.json")).Result;
+            _nugetHelper = Task.Run(() => NugetHelper.FromSourceUrlAsync(SharedConstants.NuGetApiEndpoint)).Result;
         }
 
         /* Interface Implementation */
