@@ -8,8 +8,8 @@
 </div>
 
 # Table of Contents
-- [Supported Archive Formats](#supported-archive-formats)
 - [Existing Services](#existing-services)
+    - [Reloaded II Repository](#reloaded-ii-repository)
     - [Github](#github)
         - [Determining Version](#determining-version)
         - [User Configuration](#user-configuration)
@@ -23,6 +23,28 @@
 See: [SharpCompress Supported Format Table](https://github.com/adamhathcock/sharpcompress/blob/master/FORMATS.md#supported-format-table)
 
 # Existing Services
+
+### Reloaded II Repository
+
+This is a self hosted official service for distributing Reloaded-II mods. When any dependencies of a given mod are missing, this is also the repository used for resolving dependencies. 
+
+This repository is open to everyone: Registration free!
+
+To upload: first generate a NuGet package for your mod from inside the launcher using the `Convert to NuGet format` button.
+
+![Example](https://i.imgur.com/V7uq4Jl.png)
+
+Once conversion completes, Reloaded will open a folder containing the newly generated `.nupkg` file.
+
+To upload this file, use the `dotnet` commandline utility that ships with the .NET Core SDK (if you are using Reloaded-II you'll probably have this).
+
+```
+dotnet nuget push -s http://167.71.128.50:5000/v3/index.json -k YOUR-UNIQUE-KEY package.nupkg
+```
+
+Before you upload however, you **must** read the [Upload Page](http://167.71.128.50:5000/upload) for some additional important information.
+
+Please be respectful and also follow the [Site Rules](http://167.71.128.50:5000/home).
 
 ### Github
 
