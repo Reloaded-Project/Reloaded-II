@@ -85,6 +85,10 @@ namespace Reloaded.Mod.Loader.Update.Utilities
             {
                 var items = anyFrameworkGroup.Items;
                 var tempDirectory = $"{Path.GetTempPath()}\\{packageReader.NuspecReader.GetId()}";
+                
+                // Remove all items ending with a front or backslash (directories)
+                items = items.Where(x => !(x.EndsWith("\\") || x.EndsWith("/")) );
+
                 if (Directory.Exists(tempDirectory))
                     Directory.Delete(tempDirectory, true);
 
