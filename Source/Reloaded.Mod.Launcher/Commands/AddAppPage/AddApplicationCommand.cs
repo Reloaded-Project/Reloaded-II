@@ -43,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
             // Get file information and populate initial application details.
             var fileInfo = FileVersionInfo.GetVersionInfo(exePath);
-            IApplicationConfig config = new ApplicationConfig(Path.GetFileName(fileInfo.FileName), fileInfo.ProductName, exePath);
+            IApplicationConfig config = new ApplicationConfig(Path.GetFileName(fileInfo.FileName).ToLower(), fileInfo.ProductName, exePath);
 
             // Set AppName if empty & Ensure no duplicate ID.
             if (String.IsNullOrEmpty(config.AppName))
