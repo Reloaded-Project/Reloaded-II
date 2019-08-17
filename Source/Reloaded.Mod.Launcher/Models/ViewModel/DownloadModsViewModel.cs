@@ -40,7 +40,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             _tokenSource = new CancellationTokenSource();
 
             var searchResults = await _nugetHelper.Search(SearchQuery, false, 50, _tokenSource.Token);
-            var modEntries = searchResults.Select(x => new DownloadModEntry(x.Identity.Id, x.Description, x.Identity.Version));
+            var modEntries = searchResults.Select(x => new DownloadModEntry(x.Identity.Id, x.Authors, x.Description, x.Identity.Version));
             Collections.ModifyObservableCollection(DownloadModEntries, modEntries);
         }
 

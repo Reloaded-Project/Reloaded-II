@@ -54,8 +54,9 @@
             AutoGenerateColumns="False"
             Margin="{DynamicResource CommonItemVerticalMargin}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{DynamicResource UpdateModModId}" Binding="{Binding Id}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn Header="{DynamicResource UpdateModModId}" Binding="{Binding Id}" Width="Auto" IsReadOnly="True" />
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogDescription}" Binding="{Binding Description}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors}" Width="Auto" IsReadOnly="True" />
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version}" Width="Auto" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
