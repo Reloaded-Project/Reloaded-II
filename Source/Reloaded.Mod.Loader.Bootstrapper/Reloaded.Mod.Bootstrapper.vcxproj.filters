@@ -30,9 +30,6 @@
     <ClInclude Include="ReloadedPaths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="json.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="nethost\nethost.h">
       <Filter>Header Files\nethost</Filter>
     </ClInclude>
@@ -98,5 +95,8 @@
     <Library Include="nethost\x64-libs\nethost.lib">
       <Filter>Header Files\nethost\x64-libs</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

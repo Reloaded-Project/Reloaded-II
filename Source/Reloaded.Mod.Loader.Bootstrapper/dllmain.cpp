@@ -5,7 +5,7 @@
 #include "Shlobj_core.h"
 #include "ReloadedPaths.h"
 #include "CoreCLR.hpp"
-#include "json.hpp"
+#include <nlohmann/json.hpp>
 
 #include <locale>
 #include <codecvt>
