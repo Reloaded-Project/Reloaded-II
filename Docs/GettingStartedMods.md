@@ -30,6 +30,7 @@ The configuration file has the following parameters:
 
 - **Recommended Format**: "game.type.name"
 - **Example**: sonicheroes.asset.seasidehillmidnight
+- Including the name of the game is essential as it makes your mod easy to find in the `Download Mods` menu.
 
 **Name:** The name of the mod a seen in the launcher.
 **Author**: The name of the author(s) of the mod.
