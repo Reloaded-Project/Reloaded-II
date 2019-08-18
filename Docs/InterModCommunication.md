@@ -251,7 +251,7 @@ Ideally interface libraries should be 4-10KB and contain no external references 
 ### Upgrading Interfaces used with Controllers/Plugins
 Changes to existing interfaces will break mods using the interfaces. This should be fairly obvious to anyone who has used a plugin or a plugin-like system before.
 
-If you want to add more functionality to existing interfaces, either make a new interface or extend the current interface via inheritance.
+If you want to add more functionality to existing interfaces, either make a new interface or extend the current interface via inheritance inside a newer interface.
 
 **Example:** Registering upgraded controller via inheritance:
 
@@ -260,7 +260,10 @@ If you want to add more functionality to existing interfaces, either make a new 
 ModLoader.AddOrReplaceController<IControllerV1>(this, _controller); ModLoader.AddOrReplaceController<IControllerV2>(this, _controller);
 ```
 
+Official controllers, shared libraries and plugins use a naming convention of `IController`, `IControllerV2`, `IControllerV3` ... with each version inheriting previous versions.  
+
 ## Examples
+
 The following examples contain mods that either export interfaces to be used by other mods and/or consume interfaces from other mods.
 
 - [Reloaded Universal File Redirector](https://github.com/Reloaded-Project/Reloaded.Mod.Universal.Redirector)
