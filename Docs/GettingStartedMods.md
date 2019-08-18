@@ -53,7 +53,7 @@ At the time of writing, the preview images in Reloaded-II are `256x256` in size.
 
 By default, Reloaded Mod Loader does not provide any functionality such as e.g. File Redirection that you may have seen or be used to in other mod loaders. To make Reloaded modular, all functionality that affects the target application are implemented as separate mods.
 
-If you're a programmer and wish to implement such mods, please read the [Developer Mod Guide](./DeveloperModGuide) and then read [Inter Mod Communication](./InterModCommunication.md).
+If you're a programmer and wish to implement such mods, please read the [Developer Mod Guide](./DeveloperModGuide.md) and then read [Inter Mod Communication](./InterModCommunication.md).
 
 If you're not a programmer, here is a list of mods providing various functionalities you could use to get started:
 
