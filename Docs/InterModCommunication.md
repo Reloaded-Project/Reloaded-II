@@ -251,16 +251,40 @@ Ideally interface libraries should be 4-10KB and contain no external references 
 ### Upgrading Interfaces used with Controllers/Plugins
 Changes to existing interfaces will break mods using the interfaces. This should be fairly obvious to anyone who has used a plugin or a plugin-like system before.
 
-If you want to add more functionality to existing interfaces, either make a new interface or extend the current interface via inheritance inside a newer interface.
+If you want to add more functionality to existing interfaces, either make a new interface or extend the current interface via inheritance. After being published
+
+Controller interfaces should be named with no version suffix and inherit newer versions of itself such that an end user.
+
+After being published, a certain version of an interface should never change (this includes method names, parameters etc.).
 
 **Example:** Registering upgraded controller via inheritance:
 
 ```csharp
-// Controller implements IControllerV2 which inherits IControllerV1.
+// _controller implements IController which inherits IControllerV2 and IControllerV1.
+// Although most consumers will use interface without version suffix it is recommended to register every version of interface, if possible.
+ModLoader.AddOrReplaceController<IController>(this, _controller); 
 ModLoader.AddOrReplaceController<IControllerV1>(this, _controller); ModLoader.AddOrReplaceController<IControllerV2>(this, _controller);
 ```
 
-Official controllers, shared libraries and plugins use a naming convention of `IController`, `IControllerV2`, `IControllerV3` ... with each version inheriting previous versions.  
+**Example Controller Interfaces:**
+The following are examples of valid controller interfaces.
+
+```csharp
+// Each controller with its own implementation, inheriting the next.
+interface IControllerV3 { void DoZ(); }
+interface IControllerV2 : IControllerV3 { void DoY(); }
+interface IController : IControllerV2 { void DoX(); }
+```
+
+```csharp
+// Base implementation inherits all following controllers.
+interface IController : IControllerV2, IControllerV3 { void DoX(); }
+```
+  
+```csharp
+// Empty base implementation inheriting other controllers.
+interface IController : IControllerV1, IControllerV2, IControllerV3 { }
+```
 
 ## Examples
 
