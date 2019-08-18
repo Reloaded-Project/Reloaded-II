@@ -251,11 +251,9 @@ Ideally interface libraries should be 4-10KB and contain no external references 
 ### Upgrading Interfaces used with Controllers/Plugins
 Changes to existing interfaces will break mods using the interfaces. This should be fairly obvious to anyone who has used a plugin or a plugin-like system before.
 
-If you want to add more functionality to existing interfaces, either make a new interface or extend the current interface via inheritance. After being published
+If you want to add more functionality to existing interfaces, either make a new interface or extend the current interface via inheritance. After being published (Mod Released), interfaces should never change (this includes method names).
 
 Controller interfaces should be named with no version suffix and inherit newer versions of itself such that an end user.
-
-After being published, a certain version of an interface should never change (this includes method names, parameters etc.).
 
 **Example:** Registering upgraded controller via inheritance:
 
@@ -280,7 +278,7 @@ interface IController : IControllerV2 { void DoX(); }
 // Base implementation inherits all following controllers.
 interface IController : IControllerV2, IControllerV3 { void DoX(); }
 ```
-  
+
 ```csharp
 // Empty base implementation inheriting other controllers.
 interface IController : IControllerV1, IControllerV2, IControllerV3 { }
