@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Onova.Services;
+using SharpCompress.Archives.SevenZip;
 using SharpCompress.Common;
 using SharpCompress.Readers;
 
@@ -22,23 +23,42 @@ namespace Reloaded.Mod.Loader.Update.Extractors
         {
             byte[] file     = File.ReadAllBytes(sourceFilePath);
             long totalSize  = file.Length;
-            long totalReadSize = 0;
 
             using (Stream memoryStream = new MemoryStream(file))
-            using (var factory = ReaderFactory.Open(memoryStream))
             {
-                while (factory.MoveToNextEntry())
+                if (SevenZipArchive.IsSevenZipFile(memoryStream))
                 {
-                    if (!factory.Entry.IsDirectory)
+                    // 7z is not a streamable format, thus doesn't function with the ReaderFactory API
+                    using (var sevenZipArchive = SevenZipArchive.Open(memoryStream))
                     {
-                        factory.WriteEntryToDirectory(destDirPath, _options);
-                        totalReadSize += factory.Entry.CompressedSize;
-                        await Task.Yield();
-                        progress?.Report((double) totalReadSize / totalSize);
+                        var reader = sevenZipArchive.ExtractAllEntries();
+                        await ExtractFromReaderAsync(reader, destDirPath, totalSize, progress);
+                    }
+                }
+                else
+                {
+                    using (var factory = ReaderFactory.Open(memoryStream))
+                    {
+                        await ExtractFromReaderAsync(factory, destDirPath, totalSize, progress);
                     }
                 }
             }
+        }
 
+        private async Task ExtractFromReaderAsync(IReader reader, string destDirPath, long totalSize, IProgress<double> progress = null)
+        {
+            long totalReadSize = 0;
+
+            while (reader.MoveToNextEntry())
+            {
+                if (!reader.Entry.IsDirectory)
+                {
+                    reader.WriteEntryToDirectory(destDirPath, _options);
+                    totalReadSize += reader.Entry.CompressedSize;
+                    await Task.Yield();
+                    progress?.Report((double)totalReadSize / totalSize);
+                }
+            }
         }
     }
 }
