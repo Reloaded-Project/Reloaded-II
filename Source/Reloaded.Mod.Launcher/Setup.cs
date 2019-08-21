@@ -183,6 +183,7 @@ namespace Reloaded.Mod.Launcher
                 Directory.CreateDirectory(templatesDirectory);
             
             GithubLatestUpdateResolver.GithubConfig.ToPath(new GithubLatestUpdateResolver.GithubConfig(), $"{GithubLatestUpdateResolver.GithubConfig.GetFilePath(templatesDirectory)}");
+            GameBananaUpdateResolver.GameBananaConfig.ToPath(new GameBananaUpdateResolver.GameBananaConfig(), $"{GameBananaUpdateResolver.GameBananaConfig.GetFilePath(templatesDirectory)}");
         }
 
         /// <summary>
