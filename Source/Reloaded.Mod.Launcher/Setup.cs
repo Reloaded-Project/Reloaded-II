@@ -190,8 +190,8 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static async Task CheckForUpdatesAsync()
         {
-            await Update.CheckForLoaderUpdatesAsync();
             await Task.Run(Update.CheckForModUpdatesAsync);
+            await Update.CheckForLoaderUpdatesAsync();
             if (Update.CheckMissingDependencies(out var missingDependencies))
             {
                 try
