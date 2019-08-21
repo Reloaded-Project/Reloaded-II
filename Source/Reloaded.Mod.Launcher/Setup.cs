@@ -44,7 +44,7 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         /// <param name="updateText">A function that updates the visible text onscreen.</param>
         /// <param name="minimumSplashDelay">Minimum amount of time to wait to complete the loading process.</param>
-        public static async Task SetupApplication(Action<string> updateText, int minimumSplashDelay)
+        public static async Task SetupApplicationAsync(Action<string> updateText, int minimumSplashDelay)
         {
             if (!_loadExecuted)
             {
@@ -69,7 +69,7 @@ namespace Reloaded.Mod.Launcher
                 await SetupViewModelsAsync();
 
                 updateText(_xamlCheckingForUpdates.Get());
-                CheckForUpdatesAsync();
+                CheckForUpdatesAsync(); // Fire and forget, we don't want to delay startup time.
 
                 // Wait until splash screen time.
                 updateText($"{_xamlSplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");

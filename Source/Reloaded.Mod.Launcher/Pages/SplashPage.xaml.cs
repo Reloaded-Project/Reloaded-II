@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Launcher.Models.ViewModel;
@@ -7,6 +8,7 @@ using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.Utilities;
+using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 using WindowViewModel = Reloaded.Mod.Launcher.Models.ViewModel.WindowViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages
@@ -18,6 +20,8 @@ namespace Reloaded.Mod.Launcher.Pages
     {
         private readonly SplashViewModel _splashViewModel;
         private XamlResource<int> _xamlSplashMinimumTime = new XamlResource<int>("SplashMinimumTime");
+        private XamlResource<string> _xamlFailedToLaunchTitle = new XamlResource<string>("FailedToLaunchTitle");
+        private XamlResource<string> _xamlFailedToLaunchMessage = new XamlResource<string>("FailedToLaunchMessage");
         private bool _loaded = false;
 
         public SplashPage() : base()
@@ -30,28 +34,39 @@ namespace Reloaded.Mod.Launcher.Pages
             this.DataContext = _splashViewModel;
         }
 
-        private void AfterLoading(object sender, RoutedEventArgs e)
+        private async void AfterLoading(object sender, RoutedEventArgs e)
         {
             // Start preparing everything on Splash Screen!
             if (!_loaded)
             {
                 _loaded = true;
-                var task = Task.Run(() => Setup.SetupApplication(UpdateText, _xamlSplashMinimumTime.Get()))
-                            .ContinueWith(ChangeToMainPage)
-                            .ContinueWith(DisplayFirstLaunchWarningIfNeeded);
+                try
+                {
+                    await Task.Run(async () =>
+                    {
+                        await Setup.SetupApplicationAsync(UpdateText, _xamlSplashMinimumTime.Get());
+                        ChangeToMainPage();
+                        DisplayFirstLaunchWarningIfNeeded();
+                    });
+                }
+                catch (Exception ex)
+                {
+                    var messageBox = new MessageBox(_xamlFailedToLaunchTitle.Get(), _xamlFailedToLaunchMessage.Get() + $" {ex.Message}\n{ex.StackTrace}");
+                    messageBox.ShowDialog();
+                }
             }
         }
 
-        private void ChangeToMainPage(Task obj)
+        private void ChangeToMainPage()
         {
-            IoC.Get<MainWindow>().Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
                 var viewModel = IoC.Get<WindowViewModel>();
                 viewModel.CurrentPage = Page.Base;
             });
         }
 
-        private void DisplayFirstLaunchWarningIfNeeded(Task obj)
+        private void DisplayFirstLaunchWarningIfNeeded()
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -64,7 +79,6 @@ namespace Reloaded.Mod.Launcher.Pages
                     loaderConfig.FirstLaunch = false;
                     LoaderConfigReader.WriteConfiguration(loaderConfig);
                 }
-
             });
         }
 

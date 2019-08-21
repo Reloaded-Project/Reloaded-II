@@ -172,6 +172,10 @@
     <sys:String x:Key="FetchNugetNotFoundMessage">The following packages have not been found:</sys:String>
     <sys:String x:Key="FetchNugetNotFoundAdvice">You will need to find them yourself :/</sys:String>
 
+    <!-- Startup Failure -->
+    <sys:String x:Key="FailedToLaunchTitle">Oof!</sys:String>
+    <sys:String x:Key="FailedToLaunchMessage">An error occured while trying to load Reloaded-II.</sys:String>
+
     <!-- Errors -->
     <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->
     <sys:String x:Key="ErrorPathNullOrEmpty">The path to this application is either null or empty. Please fix the path.</sys:String>
