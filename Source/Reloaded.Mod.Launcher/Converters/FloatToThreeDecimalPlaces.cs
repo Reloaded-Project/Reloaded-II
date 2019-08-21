@@ -16,6 +16,9 @@ namespace Reloaded.Mod.Launcher.Converters
         {
             if (value is float floatingPoint)
             {
+                if (Math.Abs(floatingPoint) < 0.0001F)
+                    return "N/A";
+
                 value = floatingPoint.ToString("0.000");
                 return value;
             }
