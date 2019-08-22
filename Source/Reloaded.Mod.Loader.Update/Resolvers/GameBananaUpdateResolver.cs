@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -55,7 +56,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 
                 if (Item.Files.Values.Count > 0)
                 {
-                    ItemFile = Item.Files.First(x => x.Value.FileName.Contains(Config.FileNamePattern)).Value;
+                    ItemFile = Item.Files.First(x => CaseInsensitiveStringContains(x.Value.FileName, Config.FileNamePattern)).Value;
                     var date = ItemFile.DateAdded;
                     return new []{ FromDateTime(date) };
                 }
@@ -83,6 +84,11 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 
         public void PostUpdateCallback(bool hasUpdates) { }
 
+        private bool CaseInsensitiveStringContains(string source, string toCheck)
+        {
+            return source.IndexOf(toCheck, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        }
+
         private Version FromDateTime(DateTime time)
         {
             return Version.Parse($"{time.Year}.{time.Month}.{time.Day}.{(int)time.TimeOfDay.TotalSeconds}");
@@ -93,7 +99,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             public const string ConfigFileName = "ReloadedGamebananaUpdater.json";
             public static string GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";
 
-            public string FileNamePattern { get; set; } = ".ReloadedII";
+            public string FileNamePattern { get; set; } = "reloadedii";
             public string ItemType { get; set; }
             public long ItemId     { get; set; }
         }
