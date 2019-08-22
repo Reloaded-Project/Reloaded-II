@@ -4,10 +4,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
+using System.Threading;
 using System.Windows;
+using System.Windows.Navigation;
 using Reloaded.Mod.Launcher.Misc;
+using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.WPF.Utilities;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -16,6 +21,7 @@ namespace Reloaded.Mod.Launcher
     /// </summary>
     public partial class App : Application
     {
+        private XamlResource<string> _xamlRunAsAdminMessage = new XamlResource<string>("RunAsAdminMessage");
         private Dictionary<string, string> _commandLineArguments = new Dictionary<string, string>();
 
         /// <summary>
@@ -24,6 +30,8 @@ namespace Reloaded.Mod.Launcher
         public App()
         {
             PopulateCommandLineArgs();
+
+            /* Check if Kill Process */
             if (_commandLineArguments.TryGetValue(Constants.ParameterKill, out string processId))
             {
                 var process = Process.GetProcessById(Convert.ToInt32(processId));
@@ -32,6 +40,7 @@ namespace Reloaded.Mod.Launcher
                 ActionWrappers.SleepOnConditionWithTimeout(() => process.HasExited, 1000, 32);
             }
 
+            /* Check if Launch Process */
             if (_commandLineArguments.TryGetValue(Constants.ParameterLaunch, out string applicationToLaunch))
             {
                 // Acquire arguments
@@ -52,12 +61,28 @@ namespace Reloaded.Mod.Launcher
                 Environment.Exit(0);
             }
 
+            // Move Contents involving UI elements to LoadCompleted
+            this.Startup += OnStartup;
+        }
+
+        private void OnStartup(object sender, StartupEventArgs e)
+        {            
+            // Ideally this should be in Setup, however the download dialogs should be localized.
+            SetupLocalization();
+
+            /* Check if Download Mod */
+            if (_commandLineArguments.TryGetValue(Constants.ParameterDownload, out string downloadUrl))
+            {
+                var dialog = new DownloadModArchiveDialog(new[] { new Uri(downloadUrl) });
+                dialog.ShowDialog();
+
+                // Quit the process.
+                Environment.Exit(0);
+            }
+
             if (!IsElevated)
             {
-                MessageBox.Show("You need to run this application as administrator.\n" +
-                                "Administrative privileges are needed to receive application launch/exit events " +
-                                "from Windows Management Instrumentation (WMI).\n" +
-                                "Developers: Run your favourite IDE e.g. Visual Studio as Admin.");
+                MessageBox.Show(_xamlRunAsAdminMessage.Get());
                 Environment.Exit(0);
             }
         }
@@ -70,9 +95,23 @@ namespace Reloaded.Mod.Launcher
         }
 
         /// <summary>
+        /// Sets up localization for the system language.
+        /// </summary>
+        private static void SetupLocalization()
+        {
+            // Set language dictionary.
+            var langDict = new ResourceDictionary();
+            string culture = Thread.CurrentThread.CurrentCulture.ToString();
+            string languageFilePath = AppDomain.CurrentDomain.BaseDirectory + $"/Languages/{culture}.xaml";
+            if (File.Exists(languageFilePath))
+                langDict.Source = new Uri(languageFilePath, UriKind.Absolute);
+
+            Current.Resources.MergedDictionaries.Add(langDict);
+        }
+
+        /// <summary>
         /// Checks if the application is running as root/sudo/administrator.
         /// </summary>
-        private static bool IsElevated =>
-            new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        private static bool IsElevated => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
     }
 }

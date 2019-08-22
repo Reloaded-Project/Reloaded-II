@@ -8,6 +8,7 @@
         public const string ParameterKill = "--kill";
         public const string ParameterLaunch = "--launch";
         public const string ParameterArguments = "--arguments";
+        public const string ParameterDownload  = "--download";
         public const int    IcoMaxHeight = 256;
         public const int    IcoMaxWidth = 256;
     }

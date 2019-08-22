@@ -56,9 +56,6 @@ namespace Reloaded.Mod.Launcher
                 // Allow for debugging before crashing.
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
-                // Setting up localization.
-                SetupLocalization();
-
                 updateText(_xamlSplashCreatingDefaultConfig.Get());
                 CreateNewConfigIfNotExist();
 
@@ -87,21 +84,6 @@ namespace Reloaded.Mod.Launcher
                 Debugger.Launch();
             else 
                 Debugger.Break();
-        }
-
-        /// <summary>
-        /// Sets up localization for the system language.
-        /// </summary>
-        private static void SetupLocalization()
-        {
-            // Set language dictionary.
-            var langDict = new ResourceDictionary();
-            string culture = Thread.CurrentThread.CurrentCulture.ToString();
-            string languageFilePath = AppDomain.CurrentDomain.BaseDirectory + $"/Languages/{culture}.xaml";
-            if (File.Exists(languageFilePath))
-                langDict.Source = new Uri(languageFilePath, UriKind.Absolute);
-
-            Application.Current.Resources.MergedDictionaries.Add(langDict);
         }
 
         /// <summary>

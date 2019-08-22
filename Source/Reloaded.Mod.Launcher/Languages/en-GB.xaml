@@ -176,6 +176,13 @@
     <sys:String x:Key="FailedToLaunchTitle">Oof!</sys:String>
     <sys:String x:Key="FailedToLaunchMessage">An error occured while trying to load Reloaded-II.</sys:String>
 
+    <!-- Download Mod Archive -->
+    <sys:String x:Key="DownloadModArchiveTitle">Download Mod Archive</sys:String>
+    <sys:String x:Key="DownloadModArchiveName">File Name</sys:String>
+
+    <!-- WMI Administrator Message -->
+    <sys:String x:Key="RunAsAdminMessage" xml:space="preserve">You need to run this application as administrator.&#x0a;Administrative privileges are needed to receive application launch/exit events from Windows Management Instrumentation (WMI).&#x0a;Developers: Run your favourite IDE e.g. Visual Studio as Admin.</sys:String>
+
     <!-- Errors -->
     <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->
     <sys:String x:Key="ErrorPathNullOrEmpty">The path to this application is either null or empty. Please fix the path.</sys:String>

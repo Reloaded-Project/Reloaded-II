@@ -1,0 +1,60 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.DownloadModArchiveDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
+        xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+        xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        mc:Ignorable="d"
+        SizeToContent="Height"
+        Width="500"
+        Title="{DynamicResource DownloadModArchiveTitle}"
+        Style="{DynamicResource ReloadedWindow}">
+    <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="{DynamicResource PanelMargin}"
+              Grid.Row="0">
+            <DataGrid 
+                ItemsSource="{Binding Mods, UpdateSourceTrigger=PropertyChanged}"
+                VerticalContentAlignment="Top"
+            
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                CanUserSortColumns="False"
+                CanUserReorderColumns="False"
+
+                IsReadOnly="True"
+                AutoGenerateColumns="False">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource DownloadModArchiveName}" Binding="{Binding FileName}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="{DynamicResource UpdateModSize}" Binding="{Binding FileSize, Converter={x:Static converters:FloatToThreeDecimalPlaces.Instance}}" Width="Auto" IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <Grid Margin="{DynamicResource PanelMargin}" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"   />
+                <ColumnDefinition Width="{DynamicResource UpdateModsMenuMargin}" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ProgressBar Grid.Column="0"
+                         Height="{Binding Path=Height, ElementName=Button}"
+                         Value="{Binding Progress}" 
+                         Maximum="1" />
+
+            <Button Grid.Column="2" Content="{DynamicResource UpdateModDownload}" 
+                    Click="Download_Click"/>
+        </Grid>
+    </Grid>
+</default:ReloadedWindow>

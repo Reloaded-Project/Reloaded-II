@@ -21,8 +21,13 @@ namespace Reloaded.Mod.Loader.Update.Extractors
 
         public async Task ExtractPackageAsync(string sourceFilePath, string destDirPath, IProgress<double> progress = null, CancellationToken cancellationToken = new CancellationToken())
         {
-            byte[] file     = File.ReadAllBytes(sourceFilePath);
-            long totalSize  = file.Length;
+            byte[] file = File.ReadAllBytes(sourceFilePath);
+            await ExtractPackageAsync(file, destDirPath, progress, cancellationToken);
+        }
+
+        public async Task ExtractPackageAsync(byte[] file, string destDirPath, IProgress<double> progress = null, CancellationToken cancellationToken = new CancellationToken())
+        {
+            long totalSize = file.Length;
 
             using (Stream memoryStream = new MemoryStream(file))
             {

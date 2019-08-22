@@ -31,6 +31,9 @@ namespace Reloaded.Mod.Loader.Update.Utilities
                 while (File.Exists(destFilePath) && !CheckWriteAccess(destFilePath))
                     Thread.Sleep(100);
 
+                if (File.Exists(destFilePath))
+                    File.Delete(destFilePath);
+                
                 File.Move(sourceFilePath, destFilePath);
             }
 

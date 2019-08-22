@@ -21,5 +21,10 @@ namespace Reloaded.Mod.Launcher
             IoC.Kernel.Bind<WindowViewModel>().ToConstant((WindowViewModel)this.DataContext); // Controls window properties.
             IoC.Kernel.Bind<MainWindow>().ToConstant(this);
         }
+
+        public void Setup()
+        {
+
+        }
     }
 }

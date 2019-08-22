@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Reloaded.Mod.Launcher": {
+      "commandName": "Project",
+      "commandLineArgs": "--download https://gamebanana.com/mmdl/429634"
+    }
+  }
+}
