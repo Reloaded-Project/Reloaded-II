@@ -9,6 +9,8 @@
         public const string ParameterLaunch = "--launch";
         public const string ParameterArguments = "--arguments";
         public const string ParameterDownload  = "--download";
+
+        public const string ReloadedProtocol = "R2";
         public const int    IcoMaxHeight = 256;
         public const int    IcoMaxWidth = 256;
     }

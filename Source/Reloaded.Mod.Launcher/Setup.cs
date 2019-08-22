@@ -7,9 +7,11 @@ using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Win32;
 using NuGet.Configuration;
 using Onova;
 using Onova.Services;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
@@ -22,7 +24,6 @@ using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
-using MessageBox = System.Windows.MessageBox;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -56,6 +57,8 @@ namespace Reloaded.Mod.Launcher
                 // Allow for debugging before crashing.
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
+                RegisterReloadedProtocol();
+
                 updateText(_xamlSplashCreatingDefaultConfig.Get());
                 CreateNewConfigIfNotExist();
 
@@ -76,6 +79,18 @@ namespace Reloaded.Mod.Launcher
                     await Task.Delay(100);
                 }
             }
+        }
+
+        private static void RegisterReloadedProtocol()
+        {            
+            // Get the user classes subkey.
+            var classesSubKey = Registry.CurrentUser.OpenSubKey("Software", true)?.OpenSubKey("Classes", true);
+
+            // Add a Reloaded Key.
+            RegistryKey reloadedProtocolKey = classesSubKey?.CreateSubKey($"{Constants.ReloadedProtocol}");
+            reloadedProtocolKey?.SetValue("", $"URL:{Constants.ReloadedProtocol}");
+            reloadedProtocolKey?.SetValue("URL Protocol", "");
+            reloadedProtocolKey?.CreateSubKey(@"shell\open\command")?.SetValue("", $"\"{Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, ".exe")}\" {Constants.ParameterDownload} %1");
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -73,6 +73,9 @@ namespace Reloaded.Mod.Launcher
             /* Check if Download Mod */
             if (_commandLineArguments.TryGetValue(Constants.ParameterDownload, out string downloadUrl))
             {
+                if (downloadUrl.StartsWith($"{Constants.ReloadedProtocol}:", StringComparison.InvariantCultureIgnoreCase))
+                    downloadUrl = downloadUrl.Substring(Constants.ReloadedProtocol.Length + 1);
+
                 var dialog = new DownloadModArchiveDialog(new[] { new Uri(downloadUrl) });
                 dialog.ShowDialog();
 
