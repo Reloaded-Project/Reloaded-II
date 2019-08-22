@@ -99,7 +99,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             public const string ConfigFileName = "ReloadedGamebananaUpdater.json";
             public static string GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";
 
-            public string FileNamePattern { get; set; } = "reloadedii";
+            public string FileNamePattern { get; set; } = "rii-";
             public string ItemType { get; set; }
             public long ItemId     { get; set; }
         }

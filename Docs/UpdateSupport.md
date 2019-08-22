@@ -113,14 +113,14 @@ After copying, you should then edit the file to include the entry ID and type.
 
 ```json
 {
-  "FileNamePattern": "reloadedii",
+  "FileNamePattern": "rii-",
   "ItemType": "Skin",
   "ItemId": 162715
 }
 ```
 
 ##### File Name Pattern
-The `FileNamePattern` is a piece of text which the name of the uploaded file (media) must contain to be recognized as the correct file upload. The default is `reloadedii`.
+The `FileNamePattern` is a piece of text which the name of the uploaded file (media) must contain to be recognized as the correct file upload. The default is `rii-`.
 
 It is used to distinguish the Reloaded II download from downloads that might come in other formats, e.g. for other mod loaders.
 
@@ -129,7 +129,7 @@ It is used to distinguish the Reloaded II download from downloads that might com
 ✅ Use a pattern that will only match the name of one file.
 ❌ Do not include file extensions in your pattern.
 
-Gamebanana adds suffixes to duplicate file names, even if original file is removed. So if you upload `midnighthill.7z`, remove it, and reupload it again, the file might be named something like `midnighthill_eaa22.7z`.
+Gamebanana adds suffixes to duplicate file names, even if original file is removed. So if you upload `rii-midnighthill.7z`, remove it, and reupload it again, the file might be named something like `rii-midnighthill_eaa22.7z`.
 
 **Warning**
 - Some characters are removed/replaced when uploading files to GameBanana.
