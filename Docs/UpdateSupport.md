@@ -58,7 +58,7 @@ Please be respectful and also follow the [Site Rules](http://167.71.128.50:5000/
 
 **Support:** A package is considered as "supported" if the file below exists.
 
-Support for mod updates from Github Releases can be added by copying the `ReloadedGithubUpdater.json` file from the Launcher's `Template` folder the to mod loader folder.
+Support for mod updates from Github Releases can be added by copying the `ReloadedGithubUpdater.json` file from the Launcher's `Template` folder the to mod folder.
 
 After copying, you should then edit the file to include the user/organization name, repository and name of the mod archive.
 
@@ -100,6 +100,57 @@ If not present, this file will appear the next time the Reloaded Launcher is lau
 
 - Github only allows 60 requests an hour for unauthenticated users. This means that if you have many mods with Github update support, they might not receive updates immediately.
 	- The Github service tracks when each mod has been checked, ensuring that each mod gets the chance to check for updates, even if there are more than 60.
+
+### GameBanana
+
+**Support:** A package is considered as "supported" if the file below exists.
+
+Support for mod updates from GameBanana can be added by copying the `ReloadedGamebananaUpdater.json` file from the Launcher's `Template` folder the to mod folder.
+
+After copying, you should then edit the file to include the entry ID and type.
+
+*Example:*
+
+```json
+{
+  "FileNamePattern": ".ReloadedII",
+  "ItemType": "Skin",
+  "ItemId": 162715
+}
+```
+
+##### File Name Pattern
+The `FileNamePattern` is a piece of text which the name of the uploaded file (media) must contain to be recognized as the correct file upload. The default is `.ReloadedII`.
+
+It is used to distinguish the Reloaded II download from downloads that might come in other formats, e.g. for other mod loaders.
+
+**File Pattern Guidelines:**
+✅ Piece of text at the beginning or end of the file name.
+✅ Use a pattern that will only match the name of one file.
+❌ Do not include file extensions in your pattern.
+
+Gamebanana adds suffixes to duplicate file names, even if original file is removed. So if you upload `MidnightHill.7z`, remove it, and reupload it again, the file might be named something like `MidnightHill_eaa22.7z`.
+
+##### Item Type
+A list of item types can be obtained from the following page: [GameBanana API Item Types](https://api.gamebanana.com/Core/Item/Data/AllowedItemTypes?). 
+
+The item type should match the submission type of your mod. The type of submission of your mod can be found in the URL in plural form.
+
+e.g. `gamebanana.com/skins/162715`=> `Skin`
+
+e.g. `gamebanana.com/gamefiles/7104`=> `Gamefile`
+
+##### Item Id
+The Item ID of your submission can be obtained from the URL of your submission: 
+![](https://i.imgur.com/WQBjezg.png)
+
+In order to obtain your Item ID, it is recommended that you first upload your mod as private: 
+![](https://i.imgur.com/o1lvS4n.png)
+
+##### Determining Version
+To compare versions of the mod, the GameBanana service uses the `Upload Date` of the and compares it against the last modified date of your mod's `ModConfig.json`.
+
+If the GameBanana upload is more recent than the last edit of `ModConfig.json`, a new update will be reported.
 
 # Programmers: New Services
 
