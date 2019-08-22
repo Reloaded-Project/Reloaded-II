@@ -8,12 +8,18 @@
 </div>
 
 # Table of Contents
+- [Supported Archive Formats](#supported-archive-formats)
 - [Existing Services](#existing-services)
     - [Reloaded II Repository](#reloaded-ii-repository)
     - [Github](#github)
         - [Determining Version](#determining-version)
         - [User Configuration](#user-configuration)
         - [Limitations](#limitations)
+    - [GameBanana](#gamebanana)
+        - [File Name Pattern](#file-name-pattern)
+        - [Item Type](#item-type)
+        - [Item Id](#item-id)
+        - [Determining Version](#determining-version)
 - [Programmers: New Services](#programmers-new-services)
     - [1. Write a Resolver](#1-write-a-resolver)
     - [2. Add resolver to list of Resolvers](#2-add-resolver-to-list-of-resolvers)
