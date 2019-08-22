@@ -55,7 +55,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 
                 if (Item.Files.Values.Count > 0)
                 {
-                    ItemFile = Item.Files.First(x => x.Value.FileName == Config.FileName).Value;
+                    ItemFile = Item.Files.First(x => x.Value.FileName.Contains(Config.FileNamePattern)).Value;
                     var date = ItemFile.DateAdded;
                     return new []{ FromDateTime(date) };
                 }
@@ -93,7 +93,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             public const string ConfigFileName = "ReloadedGamebananaUpdater.json";
             public static string GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";
 
-            public string FileName { get; set; } = "SomeRandomModOnGameBanana.ReloadedII";
+            public string FileNamePattern { get; set; } = ".ReloadedII";
             public string ItemType { get; set; }
             public long ItemId     { get; set; }
         }
