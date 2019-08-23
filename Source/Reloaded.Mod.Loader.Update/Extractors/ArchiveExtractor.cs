@@ -34,6 +34,7 @@ namespace Reloaded.Mod.Loader.Update.Extractors
                 if (SevenZipArchive.IsSevenZipFile(memoryStream))
                 {
                     // 7z is not a streamable format, thus doesn't function with the ReaderFactory API
+                    memoryStream.Position = 0;
                     using (var sevenZipArchive = SevenZipArchive.Open(memoryStream))
                     {
                         var reader = sevenZipArchive.ExtractAllEntries();
@@ -42,6 +43,7 @@ namespace Reloaded.Mod.Loader.Update.Extractors
                 }
                 else
                 {
+                    memoryStream.Position = 0;
                     using (var factory = ReaderFactory.Open(memoryStream))
                     {
                         await ExtractFromReaderAsync(factory, destDirPath, totalSize, progress);
