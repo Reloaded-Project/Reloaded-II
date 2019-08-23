@@ -5,7 +5,7 @@ using TestInterfaces;
 
 namespace TestModC
 {
-    public class Program : IModV1, ITestHelper
+    public class Program : IModV1, ITestHelper, IExports
     {
         public string MyId { get; set; } = "TestModC";
         public bool ResumeExecuted { get; set; }
@@ -38,5 +38,6 @@ namespace TestModC
 
         public bool CanUnload() => true;
         public bool CanSuspend() => true;
+        public Type[] GetTypes() => new [] { typeof(ITestHelper) };
     }
 }
