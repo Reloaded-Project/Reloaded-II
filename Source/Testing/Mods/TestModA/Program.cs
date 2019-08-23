@@ -5,7 +5,7 @@ using TestInterfaces;
 
 namespace TestModA
 {
-    public class Program : IModV1, ITestHelper, ITestModA
+    public class Program : IModV1, ITestHelper, ITestModA, IExports
     {
         public string MyId { get; set; } = "TestModA";
         public bool ResumeExecuted { get; set; }
@@ -42,5 +42,6 @@ namespace TestModA
 
         /* Extensions */
         public int GetControllerValue() => _controller.Number;
+        public Type[] GetTypes() => new []{ typeof(ITestModAPlugin), typeof(IController) };
     }
 }
