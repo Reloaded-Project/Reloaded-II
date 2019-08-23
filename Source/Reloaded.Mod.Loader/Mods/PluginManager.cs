@@ -76,7 +76,6 @@ namespace Reloaded.Mod.Loader.Mods
         /// <param name="modPaths">List of paths to load mods from.</param>
         public void LoadMods(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
         {
-            Debugger.Launch();
             PreloadExports(modPaths);
 
             /* Load mods. */
