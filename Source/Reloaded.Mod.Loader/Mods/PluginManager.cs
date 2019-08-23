@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Loader;
 using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
@@ -75,6 +76,7 @@ namespace Reloaded.Mod.Loader.Mods
         /// <param name="modPaths">List of paths to load mods from.</param>
         public void LoadMods(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
         {
+            Debugger.Launch();
             PreloadExports(modPaths);
 
             /* Load mods. */
@@ -206,12 +208,7 @@ namespace Reloaded.Mod.Loader.Mods
 
             // TODO: Native mod loading support.
             var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path,
-                GetExportsForModConfig(tuple.Object),
-                config =>
-                {
-                    config.IsUnloadable = true;
-                    config.PreferSharedTypes = true;
-                });
+                true, GetExportsForModConfig(tuple.Object));
 
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
@@ -250,6 +247,14 @@ namespace Reloaded.Mod.Loader.Mods
         private Type[] GetExportsForModConfig(IModConfig modConfig)
         {
             var exports = SharedTypes.AsEnumerable();
+
+            // Share the mod's types with the mod itself.
+            // The type is already preloaded into the default load context, and as such, will be inherited from the default context.
+            // i.e. The version loaded into the default context will be used.
+            // This is important because we need a single source for the other mods, i.e. ones which take this one as dependency.
+            if (_modIdToExports.ContainsKey(modConfig.ModId))
+                exports = exports.Concat(_modIdToExports[modConfig.ModId]);
+
             foreach (var dep in modConfig.ModDependencies)
             {
                 if (_modIdToExports.ContainsKey(dep))
@@ -294,9 +299,9 @@ namespace Reloaded.Mod.Loader.Mods
             {
                 var plugin = (IExports)Activator.CreateInstance(entryPoint);
                 exports = plugin.GetTypes();
+                LoadTypesIntoCurrentContext(exports);
                 loader.Dispose();
 
-                LoadTypesIntoDefaultContext(exports);
                 return true;
             }
 
@@ -305,7 +310,7 @@ namespace Reloaded.Mod.Loader.Mods
             return false;
         }
 
-        private void LoadTypesIntoDefaultContext(IEnumerable<Type> types)
+        private void LoadTypesIntoCurrentContext(IEnumerable<Type> types)
         {
             foreach (var type in types)
             {
