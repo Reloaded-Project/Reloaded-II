@@ -21,11 +21,14 @@ namespace Reloaded.Mod.Loader.Mods
     public class PluginManager : IDisposable
     {
         public LoaderAPI LoaderApi { get; }
+        private static readonly Type[] DefaultExportedTypes = new Type[0];
         private static readonly Type[] SharedTypes = { typeof(IModLoader), typeof(IMod) };
 
-        private readonly Dictionary<string, Type[]>      _modIdToExports = new Dictionary<string, Type[]>();  
         private readonly Dictionary<string, ModInstance> _modifications = new Dictionary<string, ModInstance>();
-        private readonly Dictionary<string, string>      _modIdToFolder = new Dictionary<string, string>(); // Maps Mod ID to folder containing mod.
+        private readonly Dictionary<string, ModAssemblyMetadata> _modIdToMetadata = new Dictionary<string, ModAssemblyMetadata>();  
+        private readonly Dictionary<string, string>      _modIdToFolder  = new Dictionary<string, string>(); // Maps Mod ID to folder containing mod.
+
+
         private readonly Loader _loader;
         private readonly Stopwatch _stopWatch = new Stopwatch();
 
@@ -76,7 +79,7 @@ namespace Reloaded.Mod.Loader.Mods
         /// <param name="modPaths">List of paths to load mods from.</param>
         public void LoadMods(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
         {
-            PreloadExports(modPaths);
+            PreloadAssemblyMetadata(modPaths);
 
             /* Load mods. */
             foreach (var modPath in modPaths)
@@ -118,7 +121,7 @@ namespace Reloaded.Mod.Loader.Mods
                 {
                     LoaderApi.ModUnloading(mod.Mod, mod.ModConfig);
                     _modIdToFolder.Remove(modId);
-                    _modIdToExports.Remove(modId);
+                    _modIdToMetadata.Remove(modId);
                     _modifications.Remove(modId);
                     mod.Dispose();
                 }
@@ -203,11 +206,11 @@ namespace Reloaded.Mod.Loader.Mods
         /* Mod Loading */
         private void LoadDllMod(PathGenericTuple<IModConfig> tuple)
         {
-            _modIdToFolder[tuple.Object.ModId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
+            var modId = tuple.Object.ModId;
+            _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
             // TODO: Native mod loading support.
-            var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path,
-                true, GetExportsForModConfig(tuple.Object));
+            var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object));
 
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
@@ -251,66 +254,71 @@ namespace Reloaded.Mod.Loader.Mods
             // The type is already preloaded into the default load context, and as such, will be inherited from the default context.
             // i.e. The version loaded into the default context will be used.
             // This is important because we need a single source for the other mods, i.e. ones which take this one as dependency.
-            if (_modIdToExports.ContainsKey(modConfig.ModId))
-                exports = exports.Concat(_modIdToExports[modConfig.ModId]);
+            if (_modIdToMetadata.ContainsKey(modConfig.ModId))
+                exports = exports.Concat(_modIdToMetadata[modConfig.ModId].Exports);
 
             foreach (var dep in modConfig.ModDependencies)
             {
-                if (_modIdToExports.ContainsKey(dep))
-                    exports = exports.Concat(_modIdToExports[dep]);
+                if (_modIdToMetadata.ContainsKey(dep))
+                    exports = exports.Concat(_modIdToMetadata[dep].Exports);
             }
 
             foreach (var optionalDep in modConfig.OptionalDependencies)
             {
-                if (_modIdToExports.ContainsKey(optionalDep))
-                    exports = exports.Concat(_modIdToExports[optionalDep]);
+                if (_modIdToMetadata.ContainsKey(optionalDep))
+                    exports = exports.Concat(_modIdToMetadata[optionalDep].Exports);
             }
 
             return exports.ToArray();
         }
 
-        private void PreloadExports(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
+        private void PreloadAssemblyMetadata(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
         {
-            ExecuteWithStopwatch("Loading Exported Types for Inter Mod Communication.", (paths) =>
+            ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", (paths) =>
             {
                 foreach (var modPath in paths)
                 {
                     if (!File.Exists(modPath.Path))
                         continue;
 
-                    if (!PreloadExportsForDllMod(modPath.Path, out var exports))
-                        continue;
-
-                    _modIdToExports[modPath.Object.ModId] = exports;
+                    GetMetadataForDllMod(modPath.Path, out var exports, out bool isUnloadable);
+                    
+                    _modIdToMetadata[modPath.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
                 }
             }, modPaths);
         }
 
-        private bool PreloadExportsForDllMod(string dllPath, out Type[] exports)
+        private bool GetMetadataForDllMod(string dllPath, out Type[] exports, out bool isUnloadable)
         {
-            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes.ToArray());
+            exports      = DefaultExportedTypes; // Preventing heap allocation here.
+            isUnloadable = false;
 
+            var loader          = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes.ToArray());
             var defaultAssembly = loader.LoadDefaultAssembly();
-            var types = defaultAssembly.GetTypes();
-            var entryPoint = types.FirstOrDefault(t => typeof(IExports).IsAssignableFrom(t) && !t.IsAbstract);
+            var types           = defaultAssembly.GetTypes();
 
-            if (entryPoint != null)
+            var exportsEntryPoint = types.FirstOrDefault(t => typeof(IExports).IsAssignableFrom(t) && !t.IsAbstract);
+            if (exportsEntryPoint != null)
             {
-                var plugin = (IExports)Activator.CreateInstance(entryPoint);
+                var plugin = (IExports) Activator.CreateInstance(exportsEntryPoint);
                 exports = plugin.GetTypes();
                 LoadTypesIntoCurrentContext(exports);
-                loader.Dispose();
-
-                return true;
             }
 
-            exports = null;
+            var modEntryPoint = types.FirstOrDefault(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
+            if (modEntryPoint != null)
+            {
+                var plugin = (IModV1) Activator.CreateInstance(modEntryPoint);
+                isUnloadable = plugin.CanUnload();
+            }
+
             loader.Dispose();
             return false;
         }
 
         private void LoadTypesIntoCurrentContext(IEnumerable<Type> types)
         {
+            // TODO: Use temporary contexts and add support for loading from external contexts to DotNetCorePlugins
             foreach (var type in types)
             {
                 var path = new Uri(type.Module.Assembly.CodeBase).LocalPath;
