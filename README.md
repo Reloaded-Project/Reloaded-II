@@ -11,7 +11,7 @@
 
 ## Prerequisites
 - Windows 7, 8.1, 10 or above.
-- [.NET Core 3.0 Preview 7 SDK (x64 & x86)*](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+- [.NET Core 3.0 Latest Preview SDK (x64 & x86)*](https://dotnet.microsoft.com/download/dotnet-core/3.0)
 - Visual C++ Redist 2015/17/19 [(x64)](https://aka.ms/vs/16/release/VC_redist.x64.exe) and [(x86)](https://aka.ms/vs/16/release/VC_redist.x86.exe)
 
 \*At the current moment in time, the runtime does not ship the necessary components to run desktop (GUI) applications. Hopefully this changes in the nearby future.
