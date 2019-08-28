@@ -25,10 +25,12 @@ const string_t PARAMETER_KILL		= L"--kill";
 // Global Variables
 CoreCLR* CLR;
 HMODULE thisProcessModule;
+ReloadedPaths paths;
 
 // Reloaded Init Functions
-DWORD WINAPI setup_reloaded_async(LPVOID lpParam);
-void setup_reloaded();
+DWORD WINAPI load_reloaded_async(LPVOID lpParam);
+void preload_setup_info();
+void load_reloaded();
 
 void reboot_via_launcher(); // If ReloadedPortable.txt exists in DLL directory.
 bool is_reloaded_already_loaded();
@@ -41,7 +43,9 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
     {
 		case DLL_PROCESS_ATTACH:
 			thisProcessModule = hModule;
-			CreateThread(nullptr, 0, &setup_reloaded_async, 0, 0, nullptr);
+			preload_setup_info();
+			CreateThread(nullptr, 0, &load_reloaded_async, 0, 0, nullptr);
+			Sleep(8); // Just enough to get the thread we created to the lock.
 			break;
 
 		case DLL_THREAD_ATTACH:
@@ -55,23 +59,17 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
     return TRUE;
 }
 
-DWORD WINAPI setup_reloaded_async(LPVOID lpParam)
-{
-	setup_reloaded();
-	return 0;
-}
-
-void setup_reloaded()
+void preload_setup_info()
 {
 	try
 	{
-		if (! is_reloaded_already_loaded())
+		if (!is_reloaded_already_loaded())
 		{
 			/* Reboot via launcher if in portable mode. */
 			auto dllDirectory = Utilities::get_current_directory(thisProcessModule);
 			if (Utilities::file_exists(dllDirectory + L"\\" + PORTABLE_MODE_FILE))
 				reboot_via_launcher();
-				
+
 			/* Add current directory to list of DLL paths. */
 			SetDllDirectoryW(dllDirectory.c_str());
 
@@ -79,17 +77,37 @@ void setup_reloaded()
 			LoaderConfig config = LoaderConfig();
 
 			/* Load Reloaded */
-			ReloadedPaths loaderPaths = config.get_loader_paths();
-			load_reloaded(loaderPaths);
+			paths = config.get_loader_paths();
 		}
 	}
 	catch (std::exception& exception)
 	{
 		std::cerr << exception.what() << std::endl;
-		MessageBoxA(nullptr, exception.what(), "[Bootstraper] Failed to Load Reloaded-II", MB_OK);
+		MessageBoxA(nullptr, exception.what(), "[Bootstrapper] Failed to Prepare Reloaded-II Loading", MB_OK);
 	}
 }
 
+DWORD WINAPI load_reloaded_async(LPVOID lpParam)
+{
+	load_reloaded(paths);
+	return 0;
+}
+
+void load_reloaded()
+{
+	try
+	{
+		if (! is_reloaded_already_loaded())
+		{
+			load_reloaded(paths);
+		}
+	}
+	catch (std::exception& exception)
+	{
+		std::cerr << exception.what() << std::endl;
+		MessageBoxA(nullptr, exception.what(), "[Bootstrapper] Failed to Load Reloaded-II", MB_OK);
+	}
+}
 
 /**
  * \brief Reboots the application through the use of the launcher.
