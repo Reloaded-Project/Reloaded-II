@@ -15,9 +15,11 @@
   - [Asynchronous](#asynchronous)
     - [Auto-Inject & Inject](#auto-inject-inject)
   - [Synchronous and Asynchronous](#synchronous-and-asynchronous)
-    - [DLL Loader](#dll-loader)
-      - [DLL Loader Example (SADX Mod Loader)](#dll-loader-example-sadx-mod-loader)
-      - [Synchronous Loading Mode](#synchronous-loading-mode)
+    - [DLL Loader: Introduction](#dll-loader-introduction)
+    - [DLL Loader: Reboot via Launcher (Synchronous)](#dll-loader-reboot-via-launcher-synchronous)
+    - [DLL Loader: Integration Examples](#dll-loader-integration-examples)
+      - [Ultimate ASI Loader](#ultimate-asi-loader)
+      - [SADX, SA2, Sonic R, Mania, SKC Mod Loader](#sadx-sa2-sonic-r-mania-skc-mod-loader)
 
 # Introduction
 
@@ -59,7 +61,7 @@ The "Inject" feature simply loads Reloaded into an existing process without havi
 
 The following methods of loading Reloaded support both synchronous and asynchronous loading.
 
-### DLL Loader
+### DLL Loader: Introduction
 
 Reloaded can be integrated into other ASI/DLL based mod loaders such as [Ultimate-ASI-Loader](https://github.com/ThirteenAG/Ultimate-ASI-Loader), by copying the **bootstrapper**. 
 
@@ -69,18 +71,38 @@ The bootstrapper is just a special DLL that loads .NET Core into an application 
 
 Installation will depend on the mod loader, but simply put if you copy the contents of this folder and make a mod loader mod, with `Reloaded.Mod.Loader.Bootstrapper.dll` as the target DLL (if possible), you can load Reloaded in other loaders.
 
-#### DLL Loader Example (SADX Mod Loader)
-
-![Bootstrapper](./Images/DllLoaderExample.png)
-
-#### Synchronous Loading Mode
+### DLL Loader: Reboot via Launcher (Synchronous)
 By default, the bootstrapper DLL will load the mods **asynchronously**, meaning that they will be initialized as the game is normally running.
 
-The bootstrapper however does have a feature to allow loading **synchronously**, which is **highly recommended**. The way it works is that the bootstrapper will launch the launcher with a set of commandline arguments which instruct the launcher to re-launch the game, effectively performing the `Manual Launch` launch method.
+The bootstrapper however does have a feature to allow loading **"synchronously"**, by killing the game process and rebooting it. The way it works is that the bootstrapper will launch the launcher with a set of commandline arguments which instruct the launcher to re-launch the game, effectively performing the `Manual Launch` launch method.
 
 To enable synchronous loading, simply make an empty file called  `ReloadedPortable.txt`  in the same directory as the bootstrapper, as seen in the example above.
 
 **Notes:**
 
 - The launcher will not add any additional commandline arguments, regardless of what you may have set for the application profile. Commandline arguments set in launcher apply to launching from launcher only.
+
 - Reloaded can and will only be loaded once, the bootstrapper has a safety mechanism to ensure that.
+
+### DLL Loader: Integration Examples
+
+#### Ultimate ASI Loader
+
+With Ultimate ASI Loader, you can place the Bootstrapper in your scripts/plugins directory and rename the bootstrapper DLL with an `.asi` extension.
+
+![Bootstrapper](./Images/DllLoaderExample2.png)
+
+Booting via Ultimate ASI Loader is recommended in games where the embedded Steam DRM "Steam Stub" is present (game code is encrypted) as Reloaded II itself does not have a mechanism to handle this DRM.
+
+As of Reloaded II 1.1.0, Reloaded II provides the `InitializeASI` export, integrating with this mod loader and allowing for Reloaded II to be loaded asynchronously. Users should not add  `ReloadedPortable.txt`, it is of no benefit.
+
+#### SADX, SA2, Sonic R, Mania, SKC Mod Loader
+
+![Bootstrapper](./Images/DllLoaderExample.png)
+
+Mod.ini
+```
+Name=Reloaded Mod Loader II
+Author=Sewer56
+DLLFile=Reloaded.Mod.Loader.Bootstrapper.dll
+```
