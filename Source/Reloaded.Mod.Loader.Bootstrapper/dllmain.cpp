@@ -13,6 +13,7 @@
 #include "Utilities.h"
 #include "LoaderConfig.h"
 #include <shellapi.h>
+#include <sstream>
 
 using json = nlohmann::json;
 
@@ -26,6 +27,7 @@ const string_t PARAMETER_KILL		= L"--kill";
 CoreCLR* CLR;
 HMODULE thisProcessModule;
 ReloadedPaths paths;
+HANDLE initializeThreadHandle;
 
 // Reloaded Init Functions
 DWORD WINAPI load_reloaded_async(LPVOID lpParam);
@@ -44,7 +46,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 		case DLL_PROCESS_ATTACH:
 			thisProcessModule = hModule;
 			preload_setup_info();
-			CreateThread(nullptr, 0, &load_reloaded_async, 0, 0, nullptr);
+			initializeThreadHandle = CreateThread(nullptr, 0, &load_reloaded_async, 0, 0, nullptr);
 			Sleep(8); // Just enough to get the thread we created to the lock.
 			break;
 
@@ -209,9 +211,17 @@ struct ModInfoDummy
 
 extern "C"
 {
+	// Note: MainMemory's Mod Loaders have inconsistent entry points (some having helper functions, some not). Not exporting.
 	__declspec(dllexport) ModInfoDummy SA2ModInfo { 1 };
 	__declspec(dllexport) ModInfoDummy SADXModInfo { 1 };
 	__declspec(dllexport) ModInfoDummy SonicRModInfo { 1 };
 	__declspec(dllexport) ModInfoDummy ManiaModInfo { 1 };
 	__declspec(dllexport) ModInfoDummy SKCModInfo { 1 };
+
+	// Entry point for Ultimate ASI Loader, to allow waiting for Reloaded II creation thread to terminate.
+	__declspec(dllexport) void InitializeASI()
+	{
+		std::cout << "[Reloaded II Bootstrapper] Ultimate ASI Loader Entrypoint Hit" << std::endl;
+		WaitForSingleObject(initializeThreadHandle, INFINITE);
+	}
 }
