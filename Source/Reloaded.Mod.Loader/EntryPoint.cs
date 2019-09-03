@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Forms;
 using Reloaded.Mod.Loader.Bootstrap;
 using Reloaded.Mod.Loader.Server;
+using Reloaded.Mod.Loader.Utilities;
 
 namespace Reloaded.Mod.Loader
 {
@@ -53,6 +54,8 @@ namespace Reloaded.Mod.Loader
 
             // Setup mod loader.
             _loader = new Loader();
+            DRMScanner.PrintWarnings(_loader.Console); // Print preliminary warnings.
+
             _setupServerTask = Task.Run(SetupServer);
             _loader.LoadForCurrentProcess();
 
