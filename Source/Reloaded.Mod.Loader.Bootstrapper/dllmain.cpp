@@ -28,14 +28,18 @@ CoreCLR* CLR;
 HMODULE thisProcessModule;
 ReloadedPaths paths;
 HANDLE initializeThreadHandle;
+HANDLE bootstrapperMemoryMappedFileHandle;
 
 // Reloaded Init Functions
 DWORD WINAPI load_reloaded_async(LPVOID lpParam);
-void preload_setup_info();
+bool preload_setup_info();
 void load_reloaded();
 
 void reboot_via_launcher(); // If ReloadedPortable.txt exists in DLL directory.
 bool is_reloaded_already_loaded();
+bool is_reloaded_bootstrapper_already_loaded();
+void set_reloaded_bootstrapper_already_loaded();
+std::wstring get_reloaded_bootstrapper_name();
 bool load_reloaded(ReloadedPaths& reloadedPaths);
 
 /* Entry point */
@@ -45,9 +49,11 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
     {
 		case DLL_PROCESS_ATTACH:
 			thisProcessModule = hModule;
-			preload_setup_info();
-			initializeThreadHandle = CreateThread(nullptr, 0, &load_reloaded_async, 0, 0, nullptr);
-			Sleep(8); // Just enough to get the thread we created to the lock.
+			if (preload_setup_info())
+			{
+				initializeThreadHandle = CreateThread(nullptr, 0, &load_reloaded_async, 0, 0, nullptr);
+				Sleep(8); // Just enough to get the thread we created to the lock.
+			}
 			break;
 
 		case DLL_THREAD_ATTACH:
@@ -56,17 +62,21 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 
 		case DLL_PROCESS_DETACH:
 			// Unloading mod loader not supported.
+			CloseHandle(bootstrapperMemoryMappedFileHandle);
 			break;
     }
     return TRUE;
 }
 
-void preload_setup_info()
+bool preload_setup_info()
 {
 	try
 	{
-		if (!is_reloaded_already_loaded())
+		if (!is_reloaded_already_loaded() || !is_reloaded_bootstrapper_already_loaded())
 		{
+			/* Set bootstrapper loaded flag. */
+			set_reloaded_bootstrapper_already_loaded();
+
 			/* Reboot via launcher if in portable mode. */
 			auto dllDirectory = Utilities::get_current_directory(thisProcessModule);
 			if (Utilities::file_exists(dllDirectory + L"\\" + PORTABLE_MODE_FILE))
@@ -80,6 +90,7 @@ void preload_setup_info()
 
 			/* Load Reloaded */
 			paths = config.get_loader_paths();
+			return true;
 		}
 	}
 	catch (std::exception& exception)
@@ -87,6 +98,8 @@ void preload_setup_info()
 		std::cerr << exception.what() << std::endl;
 		MessageBoxA(nullptr, exception.what(), "[Bootstrapper] Failed to Prepare Reloaded-II Loading", MB_OK);
 	}
+
+	return false;
 }
 
 DWORD WINAPI load_reloaded_async(LPVOID lpParam)
@@ -99,7 +112,7 @@ void load_reloaded()
 {
 	try
 	{
-		if (! is_reloaded_already_loaded())
+		if (! is_reloaded_already_loaded() || !is_reloaded_bootstrapper_already_loaded())
 		{
 			load_reloaded(paths);
 		}
@@ -200,6 +213,38 @@ bool is_reloaded_already_loaded()
 		CloseHandle(hMapFile);
 	
 	return loaded;
+}
+
+/**
+ * \brief Returns true if Reloaded is already loaded, else false.
+ */
+bool is_reloaded_bootstrapper_already_loaded()
+{
+	const std::wstring memoryMappedFileName = get_reloaded_bootstrapper_name();
+	const HANDLE hMapFile = OpenFileMappingW(FILE_MAP_ALL_ACCESS, FALSE, memoryMappedFileName.c_str());
+
+	const bool loaded = (hMapFile != nullptr);
+	if (hMapFile != nullptr)
+		CloseHandle(hMapFile);
+
+	return loaded;
+}
+
+/**
+ * \brief Returns true if Reloaded is already loaded, else false.
+ */
+void set_reloaded_bootstrapper_already_loaded()
+{
+	const std::wstring memoryMappedFileName = get_reloaded_bootstrapper_name();
+	bootstrapperMemoryMappedFileHandle = CreateFileMappingW(INVALID_HANDLE_VALUE, nullptr, PAGE_READWRITE, 0, 4, memoryMappedFileName.c_str());
+}
+
+/**
+ * \brief Returns the name of the memory mapped file for the Reloaded Bootstrapper.
+ */
+std::wstring get_reloaded_bootstrapper_name()
+{
+	return L"Reloaded-Mod-Loader-Bootstrapper-PID-" + std::to_wstring(GetCurrentProcessId());
 }
 
 /* Exports for different mod loaders. */
