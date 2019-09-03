@@ -92,7 +92,7 @@ With Ultimate ASI Loader, you can place the Bootstrapper in your scripts/plugins
 
 ![Bootstrapper](./Images/DllLoaderExample2.png)
 
-Booting via Ultimate ASI Loader is recommended in games where the embedded Steam DRM "Steam Stub" is present (game code is encrypted) as Reloaded II itself does not have a mechanism to handle this DRM. If you using Ultimate ASI Loader to bypass Steam Stub, you should launch the game using its regular executable as opposed to using the launcher.
+Booting via Ultimate ASI Loader is recommended in games where the embedded Steam DRM "Steam Stub" is present (game code is encrypted) as Reloaded II itself does not have a mechanism to handle this DRM. If you are using Ultimate ASI Loader to bypass Steam Stub, you should launch the game using its regular executable as opposed to using the launcher.
 
 As of Reloaded II 1.1.0, Reloaded II provides the `InitializeASI` export, integrating with this mod loader and allowing for Reloaded II to be loaded asynchronously. Users should not add  `ReloadedPortable.txt`, it is of no benefit.
 
