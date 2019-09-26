@@ -6,8 +6,8 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
-    <Version>1.1.0</Version>
-    <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | $([System.DateTime]::UtcNow.ToString("s"))</Copyright>
+    <Version>1.1.1</Version>
+    <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | Build: $([System.DateTime]::UtcNow.ToString("s"))</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -151,7 +151,6 @@
     <Compile Update="Controls\PopupLabel.xaml.cs" />
     <Compile Update="Pages\BaseSubpages\AddAppPage.xaml.cs" />
     <Compile Update="Pages\BaseSubpages\ManageModsPage.xaml.cs" />
-    <Compile Update="Pages\BaseSubpages\WelcomePage.xaml.cs" />
     <Compile Update="Pages\SplashPage.xaml.cs" />
     <Compile Update="Pages\BasePage.xaml.cs" />
   </ItemGroup>

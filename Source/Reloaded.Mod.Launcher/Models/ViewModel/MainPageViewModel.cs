@@ -63,7 +63,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         } 
 
         /* This one is to allow us to switch application without raising event twice. See: SwitchApplication */
-        private BaseSubPage _baseSubPage = BaseSubPage.Welcome;
+        private BaseSubPage _baseSubPage = BaseSubPage.SettingsPage;
 
         /* Application Monitoring */
         private ObservableCollection<ImageApplicationPathTuple> _applications;

@@ -79,10 +79,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button 
-                    Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    Content="{DynamicResource LoaderSettingsCleanup}" Click="Button_Click" />
+                <TextBlock Grid.Column="0"
+                           HorizontalAlignment="Left"
+                           TextWrapping="Wrap"
+                           FontSize="{DynamicResource FontSizeLarge}"
+                           Text="{DynamicResource LoaderSettingsWarning}"/>
 
                 <!-- Statistics -->
                 <StackPanel Grid.Column="2">

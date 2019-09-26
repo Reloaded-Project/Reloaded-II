@@ -86,6 +86,7 @@
     <sys:String x:Key="LoaderSettingsEnableAutomaticUpdates">Automatic Updates</sys:String>
     <sys:String x:Key="LoaderSettingsShowConsole">Show Console</sys:String>
     <sys:String x:Key="LoaderSettingsLoadAsynchronously">Load Asynchronously</sys:String>
+    <sys:String x:Key="LoaderSettingsWarning">Reloaded is powerful software enabling arbitrary/custom code execution. Use at your own risk.</sys:String>
 
     <!-- Application Entry -->
     <sys:String x:Key="TitleApplication">Application Hub</sys:String>
