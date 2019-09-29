@@ -8,106 +8,103 @@
     d:DesignHeight="600" 
     d:DesignWidth="756"
     Title="{DynamicResource TitleLoaderSettings}">
-    <Grid Margin="{DynamicResource PageMargin}" DataContext="{Binding ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+    <ScrollViewer>
+        <Grid Margin="{DynamicResource PageMargin}" DataContext="{Binding ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+            <Grid.Resources>
+                <Thickness x:Key="BannerMargin">75,20,75,0</Thickness>
+            </Grid.Resources>
 
-        <Grid.Resources>
-            <Thickness x:Key="BannerMargin">75,20,75,0</Thickness>
-        </Grid.Resources>
+            <StackPanel Margin="{DynamicResource PanelMargin}">
 
-        <StackPanel Margin="{DynamicResource PanelMargin}">
-            <!-- Banner and Build Date -->
-            <Image 
-                x:Name="Banner"
-                Style="{DynamicResource HighQualityImage}"
-                Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Reloaded-No-Brackets.png"
-                Margin="{DynamicResource BannerMargin}"/>
+                <!-- Banner and Build Date -->
+                <Image x:Name="Banner"
+                       Style="{DynamicResource HighQualityImage}"
+                       Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Reloaded-No-Brackets.png"
+                       Margin="{DynamicResource BannerMargin}"/>
 
-            <TextBlock DockPanel.Dock="Bottom"
-                       HorizontalAlignment="Center"
-                       Style="{DynamicResource BuildTextBlock}"
-                       Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
-
-            <!-- Docs / User Guide -->
-            <Grid Margin="{DynamicResource CommonItemVerticalMargin}"
-                  Width="{Binding ActualWidth, ElementName=Banner}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" 
-                           Text="{DynamicResource LoaderSettingsCopyright}"
-                           TextWrapping="Wrap"
-                           FontSize="{DynamicResource FontSizeLarge}"
-                           Margin="18,0,17,0"
-                           Style="{DynamicResource TextblockWithColourChange}"
+                <TextBlock DockPanel.Dock="Bottom"
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Top"/>
+                           Style="{DynamicResource BuildTextBlock}"
+                           Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal" PreviewMouseDown="Documents_PreviewMouseDown">
-                    <Image Height="48" 
+                <!-- Docs / User Guide -->
+                <Grid Margin="{DynamicResource CommonItemVerticalMargin}"
+                      Width="{Binding ActualWidth, ElementName=Banner}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" 
+                               Text="{DynamicResource LoaderSettingsCopyright}"
+                               TextWrapping="Wrap"
+                               FontSize="{DynamicResource FontSizeLarge}"
+                               Margin="18,0,17,0"
+                               Style="{DynamicResource TextblockWithColourChange}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top"/>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" PreviewMouseDown="Documents_PreviewMouseDown">
+                        <Image Height="48" 
                                Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Info-Icon.png"
                                Style="{DynamicResource HighQualityImage}"
                                Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                    <TextBlock Text="{DynamicResource LoaderSettingsAndDocumentation}"
+                        <TextBlock Text="{DynamicResource LoaderSettingsAndDocumentation}"
                                    FontSize="{DynamicResource FontSizeLarge}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
                                    Style="{DynamicResource TextblockWithColourChange}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
-                </StackPanel>
-            </Grid>
+                    </StackPanel>
+                </Grid>
 
-            <!-- Toggle Auto Accept Updates -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
-                          HorizontalAlignment="Center" 
-                          IsChecked="{Binding LoaderConfig.ShowConsole}"
-                          Content="{DynamicResource LoaderSettingsShowConsole}"
-                          Style="{DynamicResource DefaultCheckBox}"/>
+                <!-- Toggle Auto Accept Updates -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
+                              HorizontalAlignment="Center" 
+                              IsChecked="{Binding LoaderConfig.ShowConsole}"
+                              Content="{DynamicResource LoaderSettingsShowConsole}"
+                              Style="{DynamicResource DefaultCheckBox}"/>
+                </StackPanel>
+
+                <!-- Bottom Row: Statistics and Warning -->
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               HorizontalAlignment="Left"
+                               TextWrapping="Wrap"
+                               FontSize="{DynamicResource FontSizeLarge}"
+                               Text="{DynamicResource LoaderSettingsWarning}"/>
+
+                    <!-- Statistics -->
+                    <StackPanel Grid.Column="2">
+                        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock HorizontalAlignment="Right"
+                                       Style="{DynamicResource StatisticsTextblock}"
+                                       Text="{DynamicResource LoaderSettingsAppsInstalled}"/>
+                            <TextBlock HorizontalAlignment="Right"
+                                       Style="{DynamicResource StatisticsTextvalue}"
+                                       Text="{Binding Path=TotalApplicationsInstalled, UpdateSourceTrigger=PropertyChanged, FallbackValue=0}">
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock HorizontalAlignment="Right"
+                                       Style="{DynamicResource StatisticsTextblock}"
+                                       Text="{DynamicResource LoaderSettingsModsInstalled}"/>
+                            <TextBlock HorizontalAlignment="Right"
+                                       Style="{DynamicResource StatisticsTextvalue}"
+                                       Text="{Binding Path=TotalModsInstalled, UpdateSourceTrigger=PropertyChanged, FallbackValue=0}">
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
             </StackPanel>
-
-        </StackPanel>
-
-        <!-- Settings -->
-        <DockPanel LastChildFill="False" Margin="{DynamicResource PanelMargin}">
-
-            <Grid DockPanel.Dock="Bottom">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0"
-                           HorizontalAlignment="Left"
-                           TextWrapping="Wrap"
-                           FontSize="{DynamicResource FontSizeLarge}"
-                           Text="{DynamicResource LoaderSettingsWarning}"/>
-
-                <!-- Statistics -->
-                <StackPanel Grid.Column="2">
-                    <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock HorizontalAlignment="Right"
-                                   Style="{DynamicResource StatisticsTextblock}"
-                                   Text="{DynamicResource LoaderSettingsAppsInstalled}"/>
-                        <TextBlock HorizontalAlignment="Right"
-                                   Style="{DynamicResource StatisticsTextvalue}"
-                                   Text="{Binding Path=TotalApplicationsInstalled, UpdateSourceTrigger=PropertyChanged, FallbackValue=0}">
-                        </TextBlock>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <TextBlock HorizontalAlignment="Right"
-                                   Style="{DynamicResource StatisticsTextblock}"
-                                   Text="{DynamicResource LoaderSettingsModsInstalled}"/>
-                        <TextBlock HorizontalAlignment="Right"
-                                   Style="{DynamicResource StatisticsTextvalue}"
-                                   Text="{Binding Path=TotalModsInstalled, UpdateSourceTrigger=PropertyChanged, FallbackValue=0}">
-                        </TextBlock>
-                    </StackPanel>
-                </StackPanel>
-            </Grid>
-        </DockPanel>
-    </Grid>
+        </Grid>
+    </ScrollViewer>
 </launcher:ReloadedIIPage>
