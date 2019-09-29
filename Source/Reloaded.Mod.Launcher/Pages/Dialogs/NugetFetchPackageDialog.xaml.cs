@@ -16,7 +16,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
     /// </summary>
     public partial class NugetFetchPackageDialog : ReloadedWindow
     {
-        public NugetFetchPackageDialogViewModel ViewModel { get; set; }
+        public new NugetFetchPackageDialogViewModel ViewModel { get; set; }
         public NugetHelper NugetHelper { get; private set; }
 
         public NugetFetchPackageDialog(List<IPackageSearchMetadata> packages, List<string> missingPackages)

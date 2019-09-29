@@ -55,7 +55,7 @@ namespace Reloaded.Mod.Launcher
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show(_xamlCheckUpdatesFailed.Get());
             }

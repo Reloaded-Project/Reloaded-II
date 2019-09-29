@@ -49,13 +49,15 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             return Version.Parse(_modConfig.ModVersion); ;
         }
 
+        #pragma warning disable 1998 // Code too time unintensive to run asynchronously.
         public async Task<IReadOnlyList<Version>> GetPackageVersionsAsync()
+        #pragma warning restore 1998
         {
             try
             {
                 return new Version[] { Version.Parse(_packageMetadata.Identity.Version.ToString()) };
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new Version[0];
             }

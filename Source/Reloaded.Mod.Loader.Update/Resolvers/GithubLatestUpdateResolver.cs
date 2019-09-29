@@ -69,7 +69,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
                 var allowedMods             = orderedModsWithConfigs.Take(UnregisteredRateLimit).Select(x => x.Object);
                 AllowedMods                 = new HashSet<ModConfig>(allowedMods);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Debugger.Break();
             }

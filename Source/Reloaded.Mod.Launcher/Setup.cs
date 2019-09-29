@@ -69,7 +69,9 @@ namespace Reloaded.Mod.Launcher
                 await SetupViewModelsAsync();
 
                 updateText(_xamlCheckingForUpdates.Get());
+                #pragma warning disable 4014
                 CheckForUpdatesAsync(); // Fire and forget, we don't want to delay startup time.
+                #pragma warning restore 4014
 
                 // Wait until splash screen time.
                 updateText($"{_xamlSplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");
@@ -128,7 +130,7 @@ namespace Reloaded.Mod.Launcher
                 IoC.Kernel.Rebind<NugetHelper>().ToConstant(helper);
                 IoC.GetConstant<DownloadModsViewModel>(); // Consumes ManageModsViewModel, NugetHelper
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Probably no internet access. 
             }
@@ -196,9 +198,9 @@ namespace Reloaded.Mod.Launcher
                 {
                     await Update.DownloadPackagesAsync(missingDependencies, false, false);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-
+                    // ignored
                 }
             }
         }

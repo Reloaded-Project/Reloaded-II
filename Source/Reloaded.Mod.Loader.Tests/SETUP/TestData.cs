@@ -85,7 +85,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
                 NonexistingDependencies.Add(TestModB.Program.NonexistingDependencyName);
                 NonexistingDependencies.Add(TestModC.Program.NonexistingDependencyName);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (OriginalConfig != null)
                     LoaderConfigReader.WriteConfiguration(OriginalConfig);

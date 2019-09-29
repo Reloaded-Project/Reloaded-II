@@ -29,7 +29,7 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
                 _downloadModsViewModel.PropertyChanged += DownloadModsPropertyChanged;
                 _manageModsViewModel.Mods.CollectionChanged += ModsOnCollectionChanged;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Probably no internet
             }

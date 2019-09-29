@@ -30,7 +30,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             _manageModsViewModel = manageModsViewModel;
             DownloadModEntries = new ObservableCollection<DownloadModEntry>();
             PropertyChanged += OnSearchQueryChanged;
-            GetSearchResults();
+            #pragma warning disable 4014
+            GetSearchResults(); // Fire and forget.
+            #pragma warning restore 4014
         }
 
         /* Business Logic */
@@ -47,7 +49,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void OnSearchQueryChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(SearchQuery))
-                GetSearchResults();
+                #pragma warning disable 4014
+                GetSearchResults(); // Fire and forget.
+                #pragma warning restore 4014
         }
     }
 }

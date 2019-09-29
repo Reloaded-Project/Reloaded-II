@@ -13,7 +13,7 @@ namespace Reloaded.Mod.Loader.Update.Extractors
         public async Task ExtractPackageAsync(string sourceFilePath, string destDirPath, IProgress<double> progress = null,
             CancellationToken cancellationToken = new CancellationToken())
         {
-            NugetHelper.ExtractPackageContent(sourceFilePath, destDirPath, cancellationToken);
+            await Task.Run(() => NugetHelper.ExtractPackageContent(sourceFilePath, destDirPath, cancellationToken), cancellationToken);
         }
     }
 }

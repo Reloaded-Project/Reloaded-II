@@ -39,7 +39,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public ObservableCollection<BooleanGenericTuple<ApplicationConfig>> EnabledAppIds { get; set; }
         public bool MonitorNewMods { get; set; } = true;
 
-        [DoNotNotify]
+        #pragma warning disable CS0436 // Type conflicts with imported type
+        [DoNotNotify] // Conflict is intended to prevent reference to PropertyChanged. See PropertyChanged.Fody docs.
+        #pragma warning restore CS0436 // Type conflicts with imported type
         public ObservableCollection<ImageModPathTuple> Mods
         {
             get => _mods;

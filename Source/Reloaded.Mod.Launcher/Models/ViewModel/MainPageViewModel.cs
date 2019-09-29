@@ -48,7 +48,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public ImageApplicationPathTuple SelectedApplication { get; set; }
 
         /* List of programs on the sidebar. */
-        [DoNotNotify]
+        #pragma warning disable CS0436 // Type conflicts with imported type
+        [DoNotNotify] // Conflict is intended, so we don't have reference to PropertyChanged after building. Fody will fix conflict at compile time.
+        #pragma warning restore CS0436 // Type conflicts with imported type
         public ObservableCollection<ImageApplicationPathTuple> Applications
         {
             get => _applications;

@@ -55,7 +55,7 @@ namespace Reloaded.Mod.Launcher.Utility
                     valueSet = true;
                     break;
                 }
-                catch (Exception e) { /* Ignored */ }
+                catch (Exception) { /* Ignored */ }
 
                 Thread.Sleep(sleepTime);
             }
@@ -94,7 +94,7 @@ namespace Reloaded.Mod.Launcher.Utility
                     valueSet = true;
                     break;
                 }
-                catch (Exception e) { /* Ignored */ }
+                catch (Exception) { /* Ignored */ }
 
                 Thread.Sleep(sleepTime);
             }

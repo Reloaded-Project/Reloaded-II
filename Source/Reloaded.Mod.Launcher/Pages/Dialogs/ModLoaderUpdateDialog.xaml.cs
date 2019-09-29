@@ -20,7 +20,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
     /// </summary>
     public partial class ModLoaderUpdateDialog : ReloadedWindow
     {
-        public ModLoaderUpdateDialogViewModel ViewModel { get; set; }
+        public new ModLoaderUpdateDialogViewModel ViewModel { get; set; }
 
         public ModLoaderUpdateDialog(UpdateManager manager, Version targetVersion)
         {

@@ -91,7 +91,10 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
         public DownloadModDetails(Uri uri)
         {
             Uri = uri;
+
+            #pragma warning disable 4014
             GetNameAndSize(uri); // Fire and forget.
+            #pragma warning restore 4014
         }
 
         private async Task GetNameAndSize(Uri url)
@@ -104,12 +107,12 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
                     await client.OpenReadTaskAsync(url);
 
                     try { FileName = GetFileName(client); }
-                    catch (Exception e) { FileName = "???"; }
+                    catch (Exception) { FileName = "???"; }
 
                     try { FileSize = GetFileSize(client); }
-                    catch (Exception e) { FileSize = -1; }
+                    catch (Exception) { FileSize = -1; }
                 }
-                catch (Exception e) { /* Probably shouldn't swallow this one, but will for now. */ }
+                catch (Exception) { /* Probably shouldn't swallow this one, but will for now. */ }
             }
         }
 

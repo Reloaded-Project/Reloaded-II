@@ -18,7 +18,7 @@ namespace Reloaded.Mod.Launcher.Converters
                 {
                     return $"({process.Id}) {process.MainModule.ModuleName}";
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return "ERROR";
                 }

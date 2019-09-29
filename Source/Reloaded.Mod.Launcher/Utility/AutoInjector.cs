@@ -41,7 +41,7 @@ namespace Reloaded.Mod.Launcher.Utility
                     }
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
         }
     }
 }

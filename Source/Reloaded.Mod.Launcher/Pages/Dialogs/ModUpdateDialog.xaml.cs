@@ -19,7 +19,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
         private static XamlResource<string> _xamlUpdateModConfirmTitle = new XamlResource<string>("UpdateModConfirmTitle");
         private static XamlResource<string> _xamlUpdateModConfirmMessage = new XamlResource<string>("UpdateModConfirmMessage");
 
-        public ModUpdateDialogViewModel ViewModel { get; set; }
+        public new ModUpdateDialogViewModel ViewModel { get; set; }
 
         public ModUpdateDialog(Updater updater, ModUpdateSummary summary)
         {

@@ -99,7 +99,7 @@ namespace Reloaded.Mod.Loader.Update
                     pair.Resolver.PostUpdateCallback(true);
                     completeMods.Value += 1;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Debugger.Break();
                 }
