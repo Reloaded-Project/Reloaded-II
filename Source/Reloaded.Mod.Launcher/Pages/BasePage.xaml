@@ -64,14 +64,13 @@
 
                 <!-- List of Games -->
                 <ItemsControl Name="ProcessesPanel" ItemsSource="{Binding Path=Applications}"
-                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Recycling" DockPanel.Dock="Top">
 
                     <!-- Allow for virtualization of stack panel. -->
                     <ItemsControl.Template>
                         <ControlTemplate TargetType="{x:Type ItemsControl}">
-                            <ScrollViewer CanContentScroll="True">
+                            <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Disabled">
                                 <ItemsPresenter/>
                             </ScrollViewer>
                         </ControlTemplate>
