@@ -28,6 +28,7 @@
                   Margin="{DynamicResource CommonItemVerticalMargin}"/>
 
         <xctk:PropertyGrid Grid.Row="1"
+                           PreparePropertyItem="PropertyGridMakeExpandable"
                            BorderThickness="0"
                            SelectedObject="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}"
                            Margin="{DynamicResource CommonItemVerticalMargin}">

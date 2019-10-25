@@ -13,6 +13,7 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
+using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs
 {
@@ -30,6 +31,13 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
 
         private void Save_Click(object sender, RoutedEventArgs e) => ViewModel.Save();
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => ViewModel.Save();
+
+        private void PropertyGridMakeExpandable(object sender, Xceed.Wpf.Toolkit.PropertyGrid.PropertyItemEventArgs e)
+        {
+            if (e.Item is PropertyItem item)
+                if ((item.PropertyType.IsValueType && !item.PropertyType.IsEnum && !item.PropertyType.IsPrimitive) || item.PropertyType.IsClass)
+                    item.IsExpandable = true;
+        }
     }
 
     public partial class ConfigureModDialogViewModel : ObservableObject
