@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media;
 using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -19,12 +20,17 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         public BooleanGenericTuple<ImageModPathTuple> SelectedMod { get; set; }
         public ImageApplicationPathTuple ApplicationTuple { get; set; }
 
+        public OpenModFolderCommand OpenModFolderCommand { get; set; }
+        public ConfigureModCommand ConfigureModCommand { get; set; }
+
         public int SelectedModIndex { get; set; } = 0;
         public ImageSource Icon { get; set; }
 
         public ApplicationSummaryViewModel(ApplicationViewModel model)
         {
             ApplicationTuple = model.ApplicationTuple;
+            OpenModFolderCommand = new OpenModFolderCommand(this);
+            ConfigureModCommand = new ConfigureModCommand(this);
 
             // Wait for parent to fully initialize.
             model.InitializeClassTask.Wait();

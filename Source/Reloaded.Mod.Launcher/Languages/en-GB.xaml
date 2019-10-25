@@ -122,6 +122,8 @@
 
     <sys:String x:Key="ConfigureModsListItemTooltip">Drag and drop items to change the load order of mods. Mods are loaded starting with top mod first and bottom mod last.</sys:String>
     <sys:String x:Key="ConfigureModsDummyText">Uses Reloaded to tell you to get some mods. Reloaded-II is cool! Cuteness is justice, its the law!.</sys:String> <!-- Unused for now, will be used down the road. -->
+    <sys:String x:Key="ConfigureModsConfigure">Configure Mod</sys:String>
+    <sys:String x:Key="ConfigureModsOpenFolder">Open Folder</sys:String>
 
     <!-- Reloaded Process -->
     <sys:String x:Key="ReloadedProcessResume">Resume</sys:String>
@@ -183,6 +185,10 @@
 
     <!-- WMI Administrator Message -->
     <sys:String x:Key="RunAsAdminMessage" xml:space="preserve">You need to run this application as administrator.&#x0a;Administrative privileges are needed to receive application launch/exit events from Windows Management Instrumentation (WMI).&#x0a;Developers: Run your favourite IDE e.g. Visual Studio as Admin.</sys:String>
+
+    <!-- Configure Mod Dialog -->
+    <sys:String x:Key="ConfigureModDialogTitle">Configure Mod</sys:String>
+    <sys:String x:Key="ConfigureModDialogSave">Save</sys:String>
 
     <!-- Errors -->
     <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->

@@ -33,6 +33,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Search Filter -->
@@ -95,8 +96,23 @@
 
             <!-- Application Details -->
             <DockPanel Grid.Column="1" LastChildFill="False">
+
+                <!-- Actions for current application -->
+                <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+                    <Button Content="{DynamicResource ConfigureModsConfigure}" 
+                            Command="{Binding ConfigureModCommand}"
+                            Margin="{DynamicResource CommonItemHorizontalMargin}" 
+                            DockPanel.Dock="Right"/>
+
+                    <Button Content="{DynamicResource ConfigureModsOpenFolder}" 
+                            Command="{Binding OpenModFolderCommand}"
+                            DockPanel.Dock="Right"/>
+                </DockPanel>
+
+                <!-- Mod Details -->
                 <StackPanel DockPanel.Dock="Top"
                             Margin="{DynamicResource PanelMargin}">
+
                     <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModId, UpdateSourceTrigger=PropertyChanged, FallbackValue='reloaded.this.is.dummytext'}" 
                                HorizontalAlignment="Center"
                                Style="{DynamicResource TextblockWithColourChange}" 

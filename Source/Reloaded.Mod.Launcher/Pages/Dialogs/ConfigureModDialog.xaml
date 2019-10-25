@@ -1,0 +1,63 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.ConfigureModDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
+        xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="{DynamicResource ConfigureModDialogTitle}" 
+        Height="600" 
+        Width="600"
+        Closing="Window_Closing"
+        Style="{DynamicResource ReloadedWindow}">
+    <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ComboBox Grid.Row="0"
+                  Style="{DynamicResource DefaultComboBox}"
+                  ItemsSource="{Binding Configurables}"
+                  SelectedItem="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}"
+                  DisplayMemberPath="ConfigName"
+                  Margin="{DynamicResource CommonItemVerticalMargin}"/>
+
+        <xctk:PropertyGrid Grid.Row="1"
+                           BorderThickness="0"
+                           SelectedObject="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}"
+                           Margin="{DynamicResource CommonItemVerticalMargin}">
+            <xctk:PropertyGrid.Resources>
+                <!-- Hack for PropertyGrid: Reset item Styles, And Set Styles Per Item Below -->
+                <Style TargetType="{x:Type Button}" />
+                <Style TargetType="{x:Type ToolTip}" />
+                <Style TargetType="{x:Type RadioButton}" />
+                <Style TargetType="{x:Type CheckBox}" />
+                <Style TargetType="{x:Type ProgressBar}" />
+                <Style TargetType="{x:Type TextBox}" />
+                <Style TargetType="{x:Type ComboBox}" />
+                <Style TargetType="{x:Type ComboBoxItem}" />
+                <Style TargetType="{x:Type DataGrid}" />
+                <Style TargetType="{x:Type Border}" />
+                <Style TargetType="{x:Type Separator}" />
+                <Style TargetType="{x:Type ListView}" />
+                <Style TargetType="{x:Type ListBox}" />
+                <Style TargetType="{x:Type ScrollBar}" />
+                <Style TargetType="{x:Type ScrollViewer}" />
+                <Style TargetType="{x:Type Label}" />
+                <Style TargetType="{x:Type TextBlock}" />
+            </xctk:PropertyGrid.Resources>
+        </xctk:PropertyGrid>
+
+        <Button 
+            Grid.Row="2"
+            Content="{DynamicResource ConfigureModDialogSave}"
+            Style="{DynamicResource DefaultButton}"
+            HorizontalAlignment="Stretch"
+            Click="Save_Click"/>
+    </Grid>
+</default:ReloadedWindow>
