@@ -36,7 +36,12 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
     {
         public IConfigurable[] Configurables { get; set; }
         public IConfigurable CurrentConfigurable { get; set; }
-        public ConfigureModDialogViewModel(IConfigurable[] configurables) => Configurables = configurables;
+        public ConfigureModDialogViewModel(IConfigurable[] configurables)
+        {
+            Configurables = configurables;
+            if (Configurables.Length > 0)
+                CurrentConfigurable = Configurables[0];
+        }
 
         public void Save()
         {
