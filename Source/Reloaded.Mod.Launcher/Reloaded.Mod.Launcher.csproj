@@ -6,7 +6,7 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | Build: $([System.DateTime]::UtcNow.ToString("s"))</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
@@ -98,6 +98,9 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="PropertyChanged.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Styles\Controls.xaml">
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -181,9 +184,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="PropertyChanged">
-      <HintPath>Dependencies\PropertyChanged.dll</HintPath>
-    </Reference>
     <Reference Include="Xceed.Wpf.Toolkit">
       <HintPath>Dependencies\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
@@ -193,11 +193,5 @@
     <ApplicationDefinition Update="App.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ApplicationDefinition>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Dependencies\PropertyChanged.dll">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>
