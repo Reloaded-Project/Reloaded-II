@@ -21,6 +21,11 @@ namespace Reloaded.Mod.Launcher
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Returns if the application is running as root/sudo/administrator.
+        /// </summary>
+        public static bool IsElevated { get; } = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+
         private XamlResource<string> _xamlRunAsAdminMessage = new XamlResource<string>("RunAsAdminMessage");
         private Dictionary<string, string> _commandLineArguments = new Dictionary<string, string>();
 
@@ -82,12 +87,6 @@ namespace Reloaded.Mod.Launcher
                 // Quit the process.
                 Environment.Exit(0);
             }
-
-            if (!IsElevated)
-            {
-                MessageBox.Show(_xamlRunAsAdminMessage.Get());
-                Environment.Exit(0);
-            }
         }
 
         private void PopulateCommandLineArgs()
@@ -111,10 +110,5 @@ namespace Reloaded.Mod.Launcher
 
             Current.Resources.MergedDictionaries.Add(langDict);
         }
-
-        /// <summary>
-        /// Checks if the application is running as root/sudo/administrator.
-        /// </summary>
-        private static bool IsElevated => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
     }
 }

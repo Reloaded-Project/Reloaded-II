@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Utility.Interfaces;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Launcher.Utility
@@ -15,13 +16,13 @@ namespace Reloaded.Mod.Launcher.Utility
     public class AutoInjector
     {
         private MainPageViewModel _mainPageViewModel;
-        private ProcessWatcher _processWatcher;
+        private IProcessWatcher   _processWatcher;
 
         /* Construction */
         public AutoInjector(MainPageViewModel mainPageViewModel)
         {
             _mainPageViewModel = mainPageViewModel;
-            _processWatcher = new ProcessWatcher();
+            _processWatcher    = App.IsElevated ? (IProcessWatcher) new WmiProcessWatcher() : ProcessWatcher.Instance;
             _processWatcher.OnNewProcess += ProcessWatcherOnOnNewProcess;
         }
 

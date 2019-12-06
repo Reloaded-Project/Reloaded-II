@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -13,7 +14,8 @@ namespace Reloaded.Mod.Shared
         public const int MaxPath = 32767;
 
         /* Thread safety. */
-        public static object Lock = new object();
+        private static object _lock = new object();
+        private static int[] _processes = new int[1000];
 
         /* Buffer for communication. */
         private static readonly StringBuilder _buffer = new StringBuilder(MaxPath);
@@ -26,22 +28,51 @@ namespace Reloaded.Mod.Shared
 
             // Note: We can re-use the buffer without clearing because the returned string is null-terminated.
 
-            if (processHandle != IntPtr.Zero)
+            lock (_lock)
             {
-                try
+                if (processHandle != IntPtr.Zero)
                 {
-                    // ReSharper disable once NotAccessedVariable
-                    int size = _buffer.Capacity;
-                    if (QueryFullProcessImageNameW(processHandle, 0, _buffer, out size))
-                        return _buffer.ToString();
-                }
-                finally
-                {
-                    CloseHandle(processHandle);
+                    try
+                    {
+                        // ReSharper disable once NotAccessedVariable
+                        int size = _buffer.Capacity;
+                        if (QueryFullProcessImageNameW(processHandle, 0, _buffer, out size))
+                            return _buffer.ToString();
+                    }
+                    finally
+                    {
+                        CloseHandle(processHandle);
+                    }
                 }
             }
 
-            throw new Win32Exception(Marshal.GetLastWin32Error());
+            return "Unknown Path";
+        }
+
+        public static unsafe int[] GetProcessIds()
+        {
+            // Get the list of process identifiers.
+            int sizeOfProcesses = _processes.Length * sizeof(int);
+            int bytesReturned;
+
+            fixed (int* firstElement = _processes)
+            {
+                if (!EnumProcesses(firstElement, sizeOfProcesses, out bytesReturned))
+                    return new int[0];
+            }
+
+            // Print the name and process identifier for each process.
+            if (sizeOfProcesses <= bytesReturned)
+            {
+                _processes = new int[_processes.Length * 2];
+                return GetProcessIds();
+            }
+
+            // Calculate how many process identifiers were returned.
+            int processNumber = bytesReturned / sizeof(uint);
+            int[] process = new int[processNumber];
+            Buffer.BlockCopy(_processes, 0, process, 0, processNumber);
+            return process;
         }
 
         /* Open browser page */
@@ -65,5 +96,8 @@ namespace Reloaded.Mod.Shared
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool CloseHandle(IntPtr hHandle);
+
+        [DllImport("Psapi.dll", SetLastError = true)]
+        public static extern unsafe bool EnumProcesses(int* processIds, Int32 arraySizeBytes, out Int32 bytesCopied);
     }
 }

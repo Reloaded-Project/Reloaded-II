@@ -1,73 +1,76 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Management;
-using Reloaded.WPF.MVVM;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using Reloaded.Mod.Launcher.Utility.Interfaces;
+using Reloaded.Mod.Loader.IO.Weaving;
+using Reloaded.WPF.Utilities;
 
-namespace Reloaded.Mod.Launcher.Utility 
+namespace Reloaded.Mod.Launcher.Utility
 {
     /// <summary>
-    /// Utility class that provides events for when processes start up and/or shut down.
+    /// Utility class that provides events for when processes start up and/or shut down without using WMI.
+    /// More resource wasteful and has higher latency but does not require administrative privileges.
     /// </summary>
-    public class ProcessWatcher : ObservableObject, IDisposable
+    public class ProcessWatcher : ObservableObject, IDisposable, IProcessWatcher
     {
-        private const string WmiProcessidName = "ProcessID";
+        public static ProcessWatcher Instance { get; } = new ProcessWatcher();
+        private static XamlResource<int> _refreshInterval { get; set; }
 
-        public event ProcessArrived OnNewProcess = process => { };
+        public event ProcessArrived OnNewProcess    = process => { };
         public event ProcessExited OnRemovedProcess = processId => { };
+        private Timer _timer;
+        private ObservableCollection<int> _processes;
+        private object _lock = new object();
 
-        private readonly ManagementEventWatcher _startWatcher;
-        private readonly ManagementEventWatcher _stopWatcher;
 
         public ProcessWatcher()
         {
-            // Populate bindings.
-            _startWatcher = new ManagementEventWatcher(new WqlEventQuery("SELECT * FROM Win32_ProcessStartTrace"));
-            _stopWatcher = new ManagementEventWatcher(new WqlEventQuery("SELECT * FROM Win32_ProcessStopTrace"));
-            _startWatcher.EventArrived += ApplicationLaunched;
-            _stopWatcher.EventArrived += ApplicationExited;
-            _startWatcher.Start();
-            _stopWatcher.Start();
+            if (_refreshInterval == null)
+                _refreshInterval = new XamlResource<int>("ReloadedProcessListRefreshInterval");
+
+            _processes  = new ObservableCollection<int>(Shared.ProcessExtensions.GetProcessIds());
+            _processes.CollectionChanged += ProcessesChanged;
+            _timer = new Timer(Tick, null, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(_refreshInterval.Get()));
         }
 
-        ~ProcessWatcher()
+        private void Tick(object state)
         {
-            Dispose();
-        }
-
-        public void Dispose()
-        {
-            _startWatcher?.Dispose();
-            _stopWatcher?.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void RaiseOnNewProcess(Process process)
-        {
-            OnNewProcess(process);
-        }
-
-        protected virtual void RaiseOnRemovedProcess(int processId)
-        {
-            OnRemovedProcess(processId);
-        }
-
-        private void ApplicationLaunched(object sender, EventArrivedEventArgs e)
-        {
-            ActionWrappers.TryCatch(() =>
+            lock (_lock)
             {
-                var processId = Convert.ToInt32(e.NewEvent.Properties[WmiProcessidName].Value);
-                var process = Process.GetProcessById(processId);
-                RaiseOnNewProcess(process);
-            });
+                var processIds = Shared.ProcessExtensions.GetProcessIds();
+                Collections.ModifyObservableCollection(_processes, processIds);
+            }
         }
 
-        private void ApplicationExited(object sender, EventArrivedEventArgs e)
+        private void ProcessesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            int processId = Convert.ToInt32(e.NewEvent.Properties[WmiProcessidName].Value);
-            RaiseOnRemovedProcess(processId);
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                case NotifyCollectionChangedAction.Replace:
+                {
+                    foreach (var newItem in e.NewItems)
+                    {
+                        try { OnNewProcess(Process.GetProcessById((int)newItem)); }
+                        catch (Exception) { }
+                    }
+                    break;
+                }
+
+                case NotifyCollectionChangedAction.Remove:
+                {
+                    foreach (var oldItem in e.OldItems)
+                        OnRemovedProcess((int) oldItem);
+                    break;
+                }
+            }
         }
 
-        public delegate void ProcessArrived(Process newProcess);
-        public delegate void ProcessExited(int processId);
+        public void Dispose() { }
     }
 }

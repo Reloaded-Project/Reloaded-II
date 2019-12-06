@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Reloaded.Mod.Launcher.Utility.Interfaces;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Shared;
@@ -22,7 +23,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
         private HashSet<Process> _processes; // All processes that satisfy file path filter.
         private readonly string _applicationPath;
-        private readonly ProcessWatcher _processWatcher;
+        private readonly IProcessWatcher _processWatcher;
 
         /* Class Setup and Teardown */
         public ApplicationInstanceTracker(string applicationPath, CancellationToken token = default)
@@ -35,7 +36,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
             if (!token.IsCancellationRequested)
             {
-                _processWatcher = new ProcessWatcher();
+                _processWatcher = App.IsElevated ? (IProcessWatcher)new WmiProcessWatcher() : ProcessWatcher.Instance;
                 _processWatcher.OnNewProcess += ProcessWatcherOnOnNewProcess;
                 _processWatcher.OnRemovedProcess += ProcessWatcherOnOnRemovedProcess;
             }
@@ -48,7 +49,6 @@ namespace Reloaded.Mod.Launcher.Utility
 
         public void Dispose()
         {
-            _processWatcher?.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -135,12 +135,11 @@ namespace Reloaded.Mod.Launcher.Utility
             }
         }
 
-        private void AddProcess(Process newprocess)
+        private void AddProcess(Process newProcess)
         {
-            if (string.Equals(Path.GetFullPath(newprocess.MainModule.FileName), _applicationPath,
-                StringComparison.InvariantCultureIgnoreCase))
+            if (string.Equals(Shared.ProcessExtensions.GetExecutablePath(newProcess), _applicationPath, StringComparison.InvariantCultureIgnoreCase))
             {
-                _processes.Add(newprocess);
+                _processes.Add(newProcess);
                 RaiseOnProcessesChanged();
             }
         }
