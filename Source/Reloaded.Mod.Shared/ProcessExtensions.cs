@@ -14,7 +14,8 @@ namespace Reloaded.Mod.Shared
         public const int MaxPath = 32767;
 
         /* Thread safety. */
-        private static object _lock = new object();
+        private static object _getExecutablePathLock = new object();
+        private static object _getProcessIdLock = new object();
         private static int[] _processes = new int[1000];
 
         /* Buffer for communication. */
@@ -28,7 +29,7 @@ namespace Reloaded.Mod.Shared
 
             // Note: We can re-use the buffer without clearing because the returned string is null-terminated.
 
-            lock (_lock)
+            lock (_getExecutablePathLock)
             {
                 if (processHandle != IntPtr.Zero)
                 {
@@ -51,6 +52,14 @@ namespace Reloaded.Mod.Shared
 
         public static unsafe int[] GetProcessIds()
         {
+            lock (_getProcessIdLock)
+            {
+                return GetProcessIdsInternal();
+            }
+        }
+
+        private static unsafe int[] GetProcessIdsInternal()
+        {
             // Get the list of process identifiers.
             int sizeOfProcesses = _processes.Length * sizeof(int);
             int bytesReturned;
@@ -71,7 +80,7 @@ namespace Reloaded.Mod.Shared
             // Calculate how many process identifiers were returned.
             int processNumber = bytesReturned / sizeof(uint);
             int[] process = new int[processNumber];
-            Buffer.BlockCopy(_processes, 0, process, 0, processNumber);
+            Buffer.BlockCopy(_processes, 0, process, 0, bytesReturned);
             return process;
         }
 
