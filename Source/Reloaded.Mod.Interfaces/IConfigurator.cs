@@ -18,7 +18,6 @@
         /// </summary>
         IConfigurable[] GetConfigurations();
 
-
         /// <summary>
         /// Allows for custom launcher/configurator implementation.
         /// If you have your own configuration program/code, run that code here and return true.

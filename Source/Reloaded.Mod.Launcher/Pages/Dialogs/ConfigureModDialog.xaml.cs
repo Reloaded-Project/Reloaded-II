@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,12 +44,32 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
     public partial class ConfigureModDialogViewModel : ObservableObject
     {
         public IConfigurable[] Configurables { get; set; }
-        public IConfigurable CurrentConfigurable { get; set; }
+        public IConfigurable   CurrentConfigurable { get; set; }
+
         public ConfigureModDialogViewModel(IConfigurable[] configurables)
         {
             Configurables = configurables;
             if (Configurables.Length > 0)
                 CurrentConfigurable = Configurables[0];
+
+            // For configurations which support updating, update them immediately when the configs are changed.
+            for (int x = 0; x < Configurables.Length; x++)
+            {
+                if (Configurables[x] is IUpdatableConfigurable updatableConfigurable)
+                {
+                    var xCopy = x;
+                    updatableConfigurable.ConfigurationUpdated += configurable =>
+                    {
+                        // The XCEED PropertyGrid has no way of getting index of item.
+                        // For now, we will switch if necessary in the case that the name matches.
+                        // I don't see anyone making multiple configs with same names, it would be counter intuitive.
+                        if (Configurables[xCopy].ConfigName == CurrentConfigurable.ConfigName)
+                            CurrentConfigurable = configurable;
+
+                        Configurables[xCopy] = configurable;
+                    };
+                }
+            }
         }
 
         public void Save()
