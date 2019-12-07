@@ -66,7 +66,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                     if (element.DataContext is Process process)
                     {
                         ViewModel.SelectedProcess = process;
-                        ViewModel.ChangePageProperty(ApplicationSubPage.NonReloadedProcess);
+                        if (!process.HasExited)
+                            ViewModel.ChangePageProperty(ApplicationSubPage.NonReloadedProcess);
                     }
                 }
             }
