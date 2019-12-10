@@ -147,11 +147,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             MonitorNewMods = true;
         }
 
-        public void RaiseSelectedModChangedEvent()
-        {
-            this.RaisePropertyChangedEvent(nameof(SelectedModTuple));
-        }
-
         private void InvokeAsync(Action action)
         {
             if (Application.Current != null)
@@ -221,7 +216,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             // Try read all configs, this action may sometimes fail if some of the files are still being copied.
             // Worth noting is that the last fired event will never collide here and fail, thus this is a safe point to exit.
-            try { modConfigs = ModConfig.GetAllMods(IoC.Get<LoaderConfig>().ModConfigDirectory); }
+            try { modConfigs = ModConfig.GetAllMods(IoC.Get<LoaderConfig>().ModConfigDirectory, cancellationToken); }
             catch (Exception) { return; }
 
             foreach (var config in modConfigs)

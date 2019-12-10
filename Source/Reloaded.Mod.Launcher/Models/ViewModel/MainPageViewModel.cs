@@ -108,16 +108,13 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             // Try read all configs, this action may sometimes fail if some of the files are still being copied.
             // Worth noting is that the last fired event will never collide here and fail, thus this is a safe point to exit.
-            try   { applicationConfigs = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().ApplicationConfigDirectory); }
+            try   { applicationConfigs = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().ApplicationConfigDirectory, cancellationToken); }
             catch (Exception) { return; }
 
             foreach (var config in applicationConfigs)
                 applications.Add(new ImageApplicationPathTuple(GetImageForAppConfig(config), config.Object, config.Path));
 
-            if (Applications == null)
-                Applications = applications;
-            else
-                ActionWrappers.ExecuteWithApplicationDispatcher(() => { Collections.ModifyObservableCollection(_applications, applications); });
+            ActionWrappers.ExecuteWithApplicationDispatcher(() => Collections.UpdateObservableCollection(ref _applications, applications));
         }
 
         private void StartGetApplicationsTask()

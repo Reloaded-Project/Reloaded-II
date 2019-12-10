@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Misc;
@@ -63,12 +64,12 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Finds all mods on the filesystem, parses them and returns a list of all mods.
         /// </summary>
         /// <param name="modDirectory">(Optional) Directory containing all of the mods.</param>
-        public static List<PathGenericTuple<ModConfig>> GetAllMods(string modDirectory = null)
+        public static List<PathGenericTuple<ModConfig>> GetAllMods(string modDirectory = null, CancellationToken token = default)
         {
             if (modDirectory == null)
                 modDirectory = LoaderConfigReader.ReadConfiguration().ModConfigDirectory;
 
-            return _modConfigReader.ReadConfigurations(modDirectory, ConfigFileName);
+            return _modConfigReader.ReadConfigurations(modDirectory, ConfigFileName, token);
         }
 
         /// <summary>

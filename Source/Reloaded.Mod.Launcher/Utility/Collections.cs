@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -46,21 +45,6 @@ namespace Reloaded.Mod.Launcher.Utility
 
             foreach (var removedMod in oldMods)
                 oldItems.Remove(removedMod);
-        }
-
-        /// <summary>
-        /// Finds the index of a specific type that satisfies a given predicate.
-        /// </summary>
-        public static int IndexOf<T>(this IEnumerable<T> source, Func<T, bool> predicate)
-        {
-            int index = 0;
-            foreach (var item in source)
-            {
-                if (predicate(item)) return index;
-                index++;
-            }
-
-            return -1;
         }
     }
 }

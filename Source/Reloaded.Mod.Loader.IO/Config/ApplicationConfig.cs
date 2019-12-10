@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Misc;
@@ -93,12 +94,12 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// all apps.
         /// </summary>
         /// <param name="appDirectory">(Optional) Directory containing all of the applications.</param>
-        public static List<PathGenericTuple<ApplicationConfig>> GetAllApplications(string appDirectory = null)
+        public static List<PathGenericTuple<ApplicationConfig>> GetAllApplications(string appDirectory = null, CancellationToken token = default)
         {
             if (appDirectory == null)
                 appDirectory = LoaderConfigReader.ReadConfiguration().ApplicationConfigDirectory;
 
-            return _appConfigReader.ReadConfigurations(appDirectory, ConfigFileName);
+            return _appConfigReader.ReadConfigurations(appDirectory, ConfigFileName, token);
         }
 
         /// <summary>
