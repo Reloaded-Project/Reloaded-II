@@ -36,7 +36,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         private void SaveCurrentSelectedItem()
         {
             // Saves the current selection before exiting launcher.
-            Task.Run(() =>
+            ViewModel.MainPageViewModel.InvokeWithoutMonitoringApplications(() =>
             {
                 if (ViewModel.MainPageViewModel.Applications.Count >= 0)
                 {
@@ -56,17 +56,14 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             if (e.RemovedItems.Count > 0)
             {
                 // Backup and disable monitor status.
-                bool oldMonitorNewApplications = ViewModel.MainPageViewModel.MonitorNewApplications;
-                ViewModel.MainPageViewModel.MonitorNewApplications = false;
-
-                // Write config.
-                // Without the file existence check, what can happen is we remove an application and it immediately comes back.
-                var tuple = (ImageApplicationPathTuple)e.RemovedItems[0];
-                if (File.Exists(tuple.ApplicationConfigPath))
-                    ApplicationConfig.WriteConfiguration(tuple.ApplicationConfigPath, tuple.ApplicationConfig);
-
-                // Restore old monitor status.
-                ViewModel.MainPageViewModel.MonitorNewApplications = oldMonitorNewApplications;
+                ViewModel.MainPageViewModel.InvokeWithoutMonitoringApplications(() =>
+                {
+                    // Write config.
+                    // Without the file existence check, what can happen is we remove an application and it immediately comes back.
+                    var tuple = (ImageApplicationPathTuple)e.RemovedItems[0];
+                    if (File.Exists(tuple.ApplicationConfigPath))
+                        ApplicationConfig.WriteConfiguration(tuple.ApplicationConfigPath, tuple.ApplicationConfig);
+                });
             }
         }
 

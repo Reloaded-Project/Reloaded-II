@@ -123,6 +123,13 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 _getApplicationsTaskCommand.Execute(new Action<CancellationToken>(GetApplications));
         }
 
+        public void InvokeWithoutMonitoringApplications(Action action)
+        {
+            MonitorNewApplications = false;
+            action();
+            MonitorNewApplications = true;
+        }
+
         /// <summary>
         /// Obtains an image to represent a given application.
         /// The image is either a custom one or the icon of the application.
