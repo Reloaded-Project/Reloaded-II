@@ -4,15 +4,18 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
 using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Launcher.Commands.Templates;
+using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 using MessageBox = Xceed.Wpf.Toolkit.MessageBox;
 
 namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
@@ -20,10 +23,7 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
     public class ConfigureModCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
         private static Type[] _sharedTypes = { typeof(IConfigurator) };
-
         private readonly ApplicationSummaryViewModel _summaryViewModel;
-        private PluginLoader _loader;
-        private IConfigurator _configurator;
 
         public ConfigureModCommand(ApplicationSummaryViewModel summaryViewModel)
         {
@@ -39,10 +39,9 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
 
         public void Dispose()
         {
-            _configurator = null;
-            _loader?.Dispose();
-            _summaryViewModel.PropertyChanged -= SummaryViewModelOnPropertyChanged;
             GC.Collect();
+            GC.WaitForPendingFinalizers();
+            _summaryViewModel.PropertyChanged -= SummaryViewModelOnPropertyChanged;
         }
 
         /* Implementation */
@@ -54,51 +53,59 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
 
         /* ICommand */
 
+        // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void Execute(object parameter)
         {
-            if (!_configurator.TryRunCustomConfiguration())
+            // Important Note: We are keeping everything to the stack.
+            // Want our best to ensure that no types leak out anywhere making unloadability hard.
+            // Also, we must also keep loader used to load the configurator in stack, for obvious reasons.
+            if (TryGetConfigurator(_summaryViewModel.SelectedMod, out var configurator, out var loader))
             {
-                var window = new ConfigureModDialog(_configurator.GetConfigurations());
-                window.ShowDialog();
+                if (!configurator.TryRunCustomConfiguration())
+                {
+                    var window = new ConfigureModDialog(configurator.GetConfigurations());
+                    window.ShowDialog();
+                }
             }
         }
 
+        // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public bool CanExecute(object parameter)
         {
-            DisposeCurrent();
             var selectedMod = _summaryViewModel.SelectedMod;
             if (selectedMod != null)
-            {
-                var config = selectedMod.Generic.ModConfig;
-
-                string dllPath = ModConfig.GetDllPath(selectedMod.Generic.ModConfigPath, (ModConfig) config);
-                if (! File.Exists(dllPath))
-                    return false;
-
-                _loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, _sharedTypes);
-                var assembly    = _loader.LoadDefaultAssembly();
-                var types       = assembly.GetTypes();
-                var entryPoint  = types.FirstOrDefault(t => typeof(IConfigurator).IsAssignableFrom(t) && !t.IsAbstract);
-
-                if (entryPoint != null)
-                {
-                    _configurator = (IConfigurator) Activator.CreateInstance(entryPoint);
-                    _configurator.SetModDirectory(Path.GetFullPath(Path.GetDirectoryName(selectedMod.Generic.ModConfigPath)));
-                    return true;
-                }
-
-                _loader?.Dispose();
-                return false;
-            }
+                return TryGetConfigurator(selectedMod, out _, out _);
 
             return false;
         }
 
-        private void DisposeCurrent()
+        // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private bool TryGetConfigurator(BooleanGenericTuple<ImageModPathTuple> selectedMod, out IConfigurator configurator, out PluginLoader loader)
         {
-            _configurator = null;
-            _loader?.Dispose();
-            GC.Collect();
+            var config = selectedMod.Generic.ModConfig;
+            string dllPath = ModConfig.GetDllPath(selectedMod.Generic.ModConfigPath, (ModConfig)config);
+            configurator = null;
+            loader = null;
+
+            if (!File.Exists(dllPath))
+                return false;
+
+            loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, _sharedTypes);
+            var assembly = loader.LoadDefaultAssembly();
+            var types = assembly.GetTypes();
+            var entryPoint = types.FirstOrDefault(t => typeof(IConfigurator).IsAssignableFrom(t) && !t.IsAbstract);
+
+            if (entryPoint != null)
+            {
+                configurator = (IConfigurator)Activator.CreateInstance(entryPoint);
+                configurator.SetModDirectory(Path.GetFullPath(Path.GetDirectoryName(selectedMod.Generic.ModConfigPath)));
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -14,7 +14,7 @@ using Rock.Collections;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 {
-    public class ApplicationSummaryViewModel : ObservableObject
+    public class ApplicationSummaryViewModel : ObservableObject, IDisposable
     {
         public ObservableCollection<BooleanGenericTuple<ImageModPathTuple>> AllMods { get; set; }
         public BooleanGenericTuple<ImageModPathTuple> SelectedMod { get; set; }
@@ -39,6 +39,18 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             var enabledModList = GetInitialModSet(model, ApplicationTuple);
             AllMods = new ObservableCollection<BooleanGenericTuple<ImageModPathTuple>>(enabledModList);
             AllMods.CollectionChanged += (sender, args) => SaveApplication(); // Save on reorder.
+        }
+
+        ~ApplicationSummaryViewModel()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            OpenModFolderCommand?.Dispose();
+            ConfigureModCommand?.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         private void OnSelectedModChanged(object sender, PropertyChangedEventArgs e)

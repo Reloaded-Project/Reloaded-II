@@ -10,7 +10,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
     /// <summary>
     /// Interaction logic for ApplicationSummaryPage.xaml
     /// </summary>
-    public partial class ApplicationSummaryPage : ApplicationSubPage
+    public partial class ApplicationSummaryPage : ApplicationSubPage, IDisposable
     {
         public ApplicationSummaryViewModel ViewModel { get; set; }
         private readonly ResourceManipulator _manipulator;
@@ -24,6 +24,18 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
             _manipulator = new ResourceManipulator(this.Contents);
             _modsViewSource = _manipulator.Get<CollectionViewSource>("FilteredMods");
             _modsViewSource.Filter += ModsViewSourceOnFilter;
+            this.AnimateOutFinished += Dispose;
+        }
+
+        ~ApplicationSummaryPage()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            ViewModel?.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         private void ModsViewSourceOnFilter(object sender, FilterEventArgs e)
