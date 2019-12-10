@@ -18,7 +18,7 @@ namespace Reloaded.Mod.Loader.IO
     ///     A json config class that implements interface <see cref="IConfig"/>.
     ///     Examples: <see cref="ModConfig"/>, <see cref="ApplicationConfig"/>.
     /// </typeparam>
-    public class ConfigReader<TConfigType> : IConfigLoader<TConfigType> where TConfigType : IConfig
+    public class ConfigReader<TConfigType> : IConfigLoader<TConfigType> where TConfigType : IConfig, new()
     {
         /* Documentation: See IConfigLoader. */
         public static JsonSerializerOptions Options = new JsonSerializerOptions()
@@ -40,8 +40,9 @@ namespace Reloaded.Mod.Loader.IO
             // Configurations to be returned
             var configurations = new List<PathGenericTuple<TConfigType>>(configurationPaths.Length);
             foreach (string configurationPath in configurationPaths)
-                if (! token.IsCancellationRequested)
-                    configurations.Add( new PathGenericTuple<TConfigType>(configurationPath, ReadConfiguration(configurationPath)) );
+                if (!token.IsCancellationRequested)
+                    if (TryReadConfiguration(configurationPath, out var config))
+                        configurations.Add(new PathGenericTuple<TConfigType>(configurationPath, config));
 
             return configurations;
         }
@@ -52,6 +53,23 @@ namespace Reloaded.Mod.Loader.IO
             foreach (var configuration in configurations)
                 if (!token.IsCancellationRequested)
                     WriteConfiguration(configuration.Path, configuration.Object);
+        }
+
+        public bool TryReadConfiguration(string path, out TConfigType value)
+        {
+            try
+            {
+                string jsonFile = File.ReadAllText(path);
+                value = JsonSerializer.Deserialize<TConfigType>(jsonFile, Options);
+                Utility.SetNullPropertyValues(value);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                value = new TConfigType();
+                return false;
+            }
         }
 
         public TConfigType ReadConfiguration(string path)
