@@ -181,6 +181,7 @@
 
   <ItemGroup>
     <Folder Include="Controls\Converters\" />
+    <Folder Include="Models\Model\IO\" />
   </ItemGroup>
 
   <ItemGroup>

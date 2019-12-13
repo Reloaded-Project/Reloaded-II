@@ -1,5 +1,4 @@
-﻿using System;
-using Reloaded.Mod.Launcher.Models.ViewModel;
+﻿using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages

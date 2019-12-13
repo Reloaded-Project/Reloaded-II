@@ -25,8 +25,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
     public class MainPageViewModel : ObservableObject
     {
-        private static ConfigReader<ApplicationConfig> _applicationConfigReader = new ConfigReader<ApplicationConfig>();
-
         /* Fired after the Applications collection changes. */
         public event NotifyCollectionChangedEventHandler ApplicationsChanged = (sender, args) => { };
 

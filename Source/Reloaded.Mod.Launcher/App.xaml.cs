@@ -11,7 +11,6 @@ using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.WPF.Utilities;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Reloaded.Mod.Launcher
@@ -25,8 +24,6 @@ namespace Reloaded.Mod.Launcher
         /// Returns if the application is running as root/sudo/administrator.
         /// </summary>
         public static bool IsElevated { get; } = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-
-        private XamlResource<string> _xamlRunAsAdminMessage = new XamlResource<string>("RunAsAdminMessage");
         private Dictionary<string, string> _commandLineArguments = new Dictionary<string, string>();
 
         /// <summary>

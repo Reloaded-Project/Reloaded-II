@@ -23,20 +23,6 @@ namespace Reloaded.Mod.Launcher.Utility
         private ApplicationLauncher() { }
 
         /// <summary>
-        /// Creates an <see cref="ApplicationLauncher"/> given a full path to an executable.
-        /// </summary>
-        public static ApplicationLauncher FromLocation(string location)
-        {
-            var launcher = new ApplicationLauncher();
-            launcher._location = Path.GetFullPath(location);
-
-            if (!File.Exists(launcher._location))
-                throw new ArgumentException(Errors.PathToApplicationInvalid());
-
-            return launcher;
-        }
-
-        /// <summary>
         /// Creates an <see cref="ApplicationLauncher"/> from a whole commandline, i.e. path and arguments.
         /// </summary>
         public static ApplicationLauncher FromLocationAndArguments(string location, string arguments)

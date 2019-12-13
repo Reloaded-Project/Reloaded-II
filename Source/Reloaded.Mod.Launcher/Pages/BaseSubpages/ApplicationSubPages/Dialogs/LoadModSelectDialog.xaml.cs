@@ -1,23 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
-using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
 

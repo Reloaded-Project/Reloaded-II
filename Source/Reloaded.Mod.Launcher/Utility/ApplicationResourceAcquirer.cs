@@ -4,7 +4,7 @@ using System.Windows;
 namespace Reloaded.Mod.Launcher.Utility
 {
     /// <summary>
-    /// A safer resource acquirer for the current applicationn instance.
+    /// A safer resource acquirer for the current application instance.
     /// </summary>
     public static class ApplicationResourceAcquirer
     {
@@ -20,8 +20,8 @@ namespace Reloaded.Mod.Launcher.Utility
             {
                 if (Application.Current != null)
                     return (TType) Application.Current.Resources[key];
-                else
-                    return default(TType);
+                
+                return default(TType);
             }
             catch (Exception)
             {
@@ -42,8 +42,8 @@ namespace Reloaded.Mod.Launcher.Utility
             {
                 if (Application.Current != null)
                     return (TType)Application.Current.Resources[key];
-                else
-                    return alternative;
+                
+                return alternative;
             }
             catch (Exception)
             {
