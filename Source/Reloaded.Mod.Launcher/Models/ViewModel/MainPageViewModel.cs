@@ -19,6 +19,7 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Resources;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
@@ -73,7 +74,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private AutoInjector _autoInjector;
 
         /* Get Applications Task */
-        private readonly SerialTaskCommand _getApplicationsTaskCommand = new SerialTaskCommand();
+        private CancellableExecuteActionTimer _getApplicationsActionTimer = new CancellableExecuteActionTimer(new XamlResource<int>("RefreshApplicationsEventTickTimer").Get());
 
         public MainPageViewModel()
         {
@@ -120,7 +121,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void StartGetApplicationsTask()
         {
             if (MonitorNewApplications)
-                _getApplicationsTaskCommand.Execute(new Action<CancellationToken>(GetApplications));
+                _getApplicationsActionTimer.SetAction(GetApplications);
         }
 
         public void InvokeWithoutMonitoringApplications(Action action)

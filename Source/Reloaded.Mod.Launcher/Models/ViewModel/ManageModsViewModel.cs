@@ -18,6 +18,7 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Resources;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
@@ -59,7 +60,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private ObservableCollection<ImageModPathTuple> _mods;
 
         /* Get Applications Task */
-        private readonly SerialTaskCommand _getModsTaskCommand = new SerialTaskCommand();
+        private CancellableExecuteActionTimer _getApplicationsActionTimer = new CancellableExecuteActionTimer(new XamlResource<int>("RefreshModsEventTickTimer").Get());
         private readonly FileSystemWatcher _createWatcher; 
         private readonly FileSystemWatcher _deleteFileWatcher;
         private readonly FileSystemWatcher _deleteDirectoryWatcher;
@@ -158,14 +159,14 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void ExecuteGetModifications()
         {
             if (MonitorNewMods)
-                _getModsTaskCommand.Execute(new Action<CancellationToken>(GetModifications));
+                _getApplicationsActionTimer.SetAction(GetModifications);
         }
 
         private void OnDeleteDirectory(object sender, FileSystemEventArgs e)
         {
             if (MonitorNewMods)
             {
-                _getModsTaskCommand.Execute(new Action<CancellationToken>(token =>
+                ActionWrappers.ExecuteWithApplicationDispatcher(() =>
                 {
                     // Remove any mod that may have been inside removed directory.
                     var allMods = Mods;
@@ -178,7 +179,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                             break;
                         }
                     }
-                }));
+                });
             }
         }
 
@@ -186,7 +187,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         {
             if (MonitorNewMods)
             {
-                _getModsTaskCommand.Execute(new Action<CancellationToken>(token =>
+                ActionWrappers.ExecuteWithApplicationDispatcher(() =>
                 {
                     // Remove any mod with matching filename to removed instance.
                     var allMods = Mods;
@@ -198,7 +199,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                             break;
                         }
                     }
-                }));
+                });
             }
         }
 

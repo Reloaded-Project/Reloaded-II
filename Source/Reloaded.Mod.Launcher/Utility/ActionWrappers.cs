@@ -7,12 +7,18 @@ namespace Reloaded.Mod.Launcher.Utility
 {
     public static class ActionWrappers
     {
+        /// <summary>
+        /// A wrapper for try/catch that swallows exceptions.
+        /// </summary>
         public static void TryCatch(Action action)
         {
             try { action(); }
             catch (Exception) { /* ignored */ }
         }
 
+        /// <summary>
+        /// Executes an action on the UI thread, allowing for collections that run on it to be manipulated.
+        /// </summary>
         public static void ExecuteWithApplicationDispatcher(Action action)
         {
             Application.Current.Dispatcher.Invoke(action);
