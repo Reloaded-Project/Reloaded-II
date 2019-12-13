@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -22,6 +23,15 @@ namespace Reloaded.Mod.Launcher.Utility
         public static void ExecuteWithApplicationDispatcher(Action action)
         {
             Application.Current.Dispatcher.Invoke(action);
+        }
+
+        /// <summary>
+        /// Executes an action on the UI thread asynchronously, allowing for
+        /// collections that run on it to be manipulated.
+        /// </summary>
+        public static DispatcherOperation ExecuteWithApplicationDispatcherAsync(Action action)
+        {
+            return Application.Current.Dispatcher.InvokeAsync(action);
         }
 
         /// <param name="condition">Stops sleeping if this condition returns true.</param>

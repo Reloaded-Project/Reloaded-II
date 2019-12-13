@@ -61,6 +61,24 @@ namespace Reloaded.Mod.Loader.IO.Config
         }
 
         /// <summary>
+        /// Tries to retrieve the full path to the icon that represents this mod.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="modConfig">The individual mod configuration.</param>
+        /// <param name="iconPath">Full path to the icon.</param>
+        public static bool TryGetIconPath(string configPath, ModConfig modConfig, out string iconPath)
+        {
+            if (String.IsNullOrEmpty(configPath))
+            {
+                iconPath = null;
+                return false;
+            }
+
+            iconPath = Path.Combine(Path.GetDirectoryName(configPath), modConfig.ModIcon);
+            return File.Exists(iconPath);
+        }
+
+        /// <summary>
         /// Finds all mods on the filesystem, parses them and returns a list of all mods.
         /// </summary>
         /// <param name="modDirectory">(Optional) Directory containing all of the mods.</param>

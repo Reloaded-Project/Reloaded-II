@@ -26,6 +26,8 @@ namespace Reloaded.Mod.Launcher.Utility
         /// </summary>
         private CancellationTokenSource _tokenSource;
 
+        private object _lock = new object();
+
         /// <summary>
         /// Creates an <see cref="ExecuteActionTimer"/> given the length of time between ticks.
         /// </summary>
@@ -61,9 +63,12 @@ namespace Reloaded.Mod.Launcher.Utility
         /* Tick Code */
         private void Tick(object state)
         {
-            _tokenSource = new CancellationTokenSource();
-            _actionToExecute?.Invoke(_tokenSource.Token);
-            _actionToExecute = null;
+            lock (_lock)
+            {
+                _tokenSource = new CancellationTokenSource();
+                _actionToExecute?.Invoke(_tokenSource.Token);
+                _actionToExecute = null;
+            }
         }
     }
 }

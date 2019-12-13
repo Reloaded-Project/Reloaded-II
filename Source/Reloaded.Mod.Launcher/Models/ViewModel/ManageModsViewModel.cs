@@ -6,39 +6,34 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using PropertyChanged;
-using Reloaded.Mod.Launcher.Commands;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Resources;
 using Reloaded.WPF.Utilities;
+using static Reloaded.Mod.Launcher.Utility.ActionWrappers;
+using static Reloaded.Mod.Loader.IO.FileSystemWatcherFactory;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
     public class ManageModsViewModel : ObservableObject
     {
         /* Mod Config Loader. */
-        private static ConfigReader<ModConfig> _modConfigReader = new ConfigReader<ModConfig>();
         private static MainPageViewModel _mainPageViewModel;
 
         /* Fired when the available mods collection changes. */
         public event NotifyCollectionChangedEventHandler ModsChanged = (sender, args) => { };
         public event Action<ImageModPathTuple> ModSaving = tuple => { }; // When a mod is about to be saved.
 
-        /* Fields */
-        public int SelectedIndex { get; set; } = 0;
+        /* Fields for Data Binding */
         public ImageModPathTuple SelectedModTuple { get; set; }
         public ImageSource Icon { get; set; }
-
         public ObservableCollection<BooleanGenericTuple<ApplicationConfig>> EnabledAppIds { get; set; }
-        public bool MonitorNewMods { get; set; } = true;
 
         #pragma warning disable CS0436 // Type conflicts with imported type
         [DoNotNotify] // Conflict is intended to prevent reference to PropertyChanged. See PropertyChanged.Fody docs.
@@ -59,6 +54,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /* Fired when the list of available mods changes. */
         private ObservableCollection<ImageModPathTuple> _mods;
 
+        /* If false, events to reload mod list are not sent. */
+        private bool _monitorNewMods = true;
+
         /* Get Applications Task */
         private CancellableExecuteActionTimer _getApplicationsActionTimer = new CancellableExecuteActionTimer(new XamlResource<int>("RefreshModsEventTickTimer").Get());
         private readonly FileSystemWatcher _createWatcher; 
@@ -71,12 +69,16 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             _mainPageViewModel = mainPageViewModel;
             string modDirectory = loaderConfig.ModConfigDirectory;
 
-            _createWatcher = FileSystemWatcherFactory.CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed | FileSystemWatcherFactory.FileSystemWatcherEvents.Created, true, "*.*");
-            _deleteFileWatcher = FileSystemWatcherFactory.CreateChangeCreateDelete(modDirectory, OnDeleteFile, FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted);
-            _deleteDirectoryWatcher = FileSystemWatcherFactory.CreateChangeCreateDelete(modDirectory, OnDeleteDirectory, FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted, false, "*.*");
-            InvokeAsync(() => Icon = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute)));
+            _createWatcher = CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherEvents.Changed | FileSystemWatcherEvents.Created, true, "*.*");
+            _deleteFileWatcher = CreateChangeCreateDelete(modDirectory, OnDeleteFile, FileSystemWatcherEvents.Deleted);
+            _deleteDirectoryWatcher = CreateChangeCreateDelete(modDirectory, OnDeleteDirectory, FileSystemWatcherEvents.Deleted, false, "*.*");
+            ExecuteWithApplicationDispatcherAsync(() => Icon = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute)));
         }
 
+        /// <summary>
+        /// Saves the old mod tuple about to be swapped out by the UI and updates the UI
+        /// with the details of the new tuple.
+        /// </summary>
         public void SwapMods(ImageModPathTuple oldModTuple, ImageModPathTuple newModTuple)
         {
             // Save old collection.
@@ -84,149 +86,109 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 SaveMod(oldModTuple);
 
             // Make new collection.
-            if (newModTuple != null)
-            {
-                // Make new collection.
-                var booleanAppTuples = new ObservableCollection<BooleanGenericTuple<ApplicationConfig>>();
-                string[] supportedAppIds = newModTuple.ModConfig.SupportedAppId;
-                foreach (var applicationPathTuple in _mainPageViewModel.Applications)
-                {
-                    bool enabled = supportedAppIds.Contains(applicationPathTuple.ApplicationConfig.AppId);
-                    booleanAppTuples.Add(new BooleanGenericTuple<ApplicationConfig>(enabled, applicationPathTuple.ApplicationConfig));
-                }
-                EnabledAppIds = booleanAppTuples;
-            }
+            if (newModTuple == null) 
+                return;
+
+            var supportedAppIds = newModTuple.ModConfig.SupportedAppId;
+            var tuples = _mainPageViewModel.Applications.Select(x => new BooleanGenericTuple<ApplicationConfig>(supportedAppIds.Contains(x.ApplicationConfig.AppId), x.ApplicationConfig));
+            EnabledAppIds = new ObservableCollection<BooleanGenericTuple<ApplicationConfig>>(tuples);
         }
 
+        /// <summary>
+        /// Saves a given mod tuple to the hard disk.
+        /// </summary>
         public void SaveMod(ImageModPathTuple oldModTuple)
         {
-            if (oldModTuple != null)
+            if (oldModTuple == null) 
+                return;
+
+            if (EnabledAppIds != null)
+                oldModTuple.ModConfig.SupportedAppId = EnabledAppIds.Where(x => x.Enabled).Select(x => x.Generic.AppId).ToArray();
+
+            InvokeWithoutMonitoringMods(oldModTuple.Save);
+            ModSaving(oldModTuple);
+        }
+
+        /// <summary>
+        /// Obtains an image to represent a given mod, either a custom one or the default placeholder.
+        /// </summary>
+        public string GetImageForModConfig(PathGenericTuple<ModConfig> modConfig)
+        {
+            return ModConfig.TryGetIconPath(modConfig.Path, modConfig.Object, out string iconPath) ? iconPath : Paths.PLACEHOLDER_IMAGE;
+        }
+
+        /// <summary>
+        /// Populates the mod list governed by <see cref="Mods"/>.
+        /// </summary>
+        private void GetModifications(CancellationToken cancellationToken = default)
+        {
+            try
             {
-                if (EnabledAppIds != null)
-                {
-                    var supportedApps = new List<string>();
-                    foreach (var booleanAppTuple in EnabledAppIds)
-                    {
-                        if (booleanAppTuple.Enabled)
-                            supportedApps.Add(booleanAppTuple.Generic.AppId);
-                    }
-
-                    oldModTuple.ModConfig.SupportedAppId = supportedApps.ToArray();
-                }
-
-                // Make sure not to refresh the collection, we will lose our index.
-                // Note: Saving regardless of action because of possible other changes.
-                InvokeWithoutMonitoringMods(oldModTuple.Save);
-                ModSaving(oldModTuple);
+                var modConfigs = ModConfig.GetAllMods(IoC.Get<LoaderConfig>().ModConfigDirectory, cancellationToken);
+                var mods = modConfigs.Select(x => new ImageModPathTuple(GetImageForModConfig(x), x.Object, x.Path));
+                ExecuteWithApplicationDispatcher(() => Collections.UpdateObservableCollection(ref _mods, mods));
+            }
+            catch (Exception)
+            {
+                // ignored
             }
         }
 
         /// <summary>
-        /// Obtains an image to represent a given mod.
-        /// The image is either a custom one or the default placeholder.
+        /// Executes a function while temporarily disabling the automatic file update events.
         /// </summary>
-        public string GetImageForModConfig(PathGenericTuple<ModConfig> modConfig)
-        {
-            // Check if custom icon exists.
-            if (!String.IsNullOrEmpty(modConfig.Object.ModIcon))
-            {
-                string logoDirectory = Path.GetDirectoryName(modConfig.Path);
-                Debug.Assert(logoDirectory != null, nameof(logoDirectory) + " != null");
-                string logoFilePath = Path.Combine(logoDirectory, modConfig.Object.ModIcon);
-
-                if (File.Exists(logoFilePath))
-                    return logoFilePath;
-            }
-
-            return Paths.PLACEHOLDER_IMAGE;
-        }
-
         public void InvokeWithoutMonitoringMods(Action action)
         {
-            MonitorNewMods = false;
+            _monitorNewMods = false;
             action();
-            MonitorNewMods = true;
+            _monitorNewMods = true;
         }
 
-        private void InvokeAsync(Action action)
-        {
-            if (Application.Current != null)
-                Application.Current.Dispatcher.InvokeAsync(action);
-            else
-                action();
-        }
-
+        // == Events ==
         private void ExecuteGetModifications()
         {
-            if (MonitorNewMods)
+            if (_monitorNewMods)
                 _getApplicationsActionTimer.SetAction(GetModifications);
         }
 
         private void OnDeleteDirectory(object sender, FileSystemEventArgs e)
         {
-            if (MonitorNewMods)
+            // Handles deleted directories containing mod configurations.
+            // Remove any mod that may have been inside removed directory.
+            if (_monitorNewMods)
             {
-                ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+                ExecuteWithApplicationDispatcher(() =>
                 {
-                    // Remove any mod that may have been inside removed directory.
-                    var allMods = Mods;
-                    foreach (var mod in allMods)
+                    // Copy in case Mods collection changes.
+                    var allMods     = Mods; 
+                    var deletedMods = allMods.Where(x => Path.GetDirectoryName(x.ModConfigPath).Equals(e.FullPath));
+                    ExecuteWithApplicationDispatcherAsync(() =>
                     {
-                        // ReSharper disable once PossibleNullReferenceException
-                        if (Path.GetDirectoryName(mod.ModConfigPath).Equals(e.FullPath))
-                        {
-                            InvokeAsync(() => Mods.Remove(mod));
-                            break;
-                        }
-                    }
+                        foreach (var deletedMod in deletedMods) 
+                            Mods.Remove(deletedMod);
+                    });
                 });
             }
         }
 
         private void OnDeleteFile(object sender, FileSystemEventArgs e)
         {
-            if (MonitorNewMods)
+            // Handles deleted mod configuration files.
+            // Remove any mod that matches the path of a deleted config file.
+            if (_monitorNewMods)
             {
-                ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+                ExecuteWithApplicationDispatcher(() =>
                 {
-                    // Remove any mod with matching filename to removed instance.
-                    var allMods = Mods;
-                    foreach (var mod in allMods)
+                    // Copy in case Mods collection changes.
+                    var allMods     = Mods;
+                    var deletedMods = allMods.Where(x => x.ModConfigPath.Equals(e.FullPath));
+                    ExecuteWithApplicationDispatcherAsync(() =>
                     {
-                        if (mod.ModConfigPath.Equals(e.FullPath))
-                        {
-                            InvokeAsync(() => Mods.Remove(mod));
-                            break;
-                        }
-                    }
+                        foreach (var deletedMod in deletedMods)
+                            Mods.Remove(deletedMod);
+                    });
                 });
             }
-        }
-
-        /// <summary>
-        /// Populates the application list governed by <see cref="Mods"/>.
-        /// </summary>
-        private void GetModifications(CancellationToken cancellationToken = default)
-        {
-            var mods = new ObservableCollection<ImageModPathTuple>();
-            List<PathGenericTuple<ModConfig>> modConfigs;
-
-            // Check for cancellation request before config reading begins if necessary. 
-            if (cancellationToken.IsCancellationRequested)
-                return;
-
-            // Try read all configs, this action may sometimes fail if some of the files are still being copied.
-            // Worth noting is that the last fired event will never collide here and fail, thus this is a safe point to exit.
-            try { modConfigs = ModConfig.GetAllMods(IoC.Get<LoaderConfig>().ModConfigDirectory, cancellationToken); }
-            catch (Exception) { return; }
-
-            foreach (var config in modConfigs)
-                mods.Add(new ImageModPathTuple(GetImageForModConfig(config), config.Object, config.Path));
-
-            if (Mods == null)
-                Mods = mods;
-            else
-                ActionWrappers.ExecuteWithApplicationDispatcher(() => { Collections.ModifyObservableCollection(_mods, mods); });
         }
     }
 }

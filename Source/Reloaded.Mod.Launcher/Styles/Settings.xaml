@@ -18,7 +18,7 @@
     <system:Int32 x:Key="AppLauncherModLoaderSetupSleepTime">32</system:Int32>  <!-- Time between successive connection attempts. -->
 
     <!-- Process Tracker: Non-Admin Mode -->
-    <system:Int32 x:Key="ReloadedProcessListRefreshInterval">200</system:Int32>  <!-- Time between checks in milliseconds of whether application(s) launched. -->
+    <system:Int32 x:Key="ReloadedProcessListRefreshInterval">333</system:Int32>  <!-- Time between checks in milliseconds of whether application(s) launched. -->
 
     <!-- Refresh Event Ticks -->
     <system:Int32 x:Key="RefreshApplicationsEventTickTimer">100</system:Int32>  <!-- All application list refresh events are gathered in this interval and only last executed at the end of it. -->
