@@ -32,35 +32,27 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 
         private void SaveCurrentSelectedItem()
         {
-            // Saves the current selection before exiting launcher.
-            ViewModel.MainPageViewModel.InvokeWithoutMonitoringApplications(() =>
+            if (ViewModel.MainPageViewModel.Applications.Count >= 0)
             {
-                if (ViewModel.MainPageViewModel.Applications.Count >= 0)
+                try
                 {
-                    try
-                    {
-                        var imagePathAppTuple = ViewModel.MainPageViewModel.Applications.First(x => x.ApplicationConfig.Equals(ViewModel.Application));
-                        ApplicationConfig.WriteConfiguration(imagePathAppTuple.ApplicationConfigPath, ViewModel.Application);
-                    }
-                    catch (Exception) { Debug.WriteLine("AddAppPage: Failed to save current selected item."); }
+                    var imagePathAppTuple = ViewModel.MainPageViewModel.Applications.First(x => x.ApplicationConfig.Equals(ViewModel.Application));
+                    ApplicationConfig.WriteConfiguration(imagePathAppTuple.ApplicationConfigPath, ViewModel.Application);
                 }
-            });
+                catch (Exception) { Debug.WriteLine("AddAppPage: Failed to save current selected item."); }
+            }
         }
 
-        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             // Filter for first load.
             if (e.RemovedItems.Count > 0)
             {
-                // Backup and disable monitor status.
-                ViewModel.MainPageViewModel.InvokeWithoutMonitoringApplications(() =>
-                {
-                    // Write config.
-                    // Without the file existence check, what can happen is we remove an application and it immediately comes back.
-                    var tuple = (ImageApplicationPathTuple)e.RemovedItems[0];
-                    if (File.Exists(tuple.ApplicationConfigPath))
-                        ApplicationConfig.WriteConfiguration(tuple.ApplicationConfigPath, tuple.ApplicationConfig);
-                });
+                // Write config.
+                // Without the file existence check, what can happen is we remove an application and it immediately comes back.
+                var tuple = (ImageApplicationPathTuple)e.RemovedItems[0];
+                if (File.Exists(tuple.ApplicationConfigPath))
+                    ApplicationConfig.WriteConfiguration(tuple.ApplicationConfigPath, tuple.ApplicationConfig);
             }
         }
 

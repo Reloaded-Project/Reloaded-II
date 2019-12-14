@@ -59,7 +59,7 @@
                               SelectedValuePath="ApplicationConfig"
                               SelectedValue="{Binding Application, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Text="Select a Game"
-                              SelectionChanged="ComboBox_SelectionChanged"
+                              SelectionChanged="SelectionChanged"
                               SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
