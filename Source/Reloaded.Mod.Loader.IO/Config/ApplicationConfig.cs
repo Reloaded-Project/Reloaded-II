@@ -135,18 +135,23 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <param name="modifications">List of modifications to retrieve all mods from.</param>
         public static List<BooleanGenericTuple<PathGenericTuple<ModConfig>>> GetAllMods(IApplicationConfig config, List<PathGenericTuple<ModConfig>> modifications)
         {
-            // Build set of enabled mods in order of load | O(N^2)
-            var enabledModIds = config.EnabledMods;
-            var totalModList  = new List<BooleanGenericTuple<PathGenericTuple<ModConfig>>>(modifications.Count);
+            // Note: Must put items in top to bottom load order.
+            var enabledModIds  = config.EnabledMods;
 
-            foreach (var enabledMod in enabledModIds)
+            // Get dictionary of mods by Mod ID
+            var modDictionary = new Dictionary<string, PathGenericTuple<ModConfig>>();
+            foreach (var mod in modifications)
+                modDictionary[mod.Object.ModId] = mod;
+
+            // Add enabled mods.
+            var totalModList = new List<BooleanGenericTuple<PathGenericTuple<ModConfig>>>(modifications.Count);
+            foreach (var enabledModId in enabledModIds)
             {
-                var mod = modifications.FirstOrDefault(x => x.Object.ModId == enabledMod);
-                if (mod != null)
-                    totalModList.Add(new BooleanGenericTuple<PathGenericTuple<ModConfig>>(true, mod));
+                if (modDictionary.ContainsKey(enabledModId))
+                    totalModList.Add(new BooleanGenericTuple<PathGenericTuple<ModConfig>>(true, modDictionary[enabledModId]));
             }
 
-            // Add Disabled Mods
+            // Add disabled mods.
             var enabledModIdSet = config.EnabledMods.ToHashSet();
             var disabledMods    = modifications.Where(x => !enabledModIdSet.Contains(x.Object.ModId));
             totalModList.AddRange(disabledMods.Select(x => new BooleanGenericTuple<PathGenericTuple<ModConfig>>(false, x)));

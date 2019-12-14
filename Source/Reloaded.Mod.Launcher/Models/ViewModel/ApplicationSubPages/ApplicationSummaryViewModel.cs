@@ -56,19 +56,23 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         private List<BooleanGenericTuple<ImageModPathTuple>> GetInitialModSet(ApplicationViewModel model, ImageApplicationPathTuple applicationTuple)
         {
             // Note: Must put items in top to bottom load order.
-            var enabledModIds  = applicationTuple.Config.EnabledMods;
-            var modsForThisApp = model.ModsForThisApp.ToArray();
+            var enabledModIds   = applicationTuple.Config.EnabledMods;
+            var modsForThisApp  = model.ModsForThisApp.ToArray();
 
-            // Build set of enabled mods in order of load | O(N^2)
-            var totalModList  = new List<BooleanGenericTuple<ImageModPathTuple>>(modsForThisApp.Length);
-            foreach (var enabledMod in enabledModIds)
+            // Get dictionary of mods by Mod ID
+            var modDictionary  = new Dictionary<string, ImageModPathTuple>();
+            foreach (var mod in modsForThisApp)
+                modDictionary[mod.ModConfig.ModId] = mod;
+
+            // Add enabled mods.
+            var totalModList = new List<BooleanGenericTuple<ImageModPathTuple>>(modsForThisApp.Length);
+            foreach (var enabledModId in enabledModIds)
             {
-                var mod = modsForThisApp.FirstOrDefault(x => x.ModConfig.ModId == enabledMod);
-                if (mod != null)
-                    totalModList.Add(new BooleanGenericTuple<ImageModPathTuple>(true, mod));
+                if (modDictionary.ContainsKey(enabledModId))
+                    totalModList.Add(new BooleanGenericTuple<ImageModPathTuple>(true, modDictionary[enabledModId]));
             }
 
-            // Add disabled mods | O(N)
+            // Add disabled mods.
             var enabledModIdSet = applicationTuple.Config.EnabledMods.ToHashSet();
             var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.ModConfig.ModId));
             totalModList.AddRange(disabledMods.Select(x => new BooleanGenericTuple<ImageModPathTuple>(false, x)));
