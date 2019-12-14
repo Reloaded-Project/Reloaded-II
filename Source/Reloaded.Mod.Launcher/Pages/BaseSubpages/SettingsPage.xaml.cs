@@ -18,14 +18,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             this.AnimateOutStarted += OnAnimateOutStarted;
         }
 
-        private void OnAnimateOutStarted()
-        {
-            LoaderConfigReader.WriteConfiguration(ViewModel.LoaderConfig);
-        }
-
-        private void Documents_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            new OpenDocumentationCommand().Execute(null);
-        }
+        private void OnAnimateOutStarted() => ViewModel.SaveConfig();
+        private void Documents_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => new OpenDocumentationCommand().Execute(null);
     }
 }
