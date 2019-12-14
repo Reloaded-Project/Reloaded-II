@@ -27,14 +27,16 @@ namespace Reloaded.Mod.Launcher.Utility
         private CancellationTokenSource _tokenSource;
 
         private object _lock = new object();
+        private TimeSpan _currentTickDuration;
 
         /// <summary>
-        /// Creates an <see cref="ExecuteActionTimer"/> given the length of time between ticks.
+        /// Creates an <see cref="CancellableExecuteActionTimer"/> given the length of time between ticks.
         /// </summary>
         /// <param name="delayMilliseconds">Amount of milliseconds between individual ticks.</param>
         public CancellableExecuteActionTimer(int delayMilliseconds)
         {
-            _timer = new Timer(Tick, null, 0, delayMilliseconds);
+            _currentTickDuration = TimeSpan.FromMilliseconds(delayMilliseconds);
+            _timer = new Timer(Tick, null, TimeSpan.Zero, _currentTickDuration);
         }
 
         public void Dispose()
@@ -53,10 +55,21 @@ namespace Reloaded.Mod.Launcher.Utility
         }
 
         /// <summary>
+        /// Sets the action to be executed on next tick and resets the timer.
+        /// </summary>
+        public void SetActionAndReset(Action<CancellationToken> action)
+        {
+            _tokenSource.Cancel();
+            _timer.Change(_currentTickDuration, _currentTickDuration);
+            _actionToExecute = action;
+        }
+
+        /// <summary>
         /// Sets the time taken between each successive tick.
         /// </summary>
         public void SetTickDuration(TimeSpan timeSpan)
         {
+            _currentTickDuration = timeSpan;
             _timer.Change(TimeSpan.Zero, timeSpan);
         }
 

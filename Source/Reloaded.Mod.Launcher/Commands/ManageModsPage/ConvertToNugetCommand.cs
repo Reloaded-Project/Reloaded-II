@@ -2,14 +2,11 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
-using System.IO.Compression;
-using System.Windows;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.Update.Converters.NuGet;
 using Reloaded.Mod.Shared;
-using SharpCompress.Archives.Zip;
 
 namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 {
@@ -70,7 +67,6 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
             ProcessExtensions.OpenFileWithExplorer(outputPath);
 
             // End
-
             _canExecute = true;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }

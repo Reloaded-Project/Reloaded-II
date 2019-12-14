@@ -30,20 +30,23 @@ namespace Reloaded.Mod.Launcher.Utility
         /// </summary>
         public static void ModifyObservableCollection<TItemType>(ObservableCollection<TItemType> oldItems, IEnumerable<TItemType> newItems)
         {
-            // Add new entries.
-            // In new set but not old set: loadedMods \ currentSet
-            var newMods = newItems.ToHashSet();
-            newMods.ExceptWith(oldItems.ToHashSet());
+            // Hash all the items.
+            var newItemSet = newItems.ToHashSet();
+            var oldItemSet = oldItems.ToHashSet();
 
-            // Remove old entries.
-            var oldMods = oldItems.ToHashSet();
-            oldMods.ExceptWith(newItems.ToHashSet());
+            // Make a copy of hashed items.
+            var newItemSetCopy = new HashSet<TItemType>(newItemSet);
+            var oldItemSetCopy = new HashSet<TItemType>(oldItemSet);
+
+            // Remove sets from each other.
+            newItemSet.ExceptWith(oldItemSetCopy);
+            oldItemSet.ExceptWith(newItemSetCopy);
 
             // Modify list.
-            foreach (var newMod in newMods)
+            foreach (var newMod in newItemSet)
                 oldItems.Add(newMod);
 
-            foreach (var removedMod in oldMods)
+            foreach (var removedMod in oldItemSet)
                 oldItems.Remove(removedMod);
         }
     }

@@ -21,7 +21,7 @@ namespace Reloaded.Mod.Launcher.Converters.AddAppPage
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is IApplicationConfig applicationConfig)
+            if (value is IApplicationConfig)
             {
                 var viewModel = IoC.Get<AddAppViewModel>();
                 var appImagePathTuple = viewModel.MainPageViewModel.Applications.FirstOrDefault(x => x.ApplicationConfig.Equals(viewModel.Application));

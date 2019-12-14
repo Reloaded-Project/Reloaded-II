@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Input;
 using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
-using MessageBox = Xceed.Wpf.Toolkit.MessageBox;
 
 namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Windows;
+using Reloaded.Mod.Launcher.Utility;
 
 namespace Reloaded.Mod.Launcher.Commands.Templates
 {
@@ -8,7 +9,7 @@ namespace Reloaded.Mod.Launcher.Commands.Templates
     {
         protected void RaiseCanExecute(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() => { CanExecuteChanged(sender, e); });
+            ActionWrappers.ExecuteWithApplicationDispatcher(() => CanExecuteChanged(sender, e));
         }
 
         public event EventHandler CanExecuteChanged = (sender, args) => { };

@@ -85,10 +85,7 @@ namespace Reloaded.Mod.Launcher.Utility
             var trackers            = applications.Select(x => new ApplicationInstanceTracker(x.Object.AppLocation));
             processes               = trackers.SelectMany(x => x.GetProcesses().ReloadedProcesses);
 
-            if (processes.Any())
-                return true;
-
-            return false;
+            return processes.Any();
         }
 
         /* Public API */

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using IWshRuntimeLibrary;
 using Reloaded.Mod.Launcher.Commands.Templates;

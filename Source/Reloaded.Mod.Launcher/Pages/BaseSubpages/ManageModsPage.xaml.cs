@@ -91,22 +91,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             e.Handled = true;
         }
 
-        private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            _modsViewSource.View.Refresh();
-        }
-
-        private void AppsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            _appsViewSource.View.Refresh();
-        }
-
-
-
-        private void SaveCurrentMod()
-        {
-            ViewModel.SaveMod(ViewModel.SelectedModTuple);
-        }
+        private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _modsViewSource.View.Refresh();
+        private void AppsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _appsViewSource.View.Refresh();
+        private void SaveCurrentMod() => ViewModel.SaveMod(ViewModel.SelectedModTuple);
 
         private void Image_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {

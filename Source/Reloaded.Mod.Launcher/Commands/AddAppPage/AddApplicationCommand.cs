@@ -6,7 +6,6 @@ using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.ViewModel;
-using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.Utilities;
 
@@ -20,7 +19,6 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
     {
         private XamlResource<string> _xamlAddAppExecutableTitle = new XamlResource<string>("AddAppExecutableTitle");
         private XamlResource<string> _xamlAddAppExecutableFilter = new XamlResource<string>("AddAppExecutableFilter");
-        private string _lastConfigFileLocation;
         private readonly AddAppViewModel _addAppViewModel;
 
         public AddApplicationCommand()
@@ -60,9 +58,6 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             // Write file to disk.
             Directory.CreateDirectory(applicationDirectory);
             ApplicationConfig.WriteConfiguration(applicationConfigFile, (ApplicationConfig)config);
-
-            // Select this config.
-            _lastConfigFileLocation = applicationConfigFile;
         }
 
         public event EventHandler CanExecuteChanged = (sender, args) => { };

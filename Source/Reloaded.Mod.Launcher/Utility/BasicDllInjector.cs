@@ -42,11 +42,7 @@ namespace Reloaded.Mod.Launcher.Utility
             _process = process;
             _memory = new ExternalMemory(process);
 
-            // Set address of LoadLibrary.
-            if (_process.Is64Bit())
-                _loadLibraryAddress = x64LoadLibraryAddress;
-            else
-                _loadLibraryAddress = x86LoadLibraryAddress;
+            _loadLibraryAddress = _process.Is64Bit() ? x64LoadLibraryAddress : x86LoadLibraryAddress;
         }
 
         /// <param name="libraryPath">Full path to library to load.</param>

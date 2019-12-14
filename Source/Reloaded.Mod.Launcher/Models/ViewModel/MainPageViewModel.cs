@@ -119,7 +119,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void StartGetApplicationsTask()
         {
             if (MonitorNewApplications)
-                _getApplicationsActionTimer.SetAction(GetApplications);
+                _getApplicationsActionTimer.SetActionAndReset(GetApplications);
         }
 
         public void InvokeWithoutMonitoringApplications(Action action)

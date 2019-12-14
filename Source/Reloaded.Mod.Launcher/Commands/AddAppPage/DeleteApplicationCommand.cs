@@ -49,10 +49,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
         public bool CanExecute(object parameter)
         {
-            if (_addAppViewModel.MainPageViewModel.Applications.Count <= 0 || _addAppViewModel.Application == null)
-                return false;
-
-            return true;
+            return _addAppViewModel.MainPageViewModel.Applications.Count > 0 && _addAppViewModel.Application != null;
         }
 
         public void Execute(object parameter)

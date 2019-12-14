@@ -35,9 +35,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public ImageSource Icon { get; set; }
         public ObservableCollection<BooleanGenericTuple<ApplicationConfig>> EnabledAppIds { get; set; }
 
-        #pragma warning disable CS0436 // Type conflicts with imported type
-        [DoNotNotify] // Conflict is intended to prevent reference to PropertyChanged. See PropertyChanged.Fody docs.
-        #pragma warning restore CS0436 // Type conflicts with imported type
+        [DoNotNotify]
         public ObservableCollection<ImageModPathTuple> Mods
         {
             get => _mods;
@@ -52,7 +50,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         }
 
         /* Fired when the list of available mods changes. */
-        private ObservableCollection<ImageModPathTuple> _mods;
+        private ObservableCollection<ImageModPathTuple> _mods = new ObservableCollection<ImageModPathTuple>();
 
         /* If false, events to reload mod list are not sent. */
         private bool _monitorNewMods = true;
@@ -105,7 +103,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             if (EnabledAppIds != null)
                 oldModTuple.ModConfig.SupportedAppId = EnabledAppIds.Where(x => x.Enabled).Select(x => x.Generic.AppId).ToArray();
 
-            InvokeWithoutMonitoringMods(oldModTuple.Save);
+            //InvokeWithoutMonitoringMods(oldModTuple.Save);
+            oldModTuple.Save();
             ModSaving(oldModTuple);
         }
 
@@ -126,7 +125,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             {
                 var modConfigs = ModConfig.GetAllMods(IoC.Get<LoaderConfig>().ModConfigDirectory, cancellationToken);
                 var mods = modConfigs.Select(x => new ImageModPathTuple(GetImageForModConfig(x), x.Object, x.Path));
-                ExecuteWithApplicationDispatcher(() => Collections.UpdateObservableCollection(ref _mods, mods));
+                ExecuteWithApplicationDispatcher(() => Collections.ModifyObservableCollection(Mods, mods));
             }
             catch (Exception)
             {
@@ -148,7 +147,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void ExecuteGetModifications()
         {
             if (_monitorNewMods)
-                _getApplicationsActionTimer.SetAction(GetModifications);
+                _getApplicationsActionTimer.SetActionAndReset(GetModifications);
         }
 
         private void OnDeleteDirectory(object sender, FileSystemEventArgs e)
