@@ -23,13 +23,29 @@
                 
                 <StackPanel>
 
-                    <!-- Main Page -->
+                    <!-- Load Game -->
                     <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
                                HorizontalAlignment="Center" 
                                FontSize="{DynamicResource FontSizeSmaller}"
                                Text="{DynamicResource ApplicationLaunch}"
                                Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                PreviewMouseDown="LaunchApplication_PreviewMouseDown"/>
+
+                    <!-- Load Mod Collection -->
+                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="{DynamicResource FontSizeSmaller}"
+                               Text="{DynamicResource LoadModSet}"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                               PreviewMouseDown="LoadModSet_PreviewMouseDown"/>
+
+                    <!-- Save Mod Collection -->
+                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="{DynamicResource FontSizeSmaller}"
+                               Text="{DynamicResource SaveModSet}"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                               PreviewMouseDown="SaveModSet_PreviewMouseDown"/>
 
                     <!-- Main Page -->
                     <TextBlock Style="{DynamicResource TextblockWithColourChange}" 

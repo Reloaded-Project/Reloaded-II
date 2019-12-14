@@ -7,8 +7,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Ookii.Dialogs.Wpf;
+using Reloaded.Mod.Launcher.Commands.DownloadModsPage;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Utilities;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
@@ -18,7 +22,15 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
     public class ApplicationViewModel : ObservableObject, IDisposable
     {
+        private static XamlResource<string> _xamlLoadModSetTitle = new XamlResource<string>("LoadModSetDialogTitle");
+        private static XamlResource<string> _xamlSaveModSetTitle = new XamlResource<string>("SaveModSetDialogTitle");
         private static XamlResource<int> _xamlProcessRefreshInterval = new XamlResource<int>("ApplicationHubReloadedProcessRefreshInterval");
+        private static CheckForUpdatesAndDependenciesCommand _checkForUpdatesAndDependenciesCommand = new CheckForUpdatesAndDependenciesCommand();
+
+        /// <summary>
+        /// Executes once the user loads a new mod set.
+        /// </summary>
+        public event Action OnLoadModSet = () => { };
 
         public ImageApplicationPathTuple ApplicationTuple { get; }
         public ManageModsViewModel ManageModsViewModel    { get; }
@@ -68,6 +80,40 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// Changes the currently opened page in the application submenu.
         /// </summary>
         public void ChangeApplicationPage(ApplicationSubPage page) => Page = page;
+
+        /// <summary>
+        /// Allows a user to load a new mod set.
+        /// </summary>
+        public async void LoadModSet()
+        {
+            var dialog = new VistaOpenFileDialog { Title = _xamlLoadModSetTitle.Get(), Filter = Constants.WpfJsonFormat, AddExtension = true, DefaultExt = ".json" };
+            if ((bool)dialog.ShowDialog())
+            {
+                ModSet.FromFile(dialog.FileName).ToApplicationConfig(ApplicationTuple.Config);
+                ApplicationTuple.Save();
+                OnLoadModSet();
+
+                // Check for mod updates/dependencies.
+                await Task.Run(Update.CheckForModUpdatesAsync);
+                if (Update.CheckMissingDependencies(out var missingDependencies))
+                {
+                    try { await Update.DownloadPackagesAsync(missingDependencies, false, false); }
+                    catch (Exception e) { }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Allows the user to save a mod set.
+        /// </summary>
+        public void SaveModSet()
+        {
+            var dialog = new VistaSaveFileDialog { Title = _xamlSaveModSetTitle.Get(), Filter = Constants.WpfJsonFormat, AddExtension = true, DefaultExt = ".json" };
+            if ((bool)dialog.ShowDialog())
+            {
+                new ModSet(ApplicationTuple.Config).Save(dialog.FileName);
+            }
+        }
 
         // == Events ==
         private void RefreshTimerCallback(object state) => UpdateReloadedProcesses();

@@ -30,15 +30,25 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
             _canExecute = false;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
-            var updates = await Task.Run(Update.CheckForModUpdatesAsync);
+            var updates      = await Task.Run(Update.CheckForModUpdatesAsync);
             var dependencies = Update.CheckMissingDependencies(out var missingDependencies);
 
-            if ( (!updates) || (!dependencies) )
+            if ( (!updates) && (!dependencies) )
             {
-                var box = new MessageBox(_noUpdateDialogTitle.Get(),
-                    _noUpdateDialogMessage.Get());
+                var box = new MessageBox(_noUpdateDialogTitle.Get(), _noUpdateDialogMessage.Get());
                 box.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 box.ShowDialog();
+            }
+            else if (dependencies)
+            {
+                try
+                {
+                    await Update.DownloadPackagesAsync(missingDependencies, false, false);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
             }
 
             _canExecute = true;

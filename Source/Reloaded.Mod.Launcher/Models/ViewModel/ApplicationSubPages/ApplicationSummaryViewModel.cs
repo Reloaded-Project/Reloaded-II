@@ -23,18 +23,19 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         public ConfigureModCommand ConfigureModCommand { get; set; }
 
         public ImageSource Icon { get; set; }
+        private ApplicationViewModel _applicationViewModel;
 
         public ApplicationSummaryViewModel(ApplicationViewModel model)
         {
             ApplicationTuple = model.ApplicationTuple;
             OpenModFolderCommand = new OpenModFolderCommand(this);
             ConfigureModCommand = new ConfigureModCommand(this);
+            _applicationViewModel = model;
 
             // Wait for parent to fully initialize.
-            this.PropertyChanged += UpdateIcon;
-
-            AllMods = new ObservableCollection<BooleanGenericTuple<ImageModPathTuple>>(GetInitialModSet(model, ApplicationTuple));
-            AllMods.CollectionChanged += (sender, args) => SaveApplication(); // Save on reorder.
+            PropertyChanged += UpdateIcon;
+            model.OnLoadModSet += BuildModList;
+            BuildModList();
         }
 
         ~ApplicationSummaryViewModel()
@@ -47,6 +48,15 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             OpenModFolderCommand?.Dispose();
             ConfigureModCommand?.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Builds the list of mods displayed to the user.
+        /// </summary>
+        private void BuildModList()
+        {
+            AllMods = new ObservableCollection<BooleanGenericTuple<ImageModPathTuple>>(GetInitialModSet(_applicationViewModel, ApplicationTuple));
+            AllMods.CollectionChanged += (sender, args) => SaveApplication(); // Save on reorder.
         }
 
         /// <summary>

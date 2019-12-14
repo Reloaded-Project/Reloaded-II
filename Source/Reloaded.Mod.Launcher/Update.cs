@@ -62,7 +62,7 @@ namespace Reloaded.Mod.Launcher
         }
 
         /// <summary>
-        /// Checks if there are updates for any of the installed mods.
+        /// Checks if there are updates for any of the installed mods and/or new dependencies to fetch.
         /// </summary>
         public static async Task<bool> CheckForModUpdatesAsync()
         {

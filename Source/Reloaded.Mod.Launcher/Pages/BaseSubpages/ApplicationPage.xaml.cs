@@ -2,10 +2,14 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using Ookii.Dialogs.Wpf;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.Pages.Animations;
 using Reloaded.WPF.Pages.Animations.Enum;
+using Reloaded.WPF.Utilities;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
@@ -84,6 +88,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                 launcher.Start();
             }
         }
+
+        private void LoadModSet_PreviewMouseDown(object sender, MouseButtonEventArgs e) => ViewModel.LoadModSet();
+        private void SaveModSet_PreviewMouseDown(object sender, MouseButtonEventArgs e) => ViewModel.SaveModSet();
 
         /* Animation/Title/Setup overrides */
         protected override Animation[] MakeExitAnimations()
