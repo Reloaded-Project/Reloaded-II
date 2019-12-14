@@ -68,13 +68,13 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             foreach (var enabledModId in enabledModIds)
             {
                 if (modDictionary.ContainsKey(enabledModId))
-                    totalModList.Add(new BooleanGenericTuple<ImageModPathTuple>(true, modDictionary[enabledModId]));
+                    totalModList.Add(MakeSaveSubscribedGenericTuple(true, modDictionary[enabledModId]));
             }
 
             // Add disabled mods.
             var enabledModIdSet = applicationTuple.Config.EnabledMods.ToHashSet();
             var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.ModConfig.ModId));
-            totalModList.AddRange(disabledMods.Select(x => new BooleanGenericTuple<ImageModPathTuple>(false, x)));
+            totalModList.AddRange(disabledMods.Select(x => MakeSaveSubscribedGenericTuple(false, x)));
             return totalModList;
         }
 
