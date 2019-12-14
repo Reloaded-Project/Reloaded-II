@@ -13,12 +13,13 @@ using PropertyChanged;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
 using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Resources;
 using Reloaded.WPF.Utilities;
+using static Reloaded.Mod.Launcher.Utility.ActionWrappers;
+using static Reloaded.Mod.Loader.IO.FileSystemWatcherFactory;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
@@ -42,32 +43,19 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         }
 
         /* Set this to false to temporarily suspend the file system watcher monitoring new applications. */
-        public bool MonitorNewApplications { get; set; } = true;
-        public ImageApplicationPathTuple SelectedApplication { get; set; }
+        public ImageApplicationPathTuple SelectedApplication { get; private set; }
 
         /* List of programs on the sidebar. */
-        #pragma warning disable CS0436 // Type conflicts with imported type
-        [DoNotNotify] // Conflict is intended, so we don't have reference to PropertyChanged after building. Fody will fix conflict at compile time.
-        #pragma warning restore CS0436 // Type conflicts with imported type
-        public ObservableCollection<ImageApplicationPathTuple> Applications
-        {
-            get => _applications;
-            set
-            {
-                value.CollectionChanged += ApplicationsChanged;
-                _applications = value;
-
-                RaisePropertyChangedEvent(nameof(Applications));
-                ApplicationsChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-            }
-        } 
+        public ObservableCollection<ImageApplicationPathTuple> Applications { get; set; }
 
         /* This one is to allow us to switch application without raising event twice. See: SwitchApplication */
         private BaseSubPage _baseSubPage = BaseSubPage.SettingsPage;
 
         /* Application Monitoring */
-        private ObservableCollection<ImageApplicationPathTuple> _applications;
-        private FileSystemWatcher _applicationWatcher; /* Monitors for additions/changes in available applications. */
+        private readonly FileSystemWatcher _createWatcher;
+        private readonly FileSystemWatcher _deleteFileWatcher;
+        private readonly FileSystemWatcher _deleteDirectoryWatcher;
+
         private AutoInjector _autoInjector;
 
         /* Get Applications Task */
@@ -75,23 +63,63 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public MainPageViewModel()
         {
+            Applications = new ObservableCollection<ImageApplicationPathTuple>();
+            Applications.CollectionChanged += ApplicationsChanged;
             GetApplications();
 
             string appConfigDirectory = IoC.Get<LoaderConfig>().ApplicationConfigDirectory;
-            _applicationWatcher = FileSystemWatcherFactory.CreateGeneric(appConfigDirectory, StartGetApplicationsTask, FileSystemWatcherFactory.FileSystemWatcherEvents.Changed | FileSystemWatcherFactory.FileSystemWatcherEvents.Renamed | FileSystemWatcherFactory.FileSystemWatcherEvents.Deleted);
+            _createWatcher = CreateGeneric(appConfigDirectory, StartGetApplicationsTask, FileSystemWatcherEvents.Changed | FileSystemWatcherEvents.Created);
+            _deleteFileWatcher = CreateChangeCreateDelete(appConfigDirectory, OnDeleteFile, FileSystemWatcherEvents.Deleted);
+            _deleteDirectoryWatcher = CreateChangeCreateDelete(appConfigDirectory, OnDeleteDirectory, FileSystemWatcherEvents.Deleted, false, "*.*");
+
             _autoInjector = new AutoInjector(this);
         }
 
         /// <summary>
-        /// Changes the <see cref="Page"/> property to <see cref="BaseSubPage.Application"/> and
-        /// raises the property changed event.
+        /// Changes the Application page to display and displays the application.
         /// </summary>
-        public void SwitchToApplication()
+        public void SwitchToApplication(ImageApplicationPathTuple tuple)
         {
+            SelectedApplication = tuple;
             _baseSubPage = BaseSubPage.Application;
             RaisePropertyChangedEvent(nameof(Page));
         }
-        
+
+        // == Events ==
+        private void OnDeleteDirectory(object sender, FileSystemEventArgs e)
+        {
+            // Handles deleted directories containing mod configurations.
+            // Remove any mod that may have been inside removed directory.
+            ExecuteWithApplicationDispatcher(() =>
+            {
+                // Copy in case Mods collection changes.
+                var allApps = Applications;
+                var deletedApps = allApps.Where(x => Path.GetDirectoryName(x.ApplicationConfigPath).Equals(e.FullPath));
+                ExecuteWithApplicationDispatcherAsync(() =>
+                {
+                    foreach (var deletedApp in deletedApps)
+                        Applications.Remove(deletedApp);
+                });
+            });
+        }
+
+        private void OnDeleteFile(object sender, FileSystemEventArgs e)
+        {
+            // Handles deleted mod configuration files.
+            // Remove any mod that matches the path of a deleted config file.
+            ExecuteWithApplicationDispatcher(() =>
+            {
+                // Copy in case Mods collection changes.
+                var allApps = Applications;
+                var deletedApps = allApps.Where(x => x.ApplicationConfigPath.Equals(e.FullPath));
+                ExecuteWithApplicationDispatcherAsync(() =>
+                {
+                    foreach (var deletedApp in deletedApps)
+                        Applications.Remove(deletedApp);
+                });
+            });
+        }
+
         /// <summary>
         /// Populates the application list governed by <see cref="Applications"/>.
         /// </summary>
@@ -101,25 +129,12 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             {
                 var appConfigs = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().ApplicationConfigDirectory, cancellationToken);
                 var apps = appConfigs.Select(x => new ImageApplicationPathTuple(GetImageForAppConfig(x), x.Object, x.Path));
-                ActionWrappers.ExecuteWithApplicationDispatcher(() => Collections.UpdateObservableCollection(ref _applications, apps));
+                ExecuteWithApplicationDispatcher(() => Collections.ModifyObservableCollection(Applications, apps));
             }
             catch (Exception)
             {
                 // Ignored
             }
-        }
-
-        private void StartGetApplicationsTask()
-        {
-            if (MonitorNewApplications)
-                _getApplicationsActionTimer.SetActionAndReset(GetApplications);
-        }
-
-        public void InvokeWithoutMonitoringApplications(Action action)
-        {
-            MonitorNewApplications = false;
-            action();
-            MonitorNewApplications = true;
         }
 
         /// <summary>
@@ -129,7 +144,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private ImageSource GetImageForAppConfig(PathGenericTuple<ApplicationConfig> applicationConfig)
         {
             // Check if custom icon exists.
-            if (!String.IsNullOrEmpty(applicationConfig.Object.AppIcon))
+            if (!string.IsNullOrEmpty(applicationConfig.Object.AppIcon))
             {
                 if (ApplicationConfig.TryGetApplicationIcon(applicationConfig.Path, applicationConfig.Object, out var applicationIcon)) 
                     return Misc.Imaging.BitmapFromUri(new Uri(applicationIcon, UriKind.Absolute));
@@ -154,5 +169,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             return image;
         }
+
+        private void StartGetApplicationsTask() => _getApplicationsActionTimer.SetActionAndReset(GetApplications);
     }
 }
