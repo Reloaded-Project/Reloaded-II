@@ -20,14 +20,12 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public DownloadModStatus                      DownloadModStatus   { get; set; }
 
         private NugetHelper             _nugetHelper;
-        private ManageModsViewModel     _manageModsViewModel;
         private CancellationTokenSource _tokenSource;
 
         /* Construction - Deconstruction */
-        public DownloadModsViewModel(ManageModsViewModel manageModsViewModel, NugetHelper nugetHelper)
+        public DownloadModsViewModel(NugetHelper nugetHelper)
         {
             _nugetHelper = nugetHelper;
-            _manageModsViewModel = manageModsViewModel;
             DownloadModEntries = new ObservableCollection<DownloadModEntry>();
             PropertyChanged += OnSearchQueryChanged;
             #pragma warning disable 4014

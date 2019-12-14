@@ -68,7 +68,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
         {
             if (ApplicationInstanceTracker.GetAllProcesses(out var processes))
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                ActionWrappers.ExecuteWithApplicationDispatcher(() =>
                 {
                     // Accumulate list of processes.
                     string allProcessString = $"\n{_xamlUpdateLoaderProcessList.Get()}:";

@@ -16,9 +16,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             ApplicationViewModel.SelectedProcess.Exited += SelectedProcessOnExited;
         }
 
-        private void SelectedProcessOnExited(object sender, EventArgs e)
-        {
-            ApplicationViewModel.Page = ApplicationSubPage.ApplicationSummary;
-        }
+        private void SelectedProcessOnExited(object sender, EventArgs e) => ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
     }
 }

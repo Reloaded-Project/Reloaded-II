@@ -20,76 +20,32 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
     {
         private static XamlResource<int> _xamlProcessRefreshInterval = new XamlResource<int>("ApplicationHubReloadedProcessRefreshInterval");
 
-        private static readonly object Lock = new object();
-        private static Process[] _emptyProcessArray = new Process[0];
-
         public ImageApplicationPathTuple ApplicationTuple { get; }
-        public ManageModsViewModel ManageModsViewModel { get; }
+        public ManageModsViewModel ManageModsViewModel    { get; }
         public ApplicationInstanceTracker InstanceTracker { get; private set; }
 
         public ObservableCollection<ImageModPathTuple> ModsForThisApp { get; private set; }
-        public ObservableCollection<Process> ProcessesWithReloaded { get; private set; }
-        public ObservableCollection<Process> ProcessesWithoutReloaded { get; private set; }
+        public ObservableCollection<Process> ProcessesWithReloaded { get; private set; } = new ObservableCollection<Process>();
+        public ObservableCollection<Process> ProcessesWithoutReloaded { get; private set; } = new ObservableCollection<Process>();
         public Timer RefreshProcessesWithLoaderTimer { get; private set; }
-
-        public int ReloadedApps { get; set; }
-        public int NonReloadedApps { get; set; }
-        public int TotalMods { get; set; }
-
-        public ApplicationSubPage Page
-        {
-            get => _page;
-            set => _page = value;
-        }
-
+        public ApplicationSubPage Page { get; private set; }
         public Process SelectedProcess { get; set; }
-
-        /// <summary>
-        /// The task that handles asynchronous initialization of this viewmodel.
-        /// Child pages should check that it completed before initializing self.
-        /// </summary>
-        public Task InitializeClassTask { get; }
-        private readonly CancellationTokenSource _initializeClassTaskTokenSource;
-        private ApplicationSubPage _page;
 
         public ApplicationViewModel(ImageApplicationPathTuple tuple, ManageModsViewModel modsViewModel)
         {
-            ApplicationTuple = tuple;
+            ApplicationTuple    = tuple;
             ManageModsViewModel = modsViewModel;
 
-            // Update Initial Values
-            _initializeClassTaskTokenSource = new CancellationTokenSource();
-            lock (Lock)
-            {
-                // Rebind needs to be atomic or otherwise when default page's viewmodel (ApplicationSummaryViewModel)
-                // picks up this viewmodel, there may be multiple bindings.
-                IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
-            }
+            IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
+            InstanceTracker = new ApplicationInstanceTracker(tuple.Config.AppLocation);
+            ManageModsViewModel.ModsChanged += OnModsChanged;
+            ManageModsViewModel.ModSaving += OnModSaving;
+            InstanceTracker.OnProcessesChanged += OnProcessesChanged;
 
-            InitializeClassTask = Task.Run(() =>
-            {
-                try
-                {
-                    InstanceTracker = new ApplicationInstanceTracker(tuple.Config.AppLocation, _initializeClassTaskTokenSource.Token);
-                    ManageModsViewModel.ModsChanged += OnModsChanged;
-                    ManageModsViewModel.ModSaving += OnModSaving;
-                    InstanceTracker.OnProcessesChanged += InstanceTrackerOnProcessesChanged;
-
-                    InstanceTrackerOnProcessesChanged(new Process[0]);
-                    OnModsChanged(null, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                    RefreshProcessesWithLoaderTimer = new Timer(state => { InstanceTrackerOnProcessesChanged(_emptyProcessArray); }, null, 500, _xamlProcessRefreshInterval.Get());
-                    Page = ApplicationSubPage.ApplicationSummary;
-                }
-                catch (Exception ex)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        var box = new MessageBox(Errors.Error(), $"{ex.Message} | {ex.StackTrace}");
-                        box.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                        box.ShowDialog();
-                    });
-                }
-            });
+            UpdateReloadedProcesses();
+            GetModsForThisApp();
+            RefreshProcessesWithLoaderTimer = new Timer(RefreshTimerCallback, null, 500, _xamlProcessRefreshInterval.Get());
+            Page = ApplicationSubPage.ApplicationSummary;
         }
 
         ~ApplicationViewModel()
@@ -99,70 +55,42 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public void Dispose()
         {
-            // Safeguard for those spamming the application button.
-            if (!InitializeClassTask.IsCompleted)
-            {
-                _initializeClassTaskTokenSource.Cancel();
-                InitializeClassTask.Wait();
-            }
+            ManageModsViewModel.ModsChanged -= OnModsChanged;
+            ManageModsViewModel.ModSaving -= OnModSaving;
+            InstanceTracker.OnProcessesChanged -= OnProcessesChanged;
 
             RefreshProcessesWithLoaderTimer?.Dispose();
-            ManageModsViewModel.ModsChanged -= OnModsChanged;
-            if (InstanceTracker != null)
-            {
-                InstanceTracker.OnProcessesChanged -= InstanceTrackerOnProcessesChanged;
-                InstanceTracker.Dispose();
-            }
-
+            InstanceTracker?.Dispose();
             GC.SuppressFinalize(this);
         }
 
-        public void ChangePageProperty(ApplicationSubPage page)
-        {
-            _page = page;
-            RaisePropertyChangedEvent(nameof(Page));
-        }
+        /// <summary>
+        /// Changes the currently opened page in the application submenu.
+        /// </summary>
+        public void ChangeApplicationPage(ApplicationSubPage page) => Page = page;
 
-        private void InstanceTrackerOnProcessesChanged(Process[] newProcesses)
+        // == Events ==
+        private void RefreshTimerCallback(object state) => UpdateReloadedProcesses();
+        private void OnProcessesChanged(Process[] processes) => UpdateReloadedProcesses();
+        private void OnModSaving(ImageModPathTuple pathTuple) => GetModsForThisApp();
+        private void OnModsChanged(object sender, NotifyCollectionChangedEventArgs args) => GetModsForThisApp();
+
+        private void UpdateReloadedProcesses()
         {
             var result = InstanceTracker.GetProcesses();
-            if (ProcessesWithReloaded == null || ProcessesWithoutReloaded == null)
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
-                ProcessesWithReloaded = new ObservableCollection<Process>(result.ReloadedProcesses);
-                ProcessesWithoutReloaded = new ObservableCollection<Process>(result.NonReloadedProcesses);
-            }
-            else
-            {
-                ActionWrappers.ExecuteWithApplicationDispatcher(() =>
-                {
-                    Collections.ModifyObservableCollection(ProcessesWithReloaded, result.ReloadedProcesses);
-                    Collections.ModifyObservableCollection(ProcessesWithoutReloaded, result.NonReloadedProcesses);
-                });
-            }
-
-            ReloadedApps = ProcessesWithReloaded.Count;
-            NonReloadedApps = ProcessesWithoutReloaded.Count;
+                Collections.ModifyObservableCollection(ProcessesWithReloaded, result.ReloadedProcesses);
+                Collections.ModifyObservableCollection(ProcessesWithoutReloaded, result.NonReloadedProcesses);
+            });
         }
 
-        private void OnModsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void GetModsForThisApp()
         {
-            // Calculate new mod set.
-            var newMods = new ObservableCollection<ImageModPathTuple>();
             string appId = ApplicationTuple.Config.AppId;
-            foreach (var mod in ManageModsViewModel.Mods)
-            {
-                if (mod.ModConfig.SupportedAppId?.Contains(appId) == true)
-                    newMods.Add(mod);
-            }
+            var newMods  = ManageModsViewModel.Mods.Where(x => x.ModConfig.SupportedAppId != null && x.ModConfig.SupportedAppId.Contains(appId));
 
-            // Set count.
-            ModsForThisApp = newMods;
-            TotalMods = newMods.Count;
-        }
-
-        private void OnModSaving(ImageModPathTuple obj)
-        {
-            OnModsChanged(null, null);
+            ModsForThisApp = new ObservableCollection<ImageModPathTuple>(newMods);
         }
     }
 }

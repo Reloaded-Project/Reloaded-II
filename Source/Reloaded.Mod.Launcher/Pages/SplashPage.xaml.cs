@@ -59,7 +59,7 @@ namespace Reloaded.Mod.Launcher.Pages
 
         private void ChangeToMainPage()
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 var viewModel = IoC.Get<WindowViewModel>();
                 viewModel.CurrentPage = Page.Base;
@@ -68,7 +68,7 @@ namespace Reloaded.Mod.Launcher.Pages
 
         private void DisplayFirstLaunchWarningIfNeeded()
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 var loaderConfig = IoC.Get<LoaderConfig>();
                 if (loaderConfig.FirstLaunch)

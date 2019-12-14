@@ -33,16 +33,16 @@ namespace Reloaded.Mod.Launcher.Utility
             {
                 string fullPath = newProcess.GetExecutablePath();
                 var config = _mainPageViewModel.Applications.FirstOrDefault(x => string.Equals(x.Config.AppLocation, fullPath, StringComparison.OrdinalIgnoreCase));
-                if (config != null)
+                if (config != null && config.Config.AutoInject)
                 {
-                    if (config.Config.AutoInject)
-                    {
-                        var appInjector = new ApplicationInjector(newProcess);
-                        appInjector.Inject();
-                    }
+                    var appInjector = new ApplicationInjector(newProcess);
+                    appInjector.Inject();
                 }
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+                // Ignored
+            }
         }
     }
 }

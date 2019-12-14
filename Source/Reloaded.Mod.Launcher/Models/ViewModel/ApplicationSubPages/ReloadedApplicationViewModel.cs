@@ -61,12 +61,12 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 
         private void SelectedProcessOnExited(object sender, EventArgs e)
         {
-            ApplicationViewModel.Page = ApplicationSubPage.ApplicationSummary;
+            ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
         }
 
         private void ClientOnReceiveException(GenericExceptionResponse obj)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 var box = new Pages.Dialogs.MessageBox(Errors.Error(), obj.Message);
                 box.WindowStartupLocation = WindowStartupLocation.CenterScreen;

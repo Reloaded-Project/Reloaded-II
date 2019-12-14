@@ -33,7 +33,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             ConfigureModCommand = new ConfigureModCommand(this);
 
             // Wait for parent to fully initialize.
-            model.InitializeClassTask.Wait();
             this.PropertyChanged += OnSelectedModChanged;
 
             var enabledModList = GetInitialModSet(model, ApplicationTuple);

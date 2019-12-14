@@ -16,9 +16,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             MainPageViewModel = viewModel;
         }
 
-        public void RaiseApplicationChangedEvent()
-        {
-            this.RaisePropertyChangedEvent(nameof(Application));
-        }
+        public void RaiseApplicationChangedEvent() => RaisePropertyChangedEvent(nameof(Application));
     }
 }

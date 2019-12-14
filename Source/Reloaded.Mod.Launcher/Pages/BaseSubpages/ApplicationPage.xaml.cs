@@ -21,7 +21,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             InitializeComponent();
             ViewModel = new ApplicationViewModel(IoC.Get<MainPageViewModel>().SelectedApplication, IoC.Get<ManageModsViewModel>());
-            this.AnimateOutStarted += AnimateOutChildAndDispose;
+            this.AnimateOutStarted += Dispose;
         }
 
         ~ApplicationPage()
@@ -31,14 +31,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 
         public void Dispose()
         {
+            PageHost.CurrentPage?.AnimateOut();
             ViewModel?.Dispose();
             GC.SuppressFinalize(this);
-        }
-
-        private void AnimateOutChildAndDispose()
-        {
-            PageHost.CurrentPage?.AnimateOut();
-            Dispose();
         }
 
         private void ReloadedMod_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -50,7 +45,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                     if (element.DataContext is Process process)
                     {
                         ViewModel.SelectedProcess = process;
-                        ViewModel.ChangePageProperty(ApplicationSubPage.ReloadedProcess);
+                        ViewModel.ChangeApplicationPage(ApplicationSubPage.ReloadedProcess);
                     }
                 }
             }
@@ -66,7 +61,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
                     {
                         ViewModel.SelectedProcess = process;
                         if (!process.HasExited)
-                            ViewModel.ChangePageProperty(ApplicationSubPage.NonReloadedProcess);
+                            ViewModel.ChangeApplicationPage(ApplicationSubPage.NonReloadedProcess);
                     }
                 }
             }
@@ -76,7 +71,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                ViewModel.ChangePageProperty(ApplicationSubPage.ApplicationSummary);
+                ViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
             }
         }
 
@@ -91,7 +86,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         }
 
         /* Animation/Title/Setup overrides */
-
         protected override Animation[] MakeExitAnimations()
         {
             return new Animation[]

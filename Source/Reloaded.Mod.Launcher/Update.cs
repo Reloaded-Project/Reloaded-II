@@ -47,7 +47,7 @@ namespace Reloaded.Mod.Launcher
                     var result = await manager.CheckForUpdatesAsync();
                     if (result.CanUpdate)
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
                         {
                             var dialog = new ModLoaderUpdateDialog(manager, result.LastVersion);
                             dialog.ShowDialog();
@@ -76,7 +76,7 @@ namespace Reloaded.Mod.Launcher
 
                 if (updateDetails.HasUpdates())
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher?.Invoke(() =>
                     {
                         var dialog = new ModUpdateDialog(updater, updateDetails);
                         dialog.ShowDialog();

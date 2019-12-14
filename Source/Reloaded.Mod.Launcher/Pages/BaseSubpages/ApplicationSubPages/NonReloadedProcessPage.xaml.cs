@@ -25,7 +25,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
                 injector.Inject();
 
                 // Exit page.
-                ViewModel.ApplicationViewModel.Page = Enum.ApplicationSubPage.ReloadedProcess;
+                ViewModel.ApplicationViewModel.ChangeApplicationPage(Enum.ApplicationSubPage.ReloadedProcess);
             }
         }
     }

@@ -136,7 +136,7 @@
                                    FontFamily="{DynamicResource FontBold}"
                                    VerticalAlignment="Center"/>
 
-                        <TextBlock Text="{Binding NonReloadedApps, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
+                        <TextBlock Text="{Binding ProcessesWithoutReloaded.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
                                    FontFamily="{DynamicResource FontBold}"
                                    VerticalAlignment="Center"/>
@@ -152,7 +152,7 @@
                                    FontFamily="{DynamicResource FontBold}"
                                    VerticalAlignment="Center"/>
 
-                        <TextBlock Text="{Binding ReloadedApps, UpdateSourceTrigger=PropertyChanged, FallbackValue=10}"
+                        <TextBlock Text="{Binding ProcessesWithReloaded.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=10}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
                                    FontFamily="{DynamicResource FontBold}"
                                    VerticalAlignment="Center"/>
@@ -168,7 +168,7 @@
                                    FontFamily="{DynamicResource FontBold}"
                                    VerticalAlignment="Center"/>
 
-                        <TextBlock Text="{Binding TotalMods, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
+                        <TextBlock Text="{Binding ModsForThisApp.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
                                    FontFamily="{DynamicResource FontBold}"
                                    VerticalAlignment="Center"/>

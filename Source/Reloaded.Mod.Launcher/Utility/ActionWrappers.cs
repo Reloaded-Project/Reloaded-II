@@ -22,7 +22,7 @@ namespace Reloaded.Mod.Launcher.Utility
         /// </summary>
         public static void ExecuteWithApplicationDispatcher(Action action)
         {
-            Application.Current.Dispatcher.Invoke(action);
+            Application.Current?.Dispatcher?.Invoke(action);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Reloaded.Mod.Launcher.Utility
         /// </summary>
         public static DispatcherOperation ExecuteWithApplicationDispatcherAsync(Action action)
         {
-            return Application.Current.Dispatcher.InvokeAsync(action);
+            return Application.Current?.Dispatcher?.InvokeAsync(action);
         }
 
         /// <param name="condition">Stops sleeping if this condition returns true.</param>
