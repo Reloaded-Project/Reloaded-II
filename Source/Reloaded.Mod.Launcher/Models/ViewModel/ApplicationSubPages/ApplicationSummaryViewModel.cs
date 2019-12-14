@@ -23,7 +23,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         public OpenModFolderCommand OpenModFolderCommand { get; set; }
         public ConfigureModCommand ConfigureModCommand { get; set; }
 
-        public int SelectedModIndex { get; set; } = 0;
         public ImageSource Icon { get; set; }
 
         public ApplicationSummaryViewModel(ApplicationViewModel model)
@@ -33,10 +32,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             ConfigureModCommand = new ConfigureModCommand(this);
 
             // Wait for parent to fully initialize.
-            this.PropertyChanged += OnSelectedModChanged;
+            this.PropertyChanged += UpdateIcon;
 
-            var enabledModList = GetInitialModSet(model, ApplicationTuple);
-            AllMods = new ObservableCollection<BooleanGenericTuple<ImageModPathTuple>>(enabledModList);
+            AllMods = new ObservableCollection<BooleanGenericTuple<ImageModPathTuple>>(GetInitialModSet(model, ApplicationTuple));
             AllMods.CollectionChanged += (sender, args) => SaveApplication(); // Save on reorder.
         }
 
@@ -52,7 +50,53 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             GC.SuppressFinalize(this);
         }
 
-        private void OnSelectedModChanged(object sender, PropertyChangedEventArgs e)
+        /// <summary>
+        /// Builds the initial set of mods to display in the list.
+        /// </summary>
+        private List<BooleanGenericTuple<ImageModPathTuple>> GetInitialModSet(ApplicationViewModel model, ImageApplicationPathTuple applicationTuple)
+        {
+            // Note: Must put items in top to bottom load order.
+            var enabledModIds  = applicationTuple.Config.EnabledMods;
+            var modsForThisApp = model.ModsForThisApp.ToArray();
+
+            // Build set of enabled mods in order of load | O(N^2)
+            var totalModList  = new List<BooleanGenericTuple<ImageModPathTuple>>(modsForThisApp.Length);
+            foreach (var enabledMod in enabledModIds)
+            {
+                var mod = modsForThisApp.FirstOrDefault(x => x.ModConfig.ModId == enabledMod);
+                if (mod != null)
+                    totalModList.Add(new BooleanGenericTuple<ImageModPathTuple>(true, mod));
+            }
+
+            // Add disabled mods | O(N)
+            var enabledModIdSet = applicationTuple.Config.EnabledMods.ToHashSet();
+            var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.ModConfig.ModId));
+            totalModList.AddRange(disabledMods.Select(x => new BooleanGenericTuple<ImageModPathTuple>(false, x)));
+            return totalModList;
+        }
+
+        private BooleanGenericTuple<ImageModPathTuple> MakeSaveSubscribedGenericTuple(bool isEnabled, ImageModPathTuple item)
+        {
+            // Make BooleanGenericTuple that saves application on Enabled change.
+            var tuple = new BooleanGenericTuple<ImageModPathTuple>(isEnabled, item);
+            tuple.PropertyChanged += SaveOnEnabledPropertyChanged;
+            return tuple;
+        }
+
+        // == Events ==
+        private void SaveOnEnabledPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == BooleanGenericTuple<IModConfig>.NameOfEnabled)
+                SaveApplication();
+        }
+
+        private void SaveApplication()
+        {
+            ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled).Select(x => x.Generic.ModConfig.ModId).ToArray();
+            ApplicationTuple.Save();
+        }
+
+        private void UpdateIcon(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(SelectedMod))
             {
@@ -61,75 +105,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
                     Icon = Imaging.BitmapFromUri(new Uri(SelectedMod.Generic.Image));
                 }
             }
-        }
-
-        /// <summary>
-        /// Builds the initial set of mods to display in the list.
-        /// </summary>
-        private List<BooleanGenericTuple<ImageModPathTuple>> GetInitialModSet(ApplicationViewModel model, ImageApplicationPathTuple applicationTuple)
-        {
-            // Note: Must put items in top to bottom load order.
-            var enabledMods = applicationTuple.Config.EnabledMods;
-            var modsForThisApp = model.ModsForThisApp.ToArray();
-
-            // Build set of enabled mods in order of load | O(N^2)
-            var enabledModSet = new OrderedHashSet<ImageModPathTuple>(modsForThisApp.Length);
-            foreach (var enabledMod in enabledMods)
-            {
-                foreach (var modForThisApp in modsForThisApp)
-                {
-                    var modConfig = modForThisApp;
-                    if (modConfig.ModConfig.ModId == enabledMod)
-                    {
-                        enabledModSet.Add(modConfig);
-                        break;
-                    }
-                }
-            }
-
-            var totalModList = new List<BooleanGenericTuple<ImageModPathTuple>>(modsForThisApp.Length);
-            foreach (var mod in enabledModSet)
-                totalModList.Add(MakeSaveSubscribedGenericTuple(true, mod));
-
-            // Now add all items not in set.
-            foreach (var mod in modsForThisApp)
-            {
-                if (! enabledModSet.Contains(mod))
-                    totalModList.Add(MakeSaveSubscribedGenericTuple(false, mod));
-            }
-
-            return totalModList;
-        }
-
-        /* Make BooleanGenericTuple that saves application on Enabled change. */
-        private BooleanGenericTuple<ImageModPathTuple> MakeSaveSubscribedGenericTuple(bool isEnabled, ImageModPathTuple item)
-        {
-            var tuple = new BooleanGenericTuple<ImageModPathTuple>(isEnabled, item);
-            tuple.PropertyChanged += SaveOnEnabledPropertyChanged;
-            return tuple;
-        }
-
-
-        private void SaveOnEnabledPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == BooleanGenericTuple<IModConfig>.NameOfEnabled)
-                SaveApplication();
-        }
-
-        /* Application Save Implementation */
-        private void SaveApplication()
-        {
-            // Note: Do not use LINQ, too slow for our needs.
-            // Note 2: Top to bottom load order.
-            List<string> enabledMods = new List<string>(AllMods.Count);
-            foreach (var mod in AllMods)
-            {
-                if (mod.Enabled)
-                    enabledMods.Add(mod.Generic.ModConfig.ModId);
-            }
-
-            ApplicationTuple.Config.EnabledMods = enabledMods.ToArray();
-            ApplicationTuple.Save();
         }
     }
 }
