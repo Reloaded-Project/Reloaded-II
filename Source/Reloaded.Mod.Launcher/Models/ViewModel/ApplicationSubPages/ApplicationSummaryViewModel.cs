@@ -70,7 +70,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         private List<BooleanGenericTuple<ImageModPathTuple>> GetInitialModSet(ApplicationViewModel model, ImageApplicationPathTuple applicationTuple)
         {
             // Note: Must put items in top to bottom load order.
-            var enabledMods = applicationTuple.ApplicationConfig.EnabledMods;
+            var enabledMods = applicationTuple.Config.EnabledMods;
             var modsForThisApp = model.ModsForThisApp.ToArray();
 
             // Build set of enabled mods in order of load | O(N^2)
@@ -129,7 +129,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
                     enabledMods.Add(mod.Generic.ModConfig.ModId);
             }
 
-            ApplicationTuple.ApplicationConfig.EnabledMods = enabledMods.ToArray();
+            ApplicationTuple.Config.EnabledMods = enabledMods.ToArray();
             ApplicationTuple.Save();
         }
     }

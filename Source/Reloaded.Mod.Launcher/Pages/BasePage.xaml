@@ -87,7 +87,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Viewbox Margin="{DynamicResource SidebarElementMargin}">
-                                <controls:CircleButton TooltipText="{Binding Path=ApplicationConfig.AppName}"
+                                <controls:CircleButton TooltipText="{Binding Path=Config.AppName}"
                                                        ImageSource="{Binding Path=Image}"
                                                        PreviewMouseDown="Application_PreviewMouseDown"
                                 />

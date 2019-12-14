@@ -25,8 +25,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             UpdateTotalApplicationsInstalled();
             UpdateTotalModsInstalled();
-            this.MainPageViewModel.ApplicationsChanged += MainPageViewModelOnApplicationsChanged;
-            this.ManageModsViewModel.ModsChanged += ManageModsViewModelOnModsChanged;
+            MainPageViewModel.ApplicationsChanged += MainPageViewModelOnApplicationsChanged;
+            ManageModsViewModel.ModsChanged += ManageModsViewModelOnModsChanged;
 
             var version = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
             Copyright = version.LegalCopyright;

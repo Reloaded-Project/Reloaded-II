@@ -88,7 +88,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 return;
 
             var supportedAppIds = newModTuple.ModConfig.SupportedAppId;
-            var tuples = _mainPageViewModel.Applications.Select(x => new BooleanGenericTuple<ApplicationConfig>(supportedAppIds.Contains(x.ApplicationConfig.AppId), x.ApplicationConfig));
+            var tuples = _mainPageViewModel.Applications.Select(x => new BooleanGenericTuple<ApplicationConfig>(supportedAppIds.Contains(x.Config.AppId), x.Config));
             EnabledAppIds = new ObservableCollection<BooleanGenericTuple<ApplicationConfig>>(tuples);
         }
 
@@ -124,8 +124,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             try
             {
                 var modConfigs = ModConfig.GetAllMods(IoC.Get<LoaderConfig>().ModConfigDirectory, cancellationToken);
-                var mods = modConfigs.Select(x => new ImageModPathTuple(GetImageForModConfig(x), x.Object, x.Path));
-                ExecuteWithApplicationDispatcher(() => Collections.ModifyObservableCollection(Mods, mods));
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    var mods = modConfigs.Select(x => new ImageModPathTuple(GetImageForModConfig(x), x.Object, x.Path));
+                    ExecuteWithApplicationDispatcher(() => Collections.ModifyObservableCollection(Mods, mods));
+                }
             }
             catch (Exception)
             {

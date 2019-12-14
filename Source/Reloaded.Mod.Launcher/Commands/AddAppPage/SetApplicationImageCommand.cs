@@ -7,6 +7,7 @@ using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Commands.AddAppPage
@@ -43,11 +44,11 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
                 return;
 
             // Get current selected application and its paths.
-            IApplicationConfig config = _addAppViewModel.Application;
+            ApplicationConfig config = _addAppViewModel.Application.Config;
 
             // Get application entry in set of all applications.
-            var appIconPathTuple = _addAppViewModel.MainPageViewModel.Applications.First( x => x.ApplicationConfig.Equals(config) );
-            string applicationDirectory = Path.GetDirectoryName(appIconPathTuple.ApplicationConfigPath);
+            var appIconPathTuple = _addAppViewModel.MainPageViewModel.Applications.First( x => x.Config.Equals(config) );
+            string applicationDirectory = Path.GetDirectoryName(appIconPathTuple.ConfigPath);
 
             string applicationIconFileName = Path.GetFileName(imagePath);
             if (applicationDirectory != null)

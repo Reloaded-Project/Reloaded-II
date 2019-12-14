@@ -70,7 +70,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             {
                 try
                 {
-                    InstanceTracker = new ApplicationInstanceTracker(tuple.ApplicationConfig.AppLocation, _initializeClassTaskTokenSource.Token);
+                    InstanceTracker = new ApplicationInstanceTracker(tuple.Config.AppLocation, _initializeClassTaskTokenSource.Token);
                     ManageModsViewModel.ModsChanged += OnModsChanged;
                     ManageModsViewModel.ModSaving += OnModSaving;
                     InstanceTracker.OnProcessesChanged += InstanceTrackerOnProcessesChanged;
@@ -148,7 +148,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         {
             // Calculate new mod set.
             var newMods = new ObservableCollection<ImageModPathTuple>();
-            string appId = ApplicationTuple.ApplicationConfig.AppId;
+            string appId = ApplicationTuple.Config.AppId;
             foreach (var mod in ManageModsViewModel.Mods)
             {
                 if (mod.ModConfig.SupportedAppId?.Contains(appId) == true)

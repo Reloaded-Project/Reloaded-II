@@ -32,10 +32,10 @@ namespace Reloaded.Mod.Launcher.Utility
             try
             {
                 string fullPath = newProcess.GetExecutablePath();
-                var config = _mainPageViewModel.Applications.FirstOrDefault(x => string.Equals(x.ApplicationConfig.AppLocation, fullPath, StringComparison.OrdinalIgnoreCase));
+                var config = _mainPageViewModel.Applications.FirstOrDefault(x => string.Equals(x.Config.AppLocation, fullPath, StringComparison.OrdinalIgnoreCase));
                 if (config != null)
                 {
-                    if (config.ApplicationConfig.AutoInject)
+                    if (config.Config.AutoInject)
                     {
                         var appInjector = new ApplicationInjector(newProcess);
                         appInjector.Inject();

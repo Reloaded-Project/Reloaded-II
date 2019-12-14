@@ -84,7 +84,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                var appConfig = ViewModel.ApplicationTuple.ApplicationConfig;
+                var appConfig = ViewModel.ApplicationTuple.Config;
                 var launcher = ApplicationLauncher.FromApplicationConfig(appConfig);
                 launcher.Start();
             }
@@ -104,7 +104,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         protected override void OnAnimateInFinished()
         {
             if (!String.IsNullOrEmpty(this.Title))
-                IoC.Get<WindowViewModel>().WindowTitle = $"{this.Title}: {ViewModel.ApplicationTuple.ApplicationConfig.AppName}";
+                IoC.Get<WindowViewModel>().WindowTitle = $"{this.Title}: {ViewModel.ApplicationTuple.Config.AppName}";
         }
     }
 }

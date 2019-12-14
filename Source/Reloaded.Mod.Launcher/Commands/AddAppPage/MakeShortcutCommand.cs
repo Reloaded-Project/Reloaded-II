@@ -32,7 +32,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
             if (_addAppViewModel.Application != null)
             {
-                _lastConfig = _addAppViewModel.Application;
+                _lastConfig = _addAppViewModel.Application.Config;
                 _lastConfig.PropertyChanged += ApplicationOnLocationPropertyChanged;
             }
         }
@@ -60,7 +60,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
                 if (_addAppViewModel.Application != null)
                 {
-                    _lastConfig = _addAppViewModel.Application;
+                    _lastConfig = _addAppViewModel.Application.Config;
                     _lastConfig.PropertyChanged += ApplicationOnLocationPropertyChanged;
                 }
 
@@ -70,7 +70,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
         private void ApplicationOnLocationPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(_addAppViewModel.Application.AppLocation))
+            if (e.PropertyName == nameof(_addAppViewModel.Application.Config.AppLocation))
                 RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
@@ -96,10 +96,10 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             shortcut.Arguments = $"{Constants.ParameterLaunch} \"{_lastConfig.AppLocation}\"";
             shortcut.WorkingDirectory = Path.GetDirectoryName(loaderConfig.LauncherPath);
 
-            var applicationTuple = _addAppViewModel.MainPageViewModel.Applications.FirstOrDefault(x => x.ApplicationConfig.Equals(_lastConfig));
+            var applicationTuple = _addAppViewModel.MainPageViewModel.Applications.FirstOrDefault(x => x.Config.Equals(_lastConfig));
             if (applicationTuple != null)
             {
-                var hasIcon = ApplicationConfig.TryGetApplicationIcon(applicationTuple.ApplicationConfigPath, applicationTuple.ApplicationConfig, out var logoPath);
+                var hasIcon = ApplicationConfig.TryGetApplicationIcon(applicationTuple.ConfigPath, applicationTuple.Config, out var logoPath);
                 if (hasIcon)
                 {
                     // Make path for icon.

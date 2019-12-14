@@ -7,7 +7,6 @@
              xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
-             xmlns:addAppPage="clr-namespace:Reloaded.Mod.Launcher.Converters.AddAppPage"
              xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.AddAppPage"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
@@ -28,7 +27,7 @@
             <!-- Sort the app list -->
             <CollectionViewSource Source="{Binding MainPageViewModel.Applications, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Key="SortedApps" IsLiveSortingRequested="True">
                 <CollectionViewSource.SortDescriptions>
-                    <componentModel:SortDescription PropertyName="ApplicationConfig.AppName"/>
+                    <componentModel:SortDescription PropertyName="Config.AppName"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
         </ScrollViewer.Resources>
@@ -44,8 +43,7 @@
                 <Viewbox Width="{StaticResource DetailsImageWidth}" 
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
                              Margin="{DynamicResource CommonItemVerticalMargin}">
-                    <Image d:DataContext="{x:Static designTimeModels:ApplicationIcon.Instance}"
-                               Source="{Binding Application, Converter={x:Static addAppPage:ApplicationToImageConverter.Instance}, IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
+                    <Image Source="{Binding Application.Image, IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
                                ToolTip="{DynamicResource AddAppImageTooltip}" 
                                PreviewMouseDown="Image_PreviewMouseDown"/>
                 </Viewbox>
@@ -56,14 +54,13 @@
                               Width="{StaticResource DetailsColumnWidth}"
                               IsSynchronizedWithCurrentItem="True"
                               ItemsSource="{Binding Source={StaticResource SortedApps}}"
-                              SelectedValuePath="ApplicationConfig"
-                              SelectedValue="{Binding Application, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedItem="{Binding Application, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Text="Select a Game"
                               SelectionChanged="SelectionChanged"
                               SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ApplicationConfig.AppName, Mode=TwoWay}"/>
+                            <TextBlock Text="{Binding Config.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -95,14 +92,14 @@
                 <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
                         Tag="{DynamicResource AddAppName}" 
                         ToolTip="{DynamicResource AddAppName}"
-                        Text="{Binding Application.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding Application.Config.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Margin="{DynamicResource CommonItemVerticalMargin}" 
                         Width="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
 
                 <TextBox
-                        Text="{Binding Application.AppLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding Application.Config.AppLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Width="{StaticResource DetailsColumnWidth}"
                         Margin="{DynamicResource CommonItemVerticalMargin}"
                         Style="{DynamicResource TextboxWithPlaceholder}" 
@@ -112,7 +109,7 @@
                         VerticalAlignment="Center"/>
 
                 <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
-                             Text="{Binding Application.AppArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding Application.Config.AppArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Tag="{DynamicResource AddAppArguments}" 
                         ToolTip="{DynamicResource AddAppArguments}"
                         Margin="{DynamicResource CommonItemVerticalMargin}" 
@@ -132,7 +129,7 @@
                                         HorizontalAlignment="Stretch"
                                         Command="{StaticResource MakeShortcutCommand}"/>
 
-                            <CheckBox IsChecked="{Binding Application.AutoInject}" 
+                            <CheckBox IsChecked="{Binding Application.Config.AutoInject}" 
                                     Margin="{DynamicResource CommonItemVerticalMargin}" 
                                     HorizontalAlignment="Center"
                                     Content="{DynamicResource AddAppAutoInject}"

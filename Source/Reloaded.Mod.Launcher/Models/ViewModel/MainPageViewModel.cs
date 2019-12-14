@@ -64,7 +64,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public MainPageViewModel()
         {
             Applications = new ObservableCollection<ImageApplicationPathTuple>();
-            Applications.CollectionChanged += ApplicationsChanged;
+            Applications.CollectionChanged += (sender, args) => { ApplicationsChanged(sender, args); };
             GetApplications();
 
             string appConfigDirectory = IoC.Get<LoaderConfig>().ApplicationConfigDirectory;
@@ -94,7 +94,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             {
                 // Copy in case Mods collection changes.
                 var allApps = Applications;
-                var deletedApps = allApps.Where(x => Path.GetDirectoryName(x.ApplicationConfigPath).Equals(e.FullPath));
+                var deletedApps = allApps.Where(x => Path.GetDirectoryName(x.ConfigPath).Equals(e.FullPath));
                 ExecuteWithApplicationDispatcherAsync(() =>
                 {
                     foreach (var deletedApp in deletedApps)
@@ -111,7 +111,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             {
                 // Copy in case Mods collection changes.
                 var allApps = Applications;
-                var deletedApps = allApps.Where(x => x.ApplicationConfigPath.Equals(e.FullPath));
+                var deletedApps = allApps.Where(x => x.ConfigPath.Equals(e.FullPath));
                 ExecuteWithApplicationDispatcherAsync(() =>
                 {
                     foreach (var deletedApp in deletedApps)
@@ -128,8 +128,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             try
             {
                 var appConfigs = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().ApplicationConfigDirectory, cancellationToken);
-                var apps = appConfigs.Select(x => new ImageApplicationPathTuple(GetImageForAppConfig(x), x.Object, x.Path));
-                ExecuteWithApplicationDispatcher(() => Collections.ModifyObservableCollection(Applications, apps));
+                if (! cancellationToken.IsCancellationRequested)
+                {
+                    var apps = appConfigs.Select(x => new ImageApplicationPathTuple(GetImageForAppConfig(x), x.Object, x.Path));
+                    ExecuteWithApplicationDispatcher(() => Collections.ModifyObservableCollection(Applications, apps));
+                }
             }
             catch (Exception)
             {

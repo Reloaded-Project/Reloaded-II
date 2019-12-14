@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
@@ -20,10 +22,13 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         private XamlResource<string> _xamlAddAppExecutableTitle = new XamlResource<string>("AddAppExecutableTitle");
         private XamlResource<string> _xamlAddAppExecutableFilter = new XamlResource<string>("AddAppExecutableFilter");
         private readonly AddAppViewModel _addAppViewModel;
+        private readonly MainPageViewModel _mainPageViewModel;
+        private ApplicationConfig _lastSavedConfig;
 
         public AddApplicationCommand()
         {
             _addAppViewModel = IoC.Get<AddAppViewModel>();
+            _mainPageViewModel = _addAppViewModel.MainPageViewModel;
         }
 
         public bool CanExecute(object parameter)
@@ -55,9 +60,22 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             string applicationDirectory = Path.Combine(applicationConfigDirectory, config.AppId);
             string applicationConfigFile = Path.Combine(applicationDirectory, ApplicationConfig.ConfigFileName);
 
+            // Add event to auto-select added config.
+            _lastSavedConfig = (ApplicationConfig)config;
+            _mainPageViewModel.ApplicationsChanged += MainPageViewModelOnApplicationsChanged;
+
             // Write file to disk.
             Directory.CreateDirectory(applicationDirectory);
             ApplicationConfig.WriteConfiguration(applicationConfigFile, (ApplicationConfig)config);
+        }
+
+        private void MainPageViewModelOnApplicationsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            var newSelection = _mainPageViewModel.Applications.FirstOrDefault(x => x.Config.AppId == _lastSavedConfig.AppId);
+            if (newSelection != null)
+                _addAppViewModel.Application = newSelection;
+
+            _mainPageViewModel.ApplicationsChanged -= MainPageViewModelOnApplicationsChanged;
         }
 
         public event EventHandler CanExecuteChanged = (sender, args) => { };
@@ -68,7 +86,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         private void UpdateIdIfDuplicate(IApplicationConfig config)
         {
             // Ensure no duplication of AppId
-            while (_addAppViewModel.MainPageViewModel.Applications.Any(x => x.ApplicationConfig.AppId == config.AppId))
+            while (_mainPageViewModel.Applications.Any(x => x.Config.AppId == config.AppId))
             {
                 config.AppId += "_dup";
             }
