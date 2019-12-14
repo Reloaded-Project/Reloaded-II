@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.IO", "Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj", "{82170607-827D-4F66-B01B-73B4CA47B473}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rock.Collections", "..\Submodules\Rock.Collections\Rock.Collections\Rock.Collections.csproj", "{7093891E-2F3E-4FE1-B855-B421C72B8CBF}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reloaded.Mod.Loader.Bootstrapper", "Reloaded.Mod.Loader.Bootstrapper\Reloaded.Mod.Bootstrapper.vcxproj", "{56DFC45C-49FB-4409-823E-EE54637F58A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.Server", "Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj", "{9D416472-B721-4DF6-8218-63853A17D8F6}"
@@ -103,14 +101,6 @@ Global
 		{82170607-827D-4F66-B01B-73B4CA47B473}.Release|AnyCPU.Build.0 = Release|Any CPU
 		{82170607-827D-4F66-B01B-73B4CA47B473}.Release|AnyCPU (X86-only).ActiveCfg = Release|Any CPU
 		{82170607-827D-4F66-B01B-73B4CA47B473}.Release|AnyCPU (X86-only).Build.0 = Release|Any CPU
-		{7093891E-2F3E-4FE1-B855-B421C72B8CBF}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
-		{7093891E-2F3E-4FE1-B855-B421C72B8CBF}.Debug|AnyCPU.Build.0 = Debug|Any CPU
-		{7093891E-2F3E-4FE1-B855-B421C72B8CBF}.Debug|AnyCPU (X86-only).ActiveCfg = Debug|Any CPU
-		{7093891E-2F3E-4FE1-B855-B421C72B8CBF}.Debug|AnyCPU (X86-only).Build.0 = Debug|Any CPU
-		{7093891E-2F3E-4FE1-B855-B421C72B8CBF}.Release|AnyCPU.ActiveCfg = Release|Any CPU
-		{7093891E-2F3E-4FE1-B855-B421C72B8CBF}.Release|AnyCPU.Build.0 = Release|Any CPU
-		{7093891E-2F3E-4FE1-B855-B421C72B8CBF}.Release|AnyCPU (X86-only).ActiveCfg = Release|Any CPU
-		{7093891E-2F3E-4FE1-B855-B421C72B8CBF}.Release|AnyCPU (X86-only).Build.0 = Release|Any CPU
 		{56DFC45C-49FB-4409-823E-EE54637F58A1}.Debug|AnyCPU.ActiveCfg = Debug|x64
 		{56DFC45C-49FB-4409-823E-EE54637F58A1}.Debug|AnyCPU.Build.0 = Debug|x64
 		{56DFC45C-49FB-4409-823E-EE54637F58A1}.Debug|AnyCPU (X86-only).ActiveCfg = Debug|Win32
@@ -220,7 +210,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7093891E-2F3E-4FE1-B855-B421C72B8CBF} = {3ACEF67A-59F3-445F-BBDF-8960B11D6557}
 		{A4CECC87-3188-4D37-A64B-D15F5B001A9D} = {C958AA4D-5985-4F2E-8209-9B6187FF3D85}
 		{EC67FAEC-7D88-434D-A58D-6A8419929E25} = {A4CECC87-3188-4D37-A64B-D15F5B001A9D}
 		{7B523726-D5B6-4221-A2C4-3C6AC5E1F920} = {A4CECC87-3188-4D37-A64B-D15F5B001A9D}

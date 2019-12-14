@@ -9,7 +9,6 @@ using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Misc;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Weaving;
-using Rock.Collections;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {

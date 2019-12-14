@@ -10,7 +10,6 @@ using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
-using Rock.Collections;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 {
