@@ -15,7 +15,7 @@ using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
-    public class ModConfig : ObservableObject, IModConfig, IConfig
+    public class ModConfig : ObservableObject, IEquatable<ModConfig>, IModConfig, IConfig
     {
         /* Constants */
         public const string ConfigFileName  = "ModConfig.json";
@@ -273,6 +273,11 @@ namespace Reloaded.Mod.Loader.IO.Config
         public override int GetHashCode()
         {
             return (ModId != null ? ModId.GetHashCode() : 0);
+        }
+
+        bool IEquatable<ModConfig>.Equals(ModConfig other)
+        {
+            return Equals(other);
         }
     }
 }

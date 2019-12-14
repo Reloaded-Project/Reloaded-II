@@ -13,7 +13,7 @@ using Rock.Collections;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
-    public class ApplicationConfig : ObservableObject, Mod.Interfaces.IApplicationConfig, IConfig
+    public class ApplicationConfig : ObservableObject, IEquatable<ApplicationConfig>, Mod.Interfaces.IApplicationConfig, IConfig
     {
         public const string ConfigFileName = "AppConfig.json";
         
@@ -197,6 +197,11 @@ namespace Reloaded.Mod.Loader.IO.Config
         public override int GetHashCode()
         {
             return (AppId != null ? AppId.GetHashCode() : 0);
+        }
+
+        bool IEquatable<ApplicationConfig>.Equals(ApplicationConfig other)
+        {
+            return Equals(other);
         }
     }
 }
