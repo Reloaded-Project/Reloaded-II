@@ -27,30 +27,26 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private static MainPageViewModel _mainPageViewModel;
 
         /* Fired when the available mods collection changes. */
-        public event NotifyCollectionChangedEventHandler ModsChanged = (sender, args) => { };
-        public event Action<ImageModPathTuple> ModSaving = tuple => { }; // When a mod is about to be saved.
+        
+        /// <summary>
+        /// Fired when any individual mod of the mods collection changes.
+        /// This is fired only when the contents of any of the mods change compared to what is internally stored,
+        /// i.e. file was edited by user outside of the program.
+        /// </summary>
+        public event NotifyCollectionChangedEventHandler ModChanged = (sender, args) => { };
+
+        /// <summary>
+        /// Executed after a change in external files was detected and new files were read-in.
+        /// This is essentially the same as <see cref="ModChanged"/>, except it is ran per-scan instead of per-file.
+        /// Unlike <see cref="ModChanged"/> however, this always runs regardless of whether mods were changed or not.
+        /// </summary>
+        public event Action OnGetModifications = () => { }; // 
 
         /* Fields for Data Binding */
         public ImageModPathTuple SelectedModTuple { get; set; }
         public ImageSource Icon { get; set; }
         public ObservableCollection<BooleanGenericTuple<ApplicationConfig>> EnabledAppIds { get; set; }
-
-        [DoNotNotify]
-        public ObservableCollection<ImageModPathTuple> Mods
-        {
-            get => _mods;
-            set
-            {
-                value.CollectionChanged += ModsChanged;
-                _mods = value;
-
-                RaisePropertyChangedEvent(nameof(Mods));
-                ModsChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-            }
-        }
-
-        /* Fired when the list of available mods changes. */
-        private ObservableCollection<ImageModPathTuple> _mods = new ObservableCollection<ImageModPathTuple>();
+        public ObservableCollection<ImageModPathTuple> Mods { get; set; } 
 
         /* If false, events to reload mod list are not sent. */
         private bool _monitorNewMods = true;
@@ -63,11 +59,19 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public ManageModsViewModel(MainPageViewModel mainPageViewModel, LoaderConfig loaderConfig)
         {
+            Mods = new ObservableCollection<ImageModPathTuple>();
+            Mods.CollectionChanged += (sender, args) =>
+            {
+                // Hack: Reason is if we load a mod set, enable mods for app and go back to main menu and old app is highlighted, stuff will get overwritten.
+                SelectedModTuple = null;
+                ModChanged(sender, args);
+            };
             GetModifications();
+
             _mainPageViewModel = mainPageViewModel;
             string modDirectory = loaderConfig.ModConfigDirectory;
 
-            _createWatcher = CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherEvents.Changed | FileSystemWatcherEvents.Created, true, "*.*");
+            _createWatcher = CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherEvents.Changed | FileSystemWatcherEvents.Created);
             _deleteFileWatcher = CreateChangeCreateDelete(modDirectory, OnDeleteFile, FileSystemWatcherEvents.Deleted);
             _deleteDirectoryWatcher = CreateChangeCreateDelete(modDirectory, OnDeleteDirectory, FileSystemWatcherEvents.Deleted, false, "*.*");
             ExecuteWithApplicationDispatcherAsync(() => Icon = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute)));
@@ -103,9 +107,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             if (EnabledAppIds != null)
                 oldModTuple.ModConfig.SupportedAppId = EnabledAppIds.Where(x => x.Enabled).Select(x => x.Generic.AppId).ToArray();
 
-            //InvokeWithoutMonitoringMods(oldModTuple.Save);
             oldModTuple.Save();
-            ModSaving(oldModTuple);
         }
 
         /// <summary>
@@ -128,6 +130,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 {
                     var mods = modConfigs.Select(x => new ImageModPathTuple(GetImageForModConfig(x), x.Object, x.Path));
                     ExecuteWithApplicationDispatcher(() => Collections.ModifyObservableCollection(Mods, mods));
+                    OnGetModifications();
                 }
             }
             catch (Exception)
@@ -169,6 +172,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                         foreach (var deletedMod in deletedMods) 
                             Mods.Remove(deletedMod);
                     });
+
+                    if (deletedMods.Any())
+                        OnGetModifications();
                 });
             }
         }
@@ -189,6 +195,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                         foreach (var deletedMod in deletedMods)
                             Mods.Remove(deletedMod);
                     });
+
+                    if (deletedMods.Any())
+                        OnGetModifications();
                 });
             }
         }

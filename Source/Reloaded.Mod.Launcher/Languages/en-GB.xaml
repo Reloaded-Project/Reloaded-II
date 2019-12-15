@@ -21,6 +21,7 @@
     <sys:String x:Key="SplashLoadCompleteIn">Load Complete in:</sys:String>
     <sys:String x:Key="SplashCreatingTemplates">Creating Templates</sys:String>
     <sys:String x:Key="SplashCheckingForUpdates">Checking for Updates</sys:String>
+    <sys:String x:Key="SplashRunningSanityChecks">Running Sanity Checks</sys:String>
 
     <!-- Add Application Page -->
     <sys:String x:Key="AddAppImageTooltip">Click this image to import a custom logo.</sys:String>
@@ -119,17 +120,20 @@
     <!-- Application & SubMenus -->
     <sys:String x:Key="TitleConfigureMods">Configure Mods</sys:String>
     <sys:String x:Key="ApplicationLaunch">Launch Application</sys:String>
-    <sys:String x:Key="LoadModSet">Load Mod Set</sys:String>
-    <sys:String x:Key="SaveModSet">Save Mod Set</sys:String>
-
-    <sys:String x:Key="LoadModSetDialogTitle">Select file to load list of mods from.</sys:String>
-    <sys:String x:Key="SaveModSetDialogTitle">Select path to save list of mods to.</sys:String>
-
 
     <sys:String x:Key="ConfigureModsListItemTooltip">Drag and drop items to change the load order of mods. Mods are loaded starting with top mod first and bottom mod last.</sys:String>
     <sys:String x:Key="ConfigureModsDummyText">Uses Reloaded to tell you to get some mods. Reloaded-II is cool! Cuteness is justice, its the law!.</sys:String> <!-- Unused for now, will be used down the road. -->
     <sys:String x:Key="ConfigureModsConfigure">Configure Mod</sys:String>
     <sys:String x:Key="ConfigureModsOpenFolder">Open Folder</sys:String>
+
+    <sys:String x:Key="LoadModSet">Load Mod Set</sys:String>
+    <sys:String x:Key="SaveModSet">Save Mod Set</sys:String>
+    <sys:String x:Key="LoadModSetDialogTitle">Select file to load list of mods from.</sys:String>
+    <sys:String x:Key="SaveModSetDialogTitle">Select path to save list of mods to.</sys:String>
+
+    <sys:String x:Key="LoadModSetIncompatibleTitle">Compatibility Alert</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage">You have mods enabled that are not marked compatible with your application:</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage2">Pressing OK will enable the mods for your application. Pressing Cancel will disable the mods.</sys:String>
 
     <!-- Reloaded Process -->
     <sys:String x:Key="ReloadedProcessResume">Resume</sys:String>

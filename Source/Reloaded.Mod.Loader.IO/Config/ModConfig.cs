@@ -248,18 +248,20 @@ namespace Reloaded.Mod.Loader.IO.Config
            ---------------------------------
         */
 
-        protected bool Equals(ModConfig other)
+        public bool Equals(ModConfig other)
         {
-            return ModDependencies.SequenceEqualWithNullSupport(other.ModDependencies) &&
-                   SupportedAppId.SequenceEqualWithNullSupport(other.SupportedAppId) &&
-                   OptionalDependencies.SequenceEqualWithNullSupport(other.OptionalDependencies) &&
-                   string.Equals(ModId, other.ModId) && 
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return string.Equals(ModId, other.ModId) && 
                    string.Equals(ModName, other.ModName) && 
                    string.Equals(ModAuthor, other.ModAuthor) && 
                    string.Equals(ModVersion, other.ModVersion) && 
                    string.Equals(ModDescription, other.ModDescription) && 
                    string.Equals(ModDll, other.ModDll) && 
-                   string.Equals(ModIcon, other.ModIcon);
+                   string.Equals(ModIcon, other.ModIcon) &&
+                   ModDependencies.SequenceEqualWithNullSupport(other.ModDependencies) && 
+                   OptionalDependencies.SequenceEqualWithNullSupport(other.OptionalDependencies) &&
+                   SupportedAppId.SequenceEqualWithNullSupport(other.SupportedAppId);
         }
 
         public override bool Equals(object obj)
@@ -272,7 +274,20 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         public override int GetHashCode()
         {
-            return (ModId != null ? ModId.GetHashCode() : 0);
+            unchecked
+            {
+                var hashCode = (ModId != null ? ModId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ModName != null ? ModName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ModAuthor != null ? ModAuthor.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ModVersion != null ? ModVersion.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ModDescription != null ? ModDescription.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ModDll != null ? ModDll.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ModIcon != null ? ModIcon.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ ModDependencies.GetHashCodeWithNullSupport();
+                hashCode = (hashCode * 397) ^ OptionalDependencies.GetHashCodeWithNullSupport();
+                hashCode = (hashCode * 397) ^ SupportedAppId.GetHashCodeWithNullSupport();
+                return hashCode;
+            }
         }
 
         bool IEquatable<ModConfig>.Equals(ModConfig other)

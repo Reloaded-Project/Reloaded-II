@@ -83,8 +83,10 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
+                ViewModel.CheckModCompatibility();
+
                 var appConfig = ViewModel.ApplicationTuple.Config;
-                var launcher = ApplicationLauncher.FromApplicationConfig(appConfig);
+                var launcher  = ApplicationLauncher.FromApplicationConfig(appConfig);
                 launcher.Start();
             }
         }

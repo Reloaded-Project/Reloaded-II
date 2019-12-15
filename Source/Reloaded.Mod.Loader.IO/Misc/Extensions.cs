@@ -21,5 +21,13 @@ namespace Reloaded.Mod.Loader.IO.Misc
 
             return first.SequenceEqual(second);
         }
+
+        /// <summary>
+        /// Returns a hashcode for an item of type T. Returns 0 if the type is null.
+        /// </summary>
+        public static int GetHashCodeWithNullSupport<T>(this IEnumerable<T> items)
+        {
+            return items?.Aggregate(0, (current, item) => (current * 397) ^ item.GetHashCode()) ?? 0;
+        }
     }
 }

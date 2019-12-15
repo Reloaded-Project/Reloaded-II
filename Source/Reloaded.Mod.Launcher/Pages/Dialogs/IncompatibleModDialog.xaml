@@ -1,0 +1,70 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.IncompatibleModDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
+        xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
+        xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        mc:Ignorable="d"
+        Height="600" Width="650"
+        Title="{DynamicResource LoadModSetIncompatibleTitle}"
+        Style="{DynamicResource ReloadedWindow}">
+    <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{DynamicResource LoadModSetIncompatibleMessage}"
+                   Margin="{DynamicResource PanelMargin}"
+                   TextWrapping="Wrap"
+                   Grid.Row="0" />
+
+        <Grid Margin="{DynamicResource PanelMargin}"
+              Grid.Row="1">
+            <DataGrid 
+                ItemsSource="{Binding Mods, UpdateSourceTrigger=PropertyChanged}"
+                VerticalContentAlignment="Top"
+            
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                CanUserSortColumns="False"
+                CanUserReorderColumns="False"
+
+                IsReadOnly="True"
+                AutoGenerateColumns="False">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding ModConfig.ModName}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="{DynamicResource UpdateModModId}" Binding="{Binding ModConfig.ModId}" Width="*" IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <TextBlock Text="{DynamicResource LoadModSetIncompatibleMessage2}"
+                   Margin="{DynamicResource PanelMargin}"
+                   TextWrapping="Wrap"
+                   Grid.Row="2" />
+
+        <Grid Margin="{DynamicResource PanelMargin}" Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"   />
+                <ColumnDefinition Width="*"   />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="{DynamicResource MessageBoxButtonCancel}" 
+                    Margin="{DynamicResource CommonItemHorizontalMargin}"
+                    Click="Cancel_Click"/>
+
+            <Button Grid.Column="1" Content="{DynamicResource MessageBoxButtonOK}" 
+                    Margin="{DynamicResource CommonItemHorizontalMargin}"
+                    Click="OK_Click"/>
+        </Grid>
+    </Grid>
+</default:ReloadedWindow>

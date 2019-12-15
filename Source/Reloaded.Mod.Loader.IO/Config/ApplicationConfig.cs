@@ -182,7 +182,8 @@ namespace Reloaded.Mod.Loader.IO.Config
                    string.Equals(AppName, other.AppName) && 
                    string.Equals(AppLocation, other.AppLocation) && 
                    string.Equals(AppArguments, other.AppArguments) && 
-                   string.Equals(AppIcon, other.AppIcon);
+                   string.Equals(AppIcon, other.AppIcon) &&
+                   string.Equals(AutoInject, other.AutoInject);
         }
 
         public override bool Equals(object obj)
@@ -195,7 +196,17 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         public override int GetHashCode()
         {
-            return (AppId != null ? AppId.GetHashCode() : 0);
+            unchecked
+            {
+                var hashCode = (AppId != null ? AppId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (AppName != null ? AppName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (AppLocation != null ? AppLocation.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (AppArguments != null ? AppArguments.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (AppIcon != null ? AppIcon.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ AutoInject.GetHashCode();
+                hashCode = (hashCode * 397) ^ EnabledMods.GetHashCodeWithNullSupport();
+                return hashCode;
+            }
         }
 
         bool IEquatable<ApplicationConfig>.Equals(ApplicationConfig other)

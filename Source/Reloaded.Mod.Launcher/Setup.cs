@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,7 @@ using NuGet.Configuration;
 using Onova;
 using Onova.Services;
 using Reloaded.Mod.Launcher.Misc;
+using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
@@ -38,6 +40,7 @@ namespace Reloaded.Mod.Launcher
         private static XamlResource<string> _xamlCheckingForUpdates = new XamlResource<string>("SplashCheckingForUpdates");
         private static XamlResource<string> _xamlSplashLoadCompleteIn = new XamlResource<string>("SplashLoadCompleteIn");
         private static XamlResource<string> _xamlCreatingTemplates = new XamlResource<string>("SplashCreatingTemplates");
+        private static XamlResource<string> _xamlRunningSanityChecks = new XamlResource<string>("SplashRunningSanityChecks");
 
         /// <summary>
         /// Sets up the overall application state for either running or testing.
@@ -56,7 +59,6 @@ namespace Reloaded.Mod.Launcher
 
                 // Allow for debugging before crashing.
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
-
                 RegisterReloadedProtocol();
 
                 updateText(_xamlSplashCreatingDefaultConfig.Get());
@@ -73,6 +75,9 @@ namespace Reloaded.Mod.Launcher
                 CheckForUpdatesAsync(); // Fire and forget, we don't want to delay startup time.
                 #pragma warning restore 4014
 
+                updateText(_xamlRunningSanityChecks.Get());
+                DoSanityTests();
+
                 // Wait until splash screen time.
                 updateText($"{_xamlSplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");
                 
@@ -81,6 +86,49 @@ namespace Reloaded.Mod.Launcher
                     await Task.Delay(100);
                 }
             }
+        }
+
+        /// <summary>
+        /// Tries to find all incompatible mods to the current application config's set of mods.
+        /// Sanity check after loading mod sets.
+        /// </summary>
+        /// <param name="incompatibleModIds">List of incompatible mods.</param>
+        public static bool TryGetIncompatibleMods(ImageApplicationPathTuple application, IEnumerable<ImageModPathTuple> mods, out List<ImageModPathTuple> incompatibleModIds)
+        {
+            var enabledModIds = application.Config.EnabledMods;
+            incompatibleModIds = new List<ImageModPathTuple>(enabledModIds.Length);
+
+            foreach (var enabledModId in enabledModIds)
+            {
+                // ReSharper disable once PossibleMultipleEnumeration
+                var mod = mods.FirstOrDefault(x => x.ModConfig.ModId == enabledModId);
+                if (mod == null)
+                    continue;
+
+                if (!mod.ModConfig.SupportedAppId.Contains(application.Config.AppId))
+                    incompatibleModIds.Add(mod);
+            }
+
+            return incompatibleModIds.Count > 0;
+        }
+
+        /// <summary>
+        /// Tests possible error cases.
+        /// </summary>
+        private static void DoSanityTests()
+        {
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+            {
+                // Needs to be ran after SetupViewModelsAsync
+                var apps = IoC.GetConstant<MainPageViewModel>().Applications;
+                var mods = IoC.GetConstant<ManageModsViewModel>().Mods;
+
+                foreach (var app in apps)
+                {
+                    if (TryGetIncompatibleMods(app, mods, out var incompatible))
+                        new IncompatibleModDialog(incompatible, app).ShowDialog();
+                }
+            });
         }
 
         private static void RegisterReloadedProtocol()
@@ -102,6 +150,8 @@ namespace Reloaded.Mod.Launcher
             else 
                 Debugger.Break();
         }
+
+
 
         /// <summary>
         /// Creates a new configuration if the config does not exist.

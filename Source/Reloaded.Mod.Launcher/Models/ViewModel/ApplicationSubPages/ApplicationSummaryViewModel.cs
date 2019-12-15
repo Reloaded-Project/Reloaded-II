@@ -34,7 +34,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 
             // Wait for parent to fully initialize.
             PropertyChanged += UpdateIcon;
-            model.OnLoadModSet += BuildModList;
+            _applicationViewModel.OnGetModsForThisApp += BuildModList;
             BuildModList();
         }
 
@@ -45,6 +45,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 
         public void Dispose()
         {
+            _applicationViewModel.OnGetModsForThisApp -= BuildModList;
             OpenModFolderCommand?.Dispose();
             ConfigureModCommand?.Dispose();
             GC.SuppressFinalize(this);

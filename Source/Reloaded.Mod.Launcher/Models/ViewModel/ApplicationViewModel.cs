@@ -2,21 +2,18 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Drawing.Printing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using Ookii.Dialogs.Wpf;
-using Reloaded.Mod.Launcher.Commands.DownloadModsPage;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
+using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Utilities;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
-using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
@@ -25,18 +22,17 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private static XamlResource<string> _xamlLoadModSetTitle = new XamlResource<string>("LoadModSetDialogTitle");
         private static XamlResource<string> _xamlSaveModSetTitle = new XamlResource<string>("SaveModSetDialogTitle");
         private static XamlResource<int> _xamlProcessRefreshInterval = new XamlResource<int>("ApplicationHubReloadedProcessRefreshInterval");
-        private static CheckForUpdatesAndDependenciesCommand _checkForUpdatesAndDependenciesCommand = new CheckForUpdatesAndDependenciesCommand();
 
         /// <summary>
-        /// Executes once the user loads a new mod set.
+        /// Executes once list of mods for this app refreshes.
         /// </summary>
-        public event Action OnLoadModSet = () => { };
+        public event Action OnGetModsForThisApp = () => { };
 
         public ImageApplicationPathTuple ApplicationTuple { get; }
         public ManageModsViewModel ManageModsViewModel    { get; }
         public ApplicationInstanceTracker InstanceTracker { get; private set; }
 
-        public ObservableCollection<ImageModPathTuple> ModsForThisApp { get; private set; }
+        public ObservableCollection<ImageModPathTuple> ModsForThisApp { get; private set; } = new ObservableCollection<ImageModPathTuple>();
         public ObservableCollection<Process> ProcessesWithReloaded { get; private set; } = new ObservableCollection<Process>();
         public ObservableCollection<Process> ProcessesWithoutReloaded { get; private set; } = new ObservableCollection<Process>();
         public Timer RefreshProcessesWithLoaderTimer { get; private set; }
@@ -48,10 +44,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             ApplicationTuple    = tuple;
             ManageModsViewModel = modsViewModel;
 
+
             IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
             InstanceTracker = new ApplicationInstanceTracker(tuple.Config.AppLocation);
-            ManageModsViewModel.ModsChanged += OnModsChanged;
-            ManageModsViewModel.ModSaving += OnModSaving;
+            ManageModsViewModel.OnGetModifications += OnGetModifications;
             InstanceTracker.OnProcessesChanged += OnProcessesChanged;
 
             UpdateReloadedProcesses();
@@ -67,8 +63,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public void Dispose()
         {
-            ManageModsViewModel.ModsChanged -= OnModsChanged;
-            ManageModsViewModel.ModSaving -= OnModSaving;
+            ManageModsViewModel.OnGetModifications += () => OnModChanged(null, null);
             InstanceTracker.OnProcessesChanged -= OnProcessesChanged;
 
             RefreshProcessesWithLoaderTimer?.Dispose();
@@ -82,28 +77,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public void ChangeApplicationPage(ApplicationSubPage page) => Page = page;
 
         /// <summary>
-        /// Allows a user to load a new mod set.
-        /// </summary>
-        public async void LoadModSet()
-        {
-            var dialog = new VistaOpenFileDialog { Title = _xamlLoadModSetTitle.Get(), Filter = Constants.WpfJsonFormat, AddExtension = true, DefaultExt = ".json" };
-            if ((bool)dialog.ShowDialog())
-            {
-                ModSet.FromFile(dialog.FileName).ToApplicationConfig(ApplicationTuple.Config);
-                ApplicationTuple.Save();
-                OnLoadModSet();
-
-                // Check for mod updates/dependencies.
-                await Task.Run(Update.CheckForModUpdatesAsync);
-                if (Update.CheckMissingDependencies(out var missingDependencies))
-                {
-                    try { await Update.DownloadPackagesAsync(missingDependencies, false, false); }
-                    catch (Exception e) { }
-                }
-            }
-        }
-
-        /// <summary>
         /// Allows the user to save a mod set.
         /// </summary>
         public void SaveModSet()
@@ -115,11 +88,44 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             }
         }
 
+        /// <summary>
+        /// Allows a user to load a new mod set.
+        /// </summary>
+        public async void LoadModSet()
+        {
+            var dialog = new VistaOpenFileDialog { Title = _xamlLoadModSetTitle.Get(), Filter = Constants.WpfJsonFormat, AddExtension = true, DefaultExt = ".json" };
+            if ((bool)dialog.ShowDialog())
+            {
+                ModSet.FromFile(dialog.FileName).ToApplicationConfig(ApplicationTuple.Config);
+                ApplicationTuple.Save();
+                
+                // Check for mod updates/dependencies.
+                await Task.Run(Update.CheckForModUpdatesAsync);
+                if (Update.CheckMissingDependencies(out var missingDependencies))
+                {
+                    try { await Update.DownloadPackagesAsync(missingDependencies, false, false); }
+                    catch (Exception e) { }
+                }
+
+                CheckModCompatibility();
+            }
+        }
+
+        /// <summary>
+        /// Checks if all enabled mods are compatible with this application.
+        /// Excludes dependencies.
+        /// </summary>
+        public void CheckModCompatibility()
+        {
+            if (Setup.TryGetIncompatibleMods(ApplicationTuple, ManageModsViewModel.Mods, out var incompatible))
+                new IncompatibleModDialog(incompatible, ApplicationTuple).ShowDialog();
+        }
+
         // == Events ==
         private void RefreshTimerCallback(object state) => UpdateReloadedProcesses();
         private void OnProcessesChanged(Process[] processes) => UpdateReloadedProcesses();
-        private void OnModSaving(ImageModPathTuple pathTuple) => GetModsForThisApp();
-        private void OnModsChanged(object sender, NotifyCollectionChangedEventArgs args) => GetModsForThisApp();
+        private void OnGetModifications() => GetModsForThisApp();
+        private void OnModChanged(object sender, NotifyCollectionChangedEventArgs args) => GetModsForThisApp();
 
         private void UpdateReloadedProcesses()
         {
@@ -137,6 +143,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             var newMods  = ManageModsViewModel.Mods.Where(x => x.ModConfig.SupportedAppId != null && x.ModConfig.SupportedAppId.Contains(appId));
 
             ModsForThisApp = new ObservableCollection<ImageModPathTuple>(newMods);
+            OnGetModsForThisApp();
         }
     }
 }
