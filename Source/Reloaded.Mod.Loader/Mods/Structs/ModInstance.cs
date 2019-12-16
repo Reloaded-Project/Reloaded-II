@@ -7,26 +7,36 @@ using Reloaded.Mod.Loader.Server.Messages.Structures;
 namespace Reloaded.Mod.Loader.Mods.Structs
 {
     /// <summary>
-    /// Represents an individual loaded mod instance.
+    /// Represents an individual loaded mod managed mod instance.
     /// </summary>
     public class ModInstance : IDisposable
     {
-        public PluginLoader Loader;
-        public IModV1 Mod;
-        public IModConfig ModConfig;
+        public PluginLoader Loader { get; private set; }
+        public IModV1 Mod { get; private set; }
 
-        public ModState State;
-        public bool CanSuspend;
-        public bool CanUnload;
+        public IModConfig ModConfig { get; set; }
+        public ModState State { get; set; }
+        public bool CanSuspend { get; set; }
+        public bool CanUnload { get; set; }
 
         private bool _started;
 
         /* Non-Dll Mods */
         public ModInstance(IModConfig config)
         {
-            ModConfig = config;
+            ModConfig  = config;
             CanSuspend = false;
-            CanUnload = true;
+            CanUnload  = false;
+        }
+
+        /* Native Mods */
+        public ModInstance(IModV1 mod, IModConfig config)
+        {
+            Mod = mod;
+            ModConfig = config;
+
+            CanSuspend = mod.CanSuspend();
+            CanUnload = mod.CanUnload();
         }
 
         /* Dll Mods */
@@ -75,14 +85,20 @@ namespace Reloaded.Mod.Loader.Mods.Structs
 
         public void Resume()
         {
-            Mod?.Resume();
-            State = ModState.Running;
+            if (CanSuspend)
+            {
+                Mod?.Resume();
+                State = ModState.Running;
+            }
         }
 
         public void Suspend()
         {
-            Mod?.Suspend();
-            State = ModState.Suspended;
+            if (CanSuspend)
+            {
+                Mod?.Suspend();
+                State = ModState.Suspended;
+            }
         }
     }
 }

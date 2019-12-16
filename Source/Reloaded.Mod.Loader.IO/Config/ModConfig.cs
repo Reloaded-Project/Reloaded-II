@@ -14,8 +14,8 @@ using Reloaded.Mod.Loader.IO.Structs.Sorting;
 using Reloaded.Mod.Loader.IO.Weaving;
 
 namespace Reloaded.Mod.Loader.IO.Config
-{
-    public class ModConfig : ObservableObject, IEquatable<ModConfig>, IModConfig, IConfig
+{ 
+    public class ModConfig : ObservableObject, IEquatable<ModConfig>, IConfig, IModConfig
     {
         /* Constants */
         public const string ConfigFileName  = "ModConfig.json";
@@ -37,11 +37,65 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string ModVersion        { get; set; } = DefaultVersion;
         public string ModDescription    { get; set; } = DefaultDescription;
         public string ModDll            { get; set; } = String.Empty;
+        public string ModNativeDll32    { get; set; } = String.Empty;
+        public string ModNativeDll64    { get; set; } = String.Empty;
         public string ModIcon           { get; set; } = String.Empty;
 
         public string[] ModDependencies         { get; set; }
         public string[] OptionalDependencies    { get; set; }
         public string[] SupportedAppId          { get; set; }
+
+        /*
+           ---------------
+           Class Functions
+           ---------------
+        */
+
+        /// <summary>
+        /// Returns true if the mod is native, else false.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        public bool IsNativeMod(string configPath)
+        {
+            return IsNativeMod(configPath, this);
+        }
+
+        /// <summary>
+        /// Retrieves the path to the individual managed DLL for this mod.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        public string GetManagedDllPath(string configPath)
+        {
+            return GetManagedDllPath(configPath, this);
+        }
+
+        /// <summary>
+        /// Retrieves the path to the individual DLL (managed or native) for this mod.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        public string GetDllPath(string configPath)
+        {
+            return IsNativeMod(configPath) ? GetNativeDllPath(configPath) : GetManagedDllPath(configPath);
+        }
+
+        /// <summary>
+        /// Retrieves the path to the native DLL for this mod, autodetecting if 32 or 64 bit..
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        public string GetNativeDllPath(string configPath)
+        {
+            return Environment.Is64BitProcess ? GetNativeDllPath64(configPath, this) : GetNativeDllPath32(configPath, this);
+        }
+
+        /// <summary>
+        /// Tries to retrieve the full path to the icon that represents this mod.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="iconPath">Full path to the icon.</param>
+        public bool TryGetIconPath(string configPath, out string iconPath)
+        {
+            return TryGetIconPath(configPath, this, out iconPath);
+        }
 
         /*
            ---------
@@ -54,10 +108,58 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
         /// <param name="modConfig">The individual mod configuration.</param>
-        public static string GetDllPath(string configPath, ModConfig modConfig)
+        public static string GetManagedDllPath(string configPath, ModConfig modConfig)
         {
             string configDirectory = Path.GetDirectoryName(configPath);
             return Path.Combine(configDirectory, modConfig.ModDll);
+        }
+
+        /// <summary>
+        /// Returns true if the mod is native, else false.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="modConfig">The individual mod configuration.</param>
+        public static bool IsNativeMod(string configPath, ModConfig modConfig)
+        {
+            return !String.IsNullOrEmpty(GetNativeDllPath(configPath, modConfig));
+        }
+
+        /// <summary>
+        /// Retrieves the path to the native 32-bit DLL for this mod, autodetecting if 32 or 64 bit..
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="modConfig">The individual mod configuration.</param>
+        public static string GetNativeDllPath(string configPath, ModConfig modConfig)
+        {
+            return Environment.Is64BitProcess ? GetNativeDllPath64(configPath, modConfig) : GetNativeDllPath32(configPath, modConfig);
+        }
+
+        /// <summary>
+        /// Retrieves the path to native 32-bit DLL for this mod.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="modConfig">The individual mod configuration.</param>
+        public static string GetNativeDllPath32(string configPath, ModConfig modConfig)
+        {
+            if (String.IsNullOrEmpty(modConfig.ModNativeDll32))
+                return null;
+
+            string configDirectory = Path.GetDirectoryName(configPath);
+            return Path.Combine(configDirectory, modConfig.ModNativeDll32);
+        }
+
+        /// <summary>
+        /// Retrieves the path to native 64-bit DLL for this mod.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="modConfig">The individual mod configuration.</param>
+        public static string GetNativeDllPath64(string configPath, ModConfig modConfig)
+        {
+            if (String.IsNullOrEmpty(modConfig.ModNativeDll64))
+                return null;
+
+            string configDirectory = Path.GetDirectoryName(configPath);
+            return Path.Combine(configDirectory, modConfig.ModNativeDll64);
         }
 
         /// <summary>

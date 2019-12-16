@@ -101,7 +101,10 @@ namespace Reloaded.Mod.Loader.Mods
             // Load DLL or non-dll mod.
             if (File.Exists(tuple.Path))
             {
-                LoadDllMod(tuple);
+                if (tuple.Object.IsNativeMod(tuple.Path))
+                    LoadNativeMod(tuple);
+                else
+                    LoadDllMod(tuple);
             }
             else
             {
@@ -209,7 +212,6 @@ namespace Reloaded.Mod.Loader.Mods
             var modId = tuple.Object.ModId;
             _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
-            // TODO: Native mod loading support.
             var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object));
 
             var defaultAssembly = loader.LoadDefaultAssembly();
@@ -220,6 +222,14 @@ namespace Reloaded.Mod.Loader.Mods
             var plugin = (IModV1) Activator.CreateInstance(entryPoint);
             var modInstance = new ModInstance(loader, plugin, tuple.Object);
 
+            StartModInstance(modInstance);
+        }
+
+        private void LoadNativeMod(PathGenericTuple<IModConfig> tuple)
+        {
+            var modId = tuple.Object.ModId;
+            _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
+            var modInstance = new ModInstance(new NativeMod(tuple.Path), tuple.Object);
             StartModInstance(modInstance);
         }
 
@@ -239,7 +249,7 @@ namespace Reloaded.Mod.Loader.Mods
         private void StartModInstance(ModInstance instance)
         {
             _modifications[instance.ModConfig.ModId] = instance;
-
+            
             LoaderApi.ModLoading(instance.Mod, instance.ModConfig);
             instance.Start(LoaderApi);
             LoaderApi.ModLoaded(instance.Mod, instance.ModConfig);
@@ -278,12 +288,11 @@ namespace Reloaded.Mod.Loader.Mods
             {
                 foreach (var modPath in paths)
                 {
-                    if (!File.Exists(modPath.Path))
+                    if (!File.Exists(modPath.Path) || modPath.Object.IsNativeMod(modPath.Path))
                         continue;
 
-                    GetMetadataForDllMod(modPath.Path, out var exports, out bool isUnloadable);
-                    
-                    _modIdToMetadata[modPath.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
+                    if (GetMetadataForDllMod(modPath.Path, out var exports, out bool isUnloadable))
+                        _modIdToMetadata[modPath.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
                 }
             }, modPaths);
         }
@@ -313,7 +322,7 @@ namespace Reloaded.Mod.Loader.Mods
             }
 
             loader.Dispose();
-            return false;
+            return true;
         }
 
         private void LoadTypesIntoCurrentContext(IEnumerable<Type> types)

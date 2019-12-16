@@ -87,11 +87,14 @@ namespace Reloaded.Mod.Loader.Mods
 
             foreach (var mod in modifications)
             {
-                var defaultAssembly = mod.Loader.LoadDefaultAssembly();
-                var entryPoints = defaultAssembly.GetTypes().Where(t => typeof(T).IsAssignableFrom(t) && !t.IsAbstract);
+                var defaultAssembly = mod.Loader?.LoadDefaultAssembly();
+                var entryPoints = defaultAssembly?.GetTypes().Where(t => typeof(T).IsAssignableFrom(t) && !t.IsAbstract);
+                if (entryPoints == null) 
+                    continue;
+
                 foreach (var entryPoint in entryPoints)
                 {
-                    var instance = (T) Activator.CreateInstance(entryPoint);
+                    var instance = (T)Activator.CreateInstance(entryPoint);
                     interfaces.Add(new WeakReference<T>(instance));
 
                     // Store strong reference in mod loader only.

@@ -45,10 +45,9 @@ namespace Reloaded.Mod.Loader.Update
                     var version  = resolverTuple.Resolver.GetCurrentVersion();
 
                     /* Onova will wait until DLL no longer in use ;) */
-                    string dllPath  = ModConfig.GetDllPath(modTuple.Path, modTuple.Object);
+                    string dllPath  = modTuple.Object.GetDllPath(modTuple.Path);
                     string filePath = File.Exists(dllPath) ? dllPath : modTuple.Path;
-
-                    var metadata = new AssemblyMetadata(PathSanitizer.ForceValidFilePath(modTuple.Object.ModName), version, filePath);
+                    var metadata    = new AssemblyMetadata(PathSanitizer.ForceValidFilePath(modTuple.Object.ModName), version, filePath);
 
                     var manager         = new UpdateManager(metadata, resolverTuple.Resolver, resolverTuple.Resolver.Extractor);
                     var updateResult    = await manager.CheckForUpdatesAsync();

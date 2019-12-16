@@ -139,7 +139,7 @@ namespace Reloaded.Mod.Loader
 
             if (mod != null)
             {
-                var dllPath = ModConfig.GetDllPath(mod.Path, mod.Object);
+                var dllPath = mod.Object.GetDllPath(mod.Path);
                 return new PathGenericTuple<IModConfig>(dllPath, mod.Object);
             }
 
@@ -171,7 +171,7 @@ namespace Reloaded.Mod.Loader
                 if (! Manager.IsModLoaded(modToLoad.ModId))
                 {
                     string configPath = configToPathDictionary[modToLoad];
-                    string dllPath = ModConfig.GetDllPath(configPath, modToLoad);
+                    string dllPath    = modToLoad.GetDllPath(configPath);
                     modPaths.Add(new PathGenericTuple<IModConfig>(dllPath, modToLoad));
                 }
             }

@@ -82,7 +82,7 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
         private bool TryGetConfigurator(BooleanGenericTuple<ImageModPathTuple> selectedMod, out IConfigurator configurator, out PluginLoader loader)
         {
             var config = selectedMod.Generic.ModConfig;
-            string dllPath = ModConfig.GetDllPath(selectedMod.Generic.ModConfigPath, (ModConfig)config);
+            string dllPath = config.GetManagedDllPath(selectedMod.Generic.ModConfigPath);
             configurator = null;
             loader = null;
 
