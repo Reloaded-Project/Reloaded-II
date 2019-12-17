@@ -1,4 +1,5 @@
 $outputPath = "Output/Launcher"
+$launcherProjectPath = "Reloaded.Mod.Launcher/Reloaded.Mod.Launcher.csproj"
 $publishDirectory = "Publish"
 $releaseFileName = "/Release.zip"
 
@@ -6,8 +7,10 @@ $releaseFileName = "/Release.zip"
 Get-ChildItem $outputPath -Include * -Recurse | Remove-Item -Force -Recurse
 Get-ChildItem $publishDirectory -Include * -Recurse | Remove-Item -Force -Recurse
 
-# Build using Visual Studio
+# Build using Visual Studio & Dotnet Publish
 devenv Reloaded-II.sln /Rebuild Release
+dotnet publish $launcherProjectPath -c Release -r win-x64 --self-contained false -o $outputPath /p:PublishReadyToRun=true
+Remove-Item "$outputPath/win-x64" -Recurse
 
 # Remove debug/compile leftovers.
 Get-ChildItem $outputPath -Include *.pdb -Recurse | Remove-Item -Force -Recurse
