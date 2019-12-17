@@ -18,12 +18,14 @@ namespace Reloaded.Mod.Loader
     public static class EntryPoint
     {
         // DO NOT RENAME THIS CLASS OR ITS PUBLIC METHODS
+        public static Stopwatch StopWatch { get; set; }
         private static Loader _loader;
         private static Host _server;
         private static MemoryMappedFile _memoryMappedFile;
         private static Task _setupServerTask;
 
         /* Ensures DLL Resolution */
+        public static void Main() { } // Dummy for R2R images.
         static EntryPoint()
         {
             try
@@ -53,9 +55,10 @@ namespace Reloaded.Mod.Loader
             }
 
             // Setup mod loader.
+            StopWatch = new Stopwatch();
+            StopWatch.Start();
             _loader = new Loader();
             DRMScanner.PrintWarnings(_loader.Console); // Print preliminary warnings.
-
             _setupServerTask = Task.Run(SetupServer);
             _loader.LoadForCurrentProcess();
 

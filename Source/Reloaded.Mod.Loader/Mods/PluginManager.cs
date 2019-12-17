@@ -80,6 +80,12 @@ namespace Reloaded.Mod.Loader.Mods
         public void LoadMods(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
         {
             PreloadAssemblyMetadata(modPaths);
+            if (EntryPoint.StopWatch != null)
+            {
+                WriteLine($"Loader Setup Time: {EntryPoint.StopWatch.ElapsedMilliseconds}ms");
+                EntryPoint.StopWatch.Reset();
+                EntryPoint.StopWatch = null; // So not triggered in runtime mod loading.
+            }
 
             /* Load mods. */
             foreach (var modPath in modPaths)
@@ -212,7 +218,7 @@ namespace Reloaded.Mod.Loader.Mods
             var modId = tuple.Object.ModId;
             _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
-            var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object));
+            var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object), config => { config.PreferSharedTypes = true; });
 
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
@@ -302,7 +308,7 @@ namespace Reloaded.Mod.Loader.Mods
             exports      = DefaultExportedTypes; // Preventing heap allocation here.
             isUnloadable = false;
 
-            var loader          = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes.ToArray());
+            var loader          = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes.ToArray(), config => { config.PreferSharedTypes = true; });
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
 

@@ -202,9 +202,13 @@ namespace Reloaded.Mod.Launcher
                 throw new DllNotFoundException("The provided launcher directory is null or empty. This is a bug. Report this to the developer.");
 
             // Loader configuration.
-            var loaderPath = Path.Combine(launcherDirectory, $"Loader\\{LoaderConfig.LoaderDllName}");
-            if (! File.Exists(loaderPath))
-                throw new DllNotFoundException($"{LoaderConfig.LoaderDllName} {Errors.LoaderNotFound()}");
+            var loaderPath32 = Path.Combine(launcherDirectory, $"Loader\\x86\\{LoaderConfig.LoaderDllName}");
+            if (! File.Exists(loaderPath32))
+                throw new DllNotFoundException($"(x86) {LoaderConfig.LoaderDllName} {Errors.LoaderNotFound()}");
+
+            var loaderPath64 = Path.Combine(launcherDirectory, $"Loader\\x64\\{LoaderConfig.LoaderDllName}");
+            if (!File.Exists(loaderPath64))
+                throw new DllNotFoundException($"(x64) {LoaderConfig.LoaderDllName} {Errors.LoaderNotFound()}");
 
             // Bootstrappers.
             var bootstrapper32Path = Path.Combine(launcherDirectory, $"Loader\\X86\\{LoaderConfig.Bootstrapper32Name}");
@@ -217,7 +221,8 @@ namespace Reloaded.Mod.Launcher
 
             // Set to config.
             config.LauncherPath = Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, ".exe");
-            config.LoaderPath = loaderPath;
+            config.LoaderPath32 = loaderPath32;
+            config.LoaderPath64 = loaderPath64;
             config.Bootstrapper32Path = bootstrapper32Path;
             config.Bootstrapper64Path = bootstrapper64Path;
         }

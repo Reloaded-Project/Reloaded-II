@@ -30,7 +30,12 @@ LoaderConfig::LoaderConfig()
 
 string_t LoaderConfig::get_loader_path()
 {
-	const std::string stringLoaderPath = config["LoaderPath"];
+	#if _WIN64
+	const std::string stringLoaderPath = config["LoaderPath64"];
+	#else
+	const std::string stringLoaderPath = config["LoaderPath32"];
+	#endif
+	
 
 	/* std::string is non-wide and will not handle unicode characters on Windows.
 	 * Need to convert back to wide characters.

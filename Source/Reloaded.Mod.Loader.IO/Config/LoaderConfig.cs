@@ -29,8 +29,14 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Contains the path to the Reloaded Mod Loader II DLL.
         /// </summary>
-        [JsonPropertyName("LoaderPath")] // Just a safeguard in case someone decides to refactor and native bootstrapper fails to find property.
-        public string LoaderPath { get; set; } = String.Empty;
+        [JsonPropertyName("LoaderPath32")] // Just a safeguard in case someone decides to refactor and native bootstrapper fails to find property.
+        public string LoaderPath32 { get; set; } = String.Empty;
+
+        /// <summary>
+        /// Contains the path to the Reloaded Mod Loader II DLL.
+        /// </summary>
+        [JsonPropertyName("LoaderPath64")] // Just a safeguard in case someone decides to refactor and native bootstrapper fails to find property.
+        public string LoaderPath64 { get; set; } = String.Empty;
 
         /// <summary>
         /// Contains the path to the Reloaded Mod Loader II Launcher.
@@ -120,7 +126,8 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         protected bool Equals(LoaderConfig other)
         {
-            return string.Equals(LoaderPath, other.LoaderPath) &&
+            return string.Equals(LoaderPath32, other.LoaderPath32) &&
+                   string.Equals(LoaderPath64, other.LoaderPath64) &&
                    string.Equals(ApplicationConfigDirectory, other.ApplicationConfigDirectory) &&
                    string.Equals(ModConfigDirectory, other.ModConfigDirectory) &&
                    string.Equals(PluginConfigDirectory, other.PluginConfigDirectory) &&
@@ -145,7 +152,8 @@ namespace Reloaded.Mod.Loader.IO.Config
         {
             unchecked
             {
-                var hashCode = (LoaderPath != null ? LoaderPath.GetHashCode() : 0);
+                var hashCode = (LoaderPath32 != null ? LoaderPath32.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (LoaderPath64 != null ? LoaderPath64.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ApplicationConfigDirectory != null ? ApplicationConfigDirectory.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ModConfigDirectory != null ? ModConfigDirectory.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (PluginConfigDirectory != null ? PluginConfigDirectory.GetHashCode() : 0);
