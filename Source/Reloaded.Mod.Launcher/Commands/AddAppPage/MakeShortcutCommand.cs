@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Windows;
 using System.Windows.Input;
+using Reloaded.Mod.Launcher.Commands.AddAppPage.Shortcuts;
 using Reloaded.Mod.Launcher.Models.ViewModel;
-using IWshRuntimeLibrary;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Loader.IO.Config;
@@ -85,18 +86,15 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
         public void Execute(object parameter)
         {
-            string shortcutName = $"{PathSanitizer.ForceValidFilePath($"Reloaded!{_lastConfig.AppName}")}.lnk";
-            string link = $"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\{shortcutName}";
-
-            var shell       = new WshShell();
-            var shortcut    = shell.CreateShortcut(link) as IWshShortcut;
-
-            var loaderConfig = IoC.Get<LoaderConfig>();
-            shortcut.TargetPath = $"\"{loaderConfig.LauncherPath}\"";
-            shortcut.Arguments = $"{Constants.ParameterLaunch} \"{_lastConfig.AppLocation}\"";
-            shortcut.WorkingDirectory = Path.GetDirectoryName(loaderConfig.LauncherPath);
-
             var applicationTuple = _addAppViewModel.MainPageViewModel.Applications.FirstOrDefault(x => x.Config.Equals(_lastConfig));
+            var loaderConfig = IoC.Get<LoaderConfig>();
+            var shell        = (IShellLink) new ShellLink();
+
+            shell.SetDescription($"Launch {applicationTuple?.Config.AppName} via Reloaded II");
+            shell.SetPath($"\"{loaderConfig.LauncherPath}\"");
+            shell.SetArguments($"{Constants.ParameterLaunch} \"{_lastConfig.AppLocation}\"");
+            shell.SetWorkingDirectory(Path.GetDirectoryName(loaderConfig.LauncherPath));
+
             if (applicationTuple != null)
             {
                 var hasIcon = ApplicationConfig.TryGetApplicationIcon(applicationTuple.ConfigPath, applicationTuple.Config, out var logoPath);
@@ -116,15 +114,18 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
                         newIcon.Save(newIconStream);
                     }
 
-                    shortcut.IconLocation = newPath;
+                    shell.SetIconLocation(newPath, 0);
                 }
                 else
                 {
-                    shortcut.IconLocation = _lastConfig.AppLocation;
+                    shell.SetIconLocation(_lastConfig.AppLocation, 0);
                 }
             }
 
-            shortcut.Save();
+            // Save the shortcut.
+            var file = (IPersistFile) shell;
+            var link = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{applicationTuple?.Config.AppName} via Reloaded II.lnk");
+            file.Save(link, false);
 
             var messageBox = new MessageBox(_xamlShortcutCreatedTitle.Get(),
                                             $"{_xamlShortcutCreatedMessage.Get()} {link}");
