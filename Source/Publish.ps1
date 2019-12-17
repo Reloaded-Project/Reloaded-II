@@ -20,8 +20,6 @@ dotnet publish $launcherProjectPath -c Release -r win-x64 --self-contained false
 dotnet publish $loaderProjectPath -c Release -r win-x64 --self-contained false -o $loader64OutputPath /p:PublishReadyToRun=true
 dotnet publish $loaderProjectPath -c Release -r win-x86 --self-contained false -o $loader32OutputPath /p:PublishReadyToRun=true
 Remove-Item "$outputPath/win-x64" -Recurse
-Remove-Item "$loader64OutputPath/win-x64" -Recurse
-Remove-Item "$loader32OutputPath/win-x86" -Recurse
 
 # Remove debug/compile leftovers.
 Get-ChildItem $outputPath -Include *.pdb -Recurse | Remove-Item -Force -Recurse
