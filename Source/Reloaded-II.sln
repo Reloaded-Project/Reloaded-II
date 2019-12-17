@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.28822.285
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Launcher", "Reloaded.Mod.Launcher\Reloaded.Mod.Launcher.csproj", "{159EF9A3-1B08-45F8-97CA-8DD72BC91936}"
 	ProjectSection(ProjectDependencies) = postProject
+		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E} = {B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}
 		{CF3E2DC7-04F8-4878-97F4-1BCF950AC97D} = {CF3E2DC7-04F8-4878-97F4-1BCF950AC97D}
 	EndProjectSection
 EndProject
