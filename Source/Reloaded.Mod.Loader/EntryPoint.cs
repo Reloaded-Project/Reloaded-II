@@ -20,51 +20,40 @@ namespace Reloaded.Mod.Loader
     public static class EntryPoint
     {
         // DO NOT RENAME THIS CLASS OR ITS PUBLIC METHODS
-        public static Stopwatch StopWatch { get; set; }
-
+        private static Stopwatch _stopWatch;
         private static Loader _loader;
         private static Host _server;
         private static MemoryMappedFile _memoryMappedFile;
-        private static Task _setupServerTask;
 
         /* Ensures DLL Resolution */
         public static void Main() { } // Dummy for R2R images.
         private static void SetupLoader()
         {
-            void SetupServer()
-            {
-                try
-                {
-                    _server = new Host(_loader);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Failed to start Reloaded-II mod loader server." + e.Message);
-                    throw;
-                }
-            }
-
             try
             {
                 // Setup mod loader.
-                StopWatch = new Stopwatch();
-                StopWatch.Start();
+                _stopWatch = new Stopwatch();
+                _stopWatch.Start();
 
-                _loader = new Loader();
-                DRMScanner.PrintWarnings(_loader.Console); // Print preliminary warnings.
-                _setupServerTask = Task.Run(SetupServer);
-                _loader.LoadForCurrentProcess();
+                ExecuteTimed("Create Loader & Host", CreateLoaderAndHost);
+                ExecuteTimed("Checking for DRM", CheckForDRM);
+                ExecuteTimed("Loading Mods", LoadMods);
 
-                // The reason the server setup is being done on an alternate thread is to reduce startup times.
-                // The main reason is the reduction of JIT overhead in startup times, as the server code can be JIT-ted
-                // while the mod loader is loading mods.
-
-                // i.e. Server can be loaded fully in parallel to loader.
+                Console.WriteLine($"[Reloaded] Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}");
+                _stopWatch.Reset();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}");
             }
+        }
+
+        private static void LoadMods() => _loader.LoadForCurrentProcess();
+        private static void CheckForDRM() => DRMScanner.PrintWarnings(_loader.Console);
+        private static void CreateLoaderAndHost()
+        {
+            _loader = new Loader();
+            _server = new Host(_loader);
         }
 
         /* Initialize Mod Loader (DLL_PROCESS_ATTACH) */
@@ -78,9 +67,6 @@ namespace Reloaded.Mod.Loader
             // Setup Loader
             SetupLoader();
 
-            // Wait for server to finish.
-            _setupServerTask.Wait();
-
             // Write port as a Memory Mapped File, to allow Mod Loader's Launcher to discover the mod port.
             int pid             = Process.GetCurrentProcess().Id;
             _memoryMappedFile   = MemoryMappedFile.CreateOrOpen(ServerUtility.GetMappedFileNameForPid(pid), sizeof(int));
@@ -89,6 +75,18 @@ namespace Reloaded.Mod.Loader
             binaryWriter.Write(_server.Port);
 
             return _server?.Port ?? 0;
+        }
+
+        /* Utility Functions */
+
+        /// <summary>
+        /// Executes a given function and prints running stats of how long it took to execute.
+        /// </summary>
+        public static void ExecuteTimed(string text, Action action)
+        {
+            long initialTime = _stopWatch.ElapsedMilliseconds;
+            action();
+            Console.WriteLine($"[Reloaded | Benchmark] {text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms");
         }
     }
     // ReSharper restore UnusedMember.Global
