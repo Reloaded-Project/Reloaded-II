@@ -37,9 +37,11 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string ModVersion        { get; set; } = DefaultVersion;
         public string ModDescription    { get; set; } = DefaultDescription;
         public string ModDll            { get; set; } = String.Empty;
+        public string ModIcon           { get; set; } = String.Empty;
+        public string ModR2RManagedDll32 { get; set; } = String.Empty;
+        public string ModR2RManagedDll64 { get; set; } = String.Empty;
         public string ModNativeDll32    { get; set; } = String.Empty;
         public string ModNativeDll64    { get; set; } = String.Empty;
-        public string ModIcon           { get; set; } = String.Empty;
 
         public string[] ModDependencies         { get; set; }
         public string[] OptionalDependencies    { get; set; }
@@ -58,6 +60,15 @@ namespace Reloaded.Mod.Loader.IO.Config
         public bool IsNativeMod(string configPath)
         {
             return IsNativeMod(configPath, this);
+        }
+
+        /// <summary>
+        /// Returns true if the mod consists of ReadyToRun (R2R) executables, else false.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        public bool IsR2R(string configPath)
+        {
+            return IsR2R(configPath, this);
         }
 
         /// <summary>
@@ -110,8 +121,33 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <param name="modConfig">The individual mod configuration.</param>
         public static string GetManagedDllPath(string configPath, ModConfig modConfig)
         {
+            if (IsR2R(configPath, modConfig))
+                return Environment.Is64BitProcess ? GetR2RManagedDllPath64(configPath, modConfig) : GetR2RManagedDllPath32(configPath, modConfig);
+            
             string configDirectory = Path.GetDirectoryName(configPath);
             return Path.Combine(configDirectory, modConfig.ModDll);
+        }
+
+        /// <summary>
+        /// Retrieves the path to the individual DLL for this mod if the mod is using 32-bit Ready2Run format.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="modConfig">The individual mod configuration.</param>
+        public static string GetR2RManagedDllPath32(string configPath, ModConfig modConfig)
+        {
+            string configDirectory = Path.GetDirectoryName(configPath);
+            return Path.Combine(configDirectory, modConfig.ModR2RManagedDll32);
+        }
+
+        /// <summary>
+        /// Retrieves the path to the individual DLL for this mod if the mod is using 64-bit Ready2Run format.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="modConfig">The individual mod configuration.</param>
+        public static string GetR2RManagedDllPath64(string configPath, ModConfig modConfig)
+        {
+            string configDirectory = Path.GetDirectoryName(configPath);
+            return Path.Combine(configDirectory, modConfig.ModR2RManagedDll64);
         }
 
         /// <summary>
@@ -121,7 +157,17 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <param name="modConfig">The individual mod configuration.</param>
         public static bool IsNativeMod(string configPath, ModConfig modConfig)
         {
-            return !String.IsNullOrEmpty(GetNativeDllPath(configPath, modConfig));
+            return !String.IsNullOrEmpty(modConfig.ModNativeDll64) || !String.IsNullOrEmpty(modConfig.ModNativeDll32);
+        }
+
+        /// <summary>
+        /// Returns true if the mod consists of ReadyToRun (R2R) executables, else false.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        public static bool IsR2R(string configPath, ModConfig modConfig)
+        {
+            return (!String.IsNullOrEmpty(modConfig.ModR2RManagedDll32) || !String.IsNullOrEmpty(modConfig.ModR2RManagedDll64)) && 
+                   (File.Exists(GetR2RManagedDllPath32(configPath, modConfig)) || File.Exists(GetR2RManagedDllPath64(configPath, modConfig)));
         }
 
         /// <summary>
@@ -141,9 +187,6 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <param name="modConfig">The individual mod configuration.</param>
         public static string GetNativeDllPath32(string configPath, ModConfig modConfig)
         {
-            if (String.IsNullOrEmpty(modConfig.ModNativeDll32))
-                return null;
-
             string configDirectory = Path.GetDirectoryName(configPath);
             return Path.Combine(configDirectory, modConfig.ModNativeDll32);
         }
@@ -155,9 +198,6 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <param name="modConfig">The individual mod configuration.</param>
         public static string GetNativeDllPath64(string configPath, ModConfig modConfig)
         {
-            if (String.IsNullOrEmpty(modConfig.ModNativeDll64))
-                return null;
-
             string configDirectory = Path.GetDirectoryName(configPath);
             return Path.Combine(configDirectory, modConfig.ModNativeDll64);
         }

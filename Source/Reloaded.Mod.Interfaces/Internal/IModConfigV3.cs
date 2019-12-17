@@ -17,6 +17,22 @@ namespace Reloaded.Mod.Interfaces.Internal
         string ModNativeDll64 { get; set; }
 
         /// <summary>
+        /// Gets the path of the Managed DLL for x86 if the project is built as a Ready To Run image.
+        /// </summary>
+        string ModR2RManagedDll32 { get; set; }
+
+        /// <summary>
+        /// Gets the path of the Managed DLL for x64 if the project is built as a Ready To Run image.
+        /// </summary>
+        string ModR2RManagedDll64 { get; set; }
+
+        /// <summary>
+        /// Returns true if the mod consists of ReadyToRun (R2R) executables, else false.
+        /// </summary>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        bool IsR2R(string configPath);
+
+        /// <summary>
         /// Returns true if the mod is native, else false.
         /// </summary>
         /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
