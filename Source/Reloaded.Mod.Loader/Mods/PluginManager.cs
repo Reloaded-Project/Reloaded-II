@@ -28,7 +28,7 @@ namespace Reloaded.Mod.Loader.Mods
         private readonly Dictionary<string, ModAssemblyMetadata> _modIdToMetadata = new Dictionary<string, ModAssemblyMetadata>();  
         private readonly Dictionary<string, string>      _modIdToFolder  = new Dictionary<string, string>(); // Maps Mod ID to folder containing mod.
 
-
+        private AssemblyLoadContext _loadContext;
         private readonly Loader _loader;
         private readonly Stopwatch _stopWatch = new Stopwatch();
 
@@ -40,6 +40,7 @@ namespace Reloaded.Mod.Loader.Mods
         {
             _loader = loader;
             LoaderApi = new LoaderAPI(_loader);
+            _loadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly());
         }
 
         public void Dispose()
@@ -218,7 +219,7 @@ namespace Reloaded.Mod.Loader.Mods
             var modId = tuple.Object.ModId;
             _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
-            var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object), config => { config.PreferSharedTypes = true; });
+            var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object), config => config.DefaultContext = _loadContext);
 
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
@@ -308,7 +309,8 @@ namespace Reloaded.Mod.Loader.Mods
             exports      = DefaultExportedTypes; // Preventing heap allocation here.
             isUnloadable = false;
 
-            var loader          = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes.ToArray(), config => { config.PreferSharedTypes = true; });
+            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes.ToArray(),
+                config => config.DefaultContext = _loadContext);
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
 
@@ -333,11 +335,10 @@ namespace Reloaded.Mod.Loader.Mods
 
         private void LoadTypesIntoCurrentContext(IEnumerable<Type> types)
         {
-            // TODO: Use temporary contexts and add support for loading from external contexts to DotNetCorePlugins
             foreach (var type in types)
             {
                 var path = new Uri(type.Module.Assembly.CodeBase).LocalPath;
-                AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+                _loadContext.LoadFromAssemblyPath(path);
             }
         }
 

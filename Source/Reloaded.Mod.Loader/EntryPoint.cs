@@ -2,10 +2,12 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using Reloaded.Mod.Loader.Bootstrap;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
 
@@ -19,6 +21,7 @@ namespace Reloaded.Mod.Loader
     {
         // DO NOT RENAME THIS CLASS OR ITS PUBLIC METHODS
         public static Stopwatch StopWatch { get; set; }
+
         private static Loader _loader;
         private static Host _server;
         private static MemoryMappedFile _memoryMappedFile;
@@ -26,19 +29,6 @@ namespace Reloaded.Mod.Loader
 
         /* Ensures DLL Resolution */
         public static void Main() { } // Dummy for R2R images.
-        static EntryPoint()
-        {
-            try
-            {
-                AppDomain.CurrentDomain.AssemblyResolve += LocalAssemblyResolver.ResolveAssembly;
-                SetupLoader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}");
-            }
-        }
-
         private static void SetupLoader()
         {
             void SetupServer()
@@ -54,19 +44,27 @@ namespace Reloaded.Mod.Loader
                 }
             }
 
-            // Setup mod loader.
-            StopWatch = new Stopwatch();
-            StopWatch.Start();
-            _loader = new Loader();
-            DRMScanner.PrintWarnings(_loader.Console); // Print preliminary warnings.
-            _setupServerTask = Task.Run(SetupServer);
-            _loader.LoadForCurrentProcess();
+            try
+            {
+                // Setup mod loader.
+                StopWatch = new Stopwatch();
+                StopWatch.Start();
 
-            // The reason the server setup is being done on an alternate thread is to reduce startup times.
-            // The main reason is the reduction of JIT overhead in startup times, as the server code can be JIT-ted
-            // while the mod loader is loading mods.
+                _loader = new Loader();
+                DRMScanner.PrintWarnings(_loader.Console); // Print preliminary warnings.
+                _setupServerTask = Task.Run(SetupServer);
+                _loader.LoadForCurrentProcess();
 
-            // i.e. Server can be loaded fully in parallel to loader.
+                // The reason the server setup is being done on an alternate thread is to reduce startup times.
+                // The main reason is the reduction of JIT overhead in startup times, as the server code can be JIT-ted
+                // while the mod loader is loading mods.
+
+                // i.e. Server can be loaded fully in parallel to loader.
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         /* Initialize Mod Loader (DLL_PROCESS_ATTACH) */
@@ -77,6 +75,9 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         public static int Initialize(IntPtr unusedPtr, int unusedSize)
         {
+            // Setup Loader
+            SetupLoader();
+
             // Wait for server to finish.
             _setupServerTask.Wait();
 

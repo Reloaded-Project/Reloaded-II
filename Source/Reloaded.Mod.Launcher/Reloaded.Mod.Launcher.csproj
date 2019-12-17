@@ -110,7 +110,6 @@
 
   <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
-    <PackageReference Include="McMaster.NETCore.Plugins" Version="0.3.2" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="1.1.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.1">
@@ -127,6 +126,7 @@
     <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
+    <ProjectReference Include="..\Submodules\src\Plugins\McMaster.NETCore.Plugins.csproj" />
   </ItemGroup>
 
   <ItemGroup>

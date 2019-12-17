@@ -1,0 +1,3 @@
+[submodule "Source/Submodules"]
+	path = Source/Submodules
+	url = https://github.com/natemcmaster/DotNetCorePlugins.git

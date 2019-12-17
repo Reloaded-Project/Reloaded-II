@@ -50,6 +50,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestModE", "Testing\Mods\Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.Update", "Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj", "{C374EC95-D1AB-4C30-8BF1-5BAA23754716}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Submodules", "Submodules", "{2844EFD5-7804-46AE-B29D-E7428E47ECA0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "McMaster.NETCore.Plugins", "Submodules\src\Plugins\McMaster.NETCore.Plugins.csproj", "{1145F97A-955F-4B4F-96C1-EC7575FA42DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AnyCPU = Debug|AnyCPU
@@ -124,6 +128,10 @@ Global
 		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Debug|AnyCPU.Build.0 = Debug|Any CPU
 		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Release|AnyCPU.ActiveCfg = Release|Any CPU
 		{C374EC95-D1AB-4C30-8BF1-5BAA23754716}.Release|AnyCPU.Build.0 = Release|Any CPU
+		{1145F97A-955F-4B4F-96C1-EC7575FA42DD}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{1145F97A-955F-4B4F-96C1-EC7575FA42DD}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{1145F97A-955F-4B4F-96C1-EC7575FA42DD}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{1145F97A-955F-4B4F-96C1-EC7575FA42DD}.Release|AnyCPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +146,7 @@ Global
 		{D0363CCD-17A6-4700-8C94-D4E3327C6A07} = {C958AA4D-5985-4F2E-8209-9B6187FF3D85}
 		{E036F18E-312A-4C78-A8E9-5E37E5EBA9B9} = {A4CECC87-3188-4D37-A64B-D15F5B001A9D}
 		{0C911851-C2F3-4E84-BF0D-413DAD7887A7} = {A4CECC87-3188-4D37-A64B-D15F5B001A9D}
+		{1145F97A-955F-4B4F-96C1-EC7575FA42DD} = {2844EFD5-7804-46AE-B29D-E7428E47ECA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {29C01A02-5EA4-442B-92BD-67EC119B4356}

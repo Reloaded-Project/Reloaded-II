@@ -6,7 +6,7 @@
     <Copyright>Copyright ©  2019</Copyright>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
     <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -15,7 +15,8 @@
     <OutputType>WinExe</OutputType>
     <StartupObject />
     <Platforms>AnyCPU;x86;x64</Platforms>
-  </PropertyGroup>
+  
+</PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <OutputPath>..\\Output\\Launcher\\Loader\\x86</OutputPath>
   </PropertyGroup>
@@ -33,15 +34,10 @@
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
+    <ProjectReference Include="..\Submodules\src\Plugins\McMaster.NETCore.Plugins.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.9" />
-    <PackageReference Include="Costura.Fody" Version="4.1.0" />
-    <PackageReference Include="Fody" Version="6.0.5">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="McMaster.NETCore.Plugins" Version="0.3.2" />
     <PackageReference Include="Reloaded.Memory" Version="2.5.0" />
   </ItemGroup>
   <!-- Build x64 automatically after x86 -->
