@@ -26,12 +26,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.9" />
-    <PackageReference Include="Costura.Fody" Version="4.0.0" />
-    <PackageReference Include="Fody" Version="5.1.1">
+    <PackageReference Include="Costura.Fody" Version="4.1.0" />
+    <PackageReference Include="Fody" Version="6.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="McMaster.NETCore.Plugins" Version="0.3.1" />
-    <PackageReference Include="Reloaded.Memory" Version="2.0.1" />
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="0.3.2" />
+    <PackageReference Include="Reloaded.Memory" Version="2.5.0" />
   </ItemGroup>
 </Project>

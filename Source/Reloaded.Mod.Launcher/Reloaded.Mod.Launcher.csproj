@@ -11,7 +11,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-	<OutputPath>..\Output\Launcher\</OutputPath>
+	  <OutputPath>..\Output\Launcher\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -122,15 +122,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fody" Version="5.1.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="gong-wpf-dragdrop" Version="2.0.4" />
-    <PackageReference Include="McMaster.NETCore.Plugins" Version="0.3.1" />
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="0.3.2" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="1.1.0" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.0.1">
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="2.0.1" />

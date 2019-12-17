@@ -1,6 +1,4 @@
-﻿using Reloaded.Messaging.Compression;
-using Reloaded.Messaging.Messages;
-using Reloaded.Messaging.Serialization;
+﻿using Reloaded.Messaging.Interfaces;
 using Reloaded.Messaging.Serializer.MessagePack;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 

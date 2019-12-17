@@ -2,6 +2,7 @@
 using System.Net;
 using LiteNetLib;
 using Reloaded.Messaging;
+using Reloaded.Messaging.Interfaces;
 using Reloaded.Messaging.Messages;
 using Reloaded.Messaging.Structs;
 using Reloaded.Mod.Loader.Server.Messages;
