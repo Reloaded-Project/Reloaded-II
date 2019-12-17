@@ -80,13 +80,14 @@ namespace Reloaded.Mod.Loader.Mods
         /// <param name="modPaths">List of paths to load mods from.</param>
         public void LoadMods(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
         {
-            PreloadAssemblyMetadata(modPaths);
             if (EntryPoint.StopWatch != null)
             {
                 WriteLine($"Loader Setup Time: {EntryPoint.StopWatch.ElapsedMilliseconds}ms");
                 EntryPoint.StopWatch.Reset();
                 EntryPoint.StopWatch = null; // So not triggered in runtime mod loading.
             }
+
+            PreloadAssemblyMetadata(modPaths);
 
             /* Load mods. */
             foreach (var modPath in modPaths)
