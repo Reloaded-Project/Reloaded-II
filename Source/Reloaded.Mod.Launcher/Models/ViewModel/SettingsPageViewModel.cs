@@ -15,11 +15,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public int TotalApplicationsInstalled { get; set; }
         public int TotalModsInstalled { get; set; }
         public string Copyright { get; set; }
-        private LoaderConfig _loaderConfig;
+        public LoaderConfig LoaderConfig { get; set; }
 
         public SettingsPageViewModel(MainPageViewModel mainPageViewModel, ManageModsViewModel manageModsViewModel, LoaderConfig loaderConfig)
         {
-            _loaderConfig = loaderConfig;
+            LoaderConfig = loaderConfig;
             MainPageViewModel = mainPageViewModel;
             ManageModsViewModel = manageModsViewModel;
 
@@ -32,7 +32,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             Copyright = version.LegalCopyright;
         }
 
-        public void SaveConfig() { LoaderConfigReader.WriteConfiguration(_loaderConfig); }
+        public void SaveConfig() { LoaderConfigReader.WriteConfiguration(LoaderConfig); }
 
         /* Functions */
         private void UpdateTotalApplicationsInstalled() => TotalApplicationsInstalled = MainPageViewModel.Applications.Count;
