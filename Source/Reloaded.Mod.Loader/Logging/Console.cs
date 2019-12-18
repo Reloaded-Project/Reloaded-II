@@ -17,14 +17,9 @@ namespace Reloaded.Mod.Loader.Logging
         public void ShowConsole()
         {
             _consoleEnabled = ConsoleAllocator.Alloc();
-            if (_consoleEnabled)
-            {
-                Colorful.Console.BackgroundColor = BackgroundColor;
-                Colorful.Console.ForegroundColor = TextColor;
-
-                System.Console.Clear();
-                PrintBanner();
-            }
+            Colorful.Console.BackgroundColor = BackgroundColor;
+            Colorful.Console.ForegroundColor = TextColor;
+            Colorful.Console.Clear();
         }
 
         public void PrintMessage(string message, Color color)   => WriteLine(message, color);
@@ -72,11 +67,10 @@ namespace Reloaded.Mod.Loader.Logging
         public Color ColorLightBlueLight { get; set; } = Color.FromArgb(147, 224, 227);
 
         /* Default Banner */
-        private void PrintBanner()
+        public void PrintBanner()
         {
-            System.Console.WriteLine("");
-            System.Console.WriteLine("");
-
+            System.Console.Write("\n\n");
+            
             Formatter[] formatter = {
                 new Formatter(@"    hMMM+ +MMMh", ColorRed),
                 new Formatter(@"   `MMMM` dMMM/", ColorRed),
@@ -110,8 +104,7 @@ namespace Reloaded.Mod.Loader.Logging
             // -3 from the templated {0}
             WriteLinesCentered(template, formatter, -3);
 
-            System.Console.WriteLine("");
-            System.Console.WriteLine("");
+            System.Console.Write("\n\n");
         }
 
         private void WriteLinesCentered(string[] lines, Formatter[] formatters, int characterOffset)
