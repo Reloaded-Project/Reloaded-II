@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -29,6 +30,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             ViewModel = IoC.Get<ManageModsViewModel>();
             this.DataContext = ViewModel;
             this.AnimateOutStarted += SaveCurrentMod;
+            IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
 
             // Setup filters
             var manipulator = new ResourceManipulator(this.Contents);
@@ -38,6 +40,13 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             _appsViewSource.Filter += AppsViewSourceOnFilter;
             _setModImageCommand = new SetModImageCommand();
         }
+
+        ~ManageModsPage()
+        {
+            IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
+        }
+        
+        private void OnMainWindowClosing(object sender, CancelEventArgs e) => SaveCurrentMod();
 
         private void AppsViewSourceOnFilter(object sender, FilterEventArgs e)
         {

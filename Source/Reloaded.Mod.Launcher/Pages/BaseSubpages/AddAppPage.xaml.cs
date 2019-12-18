@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -25,10 +26,18 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             ViewModel = IoC.Get<AddAppViewModel>();
             this.DataContext = ViewModel;
             this.AnimateOutStarted += SaveCurrentSelectedItem;
+            IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
             this.AnimateInStarted += SetDefaultSelectionIndex;
 
             _setApplicationImageCommand = new SetApplicationImageCommand();
         }
+
+        ~AddAppPage()
+        {
+            IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
+        }
+
+        private void OnMainWindowClosing(object sender, CancelEventArgs e) => SaveCurrentSelectedItem();
 
         private void SaveCurrentSelectedItem()
         {
