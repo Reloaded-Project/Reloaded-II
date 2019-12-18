@@ -1,4 +1,5 @@
-﻿using Reloaded.WPF.Theme.Default;
+﻿using System;
+using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -20,6 +21,7 @@ namespace Reloaded.Mod.Launcher
             // Bind other models.
             IoC.Kernel.Bind<WindowViewModel>().ToConstant((WindowViewModel)this.DataContext); // Controls window properties.
             IoC.Kernel.Bind<MainWindow>().ToConstant(this);
+            this.Closed += (sender, args) => { Environment.Exit(0); };
         }
     }
 }
