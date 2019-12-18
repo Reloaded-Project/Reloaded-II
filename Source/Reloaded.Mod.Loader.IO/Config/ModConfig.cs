@@ -166,8 +166,8 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
         public static bool IsR2R(string configPath, ModConfig modConfig)
         {
-            return (!String.IsNullOrEmpty(modConfig.ModR2RManagedDll32) || !String.IsNullOrEmpty(modConfig.ModR2RManagedDll64)) && 
-                   (File.Exists(GetR2RManagedDllPath32(configPath, modConfig)) || File.Exists(GetR2RManagedDllPath64(configPath, modConfig)));
+            return (!String.IsNullOrEmpty(modConfig.ModR2RManagedDll32) && File.Exists(GetR2RManagedDllPath32(configPath, modConfig))) ||
+                   (!String.IsNullOrEmpty(modConfig.ModR2RManagedDll64) && File.Exists(GetR2RManagedDllPath64(configPath, modConfig)));
         }
 
         /// <summary>
