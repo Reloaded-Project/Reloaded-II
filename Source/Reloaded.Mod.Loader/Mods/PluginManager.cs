@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Threading.Tasks;
 using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
@@ -31,6 +32,7 @@ namespace Reloaded.Mod.Loader.Mods
         private AssemblyLoadContext _loadContext;
         private readonly Loader _loader;
         private readonly Stopwatch _stopWatch = new Stopwatch();
+        private object _modIdToMetaLock = new object();
 
         /// <summary>
         /// Initializes the <see cref="PluginManager"/>
@@ -287,14 +289,19 @@ namespace Reloaded.Mod.Loader.Mods
         {
             ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", (paths) =>
             {
-                foreach (var modPath in paths)
+                Parallel.ForEach(paths, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, (modPath) =>
                 {
                     if (!File.Exists(modPath.Path) || modPath.Object.IsNativeMod(modPath.Path))
-                        continue;
+                        return;
 
                     if (GetMetadataForDllMod(modPath.Path, out var exports, out bool isUnloadable))
-                        _modIdToMetadata[modPath.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
-                }
+                    {
+                        lock (_modIdToMetaLock)
+                        {
+                            _modIdToMetadata[modPath.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
+                        }
+                    }
+                });
             }, modPaths);
         }
 
@@ -303,8 +310,7 @@ namespace Reloaded.Mod.Loader.Mods
             exports      = DefaultExportedTypes; // Preventing heap allocation here.
             isUnloadable = false;
 
-            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes.ToArray(),
-                config => config.DefaultContext = _loadContext);
+            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes.ToArray(), config => config.DefaultContext = _loadContext);
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
 
