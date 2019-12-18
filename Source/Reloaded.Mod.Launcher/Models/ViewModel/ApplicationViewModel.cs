@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -27,6 +26,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// Executes once list of mods for this app refreshes.
         /// </summary>
         public event Action OnGetModsForThisApp = () => { };
+
+        /// <summary>
+        /// Executed when a new Mod Set is loaded by the user.
+        /// </summary>
+        public event Action OnLoadModSet = () => { };
 
         public ImageApplicationPathTuple ApplicationTuple { get; }
         public ManageModsViewModel ManageModsViewModel    { get; }
@@ -108,6 +112,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 }
 
                 CheckModCompatibility();
+                OnLoadModSet();
             }
         }
 
@@ -125,7 +130,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void RefreshTimerCallback(object state) => UpdateReloadedProcesses();
         private void OnProcessesChanged(Process[] processes) => UpdateReloadedProcesses();
         private void OnGetModifications() => GetModsForThisApp();
-        private void OnModChanged(object sender, NotifyCollectionChangedEventArgs args) => GetModsForThisApp();
 
         private void UpdateReloadedProcesses()
         {
