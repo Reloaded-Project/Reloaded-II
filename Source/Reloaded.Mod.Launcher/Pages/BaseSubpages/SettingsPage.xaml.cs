@@ -20,11 +20,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             IoC.Get<MainWindow>().Closing += OnMainWindowExit;
         }
 
-        ~SettingsPage()
-        {
-            IoC.Get<MainWindow>().Closing -= OnMainWindowExit;
-        }
-
         private void OnMainWindowExit(object sender, CancelEventArgs e) => OnLeavingPage();
         private void OnLeavingPage() => ViewModel.SaveConfig();
         private void Documents_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => new OpenDocumentationCommand().Execute(null);

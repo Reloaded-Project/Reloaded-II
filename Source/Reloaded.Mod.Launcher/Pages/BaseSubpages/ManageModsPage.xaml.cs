@@ -41,11 +41,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             _setModImageCommand = new SetModImageCommand();
         }
 
-        ~ManageModsPage()
-        {
-            IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
-        }
-        
         private void OnMainWindowClosing(object sender, CancelEventArgs e) => SaveCurrentMod();
 
         private void AppsViewSourceOnFilter(object sender, FilterEventArgs e)

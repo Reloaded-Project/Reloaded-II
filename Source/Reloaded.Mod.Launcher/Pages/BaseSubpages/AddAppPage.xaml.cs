@@ -32,11 +32,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             _setApplicationImageCommand = new SetApplicationImageCommand();
         }
 
-        ~AddAppPage()
-        {
-            IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
-        }
-
         private void OnMainWindowClosing(object sender, CancelEventArgs e) => SaveCurrentSelectedItem();
 
         private void SaveCurrentSelectedItem()

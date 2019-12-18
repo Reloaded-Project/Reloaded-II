@@ -84,6 +84,9 @@ namespace Reloaded.Mod.Launcher
                 // Quit the process.
                 Environment.Exit(0);
             }
+
+            _commandLineArguments = null;
+            this.Startup -= OnStartup;
         }
 
         private void PopulateCommandLineArgs()
