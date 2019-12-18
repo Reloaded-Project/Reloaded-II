@@ -35,6 +35,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 
         public void Dispose()
         {
+            this.AnimateOutStarted -= Dispose;
             PageHost.CurrentPage?.AnimateOut();
             ViewModel?.Dispose();
             GC.SuppressFinalize(this);

@@ -63,7 +63,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public void Dispose()
         {
-            ManageModsViewModel.OnGetModifications += () => OnModChanged(null, null);
+            ManageModsViewModel.OnGetModifications -= OnGetModifications;
             InstanceTracker.OnProcessesChanged -= OnProcessesChanged;
 
             RefreshProcessesWithLoaderTimer?.Dispose();

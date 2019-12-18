@@ -21,10 +21,10 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
             InitializeComponent();
             ViewModel = IoC.Get<ApplicationSummaryViewModel>();
 
-            _manipulator = new ResourceManipulator(this.Contents);
+            _manipulator = new ResourceManipulator(Contents);
             _modsViewSource = _manipulator.Get<CollectionViewSource>("FilteredMods");
             _modsViewSource.Filter += ModsViewSourceOnFilter;
-            this.AnimateOutFinished += Dispose;
+            AnimateOutFinished += Dispose;
         }
 
         ~ApplicationSummaryPage()
@@ -34,20 +34,22 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
 
         public void Dispose()
         {
+            _modsViewSource.Filter -= ModsViewSourceOnFilter;
+            AnimateOutFinished -= Dispose;
             ViewModel?.Dispose();
             GC.SuppressFinalize(this);
         }
 
         private void ModsViewSourceOnFilter(object sender, FilterEventArgs e)
         {
-            if (this.ModsFilter.Text.Length <= 0)
+            if (ModsFilter.Text.Length <= 0)
             {
                 e.Accepted = true;
                 return;
             }
 
             var tuple = (BooleanGenericTuple<ImageModPathTuple>)e.Item;
-            e.Accepted = tuple.Generic.ModConfig.ModName.IndexOf(this.ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase) >= 0;
+            e.Accepted = tuple.Generic.ModConfig.ModName.IndexOf(ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
         private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

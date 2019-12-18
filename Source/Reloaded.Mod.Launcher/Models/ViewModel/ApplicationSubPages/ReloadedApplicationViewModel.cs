@@ -59,8 +59,21 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             _refreshTimer.Enabled = true;
         }
 
+        ~ReloadedApplicationViewModel()
+        {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            Client.OnReceiveException -= ClientOnReceiveException;
+            _cancellationTokenSource?.Cancel();
+            _refreshTimer?.Dispose();
+        }
+
         private void SelectedProcessOnExited(object sender, EventArgs e)
         {
+            ApplicationViewModel.SelectedProcess.Exited -= SelectedProcessOnExited;
             ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
         }
 
@@ -120,12 +133,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             var loadModSelectDialog     = new LoadModSelectDialog(ApplicationViewModel, this);
             loadModSelectDialog.Owner   = Application.Current.MainWindow;
             loadModSelectDialog.ShowDialog();
-        }
-
-        public void Dispose()
-        {
-            _cancellationTokenSource.Cancel();
-            _refreshTimer?.Dispose();
         }
     }
 }

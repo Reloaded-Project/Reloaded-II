@@ -19,27 +19,13 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
 
         private void Dispose()
         {
+            this.AnimateOutStarted -= Dispose;
             ViewModel.Dispose();
         }
 
-        private void Suspend_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            ViewModel.Suspend();
-        }
-
-        private void Resume_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            ViewModel.Resume();
-        }
-
-        private void Unload_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            ViewModel.Unload();
-        }
-
-        private void LoadMod_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            ViewModel.ShowLoadModDialog();
-        }
+        private void Suspend_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.Suspend();
+        private void Resume_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.Resume();
+        private void Unload_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.Unload();
+        private void LoadMod_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.ShowLoadModDialog();
     }
 }
