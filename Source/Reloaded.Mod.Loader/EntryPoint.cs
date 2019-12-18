@@ -39,7 +39,7 @@ namespace Reloaded.Mod.Loader
                 ExecuteTimed("Checking for DRM", CheckForDRM);
                 ExecuteTimed("Loading Mods", LoadMods);
 
-                Console.WriteLine($"[Reloaded] Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}");
+                Console.WriteLine($"[Reloaded] Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
                 _stopWatch.Reset();
             }
             catch (Exception ex)
