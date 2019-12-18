@@ -167,6 +167,7 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static async Task SetupViewModelsAsync()
         {
+            _ = Task.Run(BasicDllInjector.PreloadAddresses); // Fire and Forget
             var loaderConfig = LoaderConfigReader.ReadConfiguration();
             IoC.Kernel.Bind<LoaderConfig>().ToConstant(loaderConfig);
             IoC.GetConstant<MainPageViewModel>();
@@ -185,9 +186,7 @@ namespace Reloaded.Mod.Launcher
                 // Probably no internet access. 
             }
 
-            // Preload DLL Injector Addresses.
-            BasicDllInjector.PreloadAddresses();
-
+            
             /* Set loader DLL path. */
             SetLoaderPaths(loaderConfig, Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
             LoaderConfigReader.WriteConfiguration(loaderConfig);
