@@ -12,7 +12,7 @@
         WindowStartupLocation="CenterOwner"
         Style="{DynamicResource ReloadedWindow}">
 
-    <Grid DataContext="{Binding Path=., RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+    <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
           Margin="{DynamicResource PageMargin}"
           x:Name="Contents">
 
@@ -36,7 +36,7 @@
 
         <!-- All Content. -->
         <Grid Grid.Row="0" Margin="{DynamicResource PanelMargin}">
-            <TextBox x:Name="ModsFilter"
+            <TextBox Text="{Binding ModsFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Style="{DynamicResource TextboxWithPlaceholder}"
                      Tag="{DynamicResource ModManagerSearchMods}"
                      TextChanged="ModsFilter_TextChanged"/>
