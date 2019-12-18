@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Threading;
 using System.Threading.Tasks;
 using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
@@ -25,14 +27,12 @@ namespace Reloaded.Mod.Loader.Mods
         private static readonly Type[] DefaultExportedTypes = new Type[0];
         private static readonly Type[] SharedTypes = { typeof(IModLoader), typeof(IMod) };
 
-        private readonly Dictionary<string, ModInstance> _modifications = new Dictionary<string, ModInstance>();
-        private readonly Dictionary<string, ModAssemblyMetadata> _modIdToMetadata = new Dictionary<string, ModAssemblyMetadata>();  
-        private readonly Dictionary<string, string>      _modIdToFolder  = new Dictionary<string, string>(); // Maps Mod ID to folder containing mod.
+        private readonly ConcurrentDictionary<string, ModInstance> _modifications = new ConcurrentDictionary<string, ModInstance>();
+        private readonly ConcurrentDictionary<string, ModAssemblyMetadata> _modIdToMetadata = new ConcurrentDictionary<string, ModAssemblyMetadata>();  
+        private readonly ConcurrentDictionary<string, string> _modIdToFolder  = new ConcurrentDictionary<string, string>(); // Maps Mod ID to folder containing mod.
 
         private AssemblyLoadContext _loadContext;
         private readonly Loader _loader;
-        private readonly Stopwatch _stopWatch = new Stopwatch();
-        private object _modIdToMetaLock = new object();
 
         /// <summary>
         /// Initializes the <see cref="PluginManager"/>
@@ -56,7 +56,7 @@ namespace Reloaded.Mod.Loader.Mods
         /// <summary>
         /// Retrieves a list of all loaded modifications.
         /// </summary>
-        public IReadOnlyCollection<ModInstance> GetModifications() => _modifications.Values;
+        public IReadOnlyCollection<ModInstance> GetModifications() => (IReadOnlyCollection<ModInstance>) _modifications.Values;
 
         /// <summary>
         /// Retrieves the directory of a mod with a specific Mod ID.
@@ -80,39 +80,26 @@ namespace Reloaded.Mod.Loader.Mods
         /// Loads a collection of mods from a given set of paths.
         /// </summary>
         /// <param name="modPaths">List of paths to load mods from.</param>
-        public void LoadMods(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
+        public void LoadMods(List<PathGenericTuple<IModConfig>> modPaths)
         {
             PreloadAssemblyMetadata(modPaths);
 
             /* Load mods. */
-            foreach (var modPath in modPaths)
-            {
-                ExecuteWithStopwatch($"Loading Mod: {modPath.Object.ModId}", LoadMod, modPath);
-            }
-        }
+            var partitioner = Partitioner.Create(0, modPaths.Count);
+            var modInstances = new ModInstance[modPaths.Count];
 
-        /// <summary>
-        /// Loads an individual DLL/mod.
-        /// </summary>
-        /// <exception cref="ArgumentException">Mod with specified ID is already loaded.</exception>
-        public void LoadMod(PathGenericTuple<IModConfig> tuple)
-        {
-            // Check if mod with ID already loaded.
-            if (IsModLoaded(tuple.Object.ModId))
-                throw new ReloadedException(Errors.ModAlreadyLoaded(tuple.Object.ModId));
+            Parallel.ForEach(partitioner, (range, loopState) =>
+            {
+                // Loop over each range element without a delegate invocation.
+                for (int i = range.Item1; i < range.Item2; i++)
+                {
+                    var modPath = modPaths[i];
+                    modInstances[i] = ExecuteWithStopwatch($"Prepared Mod: {modPath.Object.ModId}", GetModInstance, modPath);
+                }
+            });
 
-            // Load DLL or non-dll mod.
-            if (File.Exists(tuple.Path))
-            {
-                if (tuple.Object.IsNativeMod(tuple.Path))
-                    LoadNativeMod(tuple);
-                else
-                    LoadDllMod(tuple);
-            }
-            else
-            {
-                LoadNonDllMod(tuple);
-            }
+            foreach (var instance in modInstances)
+                ExecuteWithStopwatch($"Initialized Mod: {instance.ModConfig.ModId}", StartMod, instance);
         }
 
         /// <summary>
@@ -126,9 +113,9 @@ namespace Reloaded.Mod.Loader.Mods
                 if (mod.CanUnload)
                 {
                     LoaderApi.ModUnloading(mod.Mod, mod.ModConfig);
-                    _modIdToFolder.Remove(modId);
-                    _modIdToMetadata.Remove(modId);
-                    _modifications.Remove(modId);
+                    _modIdToFolder.Remove(modId, out _);
+                    _modIdToMetadata.Remove(modId, out _);
+                    _modifications.Remove(modId, out _);
                     mod.Dispose();
                 }
                 else
@@ -210,7 +197,26 @@ namespace Reloaded.Mod.Loader.Mods
         }
 
         /* Mod Loading */
-        private void LoadDllMod(PathGenericTuple<IModConfig> tuple)
+
+        /// <summary>
+        /// Obtains an instance of an individual ready to load mod.
+        /// To start an instance, call <see cref="StartMod"/>
+        /// </summary>
+        /// <exception cref="ArgumentException">Mod with specified ID is already loaded.</exception>
+        private ModInstance GetModInstance(PathGenericTuple<IModConfig> tuple)
+        {
+            // Check if mod with ID already loaded.
+            if (IsModLoaded(tuple.Object.ModId))
+                throw new ReloadedException(Errors.ModAlreadyLoaded(tuple.Object.ModId));
+
+            // Load DLL or non-dll mod.
+            if (File.Exists(tuple.Path))
+                return tuple.Object.IsNativeMod(tuple.Path) ? PrepareNativeMod(tuple) : PrepareDllMod(tuple);
+            
+            return PrepareNonDllMod(tuple);
+        }
+
+        private ModInstance PrepareDllMod(PathGenericTuple<IModConfig> tuple)
         {
             var modId = tuple.Object.ModId;
             _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
@@ -223,20 +229,17 @@ namespace Reloaded.Mod.Loader.Mods
 
             // Load entrypoint.
             var plugin = (IModV1) Activator.CreateInstance(entryPoint);
-            var modInstance = new ModInstance(loader, plugin, tuple.Object);
-
-            StartModInstance(modInstance);
+            return new ModInstance(loader, plugin, tuple.Object);
         }
 
-        private void LoadNativeMod(PathGenericTuple<IModConfig> tuple)
+        private ModInstance PrepareNativeMod(PathGenericTuple<IModConfig> tuple)
         {
             var modId = tuple.Object.ModId;
             _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
-            var modInstance = new ModInstance(new NativeMod(tuple.Path), tuple.Object);
-            StartModInstance(modInstance);
+            return new ModInstance(new NativeMod(tuple.Path), tuple.Object);
         }
 
-        private void LoadNonDllMod(PathGenericTuple<IModConfig> tuple)
+        private ModInstance PrepareNonDllMod(PathGenericTuple<IModConfig> tuple)
         {
             // If invalid file path, get directory.
             // If directory, use directory.
@@ -245,16 +248,14 @@ namespace Reloaded.Mod.Loader.Mods
             else
                 _modIdToFolder[tuple.Object.ModId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
-            var modInstance = new ModInstance(tuple.Object);
-            StartModInstance(modInstance);
+            return new ModInstance(tuple.Object);
         }
 
-        private void StartModInstance(ModInstance instance)
+        private void StartMod(ModInstance instance)
         {
-            _modifications[instance.ModConfig.ModId] = instance;
-            
             LoaderApi.ModLoading(instance.Mod, instance.ModConfig);
             instance.Start(LoaderApi);
+            _modifications[instance.ModConfig.ModId] = instance;
             LoaderApi.ModLoaded(instance.Mod, instance.ModConfig);
         }
 
@@ -285,24 +286,17 @@ namespace Reloaded.Mod.Loader.Mods
             return exports.ToArray();
         }
 
-        private void PreloadAssemblyMetadata(IEnumerable<PathGenericTuple<IModConfig>> modPaths)
+        private void PreloadAssemblyMetadata(List<PathGenericTuple<IModConfig>> modPaths) => ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", PreloadAssemblyMetadataParallel, modPaths);
+        private void PreloadAssemblyMetadataParallel(List<PathGenericTuple<IModConfig>> paths)
         {
-            ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", (paths) =>
+            var parallelOptions = new ParallelOptions() {MaxDegreeOfParallelism = Environment.ProcessorCount};
+            Parallel.ForEach(paths, parallelOptions, (modPath) =>
             {
-                Parallel.ForEach(paths, new ParallelOptions() { MaxDegreeOfParallelism = Environment.ProcessorCount }, (modPath) =>
-                {
-                    if (!File.Exists(modPath.Path) || modPath.Object.IsNativeMod(modPath.Path))
-                        return;
+                if (!File.Exists(modPath.Path) || modPath.Object.IsNativeMod(modPath.Path)) return;
 
-                    if (GetMetadataForDllMod(modPath.Path, out var exports, out bool isUnloadable))
-                    {
-                        lock (_modIdToMetaLock)
-                        {
-                            _modIdToMetadata[modPath.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
-                        }
-                    }
-                });
-            }, modPaths);
+                if (GetMetadataForDllMod(modPath.Path, out var exports, out bool isUnloadable))
+                    _modIdToMetadata[modPath.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
+            });
         }
 
         private bool GetMetadataForDllMod(string dllPath, out Type[] exports, out bool isUnloadable)
@@ -350,11 +344,19 @@ namespace Reloaded.Mod.Loader.Mods
 
         private void ExecuteWithStopwatch<T>(string message, Action<T> code, T parameter)
         {
-            WriteLine($"{message}");
-            _stopWatch.Restart();
+            var _stopwatch = new Stopwatch();
+            _stopwatch.Start();
             code(parameter);
-            _stopWatch.Stop();
-            WriteLine($"... {_stopWatch.ElapsedMilliseconds}ms");
+            WriteLine($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
+        }
+
+        private Y ExecuteWithStopwatch<T, Y>(string message, Func<T, Y> code, T parameter)
+        {
+            var _stopwatch = new Stopwatch();
+            _stopwatch.Start();
+            var result = code(parameter);
+            WriteLine($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
+            return result;
         }
     }
 }

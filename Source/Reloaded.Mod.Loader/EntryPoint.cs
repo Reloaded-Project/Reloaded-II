@@ -35,10 +35,13 @@ namespace Reloaded.Mod.Loader
                 _stopWatch = new Stopwatch();
                 _stopWatch.Start();
 
-                ExecuteTimed("Create Loader & Host", CreateLoaderAndHost);
-                ExecuteTimed("Checking for DRM", CheckForDRM);
+                ExecuteTimed("Create Loader", CreateLoader);
+                var createHostTask = Task.Run(() => ExecuteTimed("Create Loader Host (Async)", CreateHost));
+                var checkDrmTask   = Task.Run(() => ExecuteTimed("Checking for DRM (Async)", CheckForDRM));
                 ExecuteTimed("Loading Mods", LoadMods);
 
+                checkDrmTask.Wait();
+                createHostTask.Wait();
                 Console.WriteLine($"[Reloaded] Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
                 _stopWatch.Reset();
             }
@@ -50,11 +53,8 @@ namespace Reloaded.Mod.Loader
 
         private static void LoadMods() => _loader.LoadForCurrentProcess();
         private static void CheckForDRM() => DRMScanner.PrintWarnings(_loader.Console);
-        private static void CreateLoaderAndHost()
-        {
-            _loader = new Loader();
-            _server = new Host(_loader);
-        }
+        private static void CreateLoader() => _loader = new Loader();
+        private static void CreateHost() => _server = new Host(_loader);
 
         /* Initialize Mod Loader (DLL_PROCESS_ATTACH) */
 

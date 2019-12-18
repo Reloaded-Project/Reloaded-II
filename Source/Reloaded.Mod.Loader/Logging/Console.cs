@@ -85,8 +85,7 @@ namespace Reloaded.Mod.Loader.Logging
 
             };
 
-            string[] template = new[]
-            {
+            string[] template = {
                 @"MMMMMMMMMMMMMMMMMMdo`    {0}",
                 @"MMMMMMMMMMMMMMMMMMMMh    {0}",
                 @"MMMM-          `yMMMN    {0}",
