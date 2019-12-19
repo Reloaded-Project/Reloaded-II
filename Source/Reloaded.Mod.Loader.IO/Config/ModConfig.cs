@@ -401,6 +401,10 @@ namespace Reloaded.Mod.Loader.IO.Config
                    string.Equals(ModDescription, other.ModDescription) && 
                    string.Equals(ModDll, other.ModDll) && 
                    string.Equals(ModIcon, other.ModIcon) &&
+                   ModR2RManagedDll32 == other.ModR2RManagedDll32 &&
+                   ModR2RManagedDll64 == other.ModR2RManagedDll64 &&
+                   ModNativeDll32 == other.ModNativeDll32 &&
+                   ModNativeDll64 == other.ModNativeDll64 &&
                    ModDependencies.SequenceEqualWithNullSupport(other.ModDependencies) && 
                    OptionalDependencies.SequenceEqualWithNullSupport(other.OptionalDependencies) &&
                    SupportedAppId.SequenceEqualWithNullSupport(other.SupportedAppId);
@@ -414,23 +418,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             return Equals((ModConfig) obj);
         }
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = (ModId != null ? ModId.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ModName != null ? ModName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ModAuthor != null ? ModAuthor.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ModVersion != null ? ModVersion.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ModDescription != null ? ModDescription.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ModDll != null ? ModDll.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ModIcon != null ? ModIcon.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ ModDependencies.GetHashCodeWithNullSupport();
-                hashCode = (hashCode * 397) ^ OptionalDependencies.GetHashCodeWithNullSupport();
-                hashCode = (hashCode * 397) ^ SupportedAppId.GetHashCodeWithNullSupport();
-                return hashCode;
-            }
-        }
+        public override int GetHashCode() => (ModId != null ? ModId.GetHashCode() : 0);
 
         bool IEquatable<ModConfig>.Equals(ModConfig other)
         {

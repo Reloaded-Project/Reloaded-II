@@ -194,20 +194,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             return Equals((ApplicationConfig) obj);
         }
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = (AppId != null ? AppId.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (AppName != null ? AppName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (AppLocation != null ? AppLocation.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (AppArguments != null ? AppArguments.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (AppIcon != null ? AppIcon.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ AutoInject.GetHashCode();
-                hashCode = (hashCode * 397) ^ EnabledMods.GetHashCodeWithNullSupport();
-                return hashCode;
-            }
-        }
+        public override int GetHashCode() => (AppId != null ? AppId.GetHashCode() : 0);
 
         bool IEquatable<ApplicationConfig>.Equals(ApplicationConfig other)
         {
