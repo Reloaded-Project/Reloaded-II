@@ -35,9 +35,10 @@ You need to install both the "Runtime" and the "Desktop Runtime".
 - [Inter Mod Communication](./Docs/InterModCommunication.md)
 - [Shared Libraries](https://github.com/Sewer56/Reloaded.SharedLib.Hooks)
 - [Writing Mods For Actively Developed Games/Applications](https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications)
+- [Optimizing Mods](./Docs/OptimizingMods.md)
 
 ## Reloaded: For Potential Contributors
 - [Getting Started: Building Reloaded](./Docs/BuildingReloaded.md)
 - [Getting Started: Project Structure](./Docs/ProjectStructure.md)
 - [Reloaded II's Architecture: Behind the Scenes.](./Docs/Reloaded-II-Architecture.md)
-
+- [Localizing Reloaded](./Docs/LocalizingReloaded.md)
