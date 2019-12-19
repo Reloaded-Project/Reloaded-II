@@ -35,7 +35,10 @@ To add it to Visual Studio, copy the zip to `C:\Users\[User Name]\Documents\[Vis
 You may now start a new project.
 ![New Project](./Images/NewProject.png)
 
+(If the project(s) do not show up, this is a Visual Studio 2019 bug. Close Visual Studio, open the Visual Studio developer command prompt and run `devenv /updateConfiguration`.)
+
 ### 2. Update Mod Configuration and Image
+
 Once imported, update the `ModConfig.json` file with the relevant details of your project. You can either edit the `json` file by hand or generate one by creating a new mod in the launcher and copying it over.
 
 Then proceed to replace the mod preview image `Preview.png`.
