@@ -168,9 +168,10 @@
                             x:Name="ModListView"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding Source={StaticResource SortedMods}}"
-                            SelectedValue="{Binding SelectedModTuple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            SelectedItem="{Binding SelectedModTuple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                             ToolTip="{DynamicResource ModManagerSelectMod}"
-                            SelectionChanged="ListView_SelectionChanged" 
+                            SelectionChanged="ListView_SelectionChanged"
+                            SelectionMode="Single"
                             VerticalAlignment="Stretch"
                             VerticalContentAlignment="Top">
                             <ListView.ItemTemplate>

@@ -26,7 +26,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             UpdateTotalApplicationsInstalled();
             UpdateTotalModsInstalled();
             MainPageViewModel.ApplicationsChanged += MainPageViewModelOnApplicationsChanged;
-            ManageModsViewModel.ModChanged += ManageModViewModelOnModChanged;
+            ManageModsViewModel.ModsChanged += ManageModsViewModelOnModsChanged;
 
             var version = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
             Copyright = version.LegalCopyright;
@@ -39,7 +39,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void UpdateTotalModsInstalled() => TotalModsInstalled = ManageModsViewModel.Mods.Count;
 
         /* Events */
-        private void ManageModViewModelOnModChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateTotalModsInstalled();
+        private void ManageModsViewModelOnModsChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateTotalModsInstalled();
         private void MainPageViewModelOnApplicationsChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateTotalApplicationsInstalled();
     }
 }

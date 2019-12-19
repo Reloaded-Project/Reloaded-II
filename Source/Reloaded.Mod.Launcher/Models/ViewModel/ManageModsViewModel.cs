@@ -29,16 +29,14 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /* Fired when the available mods collection changes. */
         
         /// <summary>
-        /// Fired when any individual mod of the mods collection changes.
-        /// This is fired only when the contents of any of the mods change compared to what is internally stored,
-        /// i.e. file was edited by user outside of the program.
+        /// Fired when a mod is added or removed from the mod collection.
         /// </summary>
-        public event NotifyCollectionChangedEventHandler ModChanged = (sender, args) => { };
+        public event NotifyCollectionChangedEventHandler ModsChanged = (sender, args) => { };
 
         /// <summary>
         /// Executed after a change in external files was detected and new files were read-in.
-        /// This is essentially the same as <see cref="ModChanged"/>, except it is ran per-scan instead of per-file.
-        /// Unlike <see cref="ModChanged"/> however, this always runs regardless of whether mods were changed or not.
+        /// This is essentially the same as <see cref="ModsChanged"/>, except it is ran per-scan instead of per-file.
+        /// Unlike <see cref="ModsChanged"/> however, this always runs regardless of whether mods were changed or not.
         /// </summary>
         public event Action OnGetModifications = () => { }; // 
 
@@ -60,12 +58,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public ManageModsViewModel(MainPageViewModel mainPageViewModel, LoaderConfig loaderConfig)
         {
             Mods = new ObservableCollection<ImageModPathTuple>();
-            Mods.CollectionChanged += (sender, args) =>
-            {
-                // Hack: Reason is if we load a mod set, enable mods for app and go back to main menu and old app is highlighted, stuff will get overwritten.
-                SelectedModTuple = null;
-                ModChanged(sender, args);
-            };
+            Mods.CollectionChanged += (sender, args) => ModsChanged(sender, args);
             GetModifications();
 
             _mainPageViewModel = mainPageViewModel;
