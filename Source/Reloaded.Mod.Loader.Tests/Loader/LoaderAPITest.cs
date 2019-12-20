@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using Reloaded.Mod.Loader.Tests.SETUP;
 using TestInterfaces;
@@ -32,8 +33,8 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         public void ModifyController()
         {
             // This also tests object sharing between load contexts.
-            var testModBInstance = _loader.Manager.GetLoadedMods()[1];
-            var testModAInstance = _loader.Manager.GetLoadedMods()[0];
+            var testModBInstance = _loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId);
+            var testModAInstance = _loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigA.ModId);
 
             var testModB = (ITestModB)testModBInstance.Mod;
             var testModA = (ITestModA)testModAInstance.Mod;
@@ -63,7 +64,7 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         [Fact]
         public void UsePlugin()
         {
-            var testModB = (ITestModB)_loader.Manager.GetLoadedMods()[1].Mod;
+            var testModB = (ITestModB)_loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId).Mod;
             int random = _random.Next(0, int.MaxValue / 2);
 
             int expected = random * 2;
@@ -75,7 +76,7 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         public void AutoDisposePlugin()
         {
             // Get Mod B
-            var testModB = (ITestModB)_loader.Manager.GetLoadedMods()[1].Mod;
+            var testModB = (ITestModB)_loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId).Mod;
 
             // Unload Mod A
             _loader.UnloadMod(_testData.TestModConfigA.ModId);

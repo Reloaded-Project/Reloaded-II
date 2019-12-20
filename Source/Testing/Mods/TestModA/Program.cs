@@ -8,6 +8,7 @@ namespace TestModA
     public class Program : IModV1, ITestHelper, ITestModA, IExports
     {
         public string MyId { get; set; } = "TestModA";
+        public DateTime LoadTime { get; set; }
         public bool ResumeExecuted { get; set; }
         public bool SuspendExecuted { get; set; }
 
@@ -17,6 +18,7 @@ namespace TestModA
         public Action Disposing { get; }
         public void Start(IModLoaderV1 loader)
         {
+            LoadTime = DateTime.Now;
             _controller = new Controller();
             loader.AddOrReplaceController<IController>(this, _controller);
         }

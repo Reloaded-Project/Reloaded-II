@@ -26,7 +26,7 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         {
             ModConfig  = config;
             CanSuspend = false;
-            CanUnload  = false;
+            CanUnload  = true;
         }
 
         /* Native Mods */

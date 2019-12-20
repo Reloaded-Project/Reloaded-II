@@ -8,6 +8,7 @@ namespace TestModB
     public class Program : IModV1, ITestHelper, ITestModB
     {
         public string MyId { get; set; } = "TestModB";
+        public DateTime LoadTime { get; set; }
         public bool ResumeExecuted { get; set; }
         public bool SuspendExecuted { get; set; }
 
@@ -19,6 +20,7 @@ namespace TestModB
         public Action Disposing { get; }
         public void Start(IModLoaderV1 loader)
         {
+            LoadTime = DateTime.Now;
             _loader = (IModLoader) loader;
             _plugin = _loader.MakeInterfaces<ITestModAPlugin>()[0];
         }

@@ -56,13 +56,16 @@ namespace Reloaded.Mod.Loader.Tests.Loader
             ModInstance[]   localLoadedMods = _loader.Manager.GetLoadedMods();
             ModInfo[]       remoteLoadedMods = response.Result.Mods;
 
-            for (int x = 0; x < remoteLoadedMods.Length; x++)
+            bool Equals(ModInstance instance, ModInfo info)
             {
-                Assert.Equal(localLoadedMods[x].State           , remoteLoadedMods[x].State);
-                Assert.Equal(localLoadedMods[x].ModConfig.ModId , remoteLoadedMods[x].ModId);
-                Assert.Equal(localLoadedMods[x].CanSuspend      , remoteLoadedMods[x].CanSuspend);
-                Assert.Equal(localLoadedMods[x].CanUnload       , remoteLoadedMods[x].CanUnload);
+                return instance.State == info.State &&
+                       instance.ModConfig.ModId == info.ModId &&
+                       instance.CanSuspend == info.CanSuspend &&
+                       instance.CanUnload == info.CanUnload;
             }
+
+            foreach (var remoteLoadedMod in remoteLoadedMods)
+                Assert.Contains(localLoadedMods, instance => Equals(instance, remoteLoadedMod));
         }
 
         [Fact]
@@ -73,11 +76,11 @@ namespace Reloaded.Mod.Loader.Tests.Loader
 
             // Should be loaded last.
             var loadedMods = _loader.Manager.GetLoadedMods();
-            var testModC = (ITestHelper)   loadedMods.Last().Mod;
+            var testModC = (ITestHelper) loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigC.ModId).Mod;
             Assert.Equal(_testData.TestModConfigC.ModId, testModC.MyId);
 
             // Check state consistency
-            Assert.Equal(ModState.Running, loadedMods.Last().State);
+            Assert.Equal(ModState.Running, loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigC.ModId).State);
         }
 
         [Fact]
