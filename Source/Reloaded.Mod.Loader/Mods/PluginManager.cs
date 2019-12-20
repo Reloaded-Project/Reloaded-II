@@ -77,9 +77,9 @@ namespace Reloaded.Mod.Loader.Mods
         }
 
         /// <summary>
-        /// Loads a collection of mods from a given set of paths.
+        /// Loads a collection of mods.
         /// </summary>
-        /// <param name="modPaths">List of paths to load mods from.</param>
+        /// <param name="modPaths">Tuples of individual mod configurations and the paths to those configurations.</param>
         public void LoadMods(List<PathGenericTuple<IModConfig>> modPaths)
         {
             PreloadAssemblyMetadata(modPaths);
@@ -203,6 +203,7 @@ namespace Reloaded.Mod.Loader.Mods
         /// To start an instance, call <see cref="StartMod"/>
         /// </summary>
         /// <exception cref="ArgumentException">Mod with specified ID is already loaded.</exception>
+        /// <param name="tuple">A tuple of mod config and path to config.</param>
         private ModInstance GetModInstance(PathGenericTuple<IModConfig> tuple)
         {
             // Check if mod with ID already loaded.
@@ -210,7 +211,7 @@ namespace Reloaded.Mod.Loader.Mods
                 throw new ReloadedException(Errors.ModAlreadyLoaded(tuple.Object.ModId));
 
             // Load DLL or non-dll mod.
-            if (File.Exists(tuple.Path))
+            if (File.Exists(tuple.Object.GetDllPath(tuple.Path)))
                 return tuple.Object.IsNativeMod(tuple.Path) ? PrepareNativeMod(tuple) : PrepareDllMod(tuple);
             
             return PrepareNonDllMod(tuple);
@@ -219,9 +220,10 @@ namespace Reloaded.Mod.Loader.Mods
         private ModInstance PrepareDllMod(PathGenericTuple<IModConfig> tuple)
         {
             var modId = tuple.Object.ModId;
+            var dllPath = tuple.Object.GetDllPath(tuple.Path);
             _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
-            var loader = PluginLoader.CreateFromAssemblyFile(tuple.Path, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object), config => config.DefaultContext = _loadContext);
+            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object), config => config.DefaultContext = _loadContext);
 
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
@@ -235,8 +237,9 @@ namespace Reloaded.Mod.Loader.Mods
         private ModInstance PrepareNativeMod(PathGenericTuple<IModConfig> tuple)
         {
             var modId = tuple.Object.ModId;
+            var dllPath = tuple.Object.GetNativeDllPath(tuple.Path);
             _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
-            return new ModInstance(new NativeMod(tuple.Path), tuple.Object);
+            return new ModInstance(new NativeMod(dllPath), tuple.Object);
         }
 
         private ModInstance PrepareNonDllMod(PathGenericTuple<IModConfig> tuple)
@@ -286,16 +289,18 @@ namespace Reloaded.Mod.Loader.Mods
             return exports.ToArray();
         }
 
-        private void PreloadAssemblyMetadata(List<PathGenericTuple<IModConfig>> modPaths) => ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", PreloadAssemblyMetadataParallel, modPaths);
-        private void PreloadAssemblyMetadataParallel(List<PathGenericTuple<IModConfig>> paths)
+        private void PreloadAssemblyMetadata(List<PathGenericTuple<IModConfig>> configPathTuples) => ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", PreloadAssemblyMetadataParallel, configPathTuples);
+        private void PreloadAssemblyMetadataParallel(List<PathGenericTuple<IModConfig>> configPathTuples)
         {
             var parallelOptions = new ParallelOptions() {MaxDegreeOfParallelism = Environment.ProcessorCount};
-            Parallel.ForEach(paths, parallelOptions, (modPath) =>
+            Parallel.ForEach(configPathTuples, parallelOptions, (configPathTuple) =>
             {
-                if (!File.Exists(modPath.Path) || modPath.Object.IsNativeMod(modPath.Path)) return;
+                var dllPath = configPathTuple.Object.GetDllPath(configPathTuple.Path);
+                if (!File.Exists(dllPath) || configPathTuple.Object.IsNativeMod(configPathTuple.Path)) 
+                    return;
 
-                if (GetMetadataForDllMod(modPath.Path, out var exports, out bool isUnloadable))
-                    _modIdToMetadata[modPath.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
+                if (GetMetadataForDllMod(dllPath, out var exports, out bool isUnloadable))
+                    _modIdToMetadata[configPathTuple.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
             });
         }
 

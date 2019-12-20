@@ -183,11 +183,7 @@ namespace Reloaded.Mod.Loader
             {
                 // Reloaded does not allow loading same mod multiple times.
                 if (! Manager.IsModLoaded(modToLoad.ModId))
-                {
-                    string configPath = configToPathDictionary[modToLoad];
-                    string dllPath    = modToLoad.GetDllPath(configPath);
-                    modPaths.Add(new PathGenericTuple<IModConfig>(dllPath, modToLoad));
-                }
+                    modPaths.Add(new PathGenericTuple<IModConfig>(configToPathDictionary[modToLoad], modToLoad));
             }
 
             Manager.LoadMods(modPaths);
