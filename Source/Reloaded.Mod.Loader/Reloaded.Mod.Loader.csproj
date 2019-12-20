@@ -42,6 +42,6 @@
   </ItemGroup>
   <!-- Build x64 automatically after x86 -->
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <MSBuild Condition=" '$(Platform)' == 'x86' " Projects="$(MSBuildProjectFile)" Properties="Platform=x64;PlatFormTarget=x64" RunEachTargetSeparately="true" />
+    <MSBuild Condition=" '$(Platform)' == 'x64' " Projects="$(MSBuildProjectFile)" Properties="Platform=x86;PlatFormTarget=x86" RunEachTargetSeparately="true" />
   </Target>
 </Project>
