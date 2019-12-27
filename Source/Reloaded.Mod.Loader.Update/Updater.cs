@@ -44,9 +44,8 @@ namespace Reloaded.Mod.Loader.Update
                     var modTuple = resolverTuple.ModTuple;
                     var version  = resolverTuple.Resolver.GetCurrentVersion();
 
-                    /* Onova will wait until DLL no longer in use ;) */
-                    string dllPath  = modTuple.Object.GetDllPath(modTuple.Path);
-                    string filePath = File.Exists(dllPath) ? dllPath : modTuple.Path;
+                    // Note: Since R2R Support was added, we cannot predict which DLL will be in use. Just return the config file as main file.
+                    string filePath = modTuple.Path;
                     var metadata    = new AssemblyMetadata(PathSanitizer.ForceValidFilePath(modTuple.Object.ModName), version, filePath);
 
                     var manager         = new UpdateManager(metadata, resolverTuple.Resolver, resolverTuple.Resolver.Extractor);
