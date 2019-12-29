@@ -85,21 +85,24 @@ namespace Reloaded.Mod.Loader.Mods
             PreloadAssemblyMetadata(modPaths);
 
             /* Load mods. */
-            var partitioner = Partitioner.Create(0, modPaths.Count);
-            var modInstances = new ModInstance[modPaths.Count];
-
-            Parallel.ForEach(partitioner, (range, loopState) =>
+            if (modPaths.Count > 0)
             {
-                // Loop over each range element without a delegate invocation.
-                for (int i = range.Item1; i < range.Item2; i++)
-                {
-                    var modPath = modPaths[i];
-                    modInstances[i] = ExecuteWithStopwatch($"Prepared Mod: {modPath.Object.ModId}", GetModInstance, modPath);
-                }
-            });
+                var partitioner = Partitioner.Create(0, modPaths.Count);
+                var modInstances = new ModInstance[modPaths.Count];
 
-            foreach (var instance in modInstances)
-                ExecuteWithStopwatch($"Initialized Mod: {instance.ModConfig.ModId}", StartMod, instance);
+                Parallel.ForEach(partitioner, (range, loopState) =>
+                {
+                    // Loop over each range element without a delegate invocation.
+                    for (int i = range.Item1; i < range.Item2; i++)
+                    {
+                        var modPath = modPaths[i];
+                        modInstances[i] = ExecuteWithStopwatch($"Prepared Mod: {modPath.Object.ModId}", GetModInstance, modPath);
+                    }
+                });
+
+                foreach (var instance in modInstances)
+                    ExecuteWithStopwatch($"Initialized Mod: {instance.ModConfig.ModId}", StartMod, instance);
+            }
         }
 
         /// <summary>
