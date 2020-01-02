@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
         mc:Ignorable="d"
         Title="{DynamicResource ConfigureModDialogTitle}" 
         Height="600" 
@@ -27,32 +28,13 @@
                   DisplayMemberPath="ConfigName"
                   Margin="{DynamicResource CommonItemVerticalMargin}"/>
 
-        <xctk:PropertyGrid Grid.Row="1"
-                           PreparePropertyItem="PropertyGridMakeExpandable"
-                           BorderThickness="0"
-                           SelectedObject="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}"
-                           Margin="{DynamicResource CommonItemVerticalMargin}">
-            <xctk:PropertyGrid.Resources>
-                <!-- Hack for PropertyGrid: Reset item Styles, And Set Styles Per Item Below -->
-                <Style TargetType="{x:Type Button}" />
-                <Style TargetType="{x:Type ToolTip}" />
-                <Style TargetType="{x:Type RadioButton}" />
-                <Style TargetType="{x:Type CheckBox}" />
-                <Style TargetType="{x:Type ProgressBar}" />
-                <Style TargetType="{x:Type TextBox}" />
-                <Style TargetType="{x:Type ComboBox}" />
-                <Style TargetType="{x:Type ComboBoxItem}" />
-                <Style TargetType="{x:Type DataGrid}" />
-                <Style TargetType="{x:Type Border}" />
-                <Style TargetType="{x:Type Separator}" />
-                <Style TargetType="{x:Type ListView}" />
-                <Style TargetType="{x:Type ListBox}" />
-                <Style TargetType="{x:Type ScrollBar}" />
-                <Style TargetType="{x:Type ScrollViewer}" />
-                <Style TargetType="{x:Type Label}" />
-                <Style TargetType="{x:Type TextBlock}" />
-            </xctk:PropertyGrid.Resources>
-        </xctk:PropertyGrid>
+        <controls:NoInheritanceContentControl Grid.Row="1">
+            <xctk:PropertyGrid Grid.Row="1"
+                               PreparePropertyItem="PropertyGridMakeExpandable"
+                               BorderThickness="0"
+                               SelectedObject="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}"
+                               Margin="{DynamicResource CommonItemVerticalMargin}"/>
+        </controls:NoInheritanceContentControl>
 
         <Button 
             Grid.Row="2"
