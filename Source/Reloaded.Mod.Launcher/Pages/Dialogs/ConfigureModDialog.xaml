@@ -32,7 +32,8 @@
                                               Margin="{DynamicResource CommonItemVerticalMargin}">
             <xctk:PropertyGrid PreparePropertyItem="PropertyGridMakeExpandable"
                                BorderThickness="0"
-                               SelectedObject="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}"/>
+                               SelectedObject="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}">
+            </xctk:PropertyGrid>
         </controls:NoInheritanceContentControl>
 
         <Button 

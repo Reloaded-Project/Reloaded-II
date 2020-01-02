@@ -13,9 +13,11 @@
         <StackPanel VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource NonReloadedProcessMessageOne}" 
                        Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
+                       Style="{DynamicResource DefaultTextBlock}"
                        TextWrapping="Wrap" HorizontalAlignment="Center"/>
             <TextBlock Text="{DynamicResource NonReloadedProcessMessageTwo}" 
                        Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
+                       Style="{DynamicResource DefaultTextBlock}"
                        TextWrapping="Wrap" HorizontalAlignment="Center"/>
             <Button Content="{DynamicResource NonReloadedProcessInject}" 
                     Margin="{DynamicResource CommonItemVerticalMargin}"
@@ -28,6 +30,7 @@
                 Text="{DynamicResource NonReloadedProcessInjectWarning}" 
                 Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
                 TextWrapping="Wrap" 
+                Style="{DynamicResource DefaultTextBlock}"
                 HorizontalAlignment="Center"/>
 
         </DockPanel>

@@ -79,7 +79,8 @@
                                HorizontalAlignment="Left"
                                TextWrapping="Wrap"
                                FontSize="{DynamicResource FontSizeLarge}"
-                               Text="{DynamicResource LoaderSettingsWarning}"/>
+                               Text="{DynamicResource LoaderSettingsWarning}"
+                               Style="{DynamicResource DefaultTextBlock}"/>
 
                     <!-- Statistics -->
                     <StackPanel Grid.Column="2">

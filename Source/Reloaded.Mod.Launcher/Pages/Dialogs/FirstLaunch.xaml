@@ -17,8 +17,8 @@
         <Grid Margin="{DynamicResource PageMarginSmall}">
         
             <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="{DynamicResource FirstLaunchLineOne}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"/>
-                <TextBlock Text="{DynamicResource FirstLaunchLineTwo}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"/>
+                <TextBlock Text="{DynamicResource FirstLaunchLineOne}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource DefaultTextBlock}"/>
+                <TextBlock Text="{DynamicResource FirstLaunchLineTwo}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource DefaultTextBlock}"/>
 
                 <!-- Buttons -->
                 <Grid Margin="{DynamicResource CommonItemVerticalMargin}">
@@ -55,7 +55,7 @@
                 </Grid>
 
                 <!-- Text -->
-                <TextBlock Text="{DynamicResource FirstLaunchLineThree}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"/>
+                <TextBlock Text="{DynamicResource FirstLaunchLineThree}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource DefaultTextBlock}"/>
 
                 <!-- OK -->
                 <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource UnpaddedStretchedButton}" Margin="{DynamicResource CommonItemVerticalMargin}" 

@@ -73,6 +73,7 @@
         <!-- Text -->
         <Grid Grid.Row="2" Margin="{DynamicResource PanelMargin}">
             <TextBlock Text="{DynamicResource ReloadedProcessNotice}"
+                       Style="{DynamicResource DefaultTextBlock}"
                        HorizontalAlignment="Center" />
         </Grid>
 

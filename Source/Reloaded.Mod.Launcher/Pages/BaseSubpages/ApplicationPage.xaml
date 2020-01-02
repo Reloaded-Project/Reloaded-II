@@ -146,15 +146,18 @@
                         <TextBlock Text="{DynamicResource ApplicationOtherInstances}"
                                    Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
                                    FontFamily="{DynamicResource FontBold}"
+                                   Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
                         <TextBlock Text=":"
                                    FontFamily="{DynamicResource FontBold}"
-                                   VerticalAlignment="Center"/>
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource DefaultTextBlock}"/>
 
                         <TextBlock Text="{Binding ProcessesWithoutReloaded.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
                                    FontFamily="{DynamicResource FontBold}"
+                                   Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
 
@@ -162,15 +165,18 @@
                         <TextBlock Text="{DynamicResource ApplicationReloadedInstances}"
                                    Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
                                    FontFamily="{DynamicResource FontBold}"
+                                   Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
                         <TextBlock Text=":"
                                    FontFamily="{DynamicResource FontBold}"
+                                   Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
                         <TextBlock Text="{Binding ProcessesWithReloaded.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=10}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
                                    FontFamily="{DynamicResource FontBold}"
+                                   Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
 
@@ -178,15 +184,18 @@
                         <TextBlock Text="{DynamicResource ApplicationTotalMods}"
                                    Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
                                    FontFamily="{DynamicResource FontBold}"
+                                   Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
                         <TextBlock Text=":"
                                    FontFamily="{DynamicResource FontBold}"
+                                   Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
                         <TextBlock Text="{Binding ModsForThisApp.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
                                    FontFamily="{DynamicResource FontBold}"
+                                   Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </DockPanel>

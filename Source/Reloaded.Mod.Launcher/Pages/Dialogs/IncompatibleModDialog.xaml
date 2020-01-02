@@ -21,6 +21,7 @@
 
         <TextBlock Text="{DynamicResource LoadModSetIncompatibleMessage}"
                    Margin="{DynamicResource PanelMargin}"
+                   Style="{DynamicResource DefaultTextBlock}"
                    TextWrapping="Wrap"
                    Grid.Row="0" />
 
@@ -49,6 +50,7 @@
 
         <TextBlock Text="{DynamicResource LoadModSetIncompatibleMessage2}"
                    Margin="{DynamicResource PanelMargin}"
+                   Style="{DynamicResource DefaultTextBlock}"
                    TextWrapping="Wrap"
                    Grid.Row="2" />
 
