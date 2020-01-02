@@ -28,13 +28,11 @@
                   DisplayMemberPath="ConfigName"
                   Margin="{DynamicResource CommonItemVerticalMargin}"/>
 
-        <controls:NoInheritanceContentControl Grid.Row="1">
-            <xctk:PropertyGrid Grid.Row="1"
-                               IsCategorized="True"
-                               PreparePropertyItem="PropertyGridMakeExpandable"
+        <controls:NoInheritanceContentControl Grid.Row="1"
+                                              Margin="{DynamicResource CommonItemVerticalMargin}">
+            <xctk:PropertyGrid PreparePropertyItem="PropertyGridMakeExpandable"
                                BorderThickness="0"
-                               SelectedObject="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}"
-                               Margin="{DynamicResource CommonItemVerticalMargin}"/>
+                               SelectedObject="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}"/>
         </controls:NoInheritanceContentControl>
 
         <Button 
