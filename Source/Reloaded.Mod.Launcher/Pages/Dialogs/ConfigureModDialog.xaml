@@ -30,6 +30,7 @@
 
         <controls:NoInheritanceContentControl Grid.Row="1">
             <xctk:PropertyGrid Grid.Row="1"
+                               IsCategorized="True"
                                PreparePropertyItem="PropertyGridMakeExpandable"
                                BorderThickness="0"
                                SelectedObject="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}"

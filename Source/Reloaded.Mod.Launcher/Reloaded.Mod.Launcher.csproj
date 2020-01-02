@@ -12,6 +12,7 @@
     <ApplicationIcon>appicon.ico</ApplicationIcon>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <OutputPath>..\Output\Launcher\</OutputPath>
+    <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>
@@ -109,6 +110,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.7.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="1.1.0" />
@@ -163,12 +165,6 @@
   <ItemGroup>
     <Folder Include="Controls\Converters\" />
     <Folder Include="Models\Model\IO\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Xceed.Wpf.Toolkit">
-      <HintPath>Dependencies\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
