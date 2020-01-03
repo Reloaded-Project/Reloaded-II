@@ -1,9 +1,12 @@
-$outputPath = "Output/Launcher"
-$loader32OutputPath = "Output/Launcher/Loader/x86"
-$loader64OutputPath = "Output/Launcher/Loader/x64"
+$outputPath = "Output/Launcher/"
+$loader32OutputPath = "$outputPath/Loader/x86"
+$loader64OutputPath = "$outputPath/Loader/x64"
+
 $bootstrapperPath = "Reloaded.Mod.Loader.Bootstrapper/Reloaded.Mod.Bootstrapper.vcxproj"
 $launcherProjectPath = "Reloaded.Mod.Launcher/Reloaded.Mod.Launcher.csproj"
 $loaderProjectPath = "Reloaded.Mod.Loader/Reloaded.Mod.Loader.csproj"
+$addressDumperProjectPath = "Reloaded.Mod.Launcher.Kernel32AddressDumper/Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj"
+
 $publishDirectory = "Publish"
 $releaseFileName = "/Release.zip"
 
@@ -15,10 +18,13 @@ Get-ChildItem $publishDirectory -Include * -Recurse | Remove-Item -Force -Recurs
 
 # Build using Visual Studio & Dotnet Publish
 dotnet restore
-devenv Reloaded-II.sln /Rebuild Release
+devenv Reloaded-II.sln /Project Reloaded.Mod.Loader.Bootstrapper /Build Release
+dotnet publish $addressDumperProjectPath -c Release -r win-x86 --self-contained false -o $outputPath /p:PublishReadyToRun=true
 dotnet publish $launcherProjectPath -c Release -r win-x64 --self-contained false -o $outputPath /p:PublishReadyToRun=true
 dotnet publish $loaderProjectPath -c Release -r win-x64 --self-contained false -o $loader64OutputPath /p:PublishReadyToRun=true
 dotnet publish $loaderProjectPath -c Release -r win-x86 --self-contained false -o $loader32OutputPath /p:PublishReadyToRun=true
+
+Remove-Item "$outputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x64" -Recurse
 
 # Remove debug/compile leftovers.
