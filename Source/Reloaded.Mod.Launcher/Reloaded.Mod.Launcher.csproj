@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -117,8 +117,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="2.6.0" />
-    <PackageReference Include="Reloaded.WPF.Animations" Version="1.0.5" />
-    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="2.0.0" />
+    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="2.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Management" Version="4.7.0" />
   </ItemGroup>
@@ -165,6 +164,12 @@
   <ItemGroup>
     <Folder Include="Controls\Converters\" />
     <Folder Include="Models\Model\IO\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>Dependencies\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
