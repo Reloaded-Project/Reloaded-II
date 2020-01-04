@@ -80,11 +80,12 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             }
         }
 
-        private void LaunchApplication_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void LaunchApplication_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 ViewModel.CheckModCompatibility();
+                await Setup.CheckForMissingDependencies();
 
                 var appConfig = ViewModel.ApplicationTuple.Config;
                 var launcher  = ApplicationLauncher.FromApplicationConfig(appConfig);

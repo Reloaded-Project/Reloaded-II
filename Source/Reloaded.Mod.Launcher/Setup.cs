@@ -113,6 +113,26 @@ namespace Reloaded.Mod.Launcher
         }
 
         /// <summary>
+        /// Quickly checks for any missing dependencies amongst available mods
+        /// and opens a menu allowing to download if mods are unavailable.
+        /// </summary>
+        /// <returns></returns>
+        public static async Task CheckForMissingDependencies()
+        {
+            if (Update.CheckMissingDependencies(out var missingDependencies))
+            {
+                try
+                {
+                    await Update.DownloadPackagesAsync(missingDependencies, false, false);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+        }
+
+        /// <summary>
         /// Tests possible error cases.
         /// </summary>
         private static void DoSanityTests()
@@ -246,17 +266,8 @@ namespace Reloaded.Mod.Launcher
         {
             await Task.Run(Update.CheckForModUpdatesAsync);
             await Update.CheckForLoaderUpdatesAsync();
-            if (Update.CheckMissingDependencies(out var missingDependencies))
-            {
-                try
-                {
-                    await Update.DownloadPackagesAsync(missingDependencies, false, false);
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            }
+            await CheckForMissingDependencies();
         }
+
     }
 }
