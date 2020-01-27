@@ -15,6 +15,7 @@
     - [1. Import the Visual Studio Template](#1-import-the-visual-studio-template)
     - [2. Update Mod Configuration and Image](#2-update-mod-configuration-and-image)
     - [3. Debug Your Mods!](#3-debug-your-mods)
+- [Other Templates](#other-templates)
 - [Creating Project From Scratch](#creating-project-from-scratch)
 
 # Prerequisites
@@ -54,6 +55,9 @@ To debug your mods, by far the best and easiest option is to simply add `Debugge
 ![Debugger Launch](./Images/DebuggerLaunch.png)
 
 From there, simply make a new or choose an existing instance.
+
+# Other Templates
+Other templates, e.g. one supporting in-launcher configuration are also available, e.g. `Reloaded.Mod.Template.WithConfig.zip`
 
 # Creating Project From Scratch 
 
