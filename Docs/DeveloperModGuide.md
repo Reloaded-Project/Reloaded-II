@@ -57,7 +57,7 @@ To debug your mods, by far the best and easiest option is to simply add `Debugge
 From there, simply make a new or choose an existing instance.
 
 # Other Templates
-Other templates, e.g. one supporting in-launcher configuration are also available, e.g. `Reloaded.Mod.Template.WithConfig.zip`
+Other templates, e.g. one supporting in-launcher configuration are also available, `Reloaded.Mod.Template.WithConfig.zip`.
 
 # Creating Project From Scratch 
 
