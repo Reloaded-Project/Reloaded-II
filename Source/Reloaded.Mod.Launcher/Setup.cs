@@ -171,8 +171,6 @@ namespace Reloaded.Mod.Launcher
                 Debugger.Break();
         }
 
-
-
         /// <summary>
         /// Creates a new configuration if the config does not exist.
         /// </summary>

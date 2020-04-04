@@ -111,13 +111,13 @@
 
   <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
-    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.0.0" />
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.2.0" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="1.1.0" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.1">
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.7">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Reloaded.Memory" Version="2.6.0" />
+    <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
     <PackageReference Include="Reloaded.WPF.Theme.Default" Version="2.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Management" Version="4.7.0" />

@@ -3,7 +3,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Loader;
 using System.Windows.Input;
 using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
@@ -89,7 +91,7 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
             if (!File.Exists(dllPath))
                 return false;
 
-            loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, _sharedTypes);
+            loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, _sharedTypes, config => config.DefaultContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly()));
             var assembly = loader.LoadDefaultAssembly();
             var types = assembly.GetTypes();
             var entryPoint = types.FirstOrDefault(t => typeof(IConfigurator).IsAssignableFrom(t) && !t.IsAbstract);

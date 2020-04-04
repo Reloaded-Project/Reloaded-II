@@ -36,9 +36,9 @@
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Colorful.Console" Version="1.2.9" />
-    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.0.0" />
-    <PackageReference Include="Reloaded.Memory" Version="2.5.0" />
+    <PackageReference Include="Colorful.Console" Version="1.2.10" />
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.2.0" />
+    <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
   </ItemGroup>
   <!-- Build x64 automatically after x86 -->
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
