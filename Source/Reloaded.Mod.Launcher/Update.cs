@@ -126,6 +126,7 @@ namespace Reloaded.Mod.Launcher
             foreach (var mod in allMods)
                 allModIds.Add(mod.ModConfig.ModId);
 
+            // Remove mods we already have.
             packages        = packages.Where(x => !allModIds.Contains(x.Identity.Id)).ToList();
             missingPackages = missingPackages.Where(x => !allModIds.Contains(x)).ToList();
 
