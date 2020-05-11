@@ -1,5 +1,5 @@
 <div align="center">
-	<h1>Reloaded II: API Overview</h1>
+	<h1>Reloaded II: Communication & Loader API</h1>
 	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
 	<br/> <br/>
 	<strong>~Insert message worthy of cringe here~</strong>

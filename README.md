@@ -9,17 +9,17 @@
     Works with anything X86, X64.
 </div>
 
-## Prerequisites
-- Windows 7, 8.1, 10 or above.
-- [.NET Core 3.0 Runtime (Both x64 and x86)](https://dotnet.microsoft.com/download/dotnet-core/3.0)
-- [.NET Core 3.0 Desktop Runtime (Both x64 and x86)](https://dotnet.microsoft.com/download/dotnet-core/3.0)
-- Visual C++ Redist 2015/17/19 [(x64)](https://aka.ms/vs/16/release/VC_redist.x64.exe) and [(x86)](https://aka.ms/vs/16/release/VC_redist.x86.exe)
+## Introduction
+**[Reloaded II]** is a Universal DLL Injection based Mod Loader and Management System.
 
-X86 Runtimes are necessary for using Reloaded II with 32bit applications.
+<div align="center">
+	<img src="./Docs/Images/Header.png" width="550" align="center" />
+	<br/><br/>
+</div>
 
-X64 Runtimes are necessary for running Reloaded II's Launcher and 64bit applications.
+Designed mostly for hacking games, it is a completely free and open source public rewrite of **[Reloaded]**, my original first fully fledged mod loader.
 
-You need to install both the "Runtime" and the "Desktop Runtime".
+Made from the ground up **proudly** using the C# programming language.
 
 ## Reloaded: For End Users
 - [Quick Start](./Docs/QuickStart.md)
@@ -31,14 +31,18 @@ You need to install both the "Runtime" and the "Desktop Runtime".
 
 ## Reloaded: For Programmers 
 - [Getting Started: Developer Mod Guide](./Docs/DeveloperModGuide.md)
-- [API Overview](./Docs/APIOverview.md)
 - [Inter Mod Communication](./Docs/InterModCommunication.md)
+
+**Miscellaneous**
+- [Communication & Loader API](./Docs/APIOverview.md)
+- [Optimizing Mods](./Docs/OptimizingMods.md)
 - [Shared Libraries](https://github.com/Sewer56/Reloaded.SharedLib.Hooks)
 - [Writing Mods For Actively Developed Games/Applications](https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications)
-- [Optimizing Mods](./Docs/OptimizingMods.md)
+- [Loading Native Mods](./Docs/NativeMods.md)
 
 ## Reloaded: For Potential Contributors
 - [Getting Started: Building Reloaded](./Docs/BuildingReloaded.md)
 - [Getting Started: Project Structure](./Docs/ProjectStructure.md)
-- [Reloaded II's Architecture: Behind the Scenes.](./Docs/Reloaded-II-Architecture.md)
+- [Reloaded II's Architecture: Behind the Scenes](./Docs/Reloaded-II-Architecture.md)
 - [Localizing Reloaded](./Docs/LocalizingReloaded.md)
+

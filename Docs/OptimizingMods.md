@@ -11,7 +11,7 @@ This document details various methods and techniques in which mods may be optimi
 
 Focusing mainly on techniques which may not be immediately obvious, the main goal is to obtain better startup times, although some other optimizations are also available.
 
-## Performance-Focused Optimizations
+## Speed-Focused Optimizations
 
 #### Lazy Loading
 
@@ -66,7 +66,7 @@ _connectToServerTask.Wait(); // Will stall execution until task completes.
 
 ##### Danger: Race Conditions
 
-The important thing to note about lazy loading however is the possibility of race conditions for shared resources (such as native memory). Mainly, please **do not create function hooks asynchronously**. 
+The important thing to note about lazy loading however is the possibility of race conditions for shared resources (such as native memory). Mainly, please **do not create function hooks/detours asynchronously**. 
 
 Consider two mods creating hooks for the same function at the same time. When they read the first initial bytes of the function into memory, they would get the same result for the 'original function' to execute. 
 

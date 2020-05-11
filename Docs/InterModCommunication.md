@@ -9,72 +9,54 @@
 
 # Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
-  - [Plugins and Controllers: Similarities and Differences](#plugins-and-controllers-similarities-and-differences)
-    - [Sharing Interfaces (Important!)](#sharing-interfaces-important)
+  - [How Does it Work?](#how-does-it-work)
+  - [Using Controllers And Plugins](#using-controllers-and-plugins)
     - [Instantiation](#instantiation)
-      - [Required Dependencies](#required-dependencies)
-      - [Optional Dependencies](#optional-dependencies)
     - [Number of Instances](#number-of-instances)
     - [Disposal](#disposal)
-      - [Rules (Simplified)](#rules-simplified)
-        - [Storing Controllers](#storing-controllers)
-        - [Using Controllers](#using-controllers)
   - [Using Plugins](#using-plugins)
-    - [Instantiating](#instantiating)
-  - [Using Controllers](#using-controllers)
-    - [Registering](#registering)
-    - [Acquiring](#acquiring)
-    - [Disposing](#disposing)
-  - [Recommendations & Limitations](#recommendations-limitations)
-    - [Interface DLLs are Immutable](#interface-dlls-are-immutable)
-    - [Keep all your Interfaces in a separate library](#keep-all-your-interfaces-in-a-separate-library)
-    - [Upgrading Interfaces used with Controllers/Plugins](#upgrading-interfaces-used-with-controllersplugins)
-  - [Examples](#examples)
-
+  - [Using Controllers](#using-controllers-1)
+  - [Sharing Interfaces](#sharing-interfaces)
+  - [Recommendations &amp; Limitations](#recommendations-amp-limitations)
+  - [Example Mods](#example-mods)
 
 # Introduction
 
-Reloaded-II provides two mechanisms for what it considers "Inter Mod Communication", dubbed "Plugins and Controllers".
+Sometimes you might want to check the state of another mod or or instruct it to perform a certain action. Reloaded-II provides two mechanisms for what it considers "Inter Mod Communication", dubbed *"Plugins and Controllers"*.
 
 **Plugins** allow you to extend the functionality of other mods by implementing interfaces defined by them inside your mod. The mod loader API searches, creates and returns new instances of classes implementing a specific interface from other mods. *In other words, plugins do not share state.*
 
 **Controllers** allow you to directly interact with other loaded mods. Individual mods can submit shared instances of interfaces to the mod loader, which can then be obtained by other mods. *Controllers share state.*
 
-To make use of these, you first require an instance of the `IModLoader` interface, normally obtained as a parameter to your mod's entry point that allows for interaction with the mod loader.
+## How Does it Work?
 
-## Plugins and Controllers: Similarities and Differences 
+Implemented using interfaces, the concept is that the mod loader acts as a middleman between mods. This middleman allows mods to communicate by passing implementations of interfaces between each other.
 
-### Sharing Interfaces (Important!)
+This may be illustrated by the following diagram:
 
-Before you get started with `Controllers` and `Plugins`, there is a very important piece of information that must be addressed.
+![Example](./Diagrams/Images/InterModCommunication.png)
 
-If you are a developer of a mod which will share interfaces to be used by other mods, 
-*you must first share the interface with the mod loader*. 
+*An example of an external mod communicating with the [Universal File Redirector](https://github.com/Reloaded-Project/reloaded.universal.redirector).*
 
-This can be done by inheriting the interface `IExports` (from `Reloaded.Mod.Interfaces`) in your main mod, with single method `GetTypes` which should return an array of interfaces to be consumed by other mods.
+- During initialization, Mod A (Redirector) publishes an interface to the Mod Loader.
+- During initialization, Mod B (Other Mod) asks the mod loader for the interface.
 
-**Example:**
-```csharp
-public class Exports : IExports 
-{
-    public Type[] GetTypes() => new[] { typeof(IController) };
-}
-```
+Communication with the Mod Loader is performed using the `IModLoader` interface, available at your mod's entry point. 
 
-Sharing forces other mods to load the same instance of the DLL containing the shared interfaces (regardless of whether the version is newer or older!). If you do not share your interfaces other mods wouldn't be able to find it when making calls to the mod loader. 
 
-**If you do not do this, `MakeInterfaces` and `GetController` will not work for other mods.**
+## Using Controllers And Plugins
 
 ### Instantiation
 
-In order to be able to consume a **Plugin** or **Controller** from another mod, you must first set that mod's id as either a **required** or **optional** dependency.
+In order to be able to consume a **Plugin** or **Controller** from another mod, **you must first set that mod's id as either a required or optional dependency**.
 
-This is a safeguard in order to ensure that unintended libraries do not get unified between otherwise isolated mod instances. This allows for the safe use of Shared Libraries..
+This is a safeguard in order to ensure that unintended libraries do not get unified between otherwise isolated mod instances.
 
 #### Required Dependencies
 
-(Mods specified as `ModDependencies` in `ModConfig.json`)
+(`ModDependencies` in `ModConfig.json`)
 
 Reloaded-II re-sorts the order at which the mods are loaded on launch, guaranteeing that any required dependency of your mod will be loaded before your mod. As such, you are free to obtain Controllers and/or Plugins immediately in the entry point of your mod.
 
@@ -88,15 +70,15 @@ void Start(IModLoaderV1 loader)
 
 #### Optional Dependencies
 
-(i.e. Mods specified as `OptionalDependencies` in `ModConfig.json`)
+(`OptionalDependencies` in `ModConfig.json`)
 
-If the mod is an optional dependency (i.e. not in the mod's dependencies list), then the preferred option is to acquire Controllers/Plugins after the mod loader has finished initializing (all mods are loaded).
+If the mod is an optional dependency, then the preferred option is to acquire Controllers/Plugins after the mod loader has finished initializing (all mods are loaded).
 
 To do this, simply subscribe to `IModLoader`'s `OnModLoaderInitialized`, and try to obtain an interface instance at that point.
 
 ```csharp
 IModLoader _loader;
-IController _controller;
+WeakReference<IController> _controller;
 void Start(IModLoaderV1 loader) 
 {
    _loader = (IModLoader)loader;
@@ -186,22 +168,6 @@ WeakReference<ISharedInterface>[] interfaces = _loader.MakeInterfaces<ISharedInt
 
 ## Using Controllers
 
-For those who may be familiar with the concept of Dependency Inversion, then Reloaded-II acts similarly to an Inversion of Control (IoC) container of sorts. Reloaded stores manually submitted references/binds to objects by type, which can then be requested/resolved by other mods.
-
-### Registering
-
-To register a controller for it to then be used by other mods, simply use the `AddOrReplaceController` method of `IModLoader`. Once this is done, other mods may pick up this controller.
-
-```csharp
-Controller _controller;
-void AddController() 
-{
-    _controller = new Controller(); // Implements IController
-	_loader.AddOrReplaceController<IController>(this, _controller);
-    // This refers to `IMod`, containing the mod's entry point.
-}
-```
-
 ### Acquiring
 
 To acquire a controller that has been submitted from another mod, simply ask the mod loader.
@@ -226,6 +192,38 @@ void Unload()
 ```
 
 You may force a Garbage Collection with `GC.Collect()` to ensure other mods no longer have access to/acquire a new controller should you ever remove or override an existing controller.
+
+## Sharing Interfaces
+
+If you are developing a mod which will share interfaces to be used by other mods, 
+*you must first share the interface with the mod loader*. 
+
+This is done by inheriting the interface `IExports` (from `Reloaded.Mod.Interfaces`) in your main mod, with single method `GetTypes` which should return an array of interfaces to be consumed by other mods.
+
+**Example:**
+
+```csharp
+public class Exports : IExports 
+{
+    public Type[] GetTypes() => new[] { typeof(IController) };
+}
+```
+
+Sharing forces other mods to load the same instance of the DLL containing the shared interfaces, regardless of whether the version is newer or older. 
+
+**If you do not do this, `MakeInterfaces` and `GetController` will not work for other mods.**
+
+### Registering Controllers
+
+For controllers an additional step is required. During initialization (`Start()`), you need to register it with the mod loader. Simply use the `AddOrReplaceController` method of `IModLoader`.
+
+```csharp
+Controller _controller;
+
+_controller = new Controller(); // Implements IController
+_loader.AddOrReplaceController<IController>(this, _controller);
+```
+
 
 ## Recommendations & Limitations
 
@@ -284,8 +282,19 @@ interface IController : IControllerV2, IControllerV3 { void DoX(); }
 interface IController : IControllerV1, IControllerV2, IControllerV3 { }
 ```
 
-## Examples
+## Example Mods
 
-The following examples contain mods that either export interfaces to be used by other mods and/or consume interfaces from other mods.
+The following examples contain mods that export interfaces to be used by other mods.
+
+**Universal Mods**
 
 - [Reloaded Universal File Redirector](https://github.com/Reloaded-Project/Reloaded.Mod.Universal.Redirector)
+
+**Shared Libraries**
+
+- [PRS Compressor/Decompressor](https://github.com/Sewer56/Reloaded.SharedLib.Csharp.Prs.ReloadedII)
+- [Function Hooking/Detour Library](https://github.com/Sewer56/Reloaded.SharedLib.Hooks.ReloadedII)
+
+**Game Specific**
+
+- [Sonic Heroes Controller Hook](https://github.com/Sewer56/Heroes.Controller.Hook.ReloadedII) (Allows other mods to receive/send game inputs.)

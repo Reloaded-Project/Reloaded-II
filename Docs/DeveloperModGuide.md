@@ -21,8 +21,7 @@
 # Prerequisites
 
 - Visual Studio 2017+
-- .NET Core 2.0 SDK (or newer).
-- NuGet Package Manager (Fetching Dependencies)
+- .NET Core 3.0 SDK (or newer)
 
 *Basically whatever supports .NET Standard.*
 
@@ -36,7 +35,7 @@ To add it to Visual Studio, copy the zip to `C:\Users\[User Name]\Documents\[Vis
 You may now start a new project.
 ![New Project](./Images/NewProject.png)
 
-(If the project(s) do not show up, this is a Visual Studio 2019 bug. Close Visual Studio, open the Visual Studio developer command prompt and run `devenv /updateConfiguration`.)
+*(If the project(s) do not show up, this is a Visual Studio bug. Close Visual Studio, open the Visual Studio developer command prompt and run `devenv /updateConfiguration`.)*
 
 ### 2. Update Mod Configuration and Image
 
