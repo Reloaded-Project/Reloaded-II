@@ -59,8 +59,52 @@
     <!-- Mod Manager: Set Dependencies -->
     <sys:String x:Key="TitleSetDependenciesDialog">Установить зависимости для мода.</sys:String>
 
+    <!-- Reloaded Process -->
+    <sys:String x:Key="ReloadedProcessResume">Возобновить</sys:String>
+    <sys:String x:Key="ReloadedProcessSuspend">Приостановить</sys:String>
+    <sys:String x:Key="ReloadedProcessUnload">Выгрузить</sys:String>
+    <sys:String x:Key="ReloadedProcessRefresh">Обновить</sys:String>
+    <sys:String x:Key="ReloadedProcessLoadMod">Загрузить мод</sys:String>
+    <sys:String x:Key="ReloadedProcessNotice">Пометка: Это меню в первую очередь предназначено для использования разработчиками.</sys:String>
+
+    <!-- Update Mod Dialog -->
+    <sys:String x:Key="UpdateModTitle">Обновления мода доступны</sys:String>
+    <sys:String x:Key="UpdateModDownload">Скачать</sys:String>
+    <sys:String x:Key="UpdateModModId">Id мода</sys:String>
+    <sys:String x:Key="UpdateModSize">Размер (MB)</sys:String>
+    <sys:String x:Key="UpdateModOldVersion">Старая версия</sys:String>
+    <sys:String x:Key="UpdateModNewVersion">Новая версия</sys:String>
+
+    <!-- Update Loader Dialog -->
+    <sys:String x:Key="UpdateLoaderTitle">Доступно обновление</sys:String>
+    <sys:String x:Key="UpdateLoaderCurrentVersion">Текущая версия</sys:String>
+    <sys:String x:Key="UpdateLoaderNewVersion">Новая версия</sys:String>
+
+    <sys:String x:Key="UpdateLoaderChangelog">Открыть список изменений</sys:String>
+    <sys:String x:Key="UpdateLoaderUpdate">Обновить</sys:String>
+
+    <sys:String x:Key="UpdateLoaderRunningTitle">Приложение запущено</sys:String>
+    <sys:String x:Key="UpdateLoaderRunningMessage" xml:space="preserve">У вас есть запущенные Reloaded приложения.&#x0a;Обновление не может быть выполнено, пожалуйста, закройте все приложения.</sys:String>
+    <sys:String x:Key="UpdateLoaderProcessList">Список процессов</sys:String>
+
+    <!-- Download Mods Page -->
+    <sys:String x:Key="DownloadModsDownload">Скачать</sys:String>
+    <sys:String x:Key="DownloadModsDownloading">Идет скачивание</sys:String>
+    <sys:String x:Key="DownloadModsAlreadyDownloaded">Скачано</sys:String>
+
+    <sys:String x:Key="DownloadModsVisitWebsite">Посетить Website</sys:String>
+    <sys:String x:Key="DownloadModsCheckUpdatesAndDependencies">Проверить обновления &amp; Зависимости</sys:String>
+
     <!-- Dialogs -->
     <sys:String x:Key="MessageBoxButtonOK">OK</sys:String>
     <sys:String x:Key="MessageBoxButtonCancel">Отмена</sys:String>
+
+    <!-- Download Mod Archive -->
+    <sys:String x:Key="DownloadModArchiveTitle">Скачать архив мода</sys:String>
+    <sys:String x:Key="DownloadModArchiveName">Имя файла</sys:String>
+
+    <!-- Configure Mod Dialog -->
+    <sys:String x:Key="ConfigureModDialogTitle">Сконфигурировать мод</sys:String>
+    <sys:String x:Key="ConfigureModDialogSave">Сохранить</sys:String>
 
 </ResourceDictionary>
