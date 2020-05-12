@@ -30,7 +30,7 @@ Made from the ground up **proudly** using the C# programming language.
 - [Publishing Your Mods](./Docs/UpdateSupport.md)
 
 ## Reloaded: For Programmers 
-- [Getting Started: Developer Mod Guide](./Docs/DeveloperModGuide.md)
+- [Getting Started: Building Mods](./Docs/DeveloperModGuide.md)
 - [Inter Mod Communication](./Docs/InterModCommunication.md)
 
 **Miscellaneous**
