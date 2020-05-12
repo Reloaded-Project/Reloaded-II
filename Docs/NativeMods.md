@@ -25,6 +25,7 @@ To generate the config file, create a new mod from within the launcher.
 ## Exports
 
 **Entry Points:**
+
 Reloaded tries to start mods by using the following entry points in order:
 
 - ReloadedStart
@@ -35,6 +36,7 @@ If none of these entry points is found, the mod will not be loaded.
 The exported methods should have no parameters and return void.
 
 **Suspend, Resume, Unload:**
+
 Reloaded II's *Resume*, *Suspend* and *Unload* functionalities are available for native mods. 
 Virtually identical to their C# counterparts in the `IMod` interface, they require the following exports:
 
