@@ -21,7 +21,7 @@
     <sys:String x:Key="SplashLoadCompleteIn">Завершение загрузки в:</sys:String>
     <sys:String x:Key="SplashCreatingTemplates">Создание шаблонов</sys:String>
     <sys:String x:Key="SplashCheckingForUpdates">Проверка обновлений</sys:String>
-    <!--sys:String x:Key="SplashRunningSanityChecks">Running Sanity Checks</sys:String-->
+    <sys:String x:Key="SplashRunningSanityChecks">Запуск провероу на исправность</sys:String>
 
     <!-- Add Application Page -->
     <sys:String x:Key="AddAppImageTooltip">Выберите изображение, чтобы импортировать собственный логотип.</sys:String>
@@ -58,6 +58,29 @@
 
     <!-- Mod Manager: Set Dependencies -->
     <sys:String x:Key="TitleSetDependenciesDialog">Установить зависимости для мода.</sys:String>
+
+    <!-- Mod Manager: Create Mod Page -->
+    <sys:String x:Key="TitleCreateModDialog">Создать мод</sys:String>
+    <sys:String x:Key="CreateModDialogId">Уникальный Id</sys:String>
+    <sys:String x:Key="CreateModDialogName">Название</sys:String>
+    <sys:String x:Key="CreateModDialogAuthor">Автор</sys:String>
+    <sys:String x:Key="CreateModDialogVersion">Версия</sys:String>
+    <sys:String x:Key="CreateModDialogDescription">Короткое описание</sys:String>
+    <sys:String x:Key="CreateModDialogDependencies">Зависимости мода</sys:String>
+
+    <sys:String x:Key="CreateModDialogImageSelectorTitle">Выбрать кастомное лого для мода.</sys:String>
+    <sys:String x:Key="CreateModDialogImageSelectorFilter">Изображение</sys:String>
+
+    <sys:String x:Key="TitleCreateModNonUniqueId">Неуникальный ID</sys:String>
+    <sys:String x:Key="MessageCreateModNonUniqueId" xml:space="preserve">ModId мода, который Вы создаете, не является уникальным.&#x0a;Пожалуйста, сделайте ModId уникальным.</sys:String>
+
+    <!-- First Launch -->
+    <sys:String x:Key="TitleFirstLaunch">Добро пжаловать в Reloaded II</sys:String>
+    <sys:String x:Key="FirstLaunchLineOne">Это ваше первое использование Reloaded II.</sys:String>
+    <sys:String x:Key="FirstLaunchLineTwo">Перед тем как начать, Вы можете просмотреть следующий материал по ссылкам:</sys:String>
+    <sys:String x:Key="FirstLaunchLineDocumentation">Документация</sys:String>
+    <sys:String x:Key="FirstLaunchLineUserguide">Пользовательское руководство</sys:String>
+    <sys:String x:Key="FirstLaunchLineThree">Вы можете познее найти данные ссылки в разделе [Настройки мод-загрузчика].</sys:String>
 
     <!-- Reloaded Process -->
     <sys:String x:Key="ReloadedProcessResume">Возобновить</sys:String>
