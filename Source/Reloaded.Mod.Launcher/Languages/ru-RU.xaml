@@ -38,7 +38,7 @@
     <sys:String x:Key="AddAppAdvancedOptions">Продвинутые инструменты и настройки</sys:String>
     <sys:String x:Key="AddAppCreateShortcut">Создать ярлык</sys:String>
     <sys:String x:Key="AddAppAutoInject">Автоинъекция</sys:String>
-    <!--sys:String x:Key="AddAppAutoInjectMessage" xml:space="preserve">Note: Auto-inject is provided but not recommended as no guarantee can be made that mods will execute code before the application.&#x0a;Please instead use regular "Launch Application" from Reloaded or the "DLL Loader" method described in the Github documentation.&#x0a;Please do not submit bugs for mods that do not work using Auto-inject mode.</sys:String-->
+    <sys:String x:Key="AddAppAutoInjectMessage" xml:space="preserve">Пометка: Автоинъекция предоставлена, но не рекомендуется к использованию, так как нет гарантии, что моды будут запускать код до приложения.&#x0a;Пожалуйста, используйте обычный метод "Запуск приложения" или метод "Загрузчик DLL", который описан в документации на GitHub.&#x0a;Пожалуйста, не сообщается о багах тех модов, которые не используют автоинъекцию.</sys:String>
 
     <sys:String x:Key="AddAppExecutableTitle">Выберите приложение для создание конфигурации.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">Исполняемый файл приложения</sys:String>
