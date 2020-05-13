@@ -9,18 +9,18 @@ using Reloaded.Mod.Launcher.Models.ViewModel;
 
 namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
 {
-    public class DownloadModCommand : WithCanExecuteChanged, ICommand
+    public class DownloadModCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
         private readonly DownloadModsViewModel _downloadModsViewModel;
         private readonly ManageModsViewModel   _manageModsViewModel;
         private bool _canExecute = true;
 
         /* Create & Dispose */
-        public DownloadModCommand()
+        public DownloadModCommand(DownloadModsViewModel downloadModsViewModel)
         {
             try
             {
-                _downloadModsViewModel = IoC.Get<DownloadModsViewModel>();
+                _downloadModsViewModel = downloadModsViewModel;
                 _manageModsViewModel = IoC.Get<ManageModsViewModel>();
                 _downloadModsViewModel.PropertyChanged += DownloadModsPropertyChanged;
                 _manageModsViewModel.Mods.CollectionChanged += ModsOnCollectionChanged;

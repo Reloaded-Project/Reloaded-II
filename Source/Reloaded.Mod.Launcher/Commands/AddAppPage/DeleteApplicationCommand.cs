@@ -17,9 +17,9 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
     {
         private readonly AddAppViewModel _addAppViewModel;
 
-        public DeleteApplicationCommand()
+        public DeleteApplicationCommand(AddAppViewModel addAppViewModel)
         {
-            _addAppViewModel = IoC.Get<AddAppViewModel>();
+            _addAppViewModel = addAppViewModel;
             _addAppViewModel.MainPageViewModel.ApplicationsChanged += RaiseCanExecute;
             _addAppViewModel.PropertyChanged += AddAppViewModelOnPropertyChanged;
         }

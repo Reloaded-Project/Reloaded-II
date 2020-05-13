@@ -13,7 +13,6 @@
     <Grid Margin="{DynamicResource PageMargin}" x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
         <Grid.Resources>
-            <downloadModsPage:DownloadModCommand x:Key="DownloadModCommand"/>
             <downloadModsPage:CheckForUpdatesAndDependenciesCommand x:Key="CheckForUpdatesAndDependenciesCommand"/>
             <downloadModsPage:VisitWebsiteCommand x:Key="VisitWebsiteCommand"/>
 
@@ -86,7 +85,7 @@
             />
             <Button Content="{Binding DownloadModStatus, Converter={x:Static converters:DownloadModStatusToString.Instance}, FallbackValue='Download Mod'}" 
                     Margin="{DynamicResource CommonItemHorizontalMargin}" 
-                    Command="{DynamicResource DownloadModCommand}"
+                    Command="{Binding DownloadModCommand, UpdateSourceTrigger=PropertyChanged}"
             />
         </StackPanel>
     </Grid>

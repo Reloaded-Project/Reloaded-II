@@ -24,9 +24,9 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         private readonly MainPageViewModel _mainPageViewModel;
         private ApplicationConfig _lastSavedConfig;
 
-        public AddApplicationCommand()
+        public AddApplicationCommand(AddAppViewModel addAppViewModel)
         {
-            _addAppViewModel = IoC.Get<AddAppViewModel>();
+            _addAppViewModel = addAppViewModel;
             _mainPageViewModel = _addAppViewModel.MainPageViewModel;
         }
 

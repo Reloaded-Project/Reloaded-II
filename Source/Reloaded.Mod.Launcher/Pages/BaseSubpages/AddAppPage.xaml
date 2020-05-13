@@ -20,9 +20,6 @@
             <sys:Double x:Key="DetailsImageWidth">180</sys:Double>
             <sys:Double x:Key="DetailsColumnWidth">280</sys:Double>
 
-            <addAppPage1:DeleteApplicationCommand x:Key="DeleteApplicationCommand"/>
-            <addAppPage1:AddApplicationCommand x:Key="AddApplicationCommand"/>
-
             <!-- Sort the app list -->
             <CollectionViewSource Source="{Binding MainPageViewModel.Applications, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Key="SortedApps" IsLiveSortingRequested="True">
                 <CollectionViewSource.SortDescriptions>
@@ -79,12 +76,12 @@
                     <Button Grid.Column="0"
                             Content="{DynamicResource AddAppNewButton}" 
                             Style="{DynamicResource UnpaddedStretchedGridButton}"
-                            Command="{StaticResource AddApplicationCommand}"/>
+                            Command="{Binding AddApplicationCommand, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Button Grid.Column="1"
                             Content="{DynamicResource AddAppDeleteButton}"
                             Style="{DynamicResource UnpaddedStretchedGridButton}"
-                            Command="{StaticResource DeleteApplicationCommand}"/>
+                            Command="{Binding DeleteApplicationCommand, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
 
                 <!-- Name, Executable Location, Commandline Arguments. -->

@@ -13,10 +13,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
     /// <summary>
     /// The main page of the application.
     /// </summary>
-    public partial class AddAppPage : ReloadedIIPage
+    public partial class AddAppPage : ReloadedIIPage, IDisposable
     {
         public AddAppViewModel ViewModel { get; set; }
-        private readonly SetApplicationImageCommand _setApplicationImageCommand;
 
         public AddAppPage() : base()
         {  
@@ -26,13 +25,15 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             ViewModel = IoC.Get<AddAppViewModel>();
             this.DataContext = ViewModel;
             this.AnimateOutStarted += SaveCurrentSelectedItem;
+            this.AnimateOutStarted += Dispose;
             IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
             this.AnimateInStarted += SetDefaultSelectionIndex;
-
-            _setApplicationImageCommand = new SetApplicationImageCommand();
         }
 
-        private void OnMainWindowClosing(object sender, CancelEventArgs e) => SaveCurrentSelectedItem();
+        public void Dispose()
+        {
+            ViewModel?.Dispose();
+        }
 
         private void SaveCurrentSelectedItem()
         {
@@ -60,20 +61,17 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             }
         }
 
-        /* Set default index on entry. */
-        private void SetDefaultSelectionIndex()
-        {
-            ViewModel.SelectedIndex = 0;
-        }
-
         private void Image_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (_setApplicationImageCommand.CanExecute(null))
+            if (ViewModel.SetApplicationImageCommand.CanExecute(null))
             {
-                _setApplicationImageCommand.Execute(null);
+                ViewModel.SetApplicationImageCommand.Execute(null);
                 ViewModel.RaiseApplicationChangedEvent();
                 e.Handled = true;
             }
         }
+
+        private void SetDefaultSelectionIndex() => ViewModel.SelectedIndex = 0;
+        private void OnMainWindowClosing(object sender, CancelEventArgs e) => SaveCurrentSelectedItem();
     }
 }

@@ -1,8 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Reloaded.Mod.Launcher.Commands.DownloadModsPage;
 using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.Update.Utilities;
@@ -10,12 +12,13 @@ using Reloaded.WPF.MVVM;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
-    public class DownloadModsViewModel : ObservableObject
+    public class DownloadModsViewModel : ObservableObject, IDisposable
     {
         public string SearchQuery                                         { get; set; }
         public ObservableCollection<DownloadModEntry> DownloadModEntries  { get; set; }
         public DownloadModEntry                       DownloadModEntry    { get; set; }
         public DownloadModStatus                      DownloadModStatus   { get; set; }
+        public DownloadModCommand                     DownloadModCommand  { get; set; }
 
         private NugetHelper             _nugetHelper;
         private CancellationTokenSource _tokenSource;
@@ -25,6 +28,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         {
             _nugetHelper = nugetHelper;
             DownloadModEntries = new ObservableCollection<DownloadModEntry>();
+            DownloadModCommand = new DownloadModCommand(this);
             PropertyChanged += OnSearchQueryChanged;
             #pragma warning disable 4014
             GetSearchResults(); // Fire and forget.
@@ -48,6 +52,12 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 #pragma warning disable 4014
                 GetSearchResults(); // Fire and forget.
                 #pragma warning restore 4014
+        }
+
+        public void Dispose()
+        {
+            _tokenSource?.Dispose();
+            DownloadModCommand?.Dispose();
         }
     }
 }
