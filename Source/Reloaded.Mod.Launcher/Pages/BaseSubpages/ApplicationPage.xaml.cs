@@ -80,6 +80,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
+                ViewModel.ApplicationTuple.Save();
                 ViewModel.CheckModCompatibility();
                 await Setup.CheckForMissingDependencies();
 
