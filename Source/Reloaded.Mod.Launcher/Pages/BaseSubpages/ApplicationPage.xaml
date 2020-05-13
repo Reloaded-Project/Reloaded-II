@@ -7,6 +7,7 @@
       xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
       xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
       xmlns:reloadedWpfControls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
+      xmlns:addAppPage="clr-namespace:Reloaded.Mod.Launcher.Commands.AddAppPage"
       mc:Ignorable="d"              
       d:DesignHeight="600" 
       d:DesignWidth="756"
@@ -30,6 +31,15 @@
                                Text="{DynamicResource ApplicationLaunch}"
                                Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                PreviewMouseDown="LaunchApplication_PreviewMouseDown"/>
+
+
+                    <!-- Make Shortcut -->
+                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="{DynamicResource FontSizeSmaller}"
+                               Text="{DynamicResource AddAppCreateShortcut}"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                               PreviewMouseDown="MakeShortcut_PreviewMouseDown"/>
 
                     <!-- Load Mod Collection -->
                     <TextBlock Style="{DynamicResource TextblockWithColourChange}" 

@@ -4,7 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
+using Reloaded.Mod.Launcher.Commands.AddAppPage;
+using Reloaded.Mod.Launcher.Commands.ApplicationPage;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
@@ -42,12 +45,13 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public Timer RefreshProcessesWithLoaderTimer { get; private set; }
         public ApplicationSubPage Page { get; private set; }
         public Process SelectedProcess { get; set; }
+        public ICommand MakeShortcutCommand { get; set; }
 
         public ApplicationViewModel(ImageApplicationPathTuple tuple, ManageModsViewModel modsViewModel)
         {
             ApplicationTuple    = tuple;
             ManageModsViewModel = modsViewModel;
-
+            MakeShortcutCommand = new MakeShortcutCommand(tuple);
 
             IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
             InstanceTracker = new ApplicationInstanceTracker(tuple.Config.AppLocation);

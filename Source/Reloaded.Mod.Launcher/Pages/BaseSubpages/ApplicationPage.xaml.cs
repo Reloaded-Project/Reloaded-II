@@ -89,6 +89,13 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             }
         }
 
+
+        private void MakeShortcut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (ViewModel.MakeShortcutCommand.CanExecute(null))
+                ViewModel.MakeShortcutCommand.Execute(null);
+        }
+
         private void LoadModSet_PreviewMouseDown(object sender, MouseButtonEventArgs e) => ViewModel.LoadModSet();
         private void SaveModSet_PreviewMouseDown(object sender, MouseButtonEventArgs e) => ViewModel.SaveModSet();
 

@@ -22,7 +22,6 @@
 
             <addAppPage1:DeleteApplicationCommand x:Key="DeleteApplicationCommand"/>
             <addAppPage1:AddApplicationCommand x:Key="AddApplicationCommand"/>
-            <addAppPage1:MakeShortcutCommand x:Key="MakeShortcutCommand"/>
 
             <!-- Sort the app list -->
             <CollectionViewSource Source="{Binding MainPageViewModel.Applications, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Key="SortedApps" IsLiveSortingRequested="True">
@@ -124,10 +123,6 @@
                                          IsOpen="False">
                     <controls:PopupLabel.HiddenContent>
                         <StackPanel>
-                            <Button Content="{DynamicResource AddAppCreateShortcut}" 
-                                        Margin="{DynamicResource CommonItemVerticalMargin}" 
-                                        HorizontalAlignment="Stretch"
-                                        Command="{StaticResource MakeShortcutCommand}"/>
 
                             <CheckBox IsChecked="{Binding Application.Config.AutoInject}" 
                                     Margin="{DynamicResource CommonItemVerticalMargin}" 
