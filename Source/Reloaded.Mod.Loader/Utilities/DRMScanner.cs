@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.Logging;
 
 namespace Reloaded.Mod.Loader.Utilities

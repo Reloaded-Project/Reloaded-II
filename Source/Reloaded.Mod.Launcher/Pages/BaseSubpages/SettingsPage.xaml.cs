@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using Reloaded.Mod.Launcher.Commands.Dialog;
 using Reloaded.Mod.Launcher.Models.ViewModel;
-using Reloaded.Mod.Loader.IO;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {

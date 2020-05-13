@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum;
 using Reloaded.WPF.MVVM;
 

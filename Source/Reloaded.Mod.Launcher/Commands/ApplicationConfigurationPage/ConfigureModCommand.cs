@@ -13,7 +13,6 @@ using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
-using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 
 namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage

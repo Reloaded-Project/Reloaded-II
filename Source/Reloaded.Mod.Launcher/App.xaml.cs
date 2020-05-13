@@ -6,12 +6,10 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows;
-using System.Windows.Navigation;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
-using MessageBox = System.Windows.MessageBox;
 
 namespace Reloaded.Mod.Launcher
 {

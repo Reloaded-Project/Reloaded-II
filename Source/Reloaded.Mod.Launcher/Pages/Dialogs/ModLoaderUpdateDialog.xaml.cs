@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Onova;
 using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;

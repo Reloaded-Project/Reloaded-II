@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.WPF.MVVM;

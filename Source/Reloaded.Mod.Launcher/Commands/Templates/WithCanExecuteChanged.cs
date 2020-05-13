@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.Windows;
 using Reloaded.Mod.Launcher.Utility;
 
 namespace Reloaded.Mod.Launcher.Commands.Templates

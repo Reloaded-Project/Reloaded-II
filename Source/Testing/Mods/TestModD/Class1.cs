@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TestModD
+﻿namespace TestModD
 {
     public class Class1
     {

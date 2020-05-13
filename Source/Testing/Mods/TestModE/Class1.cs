@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TestModE
+﻿namespace TestModE
 {
     public class Class1
     {

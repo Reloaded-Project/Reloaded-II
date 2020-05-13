@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ookii.Dialogs.Wpf;
-using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO.Config;

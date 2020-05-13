@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Navigation;
-using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using Onova;
 using Onova.Services;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Reloaded.Mod.Shared
+﻿namespace Reloaded.Mod.Shared
 {
     public class SharedConstants
     {
