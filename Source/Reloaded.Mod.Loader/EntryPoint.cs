@@ -48,7 +48,7 @@ namespace Reloaded.Mod.Loader
         }
 
         private static void LoadMods() => _loader.LoadForCurrentProcess();
-        private static void CheckForDRM() => DRMScanner.PrintWarnings(_loader.Console);
+        private static void CheckForDRM() => DRMNotifier.PrintWarnings(_loader.Console);
         private static void CreateLoader() => _loader = new Loader();
         private static void CreateHost() => _server = new Host(_loader);
 
