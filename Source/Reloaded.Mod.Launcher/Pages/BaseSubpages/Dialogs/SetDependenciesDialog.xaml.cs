@@ -22,7 +22,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         public SetDependenciesDialog(ManageModsViewModel manageModsViewModel)
         {
             InitializeComponent();
-            ViewModel = new SetDependenciesDialogViewmodel(manageModsViewModel, new ResourceManipulator(this.Contents));
+            ViewModel = new SetDependenciesDialogViewmodel(manageModsViewModel, new DictionaryResourceManipulator(this.Contents.Resources));
             this.Closed += OnClosed;
         }
 
@@ -39,7 +39,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         public string ModsFilter { get; set; } = "";
         private readonly CollectionViewSource _dependenciesViewSource;
 
-        public SetDependenciesDialogViewmodel(ManageModsViewModel manageModsViewModel, ResourceManipulator manipulator)
+        public SetDependenciesDialogViewmodel(ManageModsViewModel manageModsViewModel, DictionaryResourceManipulator manipulator)
         {
             ManageModsViewModel = manageModsViewModel;
             CurrentMod = ManageModsViewModel.SelectedModTuple;

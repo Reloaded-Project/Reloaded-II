@@ -6,7 +6,7 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
-    <Version>1.4.5</Version>
+    <Version>1.5.0</Version>
     <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | Build: $([System.DateTime]::UtcNow.ToString("s"))</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
@@ -53,7 +53,6 @@
     <Page Remove="Languages\pt-PT.xaml" />
     <Page Remove="Languages\ru-RU.xaml" />
     <Page Remove="Languages\tr-TR.xaml" />
-    <Page Remove="Properties\DesignTimeResources.xaml" />
     <Page Remove="Styles\Controls.xaml" />
     <Page Remove="Styles\Settings.xaml" />
     <Page Remove="Styles\Window_Settings.xaml" />
@@ -108,12 +107,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Properties\DesignTimeResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.2.0" />
     <PackageReference Include="Ninject" Version="3.3.4" />
@@ -122,7 +115,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
-    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="2.0.1" />
+    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.0" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Management" Version="4.7.0" />
   </ItemGroup>

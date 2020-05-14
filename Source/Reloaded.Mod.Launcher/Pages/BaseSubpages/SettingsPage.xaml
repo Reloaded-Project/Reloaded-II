@@ -4,6 +4,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
+    xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
     mc:Ignorable="d"
     d:DesignHeight="600" 
     d:DesignWidth="756"
@@ -65,6 +66,18 @@
                               IsChecked="{Binding LoaderConfig.ShowConsole}"
                               Content="{DynamicResource LoaderSettingsShowConsole}"
                               Style="{DynamicResource DefaultCheckBox}"/>
+
+                    <ComboBox IsSynchronizedWithCurrentItem="True"
+                              Margin="{DynamicResource CommonItemCombinedMargin}"
+                              SelectedItem="{Binding LanguageSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              ItemsSource="{Binding LanguageSelector.Files, UpdateSourceTrigger=PropertyChanged}"
+                              MaxWidth="133" Width="133" SelectionChanged="LanguageChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
 
                 <!-- Bottom Row: Statistics and Warning -->

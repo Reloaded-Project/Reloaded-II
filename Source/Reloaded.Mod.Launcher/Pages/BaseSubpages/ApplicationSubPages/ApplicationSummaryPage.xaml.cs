@@ -13,7 +13,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
     public partial class ApplicationSummaryPage : ApplicationSubPage, IDisposable
     {
         public ApplicationSummaryViewModel ViewModel { get; set; }
-        private readonly ResourceManipulator _manipulator;
+        private readonly DictionaryResourceManipulator _manipulator;
         private readonly CollectionViewSource _modsViewSource;
 
         public ApplicationSummaryPage()
@@ -21,7 +21,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
             InitializeComponent();
             ViewModel = IoC.Get<ApplicationSummaryViewModel>();
 
-            _manipulator = new ResourceManipulator(Contents);
+            _manipulator = new DictionaryResourceManipulator(this.Contents.Resources);
             _modsViewSource = _manipulator.Get<CollectionViewSource>("FilteredMods");
             _modsViewSource.Filter += ModsViewSourceOnFilter;
             AnimateOutFinished += Dispose;

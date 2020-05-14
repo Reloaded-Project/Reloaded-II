@@ -1,10 +1,13 @@
 ﻿<Application x:Class="Reloaded.Mod.Launcher.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <controls:DesignTimeResourceDictionary RunTimeSource="pack://siteoforigin:,,,/Theme/Default/Root.xaml" DesignTimeSource="pack://application:,,,/Reloaded.WPF.Theme.Default;component/Theme/Default/Root.xaml"/>
+
                 <ResourceDictionary Source="Styles/Settings.xaml"/>
                 <ResourceDictionary Source="Styles/Controls.xaml"/>
                 <ResourceDictionary Source="Styles/Window_Settings.xaml"/>

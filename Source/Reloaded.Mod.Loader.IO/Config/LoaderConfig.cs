@@ -70,6 +70,10 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         public string[] EnabledPlugins { get; set; }
 
+        /// <summary>
+        /// The language file used by the Reloaded II launcher.
+        /// </summary>
+        public string LanguageFile { get; set; } = "en-GB.xaml";
         public bool FirstLaunch { get; set; } = true;
 
         /// <summary>

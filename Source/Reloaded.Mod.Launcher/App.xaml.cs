@@ -22,6 +22,12 @@ namespace Reloaded.Mod.Launcher
         /// Returns if the application is running as root/sudo/administrator.
         /// </summary>
         public static bool IsElevated { get; } = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+
+        /// <summary>
+        /// Allows for selection of an individual language.
+        /// </summary>
+        public static XamlFileSelector Selector { get; private set; } 
+
         private Dictionary<string, string> _commandLineArguments = new Dictionary<string, string>();
 
         /// <summary>
@@ -68,7 +74,9 @@ namespace Reloaded.Mod.Launcher
         private void OnStartup(object sender, StartupEventArgs e)
         {            
             // Ideally this should be in Setup, however the download dialogs should be localized.
-            SetupLocalization();
+            var launcherFolder = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+            Selector = new XamlFileSelector($"{launcherFolder}\\Languages");
+            Resources.MergedDictionaries.Add(Selector);
 
             /* Check if Download Mod */
             if (_commandLineArguments.TryGetValue(Constants.ParameterDownload, out string downloadUrl))
@@ -92,21 +100,6 @@ namespace Reloaded.Mod.Launcher
             string[] args = Environment.GetCommandLineArgs();
             for (int index = 1; index < args.Length; index += 2)
                 _commandLineArguments.Add(args[index], args[index + 1]);
-        }
-
-        /// <summary>
-        /// Sets up localization for the system language.
-        /// </summary>
-        private static void SetupLocalization()
-        {
-            // Set language dictionary.
-            var langDict = new ResourceDictionary();
-            string culture = Thread.CurrentThread.CurrentCulture.ToString();
-            string languageFilePath = AppDomain.CurrentDomain.BaseDirectory + $"/Languages/{culture}.xaml";
-            if (File.Exists(languageFilePath))
-                langDict.Source = new Uri(languageFilePath, UriKind.Absolute);
-
-            Current.Resources.MergedDictionaries.Add(langDict);
         }
     }
 }

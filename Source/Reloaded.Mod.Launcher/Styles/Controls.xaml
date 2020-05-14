@@ -8,7 +8,8 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <reloadedWPF:SiteOfOriginResourceDictionary RedirectSource="pack://application:,,,/Theme/Default/Root.xaml"/>
+                <reloadedWPF:DesignTimeResourceDictionary DesignTimeSource="pack://application:,,,/Theme/Default/Root.xaml"
+                                                          RunTimeSource="pack://siteoforigin:,,,/Theme/Default/Root.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>

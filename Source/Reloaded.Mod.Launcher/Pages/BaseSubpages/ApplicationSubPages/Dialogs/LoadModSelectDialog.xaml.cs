@@ -29,7 +29,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs
             ReloadedApplicationViewModel = reloadedApplicationViewModel;
 
             // Setup filters
-            var manipulator = new ResourceManipulator(this.Contents);
+            var manipulator = new DictionaryResourceManipulator(this.Contents.Resources);
             _modsViewSource = manipulator.Get<CollectionViewSource>("FilteredMods");
             _modsViewSource.Filter += ModsViewSourceOnFilter;
         }

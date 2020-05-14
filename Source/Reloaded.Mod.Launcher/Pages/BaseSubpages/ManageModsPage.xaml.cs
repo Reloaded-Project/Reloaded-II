@@ -33,7 +33,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
 
             // Setup filters
-            var manipulator = new ResourceManipulator(this.Contents);
+            var manipulator = new DictionaryResourceManipulator(this.Contents.Resources);
             _modsViewSource = manipulator.Get<CollectionViewSource>("SortedMods");
             _appsViewSource = manipulator.Get<CollectionViewSource>("SortedApps");
             _modsViewSource.Filter += ModsViewSourceOnFilter;
