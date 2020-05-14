@@ -13,12 +13,14 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public AddApplicationCommand AddApplicationCommand { get; set; }
         public DeleteApplicationCommand DeleteApplicationCommand { get; set; }
         public SetApplicationImageCommand SetApplicationImageCommand { get; set; }
+        public DeployAsiLoaderCommand DeployAsiLoaderCommand { get; set; }
 
         public AddAppViewModel(MainPageViewModel viewModel)
         {
             MainPageViewModel = viewModel;
             AddApplicationCommand = new AddApplicationCommand(this);
             DeleteApplicationCommand = new DeleteApplicationCommand(this);
+            DeployAsiLoaderCommand = new DeployAsiLoaderCommand(this);
         }
 
         public void RaiseApplicationChangedEvent() => RaisePropertyChangedEvent(nameof(Application));
@@ -26,6 +28,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public void Dispose()
         {
             DeleteApplicationCommand?.Dispose();
+            DeployAsiLoaderCommand?.Dispose();
         }
     }
 }

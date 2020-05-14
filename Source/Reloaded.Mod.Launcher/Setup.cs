@@ -219,11 +219,11 @@ namespace Reloaded.Mod.Launcher
                 throw new DllNotFoundException($"(x64) {LoaderConfig.LoaderDllName} {Errors.LoaderNotFound()}");
 
             // Bootstrappers.
-            var bootstrapper32Path = Path.Combine(launcherDirectory, $"Loader\\X86\\{LoaderConfig.Bootstrapper32Name}");
+            var bootstrapper32Path = Path.Combine(launcherDirectory, $"Loader\\X86\\Bootstrapper\\{LoaderConfig.Bootstrapper32Name}");
             if (!File.Exists(bootstrapper32Path))
                 throw new DllNotFoundException($"{LoaderConfig.Bootstrapper32Name} {Errors.LoaderNotFound()}");
 
-            var bootstrapper64Path = Path.Combine(launcherDirectory, $"Loader\\X64\\{LoaderConfig.Bootstrapper64Name}");
+            var bootstrapper64Path = Path.Combine(launcherDirectory, $"Loader\\X64\\Bootstrapper\\{LoaderConfig.Bootstrapper64Name}");
             if (!File.Exists(bootstrapper64Path))
                 throw new DllNotFoundException($"{LoaderConfig.Bootstrapper64Name} {Errors.LoaderNotFound()}");
 

@@ -65,7 +65,7 @@ The following methods of loading Reloaded support both synchronous and asynchron
 
 Reloaded can be integrated into other ASI/DLL based mod loaders such as [Ultimate-ASI-Loader](https://github.com/ThirteenAG/Ultimate-ASI-Loader), by copying the **bootstrapper**. 
 
-The bootstrapper is just a special DLL that loads .NET Core into an application and then boots Reloaded. **There are two bootstrappers**, one for 64-bit and one for 32-bit applications, and they can be found under the `Loader/X86` and `Loader/X64` directories respectively.
+The bootstrapper is just a special DLL that loads .NET Core into an application and then boots Reloaded. **There are two bootstrappers**, one for 64-bit and one for 32-bit applications, and they can be found under the `Loader/X86/Bootstrapper` and `Loader/X64/Bootstrapper` directories respectively.
 
 ![Bootstrapper](./Images/Bootstrapper.png)
 

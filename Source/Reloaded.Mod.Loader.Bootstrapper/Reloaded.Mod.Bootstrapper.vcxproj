@@ -106,8 +106,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <OutputFile>$(OutDir)\X86\$(TargetName)$(TargetExt)</OutputFile>
-      <ProgramDatabaseFile>$(OutDir)\X86\$(TargetName).pdb</ProgramDatabaseFile>
+      <OutputFile>$(OutDir)\X86\Bootstrapper\$(TargetName)$(TargetExt)</OutputFile>
+      <ProgramDatabaseFile>$(OutDir)\X86\Bootstrapper\$(TargetName).pdb</ProgramDatabaseFile>
       <DelayLoadDLLs>nethost.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
@@ -130,8 +130,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <OutputFile>$(OutDir)\X64\$(TargetName)$(TargetExt)</OutputFile>
-      <ProgramDatabaseFile>$(OutDir)\X64\$(TargetName).pdb</ProgramDatabaseFile>
+      <OutputFile>$(OutDir)\X64\Bootstrapper\$(TargetName)$(TargetExt)</OutputFile>
+      <ProgramDatabaseFile>$(OutDir)\X64\Bootstrapper\$(TargetName).pdb</ProgramDatabaseFile>
       <DelayLoadDLLs>nethost.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
@@ -158,8 +158,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <OutputFile>$(OutDir)\X86\$(TargetName)$(TargetExt)</OutputFile>
-      <ProgramDatabaseFile>$(OutDir)\X86\$(TargetName).pdb</ProgramDatabaseFile>
+      <OutputFile>$(OutDir)\X86\Bootstrapper\$(TargetName)$(TargetExt)</OutputFile>
+      <ProgramDatabaseFile>$(OutDir)\X86\Bootstrapper\$(TargetName).pdb</ProgramDatabaseFile>
       <DelayLoadDLLs>nethost.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
@@ -186,8 +186,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <OutputFile>$(OutDir)\X64\$(TargetName)$(TargetExt)</OutputFile>
-      <ProgramDatabaseFile>$(OutDir)\X64\$(TargetName).pdb</ProgramDatabaseFile>
+      <OutputFile>$(OutDir)\X64\Bootstrapper\$(TargetName)$(TargetExt)</OutputFile>
+      <ProgramDatabaseFile>$(OutDir)\X64\Bootstrapper\$(TargetName).pdb</ProgramDatabaseFile>
       <DelayLoadDLLs>nethost.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
@@ -221,13 +221,13 @@
   <ItemGroup>
     <ContentWithTargetPath Include="nethost/x64-libs/nethost.dll" Condition="'$(Platform)'=='x64'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>X64\nethost.dll</TargetPath>
+      <TargetPath>X64\Bootstrapper\nethost.dll</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup>
     <ContentWithTargetPath Include="nethost/x86-libs/nethost.dll" Condition="'$(Platform)'=='Win32'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>X86\nethost.dll</TargetPath>
+      <TargetPath>X86\Bootstrapper\nethost.dll</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup>

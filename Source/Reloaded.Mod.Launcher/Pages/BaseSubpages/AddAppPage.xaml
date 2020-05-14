@@ -121,6 +121,10 @@
                     <controls:PopupLabel.HiddenContent>
                         <StackPanel>
 
+                            <Button Margin="{DynamicResource CommonItemVerticalMargin}"
+                                    Content="{DynamicResource AsiLoaderInstall}"
+                                    Command="{Binding DeployAsiLoaderCommand}"/>
+
                             <CheckBox IsChecked="{Binding Application.Config.AutoInject}" 
                                     Margin="{DynamicResource CommonItemVerticalMargin}" 
                                     HorizontalAlignment="Center"
