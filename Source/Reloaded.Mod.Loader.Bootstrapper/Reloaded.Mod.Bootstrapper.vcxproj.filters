@@ -25,6 +25,9 @@
     <Filter Include="Header Files\core-setup">
       <UniqueIdentifier>{4c4bb2b8-9685-4b64-9e37-876edd98b4f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\nlohmann">
+      <UniqueIdentifier>{983af5d2-79ad-4ed3-a516-487073aafd86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ReloadedPaths.h">
@@ -50,6 +53,9 @@
     </ClInclude>
     <ClInclude Include="LoaderConfig.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nlohmann\json.hpp">
+      <Filter>Header Files\nlohmann</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -95,8 +101,5 @@
     <Library Include="nethost\x64-libs\nethost.lib">
       <Filter>Header Files\nethost\x64-libs</Filter>
     </Library>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

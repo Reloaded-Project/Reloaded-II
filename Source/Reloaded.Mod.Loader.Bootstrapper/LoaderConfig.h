@@ -1,5 +1,5 @@
 #pragma once
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.hpp"
 #include "CoreCLR.hpp"
 #include "ReloadedPaths.h"
 
