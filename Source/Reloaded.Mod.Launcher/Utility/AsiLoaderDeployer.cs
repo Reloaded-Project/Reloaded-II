@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Reloaded.Mod.Launcher.Models.Model;
-using Reloaded.Mod.Launcher.Properties;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Shared;
+using SharpCompress.Archives.SevenZip;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -55,9 +56,8 @@ namespace Reloaded.Mod.Launcher.Utility
             using var peParser = new BasicPeParser(Application.Config.AppLocation);
             var appDirectory = Path.GetDirectoryName(Application.Config.AppLocation);
             var dllName      = GetFirstDllFile(peParser);
-            var loaderDll    = peParser.Is32BitHeader ? Resources.ASILoader32 : Resources.ASILoader64;
             loaderPath       = Path.Combine(appDirectory, dllName);
-            File.WriteAllBytes(loaderPath, loaderDll);
+            ExtractAsiLoader(loaderPath, !peParser.Is32BitHeader);
         }
 
         /// <summary>
@@ -138,6 +138,33 @@ namespace Reloaded.Mod.Launcher.Utility
             }
 
             return GetSupportedDll(peParser, peParser.Is32BitHeader ? AsiLoaderSupportedDll32 : AsiLoaderSupportedDll64);
+        }
+
+        /// <summary>
+        /// Extracts the ASI loader to a given path.
+        /// </summary>
+        /// <param name="filePath">Absolute file path to extract loader to.</param>
+        /// <param name="is64bit">Whether loader is 64 bit or not.</param>
+        private void ExtractAsiLoader(string filePath, bool is64bit)
+        {
+            var libraryDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var compressedLoaderPath = $"{libraryDirectory}/Loader/Asi/UltimateAsiLoader.7z";
+            var archive = SevenZipArchive.Open(compressedLoaderPath);
+            ExtractFileWithName(is64bit ? "ASILoader64.dll" : "ASILoader32.dll");
+
+            void ExtractFileWithName(string name)
+            {
+                foreach (var entry in archive.Entries)
+                {
+                    if (!String.Equals(entry.Key, name, StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    var stream = entry.OpenEntryStream();
+                    using var writeStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write);
+                    stream.CopyTo(writeStream);
+                    break;
+                }
+            }
         }
 
         #region Constants

@@ -32,6 +32,9 @@
     <None Remove="Languages\hu-HU.xaml" />
     <None Remove="Languages\pl-PL.xaml" />
     <None Remove="LICENSE.txt" />
+    <None Remove="Loader\Asi\ASILoader32.dll" />
+    <None Remove="Loader\Asi\ASILoader64.dll" />
+    <None Remove="Loader\Asi\UltimateAsiLoader.7z" />
     <None Remove="Pages\BaseSubpages\ApplicationPage.xaml" />
     <None Remove="Pages\BaseSubpages\ApplicationSubPages\ApplicationSummaryPage.xaml" />
     <None Remove="Pages\BaseSubpages\ApplicationSubPages\Dialogs\LoadModSelectDialog.xaml" />
@@ -89,6 +92,9 @@
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Loader\Asi\UltimateAsiLoader.7z">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="PropertyChanged.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -134,11 +140,6 @@
     <Compile Update="Pages\BaseSubpages\ManageModsPage.xaml.cs" />
     <Compile Update="Pages\SplashPage.xaml.cs" />
     <Compile Update="Pages\BasePage.xaml.cs" />
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -179,12 +180,5 @@
     <ApplicationDefinition Update="App.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ApplicationDefinition>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 </Project>
