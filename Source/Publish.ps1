@@ -28,6 +28,8 @@ Remove-Item "$outputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x64" -Recurse
 
 # Remove debug/compile leftovers.
+Get-ChildItem $loader32OutputPath -Include *.exe -Recurse | Remove-Item -Force -Recurse
+Get-ChildItem $loader64OutputPath -Include *.exe -Recurse | Remove-Item -Force -Recurse
 Get-ChildItem $outputPath -Include *.pdb -Recurse | Remove-Item -Force -Recurse
 Get-ChildItem $outputPath -Include *.xml -Recurse | Remove-Item -Force -Recurse
 Get-ChildItem $outputPath -Include *.exp -Recurse | Remove-Item -Force -Recurse
