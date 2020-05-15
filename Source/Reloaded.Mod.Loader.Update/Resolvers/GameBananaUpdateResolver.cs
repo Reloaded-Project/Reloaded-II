@@ -46,7 +46,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             return FromDateTime(fileTimeStamp);
         }
 
-        public async Task<IReadOnlyList<Version>> GetPackageVersionsAsync()
+        public async Task<IReadOnlyList<Version>> GetPackageVersionsAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             try
             {
@@ -56,7 +56,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
                 {
                     ItemFile = Item.Files.First(x => CaseInsensitiveStringContains(x.Value.FileName, Config.FileNamePattern)).Value;
                     var date = ItemFile.DateAdded;
-                    return new []{ FromDateTime(date) };
+                    return new[] { FromDateTime(date) };
                 }
             }
             catch (Exception) { /* Ignored */ }

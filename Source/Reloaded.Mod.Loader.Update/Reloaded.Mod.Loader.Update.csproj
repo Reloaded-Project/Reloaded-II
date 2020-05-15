@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,7 +9,7 @@
     <PackageReference Include="NuGet.Packaging.Core" Version="5.5.1" />
     <PackageReference Include="NuGet.Protocol" Version="5.5.1" />
     <PackageReference Include="Octokit" Version="0.46.0" />
-    <PackageReference Include="Onova.rii" Version="2.4.6" />
+    <PackageReference Include="Onova" Version="2.6.0" />
     <PackageReference Include="SharpCompress" Version="0.25.0" />
   </ItemGroup>
 

@@ -103,7 +103,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             return Version.Parse(_modTuple.Object.ModVersion);
         }
 
-        public async Task<IReadOnlyList<Version>> GetPackageVersionsAsync()
+        public async Task<IReadOnlyList<Version>> GetPackageVersionsAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             if (_releases == null)
                 _releases = await GetReleases(_githubConfig);
@@ -111,7 +111,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             // Return no mods if rate limit hit.
             if (_releases == null)
                 return new List<Version>();
-            
+
             var versions = new List<Version>();
             foreach (var release in _releases)
             {
