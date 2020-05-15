@@ -55,7 +55,10 @@ namespace Reloaded.Mod.Launcher
                 UpdateSource();
         }
 
-        private void OnAvailableXamlFilesUpdated(object sender, FileSystemEventArgs e) => PopulateXamlFiles();
+        private void OnAvailableXamlFilesUpdated(object sender, FileSystemEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(PopulateXamlFiles);
+        }
 
 
         #region PropertyChanged
