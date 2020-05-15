@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using PeNet;
 
 namespace Reloaded.Mod.Shared
 {
@@ -14,8 +13,8 @@ namespace Reloaded.Mod.Shared
         /// </summary>
         public static unsafe bool HasSteamStub(string filePath)
         {
-            var peFile = new PeFile(filePath);
-            return peFile.ImageSectionHeaders.Any(x => x.Name.ToString() == SteamBindSection);
+            using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            return HasSteamStub(fileStream);
         }
 
         /// <summary>
@@ -23,8 +22,8 @@ namespace Reloaded.Mod.Shared
         /// </summary>
         public static unsafe bool HasSteamStub(Stream stream)
         {
-            var peFile = new PeFile(stream);
-            return peFile.ImageSectionHeaders.Any(x => x.Name.ToString() == SteamBindSection);
+            using var parser = new BasicPeParser(stream);
+            return parser.ImageSectionHeaders.Any(x => x.Name.ToString() == SteamBindSection);
         }
 
         /// <summary>
@@ -33,10 +32,8 @@ namespace Reloaded.Mod.Shared
         public static unsafe bool CheckCurrentProcess()
         {
             var process = Process.GetCurrentProcess();
-            using (var stream = new UnmanagedMemoryStream((byte*)process.MainModule.BaseAddress, process.MainModule.ModuleMemorySize))
-            {
-                return HasSteamStub(stream);
-            }
+            using var stream = new UnmanagedMemoryStream((byte*)process.MainModule.BaseAddress, process.MainModule.ModuleMemorySize);
+            return HasSteamStub(stream);
         }
     }
 }

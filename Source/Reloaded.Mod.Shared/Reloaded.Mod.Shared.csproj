@@ -13,7 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PeNet" Version="2.2.6" />
     <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
   </ItemGroup>
 
