@@ -57,7 +57,11 @@ namespace Reloaded.Mod.Launcher.Utility
                 if (_process.HasExited)
                     return 0;
 
-                return Client.GetPort((int)_process.Id);
+                var port = Client.GetPort((int)_process.Id);
+                if (port == 0)
+                    throw new Exception("Reloaded is still loading.");
+
+                return port;
             }, WhileCondition, _xamlModLoaderSetupTimeout.Get(), _xamlModLoaderSetupSleepTime.Get());
         }
 

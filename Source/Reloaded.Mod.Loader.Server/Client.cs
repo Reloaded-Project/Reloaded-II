@@ -48,6 +48,7 @@ namespace Reloaded.Mod.Loader.Server
         /// Attempts to acquire the port to connect to a remote process with a specific id.
         /// </summary>
         /// <exception cref="FileNotFoundException"><see cref="MemoryMappedFile"/> was not created by the mod loader, in other words, mod loader is not loaded.</exception>
+        /// <returns>0 if Reloaded is still initializing, exception if not initialized, else a valid port.</returns>
         public static int GetPort(int pid)
         {
             var mappedFile = MemoryMappedFile.OpenExisting(ServerUtility.GetMappedFileNameForPid(pid));

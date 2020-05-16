@@ -60,16 +60,21 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         public static int Initialize(IntPtr unusedPtr, int unusedSize)
         {
-            // Setup Loader
-            SetupLoader();
-
             // Write port as a Memory Mapped File, to allow Mod Loader's Launcher to discover the mod port.
+            // (And to stop bootstrapper from loading loader again).
             int pid             = Process.GetCurrentProcess().Id;
             _memoryMappedFile   = MemoryMappedFile.CreateOrOpen(ServerUtility.GetMappedFileNameForPid(pid), sizeof(int));
             var view            = _memoryMappedFile.CreateViewStream();
             var binaryWriter    = new BinaryWriter(view);
-            binaryWriter.Write(_server.Port);
+            binaryWriter.Write((int)0);
 
+            // Setup Loader
+            SetupLoader();
+
+            // Only write port on completed initialization.
+            // If port is 0, assume in loading state
+            binaryWriter.Seek(-sizeof(int), SeekOrigin.Current);
+            binaryWriter.Write(_server.Port);
             return _server?.Port ?? 0;
         }
 
