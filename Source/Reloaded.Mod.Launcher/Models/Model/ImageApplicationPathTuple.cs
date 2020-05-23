@@ -1,16 +1,19 @@
 ﻿using System.Windows.Media;
+using PropertyChanged;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.WPF.MVVM;
 
 namespace Reloaded.Mod.Launcher.Models.Model
 {
-    public class ImageApplicationPathTuple
+    public class ImageApplicationPathTuple : ObservableObject
     {
         private static readonly ConfigReader<ApplicationConfig> ConfigReader = new ConfigReader<ApplicationConfig>();
 
         /// <summary>
         /// The image to represent the application by in the GUI.
         /// </summary>
+        [DoNotCheckEquality]
         public ImageSource Image { get; set; }
 
         /// <summary>

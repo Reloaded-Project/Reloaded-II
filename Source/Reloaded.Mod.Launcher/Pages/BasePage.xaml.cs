@@ -11,35 +11,34 @@ namespace Reloaded.Mod.Launcher.Pages
     /// </summary>
     public partial class BasePage : ReloadedIIPage
     {
-        private readonly MainPageViewModel _mainPageViewModel;
+        public MainPageViewModel ViewModel { get; set; }
 
         public BasePage() : base()
         {
             InitializeComponent();
-            _mainPageViewModel = IoC.Get<MainPageViewModel>();
-            this.DataContext = _mainPageViewModel;
+            ViewModel = IoC.Get<MainPageViewModel>();
             this.AnimateInFinished += OnAnimateInFinished;
         }
 
         /* Preconfigured Buttons */
         private void AddApp_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            _mainPageViewModel.Page = BaseSubPage.AddApp;
+            ViewModel.Page = BaseSubPage.AddApp;
         }
 
         private void ManageMods_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            _mainPageViewModel.Page = BaseSubPage.ManageMods;
+            ViewModel.Page = BaseSubPage.ManageMods;
         }
 
         private void LoaderSettings_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            _mainPageViewModel.Page = BaseSubPage.SettingsPage;
+            ViewModel.Page = BaseSubPage.SettingsPage;
         }
 
         private void DownloadMods_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            _mainPageViewModel.Page = BaseSubPage.DownloadMods;
+            ViewModel.Page = BaseSubPage.DownloadMods;
         }
 
         private void Application_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -49,7 +48,7 @@ namespace Reloaded.Mod.Launcher.Pages
             {
                 if (element.DataContext is ImageApplicationPathTuple tuple)
                 {
-                    _mainPageViewModel.SwitchToApplication(tuple);
+                    ViewModel.SwitchToApplication(tuple);
                 }
             }
         }

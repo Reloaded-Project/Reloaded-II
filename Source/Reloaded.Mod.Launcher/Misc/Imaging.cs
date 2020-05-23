@@ -11,13 +11,16 @@ namespace Reloaded.Mod.Launcher.Misc
     {
         public static BitmapImage BitmapFromUri(Uri source)
         {
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = source;
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            bitmap.Freeze();
-            return bitmap;
+            using (var stream = new FileStream(source.LocalPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.StreamSource = stream;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+                return bitmapImage;
+            }
         }
 
         public static Bitmap BitmapImageToBitmap(BitmapImage bitmapImage)

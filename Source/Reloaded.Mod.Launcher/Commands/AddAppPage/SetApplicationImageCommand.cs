@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ookii.Dialogs.Wpf;
@@ -21,9 +22,9 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         private XamlResource<string> _xamlAddAppImageSelectorFilter     = new XamlResource<string>("AddAppImageSelectorFilter");
         private readonly AddAppViewModel _addAppViewModel;
 
-        public SetApplicationImageCommand()
+        public SetApplicationImageCommand(AddAppViewModel model)
         {
-            _addAppViewModel = IoC.Get<AddAppViewModel>();
+            _addAppViewModel = model;
         }
 
         public bool CanExecute(object parameter)
@@ -43,24 +44,25 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
                 return;
 
             // Get current selected application and its paths.
-            ApplicationConfig config = _addAppViewModel.Application.Config;
+            var application = _addAppViewModel.Application;
+            string applicationDirectory = Path.GetDirectoryName(application.ConfigPath);
 
             // Get application entry in set of all applications.
-            var appIconPathTuple = _addAppViewModel.MainPageViewModel.Applications.First( x => x.Config.Equals(config) );
-            string applicationDirectory = Path.GetDirectoryName(appIconPathTuple.ConfigPath);
-
             string applicationIconFileName = Path.GetFileName(imagePath);
             if (applicationDirectory != null)
             {
                 string applicationIconPath = Path.Combine(applicationDirectory, applicationIconFileName);
 
                 // Copy image and set config file path.
+                application.Image = null;
+                GC.Collect();
+
                 File.Copy(imagePath, applicationIconPath, true);
-                config.AppIcon = applicationIconFileName;
+                application.Config.AppIcon = applicationIconFileName;
 
                 // No need to write file on disk, file will be updated by binding.
                 ImageSource source = Imaging.BitmapFromUri(new Uri(applicationIconPath, UriKind.Absolute));
-                appIconPathTuple.Image = source;
+                application.Image = source;
             }
         }
 

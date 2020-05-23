@@ -21,6 +21,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             AddApplicationCommand = new AddApplicationCommand(this);
             DeleteApplicationCommand = new DeleteApplicationCommand(this);
             DeployAsiLoaderCommand = new DeployAsiLoaderCommand(this);
+            SetApplicationImageCommand = new SetApplicationImageCommand(this);
         }
 
         public void RaiseApplicationChangedEvent() => RaisePropertyChangedEvent(nameof(Application));

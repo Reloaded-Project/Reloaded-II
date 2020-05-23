@@ -67,7 +67,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             {
                 ViewModel.SetApplicationImageCommand.Execute(null);
                 ViewModel.RaiseApplicationChangedEvent();
-                e.Handled = true;
             }
         }
 

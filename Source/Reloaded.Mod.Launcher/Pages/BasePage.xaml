@@ -10,7 +10,7 @@
              d:DesignHeight="600" d:DesignWidth="800"
              Title="{DynamicResource TitleMainPage}">
 
-    <Grid>
+    <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
         <Grid.Resources>
         </Grid.Resources>
 
@@ -63,7 +63,7 @@
                 </Separator>
 
                 <!-- List of Games -->
-                <ItemsControl Name="ProcessesPanel" ItemsSource="{Binding Path=Applications}"
+                <ItemsControl Name="ProcessesPanel" ItemsSource="{Binding Path=Applications, UpdateSourceTrigger=PropertyChanged}"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Recycling" DockPanel.Dock="Top">
 
@@ -88,7 +88,7 @@
                         <DataTemplate>
                             <Viewbox Margin="{DynamicResource SidebarElementMargin}">
                                 <controls:CircleButton TooltipText="{Binding Path=Config.AppName}"
-                                                       ImageSource="{Binding Path=Image}"
+                                                       ImageSource="{Binding Path=Image, UpdateSourceTrigger=PropertyChanged}"
                                                        PreviewMouseDown="Application_PreviewMouseDown"
                                 />
                             </Viewbox>
