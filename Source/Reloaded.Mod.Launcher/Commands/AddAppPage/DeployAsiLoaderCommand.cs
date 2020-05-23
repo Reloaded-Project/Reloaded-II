@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.Model;
@@ -72,7 +73,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
         /* ICommand */
         public bool CanExecute(object parameter)
         {
-            if (Deployer != null) 
+            if (Deployer != null && File.Exists(Deployer.Application.Config.AppLocation)) 
                 return Deployer.CanDeploy();
 
             return false;
