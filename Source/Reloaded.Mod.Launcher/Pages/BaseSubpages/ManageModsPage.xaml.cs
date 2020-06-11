@@ -8,6 +8,7 @@ using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Utilities;
@@ -80,7 +81,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         private void ListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (ViewModel.SelectedModTuple != null)
-                ViewModel.Icon = Imaging.BitmapFromUri(new Uri(ViewModel.SelectedModTuple.Image));
+                ActionWrappers.TryCatch(() => ViewModel.Icon = Imaging.BitmapFromUri(new Uri(ViewModel.SelectedModTuple.Image)));
 
             // Tell viewmodel to swap ModId compatibility chart.
             ImageModPathTuple oldModTuple = null;
