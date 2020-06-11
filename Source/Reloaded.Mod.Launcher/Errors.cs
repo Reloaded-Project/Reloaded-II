@@ -5,6 +5,7 @@ namespace Reloaded.Mod.Launcher
     public static class Errors
     {
         public static string Error()                                => ApplicationResourceAcquirer.GetTypeOrAlternative("ErrorError", "Error");
+        public static string UnknownError()                         => ApplicationResourceAcquirer.GetTypeOrAlternative("ErrorUnknown", "Unknown Error");
         public static string PathNullOrEmpty()                      => ApplicationResourceAcquirer.GetTypeOrAlternative("ErrorPathNullOrEmpty", "The path to this application is either null or empty. Please fix the path.");
         public static string FailedToGetDirectoryOfMod()            => ApplicationResourceAcquirer.GetTypeOrAlternative("ErrorFailedToGetDirectoryOfMod", "Failed to get directory of mod to delete.");
         public static string FailedToGetDirectoryOfApplication()    => ApplicationResourceAcquirer.GetTypeOrAlternative("ErrorFailedToGetDirectoryOfApplication", "Failed to get directory of application to delete.");

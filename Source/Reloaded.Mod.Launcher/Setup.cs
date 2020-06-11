@@ -157,7 +157,11 @@ namespace Reloaded.Mod.Launcher
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (!Debugger.IsAttached)
-                Debugger.Launch();
+            {
+                var exception = ((Exception) e.ExceptionObject);
+                var messageBox = new MessageBox(Errors.UnknownError(), $"{exception.Message}\n{exception.StackTrace}");
+                messageBox.ShowDialog();
+            }
             else 
                 Debugger.Break();
         }
