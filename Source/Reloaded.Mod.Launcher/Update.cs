@@ -14,7 +14,9 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Extractors;
+using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
 using MessageBox = System.Windows.MessageBox;
 
@@ -37,7 +39,7 @@ namespace Reloaded.Mod.Launcher
             try
             {
                 using (var manager = new UpdateManager(
-                    new GithubPackageResolver("Reloaded-Project", "Reloaded-II", "Release.zip"),
+                    new GithubPackageResolver(SharedConstants.GitRepositoryAccount, SharedConstants.GitRepositoryName, SharedConstants.GitRepositoryReleaseName),
                     new ArchiveExtractor()))
                 {
                     // Check for new version and, if available, perform full update and restart

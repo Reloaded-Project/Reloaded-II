@@ -24,5 +24,10 @@
     <system:Int32 x:Key="RefreshApplicationsEventTickTimer">100</system:Int32>  <!-- All application list refresh events are gathered in this interval and only last executed at the end of it. -->
     <system:Int32 x:Key="RefreshModsEventTickTimer">100</system:Int32>  <!-- All mod list refresh events are gathered in this interval and only last executed at the end of it. -->
 
+    <!-- Markdown Displayer -->
+    <system:Double x:Key="MarkdownCellPadding">5</system:Double>
+    <SolidColorBrush x:Key="MarkdownBlockQuoteTextColor">Gray</SolidColorBrush>
+    <Thickness x:Key="MarkdownBlockQuoteThickness">4,0,0,0</Thickness>
+    <Thickness x:Key="MarkdownBlockQuotePadding">16,0,0,0</Thickness>
 
 </ResourceDictionary>

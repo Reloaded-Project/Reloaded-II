@@ -1,0 +1,116 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Styles"
+                    xmlns:markdig="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
+                    xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF">
+
+    <!-- For IntelliSense: Uncomment only when editing. -->
+    <ResourceDictionary.MergedDictionaries>
+        <controls:DesignTimeResourceDictionary RunTimeSource="pack://siteoforigin:,,,/Theme/Default/Root.xaml" DesignTimeSource="pack://application:,,,/Reloaded.WPF.Theme.Default;component/Theme/Default/Root.xaml"/>
+        <controls:DesignTimeResourceDictionary RunTimeSource="pack://siteoforigin:,,,/Styles/Settings.xaml" DesignTimeSource="pack://application:,,,/Reloaded.Mod.Launcher;component/Styles/Settings.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Document styles -->
+    <Style TargetType="{x:Type FlowDocument}" x:Key="{x:Static markdig:Styles.DocumentStyleKey}">
+        <Setter Property="ScrollViewer.Visibility" Value="Hidden"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundColorBrush}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontLight}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmaller}" />
+        <Setter Property="Foreground" Value="{StaticResource TextColorBrush}"/>
+        <Setter Property="LineHeight" Value="{DynamicResource FontSizeSmaller}"/>
+    </Style>
+ 
+    <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.Heading1StyleKey}">
+        <Setter Property="FontFamily" Value="{DynamicResource FontThin}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLargest}" />
+    </Style>
+
+    <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.Heading2StyleKey}">
+        <Setter Property="FontFamily" Value="{DynamicResource FontThin}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarger}" />
+    </Style>
+
+    <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.Heading3StyleKey}">
+        <Setter Property="FontFamily" Value="{DynamicResource FontThin}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeRegular}" />
+    </Style>
+
+    <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.Heading4StyleKey}">
+        <Setter Property="FontFamily" Value="{DynamicResource FontThin}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
+    </Style>
+
+    <Style TargetType="{x:Type Hyperlink}" x:Key="{x:Static markdig:Styles.HyperlinkStyleKey}">
+        <Setter Property="Foreground" Value="{DynamicResource AccentColorLightestBrush}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AccentColorLighterBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type Image}" x:Key="{x:Static markdig:Styles.ImageStyleKey}">
+        <Setter Property="MaxHeight" Value="{Binding RelativeSource={RelativeSource Self}, Path=Source.(BitmapSource.PixelHeight)}" />
+        <Setter Property="MaxWidth" Value="{Binding RelativeSource={RelativeSource Self}, Path=Source.(BitmapSource.PixelWidth)}" />
+    </Style>
+
+    <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.CodeBlockStyleKey}">
+        <Setter Property="FontFamily" Value="Consolas, Lucida Sans Typewriter, Courier New" />
+        <Setter Property="Background" Value="{DynamicResource BorderColorDarkBrush}"/>    
+    </Style>
+
+    <Style TargetType="{x:Type Run}" x:Key="{x:Static markdig:Styles.CodeStyleKey}">
+        <Setter Property="FontFamily" Value="Consolas, Lucida Sans Typewriter, Courier New" />
+    </Style>
+
+    <Style TargetType="{x:Type Section}" x:Key="{x:Static markdig:Styles.QuoteBlockStyleKey}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderColorBrush}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource MarkdownBlockQuoteThickness}" />
+        <Setter Property="Foreground" Value="{DynamicResource MarkdownBlockQuoteTextColor}" />
+        <Setter Property="Padding" Value="{DynamicResource MarkdownBlockQuotePadding}" />
+    </Style>
+
+    <Style TargetType="{x:Type Table}" x:Key="{x:Static markdig:Styles.TableStyleKey}">
+        <Setter Property="CellSpacing" Value="{DynamicResource MarkdownCellPadding}"/>
+    </Style>
+
+    <Style TargetType="{x:Type TableCell}" x:Key="{x:Static markdig:Styles.TableCellStyleKey}"/>
+    <Style TargetType="{x:Type TableRow}" x:Key="{x:Static markdig:Styles.TableHeaderStyleKey}"/>
+
+    <Style TargetType="{x:Type CheckBox}" x:Key="{x:Static markdig:Styles.TaskListStyleKey}">
+        <Setter Property="Margin" Value="0,0,0,-2" />
+    </Style>
+
+    <Style TargetType="{x:Type Line}" x:Key="{x:Static markdig:Styles.ThematicBreakStyleKey}">
+        <Setter Property="Stretch" Value="Fill" />
+        <Setter Property="Stroke" Value="{DynamicResource BorderColorBrush}" />
+    </Style>
+
+    <Style TargetType="{x:Type Span}" x:Key="{x:Static markdig:Styles.SubscriptStyleKey}">
+        <Setter Property="Typography.Variants" Value="Subscript" />
+    </Style>
+
+    <Style TargetType="{x:Type Span}" x:Key="{x:Static markdig:Styles.SuperscriptStyleKey}">
+        <Setter Property="Typography.Variants" Value="Superscript" />
+    </Style>
+
+    <Style TargetType="{x:Type Span}" x:Key="{x:Static markdig:Styles.StrikeThroughStyleKey}">
+        <Setter Property="TextBlock.TextDecorations" Value="Strikethrough" />
+    </Style>
+
+    <Style TargetType="{x:Type Span}" x:Key="{x:Static markdig:Styles.InsertedStyleKey}">
+        <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+    </Style>
+
+    <Style TargetType="markdig:MarkdownViewer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="markdig:MarkdownViewer">
+                    <FlowDocumentScrollViewer Document="{TemplateBinding Document}"
+                                              ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

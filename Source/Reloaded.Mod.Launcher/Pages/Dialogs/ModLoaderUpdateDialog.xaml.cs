@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Octokit;
 using Onova;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Shared;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
@@ -36,6 +40,8 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
         {
             await ViewModel.Update();
         }
+        
+        private void OpenHyperlink(object sender, System.Windows.Input.ExecutedRoutedEventArgs e) => ProcessExtensions.OpenFileWithDefaultProgram(e.Parameter.ToString());
     }
 
     public class ModLoaderUpdateDialogViewModel : ObservableObject
@@ -43,10 +49,12 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
         private static XamlResource<string> _xamlUpdateLoaderRunningTitle = new XamlResource<string>("UpdateLoaderRunningTitle");
         private static XamlResource<string> _xamlUpdateLoaderRunningMessage = new XamlResource<string>("UpdateLoaderRunningMessage");
         private static XamlResource<string> _xamlUpdateLoaderProcessList = new XamlResource<string>("UpdateLoaderProcessList");
+        private static XamlResource<string> _xamlUpdateLoaderChangelogUnavailable = new XamlResource<string>("UpdateLoaderChangelogUnavailable");
 
         public int Progress             { get; set; }
         public string CurrentVersion    { get; set; }
         public string NewVersion        { get; set; }
+        public string ReleaseText       { get; set; } = _xamlUpdateLoaderChangelogUnavailable.Get();
 
         private UpdateManager _manager;
         private Version _targetVersion;
@@ -57,7 +65,17 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             _targetVersion = targetVersion;
 
             CurrentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            NewVersion = _targetVersion.ToString();
+            NewVersion     = _targetVersion.ToString();
+
+            // Try fetch Release info.
+            try
+            {
+                var client      = new GitHubClient(new ProductHeaderValue("Reloaded-II"));
+                var releases    = client.Repository.Release.GetAll(SharedConstants.GitRepositoryAccount, SharedConstants.GitRepositoryName);
+                var release     = releases.Result.First(x => x.TagName.Contains(targetVersion.ToString()));
+                ReleaseText     = release.Body;
+            }
+            catch (Exception ex) { /* Ignored */ }
         }
 
         public async Task Update()

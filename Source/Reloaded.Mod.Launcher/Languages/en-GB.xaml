@@ -160,7 +160,8 @@
     <sys:String x:Key="UpdateLoaderCurrentVersion">Current Version</sys:String>
     <sys:String x:Key="UpdateLoaderNewVersion">New Version</sys:String>
 
-    <sys:String x:Key="UpdateLoaderChangelog">View Changelog</sys:String>
+    <sys:String x:Key="UpdateLoaderChangelogUnavailable">No Changelog Available</sys:String>
+    <sys:String x:Key="UpdateLoaderChangelog">View Changelog on Github</sys:String>
     <sys:String x:Key="UpdateLoaderUpdate">Update</sys:String>
 
     <sys:String x:Key="UpdateLoaderRunningTitle">Applications Running</sys:String>

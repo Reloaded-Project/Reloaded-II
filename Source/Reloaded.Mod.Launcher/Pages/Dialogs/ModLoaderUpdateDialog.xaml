@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
         xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+        xmlns:markdig="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
         mc:Ignorable="d"
         MinHeight="10"
         MinWidth="10"
@@ -14,9 +15,15 @@
         WindowStartupLocation="CenterScreen"
         Title="{DynamicResource UpdateLoaderTitle}"
         Style="{DynamicResource ReloadedWindow}">
+
     <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
 
+        <Grid.CommandBindings>
+            <CommandBinding Command="{x:Static markdig:Commands.Hyperlink}" Executed="OpenHyperlink" />
+        </Grid.CommandBindings>
+
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -44,8 +51,15 @@
             </DockPanel>
         </Grid>
 
+        <!-- Changelog -->
+        <markdig:MarkdownViewer Grid.Row="3" Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                MaxHeight="280" MaxWidth="650"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                Markdown="{Binding ReleaseText, FallbackValue='No Changelog Available'}" />
+
         <!-- Final Buttons -->
-        <Grid Grid.Row="3" Margin="{DynamicResource CommonItemVerticalMarginSmaller}">
+        <Grid Grid.Row="4" Margin="{DynamicResource CommonItemVerticalMarginSmaller}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"   />
                 <ColumnDefinition Width="{DynamicResource UpdateModsMenuMargin}" />
