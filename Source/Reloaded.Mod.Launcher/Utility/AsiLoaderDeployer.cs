@@ -40,7 +40,15 @@ namespace Reloaded.Mod.Launcher.Utility
                 return false;
 
             using var peParser = new BasicPeParser(Application.Config.AppLocation);
-            return GetFirstDllFile(peParser) != null;
+
+            try
+            {
+                return GetFirstDllFile(peParser) != null;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>
