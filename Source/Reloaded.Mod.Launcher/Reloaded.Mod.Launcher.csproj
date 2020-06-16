@@ -2,16 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <UseWPF>true</UseWPF>
+    <TargetFramework>net5.0</TargetFramework>
+	<UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
-    <Version>1.6.1</Version>
-    <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | Build: $([System.DateTime]::UtcNow.ToString("s"))</Copyright>
+    <Version>1.6.2</Version>
+    <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | $(Version) ($([System.DateTime]::UtcNow.ToString("s")))</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-	  <OutputPath>..\Output\Launcher\</OutputPath>
+	<OutputPath>..\Output\Launcher\</OutputPath>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
   </PropertyGroup>
 

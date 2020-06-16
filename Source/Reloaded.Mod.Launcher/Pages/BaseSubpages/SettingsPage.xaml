@@ -28,6 +28,12 @@
                            Style="{DynamicResource BuildTextBlock}"
                            Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
 
+
+                <TextBlock DockPanel.Dock="Bottom"
+                           HorizontalAlignment="Center"
+                           Style="{DynamicResource TextblockWithColourChange}"
+                           Text="{Binding Path=RuntimeVersion, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
+
                 <!-- Docs / User Guide -->
                 <Grid Margin="{DynamicResource CommonItemVerticalMargin}"
                       Width="{Binding ActualWidth, ElementName=Banner}">

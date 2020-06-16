@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
+using System.Reflection;
 using Colorful;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.Logging.Init;
@@ -71,7 +73,8 @@ namespace Reloaded.Mod.Loader.Logging
         {
             System.Console.Write("\n\n");
             
-            Formatter[] formatter = {
+            Formatter[] formatter = 
+            {
                 new Formatter(@"    hMMM+ +MMMh", ColorRed),
                 new Formatter(@"   `MMMM` dMMM/", ColorRed),
                 new Formatter(@"   +MMMh .MMMN`", ColorRed),
@@ -85,7 +88,8 @@ namespace Reloaded.Mod.Loader.Logging
 
             };
 
-            string[] template = {
+            string[] template = 
+            {
                 @"MMMMMMMMMMMMMMMMMMdo`    {0}",
                 @"MMMMMMMMMMMMMMMMMMMMh    {0}",
                 @"MMMM-          `yMMMN    {0}",
@@ -99,31 +103,54 @@ namespace Reloaded.Mod.Loader.Logging
             };
 
 
-            // Hardcoded for this banner, please do not reuse.
-            // -3 from the templated {0}
-            WriteLinesCentered(template, formatter, -3);
-
+            WriteLinesCentered(template, formatter);
+            System.Console.Write("\n");
+            PrintCoreVersion();
             System.Console.Write("\n\n");
         }
 
-        private void WriteLinesCentered(string[] lines, Formatter[] formatters, int characterOffset)
+        private void PrintCoreVersion()
         {
-            // Hardcoded for this banner, please do not reuse.
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            var coreVersion = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+
+            Formatter[] formatters = 
+            { 
+                new Formatter($"{version}", TextColor),
+                new Formatter($"{coreVersion}", ColorRed)
+            };
+
+            WriteLineCentered("{0} // {1}", formatters);
+        }
+
+        private void WriteLinesCentered(string[] lines, Formatter[] formatters)
+        {
             for (int x = 0; x < lines.Length; x++)
             {
-                var line        = lines[x];
-                var formatter   = formatters[x];
+                var line          = lines[x];
+                var formatter     = formatters[x];
 
-                // Get center, accounting for overflow.
-                int consolePointer = (System.Console.WindowWidth - line.Length + characterOffset) / 2;
-                if (consolePointer < 0)
-                    consolePointer = 0;
-
-                System.Console.SetCursorPosition(consolePointer, System.Console.CursorTop);
-                Colorful.Console.WriteLineFormatted(line, formatter, TextColor);
+                WriteLineCentered(line, formatter);
             }
+        }
 
+        private void WriteLineCentered(string line, params Formatter[] formatters)
+        {
+            var formattedLine = String.Format(line, formatters.Select(x => x.Target).ToArray());
+
+            CenterCursor(formattedLine);
+            Colorful.Console.WriteLineFormatted(line, TextColor, formatters);
             System.Console.SetCursorPosition(0, System.Console.CursorTop);
+        }
+
+        private void CenterCursor(string finalText)
+        {
+            // Get center, accounting for overflow.
+            int consolePointer = (System.Console.WindowWidth - finalText.Length) / 2;
+            if (consolePointer < 0)
+                consolePointer = 0;
+
+            System.Console.SetCursorPosition(consolePointer, System.Console.CursorTop);
         }
     }
 }

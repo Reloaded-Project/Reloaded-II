@@ -16,6 +16,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public int TotalApplicationsInstalled { get; set; }
         public int TotalModsInstalled { get; set; }
         public string Copyright { get; set; }
+        public string RuntimeVersion { get; set; }
         public LoaderConfig LoaderConfig { get; set; }
         public XamlFileSelector LanguageSelector => App.Selector;
 
@@ -32,6 +33,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             var version = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
             Copyright = version.LegalCopyright;
+            RuntimeVersion = $"Core: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}";
             SelectCurrentLanguage();
         }
 

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyTitle>Reloaded.Mod.Loader</AssemblyTitle>
     <Product>Reloaded.Mod.Loader</Product>
     <Copyright>Copyright ©  2019</Copyright>
@@ -11,6 +11,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU1605</NoWarn>
+	<Version>1.6.2</Version>
     <ApplicationIcon />
     <OutputType>WinExe</OutputType>
     <StartupObject />
