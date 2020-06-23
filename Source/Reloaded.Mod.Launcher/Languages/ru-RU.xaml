@@ -2,10 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
+    <!-- This file contains the Russian Language Text for Reloaded II -->
+    <!-- xml:space="preserve" allows for new line. &#x0a; is new line (ASCII character). -->
 
     <!-- Page Titles -->
     <sys:String x:Key="TitleAddApplication">Добавить приложение</sys:String>
     <sys:String x:Key="TitleManageMods">Управление модами</sys:String>
+    <sys:String x:Key="TitleDownloadMods">Скачать моды</sys:String>
     <sys:String x:Key="TitleLoaderSettings">Настройки мод-загрузчика</sys:String>
     <sys:String x:Key="TitleMainPage">Главная страница</sys:String>
     <sys:String x:Key="TitleSearchApplications">Поиск\сортировка приложений</sys:String> <!-- Sidebar button to search applications. Removed. Might be brought back someday. -->
@@ -14,12 +17,15 @@
     <!-- Splash Screen: Progress Messages -->
     <sys:String x:Key="SplashCreatingDefaultConfig">Создание стандартной конфигурации</sys:String>
     <sys:String x:Key="SplashCleaningConfigurations">Удаление конфигурации приложения\загрузчика\модов</sys:String> <!-- Cleaning App/Loader/Mod Configurations -->
-    <sys:String x:Key="SplashPreparingResources">Создать Resource</sys:String>
-    <sys:String x:Key="SplashLoadCompleteIn">Завершение загрузки:</sys:String>
+    <sys:String x:Key="SplashPreparingResources">Настройка ресурсов</sys:String>
+    <sys:String x:Key="SplashLoadCompleteIn">Завершение загрузки в:</sys:String>
+    <sys:String x:Key="SplashCreatingTemplates">Создание шаблонов</sys:String>
+    <sys:String x:Key="SplashCheckingForUpdates">Проверка обновлений</sys:String>
+    <sys:String x:Key="SplashRunningSanityChecks">Запуск провероу на исправность</sys:String>
 
     <!-- Add Application Page -->
     <sys:String x:Key="AddAppImageTooltip">Выберите изображение, чтобы импортировать собственный логотип.</sys:String>
-    <sys:String x:Key="AddAppImageSelectorTitle">Выберите изображение, чтобы использовать его как иконку</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Выберите изображение, чтобы использовать его как иконку.</sys:String>
     <sys:String x:Key="AddAppImageSelectorFilter">Изображение</sys:String>
 
     <sys:String x:Key="AddAppNewButton">Новое</sys:String>
@@ -31,8 +37,97 @@
 
     <sys:String x:Key="AddAppAdvancedOptions">Продвинутые инструменты и настройки</sys:String>
     <sys:String x:Key="AddAppCreateShortcut">Создать ярлык</sys:String>
+    <sys:String x:Key="AddAppAutoInject">Автоинъекция</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage" xml:space="preserve">Пометка: Автоинъекция предоставлена, но не рекомендуется к использованию, так как нет гарантии, что моды будут запускать код до приложения.&#x0a;Пожалуйста, используйте обычный метод "Запуск приложения" или метод "Загрузчик DLL", который описан в документации на GitHub.&#x0a;Пожалуйста, не сообщается о багах тех модов, которые не используют автоинъекцию.</sys:String>
 
     <sys:String x:Key="AddAppExecutableTitle">Выберите приложение для создание конфигурации.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">Исполняемый файл приложения</sys:String>
+
+    <sys:String x:Key="AddAppShortcutCreatedTitle">Ярлык создан</sys:String>
+    <sys:String x:Key="AddAppShortcutCreatedMessage">Ярлык создан в:</sys:String>
+
+    <!-- Mod Manager Page -->
+    <sys:String x:Key="ModManagerSearchMods">Поиск модов</sys:String>
+    <sys:String x:Key="ModManagerSearchApps">Поиск приложений</sys:String>
+    <sys:String x:Key="ModManagerExtraOptions">Дополнительные настройки</sys:String>
+    <sys:String x:Key="ModManagerOpenModDirectory">Открыть директорию модов</sys:String>
+    <sys:String x:Key="ModManagerConvertToNuget">Конвертировать в NuGet формат</sys:String>
+    <sys:String x:Key="ModManagerManageDependencies">Управление зависимостями</sys:String>
+    <sys:String x:Key="ModManagerSelectMod">Выбрать мод для изменения деталей.</sys:String>
+    <sys:String x:Key="ModManagerSelectApp">Выбрать приложение, которое совместимо с данным модом.</sys:String>
+
+    <!-- Mod Manager: Set Dependencies -->
+    <sys:String x:Key="TitleSetDependenciesDialog">Установить зависимости для мода.</sys:String>
+
+    <!-- Mod Manager: Create Mod Page -->
+    <sys:String x:Key="TitleCreateModDialog">Создать мод</sys:String>
+    <sys:String x:Key="CreateModDialogId">Уникальный Id</sys:String>
+    <sys:String x:Key="CreateModDialogName">Название</sys:String>
+    <sys:String x:Key="CreateModDialogAuthor">Автор</sys:String>
+    <sys:String x:Key="CreateModDialogVersion">Версия</sys:String>
+    <sys:String x:Key="CreateModDialogDescription">Короткое описание</sys:String>
+    <sys:String x:Key="CreateModDialogDependencies">Зависимости мода</sys:String>
+
+    <sys:String x:Key="CreateModDialogImageSelectorTitle">Выбрать кастомное лого для мода.</sys:String>
+    <sys:String x:Key="CreateModDialogImageSelectorFilter">Изображение</sys:String>
+
+    <sys:String x:Key="TitleCreateModNonUniqueId">Неуникальный ID</sys:String>
+    <sys:String x:Key="MessageCreateModNonUniqueId" xml:space="preserve">ModId мода, который Вы создаете, не является уникальным.&#x0a;Пожалуйста, сделайте ModId уникальным.</sys:String>
+
+    <!-- First Launch -->
+    <sys:String x:Key="TitleFirstLaunch">Добро пжаловать в Reloaded II</sys:String>
+    <sys:String x:Key="FirstLaunchLineOne">Это ваше первое использование Reloaded II.</sys:String>
+    <sys:String x:Key="FirstLaunchLineTwo">Перед тем как начать, Вы можете просмотреть следующий материал по ссылкам:</sys:String>
+    <sys:String x:Key="FirstLaunchLineDocumentation">Документация</sys:String>
+    <sys:String x:Key="FirstLaunchLineUserguide">Пользовательское руководство</sys:String>
+    <sys:String x:Key="FirstLaunchLineThree">Вы можете познее найти данные ссылки в разделе [Настройки мод-загрузчика].</sys:String>
+
+    <!-- Reloaded Process -->
+    <sys:String x:Key="ReloadedProcessResume">Возобновить</sys:String>
+    <sys:String x:Key="ReloadedProcessSuspend">Приостановить</sys:String>
+    <sys:String x:Key="ReloadedProcessUnload">Выгрузить</sys:String>
+    <sys:String x:Key="ReloadedProcessRefresh">Обновить</sys:String>
+    <sys:String x:Key="ReloadedProcessLoadMod">Загрузить мод</sys:String>
+    <sys:String x:Key="ReloadedProcessNotice">Пометка: Это меню в первую очередь предназначено для использования разработчиками.</sys:String>
+
+    <!-- Update Mod Dialog -->
+    <sys:String x:Key="UpdateModTitle">Обновления мода доступны</sys:String>
+    <sys:String x:Key="UpdateModDownload">Скачать</sys:String>
+    <sys:String x:Key="UpdateModModId">Id мода</sys:String>
+    <sys:String x:Key="UpdateModSize">Размер (MB)</sys:String>
+    <sys:String x:Key="UpdateModOldVersion">Старая версия</sys:String>
+    <sys:String x:Key="UpdateModNewVersion">Новая версия</sys:String>
+
+    <!-- Update Loader Dialog -->
+    <sys:String x:Key="UpdateLoaderTitle">Доступно обновление</sys:String>
+    <sys:String x:Key="UpdateLoaderCurrentVersion">Текущая версия</sys:String>
+    <sys:String x:Key="UpdateLoaderNewVersion">Новая версия</sys:String>
+
+    <sys:String x:Key="UpdateLoaderChangelog">Открыть список изменений</sys:String>
+    <sys:String x:Key="UpdateLoaderUpdate">Обновить</sys:String>
+
+    <sys:String x:Key="UpdateLoaderRunningTitle">Приложение запущено</sys:String>
+    <sys:String x:Key="UpdateLoaderRunningMessage" xml:space="preserve">У вас есть запущенные Reloaded приложения.&#x0a;Обновление не может быть выполнено, пожалуйста, закройте все приложения.</sys:String>
+    <sys:String x:Key="UpdateLoaderProcessList">Список процессов</sys:String>
+
+    <!-- Download Mods Page -->
+    <sys:String x:Key="DownloadModsDownload">Скачать</sys:String>
+    <sys:String x:Key="DownloadModsDownloading">Идет скачивание</sys:String>
+    <sys:String x:Key="DownloadModsAlreadyDownloaded">Скачано</sys:String>
+
+    <sys:String x:Key="DownloadModsVisitWebsite">Посетить Website</sys:String>
+    <sys:String x:Key="DownloadModsCheckUpdatesAndDependencies">Проверить обновления &amp; Зависимости</sys:String>
+
+    <!-- Dialogs -->
+    <sys:String x:Key="MessageBoxButtonOK">OK</sys:String>
+    <sys:String x:Key="MessageBoxButtonCancel">Отмена</sys:String>
+
+    <!-- Download Mod Archive -->
+    <sys:String x:Key="DownloadModArchiveTitle">Скачать архив мода</sys:String>
+    <sys:String x:Key="DownloadModArchiveName">Имя файла</sys:String>
+
+    <!-- Configure Mod Dialog -->
+    <sys:String x:Key="ConfigureModDialogTitle">Сконфигурировать мод</sys:String>
+    <sys:String x:Key="ConfigureModDialogSave">Сохранить</sys:String>
 
 </ResourceDictionary>
