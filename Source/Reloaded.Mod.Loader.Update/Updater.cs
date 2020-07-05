@@ -85,19 +85,12 @@ namespace Reloaded.Mod.Loader.Update
 
             foreach (var pair in summary.ResolverManagerResultPairs)
             {
-                try
-                {
-                    var manager = pair.Manager;
-                    var version = pair.Result.LastVersion;
-                    await manager.PrepareUpdateAsync(version, totalProgressHandler);
-                    manager.LaunchUpdater(version, false);
-                    pair.Resolver.PostUpdateCallback(true);
-                    completeMods.Value += 1;
-                }
-                catch (Exception)
-                {
-                    Debugger.Break();
-                }
+                var manager = pair.Manager;
+                var version = pair.Result.LastVersion;
+                await manager.PrepareUpdateAsync(version, totalProgressHandler);
+                manager.LaunchUpdater(version, false);
+                pair.Resolver.PostUpdateCallback(true);
+                completeMods.Value += 1;
             }
         }
 
