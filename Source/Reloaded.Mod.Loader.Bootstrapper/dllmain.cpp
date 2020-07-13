@@ -33,7 +33,6 @@ HANDLE bootstrapperMemoryMappedFileHandle;
 // Reloaded Init Functions
 DWORD WINAPI load_reloaded_async(LPVOID lpParam);
 bool preload_setup_info();
-void load_reloaded();
 
 void reboot_via_launcher(); // If ReloadedPortable.txt exists in DLL directory.
 bool is_reloaded_already_loaded();
@@ -106,22 +105,6 @@ DWORD WINAPI load_reloaded_async(LPVOID lpParam)
 {
 	load_reloaded(paths);
 	return 0;
-}
-
-void load_reloaded()
-{
-	try
-	{
-		if (! is_reloaded_already_loaded() || !is_reloaded_bootstrapper_already_loaded())
-		{
-			load_reloaded(paths);
-		}
-	}
-	catch (std::exception& exception)
-	{
-		std::cerr << exception.what() << std::endl;
-		MessageBoxA(nullptr, exception.what(), "[Bootstrapper] Failed to Load Reloaded-II", MB_OK);
-	}
 }
 
 /**
