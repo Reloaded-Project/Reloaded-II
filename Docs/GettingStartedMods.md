@@ -33,9 +33,13 @@ The configuration file has the following parameters:
 - Including the name of the game is essential as it makes your mod easy to find in the `Download Mods` menu.
 
 **Name:** The name of the mod a seen in the launcher.
+
 **Author**: The name of the author(s) of the mod.
+
 **Version**: The version of the mod. Recommended: [Semantic Versioning](https://semver.org).
+
 **Description**: Short summary of the mod.
+
 **Dependencies**: List of mods that users need enabled use this mod. (Mod loader will auto-enable them).
 
 ### 2. Update your Preview Image.
