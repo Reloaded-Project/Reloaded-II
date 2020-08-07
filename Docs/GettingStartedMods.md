@@ -26,21 +26,16 @@ This can be simply done by entering the `Manage Mods` menu and clicking the `New
 ![CreateAConfigFile](./Images/CreateConfigFile.png)
 
 The configuration file has the following parameters:
-**Mod Id**: A name that will uniquely identify the mod.
+- **Mod Id**: A name that will uniquely identify the mod.
+  - **Recommended Format**: "game.type.name"
+  - **Example**: sonicheroes.asset.seasidehillmidnight
+  - Including the name of the game is essential as it makes your mod easy to find in the `Download Mods` menu.
 
-- **Recommended Format**: "game.type.name"
-- **Example**: sonicheroes.asset.seasidehillmidnight
-- Including the name of the game is essential as it makes your mod easy to find in the `Download Mods` menu.
-
-**Name:** The name of the mod a seen in the launcher.
-
-**Author**: The name of the author(s) of the mod.
-
-**Version**: The version of the mod. Recommended: [Semantic Versioning](https://semver.org).
-
-**Description**: Short summary of the mod.
-
-**Dependencies**: List of mods that users need enabled use this mod. (Mod loader will auto-enable them).
+- **Name:** The name of the mod a seen in the launcher.
+- **Author**: The name of the author(s) of the mod.
+- **Version**: The version of the mod. Recommended: [Semantic Versioning](https://semver.org).
+- **Description**: Short summary of the mod.
+- **Dependencies**: List of mods that users need enabled use this mod. (Mod loader will auto-enable them).
 
 ### 2. Update your Preview Image.
 To set the preview image, you can click the `Reloaded` icon above the Mod Id during creation of the mod configuration.
