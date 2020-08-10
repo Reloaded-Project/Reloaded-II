@@ -131,8 +131,11 @@ The `FileNamePattern` is a piece of text which the name of the uploaded file (me
 It is used to distinguish the Reloaded II download from downloads that might come in other formats, e.g. for other mod loaders.
 
 **File Pattern Guidelines:**
+
 ✅ Piece of text at the beginning (preferred) or end of the file name.
+
 ✅ Use a pattern that will only match the name of one file.
+
 ❌ Do not include file extensions in your pattern.
 
 Gamebanana adds suffixes to duplicate file names, even if original file is removed. So if you upload `rii-midnighthill.7z`, remove it, and reupload it again, the file might be named something like `rii-midnighthill_eaa22.7z`.
