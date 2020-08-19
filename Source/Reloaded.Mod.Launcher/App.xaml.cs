@@ -75,7 +75,7 @@ namespace Reloaded.Mod.Launcher
         {            
             // Ideally this should be in Setup, however the download dialogs should be localized.
             var launcherFolder = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-            Selector = new XamlFileSelector($"{launcherFolder}\\Languages");
+            Selector = new XamlFileSelector($"{launcherFolder}\\Assets\\Languages");
             Resources.MergedDictionaries.Add(Selector);
 
             /* Check if Download Mod */

@@ -12,6 +12,10 @@ using static Reloaded.Mod.Loader.IO.FileSystemWatcherFactory.FileSystemWatcherEv
 
 namespace Reloaded.Mod.Launcher
 {
+    /// <summary>
+    /// Class that encapsulates a folder to be watched for all available xaml files.
+    /// Where <see cref="File"/> is the currently selected file and <see cref="Files"/> is a list of all files.
+    /// </summary>
     public class XamlFileSelector : ResourceDictionary, INotifyPropertyChanged
     {
         private const string XamlFilter = "*.xaml";

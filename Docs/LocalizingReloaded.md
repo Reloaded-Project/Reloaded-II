@@ -23,7 +23,7 @@ If no translation exists for a piece of text, the text will default to English (
 
 For a downloaded/release version of Reloaded II, the languages are stored in the `Languages` folder inside the launcher directory.
 
-If you are working with the Source Code of Reloaded II, the localizations are stored in `Source/Reloaded.Mod.Launcher/Languages`.
+If you are working with the Source Code of Reloaded II, the localizations are stored in `Source/Reloaded.Mod.Launcher/Assets/Languages`.
 
 ### Creating Translations
 

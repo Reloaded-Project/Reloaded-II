@@ -16,75 +16,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\Images\Add-App-Icon.png" />
-    <None Remove="Assets\Images\Download-Mods-Icon.png" />
-    <None Remove="Assets\Images\Github-Icon.png" />
-    <None Remove="Assets\Images\Icons-1.png" />
-    <None Remove="Assets\Images\Icons-2.png" />
-    <None Remove="Assets\Images\Info-Icon.png" />
-    <None Remove="Assets\Images\Mods-Icon.png" />
-    <None Remove="Assets\Images\Reloaded-No-Brackets.png" />
-    <None Remove="Assets\Images\Search-Icon.png" />
-    <None Remove="Assets\Images\Settings-Icon.png" />
-    <None Remove="Controls\PopupLabel.xaml" />
-    <None Remove="DesignTimeResources.xaml" />
-    <None Remove="Languages\en-GB.xaml" />
-    <None Remove="Languages\hu-HU.xaml" />
-    <None Remove="Languages\pl-PL.xaml" />
+    <None Remove="Assets\**" />
+    <None Remove="Styles\**" />
     <None Remove="LICENSE.txt" />
-    <None Remove="Loader\Asi\ASILoader32.dll" />
-    <None Remove="Loader\Asi\ASILoader64.dll" />
-    <None Remove="Loader\Asi\UltimateAsiLoader.7z" />
-    <None Remove="Pages\BaseSubpages\ApplicationPage.xaml" />
-    <None Remove="Pages\BaseSubpages\ApplicationSubPages\ApplicationSummaryPage.xaml" />
-    <None Remove="Pages\BaseSubpages\ApplicationSubPages\Dialogs\LoadModSelectDialog.xaml" />
-    <None Remove="Pages\BaseSubpages\ApplicationSubPages\NonReloadedProcessPage.xaml" />
-    <None Remove="Pages\BaseSubpages\ApplicationSubPages\ReloadedProcessPage.xaml" />
-    <None Remove="Pages\BaseSubpages\Dialogs\SetDependenciesDialog.xaml" />
-    <None Remove="Pages\BaseSubpages\SettingsPage.xaml" />
-    <None Remove="Pages\Dialogs\FirstLaunch.xaml" />
-    <None Remove="Pages\Dialogs\MessageBoxOkCancel.xaml" />
     <None Remove="PropertyChanged.dll" />
-    <None Remove="Styles\Settings.xaml" />
-    <None Remove="Styles\Window_Settings.xaml" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Page Remove="Languages\**\*.xaml" />
-    <Page Remove="Styles\Controls.xaml" />
-    <Page Remove="Styles\Markdown.xaml" />
-    <Page Remove="Styles\Settings.xaml" />
-    <Page Remove="Styles\Window_Settings.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Languages\**\*.xaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="LICENSE.txt">
+	<ItemGroup>
+    <Content Include="Assets\Languages\**\*.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Loader\Asi\UltimateAsiLoader.7z">
+	<Content Include="Assets\Images\**\*.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
+	<Content Include="Styles\**\*.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
+	<Content Include="Assets\Loader\**" Link="Loader\%(RecursiveDir)\%(Filename)%(Extension)">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
+	<Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="PropertyChanged.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Styles\Controls.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Styles\Markdown.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Styles\Settings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Styles\Window_Settings.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -120,18 +75,7 @@
     <Compile Update="Pages\BasePage.xaml.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Assets\Images\Add-App-Icon.png" />
-    <Resource Include="Assets\Images\Download-Mods-Icon.png" />
-    <Resource Include="Assets\Images\Github-Icon.png" />
-    <Resource Include="Assets\Images\Info-Icon.png" />
-    <Resource Include="Assets\Images\Mods-Icon.png" />
-    <Resource Include="Assets\Images\Reloaded-No-Brackets.png" />
-    <Resource Include="Assets\Images\Search-Icon.png" />
-    <Resource Include="Assets\Images\Settings-Icon.png" />
-  </ItemGroup>
-
-  <ItemGroup>
+	<ItemGroup>
     <Page Update="Controls\PopupLabel.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -141,11 +85,6 @@
     <Page Update="Pages\SplashPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controls\Converters\" />
-    <Folder Include="Models\Model\IO\" />
   </ItemGroup>
 
   <ItemGroup>
