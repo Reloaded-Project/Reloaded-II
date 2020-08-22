@@ -33,7 +33,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Search Filter -->
@@ -58,19 +57,40 @@
                 dd:DragDrop.IsDropTarget="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
                             <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       Margin="{DynamicResource ListEntryItemMarginSmall}" 
                                       Style="{DynamicResource DefaultCheckBox}"
                                       HorizontalAlignment="Center" 
                                       VerticalAlignment="Center" 
-                                      Height="{DynamicResource ListEntryCheckboxHeightSmall}"/>
+                                      Height="{DynamicResource ListEntryCheckboxHeightSmall}"
+                                      Grid.Column="0"/>
 
                             <TextBlock Text="{Binding Generic.ModConfig.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
+                                       HorizontalAlignment="Left" 
+                                       Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                       Grid.Column="1"/>
+
+                            <TextBlock Text="{Binding Generic.ModConfig.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       VerticalAlignment="Center" 
                                        HorizontalAlignment="Center" 
-                                       Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                        </StackPanel>
+                                       Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                       Grid.Column="2"/>
+
+                            <TextBlock Text="{Binding Generic.ModConfig.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       VerticalAlignment="Center" 
+                                       HorizontalAlignment="Center" 
+                                       Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                       Grid.Column="3"/>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -81,11 +101,12 @@
         <Grid Grid.Row="2" Margin="{DynamicResource PanelMargin}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Application Image -->
-            <Border Grid.Column="0" BorderBrush="{DynamicResource BorderColorBrush}" Background="Transparent" BorderThickness="1" >
+            <Border Grid.Column="0" x:Name="BannerImage" BorderBrush="{DynamicResource BorderColorBrush}" Background="Transparent" BorderThickness="1" >
                 <Viewbox Width="{StaticResource ImageSize}"
                          Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}">
                     <Image Source="{Binding Icon}"
@@ -94,47 +115,40 @@
             </Border>
 
             <!-- Application Details -->
-            <DockPanel Grid.Column="1" LastChildFill="False">
-
+            <Grid Grid.Column="2" MaxHeight="{Binding Path=ActualHeight, ElementName=BannerImage}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="{DynamicResource GridInterPanelMargin}"/>
+                    <RowDefinition Height='*'/>
+                </Grid.RowDefinitions>
+                
                 <!-- Actions for current application -->
-                <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
                     <Button Content="{DynamicResource ConfigureModsConfigure}" 
                             Command="{Binding ConfigureModCommand}"
-                            Margin="{DynamicResource CommonItemHorizontalMargin}" 
-                            DockPanel.Dock="Right"/>
+                            HorizontalAlignment="Stretch"
+                            Grid.Column="0" />
 
                     <Button Content="{DynamicResource ConfigureModsOpenFolder}" 
                             Command="{Binding OpenModFolderCommand}"
-                            DockPanel.Dock="Right"/>
-                </DockPanel>
+                            HorizontalAlignment="Stretch"
+                            Grid.Column="2" />
+                </Grid>
 
                 <!-- Mod Details -->
-                <StackPanel DockPanel.Dock="Top"
-                            Margin="{DynamicResource PanelMargin}">
-
-                    <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModId, UpdateSourceTrigger=PropertyChanged, FallbackValue='reloaded.this.is.dummytext'}" 
-                               HorizontalAlignment="Center"
-                               Style="{DynamicResource TextblockWithColourChange}" 
-                               TextWrapping="Wrap"/>
-
-                    <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModAuthor, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56'}" 
-                               HorizontalAlignment="Center"
-                               Style="{DynamicResource TextblockWithColourChange}" 
-                               TextWrapping="Wrap"/>
-
-                    <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModVersion, UpdateSourceTrigger=PropertyChanged, FallbackValue='2.0.0'}" 
-                               HorizontalAlignment="Center"
-                               Style="{DynamicResource TextblockWithColourChange}" 
-                               TextWrapping="Wrap"/>
-                </StackPanel>
-
                 <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModDescription, UpdateSourceTrigger=PropertyChanged, FallbackValue={StaticResource DummyText}}" 
-                           DockPanel.Dock="Bottom"
-                           HorizontalAlignment="Center"
-                           Margin="{DynamicResource PanelMargin}"
+                           Grid.Row="2"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
                            Style="{DynamicResource TextblockWithColourChange}" 
-                           TextWrapping="Wrap"/>
-            </DockPanel>
+                           TextWrapping="Wrap" />
+            </Grid>
         </Grid>
     </Grid>
 </local:ApplicationSubPage>

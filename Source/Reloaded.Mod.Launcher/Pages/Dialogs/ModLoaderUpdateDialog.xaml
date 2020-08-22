@@ -62,7 +62,7 @@
         <Grid Grid.Row="4" Margin="{DynamicResource CommonItemVerticalMarginSmaller}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"   />
-                <ColumnDefinition Width="{DynamicResource UpdateModsMenuMargin}" />
+                <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}" />
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 

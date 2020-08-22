@@ -26,8 +26,7 @@
     <Thickness x:Key="ListEntryItemMarginSmall">5,0</Thickness>
     <sys:Double x:Key="ListEntryCheckboxHeightSmall">18</sys:Double>
 
-    <GridLength x:Key="UpdateModsMenuMargin">20</GridLength> <!-- Spacing between the items in the bottom row. -->
-    <GridLength x:Key="UpdateLoaderMenuMargin">20</GridLength> <!-- Spacing between the items in the bottom row. -->
+    <GridLength x:Key="GridInterPanelMargin">20</GridLength> <!-- Spacing between the items in the bottom row. -->
     <sys:Double x:Key="UpdateLoaderProgressbarHeight">25</sys:Double> <!-- Height of Progressbar in update loader menu. -->
 
     <!-- Splash Properties -->

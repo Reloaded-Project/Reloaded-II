@@ -15,34 +15,39 @@
                 <Thickness x:Key="BannerMargin">75,20,75,0</Thickness>
             </Grid.Resources>
 
-            <StackPanel Margin="{DynamicResource PanelMargin}">
+            <DockPanel LastChildFill="False">
+                <StackPanel Margin="{DynamicResource PanelMargin}" DockPanel.Dock="Top">
 
-                <!-- Banner and Build Date -->
-                <Image x:Name="Banner"
+                    <!-- Banner and Build Date -->
+                    <Image x:Name="Banner"
                        Style="{DynamicResource HighQualityImage}"
+                       MaxWidth="600"
                        Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Reloaded-No-Brackets.png"
+                       StretchDirection="DownOnly"
                        Margin="{DynamicResource BannerMargin}"/>
 
-                <TextBlock DockPanel.Dock="Bottom"
+                    <TextBlock DockPanel.Dock="Bottom"
                            HorizontalAlignment="Center"
                            Style="{DynamicResource BuildTextBlock}"
                            Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
 
 
-                <TextBlock DockPanel.Dock="Bottom"
+                    <TextBlock DockPanel.Dock="Bottom"
                            HorizontalAlignment="Center"
                            Style="{DynamicResource TextblockWithColourChange}"
-                           Text="{Binding Path=RuntimeVersion, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
+                           Text="{Binding Path=RuntimeVersion, UpdateSourceTrigger=PropertyChanged, FallbackValue='.NET Core X.XX'}"/>
+                </StackPanel>
 
-                <!-- Docs / User Guide -->
-                <Grid Margin="{DynamicResource CommonItemVerticalMargin}"
+                <StackPanel DockPanel.Dock="Bottom">
+                    <!-- Docs / User Guide -->
+                    <Grid Margin="{DynamicResource CommonItemVerticalMargin}"
                       Width="{Binding ActualWidth, ElementName=Banner}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" 
+                        <TextBlock Grid.Column="0" 
                                Text="{DynamicResource LoaderSettingsCopyright}"
                                TextWrapping="Wrap"
                                FontSize="{DynamicResource FontSizeLarge}"
@@ -51,80 +56,81 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Top"/>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" PreviewMouseDown="Documents_PreviewMouseDown">
-                        <Image Height="48" 
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" PreviewMouseDown="Documents_PreviewMouseDown">
+                            <Image Height="48" 
                                Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Info-Icon.png"
                                Style="{DynamicResource HighQualityImage}"
                                Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                        <TextBlock Text="{DynamicResource LoaderSettingsAndDocumentation}"
+                            <TextBlock Text="{DynamicResource LoaderSettingsAndDocumentation}"
                                    FontSize="{DynamicResource FontSizeLarge}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
                                    Style="{DynamicResource TextblockWithColourChange}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Grid>
+                        </StackPanel>
+                    </Grid>
 
-                <!-- Toggle Auto Accept Updates -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
+                    <!-- Toggle Auto Accept Updates -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
                               HorizontalAlignment="Center" 
                               IsChecked="{Binding LoaderConfig.ShowConsole}"
                               Content="{DynamicResource LoaderSettingsShowConsole}"
                               Style="{DynamicResource DefaultCheckBox}"/>
 
-                    <ComboBox IsSynchronizedWithCurrentItem="True"
+                        <ComboBox IsSynchronizedWithCurrentItem="True"
                               Margin="{DynamicResource CommonItemCombinedMargin}"
                               SelectedItem="{Binding LanguageSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                               ItemsSource="{Binding LanguageSelector.Files, UpdateSourceTrigger=PropertyChanged}"
                               MaxWidth="133" Width="133" SelectionChanged="LanguageChanged">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
 
-                <!-- Bottom Row: Statistics and Warning -->
-                <Grid DockPanel.Dock="Bottom">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <!-- Bottom Row: Statistics and Warning -->
+                    <Grid DockPanel.Dock="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0"
+                        <TextBlock Grid.Column="0"
                                HorizontalAlignment="Left"
                                TextWrapping="Wrap"
                                FontSize="{DynamicResource FontSizeLarge}"
                                Text="{DynamicResource LoaderSettingsWarning}"
                                Style="{DynamicResource DefaultTextBlock}"/>
 
-                    <!-- Statistics -->
-                    <StackPanel Grid.Column="2">
-                        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right">
-                            <TextBlock HorizontalAlignment="Right"
+                        <!-- Statistics -->
+                        <StackPanel Grid.Column="2">
+                            <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right">
+                                <TextBlock HorizontalAlignment="Right"
                                        Style="{DynamicResource StatisticsTextblock}"
                                        Text="{DynamicResource LoaderSettingsAppsInstalled}"/>
-                            <TextBlock HorizontalAlignment="Right"
+                                <TextBlock HorizontalAlignment="Right"
                                        Style="{DynamicResource StatisticsTextvalue}"
                                        Text="{Binding Path=TotalApplicationsInstalled, UpdateSourceTrigger=PropertyChanged, FallbackValue=0}">
-                            </TextBlock>
-                        </StackPanel>
+                                </TextBlock>
+                            </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <TextBlock HorizontalAlignment="Right"
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <TextBlock HorizontalAlignment="Right"
                                        Style="{DynamicResource StatisticsTextblock}"
                                        Text="{DynamicResource LoaderSettingsModsInstalled}"/>
-                            <TextBlock HorizontalAlignment="Right"
+                                <TextBlock HorizontalAlignment="Right"
                                        Style="{DynamicResource StatisticsTextvalue}"
                                        Text="{Binding Path=TotalModsInstalled, UpdateSourceTrigger=PropertyChanged, FallbackValue=0}">
-                            </TextBlock>
+                                </TextBlock>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </DockPanel>
         </Grid>
     </ScrollViewer>
 </launcher:ReloadedIIPage>

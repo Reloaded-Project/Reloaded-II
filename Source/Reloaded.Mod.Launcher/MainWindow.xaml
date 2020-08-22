@@ -9,9 +9,9 @@
         mc:Ignorable="d"
         Title="{Binding Path=RealViewModel.WindowTitle, RelativeSource={RelativeSource Mode=Self}}" 
         Height="600"
-        Width="800"
-        MinWidth="450"
-        MinHeight="300"
+        Width="1000"
+        MinWidth="700"
+        MinHeight="500"
         Style="{DynamicResource ReloadedWindow}">
 
     <!-- Window Content -->

@@ -49,7 +49,7 @@
         <Grid Margin="{DynamicResource PanelMargin}" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"   />
-                <ColumnDefinition Width="{DynamicResource UpdateModsMenuMargin}" />
+                <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}" />
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
