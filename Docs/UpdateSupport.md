@@ -60,6 +60,12 @@ Before you upload however, you **must** read the [Upload Page](http://167.71.128
 
 Please be respectful and also follow the [Site Rules](http://167.71.128.50:5000/home).
 
+```
+Note for Serious Programmers:
+
+There exists a standalone NuGet Package Converter released as part of Tools.zip alongside Reloaded releases (starting with 1.6.2). If you are using CI/CD for your mods, feel free to use this as part of your automatic deployment process.
+```
+
 ### Github
 
 **Support:** A package is considered as "supported" if the file below exists.
