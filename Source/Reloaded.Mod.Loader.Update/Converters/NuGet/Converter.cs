@@ -12,7 +12,7 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
     /// <summary>
     /// Converts a packaged mod zip into a NuGet Package.
     /// </summary>
-    public class Converter
+    public static class Converter
     {
         private const string NugetContentDirectory = "content";
 
@@ -20,7 +20,7 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
         /// Converts a mod archive (zip) into a NuGet package.
         /// </summary>
         /// <returns>The location of the newly created package.</returns>
-        public string ConvertFromArchiveFile(string archivePath, string outputDirectory)
+        public static string FromArchiveFile(string archivePath, string outputDirectory)
         {
             var archiveFile   = new ArchiveFile(archivePath);
             var modConfig     = JsonSerializer.Deserialize<ModConfig>(archiveFile.ExtractModConfig());
@@ -46,9 +46,25 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
         /// </summary>
         /// <param name="modDirectory">Full path to the directory containing the mod.</param>
         /// <param name="outputDirectory">The path to the folder where the NuGet package should be output.</param>
+        /// <returns>The path of the generated .nupkg file.</returns>
+        public static string FromModDirectory(string modDirectory, string outputDirectory)
+        {
+            var configFilePath = Path.Combine(modDirectory, ModConfig.ConfigFileName);
+            if (!File.Exists(configFilePath))
+                throw new FileNotFoundException($"Failed to convert folder to NuGet Package. Unable to find config at {configFilePath}");
+
+            var config = JsonSerializer.Deserialize<ModConfig>(File.ReadAllText(configFilePath));
+            return FromModDirectory(modDirectory, outputDirectory, config);
+        }
+
+        /// <summary>
+        /// Creates a NuGet package given the directory of a mod.
+        /// </summary>
+        /// <param name="modDirectory">Full path to the directory containing the mod.</param>
+        /// <param name="outputDirectory">The path to the folder where the NuGet package should be output.</param>
         /// <param name="modConfig">The mod configuration for which to create the NuGet package.</param>
         /// <returns>The path of the generated .nupkg file.</returns>
-        public string FromModDirectory(string modDirectory, string outputDirectory, IModConfig modConfig)
+        public static string FromModDirectory(string modDirectory, string outputDirectory, IModConfig modConfig)
         {
             var xmlSerializer = new XmlSerializer(typeof(Package), "http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd");
 
@@ -75,8 +91,8 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
             return new Package(metadata);
         }
 
-        private string GetDirectory => $"{Path.GetTempPath()}\\{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
-        private void SetNullPropertyValues(object obj)
+        private static string GetDirectory => $"{Path.GetTempPath()}\\{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
+        private static void SetNullPropertyValues(object obj)
         {
             foreach (var property in obj.GetType().GetProperties())
             {

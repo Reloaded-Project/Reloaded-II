@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Exceptions;
 using SharpCompress.Archives;
@@ -35,19 +36,13 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
         public byte[] ExtractModConfig()
         {
             using (Stream memoryStream = new MemoryStream(_archiveFile))
-            using (var factory = ReaderFactory.Open(memoryStream))
+            using (var factory = ArchiveFactory.Open(memoryStream))
             {
-                while (factory.MoveToNextEntry())
+                var entry = factory.Entries.First(x => !x.IsDirectory && x.Key == ConfigFileName);
+                if (entry != null)
                 {
-                    var entry = factory.Entry;
-                    if (entry.IsDirectory)
-                        continue;
-
-                    if (entry.Key != ConfigFileName)
-                        continue;
-
                     using (MemoryStream memory = new MemoryStream())
-                    using (var entryStream = factory.OpenEntryStream())
+                    using (var entryStream = entry.OpenEntryStream())
                     {
                         entryStream.CopyTo(memory);
                         return memory.ToArray();
@@ -65,9 +60,9 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
         public void ExtractToDirectory(string directory)
         {
             using (Stream memoryStream = new MemoryStream(_archiveFile))
-            using (var factory = ReaderFactory.Open(memoryStream))
+            using (var factory = ArchiveFactory.Open(memoryStream))
             {
-                factory.WriteAllToDirectory(directory, _options);
+                factory.ExtractAllEntries().WriteAllToDirectory(directory, _options);
             }
         }
 

@@ -62,8 +62,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
             var selectedMod      = _manageModsViewModel.SelectedModTuple;
             var modDirectory     = Path.GetDirectoryName(selectedMod.ModConfigPath);
             var outputPath       = Path.GetDirectoryName(modDirectory);
-            var converter        = new Converter();
-            converter.FromModDirectory(modDirectory, outputPath, selectedMod.ModConfig);
+            Converter.FromModDirectory(modDirectory, outputPath, selectedMod.ModConfig);
             ProcessExtensions.OpenFileWithExplorer(outputPath);
 
             // End
