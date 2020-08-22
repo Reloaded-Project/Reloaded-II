@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Data;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Utilities;
 
@@ -21,7 +23,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
             InitializeComponent();
             ViewModel = IoC.Get<ApplicationSummaryViewModel>();
 
-            _manipulator = new DictionaryResourceManipulator(this.Contents.Resources);
+            _manipulator    = new DictionaryResourceManipulator(this.Contents.Resources);
             _modsViewSource = _manipulator.Get<CollectionViewSource>("FilteredMods");
             _modsViewSource.Filter += ModsViewSourceOnFilter;
             AnimateOutFinished += Dispose;
@@ -34,7 +36,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
 
         public void Dispose()
         {
-            _modsViewSource.Filter -= ModsViewSourceOnFilter;
+            ActionWrappers.ExecuteWithApplicationDispatcher(() => _modsViewSource.Filter -= ModsViewSourceOnFilter);
             AnimateOutFinished -= Dispose;
             ViewModel?.Dispose();
             GC.SuppressFinalize(this);
