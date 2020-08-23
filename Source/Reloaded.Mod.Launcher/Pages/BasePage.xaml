@@ -6,6 +6,7 @@
              xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
              xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
              xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800"
              Title="{DynamicResource TitleMainPage}">
@@ -17,6 +18,15 @@
                 <Setter Property="Width"  Value="Auto"/>
                 <Setter Property="Height" Value="Auto"/>
             </Style>
+
+
+            <!-- Sort the mod list -->
+            <CollectionViewSource x:Key="FilteredApps" Source="{Binding Applications, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
+                <CollectionViewSource.SortDescriptions>
+                    <componentModel:SortDescription PropertyName="Config.AppName"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
@@ -58,7 +68,7 @@
                     </Separator>
 
                     <!-- List of Games -->
-                    <ItemsControl Name="ProcessesPanel" ItemsSource="{Binding Path=Applications, UpdateSourceTrigger=PropertyChanged}"
+                    <ItemsControl Name="ProcessesPanel" ItemsSource="{Binding Source={StaticResource FilteredApps}}"
                               VirtualizingPanel.IsVirtualizing="True"
                               VirtualizingPanel.VirtualizationMode="Recycling">
 
