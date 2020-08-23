@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ookii.Dialogs.Wpf;
@@ -22,11 +23,13 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
         public IModConfig Config { get; set; } = new ModConfig();
         public ImageSource Image { get; set; } = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute));
         public ObservableCollection<BooleanGenericTuple<IModConfig>> Dependencies { get; set; } = new ObservableCollection<BooleanGenericTuple<IModConfig>>();
+        public string ModsFilter { get; set; } = "";
 
         private XamlResource<string> _xamlCreateModDialogSelectorTitle = new XamlResource<string>("CreateModDialogImageSelectorTitle");
         private XamlResource<string> _xamlCreateModDialogSelectorFilter = new XamlResource<string>("CreateModDialogImageSelectorFilter");
+        private readonly CollectionViewSource _dependenciesViewSource;
 
-        public CreateModViewModel(ManageModsViewModel manageModsViewModel)
+        public CreateModViewModel(ManageModsViewModel manageModsViewModel, DictionaryResourceManipulator manipulator)
         {
             /* Build Dependencies */
             var mods = manageModsViewModel.Mods; // In case collection changes during window open.
@@ -34,6 +37,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
             {
                 Dependencies.Add(new BooleanGenericTuple<IModConfig>(false, mod.ModConfig));
             }
+
+            _dependenciesViewSource = manipulator.Get<CollectionViewSource>("SortedDependencies");
+            _dependenciesViewSource.Filter += DependenciesViewSourceOnFilter;
         }
 
         /* Save Mod to Directory */
@@ -78,6 +84,20 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
             BitmapImage source = new BitmapImage(new Uri(imagePath, UriKind.Absolute));
             source.Freeze();
             return source;
+        }
+
+        public void RefreshModList() => _dependenciesViewSource.View.Refresh();
+
+        private void DependenciesViewSourceOnFilter(object sender, FilterEventArgs e)
+        {
+            if (this.ModsFilter.Length <= 0)
+            {
+                e.Accepted = true;
+                return;
+            }
+
+            var tuple = (BooleanGenericTuple<IModConfig>)e.Item;
+            e.Accepted = tuple.Generic.ModName.IndexOf(this.ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
         private string SelectImageFile()

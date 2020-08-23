@@ -21,7 +21,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         public CreateModDialog()
         {
             InitializeComponent();
-            RealViewModel = IoC.Get<CreateModViewModel>();
+            RealViewModel = new CreateModViewModel(IoC.Get<ManageModsViewModel>(), new DictionaryResourceManipulator(this.Contents.Resources));
         }
 
         private void ModIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -60,5 +60,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
 
             return true;
         }
+
+        private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => RealViewModel.RefreshModList();
     }
 }

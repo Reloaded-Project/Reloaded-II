@@ -14,7 +14,8 @@
         WindowStartupLocation="CenterOwner"
         Style="{DynamicResource ReloadedWindow}">
 
-    <Grid DataContext="{Binding Path=RealViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+    <Grid DataContext="{Binding Path=RealViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          x:Name="Contents">
         
         <!-- Grid Resources -->
         <Grid.Resources>
@@ -109,24 +110,37 @@
                                          HiddenVisibilityType="Collapsed"
                                          IsOpen="False">
                         <controls:PopupLabel.HiddenContent>
-                            <ListView ItemsSource="{Binding Source={StaticResource SortedDependencies}}" Margin="{DynamicResource CommonItemVerticalMarginSmall}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                      VerticalAlignment="Center" 
-                                                      HorizontalAlignment="Center"
-                                                      Height="{DynamicResource ListEntryCheckboxHeightSmall}"
-                                                      Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                            <StackPanel>
+                                <TextBox Text="{Binding ModsFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{DynamicResource TextboxWithPlaceholder}"
+                                         Tag="{DynamicResource ModManagerSearchMods}"
+                                         Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                                         TextChanged="ModsFilter_TextChanged"/>
 
-                                            <TextBlock Text="{Binding Generic.ModName, UpdateSourceTrigger=PropertyChanged}" 
-                                                       VerticalAlignment="Center" 
-                                                       HorizontalAlignment="Center" 
-                                                       Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                                <ListView ItemsSource="{Binding Source={StaticResource SortedDependencies}}"
+                                          Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          VerticalContentAlignment="Top"
+                                          Height="300">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                          VerticalAlignment="Center" 
+                                                          HorizontalAlignment="Center"
+                                                          Style="{DynamicResource DefaultCheckBox}" 
+                                                          Height="{DynamicResource ListEntryCheckboxHeightSmall}"/>
+
+                                                <TextBlock Text="{Binding Generic.ModName, UpdateSourceTrigger=PropertyChanged}" 
+                                                           VerticalAlignment="Center" 
+                                                           HorizontalAlignment="Center" 
+                                                           Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
                         </controls:PopupLabel.HiddenContent>
                     </controls:PopupLabel>
                 </WrapPanel>
