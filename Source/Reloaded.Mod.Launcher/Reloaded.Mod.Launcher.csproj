@@ -55,7 +55,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
-    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.0" />
+    <PackageReference Include="Reloaded.WPF" Version="3.0.2" />
+    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Management" Version="4.7.0" />
   </ItemGroup>

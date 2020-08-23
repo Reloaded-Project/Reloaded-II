@@ -21,64 +21,51 @@ namespace Reloaded.Mod.Launcher.Pages
         private XamlResource<int> _xamlSplashMinimumTime = new XamlResource<int>("SplashMinimumTime");
         private XamlResource<string> _xamlFailedToLaunchTitle = new XamlResource<string>("FailedToLaunchTitle");
         private XamlResource<string> _xamlFailedToLaunchMessage = new XamlResource<string>("FailedToLaunchMessage");
-        private bool _loaded = false;
-
+        private Task _setupApplicationTask;
+        
         public SplashPage() : base()
         {  
             InitializeComponent();
-            this.Loaded += AfterLoading;
 
             // Setup ViewModel
-            _splashViewModel = new SplashViewModel();
-            this.DataContext = _splashViewModel;
+            _splashViewModel    = new SplashViewModel();
+            this.DataContext    = _splashViewModel;
+            _setupApplicationTask = Task.Run(() => Setup.SetupApplicationAsync(UpdateText, _xamlSplashMinimumTime.Get()));
+            this.Loaded        += (a, b) => ActionWrappers.ExecuteWithApplicationDispatcher(Load);
         }
 
-        private async void AfterLoading(object sender, RoutedEventArgs e)
+        private async void Load()
         {
-            // Start preparing everything on Splash Screen!
-            if (!_loaded)
+            try
             {
-                _loaded = true;
-                try
-                {
-                    await Task.Run(async () =>
-                    {
-                        await Setup.SetupApplicationAsync(UpdateText, _xamlSplashMinimumTime.Get());
-                        ChangeToMainPage();
-                        DisplayFirstLaunchWarningIfNeeded();
-                    });
-                }
-                catch (Exception ex)
-                {
-                    var messageBox = new MessageBox(_xamlFailedToLaunchTitle.Get(), _xamlFailedToLaunchMessage.Get() + $" {ex.Message}\n{ex.StackTrace}");
-                    messageBox.ShowDialog();
-                }
+                await _setupApplicationTask;
+                ChangeToMainPage();
+                DisplayFirstLaunchWarningIfNeeded();
+            }
+            catch (Exception ex)
+            {
+                var messageBox = new MessageBox(_xamlFailedToLaunchTitle.Get(), _xamlFailedToLaunchMessage.Get() + $" {ex.Message}\n{ex.StackTrace}");
+                messageBox.ShowDialog();
             }
         }
 
         private void ChangeToMainPage()
         {
-            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
-            {
-                var viewModel = IoC.Get<WindowViewModel>();
-                viewModel.CurrentPage = Page.Base;
-            });
+            var viewModel = IoC.Get<WindowViewModel>();
+            viewModel.CurrentPage = Page.Base;
         }
 
         private void DisplayFirstLaunchWarningIfNeeded()
         {
-            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+            var loaderConfig = IoC.Get<LoaderConfig>();
+            if (loaderConfig.FirstLaunch)
             {
-                var loaderConfig = IoC.Get<LoaderConfig>();
-                if (loaderConfig.FirstLaunch)
-                {
-                    var firstLaunchWindow = new FirstLaunch();
-                    firstLaunchWindow.Owner = Window.GetWindow(this);
-                    firstLaunchWindow.ShowDialog();
-                    loaderConfig.FirstLaunch = false;
-                    LoaderConfigReader.WriteConfiguration(loaderConfig);
-                }
-            });
+                var firstLaunchWindow = new FirstLaunch();
+                firstLaunchWindow.Owner = Window.GetWindow(this);
+                firstLaunchWindow.ShowDialog();
+                loaderConfig.FirstLaunch = false;
+                LoaderConfigReader.WriteConfiguration(loaderConfig);
+            }
         }
 
         /// <summary>

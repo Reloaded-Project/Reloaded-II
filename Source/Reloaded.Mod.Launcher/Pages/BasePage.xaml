@@ -12,98 +12,92 @@
 
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
         <Grid.Resources>
+            <Style TargetType="{x:Type controls:CircleButton}">
+                <Setter Property="Margin" Value="{DynamicResource SidebarElementMargin}"/>
+                <Setter Property="Width"  Value="Auto"/>
+                <Setter Property="Height" Value="Auto"/>
+            </Style>
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{DynamicResource SidebarWidth}"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Background provided by another grid! -->
-        <Grid Background="{DynamicResource AccentColorBrush}">
+        <!-- Our icons need to be scrollable. -->
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" Grid.Column="0">
 
-            <!-- Using the margin as padding, inheriting background from grid behind..-->
-            <DockPanel Margin="{DynamicResource SidebarMargin}">
+            <!-- Background provided by this grid -->
+            <Grid x:Name="Sidebar" Background="{DynamicResource AccentColorBrush}">
 
-                <!-- Theme Page Buttons -->
-                <Viewbox DockPanel.Dock="Top" Margin="{DynamicResource SidebarElementMargin}">
-                    <controls:CircleButton 
-                        ImageSource="pack://application:,,,/Assets/Images/Add-App-Icon.png"
-                        TooltipText="{DynamicResource TitleAddApplication}" PreviewMouseDown="AddApp_PreviewMouseDown"/>
-                </Viewbox>
-
-                <Viewbox DockPanel.Dock="Top" Margin="{DynamicResource SidebarElementMargin}">
+                <StackPanel Margin="{DynamicResource SidebarMargin}">
+                    
+                    <!-- Theme Page Buttons -->
                     <controls:CircleButton
                         ImageSource="pack://application:,,,/Assets/Images/Download-Mods-Icon.png" 
-                        TooltipText="{DynamicResource TitleDownloadMods}" PreviewMouseDown="DownloadMods_PreviewMouseDown"/>
-                </Viewbox>
+                        TooltipText="{DynamicResource TitleDownloadMods}" PreviewMouseDown="DownloadMods_PreviewMouseDown" />
 
-                <Viewbox DockPanel.Dock="Top" Margin="{DynamicResource SidebarElementMargin}">
                     <controls:CircleButton
                         ImageSource="pack://application:,,,/Assets/Images/Mods-Icon.png" 
                         TooltipText="{DynamicResource TitleManageMods}" PreviewMouseDown="ManageMods_PreviewMouseDown"/>
-                </Viewbox>
 
-                <Viewbox DockPanel.Dock="Top" Margin="{DynamicResource SidebarElementMargin}">
                     <controls:CircleButton 
                         ImageSource="pack://application:,,,/Assets/Images/Settings-Icon.png"
                         TooltipText="{DynamicResource TitleLoaderSettings}" PreviewMouseDown="LoaderSettings_PreviewMouseDown"/>
-                </Viewbox>
 
-                <!-- Separator -->
-                <Separator Margin="{DynamicResource SidebarElementMargin}" Style="{DynamicResource AltSeparatorStyle}" RenderTransformOrigin="0.5,0.5" DockPanel.Dock="Top" >
-                    <Separator.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleY="{DynamicResource SeparatorHeight}"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Separator.RenderTransform>
-                </Separator>
+                    <!-- Separator -->
+                    <Separator Margin="{DynamicResource SidebarElementMargin}" Style="{DynamicResource AltSeparatorStyle}" RenderTransformOrigin="0.5,0.5">
+                        <Separator.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleY="{DynamicResource SeparatorHeight}"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Separator.RenderTransform>
+                    </Separator>
 
-                <!-- List of Games -->
-                <ItemsControl Name="ProcessesPanel" ItemsSource="{Binding Path=Applications, UpdateSourceTrigger=PropertyChanged}"
+                    <!-- List of Games -->
+                    <ItemsControl Name="ProcessesPanel" ItemsSource="{Binding Path=Applications, UpdateSourceTrigger=PropertyChanged}"
                               VirtualizingPanel.IsVirtualizing="True"
-                              VirtualizingPanel.VirtualizationMode="Recycling" DockPanel.Dock="Top">
+                              VirtualizingPanel.VirtualizationMode="Recycling">
 
-                    <!-- Allow for virtualization of stack panel. -->
-                    <ItemsControl.Template>
-                        <ControlTemplate TargetType="{x:Type ItemsControl}">
-                            <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Disabled">
+                        <!-- Allow for virtualization of stack panel. -->
+                        <ItemsControl.Template>
+                            <ControlTemplate TargetType="{x:Type ItemsControl}">
                                 <ItemsPresenter/>
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
 
-                    <!-- The actual panel of visible items -->
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel IsItemsHost="True"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+                        <!-- The actual panel of visible items -->
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel IsItemsHost="True"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                    <!-- Define each control. -->
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Viewbox Margin="{DynamicResource SidebarElementMargin}">
+                        <!-- Define each control. -->
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
                                 <controls:CircleButton TooltipText="{Binding Path=Config.AppName}"
                                                        ImageSource="{Binding Path=Image, UpdateSourceTrigger=PropertyChanged}"
-                                                       PreviewMouseDown="Application_PreviewMouseDown"
-                                />
-                            </Viewbox>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                                       PreviewMouseDown="Application_PreviewMouseDown"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    
+                    <controls:CircleButton 
+                        ImageSource="pack://application:,,,/Assets/Images/Add-App-Icon.png"
+                        TooltipText="{DynamicResource TitleAddApplication}" PreviewMouseDown="AddApp_PreviewMouseDown"/>
 
-            </DockPanel>
-        </Grid>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
 
         <!-- Window Content -->
         <controls:PageHost Grid.Column="1" 
                Name="ContentFrame" 
                ClipToBounds="True"
-               Grid.RowSpan="2"
                CurrentPage="{Binding Path=Page,
                                      Converter={x:Static converters:ApplicationBaseSubPageToPageConverter.Instance}}"/>
     </Grid>
