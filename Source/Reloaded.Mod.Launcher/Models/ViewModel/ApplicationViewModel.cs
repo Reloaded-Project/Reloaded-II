@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
-using Reloaded.Mod.Launcher.Commands.AddAppPage;
+using Reloaded.Mod.Launcher.Commands.EditAppPage;
 using Reloaded.Mod.Launcher.Commands.ApplicationPage;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;

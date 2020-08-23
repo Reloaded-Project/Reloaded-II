@@ -10,7 +10,7 @@ using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.WPF.Utilities;
 
-namespace Reloaded.Mod.Launcher.Commands.AddAppPage
+namespace Reloaded.Mod.Launcher.Commands.EditAppPage
 {
     public class DeployAsiLoaderCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
@@ -21,9 +21,9 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
 
         private ImageApplicationPathTuple Application { get; set; }
         private AsiLoaderDeployer Deployer { get; set; }
-        private AddAppViewModel ViewModel { get; set; }
+        private EditAppViewModel ViewModel { get; set; }
 
-        public DeployAsiLoaderCommand(AddAppViewModel addAppViewModel)
+        public DeployAsiLoaderCommand(EditAppViewModel addAppViewModel)
         {
             ViewModel = addAppViewModel;
             ViewModel.PropertyChanged += AddAppViewModelOnPropertyChanged;

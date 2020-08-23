@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
+using Reloaded.Mod.Launcher.Pages.BaseSubpages;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 using Reloaded.WPF.Theme.Default;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
@@ -26,6 +27,8 @@ namespace Reloaded.Mod.Launcher.Converters
                     return IoC.Get<ReloadedProcessPage>();
                 case ApplicationSubPage.ApplicationSummary:
                     return IoC.Get<ApplicationSummaryPage>();
+                case ApplicationSubPage.EditApplication:
+                    return IoC.Get<EditAppPage>();
                 default:
                     Debugger.Break();
                     return null;

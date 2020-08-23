@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Windows;
 using System.Windows.Input;
-using Reloaded.Mod.Launcher.Commands.AddAppPage.Shortcuts;
+using Reloaded.Mod.Launcher.Commands.EditAppPage.Shortcuts;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;

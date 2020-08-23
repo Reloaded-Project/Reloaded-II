@@ -16,8 +16,6 @@ namespace Reloaded.Mod.Launcher.Converters
         {
             switch ((BaseSubPage) value)
             {
-                case BaseSubPage.AddApp:
-                    return IoC.GetConstant<Pages.BaseSubpages.AddAppPage>();
                 case BaseSubPage.ManageMods:
                     return IoC.GetConstant<ManageModsPage>();
                 case BaseSubPage.SettingsPage:

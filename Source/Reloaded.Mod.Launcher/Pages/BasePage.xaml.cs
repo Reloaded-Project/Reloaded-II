@@ -23,7 +23,7 @@ namespace Reloaded.Mod.Launcher.Pages
         /* Preconfigured Buttons */
         private void AddApp_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ViewModel.Page = BaseSubPage.AddApp;
+            ViewModel.AddApplicationCommand.Execute(null);
         }
 
         private void ManageMods_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

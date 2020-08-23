@@ -1,4 +1,4 @@
-﻿<launcher:ReloadedIIPage x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.AddAppPage"
+﻿<launcher:ReloadedIIPage x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.EditAppPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,25 +7,18 @@
              xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
-             xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.AddAppPage"
+             xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.EditAppPage"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignHeight="600" 
              d:DesignWidth="756"
-             Title="{DynamicResource TitleAddApplication}">
+             Title="{DynamicResource TitleEditApplication}">
     <ScrollViewer DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
         <ScrollViewer.Resources>
             <!-- Layout properties -->
             <sys:Double x:Key="DetailsImageWidth">180</sys:Double>
             <sys:Double x:Key="DetailsColumnWidth">280</sys:Double>
-
-            <!-- Sort the app list -->
-            <CollectionViewSource Source="{Binding MainPageViewModel.Applications, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Key="SortedApps" IsLiveSortingRequested="True">
-                <CollectionViewSource.SortDescriptions>
-                    <componentModel:SortDescription PropertyName="Config.AppName"/>
-                </CollectionViewSource.SortDescriptions>
-            </CollectionViewSource>
         </ScrollViewer.Resources>
 
         <Grid Margin="{DynamicResource PageMargin}"
@@ -44,45 +37,14 @@
                                PreviewMouseDown="Image_PreviewMouseDown"/>
                 </Viewbox>
 
-                <!-- Application Selector -->
-                <ComboBox x:Name="AppSelectionBox"
-                              Margin="{DynamicResource CommonItemVerticalMargin}"
-                              Width="{StaticResource DetailsColumnWidth}"
-                              IsSynchronizedWithCurrentItem="True"
-                              ItemsSource="{Binding Source={StaticResource SortedApps}}"
-                              SelectedItem="{Binding Application, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Text="Select a Game"
-                              SelectionChanged="SelectionChanged"
-                              SelectedIndex="{Binding SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Config.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
 
-                <!-- Add / Delete -->
-                <Grid Margin="{DynamicResource CommonItemVerticalMargin}"
-                          Width="{StaticResource DetailsColumnWidth}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                    </Grid.RowDefinitions>
-
-                    <Button Grid.Column="0"
-                            Content="{DynamicResource AddAppNewButton}" 
-                            Style="{DynamicResource UnpaddedStretchedGridButton}"
-                            Command="{Binding AddApplicationCommand, UpdateSourceTrigger=PropertyChanged}"/>
-
-                    <Button Grid.Column="1"
-                            Content="{DynamicResource AddAppDeleteButton}"
-                            Style="{DynamicResource UnpaddedStretchedGridButton}"
-                            Command="{Binding DeleteApplicationCommand, UpdateSourceTrigger=PropertyChanged}"/>
-                </Grid>
+                <!-- Delete -->
+                <Button Grid.Column="1"
+                        Margin="{DynamicResource CommonItemVerticalMargin}"    
+                        Content="{DynamicResource AddAppDeleteButton}"
+                        Style="{DynamicResource UnpaddedStretchedGridButton}"
+                        Width="{StaticResource DetailsColumnWidth}"
+                        Command="{Binding DeleteApplicationCommand, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <!-- Name, Executable Location, Commandline Arguments. -->
                 <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 

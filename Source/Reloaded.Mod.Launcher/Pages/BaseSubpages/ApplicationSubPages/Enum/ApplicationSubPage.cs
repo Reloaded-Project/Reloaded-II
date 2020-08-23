@@ -5,6 +5,7 @@
         Null,
         NonReloadedProcess,
         ReloadedProcess,
-        ApplicationSummary
+        ApplicationSummary,
+        EditApplication
     }
 }

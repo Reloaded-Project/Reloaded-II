@@ -2,7 +2,6 @@
 {
     public enum BaseSubPage
     {
-        AddApp,
         ManageMods,
         SettingsPage,
         Application,

@@ -7,7 +7,7 @@
       xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
       xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
       xmlns:reloadedWpfControls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
-      xmlns:addAppPage="clr-namespace:Reloaded.Mod.Launcher.Commands.AddAppPage"
+      xmlns:addAppPage="clr-namespace:Reloaded.Mod.Launcher.Commands.EditAppPage"
       mc:Ignorable="d"              
       d:DesignHeight="600" 
       d:DesignWidth="756"
@@ -64,6 +64,14 @@
                                Text="{DynamicResource TitleConfigureMods}"
                                Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                PreviewMouseDown="Summary_PreviewMouseDown"/>
+
+                    <!-- Edit Page -->
+                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="{DynamicResource FontSizeSmaller}"
+                               Text="{DynamicResource TitleEditApplication}"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                               PreviewMouseDown="Edit_PreviewMouseDown"/>
 
                     <!-- Reloaded Processes -->
                     <controls:PopupLabel Margin="{DynamicResource CommonItemVerticalMarginSmall}"

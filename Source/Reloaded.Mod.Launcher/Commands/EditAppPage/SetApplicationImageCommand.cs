@@ -10,26 +10,26 @@ using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.Utilities;
 
-namespace Reloaded.Mod.Launcher.Commands.AddAppPage
+namespace Reloaded.Mod.Launcher.Commands.EditAppPage
 {
     /// <summary>
-    /// Command to be used by the <see cref="AddAppPage"/> which allows
+    /// Command to be used by the <see cref="EditAppPage"/> which allows
     /// for the addition of a new application.
     /// </summary>
     public class SetApplicationImageCommand : ICommand
     {
         private XamlResource<string> _xamlAddAppImageExecutableTitle    = new XamlResource<string>("AddAppImageSelectorTitle");
         private XamlResource<string> _xamlAddAppImageSelectorFilter     = new XamlResource<string>("AddAppImageSelectorFilter");
-        private readonly AddAppViewModel _addAppViewModel;
+        private readonly EditAppViewModel _editAppViewModel;
 
-        public SetApplicationImageCommand(AddAppViewModel model)
+        public SetApplicationImageCommand(EditAppViewModel model)
         {
-            _addAppViewModel = model;
+            _editAppViewModel = model;
         }
 
         public bool CanExecute(object parameter)
         {
-            if (_addAppViewModel.Application != null)
+            if (_editAppViewModel.Application != null)
                 return true;
 
             return false;
@@ -44,7 +44,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
                 return;
 
             // Get current selected application and its paths.
-            var application = _addAppViewModel.Application;
+            var application = _editAppViewModel.Application;
             string applicationDirectory = Path.GetDirectoryName(application.ConfigPath);
 
             // Get application entry in set of all applications.

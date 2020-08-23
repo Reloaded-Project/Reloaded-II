@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Reloaded.Mod.Launcher.Commands.EditAppPage;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
 using Reloaded.Mod.Launcher.Utility;
@@ -47,6 +48,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /* List of programs on the sidebar. */
         public ObservableCollection<ImageApplicationPathTuple> Applications { get; set; }
 
+        /* Allows us to add an application */
+        public AddApplicationCommand AddApplicationCommand { get; private set; }
+
         /* This one is to allow us to switch application without raising event twice. See: SwitchApplication */
         private BaseSubPage _baseSubPage = BaseSubPage.SettingsPage;
 
@@ -62,6 +66,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public MainPageViewModel()
         {
+            AddApplicationCommand = new AddApplicationCommand(this);
             Applications = new ObservableCollection<ImageApplicationPathTuple>();
             Applications.CollectionChanged += (sender, args) => { ApplicationsChanged(sender, args); };
             GetApplications();

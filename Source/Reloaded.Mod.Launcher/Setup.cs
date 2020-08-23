@@ -184,9 +184,8 @@ namespace Reloaded.Mod.Launcher
             var loaderConfig = LoaderConfigReader.ReadConfiguration();
             IoC.Kernel.Bind<LoaderConfig>().ToConstant(loaderConfig);
             IoC.GetConstant<MainPageViewModel>();
-            IoC.GetConstant<AddAppViewModel>();       // Consumes MainPageViewModel, make sure it goes after it.
             IoC.GetConstant<ManageModsViewModel>();   // Consumes MainPageViewModel, LoaderConfig
-            IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, AddAppViewModel
+            IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, MainPageViewModel
 
             try
             {

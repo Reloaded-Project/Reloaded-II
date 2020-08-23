@@ -10,37 +10,32 @@ using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.Utilities;
 
-namespace Reloaded.Mod.Launcher.Commands.AddAppPage
+namespace Reloaded.Mod.Launcher.Commands.EditAppPage
 {
     /// <summary>
-    /// Command to be used by the <see cref="AddAppPage"/> which allows
+    /// Command to be used by the <see cref="EditAppPage"/> which allows
     /// for the addition of a new application.
     /// </summary>
     public class AddApplicationCommand : ICommand
     {
         private XamlResource<string> _xamlAddAppExecutableTitle = new XamlResource<string>("AddAppExecutableTitle");
         private XamlResource<string> _xamlAddAppExecutableFilter = new XamlResource<string>("AddAppExecutableFilter");
-        private readonly AddAppViewModel _addAppViewModel;
         private readonly MainPageViewModel _mainPageViewModel;
-        private ApplicationConfig _lastSavedConfig;
+        private ApplicationConfig _lastConfig;
 
-        public AddApplicationCommand(AddAppViewModel addAppViewModel)
+        public AddApplicationCommand(MainPageViewModel viewModel)
         {
-            _addAppViewModel = addAppViewModel;
-            _mainPageViewModel = _addAppViewModel.MainPageViewModel;
+            _mainPageViewModel = viewModel;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
+        public bool CanExecute(object parameter) => true;
 
         public void Execute(object parameter)
         {
             // Select EXE
             string exePath = SelectEXEFile();
 
-            if (String.IsNullOrEmpty(exePath) || ! File.Exists(exePath))
+            if (string.IsNullOrEmpty(exePath) || !File.Exists(exePath))
                 return;
 
             // Get file information and populate initial application details.
@@ -48,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             IApplicationConfig config = new ApplicationConfig(Path.GetFileName(fileInfo.FileName).ToLower(), fileInfo.ProductName, exePath);
 
             // Set AppName if empty & Ensure no duplicate ID.
-            if (String.IsNullOrEmpty(config.AppName))
+            if (string.IsNullOrEmpty(config.AppName))
                 config.AppName = config.AppId;
 
             UpdateIdIfDuplicate(config);
@@ -59,22 +54,22 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             string applicationDirectory = Path.Combine(applicationConfigDirectory, config.AppId);
             string applicationConfigFile = Path.Combine(applicationDirectory, ApplicationConfig.ConfigFileName);
 
-            // Add event to auto-select added config.
-            _lastSavedConfig = (ApplicationConfig)config;
-            _mainPageViewModel.ApplicationsChanged += MainPageViewModelOnApplicationsChanged;
-
             // Write file to disk.
             Directory.CreateDirectory(applicationDirectory);
             ApplicationConfig.WriteConfiguration(applicationConfigFile, (ApplicationConfig)config);
+
+            // TODO: Enter Application Screen
+            _lastConfig = (ApplicationConfig)config;
+            _mainPageViewModel.ApplicationsChanged += ApplicationsChanged;
         }
 
-        private void MainPageViewModelOnApplicationsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ApplicationsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var newSelection = _mainPageViewModel.Applications.FirstOrDefault(x => x.Config.AppId == _lastSavedConfig.AppId);
-            if (newSelection != null)
-                _addAppViewModel.Application = newSelection;
+            var newConfig = _mainPageViewModel.Applications.FirstOrDefault(x => x.Config.AppId == _lastConfig.AppId);
+            if (newConfig != null)
+                _mainPageViewModel.SwitchToApplication(newConfig);
 
-            _mainPageViewModel.ApplicationsChanged -= MainPageViewModelOnApplicationsChanged;
+            _mainPageViewModel.ApplicationsChanged -= ApplicationsChanged;
         }
 
         public event EventHandler CanExecuteChanged = (sender, args) => { };
@@ -100,7 +95,7 @@ namespace Reloaded.Mod.Launcher.Commands.AddAppPage
             dialog.Title = _xamlAddAppExecutableTitle.Get();
             dialog.Filter = $"{_xamlAddAppExecutableFilter.Get()} (*.exe)|*.exe";
 
-            if ((bool) dialog.ShowDialog())
+            if ((bool)dialog.ShowDialog())
             {
                 return dialog.FileName;
             }

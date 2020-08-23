@@ -12,7 +12,7 @@ using Reloaded.WPF.Utilities;
 namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 {
     /// <summary>
-    /// Command to be used by the <see cref="AddAppPage"/> which allows
+    /// Command to be used by the <see cref="EditAppPage"/> which allows
     /// for the addition of a new application.
     /// </summary>
     public class SetModImageCommand : ICommand

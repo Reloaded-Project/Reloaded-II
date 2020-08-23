@@ -76,6 +76,14 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             }
         }
 
+        private void Edit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                ViewModel.ChangeApplicationPage(ApplicationSubPage.EditApplication);
+            }
+        }
+
         private async void LaunchApplication_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)

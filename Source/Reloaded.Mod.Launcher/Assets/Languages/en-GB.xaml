@@ -7,6 +7,7 @@
 
     <!-- Page Titles -->
     <sys:String x:Key="TitleAddApplication">Add an Application</sys:String>
+    <sys:String x:Key="TitleEditApplication">Edit Application</sys:String>
     <sys:String x:Key="TitleManageMods">Manage Mods</sys:String>
     <sys:String x:Key="TitleDownloadMods">Download Mods</sys:String>
     <sys:String x:Key="TitleLoaderSettings">Mod Loader Settings</sys:String>
