@@ -287,7 +287,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             // Generate list of edges to other nodes this node is dependent on.
             var allMods = allModsDict.Values.ToArray();
             foreach (var node in allMods)
-                PopulateNodeDependencies(node, allModsDict);
+                PopulateNodeDependencies(node, allModsDict, null);
 
             // Perform a depth first search so long a node is unvisited.
             Node<ModConfig> firstUnvisitedNode;
@@ -344,34 +344,31 @@ namespace Reloaded.Mod.Loader.IO.Config
             node.Visited = Mark.Visiting;
 
             // Get all dependencies (children/edge nodes).
-            PopulateNodeDependencies(node, allModsDict);
+            PopulateNodeDependencies(node, allModsDict, dependencySet);
 
             // Visit all children, depth first.
             foreach (var dependency in node.Edges)
                 GetDependenciesVisitNode(dependency, allModsDict, dependencySet);
 
-            // Do collect missing dependencies.
-            foreach (string dependencyId in node.Element.ModDependencies)
-            {
-                // Get first matching dependency id if it exists (Linq FirstOrDefault)
-                if (allModsDict.TryGetValue(dependencyId, out var value))
-                    dependencySet.Configurations.Add(value.Element);
-                else
-                    dependencySet.MissingConfigurations.Add(dependencyId);
-            }
-
             // Set visited and return to next in stack.
             node.Visited = Mark.Visited;
         }
 
-        private static void PopulateNodeDependencies(Node<ModConfig> node, Dictionary<string, Node<ModConfig>> allModsDict)
+        private static void PopulateNodeDependencies(Node<ModConfig> node, Dictionary<string, Node<ModConfig>> allModsDict, ModDependencySet dependencySet)
         {
             // Populates the dependencies for each node given a dictionary of all available mods.
             node.Edges = new List<Node<ModConfig>>(allModsDict.Count);
             foreach (string dependencyId in node.Element.ModDependencies)
             {
                 if (allModsDict.TryGetValue(dependencyId, out var dependency))
+                {
                     node.Edges.Add(dependency);
+                    dependencySet?.Configurations.Add(dependency.Element);
+                }
+                else
+                {
+                    dependencySet?.MissingConfigurations.Add(dependencyId);
+                }
             }
         }
 
