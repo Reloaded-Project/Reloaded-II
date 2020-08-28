@@ -264,20 +264,11 @@ namespace Reloaded.Mod.Loader.IO.Config
 
             var dependencySet = new ModDependencySet();
 
-            // Populate whole list of nodes (graph), connected up with dependencies as edges.
-            var allModsNodes = new List<Node<ModConfig>>();
-            foreach (var mod in allMods)
-                allModsNodes.Add(new Node<ModConfig>(mod));
-
-            foreach (var node in allModsNodes)
-                node.Edges = allModsNodes.Where(x => node.Element.ModDependencies.Contains(x.Element.ModId)).ToList();
-
-            // Find our mod configuration in set of nodes.
-            var initialNode = new Node<ModConfig>(config);
-            initialNode.Edges = allModsNodes.Where(x => initialNode.Element.ModDependencies.Contains(x.Element.ModId)).ToList();
+            // Populate whole list of nodes (graph).
+            var allModsDict = PopulateNodeDictionary(allMods);
 
             // Recursive resolution.
-            GetDependenciesVisitNode(initialNode, allMods, dependencySet);
+            GetDependenciesVisitNode(new Node<ModConfig>(config), allModsDict, dependencySet);
 
             return dependencySet;
         }
@@ -290,18 +281,17 @@ namespace Reloaded.Mod.Loader.IO.Config
         {
             var sortedMods = new List<ModConfig>();
 
-            // Populate list of all nodes (without dependencies)
-            List<Node<ModConfig>> allNodes = new List<Node<ModConfig>>();
-            foreach (var mod in mods)
-                allNodes.Add(new Node<ModConfig>(mod));
+            // Populate whole list of nodes (graph).
+            var allModsDict = PopulateNodeDictionary(mods);
 
             // Generate list of edges to other nodes this node is dependent on.
-            foreach (var node in allNodes)
-                node.Edges = allNodes.Where(x => node.Element.ModDependencies.Contains(x.Element.ModId)).ToList();
+            var allMods = allModsDict.Values.ToArray();
+            foreach (var node in allMods)
+                PopulateNodeDependencies(node, allModsDict);
 
             // Perform a depth first search so long a node is unvisited.
             Node<ModConfig> firstUnvisitedNode;
-            while ((firstUnvisitedNode = allNodes.FirstOrDefault(node => node.Visited == Mark.NotVisited)) != null)
+            while ((firstUnvisitedNode = allMods.FirstOrDefault(node => node.Visited == Mark.NotVisited)) != null)
             {
                 SortModsVisitNode(firstUnvisitedNode, sortedMods);
             }
@@ -338,9 +328,9 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Returns a list of all Mod IDs that are not installed referenced by a mod config.
         /// </summary>
         /// <param name="node">The mod configuration for which to find missing dependencies.</param>
-        /// <param name="allMods">Collection containing all of the mod configurations.</param>
+        /// <param name="allModsDict">Collection containing all of the mod configurations.</param>
         /// <param name="dependencySet">Accumulator for all missing dependencies.</param>
-        private static void GetDependenciesVisitNode(Node<ModConfig> node, IEnumerable<ModConfig> allMods, ModDependencySet dependencySet)
+        private static void GetDependenciesVisitNode(Node<ModConfig> node, Dictionary<string, Node<ModConfig>> allModsDict, ModDependencySet dependencySet)
         {
             // Already fully visited, already in list.
             if (node.Visited == Mark.Visited)
@@ -353,22 +343,45 @@ namespace Reloaded.Mod.Loader.IO.Config
 
             node.Visited = Mark.Visiting;
 
+            // Get all dependencies (children/edge nodes).
+            PopulateNodeDependencies(node, allModsDict);
+
             // Visit all children, depth first.
             foreach (var dependency in node.Edges)
-                GetDependenciesVisitNode(dependency, allMods, dependencySet);
+                GetDependenciesVisitNode(dependency, allModsDict, dependencySet);
 
             // Do collect missing dependencies.
             foreach (string dependencyId in node.Element.ModDependencies)
             {
-                var dependencyConfig = allMods.FirstOrDefault(x => x.ModId == dependencyId);
-                if (dependencyConfig != null)
-                    dependencySet.Configurations.Add(dependencyConfig);
+                // Get first matching dependency id if it exists (Linq FirstOrDefault)
+                if (allModsDict.TryGetValue(dependencyId, out var value))
+                    dependencySet.Configurations.Add(value.Element);
                 else
                     dependencySet.MissingConfigurations.Add(dependencyId);
             }
 
             // Set visited and return to next in stack.
             node.Visited = Mark.Visited;
+        }
+
+        private static void PopulateNodeDependencies(Node<ModConfig> node, Dictionary<string, Node<ModConfig>> allModsDict)
+        {
+            // Populates the dependencies for each node given a dictionary of all available mods.
+            node.Edges = new List<Node<ModConfig>>(allModsDict.Count);
+            foreach (string dependencyId in node.Element.ModDependencies)
+            {
+                if (allModsDict.TryGetValue(dependencyId, out var dependency))
+                    node.Edges.Add(dependency);
+            }
+        }
+
+        private static Dictionary<string, Node<ModConfig>> PopulateNodeDictionary(IEnumerable<ModConfig> mods)
+        {
+            var allModsDict = new Dictionary<string, Node<ModConfig>>(StringComparer.OrdinalIgnoreCase);
+            foreach (var mod in mods)
+                allModsDict[mod.ModId] = new Node<ModConfig>(mod);
+
+            return allModsDict;
         }
 
         /*
