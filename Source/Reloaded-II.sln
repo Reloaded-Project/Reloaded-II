@@ -52,7 +52,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.Update"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{E74AA64B-677C-4C35-8599-03B59982FDFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetConverter", "Tools\NuGetConverter\NuGetConverter.csproj", "{4805E5D7-A321-41F3-9547-CAF69D688CFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NuGetConverter", "Tools\NuGetConverter\NuGetConverter.csproj", "{4805E5D7-A321-41F3-9547-CAF69D688CFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -167,6 +167,7 @@ Global
 		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Debug|X64+X86.Build.0 = Debug|x86
 		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Release|Any CPU.ActiveCfg = Release|x86
 		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Release|X64+X86.ActiveCfg = Release|x86
+		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Release|X64+X86.Build.0 = Release|x86
 		{E036F18E-312A-4C78-A8E9-5E37E5EBA9B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E036F18E-312A-4C78-A8E9-5E37E5EBA9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E036F18E-312A-4C78-A8E9-5E37E5EBA9B9}.Debug|X64+X86.ActiveCfg = Debug|Any CPU
