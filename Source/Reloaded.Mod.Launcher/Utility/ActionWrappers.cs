@@ -3,15 +3,25 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
     public static class ActionWrappers
     {
         /// <summary>
-        /// A wrapper for try/catch that swallows exceptions.
+        /// A wrapper for try/catch that displays exceptions in the UI.
         /// </summary>
         public static void TryCatch(Action action)
+        {
+            try { action(); }
+            catch (Exception ex) { Errors.HandleException(ex); }
+        }
+
+        /// <summary>
+        /// A wrapper for try/catch that swallows exceptions.
+        /// </summary>
+        public static void TryCatchDiscard(Action action)
         {
             try { action(); }
             catch (Exception) { /* ignored */ }

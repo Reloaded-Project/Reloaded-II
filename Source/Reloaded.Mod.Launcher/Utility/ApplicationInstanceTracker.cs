@@ -62,7 +62,7 @@ namespace Reloaded.Mod.Launcher.Utility
                 if (token.IsCancellationRequested)
                     return;
 
-                ActionWrappers.TryCatch(() =>
+                ActionWrappers.TryCatchDiscard(() =>
                 {
                     var processPath = Path.GetFullPath(process.GetExecutablePath());
 

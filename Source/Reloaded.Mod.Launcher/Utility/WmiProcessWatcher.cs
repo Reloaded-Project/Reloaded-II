@@ -54,7 +54,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
         private void ApplicationLaunched(object sender, EventArrivedEventArgs e)
         {
-            ActionWrappers.TryCatch(() =>
+            ActionWrappers.TryCatchDiscard(() =>
             {
                 var processId = Convert.ToInt32(e.NewEvent.Properties[WmiProcessidName].Value);
                 var process = Process.GetProcessById(processId);

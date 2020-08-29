@@ -154,17 +154,7 @@ namespace Reloaded.Mod.Launcher
             reloadedProtocolKey?.CreateSubKey(@"shell\open\command")?.SetValue("", $"\"{Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, ".exe")}\" {Constants.ParameterDownload} %1");
         }
 
-        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            if (!Debugger.IsAttached)
-            {
-                var exception = ((Exception) e.ExceptionObject);
-                var messageBox = new MessageBox(Errors.UnknownError(), $"{exception.Message}\n{exception.StackTrace}");
-                messageBox.ShowDialog();
-            }
-            else 
-                Debugger.Break();
-        }
+        private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e) => Errors.HandleException((Exception) e.ExceptionObject);
 
         /// <summary>
         /// Creates a new configuration if the config does not exist.
@@ -180,8 +170,8 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static async Task SetupViewModelsAsync()
         {
-            _ = Task.Run(BasicDllInjector.PreloadAddresses); // Fire and Forget
-            var loaderConfig = LoaderConfigReader.ReadConfiguration();
+            Task.Run(BasicDllInjector.PreloadAddresses); // Fire and Forget
+            var loaderConfig  = LoaderConfigReader.ReadConfiguration();
             IoC.Kernel.Bind<LoaderConfig>().ToConstant(loaderConfig);
             IoC.GetConstant<MainPageViewModel>();
             IoC.GetConstant<ManageModsViewModel>();   // Consumes MainPageViewModel, LoaderConfig

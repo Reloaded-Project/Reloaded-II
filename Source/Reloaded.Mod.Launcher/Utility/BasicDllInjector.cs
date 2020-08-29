@@ -4,9 +4,11 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows;
 using Reloaded.Memory.Sources;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Shared;
+using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -26,12 +28,6 @@ namespace Reloaded.Mod.Launcher.Utility
         private readonly Process _process;
         private readonly ExternalMemory _memory;
 
-        static BasicDllInjector()
-        {
-            x64LoadLibraryAddress = Getx64LoadLibraryAddress();
-            x86LoadLibraryAddress = Getx86LoadLibraryAddress();
-        }
-
         /// <summary>
         /// Provides the implementation of a primitive DLL injector, supporting injection into
         /// suspended process.
@@ -40,7 +36,7 @@ namespace Reloaded.Mod.Launcher.Utility
         {
             // Set the Location and Handle to the Process to be Injected.
             _process = process;
-            _memory = new ExternalMemory(process);
+            _memory  = new ExternalMemory(process);
 
             _loadLibraryAddress = _process.Is64Bit() ? x64LoadLibraryAddress : x86LoadLibraryAddress;
         }
@@ -58,6 +54,11 @@ namespace Reloaded.Mod.Launcher.Utility
         public static void PreloadAddresses()
         {
             // Dummy. Static constructor only needed.
+            ActionWrappers.TryCatch(() =>
+            {
+                x64LoadLibraryAddress = Getx64LoadLibraryAddress();
+                x86LoadLibraryAddress = Getx86LoadLibraryAddress();
+            });
         }
 
         private IntPtr WriteLoadLibraryParameter(string libraryPath)
@@ -98,7 +99,7 @@ namespace Reloaded.Mod.Launcher.Utility
             var result = (IntPtr)reader.ReadInt64();
 
             if (result == IntPtr.Zero)
-                throw new Exception("Failed to acquire address of GetProcAddress for x86.");
+                throw new Exception(Errors.ErrorGetProcAddress32Failed());
 
             return result;
         }

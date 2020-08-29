@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Windows;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Server;
@@ -27,7 +28,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
         public ApplicationInjector(Process process)
         {
-            _process = process;
+            _process  = process;
             _injector = new BasicDllInjector(process);
         }
 

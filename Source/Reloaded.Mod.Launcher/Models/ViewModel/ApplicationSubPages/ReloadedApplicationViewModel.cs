@@ -86,7 +86,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         /// </summary>
         public void ResetSelectedMod()
         {
-            ActionWrappers.TryCatch(() => SelectedMod = CurrentMods[0]);
+            ActionWrappers.TryCatchDiscard(() => SelectedMod = CurrentMods[0]);
         }
 
         /* Actions */

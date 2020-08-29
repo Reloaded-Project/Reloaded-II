@@ -213,6 +213,7 @@
     <sys:String x:Key="ErrorDllInjectionFailed">Failed to DLL inject into application process.</sys:String>
     <sys:String x:Key="ErrorPathToApplicationInvalid">The path to the application to be launched is invalid. Please re-check your application configuration.</sys:String>
     <sys:String x:Key="ErrorCheckUpdatesFailed">Failed to check for updates. We are either being rate limited by Github or not connected to the internet.</sys:String>
+    <sys:String x:Key="ErrorGetProcAddress32Failed" xml:space="preserve">Warning: You are probably missing the x86 version of .NET Core, 32-bit applications will not work.&#x0a;Please re-check the requirements listed on the download page.&#x0a;Actual Error: Failed to acquire address of GetProcAddress for x86.</sys:String>
 
     <!-- Asi Loader -->
     <sys:String x:Key="AsiLoaderInstall">Deploy ASI Loader</sys:String>
@@ -220,6 +221,6 @@
     <sys:String x:Key="AsiLoaderDialogDescription" xml:space="preserve">ThirteenAG's Ultimate ASI Loader (3rd party DLL loader) can be deployed if you would like for Reloaded&#x0a;to be launched automatically without using a launcher or shortcut. Would you like to deploy this loader?</sys:String>
     <sys:String x:Key="AsiLoaderDialogLoaderDeployed">ASI Loader Successfully deployed to: </sys:String>
     <sys:String x:Key="AsiLoaderDialogBootstrapperDeployed">Reloaded Bootstrapper deployed to: </sys:String>
-    <sys:String x:Key="ErrorAsiNotSupported">No compatible DLL name found to add Ultimate ASI Loader.</sys:String> <!-- Unused at the moment, may be used in the future. -->
+    <sys:String x:Key="ErrorAsiNotSupported" xml:space="preserve">No compatible DLL name found to add Ultimate ASI Loader.</sys:String> <!-- Unused at the moment, may be used in the future. -->
 
 </ResourceDictionary>
