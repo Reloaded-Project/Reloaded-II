@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
 
         <!-- Text -->
-        <TextBlock Text="{DynamicResource FetchNugetMessage}" Grid.Row="0" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource DefaultTextBlock}"/>
+        <TextBlock Text="{DynamicResource FetchNugetMessage}" Grid.Row="0" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource RIIDefaultTextBlock}"/>
 
         <!-- List Of Deps -->
         <DataGrid 
@@ -51,7 +51,7 @@
 
         <!-- Text -->
         <TextBlock Text="{DynamicResource FetchNugetNotFoundMessage}" Grid.Row="2" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"
-                   Style="{DynamicResource DefaultTextBlock}"
+                   Style="{DynamicResource RIIDefaultTextBlock}"
                    Visibility="{Binding ShowMissingPackages}"/>
 
         <ListView 
@@ -71,7 +71,7 @@
 
         <!-- Fetch NuGet -->
         <TextBlock Text="{DynamicResource FetchNugetNotFoundAdvice}" Grid.Row="4" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"
-                   Style="{DynamicResource DefaultTextBlock}"
+                   Style="{DynamicResource RIIDefaultTextBlock}"
                    Visibility="{Binding ShowMissingPackages}"/>
 
         <!-- Options -->

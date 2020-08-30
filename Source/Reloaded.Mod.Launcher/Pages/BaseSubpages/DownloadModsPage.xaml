@@ -66,7 +66,7 @@
                    VerticalAlignment="Center"
                    Margin="{DynamicResource CommonItemVerticalMargin}" 
                    Text="{Binding DownloadModEntry.Description, UpdateSourceTrigger=PropertyChanged}"
-                   Style="{DynamicResource DefaultTextBlock}"
+                   Style="{DynamicResource RIIDefaultTextBlock}"
                    TextWrapping="Wrap"/>
 
         <!-- Actions -->

@@ -39,15 +39,15 @@
         <!-- Current and New Version -->
         <Grid Grid.Row="1" Margin="{DynamicResource CommonItemVerticalMarginSmaller}">
             <DockPanel LastChildFill="False">
-                <TextBlock Text="{DynamicResource UpdateLoaderCurrentVersion}" Style="{DynamicResource DefaultTextBlock}"/>
-                <TextBlock Text="{Binding CurrentVersion, FallbackValue=1.0.0}" DockPanel.Dock="Right" Style="{DynamicResource DefaultTextBlock}"/>
+                <TextBlock Text="{DynamicResource UpdateLoaderCurrentVersion}" Style="{DynamicResource RIIDefaultTextBlock}"/>
+                <TextBlock Text="{Binding CurrentVersion, FallbackValue=1.0.0}" DockPanel.Dock="Right" Style="{DynamicResource RIIDefaultTextBlock}"/>
             </DockPanel>
         </Grid>
 
         <Grid Grid.Row="2" Margin="{DynamicResource CommonItemVerticalMarginSmaller}">
             <DockPanel LastChildFill="False">
-                <TextBlock Text="{DynamicResource UpdateLoaderNewVersion}" Style="{DynamicResource DefaultTextBlock}"/>
-                <TextBlock Text="{Binding NewVersion, FallbackValue=1.0.1}" DockPanel.Dock="Right" Style="{DynamicResource DefaultTextBlock}"/>
+                <TextBlock Text="{DynamicResource UpdateLoaderNewVersion}" Style="{DynamicResource RIIDefaultTextBlock}"/>
+                <TextBlock Text="{Binding NewVersion, FallbackValue=1.0.1}" DockPanel.Dock="Right" Style="{DynamicResource RIIDefaultTextBlock}"/>
             </DockPanel>
         </Grid>
 

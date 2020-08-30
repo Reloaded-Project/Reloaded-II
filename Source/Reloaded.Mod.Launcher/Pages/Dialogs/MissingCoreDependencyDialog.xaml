@@ -16,7 +16,7 @@
         <StackPanel>
             <TextBlock Text="{DynamicResource MissingDependenciesText}" 
                        Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
-                       Style="{DynamicResource DefaultTextBlock}"
+                       Style="{DynamicResource RIIDefaultTextBlock}"
                        TextWrapping="Wrap"/>
             <DataGrid 
                 ItemsSource="{Binding Dependencies, UpdateSourceTrigger=PropertyChanged}"
@@ -46,7 +46,7 @@
             </DataGrid>
             <TextBlock Text="{DynamicResource MissingDependenciesText2}" 
                        Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
-                       Style="{DynamicResource DefaultTextBlock}"
+                       Style="{DynamicResource RIIDefaultTextBlock}"
                        TextWrapping="Wrap"/>
         </StackPanel>
     </Grid>

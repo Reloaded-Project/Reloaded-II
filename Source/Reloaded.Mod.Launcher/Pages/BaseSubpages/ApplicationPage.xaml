@@ -184,16 +184,16 @@
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
                             <TextBlock Text="{DynamicResource ApplicationTotalMods}"
                                    Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
-                                   Style="{DynamicResource DefaultTextBlock}"
+                                   Style="{DynamicResource RIIDefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
                             <TextBlock Text=":"
-                                   Style="{DynamicResource DefaultTextBlock}"
+                                   Style="{DynamicResource RIIDefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
                             <TextBlock Text="{Binding ModsForThisApp.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
-                                   Style="{DynamicResource DefaultTextBlock}"
+                                   Style="{DynamicResource RIIDefaultTextBlock}"
                                    VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>

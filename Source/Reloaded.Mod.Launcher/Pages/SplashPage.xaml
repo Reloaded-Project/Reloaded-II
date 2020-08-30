@@ -24,7 +24,7 @@
                     VerticalAlignment="Bottom"
                     FontSize="{DynamicResource SplashFontSize}"
                     Text="{Binding Text, FallbackValue='Initializing Reloaded'}" 
-                    Style="{DynamicResource DefaultTextBlock}"/>
+                    Style="{DynamicResource RIIDefaultTextBlock}"/>
             </Grid>
         </StackPanel>
     </Grid>

@@ -104,7 +104,7 @@
                                TextWrapping="Wrap"
                                FontSize="{DynamicResource FontSizeLarge}"
                                Text="{DynamicResource LoaderSettingsWarning}"
-                               Style="{DynamicResource DefaultTextBlock}"/>
+                               Style="{DynamicResource RIIDefaultTextBlock}"/>
 
                         <!-- Statistics -->
                         <StackPanel Grid.Column="2">
