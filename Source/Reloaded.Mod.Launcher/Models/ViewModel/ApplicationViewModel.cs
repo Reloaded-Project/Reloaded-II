@@ -40,7 +40,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public ApplicationInstanceTracker InstanceTracker { get; private set; }
 
         public ObservableCollection<ImageModPathTuple> ModsForThisApp { get; private set; } = new ObservableCollection<ImageModPathTuple>();
-        public ObservableCollection<Process> ProcessesWithReloaded { get; private set; } = new ObservableCollection<Process>();
+        public ObservableCollection<Process> ProcessesWithReloaded    { get; private set; } = new ObservableCollection<Process>();
         public ObservableCollection<Process> ProcessesWithoutReloaded { get; private set; } = new ObservableCollection<Process>();
         public Timer RefreshProcessesWithLoaderTimer { get; private set; }
         public ApplicationSubPage Page { get; private set; }

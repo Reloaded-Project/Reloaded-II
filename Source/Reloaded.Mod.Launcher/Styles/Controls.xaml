@@ -28,6 +28,19 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Textblock with colour change on hover -->
+    <Style x:Key="RIIDefaultTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextBlock}">
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+    </Style>
+
+    <Style x:Key="SidebarHeaderTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource RIIDefaultTextBlock}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarger}"/>
+        <Setter Property="FontStyle" Value="Italic"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontRegular}"/>
+    </Style>
+
     <!-- Button without internal padding -->
     <Style x:Key="UnpaddedButton" TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultButton}">
         <Setter Property="Height" Value="30"/>

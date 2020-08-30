@@ -8,7 +8,7 @@ namespace Reloaded.Mod.Launcher.Converters
     [ValueConversion(typeof(Process), typeof(string))]
     public class ProcessToNameStringConverter : IValueConverter
     {
-        public static ProcessToNameStringConverter Instance = new ProcessToNameStringConverter();
+        public string Prefix { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -16,7 +16,7 @@ namespace Reloaded.Mod.Launcher.Converters
             {
                 try
                 {
-                    return $"({process.Id}) {process.MainModule.ModuleName}";
+                    return $"{Prefix} Id: {process.Id}";
                 }
                 catch (Exception)
                 {

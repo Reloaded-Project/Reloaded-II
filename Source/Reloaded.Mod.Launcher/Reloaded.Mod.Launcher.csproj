@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Remove="Assets\**" />
     <None Remove="Styles\**" />
+    <None Remove="Theme\**" />
     <None Remove="LICENSE.txt" />
   </ItemGroup>
 	
@@ -34,6 +35,11 @@
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
 	</Content>
 	<Content Include="Styles\**\*.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	</Content>
+	<Content Include="Theme\**">
 	  <Generator>MSBuild:Compile</Generator>
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

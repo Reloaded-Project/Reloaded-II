@@ -12,213 +12,194 @@
       d:DesignHeight="600" 
       d:DesignWidth="756"
       Title="{DynamicResource TitleApplication}">
+
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+        <Grid.Resources>
+
+            <converters:ProcessToNameStringConverter x:Key="ReloadedPrcConverter" Prefix="[RLD]" />
+            <converters:ProcessToNameStringConverter x:Key="NonReloadedPrcConverter" Prefix="[SYS]" />
+            <Style x:Key="ProcessListStyle" TargetType="{x:Type ItemsControl}">
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+                <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+                <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+
+                <!-- Allow for virtualization of stack panel. -->
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ItemsControl}">
+                            <ScrollViewer CanContentScroll="True">
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <!-- The actual panel of visible items -->
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </Grid.Resources>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{DynamicResource ApplicationBarWidth}"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Left Side -->
-        <Grid Grid.Column="0" Background="{DynamicResource AccentColorBrushDark}">
-            <Grid Margin="{DynamicResource ApplicationBarMargin}">
-                
-                <StackPanel>
+        <ScrollViewer Grid.Column="0">
+            <Grid Background="{DynamicResource AccentColorBrushDark}">
+                <Grid Margin="{DynamicResource ApplicationBarMargin}">
 
-                    <!-- Load Game -->
-                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Main Header -->
+                    <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
+                               Text="{Binding ApplicationTuple.Config.AppName}"
+                               HorizontalAlignment="Center"
+                               FontStyle="Normal"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
+                               Grid.Row="0" />
+
+                    <StackPanel Grid.Row="1">
+
+                        <Separator/>
+
+                        <!-- Main Header -->
+                        <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
+                               Text="{DynamicResource AppCategoryMain}"/>
+
+                        <!-- Load Game -->
+                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
                                HorizontalAlignment="Center" 
                                FontSize="{DynamicResource FontSizeSmaller}"
                                Text="{DynamicResource ApplicationLaunch}"
                                Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                PreviewMouseDown="LaunchApplication_PreviewMouseDown"/>
 
-
-                    <!-- Make Shortcut -->
-                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
-                               HorizontalAlignment="Center" 
-                               FontSize="{DynamicResource FontSizeSmaller}"
-                               Text="{DynamicResource AddAppCreateShortcut}"
-                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                               PreviewMouseDown="MakeShortcut_PreviewMouseDown"/>
-
-                    <!-- Load Mod Collection -->
-                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
-                               HorizontalAlignment="Center" 
-                               FontSize="{DynamicResource FontSizeSmaller}"
-                               Text="{DynamicResource LoadModSet}"
-                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                               PreviewMouseDown="LoadModSet_PreviewMouseDown"/>
-
-                    <!-- Save Mod Collection -->
-                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
-                               HorizontalAlignment="Center" 
-                               FontSize="{DynamicResource FontSizeSmaller}"
-                               Text="{DynamicResource SaveModSet}"
-                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                               PreviewMouseDown="SaveModSet_PreviewMouseDown"/>
-
-                    <!-- Main Page -->
-                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                        <!-- Main Page -->
+                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
                                HorizontalAlignment="Center" 
                                FontSize="{DynamicResource FontSizeSmaller}"
                                Text="{DynamicResource TitleConfigureMods}"
                                Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                PreviewMouseDown="Summary_PreviewMouseDown"/>
 
-                    <!-- Edit Page -->
-                    <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                        <!-- Edit Page -->
+                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
                                HorizontalAlignment="Center" 
                                FontSize="{DynamicResource FontSizeSmaller}"
                                Text="{DynamicResource TitleEditApplication}"
                                Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                                PreviewMouseDown="Edit_PreviewMouseDown"/>
+                    </StackPanel>
 
-                    <!-- Reloaded Processes -->
-                    <controls:PopupLabel Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                         FontFamily="{DynamicResource FontThin}"
-                                         Foreground="{DynamicResource TextColorBrush}"
-                                         ButtonText="{DynamicResource ApplicationReloadedInstances}"
-                                         IsOpen="True">
-                        <controls:PopupLabel.HiddenContent>
+                    <StackPanel Grid.Row="2">
+                        <Separator/>
+
+                        <!-- Actions Header -->
+                        <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
+                               Text="{DynamicResource AppCategoryActions}"/>
+
+                        <!-- Make Shortcut -->
+                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="{DynamicResource FontSizeSmaller}"
+                               Text="{DynamicResource AddAppCreateShortcut}"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                               PreviewMouseDown="MakeShortcut_PreviewMouseDown"/>
+
+                        <!-- Load Mod Collection -->
+                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="{DynamicResource FontSizeSmaller}"
+                               Text="{DynamicResource LoadModSet}"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                               PreviewMouseDown="LoadModSet_PreviewMouseDown"/>
+
+                        <!-- Save Mod Collection -->
+                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
+                               HorizontalAlignment="Center" 
+                               FontSize="{DynamicResource FontSizeSmaller}"
+                               Text="{DynamicResource SaveModSet}"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                               PreviewMouseDown="SaveModSet_PreviewMouseDown"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3">
+                        <Separator/>
+
+                        <!-- Instances Header -->
+                        <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
+                               Text="{DynamicResource AppCategoryInstances}"/>
+
+                        
+                        <StackPanel Margin="{DynamicResource CommonItemVerticalMarginSmall}">
+
+                            <!-- Reloaded Processes -->
                             <ItemsControl ItemsSource="{Binding ProcessesWithReloaded, UpdateSourceTrigger=PropertyChanged}"
-                                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                          VirtualizingPanel.IsVirtualizing="True"
-                                          VirtualizingPanel.VirtualizationMode="Recycling">
+                                          Style="{DynamicResource ProcessListStyle}">
 
-                                <!-- Allow for virtualization of stack panel. -->
-                                <ItemsControl.Template>
-                                    <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                        <ScrollViewer CanContentScroll="True">
-                                            <ItemsPresenter/>
-                                        </ScrollViewer>
-                                    </ControlTemplate>
-                                </ItemsControl.Template>
-
-                                <!-- The actual panel of visible items -->
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel IsItemsHost="True"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-
-                                <!-- Define each control. -->
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Style="{DynamicResource TextblockWithColourChange}" HorizontalAlignment="Center" 
                                                    FontSize="{DynamicResource FontSizeSmaller}"
-                                                   Text="{Binding ., Converter={x:Static converters:ProcessToNameStringConverter.Instance}}"
+                                                   Text="{Binding ., Converter={StaticResource ReloadedPrcConverter}}"
                                                    PreviewMouseDown="ReloadedMod_PreviewMouseDown"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
 
                             </ItemsControl>
-                        </controls:PopupLabel.HiddenContent>
-                    </controls:PopupLabel>
 
-                    <!-- Non-Reloaded Processes -->
-                    <controls:PopupLabel Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                         FontFamily="{DynamicResource FontThin}"
-                                         Foreground="{DynamicResource TextColorBrush}"
-                                         ButtonText="{DynamicResource ApplicationOtherInstances}"
-                                         IsOpen="True">
-                        <controls:PopupLabel.HiddenContent>
+                            <!-- Non-Reloaded Processes -->
                             <ItemsControl ItemsSource="{Binding ProcessesWithoutReloaded, UpdateSourceTrigger=PropertyChanged}"
-                                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                          VirtualizingPanel.IsVirtualizing="True"
-                                          VirtualizingPanel.VirtualizationMode="Recycling">
+                                      Style="{DynamicResource ProcessListStyle}">
 
-                                <!-- Allow for virtualization of stack panel. -->
-                                <ItemsControl.Template>
-                                    <ControlTemplate TargetType="{x:Type ItemsControl}">
-                                        <ScrollViewer CanContentScroll="True">
-                                            <ItemsPresenter/>
-                                        </ScrollViewer>
-                                    </ControlTemplate>
-                                </ItemsControl.Template>
-
-                                <!-- The actual panel of visible items -->
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel IsItemsHost="True"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-
-                                <!-- Define each control. -->
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Style="{DynamicResource TextblockWithColourChange}" HorizontalAlignment="Center" 
                                                    FontSize="{DynamicResource FontSizeSmaller}"
-                                                   Text="{Binding ., Converter={x:Static converters:ProcessToNameStringConverter.Instance}}" 
+                                                   Text="{Binding ., Converter={StaticResource NonReloadedPrcConverter}}" 
                                                    PreviewMouseDown="NonReloadedMod_PreviewMouseDown"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
 
                             </ItemsControl>
-                        </controls:PopupLabel.HiddenContent>
-                    </controls:PopupLabel>
-                </StackPanel>
-
-                <!-- Statistics -->
-                <DockPanel LastChildFill="False">
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-                        <TextBlock Text="{DynamicResource ApplicationOtherInstances}"
-                                   Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
-                                   FontFamily="{DynamicResource FontBold}"
-                                   Style="{DynamicResource DefaultTextBlock}"
-                                   VerticalAlignment="Center"/>
-
-                        <TextBlock Text=":"
-                                   FontFamily="{DynamicResource FontBold}"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource DefaultTextBlock}"/>
-
-                        <TextBlock Text="{Binding ProcessesWithoutReloaded.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
-                                   Margin="{DynamicResource ListEntryItemMarginSmall}"
-                                   FontFamily="{DynamicResource FontBold}"
-                                   Style="{DynamicResource DefaultTextBlock}"
-                                   VerticalAlignment="Center"/>
+                        </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-                        <TextBlock Text="{DynamicResource ApplicationReloadedInstances}"
+                    <!-- Statistics -->
+                    <StackPanel Grid.Row="4">
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                            <TextBlock Text="{DynamicResource ApplicationTotalMods}"
                                    Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
-                                   FontFamily="{DynamicResource FontBold}"
                                    Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
-                        <TextBlock Text=":"
-                                   FontFamily="{DynamicResource FontBold}"
+                            <TextBlock Text=":"
                                    Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
-                        <TextBlock Text="{Binding ProcessesWithReloaded.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=10}"
+                            <TextBlock Text="{Binding ModsForThisApp.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
-                                   FontFamily="{DynamicResource FontBold}"
                                    Style="{DynamicResource DefaultTextBlock}"
                                    VerticalAlignment="Center"/>
+                        </StackPanel>
                     </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-                        <TextBlock Text="{DynamicResource ApplicationTotalMods}"
-                                   Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
-                                   FontFamily="{DynamicResource FontBold}"
-                                   Style="{DynamicResource DefaultTextBlock}"
-                                   VerticalAlignment="Center"/>
-
-                        <TextBlock Text=":"
-                                   FontFamily="{DynamicResource FontBold}"
-                                   Style="{DynamicResource DefaultTextBlock}"
-                                   VerticalAlignment="Center"/>
-
-                        <TextBlock Text="{Binding ModsForThisApp.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
-                                   Margin="{DynamicResource ListEntryItemMarginSmall}"
-                                   FontFamily="{DynamicResource FontBold}"
-                                   Style="{DynamicResource DefaultTextBlock}"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
-                </DockPanel>
+                </Grid>
             </Grid>
-        </Grid>
+        </ScrollViewer>
 
         <!-- Right Side -->
         <reloadedWpfControls:PageHost x:Name="PageHost" Grid.Column="1" CurrentPage="{Binding Page, Converter={x:Static converters:ApplicationSubPageToPageConverter.Instance}}" />
