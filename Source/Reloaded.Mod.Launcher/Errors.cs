@@ -21,13 +21,13 @@ namespace Reloaded.Mod.Launcher
         /// <summary>
         /// Handles a generic thrown exception.
         /// </summary>
-        public static void HandleException(Exception ex)
+        public static void HandleException(Exception ex, string message = "")
         {
             if (!Debugger.IsAttached)
             {
                 ActionWrappers.ExecuteWithApplicationDispatcher(() =>
                 {
-                    var messageBox = new MessageBox(Errors.UnknownError(), $"{ex.Message}\n{ex.StackTrace}");
+                    var messageBox = new MessageBox(Errors.UnknownError(), $"{message}{ex.Message}\n{ex.StackTrace}");
                     messageBox.ShowDialog();
                 });
             }

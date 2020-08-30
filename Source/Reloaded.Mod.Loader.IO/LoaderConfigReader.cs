@@ -41,9 +41,8 @@ namespace Reloaded.Mod.Loader.IO
                                     $" Reloaded II may not be installed.");
 
             string jsonFile = File.ReadAllText(StaticConfigFilePath);
-            var config = JsonSerializer.Deserialize<LoaderConfig>(jsonFile);
-            config.ResetMissingDirectories();
-            Utility.SetNullPropertyValues(config);
+            var config      = JsonSerializer.Deserialize<LoaderConfig>(jsonFile);
+            config.SanitizeConfig();
             return config;
         }
 
@@ -56,10 +55,6 @@ namespace Reloaded.Mod.Loader.IO
             string directory = Path.GetDirectoryName(StaticConfigFilePath);
             if (! Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
-
-            // TODO: Remove this once serialization library supports nulls as empty array.
-            if (config.EnabledPlugins == null)
-                config.EnabledPlugins = Constants.EmptyStringArray;
 
             string jsonFile = JsonSerializer.Serialize(config, new JsonSerializerOptions() { WriteIndented = true });
             File.WriteAllText(StaticConfigFilePath, jsonFile);

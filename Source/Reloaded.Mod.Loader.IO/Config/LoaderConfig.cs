@@ -68,7 +68,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
         /// </summary>
-        public string[] EnabledPlugins { get; set; }
+        public string[] EnabledPlugins { get; set; } = new string[0] { };
 
         /// <summary>
         /// The language file used by the Reloaded II launcher.
@@ -87,8 +87,14 @@ namespace Reloaded.Mod.Loader.IO.Config
         {
         }
 
+        public void SanitizeConfig()
+        {
+            Utility.SetNullPropertyValues(this);
+            ResetMissingDirectories();
+        }
+
         // Creates directories/folders if they do not exist.
-        public void ResetMissingDirectories()
+        private void ResetMissingDirectories()
         {
             try
             {

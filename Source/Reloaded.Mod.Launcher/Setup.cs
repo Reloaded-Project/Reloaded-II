@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -189,8 +189,24 @@ namespace Reloaded.Mod.Launcher
         private static async Task SetupViewModelsAsync()
         {
             Task.Run(BasicDllInjector.PreloadAddresses); // Fire and Forget
-            var loaderConfig  = LoaderConfigReader.ReadConfiguration();
-            IoC.Kernel.Bind<LoaderConfig>().ToConstant(loaderConfig);
+
+            LoaderConfig config;
+            try
+            {
+                config = LoaderConfigReader.ReadConfiguration();
+            }
+            catch (Exception ex)
+            {
+                config = new LoaderConfig();
+                config.SanitizeConfig();
+                LoaderConfigReader.WriteConfiguration(config);
+                Errors.HandleException(ex, "Failed to parse Reloaded-II launcher configuration.\n" +
+                                           "This is a rare bug, your settings have been reset.\n" +
+                                           "If you have encountered this please report this to the Github issue tracker.\n" +
+                                           "Any information on how to reproduce this would be very, very welcome.\n");
+            }
+
+            IoC.Kernel.Bind<LoaderConfig>().ToConstant(config);
             IoC.GetConstant<MainPageViewModel>();
             IoC.GetConstant<ManageModsViewModel>();   // Consumes MainPageViewModel, LoaderConfig
             IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, MainPageViewModel
@@ -206,10 +222,9 @@ namespace Reloaded.Mod.Launcher
                 // Probably no internet access. 
             }
 
-            
             /* Set loader DLL path. */
-            SetLoaderPaths(loaderConfig, Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
-            LoaderConfigReader.WriteConfiguration(loaderConfig);
+            SetLoaderPaths(config, Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
+            LoaderConfigReader.WriteConfiguration(config);
         }
 
         /// <summary>
