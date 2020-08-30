@@ -13,6 +13,7 @@ using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.Update.Dependency;
 using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.Mod.Shared;
@@ -51,6 +52,7 @@ namespace Reloaded.Mod.Launcher
                 // Allow for debugging before crashing.
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
                 RegisterReloadedProtocol();
+                CheckForMissingDependencies();
 
                 updateText(_xamlSplashCreatingDefaultConfig.Get());
                 CreateNewConfigIfNotExist();
@@ -76,6 +78,22 @@ namespace Reloaded.Mod.Launcher
                 {
                     await Task.Delay(100);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Checks for missing mod loader dependencies.
+        /// </summary>
+        private static void CheckForMissingDependencies()
+        {
+            var deps = new DependencyChecker();
+            if (!deps.AllAvailable)
+            {
+                ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+                {
+                    var dialog = new MissingCoreDependencyDialog(deps);
+                    dialog.ShowDialog();
+                });
             }
         }
 
@@ -108,7 +126,7 @@ namespace Reloaded.Mod.Launcher
         /// and opens a menu allowing to download if mods are unavailable.
         /// </summary>
         /// <returns></returns>
-        public static async Task CheckForMissingDependencies()
+        public static async Task CheckForMissingModDependencies()
         {
             if (Update.CheckMissingDependencies(out var missingDependencies))
             {
@@ -248,7 +266,7 @@ namespace Reloaded.Mod.Launcher
         {
             await Task.Run(Update.CheckForModUpdatesAsync);
             await Update.CheckForLoaderUpdatesAsync();
-            await CheckForMissingDependencies();
+            await CheckForMissingModDependencies();
         }
 
     }

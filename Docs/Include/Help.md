@@ -36,14 +36,6 @@ This is specified on the download page.
 
 I apologise for the inconvenience, it has to be this way due to technical issues involved.
 
-### Reloaded still doesn't boot.
-
-Reloaded now includes a nifty tool used for checking whether all required components are available.
-
-Run `Reloaded-II-Test.exe`, it should provide you a report of what components are missing and what components are available; including direct download links (wherever possible).
-
-If you are still having issues, please contact me on the Discord server: https://discord.gg/wGgdZfX or on Github https://github.com/Reloaded-Project/Reloaded-II/issues
-
 ### How do I get started with using Reloaded?
 
 It's as easy as 1,2,3. Take a look at the quick start guide!

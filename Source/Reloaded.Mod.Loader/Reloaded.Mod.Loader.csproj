@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyTitle>Reloaded.Mod.Loader</AssemblyTitle>
     <Product>Reloaded.Mod.Loader</Product>
     <Copyright>Copyright ©  2019</Copyright>

@@ -43,6 +43,7 @@ Remove-Item "$outputPath/win-x64" -Recurse
 Get-ChildItem "$loader32OutputPath" -Include *.exe -Recurse | Remove-Item -Force -Recurse
 Get-ChildItem "$loader64OutputPath" -Include *.exe -Recurse | Remove-Item -Force -Recurse
 foreach ($cleanupPath in $cleanupPaths) {
+    Get-ChildItem "$cleanupPath" -Include *.config -Recurse | Remove-Item -Force -Recurse
     Get-ChildItem "$cleanupPath" -Include *.pdb -Recurse | Remove-Item -Force -Recurse
     Get-ChildItem "$cleanupPath" -Include *.xml -Recurse | Remove-Item -Force -Recurse
     Get-ChildItem "$cleanupPath" -Include *.exp -Recurse | Remove-Item -Force -Recurse

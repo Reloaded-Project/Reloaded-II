@@ -1,0 +1,53 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.MissingCoreDependencyDialog"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
+                xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+                mc:Ignorable="d"
+                Height="Auto" 
+                Width="500"
+                SizeToContent="Height"
+                WindowStartupLocation="CenterOwner"
+                Title="{DynamicResource MissingDependenciesTitle}"
+                Style="{DynamicResource ReloadedWindow}">
+    <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
+        <StackPanel>
+            <TextBlock Text="{DynamicResource MissingDependenciesText}" 
+                       Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                       Style="{DynamicResource DefaultTextBlock}"
+                       TextWrapping="Wrap"/>
+            <DataGrid 
+                ItemsSource="{Binding Dependencies, UpdateSourceTrigger=PropertyChanged}"
+                Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                CanUserSortColumns="False"
+                CanUserReorderColumns="False"
+
+                IsReadOnly="True"
+                AutoGenerateColumns="False"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name}" Width="*" IsReadOnly="True" />
+                    <DataGridTemplateColumn Header="{DynamicResource UpdateModDownload}" Width="Auto" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="{DynamicResource UpdateModDownload}" Click="DownloadButtonClick" IsEnabled="{Binding IsMissing}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Text="{DynamicResource MissingDependenciesText2}" 
+                       Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                       Style="{DynamicResource DefaultTextBlock}"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+    </Grid>
+</default:ReloadedWindow>

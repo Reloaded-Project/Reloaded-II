@@ -21,6 +21,7 @@
 
 - Visual Studio 2019+
 - Visual Studio: "Desktop development with C++" (Windows 10 SDK)
+- .NET Framework 4.8 SDK (Dependency Checker)
 - .NET Core 5.0 Preview 6 SDK (or newer).
 - NuGet Package Manager (Fetching Dependencies)
 

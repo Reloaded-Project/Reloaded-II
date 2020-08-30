@@ -202,6 +202,12 @@
     <sys:String x:Key="ConfigureModDialogTitle">Configure Mod</sys:String>
     <sys:String x:Key="ConfigureModDialogSave">Save</sys:String>
 
+    <!-- Missing Dependencies Dialog -->
+    <sys:String x:Key="MissingDependenciesTitle">Missing Requirements</sys:String>
+    <sys:String x:Key="MissingDependenciesText">It appears that certain requirements required to run Reloaded are missing from your system. The launcher has found the following missing requirements: </sys:String>
+    <sys:String x:Key="MissingDependenciesText2">Please download the requirements provided above and close the window.</sys:String>
+
+
     <!-- Errors -->
     <sys:String x:Key="ErrorError">Error</sys:String> <!-- Just the word "Error" in native language. -->
     <sys:String x:Key="ErrorUnknown">Unknown Error</sys:String>

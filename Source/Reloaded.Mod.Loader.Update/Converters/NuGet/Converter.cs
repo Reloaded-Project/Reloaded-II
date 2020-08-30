@@ -85,7 +85,7 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
         /// </summary>
         private static Package FromModConfig(IModConfig modConfig)
         {
-            var dependencies = modConfig.ModDependencies.Select(x => new Dependency(x, "0.0.0")).ToArray();
+            var dependencies = modConfig.ModDependencies.Select(x => new Structures.Dependency(x, "0.0.0")).ToArray();
             var dependencyGroup = new DependencyGroup(dependencies);
             var metadata = new Metadata(modConfig.ModId, modConfig.ModVersion, modConfig.ModAuthor, modConfig.ModDescription, dependencyGroup);
             return new Package(metadata);
