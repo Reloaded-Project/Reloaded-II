@@ -22,6 +22,7 @@ Designed mostly for hacking games, it is a completely free and open source publi
 Made from the ground up **proudly** using the C# programming language.
 
 ## Reloaded: For End Users
+- [FAQ: Frequently Asked Questions](./Docs/FAQ.md)
 - [Quick Start](./Docs/QuickStart.md)
 - [Installation/Injection Methods](./Docs/InjectionMethods.md) (Recommended Read for Power Users)
 

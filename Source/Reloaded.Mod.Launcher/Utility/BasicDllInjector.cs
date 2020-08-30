@@ -106,7 +106,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
         private static Process StartKernelAddressDumper()
         {
-            string location = AppDomain.CurrentDomain.BaseDirectory + $"\\{LoaderConfig.Kernel32AddressDumperName}";
+            string location = AppDomain.CurrentDomain.BaseDirectory + $"\\{LoaderConfig.Kernel32AddressDumperPath}";
             return Process.Start(location);
         }
 

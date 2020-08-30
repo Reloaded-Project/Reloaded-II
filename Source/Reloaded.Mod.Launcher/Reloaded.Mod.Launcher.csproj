@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
 	<UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
@@ -10,37 +10,37 @@
     <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | $(Version) ($([System.DateTime]::UtcNow.ToString("s")))</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	<OutputPath>..\Output\Launcher\</OutputPath>
-    <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Assets\**" />
     <None Remove="Styles\**" />
     <None Remove="LICENSE.txt" />
-    <None Remove="PropertyChanged.dll" />
   </ItemGroup>
-
-	<ItemGroup>
+	
+  <ItemGroup>
     <Content Include="Assets\Languages\**\*.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
     </Content>
 	<Content Include="Assets\Images\**\*.png">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
 	</Content>
 	<Content Include="Styles\**\*.xaml">
 	  <Generator>MSBuild:Compile</Generator>
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	</Content>
 	<Content Include="Assets\Loader\**" Link="Loader\%(RecursiveDir)\%(Filename)%(Extension)">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	</Content>
 	<Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="PropertyChanged.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
 
@@ -56,7 +56,7 @@
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
     <PackageReference Include="Reloaded.WPF" Version="3.0.2" />
-    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.1" />
+    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.2" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Management" Version="4.7.0" />
   </ItemGroup>

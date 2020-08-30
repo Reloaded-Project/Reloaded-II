@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -31,7 +32,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             MainPageViewModel.ApplicationsChanged += MainPageViewModelOnApplicationsChanged;
             ManageModsViewModel.ModsChanged += ManageModsViewModelOnModsChanged;
 
-            var version = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
+            var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
             Copyright = version.LegalCopyright;
             RuntimeVersion = $"Core: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}";
             SelectCurrentLanguage();

@@ -1,6 +1,7 @@
 # Build Locations
 $outputPath = "Output/Launcher/"
 $toolsPath  = "Output/Tools/"
+$dumperOutputPath = "$outputPath/Loader/"
 $loader32OutputPath = "$outputPath/Loader/x86"
 $loader64OutputPath = "$outputPath/Loader/x64"
 
@@ -28,12 +29,13 @@ foreach ($cleanupPath in $cleanupPaths) {
 dotnet restore	
 
 devenv Reloaded-II.sln /Project Reloaded.Mod.Loader.Bootstrapper /Build Release
-dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false -o "$outputPath" /p:PublishReadyToRun=true
-dotnet publish "$launcherProjectPath" -c Release -r win-x64 --self-contained false -o "$outputPath" /p:PublishReadyToRun=true
+dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false /p:PublishSingleFile=true -o "$dumperOutputPath"
+dotnet publish "$launcherProjectPath" -c Release -r win-x64 --self-contained false /p:PublishReadyToRun=true /p:PublishSingleFile=true -o "$outputPath"
 dotnet publish "$loaderProjectPath" -c Release -r win-x64 --self-contained false -o "$loader64OutputPath" /p:PublishReadyToRun=true
 dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false -o "$loader32OutputPath" /p:PublishReadyToRun=true
 dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true /p:PublishReadyToRun=true
 
+Remove-Item "$dumperOutputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x64" -Recurse
 

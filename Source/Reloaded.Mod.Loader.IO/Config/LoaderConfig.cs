@@ -11,7 +11,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public const string LoaderDllName = "Reloaded.Mod.Loader.dll";
         public const string Bootstrapper32Name = "Reloaded.Mod.Loader.Bootstrapper.dll";
         public const string Bootstrapper64Name = "Reloaded.Mod.Loader.Bootstrapper.dll";
-        public const string Kernel32AddressDumperName = "Kernel32AddressDumper.exe";
+        public const string Kernel32AddressDumperPath = "Loader/Kernel32AddressDumper.exe";
 
         /// <summary>
         /// The name of the configuration file as stored on disk.

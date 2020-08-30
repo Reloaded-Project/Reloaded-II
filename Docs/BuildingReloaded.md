@@ -21,7 +21,7 @@
 
 - Visual Studio 2019+
 - Visual Studio: "Desktop development with C++" (Windows 10 SDK)
-- .NET Core 3.0 Preview 6 SDK (or newer).
+- .NET Core 5.0 Preview 6 SDK (or newer).
 - NuGet Package Manager (Fetching Dependencies)
 
 # Obtaining Reloaded
