@@ -25,6 +25,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
     </Content>
+	<Content Include="Assets\HTML\**" Link="%(RecursiveDir)\%(Filename)%(Extension)">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	</Content>
 	<Content Include="Assets\Images\**\*.png">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
