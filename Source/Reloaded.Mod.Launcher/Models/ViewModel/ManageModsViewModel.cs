@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
@@ -64,7 +65,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             _createWatcher = CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherEvents.Changed | FileSystemWatcherEvents.Created);
             _deleteFileWatcher = CreateChangeCreateDelete(modDirectory, OnDeleteFile, FileSystemWatcherEvents.Deleted);
             _deleteDirectoryWatcher = CreateChangeCreateDelete(modDirectory, OnDeleteDirectory, FileSystemWatcherEvents.Deleted, false, "*.*");
-            ExecuteWithApplicationDispatcherAsync(() => Icon = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.Absolute)));
+            ExecuteWithApplicationDispatcherAsync(() => Icon = new BitmapImage(new Uri(Constants.PlaceholderImagePath, UriKind.Absolute)));
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// </summary>
         public string GetImageForModConfig(PathGenericTuple<ModConfig> modConfig)
         {
-            return ModConfig.TryGetIconPath(modConfig.Path, modConfig.Object, out string iconPath) ? iconPath : Paths.PLACEHOLDER_IMAGE;
+            return ModConfig.TryGetIconPath(modConfig.Path, modConfig.Object, out string iconPath) ? iconPath : Constants.PlaceholderImagePath;
         }
 
         /// <summary>

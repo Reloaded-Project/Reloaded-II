@@ -1,4 +1,7 @@
-﻿namespace Reloaded.Mod.Launcher.Misc
+﻿using System.Diagnostics;
+using System.IO;
+
+namespace Reloaded.Mod.Launcher.Misc
 {
     public static class Constants
     {
@@ -14,5 +17,9 @@
         public const string ReloadedProtocol = "R2";
         public const int    IcoMaxHeight = 256;
         public const int    IcoMaxWidth = 256;
+
+        public static readonly string ApplicationPath      = Process.GetCurrentProcess().MainModule.FileName;
+        public static readonly string ApplicationDirectory = Path.GetDirectoryName(ApplicationPath);
+        public static readonly string PlaceholderImagePath = $"{ApplicationDirectory}/Assets/Images/Mod-Placeholder.png";
     }
 }
