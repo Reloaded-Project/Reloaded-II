@@ -59,6 +59,7 @@
                         <Image d:DataContext="{x:Static designTimeModels:ModIcon.Instance}"
                                Source="{Binding Icon}"
                                ToolTip="{DynamicResource AddAppImageTooltip}"
+                               ToolTipService.InitialShowDelay="0"
                                PreviewMouseDown="Image_PreviewMouseDown"/>
                     </Viewbox>
 

@@ -34,6 +34,7 @@
                              Margin="{DynamicResource CommonItemVerticalMargin}">
                     <Image Source="{Binding Application.Image, IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
                                ToolTip="{DynamicResource AddAppImageTooltip}" 
+                               ToolTipService.InitialShowDelay="0"
                                PreviewMouseDown="Image_PreviewMouseDown"/>
                 </Viewbox>
 

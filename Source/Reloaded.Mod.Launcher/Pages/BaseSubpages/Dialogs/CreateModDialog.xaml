@@ -47,7 +47,9 @@
                              Margin="{DynamicResource CommonItemVerticalMarginSmall}">
                         <Image x:Name="ModIcon"
                                Source="{Binding Image}" 
-                               ToolTip="{DynamicResource AddAppImageTooltip}" PreviewMouseDown="ModIcon_PreviewMouseDown"/>
+                               ToolTip="{DynamicResource AddAppImageTooltip}" 
+                               ToolTipService.InitialShowDelay="0"
+                               PreviewMouseDown="ModIcon_PreviewMouseDown"/>
                     </Viewbox>
 
                     <!-- Mod Properties -->
