@@ -90,7 +90,7 @@ namespace Reloaded.Mod.Shared
 
         public static void OpenFileWithDefaultProgram(string url)
         {
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}"));
+            Process.Start(new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\""));
         }
 
         /* Definitions */
