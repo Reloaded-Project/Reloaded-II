@@ -38,7 +38,7 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
             using (Stream memoryStream = new MemoryStream(_archiveFile))
             using (var factory = ArchiveFactory.Open(memoryStream))
             {
-                var entry = factory.Entries.First(x => !x.IsDirectory && x.Key == ConfigFileName);
+                var entry = factory.Entries.FirstOrDefault(x => !x.IsDirectory && x.Key == ConfigFileName);
                 if (entry != null)
                 {
                     using (MemoryStream memory = new MemoryStream())
