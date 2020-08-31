@@ -97,7 +97,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             if (appDirectory == null)
                 appDirectory = LoaderConfigReader.ReadConfiguration().ApplicationConfigDirectory;
 
-            return _appConfigReader.ReadConfigurations(appDirectory, ConfigFileName, token);
+            return _appConfigReader.ReadConfigurations(appDirectory, ConfigFileName, token, 2);
         }
 
         /// <summary>

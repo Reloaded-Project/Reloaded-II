@@ -228,7 +228,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             if (modDirectory == null)
                 modDirectory = LoaderConfigReader.ReadConfiguration().ModConfigDirectory;
 
-            return _modConfigReader.ReadConfigurations(modDirectory, ConfigFileName, token);
+            return _modConfigReader.ReadConfigurations(modDirectory, ConfigFileName, token, 2);
         }
 
         /// <summary>

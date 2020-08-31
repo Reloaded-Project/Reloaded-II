@@ -71,8 +71,8 @@ namespace Reloaded.Mod.Loader.Tests.IO
                 _appConfigReader.WriteConfiguration(filePaths[1], _testAppConfig);
 
                 /* Find in directories. */
-                var modPathConfigTuple = _modConfigReader.ReadConfigurations(currentDirectory, ModConfigFileName)[0];
-                var appPathConfigTuple = _appConfigReader.ReadConfigurations(currentDirectory, AppConfigFileName)[0];
+                var modPathConfigTuple = _modConfigReader.ReadConfigurations(currentDirectory, ModConfigFileName, default, 2)[0];
+                var appPathConfigTuple = _appConfigReader.ReadConfigurations(currentDirectory, AppConfigFileName, default, 2)[0];
 
                 /* Validate Tuples. */
                 Assert.Equal(Path.GetFullPath(filePaths[0]), Path.GetFullPath(modPathConfigTuple.Path));

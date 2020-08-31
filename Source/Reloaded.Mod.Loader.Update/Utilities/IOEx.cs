@@ -1,11 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using Reloaded.Mod.Loader.IO;
 
 namespace Reloaded.Mod.Loader.Update.Utilities
 {
     public static class IOEx
     {
+        /// <summary>
+        /// Gets a list of all the files contained within a specific directory.
+        /// </summary>
+        /// <param name="directory">The absolute path of the directory from which to load all configurations from.</param>
+        /// <param name="fileName">The name of the file to load. The filename can contain wildcards * but not regex.</param>
+        /// <param name="maxDepth">Maximum depth to search in with 1 indicating only current directory.</param>
+        public static List<string> GetFilesEx(string directory, string fileName, int maxDepth = 1)
+        {
+            return Utility.GetFilesEx(directory, fileName, maxDepth);
+        }
+
         /// <summary>
         /// Moves a directory from a given source path to a target path, overwriting all files.
         /// </summary>
