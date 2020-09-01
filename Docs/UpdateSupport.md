@@ -11,7 +11,7 @@
 - [Supported Archive Formats](#supported-archive-formats)
 - [Existing Services](#existing-services)
     - [Reloaded II Repository](#reloaded-ii-repository)
-    - [Github](#github)
+    - [GitHub](#github)
         - [Determining Version](#determining-version)
         - [User Configuration](#user-configuration)
         - [Limitations](#limitations)
@@ -66,11 +66,11 @@ Note for Serious Programmers:
 There exists a standalone NuGet Package Converter released as part of Tools.zip alongside Reloaded releases (starting with 1.6.2). If you are using CI/CD for your mods, feel free to use this as part of your automatic deployment process.
 ```
 
-### Github
+### GitHub
 
 **Support:** A package is considered as "supported" if the file below exists.
 
-Support for mod updates from Github Releases can be added by copying the `ReloadedGithubUpdater.json` file from the Launcher's `Template` folder the to mod folder.
+Support for mod updates from GitHub Releases can be added by copying the `ReloadedGitHubUpdater.json` file from the Launcher's `Template` folder the to mod folder.
 
 After copying, you should then edit the file to include the user/organization name, repository and name of the mod archive.
 
@@ -85,15 +85,15 @@ After copying, you should then edit the file to include the user/organization na
 ```
 
 ##### Determining Version
-To determine the current version of the mod, the Github service uses the `ModVersion` field inside of your mod's `ModConfig.json`.
+To determine the current version of the mod, the GitHub service uses the `ModVersion` field inside of your mod's `ModConfig.json`.
 
-To determine the version on Github, the Github service uses the `tag` assigned to each release. 
+To determine the version on GitHub, the GitHub service uses the `tag` assigned to each release. 
 
-If the Github version is higher than the local one, there is an update.
+If the GitHub version is higher than the local one, there is an update.
 
 ##### User Configuration
 
-Each mod with Github update support can be configured by the user. This can be done by editing the `ReloadedGithubUserConfig.json`  file, in the mod folder using a standard text editor. 
+Each mod with GitHub update support can be configured by the user. This can be done by editing the `ReloadedGitHubUserConfig.json`  file, in the mod folder using a standard text editor. 
 
 **Example file:**
 ```json
@@ -105,13 +105,13 @@ Each mod with Github update support can be configured by the user. This can be d
 
 If not present, this file will appear the next time the Reloaded Launcher is launched.
 
-**Note:** *ReloadedGithubUserConfig.json should not be included in any mod downloads!*
+**Note:** *ReloadedGitHubUserConfig.json should not be included in any mod downloads!*
 
 ##### Limitations
 - Prereleases are supported but semantic versioning is not. Please do not add any prefixes/suffixes to your release tags.
 
-- Github only allows 60 requests an hour for unauthenticated users. This means that if you have many mods with Github update support, they might not receive updates immediately.
-	- The Github service tracks when each mod has been checked, ensuring that each mod gets the chance to check for updates, even if there are more than 60.
+- GitHub only allows 60 requests an hour for unauthenticated users. This means that if you have many mods with GitHub update support, they might not receive updates immediately.
+	- The GitHub service tracks when each mod has been checked, ensuring that each mod gets the chance to check for updates, even if there are more than 60.
 
 ### GameBanana
 
@@ -180,7 +180,7 @@ Here is a simple rundown of how to add a new service for a 3rd party website.
 ### 1. Write a Resolver
 Inside the `Resolvers` folder of the `Reloaded.Mod.Loader.Update` project, write a class that implements the `IModResolver` class.
 
-**Example:** See `GithubLatestUpdateResolver`.
+**Example:** See `GitHubLatestUpdateResolver`.
 
 The class only needs to be able to determine if there's a newer version, Reloaded-II will always autoselect newest version to update regardless of how many updates are available.
 

@@ -39,7 +39,7 @@
     <sys:String x:Key="AddAppAdvancedOptions">Advanced Tools &amp; Options</sys:String>
     <sys:String x:Key="AddAppCreateShortcut">Create Shortcut</sys:String>
     <sys:String x:Key="AddAppAutoInject">Auto-Inject</sys:String>
-    <sys:String x:Key="AddAppAutoInjectMessage" xml:space="preserve">Note: Auto-inject is provided but not recommended as no guarantee can be made that mods will execute code before the application.&#x0a;Please instead use regular "Launch Application" from Reloaded or the "DLL Loader" method described in the Github documentation.&#x0a;Please do not submit bugs for mods that do not work using Auto-inject mode.</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage" xml:space="preserve">Note: Auto-inject is provided but not recommended as no guarantee can be made that mods will execute code before the application.&#x0a;Please instead use regular "Launch Application" from Reloaded or the "DLL Loader" method described in the GitHub documentation.&#x0a;Please do not submit bugs for mods that do not work using Auto-inject mode.</sys:String>
 
     <sys:String x:Key="AddAppExecutableTitle">Select an application to create the configuration for.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">Application Executable</sys:String>
@@ -162,7 +162,7 @@
     <sys:String x:Key="UpdateLoaderNewVersion">New Version</sys:String>
 
     <sys:String x:Key="UpdateLoaderChangelogUnavailable">No Changelog Available</sys:String>
-    <sys:String x:Key="UpdateLoaderChangelog">View Changelog on Github</sys:String>
+    <sys:String x:Key="UpdateLoaderChangelog">View Changelog on GitHub</sys:String>
     <sys:String x:Key="UpdateLoaderUpdate">Update</sys:String>
 
     <sys:String x:Key="UpdateLoaderRunningTitle">Applications Running</sys:String>
@@ -208,11 +208,11 @@
     <sys:String x:Key="ErrorPathNullOrEmpty">The path to this application is either null or empty. Please fix the path.</sys:String>
     <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">Failed to get directory of mod to delete.</sys:String>
     <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">Failed to get directory of application to delete.</sys:String>
-    <sys:String x:Key="ErrorLoaderNotFound">was not found. This may be caused by Antivirus software deleting and/or breaking changes in Github repository.</sys:String> <!-- Loader DLL Name displays before this message -->
+    <sys:String x:Key="ErrorLoaderNotFound">was not found. This may be caused by Antivirus software deleting and/or breaking changes in GitHub repository.</sys:String> <!-- Loader DLL Name displays before this message -->
     <sys:String x:Key="ErrorFailedToStartProcess">Failed to start the process. Is your path correct?</sys:String>
     <sys:String x:Key="ErrorDllInjectionFailed">Failed to DLL inject into application process.</sys:String>
     <sys:String x:Key="ErrorPathToApplicationInvalid">The path to the application to be launched is invalid. Please re-check your application configuration.</sys:String>
-    <sys:String x:Key="ErrorCheckUpdatesFailed">Failed to check for updates. We are either being rate limited by Github or not connected to the internet.</sys:String>
+    <sys:String x:Key="ErrorCheckUpdatesFailed">Failed to check for updates. We are either being rate limited by GitHub or not connected to the internet.</sys:String>
     <sys:String x:Key="ErrorGetProcAddress32Failed" xml:space="preserve">Warning: You are probably missing the x86 version of .NET Core, 32-bit applications will not work.&#x0a;Please re-check the requirements listed on the download page.&#x0a;Actual Error: Failed to acquire address of GetProcAddress for x86.</sys:String>
 
     <!-- Asi Loader -->
@@ -236,7 +236,7 @@
 
     <!-- Update 1.7.0: Loader Settings Icons -->
     <sys:String x:Key="LoaderSettingsTwitter">Tweet Me</sys:String>
-    <sys:String x:Key="LoaderSettingsDonate">Sponsor Me on Github</sys:String>
+    <sys:String x:Key="LoaderSettingsDonate">Sponsor Me on GitHub</sys:String>
     <sys:String x:Key="LoaderSettingsDiscord">Join the Discord Server</sys:String>
 
 </ResourceDictionary>

@@ -8,21 +8,21 @@ The most up to date version of this document can be found at: https://github.com
 ### What are the official download links for Reloaded?
 
 The official downloads for Reloaded-II are on
-- *Github* https://github.com/Reloaded-Project/Reloaded-II/releases
+- *GitHub* https://github.com/Reloaded-Project/Reloaded-II/releases
 - *GameBanana* https://gamebanana.com/tools/6693
 
 Anything else is unofficial.
 
-Github is always kept up to date while Gamebanana is sometimes updated slightly less periodically. Regardless of what you download, the launcher will always offer to update itself to the latest up to date version.
+GitHub is always kept up to date while Gamebanana is sometimes updated slightly less periodically. Regardless of what you download, the launcher will always offer to update itself to the latest up to date version.
 
-Complete documentation for Reloaded is available on Github: https://github.com/Reloaded-Project/Reloaded-II#reloaded-for-end-users.
+Complete documentation for Reloaded is available on GitHub: https://github.com/Reloaded-Project/Reloaded-II#reloaded-for-end-users.
 
 ### Reloaded doesn't boot, what should I do?
 
 Have you installed the dependencies?
 No, seriously, 99% of the time it's just that. 
 
-Please look directly above the download button on both GameBanana and Github and download **ALL** of the linked dependencies.
+Please look directly above the download button on both GameBanana and GitHub and download **ALL** of the linked dependencies.
 
 ### How do I get started with using Reloaded?
 
@@ -110,7 +110,7 @@ https://github.com/Reloaded-Project/Reloaded.Hooks
 
 ### How can I contribute to Reloaded?
 
-The easiest way to contribute to Reloaded is to look at the issue list on Github: https://github.com/Reloaded-Project/Reloaded-II/issues
+The easiest way to contribute to Reloaded is to look at the issue list on GitHub: https://github.com/Reloaded-Project/Reloaded-II/issues
 
 Anything labelled as `accepted` is up for grabs by anyone, unless assigned to a specific user.
 Just make sure to follow the coding style in the existing projects and try to write good code. 

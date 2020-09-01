@@ -18,15 +18,15 @@ using Reloaded.Mod.Loader.Update.Utilities;
 namespace Reloaded.Mod.Loader.Update.Resolvers
 {
     /// <summary>
-    /// Resolver for Github that will download latest release or prerelease.
+    /// Resolver for GitHub that will download latest release or prerelease.
     /// </summary>
-    public class GithubLatestUpdateResolver : IModResolver
+    public class GitHubLatestUpdateResolver : IModResolver
     {
         public const int UnregisteredRateLimit = 60;
 
         // AllowedMods contains the first <UnregisteredRateLimit> mods, ordered by ones checked longest time ago.
         private static HashSet<ModConfig> AllowedMods { get; set; }
-        private static GitHubClient GithubClient { get; set; }
+        private static GitHubClient GitHubClient { get; set; }
 
         private static int          CachedRateLimit { get; set; }
         private static bool         ValidRateLimit  { get; set; } = false;
@@ -36,7 +36,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             if (ValidRateLimit)
                 return CachedRateLimit;
 
-            var rateLimits = await GithubClient.Miscellaneous.GetRateLimits();
+            var rateLimits = await GitHubClient.Miscellaneous.GetRateLimits();
             CachedRateLimit = rateLimits.Resources.Core.Remaining;
             ValidRateLimit  = true;
 
@@ -44,24 +44,24 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         }
 
         private PathGenericTuple<ModConfig> _modTuple;
-        private GithubConfig _githubConfig;
-        private GithubUserConfig _githubUserConfig;
+        private GitHubConfig _githubConfig;
+        private GitHubUserConfig _githubUserConfig;
         private IReadOnlyList<Release> _releases;
         private ReleaseAsset _targetAsset;
 
-        static GithubLatestUpdateResolver()
+        static GitHubLatestUpdateResolver()
         {
             try
             {
-                GithubClient    = new GitHubClient(new ProductHeaderValue("Reloaded-II"));
+                GitHubClient    = new GitHubClient(new ProductHeaderValue("Reloaded-II"));
 
                 // Get list of mods allowed to be updated this time around.
                 var allMods                 = ModConfig.GetAllMods();
-                var allModsWithConfigs      = allMods.Where(x => File.Exists(GithubConfig.GetFilePath(GetModDirectory(x))));
+                var allModsWithConfigs      = allMods.Where(x => File.Exists(GitHubConfig.GetFilePath(GetModDirectory(x))));
 
                 MakeTimestampsIfNotExist(allModsWithConfigs);
 
-                var orderedModsWithConfigs  = allModsWithConfigs.OrderBy(x => GithubUserConfig.FromPath(GithubUserConfig.GetFilePath(GetModDirectory(x))).LastCheckTimestamp);
+                var orderedModsWithConfigs  = allModsWithConfigs.OrderBy(x => GitHubUserConfig.FromPath(GitHubUserConfig.GetFilePath(GetModDirectory(x))).LastCheckTimestamp);
                 var allowedMods             = orderedModsWithConfigs.Take(UnregisteredRateLimit).Select(x => x.Object);
                 AllowedMods                 = new HashSet<ModConfig>(allowedMods);
             }
@@ -77,9 +77,9 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         {
             try
             {
-                if (Task.Run(AssertGithubOK).Result)
+                if (Task.Run(AssertGitHubOK).Result)
                 {
-                    string path = GithubConfig.GetFilePath(GetModDirectory(mod));
+                    string path = GitHubConfig.GetFilePath(GetModDirectory(mod));
 
                     if (File.Exists(path) && AllowedMods.Contains(mod.Object))
                         return true;
@@ -93,9 +93,9 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         public void Construct(PathGenericTuple<ModConfig> mod)
         {
             _modTuple = mod;
-            string path = GithubConfig.GetFilePath(GetModDirectory(mod));
-            _githubConfig = GithubConfig.FromPath(path);
-            _githubUserConfig = GithubUserConfig.FromPath(path);
+            string path = GitHubConfig.GetFilePath(GetModDirectory(mod));
+            _githubConfig = GitHubConfig.FromPath(path);
+            _githubUserConfig = GitHubUserConfig.FromPath(path);
         }
 
         public Version GetCurrentVersion()
@@ -151,7 +151,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         public void PostUpdateCallback(bool hasUpdates)
         {
             _githubUserConfig.LastCheckTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
-            GithubUserConfig.ToPath(_githubUserConfig, GithubUserConfig.GetFilePath(GetModDirectory(_modTuple)));
+            GitHubUserConfig.ToPath(_githubUserConfig, GitHubUserConfig.GetFilePath(GetModDirectory(_modTuple)));
         }
 
         /* Helper classes */
@@ -159,9 +159,9 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         {
             foreach (var modWithConfig in mods)
             {
-                var configPath = GithubUserConfig.GetFilePath(GetModDirectory(modWithConfig));
+                var configPath = GitHubUserConfig.GetFilePath(GetModDirectory(modWithConfig));
                 if (!File.Exists(configPath))
-                    GithubUserConfig.ToPath(new GithubUserConfig(0), configPath);
+                    GitHubUserConfig.ToPath(new GitHubUserConfig(0), configPath);
             }
         }
 
@@ -170,9 +170,9 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             return Path.GetDirectoryName(mod.Path);
         }
 
-        private async Task<bool> AssertGithubOK()
+        private async Task<bool> AssertGitHubOK()
         {
-            if (GithubClient == null)
+            if (GitHubClient == null)
                 return false;
 
             var rateLimit = await GetRateLimit();
@@ -191,11 +191,11 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             }
         }
 
-        private async Task<IReadOnlyList<Release>> GetReleases(GithubConfig configuration)
+        private async Task<IReadOnlyList<Release>> GetReleases(GitHubConfig configuration)
         {
             try
             {
-                var releases = await GithubClient.Repository.Release.GetAll(configuration.UserName, configuration.RepositoryName);
+                var releases = await GitHubClient.Repository.Release.GetAll(configuration.UserName, configuration.RepositoryName);
                 ValidRateLimit = false;
                 if (!_githubUserConfig.EnablePrereleases)
                     releases = releases.Where(x => x.Prerelease == false).ToList();
@@ -205,25 +205,25 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             catch { return null; }
         }
 
-        /* Github Config. */
-        public class GithubUserConfig : JsonSerializable<GithubUserConfig>
+        /* GitHub Config. */
+        public class GitHubUserConfig : JsonSerializable<GitHubUserConfig>
         {
-            public const string     ConfigFileName = "ReloadedGithubUserConfig.json";
+            public const string     ConfigFileName = "ReloadedGitHubUserConfig.json";
             public static string    GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";
 
             public long LastCheckTimestamp { get; set; }
             public bool EnablePrereleases  { get; set; } = false;
 
-            public GithubUserConfig() { } // For deserialization
-            public GithubUserConfig(long timeStamp)
+            public GitHubUserConfig() { } // For deserialization
+            public GitHubUserConfig(long timeStamp)
             {
                 LastCheckTimestamp = timeStamp;
             }
         }
 
-        public class GithubConfig : JsonSerializable<GithubConfig>
+        public class GitHubConfig : JsonSerializable<GitHubConfig>
         {
-            public const string     ConfigFileName = "ReloadedGithubUpdater.json";
+            public const string     ConfigFileName = "ReloadedGitHubUpdater.json";
             public static string    GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";
 
             public string UserName          { get; set; }

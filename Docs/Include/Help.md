@@ -7,14 +7,14 @@ This is just a basic tiny document provided in case you get stuck 😊.
 ### What are the official download links for Reloaded?
 
 The official downloads for Reloaded-II are on
-- *Github* https://github.com/Reloaded-Project/Reloaded-II/releases
+- *GitHub* https://github.com/Reloaded-Project/Reloaded-II/releases
 - *GameBanana* https://gamebanana.com/tools/6693
 
 Anything else is unofficial.
 
-Github is always kept up to date while Gamebanana is sometimes updated slightly less periodically. Regardless of what you download, the launcher will always offer to update itself to the latest up to date version.
+GitHub is always kept up to date while Gamebanana is sometimes updated slightly less periodically. Regardless of what you download, the launcher will always offer to update itself to the latest up to date version.
 
-Complete documentation for Reloaded is available on Github: https://github.com/Reloaded-Project/Reloaded-II#reloaded-for-end-users.
+Complete documentation for Reloaded is available on GitHub: https://github.com/Reloaded-Project/Reloaded-II#reloaded-for-end-users.
 
 ### Reloaded doesn't boot, what should I do?
 

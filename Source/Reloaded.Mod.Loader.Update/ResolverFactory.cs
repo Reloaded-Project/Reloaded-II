@@ -15,7 +15,7 @@ namespace Reloaded.Mod.Loader.Update
         /// </summary>
         private class ResolverCollection
         {
-            public IModResolver[] Resolvers { get; set; } = { new NugetRepositoryResolver(), new GithubLatestUpdateResolver(), new GameBananaUpdateResolver() };
+            public IModResolver[] Resolvers { get; set; } = { new NugetRepositoryResolver(), new GitHubLatestUpdateResolver(), new GameBananaUpdateResolver() };
         }
 
         /// <summary>

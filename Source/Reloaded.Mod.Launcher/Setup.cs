@@ -202,7 +202,7 @@ namespace Reloaded.Mod.Launcher
                 LoaderConfigReader.WriteConfiguration(config);
                 Errors.HandleException(ex, "Failed to parse Reloaded-II launcher configuration.\n" +
                                            "This is a rare bug, your settings have been reset.\n" +
-                                           "If you have encountered this please report this to the Github issue tracker.\n" +
+                                           "If you have encountered this please report this to the GitHub issue tracker.\n" +
                                            "Any information on how to reproduce this would be very, very welcome.\n");
             }
 
@@ -270,7 +270,7 @@ namespace Reloaded.Mod.Launcher
             if (!Directory.Exists(templatesDirectory))
                 Directory.CreateDirectory(templatesDirectory);
             
-            GithubLatestUpdateResolver.GithubConfig.ToPath(new GithubLatestUpdateResolver.GithubConfig(), $"{GithubLatestUpdateResolver.GithubConfig.GetFilePath(templatesDirectory)}");
+            GitHubLatestUpdateResolver.GitHubConfig.ToPath(new GitHubLatestUpdateResolver.GitHubConfig(), $"{GitHubLatestUpdateResolver.GitHubConfig.GetFilePath(templatesDirectory)}");
             GameBananaUpdateResolver.GameBananaConfig.ToPath(new GameBananaUpdateResolver.GameBananaConfig(), $"{GameBananaUpdateResolver.GameBananaConfig.GetFilePath(templatesDirectory)}");
         }
 

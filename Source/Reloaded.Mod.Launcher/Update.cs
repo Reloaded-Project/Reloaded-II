@@ -39,7 +39,7 @@ namespace Reloaded.Mod.Launcher
             try
             {
                 using (var manager = new UpdateManager(
-                    new GithubPackageResolver(SharedConstants.GitRepositoryAccount, SharedConstants.GitRepositoryName, SharedConstants.GitRepositoryReleaseName),
+                    new GitHubPackageResolver(SharedConstants.GitRepositoryAccount, SharedConstants.GitRepositoryName, SharedConstants.GitRepositoryReleaseName),
                     new ArchiveExtractor()))
                 {
                     // Check for new version and, if available, perform full update and restart
