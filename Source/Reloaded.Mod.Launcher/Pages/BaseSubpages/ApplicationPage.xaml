@@ -87,28 +87,19 @@
                         <Separator/>
 
                         <!-- Load Game -->
-                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
-                               HorizontalAlignment="Center" 
-                               FontSize="{DynamicResource FontSizeSmaller}"
-                               Text="{DynamicResource ApplicationLaunch}"
-                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                               PreviewMouseDown="LaunchApplication_PreviewMouseDown"/>
+                        <TextBlock Style="{DynamicResource SidebarTextblock}" 
+                                   Text="{DynamicResource ApplicationLaunch}"
+                                   PreviewMouseDown="LaunchApplication_PreviewMouseDown"/>
 
                         <!-- Main Page -->
-                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
-                               HorizontalAlignment="Center" 
-                               FontSize="{DynamicResource FontSizeSmaller}"
-                               Text="{DynamicResource TitleConfigureMods}"
-                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                               PreviewMouseDown="Summary_PreviewMouseDown"/>
+                        <TextBlock Style="{DynamicResource SidebarTextblock}" 
+                                   Text="{DynamicResource TitleConfigureMods}"
+                                   PreviewMouseDown="Summary_PreviewMouseDown"/>
 
                         <!-- Edit Page -->
-                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
-                               HorizontalAlignment="Center" 
-                               FontSize="{DynamicResource FontSizeSmaller}"
-                               Text="{DynamicResource TitleEditApplication}"
-                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                               PreviewMouseDown="Edit_PreviewMouseDown"/>
+                        <TextBlock Style="{DynamicResource SidebarTextblock}" 
+                                   Text="{DynamicResource TitleEditApplication}"
+                                   PreviewMouseDown="Edit_PreviewMouseDown"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="1">
@@ -120,28 +111,19 @@
                         <Separator/>
 
                         <!-- Make Shortcut -->
-                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
-                               HorizontalAlignment="Center" 
-                               FontSize="{DynamicResource FontSizeSmaller}"
-                               Text="{DynamicResource AddAppCreateShortcut}"
-                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                               PreviewMouseDown="MakeShortcut_PreviewMouseDown"/>
+                        <TextBlock Style="{DynamicResource SidebarTextblock}" 
+                                   Text="{DynamicResource AddAppCreateShortcut}"
+                                   PreviewMouseDown="MakeShortcut_PreviewMouseDown"/>
 
                         <!-- Load Mod Collection -->
-                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
-                               HorizontalAlignment="Center" 
-                               FontSize="{DynamicResource FontSizeSmaller}"
-                               Text="{DynamicResource LoadModSet}"
-                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                               PreviewMouseDown="LoadModSet_PreviewMouseDown"/>
+                        <TextBlock Style="{DynamicResource SidebarTextblock}" 
+                                   Text="{DynamicResource LoadModSet}"
+                                   PreviewMouseDown="LoadModSet_PreviewMouseDown"/>
 
                         <!-- Save Mod Collection -->
-                        <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
-                               HorizontalAlignment="Center" 
-                               FontSize="{DynamicResource FontSizeSmaller}"
-                               Text="{DynamicResource SaveModSet}"
-                               Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                               PreviewMouseDown="SaveModSet_PreviewMouseDown"/>
+                        <TextBlock Style="{DynamicResource SidebarTextblock}" 
+                                   Text="{DynamicResource SaveModSet}"
+                                   PreviewMouseDown="SaveModSet_PreviewMouseDown"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="2">

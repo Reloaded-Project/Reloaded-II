@@ -16,6 +16,8 @@
 
     <!-- Textblock with colour change on hover -->
     <Style x:Key="TextblockWithColourChange" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}">
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Trigger.EnterActions>
@@ -28,6 +30,8 @@
         </Style.Triggers>
     </Style>
 
+
+
     <!-- Textblock with colour change on hover -->
     <Style x:Key="RIIDefaultTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextBlock}">
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
@@ -38,6 +42,13 @@
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeLarger}"/>
         <Setter Property="FontStyle" Value="Italic"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontRegular}"/>
+    </Style>
+
+    <Style x:Key="SidebarTextblock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextblockWithColourChange}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmaller}"/>
+        <Setter Property="Margin" Value="{DynamicResource CommonItemVerticalMarginSmall}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="{DynamicResource FontRegular}"/>
     </Style>
 
