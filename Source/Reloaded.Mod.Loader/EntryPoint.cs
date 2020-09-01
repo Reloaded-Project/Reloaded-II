@@ -31,6 +31,7 @@ namespace Reloaded.Mod.Loader
                 _stopWatch = new Stopwatch();
                 _stopWatch.Start();
 
+                AppDomain.CurrentDomain.UnhandledException += DumpLogOnCrash;
                 ExecuteTimed("Create Loader", CreateLoader);
                 var createHostTask = Task.Run(() => ExecuteTimed("Create Loader Host (Async)", CreateHost));
                 var checkDrmTask   = Task.Run(() => ExecuteTimed("Checking for DRM (Async)", CheckForDRM));
@@ -43,7 +44,10 @@ namespace Reloaded.Mod.Loader
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}");
+                var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA crash log has been saved to: {_loader?.Logger?.FlushPath}";
+                _loader?.Console?.WriteLine(errorMessage, _loader.Console.ColorRed);
+                _loader?.Logger?.Flush();
+                MessageBox.Show(errorMessage);
             }
         }
 
@@ -51,6 +55,12 @@ namespace Reloaded.Mod.Loader
         private static void CheckForDRM() => DRMNotifier.PrintWarnings(_loader.Console);
         private static void CreateLoader() => _loader = new Loader();
         private static void CreateHost() => _server = new Host(_loader);
+
+        private static void DumpLogOnCrash(object sender, UnhandledExceptionEventArgs e)
+        {
+            _loader?.Console?.WriteLine($"Saving crash log to: {_loader?.Logger?.FlushPath}", _loader.Console.ColorRed);
+            _loader?.Logger?.Flush();
+        }
 
         /* Initialize Mod Loader (DLL_PROCESS_ATTACH) */
 

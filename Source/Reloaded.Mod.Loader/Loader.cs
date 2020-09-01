@@ -8,6 +8,7 @@ using Reloaded.Mod.Loader.Exceptions;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.Logging;
 using Reloaded.Mod.Loader.Mods;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Utilities;
@@ -21,6 +22,7 @@ namespace Reloaded.Mod.Loader
         public bool IsLoaded { get; private set; }
         public IApplicationConfig Application { get; private set; }
         public Console Console { get; }
+        public Logger Logger { get; }
         public PluginManager Manager { get; private set; }
         public LoaderConfig LoaderConfig { get; private set; }
 
@@ -38,6 +40,7 @@ namespace Reloaded.Mod.Loader
             LoaderConfig = LoaderConfigReader.ReadConfiguration();
             Manager = new PluginManager(this);
             Console = new Console();
+            Logger = new Logger(Console, Path.GetTempPath());
         }
 
         /// <summary>
@@ -50,6 +53,7 @@ namespace Reloaded.Mod.Loader
             Manager = new PluginManager(this);
 
             Console = new Console();
+            Logger  = new Logger(Console, Path.GetTempPath());
             if (LoaderConfig.ShowConsole)
             {
                 Console.ShowConsole();
