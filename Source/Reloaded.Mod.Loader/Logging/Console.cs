@@ -30,20 +30,20 @@ namespace Reloaded.Mod.Loader.Logging
 
         public void WriteLine(string message, Color color)
         {
-            if (_consoleEnabled)
-            {
-                Colorful.Console.WriteLine(message, color);
-                OnPrintMessage?.Invoke(this, message);
-            }
+            if (!_consoleEnabled) 
+                return;
+
+            Colorful.Console.WriteLine(message, color);
+            OnPrintMessage?.Invoke(this, message);
         }
 
         public void Write(string message, Color color)
         {
-            if (_consoleEnabled)
-            {
-                Colorful.Console.Write(message, color);
-                OnPrintMessage?.Invoke(this, message);
-            }
+            if (!_consoleEnabled) 
+                return;
+
+            Colorful.Console.Write(message, color);
+            OnPrintMessage?.Invoke(this, message);
         }
 
         // Default Colours
@@ -69,11 +69,13 @@ namespace Reloaded.Mod.Loader.Logging
         public Color ColorLightBlueLight { get; set; } = Color.FromArgb(147, 224, 227);
 
         /* Default Banner */
+
+        #region Print Banner
         public void PrintBanner()
         {
             System.Console.Write("\n\n");
-            
-            Formatter[] formatter = 
+
+            Formatter[] formatter =
             {
                 new Formatter(@"    hMMM+ +MMMh", ColorRed),
                 new Formatter(@"   `MMMM` dMMM/", ColorRed),
@@ -88,7 +90,7 @@ namespace Reloaded.Mod.Loader.Logging
 
             };
 
-            string[] template = 
+            string[] template =
             {
                 @"MMMMMMMMMMMMMMMMMMdo`    {0}",
                 @"MMMMMMMMMMMMMMMMMMMMh    {0}",
@@ -114,8 +116,8 @@ namespace Reloaded.Mod.Loader.Logging
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
             var coreVersion = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
-            Formatter[] formatters = 
-            { 
+            Formatter[] formatters =
+            {
                 new Formatter($"{version}", TextColor),
                 new Formatter($"{coreVersion}", ColorRed)
             };
@@ -127,8 +129,8 @@ namespace Reloaded.Mod.Loader.Logging
         {
             for (int x = 0; x < lines.Length; x++)
             {
-                var line          = lines[x];
-                var formatter     = formatters[x];
+                var line = lines[x];
+                var formatter = formatters[x];
 
                 WriteLineCentered(line, formatter);
             }
@@ -152,5 +154,9 @@ namespace Reloaded.Mod.Loader.Logging
 
             System.Console.SetCursorPosition(consolePointer, System.Console.CursorTop);
         }
+
+
+        #endregion
+
     }
 }
