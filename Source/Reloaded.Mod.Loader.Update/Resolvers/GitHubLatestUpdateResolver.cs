@@ -208,7 +208,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         /* GitHub Config. */
         public class GitHubUserConfig : JsonSerializable<GitHubUserConfig>
         {
-            public const string     ConfigFileName = "ReloadedGitHubUserConfig.json";
+            public const string     ConfigFileName = "ReloadedGithubUserConfig.json";
             public static string    GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";
 
             public long LastCheckTimestamp { get; set; }
@@ -223,7 +223,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 
         public class GitHubConfig : JsonSerializable<GitHubConfig>
         {
-            public const string     ConfigFileName = "ReloadedGitHubUpdater.json";
+            public const string     ConfigFileName = "ReloadedGithubUpdater.json";
             public static string    GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";
 
             public string UserName          { get; set; }
