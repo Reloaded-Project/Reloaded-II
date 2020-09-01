@@ -33,7 +33,7 @@ dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-containe
 dotnet publish "$launcherProjectPath" -c Release -r win-x64 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true -o "$outputPath"
 dotnet publish "$loaderProjectPath" -c Release -r win-x64 --self-contained false -o "$loader64OutputPath" /p:PublishReadyToRun=true
 dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false -o "$loader32OutputPath" /p:PublishReadyToRun=true
-dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true /p:PublishReadyToRun=true
+dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
 
 Remove-Item "$dumperOutputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x86" -Recurse
