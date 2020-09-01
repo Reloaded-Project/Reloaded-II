@@ -70,7 +70,7 @@ There exists a standalone NuGet Package Converter released as part of Tools.zip 
 
 **Support:** A package is considered as "supported" if the file below exists.
 
-Support for mod updates from GitHub Releases can be added by copying the `ReloadedGitHubUpdater.json` file from the Launcher's `Template` folder the to mod folder.
+Support for mod updates from GitHub Releases can be added by copying the `ReloadedGithubUpdater.json` file from the Launcher's `Template` folder the to mod folder.
 
 After copying, you should then edit the file to include the user/organization name, repository and name of the mod archive.
 
@@ -93,7 +93,7 @@ If the GitHub version is higher than the local one, there is an update.
 
 ##### User Configuration
 
-Each mod with GitHub update support can be configured by the user. This can be done by editing the `ReloadedGitHubUserConfig.json`  file, in the mod folder using a standard text editor. 
+Each mod with GitHub update support can be configured by the user. This can be done by editing the `ReloadedGithubUserConfig.json`  file, in the mod folder using a standard text editor. 
 
 **Example file:**
 ```json
@@ -105,7 +105,7 @@ Each mod with GitHub update support can be configured by the user. This can be d
 
 If not present, this file will appear the next time the Reloaded Launcher is launched.
 
-**Note:** *ReloadedGitHubUserConfig.json should not be included in any mod downloads!*
+**Note:** *ReloadedGithubUserConfig.json should not be included in any mod downloads!*
 
 ##### Limitations
 - Prereleases are supported but semantic versioning is not. Please do not add any prefixes/suffixes to your release tags.
