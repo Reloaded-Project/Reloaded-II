@@ -234,4 +234,9 @@
     <sys:String x:Key="AppCategoryInstances">Instances</sys:String>
     <sys:String x:Key="AppCategorySummary">Summary</sys:String>
 
+    <!-- Update 1.7.0: Loader Settings Icons -->
+    <sys:String x:Key="LoaderSettingsTwitter">Tweet Me</sys:String>
+    <sys:String x:Key="LoaderSettingsDonate">Sponsor Me on Github</sys:String>
+    <sys:String x:Key="LoaderSettingsDiscord">Join the Discord Server</sys:String>
+
 </ResourceDictionary>

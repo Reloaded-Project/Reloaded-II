@@ -2,6 +2,7 @@
 using System.Windows;
 using Reloaded.Mod.Launcher.Commands.Dialog;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {
@@ -27,5 +28,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             ViewModel.SaveNewLanguage();
         }
+
+        private void Discord_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => ProcessExtensions.OpenFileWithDefaultProgram("https://discord.gg/A8zNnS6");
+        private void Twitter_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => ProcessExtensions.OpenFileWithDefaultProgram("https://twitter.com/TheSewer56");
+        private void Donate_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => ProcessExtensions.OpenFileWithDefaultProgram("https://github.com/sponsors/Sewer56");
     }
 }

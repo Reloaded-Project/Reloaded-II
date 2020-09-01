@@ -13,6 +13,12 @@
         <Grid Margin="{DynamicResource PageMargin}" DataContext="{Binding ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
             <Grid.Resources>
                 <Thickness x:Key="BannerMargin">75,20,75,0</Thickness>
+                <Style x:Key="SocialIcon" TargetType="{x:Type Image}" BasedOn="{StaticResource HighQualityImage}">
+                    <Setter Property="Height" Value="48"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="{DynamicResource ListEntryItemMarginSmall}"/>
+                    <Setter Property="ToolTipService.InitialShowDelay" Value="0" />
+                </Style>
             </Grid.Resources>
 
             <DockPanel LastChildFill="False">
@@ -39,38 +45,34 @@
                 </StackPanel>
 
                 <StackPanel DockPanel.Dock="Bottom">
+
                     <!-- Docs / User Guide -->
-                    <Grid Margin="{DynamicResource CommonItemVerticalMargin}"
-                      Width="{Binding ActualWidth, ElementName=Banner}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="{DynamicResource CommonItemVerticalMargin}" HorizontalAlignment="Center">
+                        
+                        
+                        <Image Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Info-Icon.png"
+                               Style="{DynamicResource SocialIcon}"
+                               ToolTip="{DynamicResource FirstLaunchLineUserguide}"
+                               PreviewMouseDown="Documents_PreviewMouseDown" />
 
-                        <TextBlock Grid.Column="0" 
-                               Text="{DynamicResource LoaderSettingsCopyright}"
-                               TextWrapping="Wrap"
-                               FontSize="{DynamicResource FontSizeLarge}"
-                               Margin="18,0,17,0"
-                               Style="{DynamicResource TextblockWithColourChange}"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Top"/>
+                        <Image Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Icon-Discord.png"
+                               Style="{DynamicResource SocialIcon}"
+                               ToolTip="{DynamicResource LoaderSettingsDiscord}"
+                               PreviewMouseDown="Discord_PreviewMouseDown" />
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" PreviewMouseDown="Documents_PreviewMouseDown">
-                            <Image Height="48" 
-                               Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Info-Icon.png"
-                               Style="{DynamicResource HighQualityImage}"
-                               Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                            <TextBlock Text="{DynamicResource LoaderSettingsAndDocumentation}"
-                                   FontSize="{DynamicResource FontSizeLarge}"
-                                   Margin="{DynamicResource ListEntryItemMarginSmall}"
-                                   Style="{DynamicResource TextblockWithColourChange}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Grid>
+                        <Image Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Icon-Twitter.png"
+                               Style="{DynamicResource SocialIcon}"
+                               ToolTip="{DynamicResource LoaderSettingsTwitter}"
+                               PreviewMouseDown="Twitter_PreviewMouseDown" />
 
-                    <!-- Toggle Auto Accept Updates -->
+                        <Image Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Icon-Sponsor.png"
+                               Style="{DynamicResource SocialIcon}"
+                               ToolTip="{DynamicResource LoaderSettingsDonate}"
+                               PreviewMouseDown="Donate_PreviewMouseDown" />
+
+                    </StackPanel>
+
+                    <!-- Toggle Show Console -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
                               HorizontalAlignment="Center" 
