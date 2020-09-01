@@ -54,31 +54,37 @@
         <!-- Left Side -->
         <ScrollViewer Grid.Column="0">
             <Grid Background="{DynamicResource AccentColorBrushDark}">
-                <Grid Margin="{DynamicResource ApplicationBarMargin}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{DynamicResource ApplicationBarHeaderHeight}"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Background="{DynamicResource AccentColorBrushDarker}">
+                    <!-- Main Header -->
+                    <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
+                               Text="{Binding ApplicationTuple.Config.AppName}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontStyle="Normal"
+                               Margin="{DynamicResource CommonItemVerticalMarginSmallest}" />
+                </Grid>
+
+                <Grid Margin="{DynamicResource ApplicationBarMargin}" Grid.Row="1">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Main Header -->
-                    <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
-                               Text="{Binding ApplicationTuple.Config.AppName}"
-                               HorizontalAlignment="Center"
-                               FontStyle="Normal"
-                               Margin="{DynamicResource CommonItemVerticalMarginSmallest}"
-                               Grid.Row="0" />
-
-                    <StackPanel Grid.Row="1">
-
-                        <Separator/>
+                    <StackPanel Grid.Row="0">
 
                         <!-- Main Header -->
                         <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
-                               Text="{DynamicResource AppCategoryMain}"/>
+                                   Text="{DynamicResource AppCategoryMain}"/>
+
+                        <Separator/>
 
                         <!-- Load Game -->
                         <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
@@ -105,12 +111,13 @@
                                PreviewMouseDown="Edit_PreviewMouseDown"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="2">
-                        <Separator/>
+                    <StackPanel Grid.Row="1">
 
                         <!-- Actions Header -->
                         <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
-                               Text="{DynamicResource AppCategoryActions}"/>
+                                   Text="{DynamicResource AppCategoryActions}"/>
+
+                        <Separator/>
 
                         <!-- Make Shortcut -->
                         <TextBlock Style="{DynamicResource TextblockWithColourChange}" 
@@ -137,13 +144,13 @@
                                PreviewMouseDown="SaveModSet_PreviewMouseDown"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="3">
-                        <Separator/>
+                    <StackPanel Grid.Row="2">
 
                         <!-- Instances Header -->
                         <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
-                               Text="{DynamicResource AppCategoryInstances}"/>
+                                   Text="{DynamicResource AppCategoryInstances}"/>
 
+                        <Separator/>
                         
                         <StackPanel Margin="{DynamicResource CommonItemVerticalMarginSmall}">
 
@@ -180,7 +187,7 @@
                     </StackPanel>
 
                     <!-- Statistics -->
-                    <StackPanel Grid.Row="4">
+                    <StackPanel Grid.Row="3">
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
                             <TextBlock Text="{DynamicResource ApplicationTotalMods}"
                                    Margin="{DynamicResource CommonItemVerticalMarginSmallest}"

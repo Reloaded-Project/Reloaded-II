@@ -41,8 +41,11 @@
     <sys:Double x:Key="SeparatorHeight">2</sys:Double>             <!-- Height of the separator between the default pages and processes. -->
 
     <!-- Application Bar Properties -->
-    <GridLength x:Key="ApplicationBarWidth">180</GridLength>        <!-- Width of the bar when an application page is open. -->
-    <Thickness x:Key="ApplicationBarMargin">10</Thickness>          <!-- Margin between all the contents and the edges of the bar. -->
+    <GridLength x:Key="ApplicationBarWidth">180</GridLength>       <!-- Width of the bar when an application page is open. -->
+    <GridLength x:Key="ApplicationBarHeaderHeight">44</GridLength> <!-- Height of the bar when an application page is open. -->
+
+    <Thickness x:Key="ApplicationBarMargin">10</Thickness>         <!-- Margin between all the contents and the edges of the bar. -->
+
 
     <!-- Popup Label Properties -->
     <sys:Double x:Key="PopupLabelSlideAnimationDuration">0.250</sys:Double>  <!-- Length of the slide in part of the animation in Milliseconds -->
