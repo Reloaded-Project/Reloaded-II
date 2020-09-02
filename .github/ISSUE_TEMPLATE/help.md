@@ -11,7 +11,7 @@ assignees: ''
 You can see them right beside the download button on each official download. 
 You'll need all of them as stated.
 
-**As seen on Github**:
+**As seen on GitHub**:
 ![image](https://user-images.githubusercontent.com/6697380/90259427-e71e8900-de41-11ea-87aa-0ff27cf5e486.png)
 
 **As seen on GameBanana**:
@@ -24,4 +24,4 @@ A clear and concise description of what you would like help with.
 If applicable, add screenshots to help explain your problem.
 
 **Additional Resources**
-If the issue is related to any external resource e.g. specific version of a mod or pack, consider stating the version or linking the resource in question. Preferably though, mod specific issues should go in their own Github repositories as I in most cases would not be able to help.
+If the issue is related to any external resource e.g. specific version of a mod or pack, consider stating the version or linking the resource in question. Preferably though, mod specific issues should go in their own GitHub repositories as I in most cases would not be able to help.

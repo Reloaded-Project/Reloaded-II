@@ -207,11 +207,11 @@
     <sys:String x:Key="ErrorPathNullOrEmpty">La ruta para esta aplicación es nula o vacía. Corrija la ubicación.</sys:String>
     <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">Fallo al obtener la carpeta del mod a eliminar.</sys:String>
     <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">Fallo al obtener la carpeta de la aplicación a eliminar.</sys:String>
-    <sys:String x:Key="ErrorLoaderNotFound">No fue encontrado. Esto puede haber sido causado por la eliminación del software desde un antivirus y/o por la ruptura de cambios en el repositorio de Github.</sys:String> <!-- Loader DLL Name displays before this message -->
+    <sys:String x:Key="ErrorLoaderNotFound">No fue encontrado. Esto puede haber sido causado por la eliminación del software desde un antivirus y/o por la ruptura de cambios en el repositorio de GitHub.</sys:String> <!-- Loader DLL Name displays before this message -->
     <sys:String x:Key="ErrorFailedToStartProcess">No se pudo iniciar el proceso. ¿Tu ruta es correcta?</sys:String>
     <sys:String x:Key="ErrorDllInjectionFailed">Falló al inyectar el DLL en el proceso de registro.</sys:String>
     <sys:String x:Key="ErrorPathToApplicationInvalid">La ruta a iniciar para la aplicación no es válida. Compruebe de nuevo la configuración de su aplicación.</sys:String>
 
-    <sys:String x:Key="ErrorCheckUpdatesFailed">No se pudieron verificar las actualizaciones. Estamos limitados por Github o no conectados a Internet.</sys:String>
+    <sys:String x:Key="ErrorCheckUpdatesFailed">No se pudieron verificar las actualizaciones. Estamos limitados por GitHub o no conectados a Internet.</sys:String>
 
 </ResourceDictionary>

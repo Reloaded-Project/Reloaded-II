@@ -16,7 +16,7 @@ namespace Reloaded.Mod.Loader.Update.Dependency
             if (deps.AllAvailable)
             {
                 builder.AppendLine("Everything should be a-ok!\n" +
-                                   "If Reloaded is not launching, please report an issue to Github or Discord as stated in Help.html");
+                                   "If Reloaded is not launching, please report an issue to GitHub or Discord as stated in Help.html");
             }
             else
             {
