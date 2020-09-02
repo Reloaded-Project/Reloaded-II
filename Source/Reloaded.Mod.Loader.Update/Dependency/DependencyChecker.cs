@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NetCoreInstallChecker;
 using NetCoreInstallChecker.Structs;
 using NetCoreInstallChecker.Structs.Config;
@@ -26,16 +28,21 @@ namespace Reloaded.Mod.Loader.Update.Dependency
         private const string CoreLoaderVersion = "3.1.0";
         private const string CoreLauncherVersion = "5.0.0";
 
-        public DependencyChecker()
+        public DependencyChecker(bool is64Bit)
         {
-            Dependencies = new IDependency[]
+            var deps = new List<IDependency>();
+
+            deps.Add(new NetCoreDependency($".NET Core {CoreLoaderVersion} x86", ResolveLoaderCore(false)));
+            deps.Add(new RedistributableDependency("Visual C++ Redistributable x86", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x86), false));
+
+            if (is64Bit)
             {
-                new NetCoreDependency($".NET Core {CoreLoaderVersion} x86", ResolveLoaderCore(false)),
-                new NetCoreDependency($".NET Core {CoreLoaderVersion} x64", ResolveLoaderCore(true)),
-                new RedistributableDependency("Visual C++ Redistributable x86", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x86), false),
-                new RedistributableDependency("Visual C++ Redistributable x64", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x64), true),
-                new NetCoreDependency($"[Launcher] .NET Core {CoreLauncherVersion} x64", ResolveLauncherCore())
-            };
+                deps.Add(new NetCoreDependency($".NET Core {CoreLoaderVersion} x64", ResolveLoaderCore(true)));
+                deps.Add(new RedistributableDependency("Visual C++ Redistributable x64", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x64), true));
+                deps.Add(new NetCoreDependency($"[Launcher] .NET Core {CoreLauncherVersion} x64", ResolveLauncherCore()));
+            }
+
+            Dependencies = deps.ToArray();
         }
 
         /// <summary>

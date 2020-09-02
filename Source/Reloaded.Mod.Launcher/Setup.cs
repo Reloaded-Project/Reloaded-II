@@ -86,7 +86,7 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static void CheckForMissingDependencies()
         {
-            var deps = new DependencyChecker();
+            var deps = new DependencyChecker(IntPtr.Size == 8);
             if (!deps.AllAvailable)
             {
                 ActionWrappers.ExecuteWithApplicationDispatcher(() =>
