@@ -1,5 +1,6 @@
 # Build Locations
 $outputPath = "Output/Launcher/"
+$outputPath32 = "Output/Launcher/x86"
 $toolsPath  = "Output/Tools/"
 $dumperOutputPath = "$outputPath/Loader/"
 $loader32OutputPath = "$outputPath/Loader/x86"
@@ -31,10 +32,13 @@ dotnet restore
 devenv Reloaded-II.sln /Project Reloaded.Mod.Loader.Bootstrapper /Build Release
 dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false /p:PublishSingleFile=true -o "$dumperOutputPath"
 dotnet publish "$launcherProjectPath" -c Release -r win-x64 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true -o "$outputPath"
+dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true -o "$outputPath32"
 dotnet publish "$loaderProjectPath" -c Release -r win-x64 --self-contained false -o "$loader64OutputPath" /p:PublishReadyToRun=true
 dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false -o "$loader32OutputPath" /p:PublishReadyToRun=true
 dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
 
+Move-Item -Path "$outputPath32/Reloaded-II.exe" -Destination "$outputPath/Reloaded-II32.exe"
+Remove-Item "$outputPath32" -Recurse
 Remove-Item "$dumperOutputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x64" -Recurse
