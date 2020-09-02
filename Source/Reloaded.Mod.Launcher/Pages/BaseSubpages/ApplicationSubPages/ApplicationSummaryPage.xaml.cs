@@ -50,8 +50,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
                 return;
             }
 
-            var tuple = (BooleanGenericTuple<ImageModPathTuple>)e.Item;
-            e.Accepted = tuple.Generic.ModConfig.ModName.IndexOf(ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase) >= 0;
+            var tuple = (ModEntry)e.Item;
+            e.Accepted = tuple.Tuple.ModConfig.ModName.Contains(ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

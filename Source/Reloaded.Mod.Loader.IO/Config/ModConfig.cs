@@ -41,6 +41,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string ModR2RManagedDll64 { get; set; } = String.Empty;
         public string ModNativeDll32    { get; set; } = String.Empty;
         public string ModNativeDll64    { get; set; } = String.Empty;
+        public bool   IsLibrary         { get; set; } = false;
 
         public string[] ModDependencies         { get; set; }
         public string[] OptionalDependencies    { get; set; }

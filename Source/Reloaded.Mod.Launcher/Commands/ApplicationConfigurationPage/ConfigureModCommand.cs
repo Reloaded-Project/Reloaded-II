@@ -79,10 +79,10 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
 
         // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private bool TryGetConfigurator(BooleanGenericTuple<ImageModPathTuple> selectedMod, out IConfigurator configurator, out PluginLoader loader)
+        private bool TryGetConfigurator(ModEntry selectedMod, out IConfigurator configurator, out PluginLoader loader)
         {
-            var config = selectedMod.Generic.ModConfig;
-            string dllPath = config.GetManagedDllPath(selectedMod.Generic.ModConfigPath);
+            var config = selectedMod.Tuple.ModConfig;
+            string dllPath = config.GetManagedDllPath(selectedMod.Tuple.ModConfigPath);
             configurator = null;
             loader = null;
 
@@ -97,7 +97,7 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
             if (entryPoint != null)
             {
                 configurator = (IConfigurator)Activator.CreateInstance(entryPoint);
-                configurator.SetModDirectory(Path.GetFullPath(Path.GetDirectoryName(selectedMod.Generic.ModConfigPath)));
+                configurator.SetModDirectory(Path.GetFullPath(Path.GetDirectoryName(selectedMod.Tuple.ModConfigPath)));
                 return true;
             }
 

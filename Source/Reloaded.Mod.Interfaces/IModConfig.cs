@@ -2,7 +2,7 @@
 
 namespace Reloaded.Mod.Interfaces
 {
-    public interface IModConfig : IModConfigV3
+    public interface IModConfig : IModConfigV4
     {
 
     }

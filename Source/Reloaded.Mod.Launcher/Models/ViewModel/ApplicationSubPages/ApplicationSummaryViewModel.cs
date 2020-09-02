@@ -15,8 +15,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 {
     public class ApplicationSummaryViewModel : ObservableObject, IDisposable
     {
-        public ObservableCollection<BooleanGenericTuple<ImageModPathTuple>> AllMods { get; set; }
-        public BooleanGenericTuple<ImageModPathTuple> SelectedMod { get; set; }
+        public ObservableCollection<ModEntry> AllMods { get; set; }
+        public ModEntry SelectedMod { get; set; }
         public ImageApplicationPathTuple ApplicationTuple { get; set; }
 
         public OpenModFolderCommand OpenModFolderCommand { get; set; }
@@ -58,43 +58,43 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         /// </summary>
         private void BuildModList()
         {
-            AllMods = new ObservableCollection<BooleanGenericTuple<ImageModPathTuple>>(GetInitialModSet(_applicationViewModel, ApplicationTuple));
+            AllMods = new ObservableCollection<ModEntry>(GetInitialModSet(_applicationViewModel, ApplicationTuple));
             AllMods.CollectionChanged += (sender, args) => SaveApplication(); // Save on reorder.
         }
 
         /// <summary>
         /// Builds the initial set of mods to display in the list.
         /// </summary>
-        private List<BooleanGenericTuple<ImageModPathTuple>> GetInitialModSet(ApplicationViewModel model, ImageApplicationPathTuple applicationTuple)
+        private List<ModEntry> GetInitialModSet(ApplicationViewModel model, ImageApplicationPathTuple applicationTuple)
         {
             // Note: Must put items in top to bottom load order.
             var enabledModIds   = applicationTuple.Config.EnabledMods;
             var modsForThisApp  = model.ModsForThisApp.ToArray();
 
-            // Get dictionary of mods by Mod ID
+            // Get dictionary of mods for this app by Mod ID
             var modDictionary  = new Dictionary<string, ImageModPathTuple>();
             foreach (var mod in modsForThisApp)
                 modDictionary[mod.ModConfig.ModId] = mod;
 
             // Add enabled mods.
-            var totalModList = new List<BooleanGenericTuple<ImageModPathTuple>>(modsForThisApp.Length);
+            var totalModList = new List<ModEntry>(modsForThisApp.Length);
             foreach (var enabledModId in enabledModIds)
             {
                 if (modDictionary.ContainsKey(enabledModId))
-                    totalModList.Add(MakeSaveSubscribedGenericTuple(true, modDictionary[enabledModId]));
+                    totalModList.Add(MakeSaveSubscribedModEntry(true, modDictionary[enabledModId]));
             }
 
             // Add disabled mods.
             var enabledModIdSet = applicationTuple.Config.EnabledMods.ToHashSet();
             var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.ModConfig.ModId));
-            totalModList.AddRange(disabledMods.Select(x => MakeSaveSubscribedGenericTuple(false, x)));
+            totalModList.AddRange(disabledMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
             return totalModList;
         }
 
-        private BooleanGenericTuple<ImageModPathTuple> MakeSaveSubscribedGenericTuple(bool isEnabled, ImageModPathTuple item)
+        private ModEntry MakeSaveSubscribedModEntry(bool? isEnabled, ImageModPathTuple item)
         {
             // Make BooleanGenericTuple that saves application on Enabled change.
-            var tuple = new BooleanGenericTuple<ImageModPathTuple>(isEnabled, item);
+            var tuple = new ModEntry(isEnabled, item);
             tuple.PropertyChanged += SaveOnEnabledPropertyChanged;
             return tuple;
         }
@@ -108,7 +108,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 
         private void SaveApplication()
         {
-            ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled).Select(x => x.Generic.ModConfig.ModId).ToArray();
+            ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled == true).Select(x => x.Tuple.ModConfig.ModId).ToArray();
             ApplicationTuple.Save();
         }
 
@@ -116,9 +116,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         {
             if (e.PropertyName == nameof(SelectedMod))
             {
-                if (SelectedMod?.Generic != null)
+                if (SelectedMod?.Tuple != null)
                 {
-                    Icon = Imaging.BitmapFromUri(new Uri(SelectedMod.Generic.Image));
+                    Icon = Imaging.BitmapFromUri(new Uri(SelectedMod.Tuple.Image));
                 }
             }
         }

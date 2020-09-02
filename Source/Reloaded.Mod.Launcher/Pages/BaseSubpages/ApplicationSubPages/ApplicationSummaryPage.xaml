@@ -66,26 +66,28 @@
                             </Grid.ColumnDefinitions>
                             
                             <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      IsEnabled="{Binding IsEditable}"
                                       Margin="{DynamicResource ListEntryItemMarginSmall}" 
                                       Style="{DynamicResource DefaultCheckBox}"
                                       HorizontalAlignment="Center" 
                                       VerticalAlignment="Center" 
                                       Height="{DynamicResource ListEntryCheckboxHeightSmall}"
-                                      Grid.Column="0"/>
+                                      Grid.Column="0"
+                                      IsThreeState="True" />
 
-                            <TextBlock Text="{Binding Generic.ModConfig.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock Text="{Binding Tuple.ModConfig.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" 
                                        Margin="{DynamicResource ListEntryItemMarginSmall}"
                                        Grid.Column="1"/>
 
-                            <TextBlock Text="{Binding Generic.ModConfig.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock Text="{Binding Tuple.ModConfig.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Center" 
                                        Margin="{DynamicResource ListEntryItemMarginSmall}"
                                        Grid.Column="2"/>
 
-                            <TextBlock Text="{Binding Generic.ModConfig.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock Text="{Binding Tuple.ModConfig.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Center" 
                                        Margin="{DynamicResource ListEntryItemMarginSmall}"
@@ -142,7 +144,7 @@
                 </Grid>
 
                 <!-- Mod Details -->
-                <TextBlock Text="{Binding SelectedMod.Generic.ModConfig.ModDescription, UpdateSourceTrigger=PropertyChanged, FallbackValue={StaticResource DummyText}}" 
+                <TextBlock Text="{Binding SelectedMod.Tuple.ModConfig.ModDescription, UpdateSourceTrigger=PropertyChanged, FallbackValue={StaticResource DummyText}}" 
                            Grid.Row="2"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Stretch"
