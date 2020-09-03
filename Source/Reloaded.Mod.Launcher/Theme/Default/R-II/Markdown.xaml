@@ -6,8 +6,8 @@
 
     <!-- For IntelliSense: Uncomment only when editing. -->
     <ResourceDictionary.MergedDictionaries>
-        <controls:DesignTimeResourceDictionary RunTimeSource="pack://siteoforigin:,,,/Theme/Default/Root.xaml" DesignTimeSource="pack://application:,,,/Reloaded.WPF.Theme.Default;component/Theme/Default/Root.xaml"/>
-        <controls:DesignTimeResourceDictionary RunTimeSource="pack://siteoforigin:,,,/Theme/Default/R-II/Settings.xaml" DesignTimeSource="pack://application:,,,/Reloaded.Mod.Launcher;component/Theme/Default/R-II/Settings.xaml"/>
+        <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Root.xaml" />
+        <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/Settings.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Document styles -->

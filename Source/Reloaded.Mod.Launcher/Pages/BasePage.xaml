@@ -19,7 +19,6 @@
                 <Setter Property="Height" Value="Auto"/>
             </Style>
 
-
             <!-- Sort the mod list -->
             <CollectionViewSource x:Key="FilteredApps" Source="{Binding Applications, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                 <CollectionViewSource.SortDescriptions>

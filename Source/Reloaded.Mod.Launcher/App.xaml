@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <controls:DesignTimeResourceDictionary RunTimeSource="pack://siteoforigin:,,,/Theme/Default.xaml" DesignTimeSource="pack://application:,,,/Reloaded.WPF.Theme.Default;component/Theme/Default.xaml"/>
+                <ResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default.xaml" />
                 <ResourceDictionary Source="Assets/Languages/en-GB.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

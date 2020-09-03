@@ -1,15 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:reloadedWPF="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF">
+                    xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF">
 
 
     <!-- Import Reloaded.WPF Theme at runtime. -->
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <reloadedWPF:DesignTimeResourceDictionary DesignTimeSource="pack://application:,,,/Theme/Default/Root.xaml"
-                                                          RunTimeSource="pack://siteoforigin:,,,/Theme/Default/Root.xaml"/>
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Root.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>

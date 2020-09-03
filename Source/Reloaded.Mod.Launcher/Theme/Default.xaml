@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
@@ -8,8 +9,8 @@
                 <!-- Note to themers: Do not remove the two default dictionaries here.
                                       If you want to override stuff, add another ResourceDictionary BELOW such that existing values will be overwritten.
                 -->
-                <ResourceDictionary Source="./Default/Root.xaml"/>
-                <ResourceDictionary Source="./Default/R-II/Root.xaml"/>
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Root.xaml"/>
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/Root.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
