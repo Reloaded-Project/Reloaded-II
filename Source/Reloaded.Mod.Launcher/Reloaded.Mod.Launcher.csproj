@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <None Remove="Assets\**" />
-    <None Remove="Styles\**" />
     <None Remove="Theme\**" />
     <None Remove="LICENSE.txt" />
   </ItemGroup>
@@ -30,15 +29,6 @@
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	</Content>
-	<Content Include="Assets\Images\**\*.png">
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
-	</Content>
-	<Content Include="Styles\**\*.xaml">
-	  <Generator>MSBuild:Compile</Generator>
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	</Content>
 	<Content Include="Theme\**">
 	  <Generator>MSBuild:Compile</Generator>
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -48,6 +38,9 @@
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	</Content>
+	<Page Remove="Theme\Default.xaml" />
+	<Page Remove="Theme\Default\R-II\Images.xaml" />
+	<Page Remove="Theme\Default\R-II\Root.xaml" />
 	<Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -108,5 +101,9 @@
     <ApplicationDefinition Update="App.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ApplicationDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Images\" />
   </ItemGroup>
 </Project>

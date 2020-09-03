@@ -29,7 +29,7 @@
 
                     <StackPanel Grid.Column="0" Orientation="Horizontal" PreviewMouseDown="Documents_PreviewMouseDown">
                         <Image Height="48" 
-                               Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/GitHub-Icon.png"
+                               Source="{DynamicResource IconGitHub}"
                                Style="{DynamicResource HighQualityImage}"
                                Margin="{DynamicResource ListEntryItemMarginSmall}"/>
                         <TextBlock Text="{DynamicResource FirstLaunchLineDocumentation}"
@@ -42,7 +42,7 @@
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" PreviewMouseDown="UserGuide_PreviewMouseDown">
                         <Image Height="48" 
-                               Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Info-Icon.png"
+                               Source="{DynamicResource IconInfo}"
                                Style="{DynamicResource HighQualityImage}"
                                Margin="{DynamicResource ListEntryItemMarginSmall}"/>
                         <TextBlock Text="{DynamicResource FirstLaunchLineUserguide}"

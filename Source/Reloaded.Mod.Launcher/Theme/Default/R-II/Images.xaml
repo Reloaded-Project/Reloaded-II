@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Theme.Default.R_II">
+
+    <ImageSource x:Key="IconAddApp">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconAddApp.png</ImageSource>
+    <ImageSource x:Key="IconDiscord">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconDiscord.png</ImageSource>
+    <ImageSource x:Key="IconDownloadMods">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconDownloadMods.png</ImageSource>
+    <ImageSource x:Key="IconGitHub">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconGitHub.png</ImageSource>
+    <ImageSource x:Key="IconInfo">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconInfo.png</ImageSource>
+    <ImageSource x:Key="IconMods">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconMods.png</ImageSource>
+    <ImageSource x:Key="IconSearch">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconSearch.png</ImageSource>
+    <ImageSource x:Key="IconSettings">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconSettings.png</ImageSource>
+    <ImageSource x:Key="IconSponsor">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconSponsor.png</ImageSource>
+    <ImageSource x:Key="IconTwitter">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconTwitter.png</ImageSource>
+    <ImageSource x:Key="ModPlaceholder">pack://siteoforigin:,,,/Theme/Default/R-II/Images/ModPlaceholder.png</ImageSource>
+    <ImageSource x:Key="ReloadedNoBrackets">pack://siteoforigin:,,,/Theme/Default/R-II/Images/ReloadedNoBrackets.png</ImageSource>
+
+</ResourceDictionary>

@@ -44,15 +44,15 @@
                     
                     <!-- Theme Page Buttons -->
                     <controls:CircleButton
-                        ImageSource="pack://application:,,,/Assets/Images/Download-Mods-Icon.png" 
+                        ImageSource="{DynamicResource IconDownloadMods}" 
                         TooltipText="{DynamicResource TitleDownloadMods}" PreviewMouseDown="DownloadMods_PreviewMouseDown" />
 
                     <controls:CircleButton
-                        ImageSource="pack://application:,,,/Assets/Images/Mods-Icon.png" 
+                        ImageSource="{DynamicResource IconMods}" 
                         TooltipText="{DynamicResource TitleManageMods}" PreviewMouseDown="ManageMods_PreviewMouseDown"/>
 
                     <controls:CircleButton 
-                        ImageSource="pack://application:,,,/Assets/Images/Settings-Icon.png"
+                        ImageSource="{DynamicResource IconSettings}"
                         TooltipText="{DynamicResource TitleLoaderSettings}" PreviewMouseDown="LoaderSettings_PreviewMouseDown"/>
 
                     <!-- Separator -->
@@ -97,7 +97,7 @@
                     </ItemsControl>
                     
                     <controls:CircleButton 
-                        ImageSource="pack://application:,,,/Assets/Images/Add-App-Icon.png"
+                        ImageSource="{DynamicResource IconAddApp}"
                         TooltipText="{DynamicResource TitleAddApplication}" PreviewMouseDown="AddApp_PreviewMouseDown"/>
 
                 </StackPanel>

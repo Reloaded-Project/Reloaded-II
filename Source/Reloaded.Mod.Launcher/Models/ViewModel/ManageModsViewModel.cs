@@ -65,7 +65,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             _createWatcher = CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherEvents.Changed | FileSystemWatcherEvents.Created);
             _deleteFileWatcher = CreateChangeCreateDelete(modDirectory, OnDeleteFile, FileSystemWatcherEvents.Deleted);
             _deleteDirectoryWatcher = CreateChangeCreateDelete(modDirectory, OnDeleteDirectory, FileSystemWatcherEvents.Deleted, false, "*.*");
-            ExecuteWithApplicationDispatcherAsync(() => Icon = new BitmapImage(new Uri(Constants.PlaceholderImagePath, UriKind.Absolute)));
+            ExecuteWithApplicationDispatcherAsync(() => Icon = new BitmapImage(Constants.PlaceholderImagePath));
         }
 
         /// <summary>
@@ -104,9 +104,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// <summary>
         /// Obtains an image to represent a given mod, either a custom one or the default placeholder.
         /// </summary>
-        public string GetImageForModConfig(PathGenericTuple<ModConfig> modConfig)
+        public Uri GetImageForModConfig(PathGenericTuple<ModConfig> modConfig)
         {
-            return ModConfig.TryGetIconPath(modConfig.Path, modConfig.Object, out string iconPath) ? iconPath : Constants.PlaceholderImagePath;
+            return ModConfig.TryGetIconPath(modConfig.Path, modConfig.Object, out string iconPath) ? new Uri(iconPath, UriKind.RelativeOrAbsolute) : Constants.PlaceholderImagePath;
         }
 
         /// <summary>

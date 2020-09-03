@@ -118,7 +118,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             {
                 if (SelectedMod?.Tuple != null)
                 {
-                    Icon = Imaging.BitmapFromUri(new Uri(SelectedMod.Tuple.Image));
+                    Icon = Imaging.BitmapFromUri(SelectedMod.Tuple.Image);
                 }
             }
         }

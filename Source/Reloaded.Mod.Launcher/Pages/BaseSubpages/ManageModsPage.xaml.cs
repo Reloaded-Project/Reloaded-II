@@ -81,7 +81,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         private void ListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (ViewModel.SelectedModTuple != null)
-                ActionWrappers.TryCatchDiscard(() => ViewModel.Icon = Imaging.BitmapFromUri(new Uri(ViewModel.SelectedModTuple.Image)));
+                ActionWrappers.TryCatchDiscard(() => ViewModel.Icon = Imaging.BitmapFromUri(ViewModel.SelectedModTuple.Image));
 
             // Tell viewmodel to swap ModId compatibility chart.
             ImageModPathTuple oldModTuple = null;

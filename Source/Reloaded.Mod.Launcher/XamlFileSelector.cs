@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using Reloaded.Mod.Launcher.Annotations;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using static Reloaded.Mod.Loader.IO.FileSystemWatcherFactory.FileSystemWatcherEvents;
@@ -68,7 +67,6 @@ namespace Reloaded.Mod.Launcher
         #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -21,7 +21,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
     public class CreateModViewModel : ObservableObject
     {
         public IModConfig Config { get; set; } = new ModConfig();
-        public ImageSource Image { get; set; } = new BitmapImage(new Uri(Constants.PlaceholderImagePath, UriKind.Absolute));
+        public ImageSource Image { get; set; } = new BitmapImage(Constants.PlaceholderImagePath);
         public ObservableCollection<BooleanGenericTuple<IModConfig>> Dependencies { get; set; } = new ObservableCollection<BooleanGenericTuple<IModConfig>>();
         public string ModsFilter { get; set; } = "";
 
@@ -76,7 +76,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
 
             if (String.IsNullOrEmpty(imagePath) || !File.Exists(imagePath))
             {
-                var bitmapImage = new BitmapImage(new Uri(Constants.PlaceholderImagePath, UriKind.Absolute));
+                var bitmapImage = new BitmapImage(Constants.PlaceholderImagePath);
                 bitmapImage.Freeze();
                 return bitmapImage;
             }

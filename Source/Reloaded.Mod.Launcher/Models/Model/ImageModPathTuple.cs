@@ -1,4 +1,5 @@
-﻿using Reloaded.Mod.Interfaces;
+﻿using System;
+using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 
@@ -11,7 +12,7 @@ namespace Reloaded.Mod.Launcher.Models.Model
         /// <summary>
         /// The URI of the image used to represent the mod by in the GUI.
         /// </summary>
-        public string Image { get; set; }
+        public Uri Image { get; set; }
 
         /// <summary>
         /// The application configuration.
@@ -23,7 +24,7 @@ namespace Reloaded.Mod.Launcher.Models.Model
         /// </summary>
         public string ModConfigPath { get; set; }
 
-        public ImageModPathTuple(string image, IModConfig modConfig, string modConfigPath)
+        public ImageModPathTuple(Uri image, IModConfig modConfig, string modConfigPath)
         {
             Image = image;
             ModConfig = modConfig;

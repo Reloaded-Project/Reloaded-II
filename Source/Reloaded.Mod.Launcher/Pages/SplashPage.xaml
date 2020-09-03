@@ -17,7 +17,7 @@
                     RenderOptions.CachingHint="Cache"
                     StretchDirection="DownOnly"
                     MaxWidth="650"
-                    Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Reloaded-No-Brackets.png"/>
+                    Source="{DynamicResource ReloadedNoBrackets}"/>
 
                 <TextBlock
                     HorizontalAlignment="Center"

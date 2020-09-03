@@ -6,12 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <controls:DesignTimeResourceDictionary RunTimeSource="pack://siteoforigin:,,,/Theme/Default/Root.xaml" DesignTimeSource="pack://application:,,,/Reloaded.WPF.Theme.Default;component/Theme/Default/Root.xaml"/>
-
-                <ResourceDictionary Source="Styles/Settings.xaml"/>
-                <ResourceDictionary Source="Styles/Controls.xaml"/>
-                <ResourceDictionary Source="Styles/Window_Settings.xaml"/>
-                <ResourceDictionary Source="Styles/Markdown.xaml"/>
+                <controls:DesignTimeResourceDictionary RunTimeSource="pack://siteoforigin:,,,/Theme/Default.xaml" DesignTimeSource="pack://application:,,,/Reloaded.WPF.Theme.Default;component/Theme/Default.xaml"/>
                 <ResourceDictionary Source="Assets/Languages/en-GB.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

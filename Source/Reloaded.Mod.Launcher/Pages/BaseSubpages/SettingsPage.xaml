@@ -28,7 +28,7 @@
                     <Image x:Name="Banner"
                        Style="{DynamicResource HighQualityImage}"
                        MaxWidth="600"
-                       Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Reloaded-No-Brackets.png"
+                       Source="{DynamicResource ReloadedNoBrackets}"
                        StretchDirection="DownOnly"
                        Margin="{DynamicResource BannerMargin}"/>
 
@@ -48,24 +48,24 @@
 
                     <!-- Docs / User Guide -->
                     <StackPanel Orientation="Horizontal" Margin="{DynamicResource CommonItemVerticalMargin}" HorizontalAlignment="Center">
-                        
-                        
-                        <Image Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Info-Icon.png"
+
+
+                        <Image Source="{DynamicResource IconInfo}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource FirstLaunchLineUserguide}"
                                PreviewMouseDown="Documents_PreviewMouseDown" />
 
-                        <Image Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Icon-Discord.png"
+                        <Image Source="{DynamicResource IconDiscord}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource LoaderSettingsDiscord}"
                                PreviewMouseDown="Discord_PreviewMouseDown" />
 
-                        <Image Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Icon-Twitter.png"
+                        <Image Source="{DynamicResource IconTwitter}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource LoaderSettingsTwitter}"
                                PreviewMouseDown="Twitter_PreviewMouseDown" />
 
-                        <Image Source="pack://application:,,,/Reloaded-II;Component/Assets/Images/Icon-Sponsor.png"
+                        <Image Source="{DynamicResource IconSponsor}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource LoaderSettingsDonate}"
                                PreviewMouseDown="Donate_PreviewMouseDown" />

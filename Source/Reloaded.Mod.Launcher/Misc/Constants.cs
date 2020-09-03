@@ -1,5 +1,9 @@
-﻿using System.Diagnostics;
+using System;
+using System.Diagnostics;
 using System.IO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Reloaded.Mod.Launcher.Utility;
 
 namespace Reloaded.Mod.Launcher.Misc
 {
@@ -20,6 +24,14 @@ namespace Reloaded.Mod.Launcher.Misc
 
         public static readonly string ApplicationPath      = Process.GetCurrentProcess().MainModule.FileName;
         public static readonly string ApplicationDirectory = Path.GetDirectoryName(ApplicationPath);
-        public static readonly string PlaceholderImagePath = $"{ApplicationDirectory}/Assets/Images/Mod-Placeholder.png";
+
+        public static Uri PlaceholderImagePath
+        {
+            get
+            {
+                var placeholder = ApplicationResourceAcquirer.GetTypeOrDefault<ImageSource>("ModPlaceholder");
+                return new Uri(((BitmapFrame)placeholder).Decoder.ToString(), UriKind.Absolute);
+            }
+        }
     }
 }
