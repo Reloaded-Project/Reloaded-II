@@ -44,7 +44,18 @@ namespace Reloaded.Mod.Launcher
         private void UpdateSource()
         {
             if (File != null)
+            {
                 base.Source = new Uri(File, UriKind.RelativeOrAbsolute);
+
+                /* Cleanup old Dictionaries:
+                   Normally I wouldn't personally suggest running GC.Collect in user code however there's 
+                   potentially a lot of resources to clean up  in terms of memory space. Especially if e.g. 
+                   user loaded in complex images.
+
+                   As this in practice occurs over a theme or language switch, it should be largely unnoticeable to the end user.
+                */
+                GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            }
         }
 
         /* Events */

@@ -38,6 +38,10 @@
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	</Content>
+	<Page Remove="Theme\Halogen.xaml" />
+	<Page Remove="Theme\Halogen\Controls.xaml" />
+	<Page Remove="Theme\Halogen\Images.xaml" />
+	<Page Remove="Theme\Halogen\Styles.xaml" />
 	<Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -102,5 +106,12 @@
 
   <ItemGroup>
     <Folder Include="Assets\Images\" />
+    <Folder Include="Theme\Halogen\Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Theme\Halogen.xaml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
 </Project>

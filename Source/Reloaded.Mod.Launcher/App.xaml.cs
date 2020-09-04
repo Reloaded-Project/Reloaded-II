@@ -26,7 +26,12 @@ namespace Reloaded.Mod.Launcher
         /// <summary>
         /// Allows for selection of an individual language.
         /// </summary>
-        public static XamlFileSelector Selector { get; private set; } 
+        public static XamlFileSelector LanguageSelector { get; private set; }
+
+        /// <summary>
+        /// Allows for selection of an individual theme.
+        /// </summary>
+        public static XamlFileSelector ThemeSelector { get; private set; }
 
         private Dictionary<string, string> _commandLineArguments = new Dictionary<string, string>();
 
@@ -75,8 +80,10 @@ namespace Reloaded.Mod.Launcher
         {            
             // Ideally this should be in Setup, however the download dialogs should be localized.
             var launcherFolder = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-            Selector = new XamlFileSelector($"{launcherFolder}\\Assets\\Languages");
-            Resources.MergedDictionaries.Add(Selector);
+            LanguageSelector = new XamlFileSelector($"{launcherFolder}\\Assets\\Languages");
+            ThemeSelector = new XamlFileSelector($"{launcherFolder}\\Theme");
+            Resources.MergedDictionaries.Add(LanguageSelector);
+            Resources.MergedDictionaries.Add(ThemeSelector);
 
             /* Check if Download Mod */
             if (_commandLineArguments.TryGetValue(Constants.ParameterDownload, out string downloadUrl))

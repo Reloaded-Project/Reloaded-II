@@ -91,6 +91,18 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+
+                        <ComboBox IsSynchronizedWithCurrentItem="True"
+                                  Margin="{DynamicResource CommonItemCombinedMargin}"
+                                  SelectedItem="{Binding ThemeSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  ItemsSource="{Binding ThemeSelector.Files, UpdateSourceTrigger=PropertyChanged}"
+                                  MaxWidth="133" Width="133" SelectionChanged="ThemeChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </StackPanel>
 
                     <!-- Bottom Row: Statistics and Warning -->

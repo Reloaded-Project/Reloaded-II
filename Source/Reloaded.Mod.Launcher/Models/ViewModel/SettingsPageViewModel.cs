@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Windows;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.MVVM;
@@ -19,7 +20,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public string Copyright { get; set; }
         public string RuntimeVersion { get; set; }
         public LoaderConfig LoaderConfig { get; set; }
-        public XamlFileSelector LanguageSelector => App.Selector;
+        public XamlFileSelector LanguageSelector => App.LanguageSelector;
+        public XamlFileSelector ThemeSelector => App.ThemeSelector;
 
         public SettingsPageViewModel(MainPageViewModel mainPageViewModel, ManageModsViewModel manageModsViewModel, LoaderConfig loaderConfig)
         {
@@ -35,7 +37,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
             Copyright = version.LegalCopyright;
             RuntimeVersion = $"Core: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}";
-            SelectCurrentLanguage();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SelectCurrentLanguage();
+                SelectCurrentTheme();
+            });
         }
 
         public void SaveConfig()
@@ -45,19 +51,37 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public void SaveNewLanguage()
         {
-            LoaderConfig.LanguageFile = LanguageSelector.File;
-            SaveConfig();
+            if (LanguageSelector.File != null)
+            {
+                LoaderConfig.LanguageFile = LanguageSelector.File;
+                SaveConfig();
+            }
         }
 
-        public void SelectCurrentLanguage()
+        public void SaveNewTheme()
         {
-            for (int x = 0; x < LanguageSelector.Files.Count; x++)
+            if (ThemeSelector.File != null)
             {
-                if (LanguageSelector.Files[x] == LoaderConfig.LanguageFile)
-                {
-                    LanguageSelector.File = LanguageSelector.Files[x];
-                    break;
-                }
+                LoaderConfig.ThemeFile = ThemeSelector.File;
+                SaveConfig();
+
+                // TODO: This is a bug workaround for where the language ComboBox gets reset after a theme change.
+                SelectCurrentLanguage();
+            }
+        }
+
+        public void SelectCurrentLanguage() => SelectXamlFile(LanguageSelector, LoaderConfig.LanguageFile);
+        public void SelectCurrentTheme()    => SelectXamlFile(ThemeSelector, LoaderConfig.ThemeFile);
+
+        private void SelectXamlFile(XamlFileSelector selector, string fileName)
+        {
+            foreach (var file in selector.Files)
+            {
+                if (file != fileName) 
+                    continue;
+                
+                selector.File = file;
+                break;
             }
         }
 

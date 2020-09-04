@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- XOS Palette -->
+    <Color x:Key="AccentColorLightest">#a8bbd6</Color>  <!-- HSL: HSL: hsl(216, 36%, 75%) -->
+    <Color x:Key="AccentColorLighter">#6384b6</Color>   <!-- HSL: HSL: hsl(216, 36%, 55%) -->
+    <Color x:Key="AccentColorLight">#395379</Color>     <!-- HSL: hsl(216, 36%, 35%) -->
+    <Color x:Key="AccentColor">#293b57</Color>          <!-- HSL: hsl(216, 36%, 25%) -->
+    <Color x:Key="AccentColorDark">#212f45</Color>      <!-- HSL: hsl(216, 36%, 20%) -->
+    <Color x:Key="AccentColorDarker">#182334</Color>    <!-- HSL: hsl(216, 36%, 15%) -->
+    <Color x:Key="AccentColorDarkest">#101823</Color>   <!-- HSL: hsl(216, 36%, 10%) -->
+
+    <!-- Need to reimport brushes for color changes to take effect. -->
+    <SolidColorBrush x:Key="AccentColorLightestBrush" Color="{DynamicResource AccentColorLightest}"/>
+    <SolidColorBrush x:Key="AccentColorLighterBrush" Color="{DynamicResource AccentColorLighter}"/>
+    <SolidColorBrush x:Key="AccentColorLightBrush" Color="{DynamicResource AccentColorLight}"/>
+    <SolidColorBrush x:Key="AccentColorBrush" Color="{DynamicResource AccentColor}"/>
+    <SolidColorBrush x:Key="AccentColorBrushDark" Color="{DynamicResource AccentColorDark}"/>
+    <SolidColorBrush x:Key="AccentColorBrushDarker" Color="{DynamicResource AccentColorDarker}"/>
+    <SolidColorBrush x:Key="AccentColorBrushDarkest" Color="{DynamicResource AccentColorDarkest}"/>
+
+</ResourceDictionary>

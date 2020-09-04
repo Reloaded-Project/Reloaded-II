@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Theme.Halogen">
+
+    <!-- Modified copy of Theme/Halogen/Images.xaml -->
+    <ImageSource x:Key="IconAddApp">pack://siteoforigin:,,,/Theme/Halogen/Images/IconAddApp.png</ImageSource>
+    <ImageSource x:Key="IconDiscord">pack://siteoforigin:,,,/Theme/Halogen/Images/IconDiscord.png</ImageSource>
+    <ImageSource x:Key="IconDownloadMods">pack://siteoforigin:,,,/Theme/Halogen/Images/IconDownloadMods.png</ImageSource>
+    <ImageSource x:Key="IconGitHub">pack://siteoforigin:,,,/Theme/Halogen/Images/IconGitHub.png</ImageSource>
+    <ImageSource x:Key="IconInfo">pack://siteoforigin:,,,/Theme/Halogen/Images/IconInfo.png</ImageSource>
+    <ImageSource x:Key="IconMods">pack://siteoforigin:,,,/Theme/Halogen/Images/IconMods.png</ImageSource>
+    <ImageSource x:Key="IconSearch">pack://siteoforigin:,,,/Theme/Halogen/Images/IconSearch.png</ImageSource>
+    <ImageSource x:Key="IconSettings">pack://siteoforigin:,,,/Theme/Halogen/Images/IconSettings.png</ImageSource>
+    <ImageSource x:Key="IconSponsor">pack://siteoforigin:,,,/Theme/Halogen/Images/IconSponsor.png</ImageSource>
+    <ImageSource x:Key="IconTwitter">pack://siteoforigin:,,,/Theme/Halogen/Images/IconTwitter.png</ImageSource>
+    <ImageSource x:Key="ModPlaceholder">pack://siteoforigin:,,,/Theme/Halogen/Images/ModPlaceholder.png</ImageSource>
+    <ImageSource x:Key="ReloadedNoBrackets">pack://siteoforigin:,,,/Theme/Halogen/Images/ReloadedNoBrackets.png</ImageSource>
+
+</ResourceDictionary>

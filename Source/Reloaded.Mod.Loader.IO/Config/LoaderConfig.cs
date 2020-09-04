@@ -74,6 +74,12 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// The language file used by the Reloaded II launcher.
         /// </summary>
         public string LanguageFile { get; set; } = "en-GB.xaml";
+
+        /// <summary>
+        /// The theme file used by the Reloaded-II launcher.
+        /// </summary>
+        public string ThemeFile { get; set; } = "Default.xaml";
+
         public bool FirstLaunch { get; set; } = true;
 
         /// <summary>
