@@ -11,7 +11,8 @@ namespace Reloaded.Mod.Launcher.Misc
     {
         public static BitmapImage BitmapFromUri(Uri source)
         {
-            using (var stream = new FileStream(source.AbsoluteUri.Replace("pack://siteoforigin:,,,", Constants.ApplicationDirectory), FileMode.Open, FileAccess.Read, FileShare.Read))
+            string uri = source.OriginalString.Replace("pack://siteoforigin:,,,", Constants.ApplicationDirectory);
+            using (var stream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 var bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
