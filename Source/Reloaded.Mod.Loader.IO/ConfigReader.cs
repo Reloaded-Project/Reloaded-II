@@ -33,12 +33,13 @@ namespace Reloaded.Mod.Loader.IO
         /// <param name="directory">The absolute path of the directory from which to load all configurations from.</param>
         /// <param name="fileName">The name of the file to load. The filename can contain wildcards * but not regex.</param>
         /// <param name="token">Cancels the task if necessary.</param>
-        /// <param name="maxDepth">Maximum depth in directories to get files from where 1 is only this directory.</param>
+        /// <param name="maxDepth">Maximum depth (inclusive) in directories to get files from where 1 is only this directory.</param>
+        /// <param name="minDepth">Minimum depth (inclusive) in directories to get files from where 1 is this directory.</param>
         /// <returns>Tuples containing the path the configurations was loaded from and the corresponding config class.</returns>
-        public List<PathGenericTuple<TConfigType>> ReadConfigurations(string directory, string fileName, CancellationToken token = default, int maxDepth = 1)
+        public List<PathGenericTuple<TConfigType>> ReadConfigurations(string directory, string fileName, CancellationToken token = default, int maxDepth = 1, int minDepth = 1)
         {
             // Get all config files to load.
-            var configurationPaths = Utility.GetFilesEx(directory, fileName, maxDepth);
+            var configurationPaths = Utility.GetFilesEx(directory, fileName, maxDepth, minDepth);
 
             // Configurations to be returned
             var configurations = new List<PathGenericTuple<TConfigType>>(configurationPaths.Count);

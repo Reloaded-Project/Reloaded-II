@@ -12,22 +12,25 @@ namespace Reloaded.Mod.Loader.IO
         /// </summary>
         /// <param name="directory">The absolute path of the directory from which to load all configurations from.</param>
         /// <param name="fileName">The name of the file to load. The filename can contain wildcards * but not regex.</param>
-        /// <param name="maxDepth">Maximum depth to search in with 1 indicating only current directory.</param>
-        public static List<string> GetFilesEx(string directory, string fileName, int maxDepth = 1)
+        /// <param name="maxDepth">Maximum depth (inclusive) to search in with 1 indicating only current directory.</param>
+        /// <param name="minDepth">Minimum depth (inclusive) to search in with 1 indicating current directory.</param>
+        public static List<string> GetFilesEx(string directory, string fileName, int maxDepth = 1, int minDepth = 1)
         {
             var files = new List<string>();
-            GetFilesExInternal(directory, fileName, maxDepth, 0, files);
+            GetFilesExInternal(directory, fileName, maxDepth, minDepth, 0, files);
             return files;
         }
 
-        private static void GetFilesExInternal(string directory, string fileName, int maxDepth, int currentDepth, List<string> files)
+        private static void GetFilesExInternal(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files)
         {
             if (currentDepth >= maxDepth)
                 return;
 
-            files.AddRange(Directory.GetFiles(directory, fileName, SearchOption.TopDirectoryOnly));
+            if (currentDepth >= minDepth - 1)
+                files.AddRange(Directory.GetFiles(directory, fileName, SearchOption.TopDirectoryOnly));
+
             foreach (var subdir in Directory.GetDirectories(directory))
-                GetFilesExInternal(subdir, fileName, maxDepth, currentDepth + 1, files);
+                GetFilesExInternal(subdir, fileName, maxDepth, minDepth, currentDepth + 1, files);
         }
 
         /// <summary>
