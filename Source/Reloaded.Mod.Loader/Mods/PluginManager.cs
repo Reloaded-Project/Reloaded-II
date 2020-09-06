@@ -344,9 +344,9 @@ namespace Reloaded.Mod.Loader.Mods
         }
 
         /* Utility */
-        private void WriteLine(string message, string prefix = "[Reloaded] ")
+        private void WriteLineAsync(string message, string prefix = "[Reloaded] ")
         {
-            _loader.Console.WriteLine($"{prefix}{message}");
+            _loader.Console.WriteLineAsync($"{prefix}{message}");
         }
 
         private void ExecuteWithStopwatch<T>(string message, Action<T> code, T parameter)
@@ -354,7 +354,7 @@ namespace Reloaded.Mod.Loader.Mods
             var _stopwatch = new Stopwatch();
             _stopwatch.Start();
             code(parameter);
-            WriteLine($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
+            WriteLineAsync($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
         }
 
         private Y ExecuteWithStopwatch<T, Y>(string message, Func<T, Y> code, T parameter)
@@ -362,7 +362,7 @@ namespace Reloaded.Mod.Loader.Mods
             var _stopwatch = new Stopwatch();
             _stopwatch.Start();
             var result = code(parameter);
-            WriteLine($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
+            WriteLineAsync($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
             return result;
         }
     }

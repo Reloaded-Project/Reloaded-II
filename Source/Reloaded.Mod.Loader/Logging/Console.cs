@@ -1,16 +1,21 @@
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Colorful;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.Logging.Init;
+using Reloaded.Mod.Loader.Logging.Structs;
 
 namespace Reloaded.Mod.Loader.Logging
 {
     public class Console : ILogger
     {
         public event EventHandler<string> OnPrintMessage = (sender, s) => { };
+        private BlockingCollection<LogMessage> _messages;
+        private Thread _loggingThread;
         private bool _consoleEnabled = false;
 
         /* Default constructor */
@@ -22,6 +27,9 @@ namespace Reloaded.Mod.Loader.Logging
             Colorful.Console.BackgroundColor = BackgroundColor;
             Colorful.Console.ForegroundColor = TextColor;
             Colorful.Console.Clear();
+            _messages = new BlockingCollection<LogMessage>();
+            _loggingThread = new Thread(ProcessQueue) { IsBackground = true };
+            _loggingThread.Start();
         }
 
         public void PrintMessage(string message, Color color)   => WriteLine(message, color);
@@ -30,7 +38,7 @@ namespace Reloaded.Mod.Loader.Logging
 
         public void WriteLine(string message, Color color)
         {
-            if (!_consoleEnabled) 
+            if (!_consoleEnabled)
                 return;
 
             Colorful.Console.WriteLine(message, color);
@@ -39,12 +47,18 @@ namespace Reloaded.Mod.Loader.Logging
 
         public void Write(string message, Color color)
         {
-            if (!_consoleEnabled) 
+            if (!_consoleEnabled)
                 return;
 
             Colorful.Console.Write(message, color);
             OnPrintMessage?.Invoke(this, message);
         }
+
+        public void WriteLineAsync(string message) => WriteLineAsync(message, TextColor);
+        public void WriteLineAsync(string message, Color color) => _messages.Add(new LogMessage(LogMessageType.WriteLine, message, color));
+
+        public void WriteAsync(string message) => WriteAsync(message, TextColor);
+        public void WriteAsync(string message, Color color) => _messages.Add(new LogMessage(LogMessageType.Write, message, color));
 
         // Default Colours
         public Color BackgroundColor     { get; set; } = Color.FromArgb(20, 25, 31);
@@ -67,6 +81,25 @@ namespace Reloaded.Mod.Loader.Logging
 
         public Color ColorLightBlue      { get; set; } = Color.FromArgb(154, 237, 254);
         public Color ColorLightBlueLight { get; set; } = Color.FromArgb(147, 224, 227);
+
+        private void ProcessQueue()
+        {
+            while (true)
+            {
+                var message = _messages.Take();
+
+                switch (message.Type)
+                {
+                    default:
+                    case LogMessageType.WriteLine:
+                        WriteLine(message.Message, message.Color);
+                        break;
+                    case LogMessageType.Write:
+                        Write(message.Message, message.Color);
+                        break;
+                }
+            }
+        }
 
         /* Default Banner */
         #region Banner: Reloaded Branding
