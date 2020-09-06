@@ -8,7 +8,7 @@ namespace Reloaded.Mod.Interfaces.Internal
         // Events
         
         /// <summary>
-        /// Executed after printing a line to the console.
+        /// Executed after printing a line or text to the console.
         /// </summary>
         event EventHandler<string> OnPrintMessage;
 
