@@ -29,7 +29,7 @@
                        Style="{DynamicResource HighQualityImage}"
                        MaxWidth="600"
                        Source="{DynamicResource ReloadedNoBrackets}"
-                       StretchDirection="DownOnly"
+                       StretchDirection="Both"
                        Margin="{DynamicResource BannerMargin}"/>
 
                     <TextBlock DockPanel.Dock="Bottom"

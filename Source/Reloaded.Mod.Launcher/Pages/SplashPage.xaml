@@ -10,22 +10,20 @@
 
     <Grid>
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-            <Grid Margin="{DynamicResource SplashImageMargin}">
-                <Image 
-                    RenderOptions.BitmapScalingMode="HighQuality"
-                    RenderOptions.EdgeMode="Aliased"
-                    RenderOptions.CachingHint="Cache"
-                    StretchDirection="DownOnly"
-                    MaxWidth="650"
-                    Source="{DynamicResource ReloadedNoBrackets}"/>
+            <Image 
+                RenderOptions.BitmapScalingMode="HighQuality"
+                RenderOptions.EdgeMode="Aliased"
+                RenderOptions.CachingHint="Cache"
+                StretchDirection="Both"
+                MaxWidth="650"
+                Source="{DynamicResource ReloadedNoBrackets}"/>
 
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    FontSize="{DynamicResource SplashFontSize}"
-                    Text="{Binding Text, FallbackValue='Initializing Reloaded'}" 
-                    Style="{DynamicResource RIIDefaultTextBlock}"/>
-            </Grid>
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                FontSize="{DynamicResource SplashFontSize}"
+                Text="{Binding Text, FallbackValue='Initializing Reloaded'}" 
+                Style="{DynamicResource RIIDefaultTextBlock}"/>
         </StackPanel>
     </Grid>
 </launcher:ReloadedIIPage>
