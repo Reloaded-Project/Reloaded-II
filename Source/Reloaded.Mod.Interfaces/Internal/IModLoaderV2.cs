@@ -1,6 +1,6 @@
 ﻿namespace Reloaded.Mod.Interfaces.Internal
 {
-    public interface IModLoaderV2
+    public interface IModLoaderV2 : IModLoaderV1
     {
         /// <summary>
         /// Retrieves the directory of a mod with a specific Mod ID.

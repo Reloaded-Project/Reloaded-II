@@ -2,7 +2,7 @@
 
 namespace Reloaded.Mod.Interfaces.Internal
 {
-    public interface ILoggerV2
+    public interface ILoggerV2 : ILoggerV1
     {
         /// <summary>
         /// Writes a new line to the console output
