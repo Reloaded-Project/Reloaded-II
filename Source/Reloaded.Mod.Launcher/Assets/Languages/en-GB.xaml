@@ -93,8 +93,8 @@
     <!-- Application Entry -->
     <sys:String x:Key="TitleApplication">Application Hub</sys:String>
     <sys:String x:Key="ApplicationTotalMods">Total Mods</sys:String>
-    <sys:String x:Key="ApplicationOtherInstances">Other Instances</sys:String>
-    <sys:String x:Key="ApplicationReloadedInstances">Reloaded Instances</sys:String>
+    <sys:String x:Key="ApplicationOtherInstances">Other Instances</sys:String>       <!-- Unused as of 1.7.0 -->
+    <sys:String x:Key="ApplicationReloadedInstances">Reloaded Instances</sys:String> <!-- Unused as of 1.7.0 -->
 
     <!-- First Launch -->
     <sys:String x:Key="TitleFirstLaunch">Welcome to Reloaded II</sys:String>
@@ -231,7 +231,7 @@
     <!-- Categories: Main Menu Screen -->
     <sys:String x:Key="AppCategoryMain">Main</sys:String>
     <sys:String x:Key="AppCategoryActions">Actions</sys:String>
-    <sys:String x:Key="AppCategoryInstances">Instances</sys:String>
+    <sys:String x:Key="AppCategoryProcesses">Processes</sys:String>
     <sys:String x:Key="AppCategorySummary">Summary</sys:String>
 
     <!-- Update 1.7.0: Loader Settings Icons -->

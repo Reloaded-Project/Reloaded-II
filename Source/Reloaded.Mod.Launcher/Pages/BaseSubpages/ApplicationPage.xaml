@@ -130,7 +130,7 @@
 
                         <!-- Instances Header -->
                         <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
-                                   Text="{DynamicResource AppCategoryInstances}"/>
+                                   Text="{DynamicResource AppCategoryProcesses}"/>
 
                         <Separator/>
                         
