@@ -19,7 +19,7 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// </summary>
         /// <param name="message">The message to print.</param>
         /// <param name="color">The color to print the message in.</param>
-        void PrintMessage(string message, Color color);
+        void PrintMessage(string message, Color color) { throw new NotImplementedException(); }
 
         // Console Colours
         Color BackgroundColor { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Reloaded.Mod.Interfaces.Internal
 {
@@ -9,25 +10,25 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// </summary>
         /// <param name="message">The message to print.</param>
         /// <param name="color">The color to print the message in.</param>
-        void WriteLine(string message, Color color);
+        void WriteLine(string message, Color color) { throw new NotImplementedException(); }
 
         /// <summary>
         /// Writes a new line to the console output
         /// </summary>
         /// <param name="message">The message to print.</param>
-        void WriteLine(string message);
+        void WriteLine(string message) { throw new NotImplementedException(); }
 
         /// <summary>
         /// Writes additional text to the console output without proceeding to the next line.
         /// </summary>
         /// <param name="message">The message to print.</param>
         /// <param name="color">The color to print the message in.</param>
-        void Write(string message, Color color);
+        void Write(string message, Color color) { throw new NotImplementedException(); }
 
         /// <summary>
         /// Writes additional text to the console output without proceeding to the next line.
         /// </summary>
         /// <param name="message">The message to print.</param>
-        void Write(string message);
+        void Write(string message) { throw new NotImplementedException(); }
     }
 }
