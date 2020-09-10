@@ -16,6 +16,7 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Dependency;
 using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
 
@@ -213,8 +214,8 @@ namespace Reloaded.Mod.Launcher
 
             try
             {
-                var helper = await NugetHelper.FromSourceUrlAsync(SharedConstants.NuGetApiEndpoint);
-                IoC.Kernel.Rebind<NugetHelper>().ToConstant(helper);
+                var helper = await NugetRepository.FromSourceUrlAsync(SharedConstants.NuGetApiEndpoint);
+                IoC.Kernel.Rebind<NugetRepository>().ToConstant(helper);
                 IoC.GetConstant<DownloadModsViewModel>(); // Consumes ManageModsViewModel, NugetHelper
             }
             catch (Exception)

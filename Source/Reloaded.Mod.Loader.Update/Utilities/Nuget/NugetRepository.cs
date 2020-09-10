@@ -6,35 +6,31 @@ using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Common;
 using NuGet.Configuration;
-using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
 
-namespace Reloaded.Mod.Loader.Update.Utilities
+namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
 {
     /// <summary>
-    /// Helper class which makes it easier to interact with the NuGet API.
-    /// Note: This class has a bias that always selects the latest version of every package, dependency etc.
+    /// A wrapper around an individual NuGet repository.
     /// </summary>
-    public class NugetHelper
+    public class NugetRepository
     {
         private static NullLogger _nullLogger = new NullLogger();
         private static SourceCacheContext _sourceCacheContext = new SourceCacheContext();
 
-        private PackageSource _packageSource;
-        private SourceRepository _sourceRepository;
+        private PackageSource       _packageSource;
+        private SourceRepository    _sourceRepository;
 
-        private DownloadResource _downloadResource;
+        private DownloadResource        _downloadResource;
         private PackageMetadataResource _packageMetadataResource;
-        private PackageSearchResource _packageSearchResource;
-
-        private NugetHelper() { }
+        private PackageSearchResource   _packageSearchResource;
 
         /// <param name="nugetSourceUrl">Source of a specific NuGet feed such as https://api.nuget.org/v3/index.json</param>
-        public static async Task<NugetHelper> FromSourceUrlAsync(string nugetSourceUrl)
+        public static async Task<NugetRepository> FromSourceUrlAsync(string nugetSourceUrl)
         {
-            var nugetHelper               = new NugetHelper();
-            nugetHelper._packageSource    = new PackageSource(nugetSourceUrl);
+            var nugetHelper = new NugetRepository();
+            nugetHelper._packageSource = new PackageSource(nugetSourceUrl);
             nugetHelper._sourceRepository = new SourceRepository(nugetHelper._packageSource, Repository.Provider.GetCoreV3());
 
             nugetHelper._downloadResource = await nugetHelper._sourceRepository.GetResourceAsync<DownloadResource>();
@@ -42,55 +38,6 @@ namespace Reloaded.Mod.Loader.Update.Utilities
             nugetHelper._packageSearchResource = await nugetHelper._sourceRepository.GetResourceAsync<PackageSearchResource>();
 
             return nugetHelper;
-        }
-
-        /// <summary>
-        /// Extracts the content files of the NuGet package to a specified directory.
-        /// </summary>
-        /// <param name="nugetPackagePath">Full path to the NuGet package.</param>
-        /// <param name="targetDirectory">The directory to extract the package content to.</param>
-        /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-        public static void ExtractPackageContent(string nugetPackagePath, string targetDirectory, CancellationToken token = default)
-        {
-            using (var packageStream = File.OpenRead(Path.GetFullPath(nugetPackagePath)))
-            {
-                ExtractPackageContent(packageStream, targetDirectory, token);
-            }
-        }
-
-        /// <summary>
-        /// Extracts the content files of the NuGet package to a specified directory.
-        /// </summary>
-        /// <param name="downloadResourceResult">Result of the <see cref="DownloadPackageAsync"/> method.</param>
-        /// <param name="targetDirectory">The directory to extract the package content to.</param>
-        /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-        public static void ExtractPackageContent(DownloadResourceResult downloadResourceResult, string targetDirectory, CancellationToken token = default)
-        {
-            ExtractPackageContent(downloadResourceResult.PackageStream, targetDirectory, token);
-        }
-
-        /// <summary>
-        /// Extracts the content files of the NuGet package to a specified directory.
-        /// </summary>
-        /// <param name="nugetPackageStream">Stream containing the NuGet package.</param>
-        /// <param name="targetDirectory">The directory to extract the package content to.</param>
-        /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-        public static void ExtractPackageContent(Stream nugetPackageStream, string targetDirectory, CancellationToken token = default)
-        {
-            PackageReaderBase packageReader = new PackageArchiveReader(nugetPackageStream);
-            var items = packageReader.GetFiles();
-            var tempDirectory = $"{Path.GetTempPath()}\\{packageReader.NuspecReader.GetId()}";
-
-            // Remove all items ending with a front or backslash (directories)
-            items = items.Where(x => !(x.EndsWith("\\") || x.EndsWith("/")));
-
-            if (Directory.Exists(tempDirectory))
-                Directory.Delete(tempDirectory, true);
-
-            packageReader.CopyFiles(tempDirectory, items, ExtractFile, _nullLogger, token);
-
-            var fullTargetDirectory = Path.GetFullPath(targetDirectory);
-            IOEx.MoveDirectory(tempDirectory, fullTargetDirectory);
         }
 
         /// <summary>
@@ -149,7 +96,7 @@ namespace Reloaded.Mod.Loader.Update.Utilities
         /// <param name="includeUnlisted">Include unlisted packages.</param>
         /// <param name="includePrerelease">Include pre-release packages.</param>
         /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-        public async Task<FindDependenciesResult> FindDependencies(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
+        public async Task<NugetFindDependenciesResult> FindDependencies(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
             var package = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
             return await FindDependencies(package.Last(), includePrerelease, includeUnlisted, token); ;
@@ -162,9 +109,9 @@ namespace Reloaded.Mod.Loader.Update.Utilities
         /// <param name="includeUnlisted">Include unlisted packages.</param>
         /// <param name="includePrerelease">Include pre-release packages.</param>
         /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-        public async Task<FindDependenciesResult> FindDependencies(IPackageSearchMetadata packageSearchMetadata, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
+        public async Task<NugetFindDependenciesResult> FindDependencies(IPackageSearchMetadata packageSearchMetadata, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
-            var result = new FindDependenciesResult(new HashSet<IPackageSearchMetadata>(), new HashSet<string>());
+            var result = new NugetFindDependenciesResult(new HashSet<IPackageSearchMetadata>(), new HashSet<string>());
             await FindDependenciesRecursiveAsync(packageSearchMetadata, includePrerelease, includeUnlisted, result.Dependencies, result.PackagesNotFound, token);
             return result;
         }
@@ -189,10 +136,13 @@ namespace Reloaded.Mod.Loader.Update.Utilities
             {
                 foreach (var package in dependencySet.Packages)
                 {
-                    var metadata = await GetPackageDetails(package.Id, includePrerelease, includeUnlisted, token);
+                    var metadata = (await GetPackageDetails(package.Id, includePrerelease, includeUnlisted, token)).ToArray();
                     if (metadata.Any())
                     {
                         var lastVersion = metadata.Last();
+                        if (dependenciesAccumulator.Contains(lastVersion))
+                            continue;
+
                         dependenciesAccumulator.Add(lastVersion);
                         await FindDependenciesRecursiveAsync(lastVersion, includePrerelease, includeUnlisted, dependenciesAccumulator, packagesNotFoundAccumulator, token);
                     }
@@ -201,35 +151,6 @@ namespace Reloaded.Mod.Loader.Update.Utilities
                         packagesNotFoundAccumulator.Add(package.Id);
                     }
                 }
-            }
-        }
-
-        private static string ExtractFile(string sourceFile, string targetPath, Stream fileStream)
-        {
-            // Create directory if doesn't exist.
-            var directory = Path.GetDirectoryName(targetPath);
-            if (! Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-            // Decompress.
-            using (var targetStream = File.OpenWrite(targetPath))
-            {
-                fileStream.CopyTo(targetStream);
-            }
-
-            return targetPath;
-        }
-
-        /* Local classes. */
-        public struct FindDependenciesResult
-        {
-            public HashSet<IPackageSearchMetadata> Dependencies { get; private set; }
-            public HashSet<string> PackagesNotFound { get; private set; }
-
-            public FindDependenciesResult(HashSet<IPackageSearchMetadata> dependencies, HashSet<string> packagesNotFound)
-            {
-                Dependencies = dependencies;
-                PackagesNotFound = packagesNotFound;
             }
         }
     }

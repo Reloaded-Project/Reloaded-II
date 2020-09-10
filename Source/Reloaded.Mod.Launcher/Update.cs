@@ -16,6 +16,7 @@ using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
 using MessageBox = System.Windows.MessageBox;
@@ -97,14 +98,14 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         public static async Task DownloadPackagesAsync(IEnumerable<string> modIds, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
-            var nugetUtility = IoC.Get<NugetHelper>();
+            var nugetRepository = IoC.Get<NugetRepository>();
             var packages        = new List<IPackageSearchMetadata>();
             var missingPackages = new List<string>();
 
             /* Get details of every mod. */
             foreach (var modId in modIds)
             {
-                var packageDetails = await nugetUtility.GetPackageDetails(modId, includePrerelease, includeUnlisted, token);
+                var packageDetails = await nugetRepository.GetPackageDetails(modId, includePrerelease, includeUnlisted, token);
                 if (packageDetails.Any())
                     packages.Add(packageDetails.Last());
                 else
@@ -114,7 +115,7 @@ namespace Reloaded.Mod.Launcher
             /* Get dependencies of every mod. */
             foreach (var package in packages.ToArray())
             {
-                var dependencies = await nugetUtility.FindDependencies(package, includePrerelease, includeUnlisted, token);
+                var dependencies = await nugetRepository.FindDependencies(package, includePrerelease, includeUnlisted, token);
                 packages.AddRange       (dependencies.Dependencies);
                 missingPackages.AddRange(dependencies.PackagesNotFound);
             }

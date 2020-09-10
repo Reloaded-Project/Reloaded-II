@@ -1,34 +1,35 @@
 ﻿using System.IO;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.Update.NuGet
 {
-    public class NugetHelperTests
+    public class NugetRepositoryTests
     {
         private const string TestNugetFeed              = "http://167.71.128.50:5000/v3/index.json";
         private const string TestPackageName            = "sonicheroes.skins.midnighthill";
         private const string DependencyId               = "reloaded.universal.redirector";
         private const string TransitiveDependencyId     = "reloaded.sharedlib.hooks";
 
-        private NugetHelper _nugetHelper;
+        private NugetRepository _nugetRepository;
 
-        public NugetHelperTests()
+        public NugetRepositoryTests()
         {
-            _nugetHelper = NugetHelper.FromSourceUrlAsync(TestNugetFeed).Result;
+            _nugetRepository = NugetRepository.FromSourceUrlAsync(TestNugetFeed).Result;
         }
 
         [Fact]
         public void Search()
         {
-            var package = _nugetHelper.Search(TestPackageName, false).Result;
+            var package = _nugetRepository.Search(TestPackageName, false).Result;
             Assert.Contains(package, metadata => metadata.Identity.Id == TestPackageName);
         }
 
         [Fact]
         public void SearchDependencies()
         {
-            var dependencies = _nugetHelper.FindDependencies(TestPackageName, false, true).Result;
+            var dependencies = _nugetRepository.FindDependencies(TestPackageName, false, true).Result;
 
             Assert.Contains(dependencies.Dependencies, metadata => metadata.Identity.Id == DependencyId);
             Assert.Contains(dependencies.Dependencies, metadata => metadata.Identity.Id == TransitiveDependencyId);
@@ -37,9 +38,9 @@ namespace Reloaded.Mod.Loader.Tests.Update.NuGet
         [Fact]
         public void DownloadPackage()
         {
-            var downloadResourceResult = _nugetHelper.DownloadPackageAsync(TestPackageName, true, true).Result;
+            var downloadResourceResult = _nugetRepository.DownloadPackageAsync(TestPackageName, true, true).Result;
             var tempLocation           = Directory.CreateDirectory("Temp\\DownloadedMod");
-            NugetHelper.ExtractPackageContent(downloadResourceResult, tempLocation.FullName);
+            Nuget.ExtractPackage(downloadResourceResult, tempLocation.FullName);
 
             // Check ModConfig.json exists.
             string modConfigLocation = $"{tempLocation.FullName}\\ModConfig.json";

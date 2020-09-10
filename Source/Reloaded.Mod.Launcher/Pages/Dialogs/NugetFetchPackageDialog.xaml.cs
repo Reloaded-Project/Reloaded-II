@@ -6,6 +6,7 @@ using NuGet.Protocol.Core.Types;
 using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
 
@@ -17,13 +18,13 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
     public partial class NugetFetchPackageDialog : ReloadedWindow
     {
         public new NugetFetchPackageDialogViewModel ViewModel { get; set; }
-        public NugetHelper NugetHelper { get; private set; }
+        public NugetRepository NugetRepository { get; private set; }
 
         public NugetFetchPackageDialog(List<IPackageSearchMetadata> packages, List<string> missingPackages)
         {
             InitializeComponent();
             ViewModel = new NugetFetchPackageDialogViewModel(packages, missingPackages);
-            NugetHelper = IoC.Get<NugetHelper>();
+            NugetRepository = IoC.Get<NugetRepository>();
         }
 
         private async void OK_Click(object sender, RoutedEventArgs e)
@@ -34,8 +35,8 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             var loaderConfig = IoC.Get<LoaderConfig>();
             foreach (var package in ViewModel.Packages)
             {
-                var downloadPackage = await NugetHelper.DownloadPackageAsync(package, CancellationToken.None);
-                NugetHelper.ExtractPackageContent(downloadPackage, Path.Combine(loaderConfig.ModConfigDirectory, package.Identity.Id));
+                var downloadPackage = await NugetRepository.DownloadPackageAsync(package, CancellationToken.None);
+                Nuget.ExtractPackage(downloadPackage, Path.Combine(loaderConfig.ModConfigDirectory, package.Identity.Id));
             }
 
             ViewModel.DownloadModStatus = DownloadModStatus.Default;

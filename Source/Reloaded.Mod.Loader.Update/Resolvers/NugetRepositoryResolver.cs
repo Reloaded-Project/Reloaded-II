@@ -11,19 +11,20 @@ using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.Update.Resolvers
 {
     public class NugetRepositoryResolver : IModResolver
     {
-        private static NugetHelper _nugetHelper;
+        private static NugetRepository _nugetHelper;
         private IPackageSearchMetadata _packageMetadata;
         private ModConfig _modConfig;
 
         static NugetRepositoryResolver()
         {
-            _nugetHelper = Task.Run(() => NugetHelper.FromSourceUrlAsync(SharedConstants.NuGetApiEndpoint)).Result;
+            _nugetHelper = Task.Run(() => NugetRepository.FromSourceUrlAsync(SharedConstants.NuGetApiEndpoint)).Result;
         }
 
         /* Interface Implementation */

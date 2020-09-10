@@ -8,6 +8,7 @@ using Reloaded.Mod.Launcher.Commands.DownloadModsPage;
 using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.WPF.MVVM;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
@@ -20,13 +21,13 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public DownloadModStatus                      DownloadModStatus   { get; set; }
         public DownloadModCommand                     DownloadModCommand  { get; set; }
 
-        private NugetHelper             _nugetHelper;
+        private NugetRepository _nugetRepository;
         private CancellationTokenSource _tokenSource;
 
         /* Construction - Deconstruction */
-        public DownloadModsViewModel(NugetHelper nugetHelper)
+        public DownloadModsViewModel(NugetRepository _nugetRepository)
         {
-            _nugetHelper = nugetHelper;
+            this._nugetRepository = _nugetRepository;
             DownloadModEntries = new ObservableCollection<DownloadModEntry>();
             DownloadModCommand = new DownloadModCommand(this);
             PropertyChanged += OnSearchQueryChanged;
@@ -41,7 +42,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             _tokenSource?.Cancel();
             _tokenSource = new CancellationTokenSource();
 
-            var searchResults = await _nugetHelper.Search(SearchQuery, false, 50, _tokenSource.Token);
+            var searchResults = await _nugetRepository.Search(SearchQuery, false, 50, _tokenSource.Token);
             var modEntries = searchResults.Select(x => new DownloadModEntry(x.Identity.Id, x.Authors, x.Description, x.Identity.Version));
             Collections.ModifyObservableCollection(DownloadModEntries, modEntries);
         }
