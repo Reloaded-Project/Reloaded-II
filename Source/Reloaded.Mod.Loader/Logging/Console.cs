@@ -14,7 +14,7 @@ namespace Reloaded.Mod.Loader.Logging
     public class Console : ILogger
     {
         public event EventHandler<string> OnPrintMessage = (sender, s) => { };
-        private BlockingCollection<LogMessage> _messages;
+        private BlockingCollection<LogMessage> _messages = new BlockingCollection<LogMessage>();
         private Thread _loggingThread;
         private bool _consoleEnabled = false;
 
@@ -27,7 +27,6 @@ namespace Reloaded.Mod.Loader.Logging
             Colorful.Console.BackgroundColor = BackgroundColor;
             Colorful.Console.ForegroundColor = TextColor;
             Colorful.Console.Clear();
-            _messages = new BlockingCollection<LogMessage>();
             _loggingThread = new Thread(ProcessQueue) { IsBackground = true };
             _loggingThread.Start();
         }
