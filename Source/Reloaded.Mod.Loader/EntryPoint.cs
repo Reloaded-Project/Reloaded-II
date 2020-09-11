@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Reloaded.Mod.Loader.Server;
@@ -44,10 +45,7 @@ namespace Reloaded.Mod.Loader
             }
             catch (Exception ex)
             {
-                var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA crash log has been saved to: {_loader?.Logger?.FlushPath}";
-                _loader?.Console?.WriteLine(errorMessage, _loader.Console.ColorRed);
-                _loader?.Logger?.Flush();
-                MessageBox.Show(errorMessage);
+                HandleException(ex);
             }
         }
 
@@ -98,6 +96,16 @@ namespace Reloaded.Mod.Loader
             long initialTime = _stopWatch.ElapsedMilliseconds;
             action();
             Console.WriteLine($"[Reloaded | Benchmark] {text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms");
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void HandleException(Exception ex)
+        {
+            // This method is singled out to avoid loading System.Windows.Forms at startup; because it is lazy loaded.
+            var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA crash log has been saved to: {_loader?.Logger?.FlushPath}";
+            _loader?.Console?.WriteLine(errorMessage, _loader.Console.ColorRed);
+            _loader?.Logger?.Flush();
+            MessageBox.Show(errorMessage);
         }
     }
     // ReSharper restore UnusedMember.Global
