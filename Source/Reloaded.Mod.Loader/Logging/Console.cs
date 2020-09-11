@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using Colorful;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.Logging.Init;
@@ -14,6 +15,13 @@ namespace Reloaded.Mod.Loader.Logging
     public class Console : ILogger
     {
         public event EventHandler<string> OnPrintMessage = (sender, s) => { };
+
+        /// <summary>
+        /// Indicates if console is initialized or not.
+        /// If console is not yet initialized, all write operations will be buffered into the async collection.
+        /// </summary>
+        public bool ConsoleInitialized { get; private set; }
+
         private BlockingCollection<LogMessage> _messages = new BlockingCollection<LogMessage>();
         private Thread _loggingThread;
         private bool _consoleEnabled = false;
@@ -21,14 +29,24 @@ namespace Reloaded.Mod.Loader.Logging
         /* Default constructor */
         public Console() { }
 
-        public void ShowConsole()
+        /// <summary>
+        /// Asynchronously initializes the console.
+        /// </summary>
+        public void InitConsoleAsync()
         {
-            _consoleEnabled = ConsoleAllocator.Alloc();
-            Colorful.Console.BackgroundColor = BackgroundColor;
-            Colorful.Console.ForegroundColor = TextColor;
-            Colorful.Console.Clear();
-            _loggingThread = new Thread(ProcessQueue) { IsBackground = true };
-            _loggingThread.Start();
+            Task.Run(() =>
+            {
+                _consoleEnabled = ConsoleAllocator.Alloc();
+                Colorful.Console.BackgroundColor = BackgroundColor;
+                Colorful.Console.ForegroundColor = TextColor;
+                Colorful.Console.Clear();
+
+                _loggingThread = new Thread(ProcessQueue) { IsBackground = true };
+                _loggingThread.Start();
+
+                PrintBanner();
+                ConsoleInitialized = true;
+            });
         }
 
         public void PrintMessage(string message, Color color)   => WriteLine(message, color);
@@ -40,8 +58,15 @@ namespace Reloaded.Mod.Loader.Logging
             if (!_consoleEnabled)
                 return;
 
-            Colorful.Console.WriteLine(message, color);
-            OnPrintMessage?.Invoke(this, message);
+            if (ConsoleInitialized)
+            {
+                Colorful.Console.WriteLine(message, color);
+                OnPrintMessage?.Invoke(this, message);
+            }
+            else
+            {
+                WriteLineAsync(message, color);
+            }
         }
 
         public void Write(string message, Color color)
@@ -49,8 +74,15 @@ namespace Reloaded.Mod.Loader.Logging
             if (!_consoleEnabled)
                 return;
 
-            Colorful.Console.Write(message, color);
-            OnPrintMessage?.Invoke(this, message);
+            if (ConsoleInitialized)
+            {
+                Colorful.Console.Write(message, color);
+                OnPrintMessage?.Invoke(this, message);
+            }
+            else
+            {
+                WriteAsync(message, color);
+            }
         }
 
         public void WriteLineAsync(string message) => WriteLineAsync(message, TextColor);
@@ -81,10 +113,20 @@ namespace Reloaded.Mod.Loader.Logging
         public Color ColorLightBlue      { get; set; } = Color.FromArgb(154, 237, 254);
         public Color ColorLightBlueLight { get; set; } = Color.FromArgb(147, 224, 227);
 
+        /// <summary>
+        /// Synchronously waits for console initialization using blocking.
+        /// </summary>
+        public void WaitForConsoleInit()
+        {
+            while (!ConsoleInitialized)
+                Thread.Sleep(1);
+        }
+
         private void ProcessQueue()
         {
             while (true)
             {
+                WaitForConsoleInit();
                 var message = _messages.Take();
 
                 switch (message.Type)

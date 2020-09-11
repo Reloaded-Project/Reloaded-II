@@ -95,7 +95,7 @@ namespace Reloaded.Mod.Loader
         {
             long initialTime = _stopWatch.ElapsedMilliseconds;
             action();
-            Console.WriteLine($"[Reloaded | Benchmark] {text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms");
+            _loader?.Console?.WriteLine($"[Reloaded | Benchmark] {text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

@@ -32,33 +32,18 @@ namespace Reloaded.Mod.Loader
         public bool IsTesting { get; private set; }
 
         /// <summary>
-        /// Loader constructor used for testing the loader.
+        /// Initialize the loader.
         /// </summary>
         public Loader(bool isTesting = false)
         {
             IsTesting = isTesting;
             LoaderConfig = LoaderConfigReader.ReadConfiguration();
             Manager = new PluginManager(this);
+
             Console = new Console();
             Logger = new Logger(Console, Path.GetTempPath());
-        }
-
-        /// <summary>
-        /// Initialize loader used by the actual loader.
-        /// </summary>
-        public Loader()
-        {
-            IsTesting = false;
-            LoaderConfig = LoaderConfigReader.ReadConfiguration();
-            Manager = new PluginManager(this);
-
-            Console = new Console();
-            Logger  = new Logger(Console, Path.GetTempPath());
             if (LoaderConfig.ShowConsole)
-            {
-                Console.ShowConsole();
-                Console.PrintBanner();
-            }
+                Console.InitConsoleAsync();
         }
 
         ~Loader()
