@@ -23,11 +23,11 @@ namespace Reloaded.Mod.Loader.IO
 
         private static void GetFilesExInternal(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files)
         {
-            if (currentDepth >= maxDepth)
-                return;
-
-            if (currentDepth >= minDepth - 1)
+            if (currentDepth >= minDepth - 1 && currentDepth < maxDepth)
                 files.AddRange(Directory.GetFiles(directory, fileName, SearchOption.TopDirectoryOnly));
+
+            if (currentDepth + 1 >= maxDepth) 
+                return;
 
             foreach (var subdir in Directory.GetDirectories(directory))
                 GetFilesExInternal(subdir, fileName, maxDepth, minDepth, currentDepth + 1, files);
