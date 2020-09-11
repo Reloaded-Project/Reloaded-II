@@ -40,7 +40,7 @@ namespace Reloaded.Mod.Loader
 
                 checkDrmTask.Wait();
                 createHostTask.Wait();
-                Console.WriteLine($"[Reloaded] Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
+                _loader?.Console?.WriteLineAsync($"[Reloaded] Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
                 _stopWatch.Reset();
             }
             catch (Exception ex)
