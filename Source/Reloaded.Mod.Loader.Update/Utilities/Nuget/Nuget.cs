@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using NuGet.Common;
 using NuGet.Packaging;
 using NuGet.Protocol.Core.Types;
+using NuGet.Versioning;
 
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
 {
@@ -61,6 +63,23 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
 
             var fullTargetDirectory = Path.GetFullPath(targetDirectory);
             IOEx.MoveDirectory(tempDirectory, fullTargetDirectory);
+        }
+
+        /// <summary>
+        /// Retrieves the newest version of a given package.
+        /// </summary>
+        /// <param name="metadata">List of all package metadata.</param>
+        public static IPackageSearchMetadata GetNewestVersion(IEnumerable<IPackageSearchMetadata> metadata)
+        {
+            IPackageSearchMetadata highest = null;
+
+            foreach (var meta in metadata)
+            {
+                if (highest == null || meta.Identity.Version > highest.Identity.Version)
+                    highest = meta;
+            }
+
+            return highest;
         }
 
         private static string ExtractFile(string sourceFile, string targetPath, Stream fileStream)

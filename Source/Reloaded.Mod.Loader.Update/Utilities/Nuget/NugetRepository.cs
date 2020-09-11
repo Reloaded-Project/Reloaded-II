@@ -6,15 +6,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Common;
 using NuGet.Configuration;
+using NuGet.Frameworks;
 using NuGet.Packaging.Core;
+using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
 {
     /// <summary>
     /// A wrapper around an individual NuGet repository.
     /// </summary>
-    public class NugetRepository
+    public class NugetRepository : INugetRepository
     {
         private static NullLogger _nullLogger = new NullLogger();
         private static SourceCacheContext _sourceCacheContext = new SourceCacheContext();
@@ -61,7 +65,10 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         public async Task<DownloadResourceResult> DownloadPackageAsync(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
             var package = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
-            return await DownloadPackageAsync(package.Last(), token);
+            if (package.Any())
+                return await DownloadPackageAsync(package.Last(), token);
+
+            throw new Exception("Package with given ID was not found.");
         }
 
         /// <summary>
@@ -83,7 +90,7 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         /// <param name="packageId">The unique ID of the package.</param>
         /// <param name="includePrerelease">Include pre-release packages.</param>
         /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-        /// <returns>Return contains an array of versions </returns>
+        /// <returns>Return contains an array of versions for this package.</returns>
         public async Task<IEnumerable<IPackageSearchMetadata>> GetPackageDetails(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
             return await _packageMetadataResource.GetMetadataAsync(packageId, includePrerelease, includeUnlisted, _sourceCacheContext, _nullLogger, token);
@@ -96,10 +103,10 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         /// <param name="includeUnlisted">Include unlisted packages.</param>
         /// <param name="includePrerelease">Include pre-release packages.</param>
         /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-        public async Task<NugetFindDependenciesResult> FindDependencies(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
+        public async Task<FindDependenciesResult> FindDependencies(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
-            var package = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
-            return await FindDependencies(package.Last(), includePrerelease, includeUnlisted, token); ;
+            var packages = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
+            return await FindDependencies(Nuget.GetNewestVersion(packages), includePrerelease, includeUnlisted, token);
         }
 
         /// <summary>
@@ -109,9 +116,9 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         /// <param name="includeUnlisted">Include unlisted packages.</param>
         /// <param name="includePrerelease">Include pre-release packages.</param>
         /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-        public async Task<NugetFindDependenciesResult> FindDependencies(IPackageSearchMetadata packageSearchMetadata, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
+        public async Task<FindDependenciesResult> FindDependencies(IPackageSearchMetadata packageSearchMetadata, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
-            var result = new NugetFindDependenciesResult(new HashSet<IPackageSearchMetadata>(), new HashSet<string>());
+            var result = new FindDependenciesResult(new HashSet<IPackageSearchMetadata>(), new HashSet<string>());
             await FindDependenciesRecursiveAsync(packageSearchMetadata, includePrerelease, includeUnlisted, result.Dependencies, result.PackagesNotFound, token);
             return result;
         }
@@ -139,7 +146,7 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
                     var metadata = (await GetPackageDetails(package.Id, includePrerelease, includeUnlisted, token)).ToArray();
                     if (metadata.Any())
                     {
-                        var lastVersion = metadata.Last();
+                        var lastVersion = Nuget.GetNewestVersion(metadata);
                         if (dependenciesAccumulator.Contains(lastVersion))
                             continue;
 
