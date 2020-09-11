@@ -33,5 +33,11 @@ namespace Reloaded.Mod.Loader.IO.Config
         {
             _configReader.WriteConfiguration(filePath, this);
         }
+
+        /// <inheritdoc />
+        public void SetNullValues()
+        {
+            EnabledMods ??= Constants.EmptyStringArray;
+        }
     }
 }

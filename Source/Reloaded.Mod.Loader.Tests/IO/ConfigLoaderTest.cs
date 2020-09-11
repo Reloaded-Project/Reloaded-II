@@ -26,9 +26,9 @@ namespace Reloaded.Mod.Loader.Tests.IO
 
             _testModConfig = new ModConfig();
             _testAppConfig = new ApplicationConfig();
-            Utility.SetNullPropertyValues(_testAppConfig);
-            Utility.SetNullPropertyValues(_testModConfig);
-
+            _testAppConfig.SetNullValues();
+            _testModConfig.SetNullValues();
+            
             _modConfigReader = new ConfigReader<ModConfig>();
             _appConfigReader = new ConfigReader<ApplicationConfig>();
         }

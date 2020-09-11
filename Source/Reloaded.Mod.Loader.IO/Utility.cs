@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Reloaded.Mod.Loader.IO.Structs;
 
 namespace Reloaded.Mod.Loader.IO
 {
     public static class Utility
     {
+        private static object _getFilesLock = new object();
+
         /// <summary>
         /// Gets a list of all the files contained within a specific directory.
         /// </summary>
@@ -16,39 +22,36 @@ namespace Reloaded.Mod.Loader.IO
         /// <param name="minDepth">Minimum depth (inclusive) to search in with 1 indicating current directory.</param>
         public static List<string> GetFilesEx(string directory, string fileName, int maxDepth = 1, int minDepth = 1)
         {
-            var files = new List<string>();
-            GetFilesExInternal(directory, fileName, maxDepth, minDepth, 0, files);
+            var directories = new List<string>();
+            GetFilesExDirectories(directory, maxDepth, minDepth, 0, directories);
+
+            // Wait for all threads to terminate.
+            var files           = new List<string>();
+            var localLockObject = new object();
+            var partitioner     = Partitioner.Create(0, directories.Count);
+            Parallel.ForEach(partitioner, (tuple, state) =>
+            {
+                var localFiles = new List<string>();
+                for (int x = tuple.Item1; x < tuple.Item2; x++)
+                    localFiles.AddRange(Directory.GetFiles(directories[x], fileName, SearchOption.TopDirectoryOnly));
+
+                lock (localLockObject) 
+                    files.AddRange(localFiles);
+            });
+
             return files;
         }
 
-        private static void GetFilesExInternal(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files)
+        private static void GetFilesExDirectories(string directory, int maxDepth, int minDepth, int currentDepth, List<string> directories)
         {
             if (currentDepth >= minDepth - 1 && currentDepth < maxDepth)
-                files.AddRange(Directory.GetFiles(directory, fileName, SearchOption.TopDirectoryOnly));
+                directories.Add(directory);
 
             if (currentDepth + 1 >= maxDepth) 
                 return;
 
             foreach (var subdir in Directory.GetDirectories(directory))
-                GetFilesExInternal(subdir, fileName, maxDepth, minDepth, currentDepth + 1, files);
-        }
-
-        /// <summary>
-        /// Finds all properties which have a null values and gives them the default value for the type.
-        /// </summary>
-        public static void SetNullPropertyValues(object obj)
-        {
-            foreach (var property in obj.GetType().GetProperties())
-            {
-                var propertyValue = property.GetValue(obj, null);
-                if (propertyValue == null)
-                {
-                    property.SetValue(obj,
-                        property.PropertyType.IsArray
-                            ? Activator.CreateInstance(property.PropertyType, 0)
-                            : Activator.CreateInstance(property.PropertyType));
-                }
-            }
+                GetFilesExDirectories(subdir, maxDepth, minDepth, currentDepth + 1, directories);
         }
     }
 }

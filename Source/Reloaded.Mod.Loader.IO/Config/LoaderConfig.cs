@@ -95,7 +95,8 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         public void SanitizeConfig()
         {
-            Utility.SetNullPropertyValues(this);
+            // System.Text.Json might deserialize this as null.
+            EnabledPlugins ??= Constants.EmptyStringArray;
             ResetMissingDirectories();
         }
 

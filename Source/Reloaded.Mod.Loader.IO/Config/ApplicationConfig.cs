@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Interfaces;
@@ -166,6 +167,12 @@ namespace Reloaded.Mod.Loader.IO.Config
         public override string ToString()
         {
             return $"AppName: {AppName}, AppLocation: {AppLocation}";
+        }
+
+        /// <inheritdoc />
+        public void SetNullValues()
+        {
+            EnabledMods ??= Constants.EmptyStringArray;
         }
 
         /*

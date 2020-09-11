@@ -44,8 +44,13 @@ namespace Reloaded.Mod.Loader.IO
             // Configurations to be returned
             var configurations = new List<PathGenericTuple<TConfigType>>(configurationPaths.Count);
             foreach (string configurationPath in configurationPaths)
-                if (!token.IsCancellationRequested && TryReadConfiguration(configurationPath, out var config))
+            {
+                if (token.IsCancellationRequested)
+                    return configurations;
+
+                if (TryReadConfiguration(configurationPath, out var config))
                     configurations.Add(new PathGenericTuple<TConfigType>(configurationPath, config));
+            }
 
             return configurations;
         }
@@ -73,10 +78,7 @@ namespace Reloaded.Mod.Loader.IO
         {
             try
             {
-                string jsonFile = File.ReadAllText(path);
-                value = JsonSerializer.Deserialize<TConfigType>(jsonFile, Options);
-                Utility.SetNullPropertyValues(value);
-
+                value = ReadConfiguration(path);
                 return true;
             }
             catch (Exception)
@@ -94,7 +96,7 @@ namespace Reloaded.Mod.Loader.IO
         {
             string jsonFile = File.ReadAllText(path);
             var result = JsonSerializer.Deserialize<TConfigType>(jsonFile, Options);
-            Utility.SetNullPropertyValues(result);
+            result.SetNullValues();
             return result;
         }
 
