@@ -38,10 +38,10 @@ namespace Reloaded.Mod.Loader
         {
             IsTesting = isTesting;
             LoaderConfig = LoaderConfigReader.ReadConfiguration();
-            Manager = new PluginManager(this);
-
             Console = new Console();
             Logger = new Logger(Console, Path.GetTempPath());
+
+            Manager = new PluginManager(this);
             if (LoaderConfig.ShowConsole)
                 Console.InitConsoleAsync();
         }

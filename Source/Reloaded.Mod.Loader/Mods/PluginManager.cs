@@ -369,7 +369,7 @@ namespace Reloaded.Mod.Loader.Mods
         /* Utility */
         private void WriteLineAsync(string message, string prefix = "[Reloaded] ")
         {
-            _loader.Console.WriteLineAsync($"{prefix}{message}");
+            _loader?.Console?.WriteLineAsync($"{prefix}{message}");
         }
 
         private void ExecuteWithStopwatch<T>(string message, Action<T> code, T parameter)
