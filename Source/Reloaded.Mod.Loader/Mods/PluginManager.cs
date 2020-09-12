@@ -86,22 +86,33 @@ namespace Reloaded.Mod.Loader.Mods
             /* Load mods. */
             if (modPaths.Count > 0)
             {
-                var partitioner = Partitioner.Create(0, modPaths.Count);
-                var modInstances = new ModInstance[modPaths.Count];
-
-                Parallel.ForEach(partitioner, (range, loopState) =>
-                {
-                    // Loop over each range element without a delegate invocation.
-                    for (int i = range.Item1; i < range.Item2; i++)
-                    {
-                        var modPath = modPaths[i];
-                        modInstances[i] = ExecuteWithStopwatch($"Prepared Mod: {modPath.Object.ModId}", GetModInstance, modPath);
-                    }
-                });
-
-                foreach (var instance in modInstances)
-                    ExecuteWithStopwatch($"Initialized Mod: {instance.ModConfig.ModId}", StartMod, instance);
+                var modInstances = ExecuteWithStopwatch($"Prepared All Mods: ", PrepareAllMods, modPaths);
+                ExecuteWithStopwatch($"Start All Mods: ", StartAllInstances, modInstances);
             }
+        }
+
+        private ModInstance[] PrepareAllMods(List<PathGenericTuple<IModConfig>> modPaths)
+        {
+            var partitioner = Partitioner.Create(0, modPaths.Count);
+            var modInstances = new ModInstance[modPaths.Count];
+
+            Parallel.ForEach(partitioner, (range, loopState) =>
+            {
+                // Loop over each range element without a delegate invocation.
+                for (int i = range.Item1; i < range.Item2; i++)
+                {
+                    var modPath = modPaths[i];
+                    modInstances[i] = ExecuteWithStopwatch($"Prepared Mod: {modPath.Object.ModId}", GetModInstance, modPath);
+                }
+            });
+
+            return modInstances;
+        }
+
+        private void StartAllInstances(ModInstance[] instances)
+        {
+            foreach (var instance in instances)
+                ExecuteWithStopwatch($"Initialized Mod: {instance.ModConfig.ModId}", StartMod, instance);
         }
 
         /// <summary>
@@ -225,7 +236,11 @@ namespace Reloaded.Mod.Loader.Mods
             var dllPath = tuple.Object.GetDllPath(tuple.Path);
             _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
-            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object), config => config.DefaultContext = _loadContext);
+            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object), config =>
+            {
+                config.DefaultContext = _loadContext;
+                config.IsLazyLoaded = true;
+            });
 
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
@@ -294,15 +309,19 @@ namespace Reloaded.Mod.Loader.Mods
         private void PreloadAssemblyMetadata(List<PathGenericTuple<IModConfig>> configPathTuples) => ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", PreloadAssemblyMetadataParallel, configPathTuples);
         private void PreloadAssemblyMetadataParallel(List<PathGenericTuple<IModConfig>> configPathTuples)
         {
-            var parallelOptions = new ParallelOptions() {MaxDegreeOfParallelism = Environment.ProcessorCount};
-            Parallel.ForEach(configPathTuples, parallelOptions, (configPathTuple) =>
+            var partitioner = Partitioner.Create(0, configPathTuples.Count);
+            Parallel.ForEach(partitioner, (tuple, state) =>
             {
-                var dllPath = configPathTuple.Object.GetDllPath(configPathTuple.Path);
-                if (!File.Exists(dllPath) || configPathTuple.Object.IsNativeMod(configPathTuple.Path)) 
-                    return;
+                for (int x = tuple.Item1; x < tuple.Item2; x++)
+                {
+                    var configPathTuple = configPathTuples[x];
+                    var dllPath = configPathTuple.Object.GetDllPath(configPathTuple.Path);
+                    if (!File.Exists(dllPath) || configPathTuple.Object.IsNativeMod(configPathTuple.Path))
+                        return;
 
-                if (GetMetadataForDllMod(dllPath, out var exports, out bool isUnloadable))
-                    _modIdToMetadata[configPathTuple.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
+                    if (GetMetadataForDllMod(dllPath, out var exports, out bool isUnloadable))
+                        _modIdToMetadata[configPathTuple.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
+                }
             });
         }
 
@@ -311,7 +330,11 @@ namespace Reloaded.Mod.Loader.Mods
             exports      = DefaultExportedTypes; // Preventing heap allocation here.
             isUnloadable = false;
 
-            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes.ToArray(), config => config.DefaultContext = _loadContext);
+            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes, config =>
+            {
+                config.DefaultContext = _loadContext;
+                config.IsLazyLoaded = true;
+            });
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
 
