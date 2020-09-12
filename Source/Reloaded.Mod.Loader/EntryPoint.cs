@@ -2,11 +2,14 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
+using static System.Environment;
 
 namespace Reloaded.Mod.Loader
 {
@@ -68,6 +71,8 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         public static int Initialize(IntPtr unusedPtr, int unusedSize)
         {
+            EnableProfileOptimization();
+
             // Write port as a Memory Mapped File, to allow Mod Loader's Launcher to discover the mod port.
             // (And to stop bootstrapper from loading loader again).
             int pid             = Process.GetCurrentProcess().Id;
@@ -106,6 +111,19 @@ namespace Reloaded.Mod.Loader
             _loader?.Console?.WriteLine(errorMessage, _loader.Console.ColorRed);
             _loader?.Logger?.Flush();
             MessageBox.Show(errorMessage);
+        }
+
+        private static void EnableProfileOptimization()
+        {
+            // Start Profile Optimization
+            var profileRoot = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), LoaderConfigReader.ReloadedFolderName, "ProfileOptimization");
+            Directory.CreateDirectory(profileRoot);
+            
+            // Define the folder where to save the profile files
+            ProfileOptimization.SetProfileRoot(profileRoot);
+
+            // Start profiling and save it in Startup.profile
+            ProfileOptimization.StartProfile("Loader.profile");
         }
     }
     // ReSharper restore UnusedMember.Global
