@@ -36,7 +36,7 @@ namespace Reloaded.Mod.Loader
                 ExecuteTimed("Create Loader", CreateLoader);
                 var createHostTask = Task.Run(() => ExecuteTimed("Create Loader Host (Async)", CreateHost));
                 var checkDrmTask   = Task.Run(() => ExecuteTimed("Checking for DRM (Async)", CheckForDRM));
-                ExecuteTimed("Loading Mods", LoadMods);
+                ExecuteTimed("Loading Mods (Total)", LoadMods);
 
                 checkDrmTask.Wait();
                 createHostTask.Wait();
@@ -95,7 +95,7 @@ namespace Reloaded.Mod.Loader
         {
             long initialTime = _stopWatch.ElapsedMilliseconds;
             action();
-            _loader?.Console?.WriteLine($"[Reloaded | Benchmark] {text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms");
+            _loader?.Console?.WriteLine($"[Reloaded] {text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

@@ -86,8 +86,8 @@ namespace Reloaded.Mod.Loader.Mods
             /* Load mods. */
             if (modPaths.Count > 0)
             {
-                var modInstances = ExecuteWithStopwatch($"Prepared All Mods: ", PrepareAllMods, modPaths);
-                ExecuteWithStopwatch($"Start All Mods: ", StartAllInstances, modInstances);
+                var modInstances = ExecuteWithStopwatch($"Prepare All Mods (Total)", PrepareAllMods, modPaths);
+                ExecuteWithStopwatch($"Initialized All Mods (Total)", StartAllInstances, modInstances);
             }
         }
 
