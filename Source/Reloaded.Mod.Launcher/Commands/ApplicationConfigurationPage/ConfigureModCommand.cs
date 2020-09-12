@@ -89,7 +89,11 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
             if (!File.Exists(dllPath))
                 return false;
 
-            loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, _sharedTypes, config => config.DefaultContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly()));
+            loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, _sharedTypes, config =>
+            {
+                config.DefaultContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly());
+                config.IsLazyLoaded = true;
+            });
             var assembly = loader.LoadDefaultAssembly();
             var types = assembly.GetTypes();
             var entryPoint = types.FirstOrDefault(t => typeof(IConfigurator).IsAssignableFrom(t) && !t.IsAbstract);
