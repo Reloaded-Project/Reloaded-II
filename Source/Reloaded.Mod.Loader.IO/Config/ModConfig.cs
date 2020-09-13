@@ -423,6 +423,7 @@ namespace Reloaded.Mod.Loader.IO.Config
                    ModR2RManagedDll64 == other.ModR2RManagedDll64 &&
                    ModNativeDll32 == other.ModNativeDll32 &&
                    ModNativeDll64 == other.ModNativeDll64 &&
+                   IsLibrary == other.IsLibrary &&
                    ModDependencies.SequenceEqualWithNullSupport(other.ModDependencies) && 
                    OptionalDependencies.SequenceEqualWithNullSupport(other.OptionalDependencies) &&
                    SupportedAppId.SequenceEqualWithNullSupport(other.SupportedAppId);
