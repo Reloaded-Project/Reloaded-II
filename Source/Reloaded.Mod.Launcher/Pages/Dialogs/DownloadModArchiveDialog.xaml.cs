@@ -79,7 +79,6 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
         public Uri Uri          { get; set; }
         public string FileName  { get; set; }
         public float  FileSize  { get; set; }
-        public int Progress     { get; set; }
 
         public DownloadModDetails(Uri uri)
         {

@@ -14,7 +14,6 @@
 
         <Grid.Resources>
             <downloadModsPage:CheckForUpdatesAndDependenciesCommand x:Key="CheckForUpdatesAndDependenciesCommand"/>
-            <downloadModsPage:VisitWebsiteCommand x:Key="VisitWebsiteCommand"/>
 
         </Grid.Resources>
 
@@ -75,10 +74,6 @@
                     Orientation="Horizontal" 
                     Margin="{DynamicResource CommonItemVerticalMargin}">
 
-            <Button Content="{DynamicResource DownloadModsVisitWebsite}"
-                    Margin="{DynamicResource CommonItemHorizontalMargin}" 
-                    Command="{DynamicResource VisitWebsiteCommand}"
-            />
             <Button Content="{DynamicResource DownloadModsCheckUpdatesAndDependencies}"
                     Margin="{DynamicResource CommonItemHorizontalMargin}" 
                     Command="{DynamicResource CheckForUpdatesAndDependenciesCommand}"
