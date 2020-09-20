@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows.Input;
+using NuGet.Protocol.Core.Types;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 
 namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
 {
@@ -85,7 +90,10 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
             _canExecute = false;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
-            await Update.DownloadPackagesAsync(new []{ _downloadModsViewModel.DownloadModEntry.Id }, false, false);
+            var entry  = _downloadModsViewModel.DownloadModEntry;
+            var newest = Nuget.GetNewestVersion(await entry.Source.GetPackageDetails(entry.Id, false, false));
+            var tuple  = new NugetTuple<IPackageSearchMetadata>(entry.Source, newest);
+            await Update.DownloadNuGetPackagesAsync(tuple, new List<string>(), false, false);
 
             _canExecute = true;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));

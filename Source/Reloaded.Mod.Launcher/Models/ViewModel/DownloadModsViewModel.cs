@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -21,11 +22,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public DownloadModStatus                      DownloadModStatus   { get; set; }
         public DownloadModCommand                     DownloadModCommand  { get; set; }
 
-        private NugetRepository _nugetRepository;
+        private AggregateNugetRepository _nugetRepository;
         private CancellationTokenSource _tokenSource;
 
         /* Construction - Deconstruction */
-        public DownloadModsViewModel(NugetRepository _nugetRepository)
+        public DownloadModsViewModel(AggregateNugetRepository _nugetRepository)
         {
             this._nugetRepository = _nugetRepository;
             DownloadModEntries = new ObservableCollection<DownloadModEntry>();
@@ -42,8 +43,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             _tokenSource?.Cancel();
             _tokenSource = new CancellationTokenSource();
 
-            var searchResults = await _nugetRepository.Search(SearchQuery, false, 50, _tokenSource.Token);
-            var modEntries = searchResults.Select(x => new DownloadModEntry(x.Identity.Id, x.Authors, x.Description, x.Identity.Version));
+            var searchTuples = await _nugetRepository.Search(SearchQuery, false, 50, _tokenSource.Token);
+            var modEntries   = new List<DownloadModEntry>();
+            foreach (var tuple in searchTuples)
+                modEntries.AddRange(tuple.Generic.Select(x => new DownloadModEntry(x.Identity.Id, x.Authors, x.Description, x.Identity.Version, tuple.Repository)));
+
             Collections.ModifyObservableCollection(DownloadModEntries, modEntries);
         }
 

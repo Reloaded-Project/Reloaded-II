@@ -7,6 +7,7 @@ using System.Windows;
 using NuGet.Protocol.Core.Types;
 using Onova;
 using Onova.Services;
+using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
@@ -15,8 +16,10 @@ using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Resolvers;
+using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
 using MessageBox = System.Windows.MessageBox;
@@ -71,7 +74,7 @@ namespace Reloaded.Mod.Launcher
 
             try
             {
-                var updater       = new Updater(allMods);
+                var updater       = new Updater(allMods, new UpdaterData(IoC.Get<AggregateNugetRepository>()));
                 var updateDetails = await updater.GetUpdateDetails();
 
                 if (updateDetails.HasUpdates())
@@ -94,30 +97,65 @@ namespace Reloaded.Mod.Launcher
         }
 
         /// <summary>
-        /// Downloads mods in an asynchronous fashion.
+        /// Downloads mods in an asynchronous fashion provided a list of Mod IDs to download.
         /// </summary>
-        public static async Task DownloadPackagesAsync(IEnumerable<string> modIds, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
+        /// <param name="modIds">IDs of all of the mods to download.</param>
+        /// <param name="includePrerelease">Include pre-release packages.</param>
+        /// <param name="includeUnlisted">Include unlisted packages.</param>
+        /// <param name="token">Used to cancel the operation.</param>
+        public static async Task DownloadNuGetPackagesAsync(IEnumerable<string> modIds, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
-            var nugetRepository = IoC.Get<NugetRepository>();
-            var packages        = new List<IPackageSearchMetadata>();
-            var missingPackages = new List<string>();
+            var aggregateRepository = IoC.Get<AggregateNugetRepository>();
+            var packages            = new List<NugetTuple<IPackageSearchMetadata>>();
+            var missingPackages     = new List<string>();
 
             /* Get details of every mod. */
             foreach (var modId in modIds)
             {
-                var packageDetails = await nugetRepository.GetPackageDetails(modId, includePrerelease, includeUnlisted, token);
-                if (packageDetails.Any())
-                    packages.Add(packageDetails.Last());
+                var packageDetails = await aggregateRepository.GetPackageDetails(modId, includePrerelease, includeUnlisted, token);
+                var newest = aggregateRepository.GetNewestPackage(packageDetails);
+                if (newest != null)
+                    packages.Add(newest);
                 else
                     missingPackages.Add(modId);
             }
 
+            await DownloadNuGetPackagesAsync(packages, missingPackages, includePrerelease, includeUnlisted, token);
+        }
+
+
+        /// <summary>
+        /// Downloads mods in an asynchronous fashion provided a list of known and missing packages.
+        /// </summary>
+        /// <param name="package">Existing known package.</param>
+        /// <param name="missingPackages">List of packages known to be missing.</param>
+        /// <param name="includePrerelease">Include pre-release packages.</param>
+        /// <param name="includeUnlisted">Include unlisted packages.</param>
+        /// <param name="token">Used to cancel the operation.</param>
+        public static async Task DownloadNuGetPackagesAsync(NugetTuple<IPackageSearchMetadata> package, List<string> missingPackages, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
+        {
+            await DownloadNuGetPackagesAsync(new List<NugetTuple<IPackageSearchMetadata>>() { package }, missingPackages, includePrerelease, includeUnlisted, token);
+        }
+
+        /// <summary>
+        /// Downloads mods in an asynchronous fashion provided a list of known and missing packages.
+        /// </summary>
+        /// <param name="packages">List of existing known packages.</param>
+        /// <param name="missingPackages">List of packages known to be missing.</param>
+        /// <param name="includePrerelease">Include pre-release packages.</param>
+        /// <param name="includeUnlisted">Include unlisted packages.</param>
+        /// <param name="token">Used to cancel the operation.</param>
+        public static async Task DownloadNuGetPackagesAsync(List<NugetTuple<IPackageSearchMetadata>> packages, List<string> missingPackages, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
+        {
             /* Get dependencies of every mod. */
             foreach (var package in packages.ToArray())
             {
-                var dependencies = await nugetRepository.FindDependencies(package, includePrerelease, includeUnlisted, token);
-                packages.AddRange       (dependencies.Dependencies);
-                missingPackages.AddRange(dependencies.PackagesNotFound);
+                var repository = package.Repository;
+                var searchResult = await repository.FindDependencies(package.Generic, includePrerelease, includeUnlisted, token);
+
+                packages.AddRange(
+                    searchResult.Dependencies.Select(x => new NugetTuple<IPackageSearchMetadata>(package.Repository, x)));
+                missingPackages.AddRange(searchResult.PackagesNotFound);
             }
 
             /* Remove already existing packages. */
@@ -127,7 +165,7 @@ namespace Reloaded.Mod.Launcher
                 allModIds.Add(mod.ModConfig.ModId);
 
             // Remove mods we already have.
-            packages        = packages.Where(x => !allModIds.Contains(x.Identity.Id)).ToList();
+            packages = packages.Where(x => !allModIds.Contains(x.Generic.Identity.Id)).ToList();
             missingPackages = missingPackages.Where(x => !allModIds.Contains(x)).ToList();
 
             ActionWrappers.ExecuteWithApplicationDispatcher(() =>

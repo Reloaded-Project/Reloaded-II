@@ -18,11 +18,13 @@ namespace Reloaded.Mod.Loader.Update
     {
         private IEnumerable<PathGenericTuple<ModConfig>>    _mods;
         private List<ResolverManagerModResultPair>          _resolversWithUpdates;
+        private UpdaterData _data;
 
         /* Instantiation */
-        public Updater(IEnumerable<PathGenericTuple<ModConfig>> mods)
+        public Updater(IEnumerable<PathGenericTuple<ModConfig>> mods, UpdaterData data)
         {
             _mods = mods;
+            _data = data;
         }
 
         /* Get resolvers. */
@@ -99,7 +101,7 @@ namespace Reloaded.Mod.Loader.Update
             var modResolverPairs = new List<ResolverModPair>();
             foreach (var mod in _mods)
             {
-                var resolver = ResolverFactory.GetResolver(mod);
+                var resolver = ResolverFactory.GetResolver(mod, _data);
                 if (resolver != null)
                 {
                     resolver.Construct(mod);

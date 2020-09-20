@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using Reloaded.Mod.Launcher.Misc;
@@ -17,6 +18,7 @@ using Reloaded.Mod.Loader.Update.Dependency;
 using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
 using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
 
@@ -133,7 +135,7 @@ namespace Reloaded.Mod.Launcher
             {
                 try
                 {
-                    await Update.DownloadPackagesAsync(missingDependencies, false, false);
+                    await Update.DownloadNuGetPackagesAsync(missingDependencies, false, false);
                 }
                 catch (Exception)
                 {
@@ -214,8 +216,18 @@ namespace Reloaded.Mod.Launcher
 
             try
             {
-                var helper = await NugetRepository.FromSourceUrlAsync(SharedConstants.NuGetApiEndpoint);
-                IoC.Kernel.Rebind<NugetRepository>().ToConstant(helper);
+                var aggregateRepo = new INugetRepository[config.NuGetFeeds.Length];
+                for (var x = 0; x < config.NuGetFeeds.Length; x++)
+                {
+                    try
+                    {
+                        var repository = await NugetRepository.FromSourceUrlAsync(config.NuGetFeeds[x].URL);
+                        aggregateRepo[x] = repository;
+                    }
+                    catch (Exception) { /* Ignored */ }
+                }
+
+                IoC.Kernel.Rebind<AggregateNugetRepository>().ToConstant(new AggregateNugetRepository(aggregateRepo));
                 IoC.GetConstant<DownloadModsViewModel>(); // Consumes ManageModsViewModel, NugetHelper
             }
             catch (Exception)
