@@ -25,7 +25,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         private const string DefaultPluginConfigDirectory       = "Plugins";
         private static readonly NugetFeed[] DefaultFeeds        = new NugetFeed[]
         {
-            new NugetFeed("Official Repository", SharedConstants.NuGetApiEndpoint, "Package repository of Sewer56, the developer for Reloaded. " +
+            new NugetFeed("Official Repository", SharedConstants.NuGetApiEndpoint, "Package repository of Sewer56, the developer of Reloaded. " +
                                                                                    "Contains personal and popular community packages."),
         };
 
