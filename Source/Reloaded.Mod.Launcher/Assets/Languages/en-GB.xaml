@@ -245,8 +245,8 @@
     <sys:String x:Key="TitleConfigNuGetFeeds">Configure NuGet Sources</sys:String>
     <sys:String x:Key="ConfigNuGetFeedsButton">Configure Sources</sys:String> <!-- Button in Download Mods Menu -->
 
-    <sys:String x:Key="ConfigNuGetFeedsName">Name</sys:String>
-    <sys:String x:Key="ConfigNuGetFeedsURL">URL</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsName">Name (Required)</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURL">URL (Required)</sys:String>
     <sys:String x:Key="ConfigNuGetFeedsURLTooltip">Example: http://167.71.128.50:5000/v3/index.json</sys:String>
     <sys:String x:Key="ConfigNuGetFeedsDescription">Description</sys:String>
 

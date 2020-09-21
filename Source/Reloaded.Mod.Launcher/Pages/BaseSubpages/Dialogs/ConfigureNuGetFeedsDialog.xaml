@@ -62,6 +62,7 @@
                              Style="{DynamicResource TextboxWithPlaceholder}" 
                              Tag="{DynamicResource ConfigNuGetFeedsName}" 
                              ToolTip="{DynamicResource ConfigNuGetFeedsName}"
+                             ToolTipService.InitialShowDelay="0"
                              Margin="{DynamicResource CommonItemVerticalMargin}" />
 
                     <!-- Feed URL -->
@@ -69,6 +70,7 @@
                              Style="{DynamicResource TextboxWithPlaceholder}" 
                              Tag="{DynamicResource ConfigNuGetFeedsURL}" 
                              ToolTip="{DynamicResource ConfigNuGetFeedsURLTooltip}"
+                             ToolTipService.InitialShowDelay="0"
                              Margin="{DynamicResource CommonItemVerticalMargin}" />
 
                     <!-- Feed Description -->
@@ -76,6 +78,7 @@
                              Style="{DynamicResource TextboxWithPlaceholder}" 
                              Tag="{DynamicResource ConfigNuGetFeedsDescription}" 
                              ToolTip="{DynamicResource ConfigNuGetFeedsDescription}"
+                             ToolTipService.InitialShowDelay="0"
                              Margin="{DynamicResource CommonItemVerticalMargin}"
                              TextWrapping="Wrap" />
 

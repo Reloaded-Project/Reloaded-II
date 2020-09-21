@@ -38,13 +38,13 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
 
     public class ConfigureNuGetFeedsDialogViewModel : ObservableObject, IDisposable
     {
-        public CreateNewFeedCommand CreateNewFeedCommand    { get; set; }
-        public DeleteFeedCommand    DeleteFeedCommand       { get; set; }
+        public CreateNewFeedCommand CreateNewFeedCommand { get; set; }
+        public DeleteFeedCommand    DeleteFeedCommand    { get; set; }
 
-        public NugetFeed CurrentFeed                    { get; set; }
-        public ObservableCollection<NugetFeed> Feeds    { get; set; }
+        public NugetFeed CurrentFeed                  { get; set; }
+        public ObservableCollection<NugetFeed> Feeds  { get; set; }
 
-        private LoaderConfig _config                    { get; set; }
+        private LoaderConfig _config                  { get; set; }
 
         /// <inheritdoc />
         public ConfigureNuGetFeedsDialogViewModel(LoaderConfig loaderConfig)
@@ -79,7 +79,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         /// <inheritdoc />
         public void Execute(object? parameter)
         {
-            var feed = new NugetFeed();
+            var feed = new NugetFeed("New NuGet Feed", "");
             ViewModel.Feeds.Add(feed);
             ViewModel.CurrentFeed = feed;
         }
