@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ninject;
+using Reloaded.Mod.Loader.IO;
+using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -15,7 +18,24 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         static IoC()
         {
-            /* No code here yet. */
+            // Setup loader configuration.
+            LoaderConfig config;
+            try
+            {
+                config = LoaderConfigReader.ReadConfiguration();
+            }
+            catch (Exception ex)
+            {
+                config = new LoaderConfig();
+                config.SanitizeConfig();
+                LoaderConfigReader.WriteConfiguration(config);
+                Errors.HandleException(ex, "Failed to parse Reloaded-II launcher configuration.\n" +
+                                           "This is a rare bug, your settings have been reset.\n" +
+                                           "If you have encountered this please report this to the GitHub issue tracker.\n" +
+                                           "Any information on how to reproduce this would be very, very welcome.\n");
+            }
+
+            Kernel.Bind<LoaderConfig>().ToConstant(config);
         }
 
         /// <summary>

@@ -132,7 +132,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             /* Get name of package. */
             var configReader = new ConfigReader<ModConfig>();
             var configs      = configReader.ReadConfigurations(temporaryDirectory, ModConfig.ConfigFileName, default, int.MaxValue);
-            var loaderConfig = LoaderConfigReader.ReadConfiguration();
+            var loaderConfig = IoC.Get<LoaderConfig>();
 
             foreach (var config in configs)
             {

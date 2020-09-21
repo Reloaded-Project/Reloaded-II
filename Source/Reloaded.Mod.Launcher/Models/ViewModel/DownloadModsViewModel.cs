@@ -46,7 +46,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             var searchTuples = await _nugetRepository.Search(SearchQuery, false, 50, _tokenSource.Token);
             var modEntries   = new List<DownloadModEntry>();
             foreach (var tuple in searchTuples)
-                modEntries.AddRange(tuple.Generic.Select(x => new DownloadModEntry(x.Identity.Id, x.Authors, x.Description, x.Identity.Version, tuple.Repository)));
+                modEntries.AddRange(tuple.Generic.Select(x => new DownloadModEntry(x, tuple.Repository)));
 
             Collections.ModifyObservableCollection(DownloadModEntries, modEntries);
         }

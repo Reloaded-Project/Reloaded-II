@@ -193,23 +193,7 @@ namespace Reloaded.Mod.Launcher
         {
             Task.Run(BasicDllInjector.PreloadAddresses); // Fire and Forget
 
-            LoaderConfig config;
-            try
-            {
-                config = LoaderConfigReader.ReadConfiguration();
-            }
-            catch (Exception ex)
-            {
-                config = new LoaderConfig();
-                config.SanitizeConfig();
-                LoaderConfigReader.WriteConfiguration(config);
-                Errors.HandleException(ex, "Failed to parse Reloaded-II launcher configuration.\n" +
-                                           "This is a rare bug, your settings have been reset.\n" +
-                                           "If you have encountered this please report this to the GitHub issue tracker.\n" +
-                                           "Any information on how to reproduce this would be very, very welcome.\n");
-            }
-
-            IoC.Kernel.Bind<LoaderConfig>().ToConstant(config);
+            var config = IoC.Get<LoaderConfig>();
             IoC.GetConstant<MainPageViewModel>();
             IoC.GetConstant<ManageModsViewModel>();   // Consumes MainPageViewModel, LoaderConfig
             IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, MainPageViewModel
