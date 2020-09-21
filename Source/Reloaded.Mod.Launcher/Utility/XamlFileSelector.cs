@@ -5,11 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using static Reloaded.Mod.Loader.IO.FileSystemWatcherFactory.FileSystemWatcherEvents;
 
-namespace Reloaded.Mod.Launcher
+namespace Reloaded.Mod.Launcher.Utility
 {
     /// <summary>
     /// Class that encapsulates a folder to be watched for all available xaml files.

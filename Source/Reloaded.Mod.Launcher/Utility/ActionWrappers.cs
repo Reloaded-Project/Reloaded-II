@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using Reloaded.Mod.Launcher.Misc;
 
 namespace Reloaded.Mod.Launcher.Utility
 {

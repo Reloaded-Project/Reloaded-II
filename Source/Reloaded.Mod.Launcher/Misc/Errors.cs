@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 
-namespace Reloaded.Mod.Launcher
+namespace Reloaded.Mod.Launcher.Misc
 {
     public static class Errors
     {

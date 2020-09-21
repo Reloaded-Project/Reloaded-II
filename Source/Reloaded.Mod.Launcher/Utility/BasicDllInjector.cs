@@ -5,6 +5,7 @@ using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 using System.Text;
 using Reloaded.Memory.Sources;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Shared;
 

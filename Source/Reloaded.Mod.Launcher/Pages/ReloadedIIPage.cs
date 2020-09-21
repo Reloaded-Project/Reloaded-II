@@ -2,7 +2,7 @@
 using Reloaded.WPF.Theme.Default;
 using WindowViewModel = Reloaded.Mod.Launcher.Models.ViewModel.WindowViewModel;
 
-namespace Reloaded.Mod.Launcher
+namespace Reloaded.Mod.Launcher.Pages
 {
     /// <summary>
     /// Special type of <see cref="ReloadedWindow"/> that adds localization support

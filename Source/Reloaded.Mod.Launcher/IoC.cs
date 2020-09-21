@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ninject;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 

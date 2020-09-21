@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Launcher.Utility

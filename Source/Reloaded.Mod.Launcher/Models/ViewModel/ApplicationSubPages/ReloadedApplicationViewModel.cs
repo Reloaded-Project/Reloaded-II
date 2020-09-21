@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum;
 using Reloaded.Mod.Launcher.Utility;

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Utility.Interfaces;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Server;
