@@ -12,7 +12,6 @@ using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
-using Reloaded.WPF.Resources;
 using Reloaded.WPF.Utilities;
 using static Reloaded.Mod.Launcher.Utility.ActionWrappers;
 using static Reloaded.Mod.Loader.IO.FileSystemWatcherFactory;

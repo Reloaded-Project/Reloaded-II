@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Protocol.Core.Types;
@@ -11,10 +10,8 @@ using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Structures;
-using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
-using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.Update.Resolvers
 {

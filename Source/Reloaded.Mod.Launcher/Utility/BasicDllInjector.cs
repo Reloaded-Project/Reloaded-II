@@ -4,11 +4,9 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows;
 using Reloaded.Memory.Sources;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Shared;
-using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Utility
 {

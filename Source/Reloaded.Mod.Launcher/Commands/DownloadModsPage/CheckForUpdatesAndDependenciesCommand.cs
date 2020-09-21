@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.Templates;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.WPF.Utilities;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 

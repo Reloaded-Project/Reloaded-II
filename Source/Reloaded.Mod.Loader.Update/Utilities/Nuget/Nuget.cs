@@ -5,7 +5,6 @@ using System.Threading;
 using NuGet.Common;
 using NuGet.Packaging;
 using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
 
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
 {

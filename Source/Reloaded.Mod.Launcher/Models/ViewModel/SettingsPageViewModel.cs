@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using System.Windows;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;

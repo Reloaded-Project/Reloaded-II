@@ -5,7 +5,6 @@ using System.Windows;
 using NuGet.Protocol.Core.Types;
 using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 using Reloaded.WPF.MVVM;

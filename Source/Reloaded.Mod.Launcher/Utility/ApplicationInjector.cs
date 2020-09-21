@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows;
-using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.WPF.Utilities;

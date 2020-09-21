@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Windows;
 using System.Windows.Controls;
 using Reloaded.Mod.Launcher.Commands.Dialog;
 using Reloaded.Mod.Launcher.Models.ViewModel;

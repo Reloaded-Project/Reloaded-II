@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using Reloaded.Mod.Launcher.Misc;
@@ -16,10 +15,8 @@ using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Dependency;
 using Reloaded.Mod.Loader.Update.Resolvers;
-using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
-using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher

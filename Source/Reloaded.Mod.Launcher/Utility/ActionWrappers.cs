@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
 namespace Reloaded.Mod.Launcher.Utility
 {

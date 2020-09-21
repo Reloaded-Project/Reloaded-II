@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 

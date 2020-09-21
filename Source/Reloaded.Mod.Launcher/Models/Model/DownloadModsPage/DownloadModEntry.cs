@@ -1,7 +1,5 @@
-﻿using System;
-using NuGet.Protocol.Core.Types;
+﻿using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
 
 namespace Reloaded.Mod.Launcher.Models.Model.DownloadModsPage

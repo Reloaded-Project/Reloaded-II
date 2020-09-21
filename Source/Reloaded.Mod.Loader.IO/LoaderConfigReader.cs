@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text.Json;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Misc;
 
 namespace Reloaded.Mod.Loader.IO
 {

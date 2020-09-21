@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using Reloaded.Mod.Loader.Logging;
+﻿using Reloaded.Mod.Loader.Logging;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.Utilities

@@ -5,9 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Onova.Services;
 using SharpCompress.Archives;
-using SharpCompress.Archives.SevenZip;
 using SharpCompress.Common;
-using SharpCompress.Readers;
 
 namespace Reloaded.Mod.Loader.Update.Extractors
 {

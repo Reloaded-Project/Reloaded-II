@@ -1,5 +1,4 @@
-﻿using System;
-using Reloaded.Mod.Launcher.Models.ViewModel;
+﻿using Reloaded.Mod.Launcher.Models.ViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {

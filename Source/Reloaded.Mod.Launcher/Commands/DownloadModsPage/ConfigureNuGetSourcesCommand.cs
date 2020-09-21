@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 using Reloaded.Mod.Loader.IO.Config;

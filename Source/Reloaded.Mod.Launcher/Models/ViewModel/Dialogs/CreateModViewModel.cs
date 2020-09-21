@@ -12,7 +12,6 @@ using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
-using Reloaded.WPF.Resources;
 using Reloaded.WPF.Utilities;
 using PathSanitizer = Reloaded.Mod.Shared.PathSanitizer;
 

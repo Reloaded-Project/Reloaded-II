@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Xunit;
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 using System.Windows.Input;
 using NuGet.Protocol.Core.Types;
 using Reloaded.Mod.Launcher.Commands.Templates;
