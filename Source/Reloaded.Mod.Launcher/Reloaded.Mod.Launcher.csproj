@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -38,10 +38,6 @@
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	</Content>
-	<Page Remove="Theme\Halogen.xaml" />
-	<Page Remove="Theme\Halogen\Controls.xaml" />
-	<Page Remove="Theme\Halogen\Images.xaml" />
-	<Page Remove="Theme\Halogen\Styles.xaml" />
 	<Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -73,26 +69,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controls\PopupLabel.xaml.cs" />
-    <Compile Update="Pages\BaseSubpages\AddAppPage.xaml.cs" />
-    <Compile Update="Pages\BaseSubpages\ManageModsPage.xaml.cs" />
-    <Compile Update="Pages\SplashPage.xaml.cs" />
-    <Compile Update="Pages\BasePage.xaml.cs" />
-  </ItemGroup>
-
-	<ItemGroup>
-    <Page Update="Controls\PopupLabel.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\Dialogs\ModLoaderUpdateDialog.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\SplashPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Xceed.Wpf.Toolkit">
       <HintPath>Dependencies\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
@@ -102,16 +78,5 @@
     <ApplicationDefinition Update="App.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ApplicationDefinition>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Assets\Images\" />
-    <Folder Include="Theme\Halogen\Images\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Theme\Halogen.xaml">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
 </Project>
