@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.Templates;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.WPF.Utilities;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
@@ -40,7 +41,7 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
             {
                 try
                 {
-                    await Update.DownloadPackagesAsync(missingDependencies, false, false);
+                    await Update.DownloadNuGetPackagesAsync(missingDependencies, false, false);
                 }
                 catch (Exception)
                 {

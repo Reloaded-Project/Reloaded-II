@@ -6,16 +6,15 @@
       xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages"
       xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
       xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
-      xmlns:downloadModsPage="clr-namespace:Reloaded.Mod.Launcher.Commands.DownloadModsPage"
+      xmlns:commands="clr-namespace:Reloaded.Mod.Launcher.Commands.DownloadModsPage"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="756"
       Title="{DynamicResource TitleDownloadMods}">
     <Grid Margin="{DynamicResource PageMargin}" x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
         <Grid.Resources>
-            <downloadModsPage:CheckForUpdatesAndDependenciesCommand x:Key="CheckForUpdatesAndDependenciesCommand"/>
-            <downloadModsPage:VisitWebsiteCommand x:Key="VisitWebsiteCommand"/>
-
+            <commands:CheckForUpdatesAndDependenciesCommand x:Key="CheckForUpdatesAndDependenciesCommand"/>
+            <commands:ConfigureNuGetSourcesCommand x:Key="ConfigureNuGetSourcesCommand"/>
         </Grid.Resources>
 
         <Grid.RowDefinitions>
@@ -53,7 +52,7 @@
             AutoGenerateColumns="False"
             Margin="{DynamicResource CommonItemVerticalMargin}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{DynamicResource UpdateModModId}" Binding="{Binding Id}" Width="Auto" IsReadOnly="True" />
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name}" Width="Auto" IsReadOnly="True" />
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogDescription}" Binding="{Binding Description}" Width="*" IsReadOnly="True" />
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors}" Width="Auto" IsReadOnly="True" />
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version}" Width="Auto" IsReadOnly="True"/>
@@ -74,10 +73,9 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal" 
                     Margin="{DynamicResource CommonItemVerticalMargin}">
-
-            <Button Content="{DynamicResource DownloadModsVisitWebsite}"
+            <Button Content="{DynamicResource ConfigNuGetFeedsButton}"
                     Margin="{DynamicResource CommonItemHorizontalMargin}" 
-                    Command="{DynamicResource VisitWebsiteCommand}"
+                    Command="{DynamicResource ConfigureNuGetSourcesCommand}"
             />
             <Button Content="{DynamicResource DownloadModsCheckUpdatesAndDependencies}"
                     Margin="{DynamicResource CommonItemHorizontalMargin}" 

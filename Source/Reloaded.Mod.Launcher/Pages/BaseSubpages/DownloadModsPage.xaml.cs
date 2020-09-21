@@ -6,7 +6,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
     /// <summary>
     /// Interaction logic for DownloadModsPage.xaml
     /// </summary>
-    public partial class DownloadModsPage : ReloadedIIPage, IDisposable
+    public partial class DownloadModsPage : ReloadedIIPage
     {
         public DownloadModsViewModel ViewModel { get; set; }
 
@@ -14,12 +14,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             InitializeComponent();
             ViewModel = IoC.GetConstant<DownloadModsViewModel>();
-            this.AnimateOutStarted += Dispose;
-        }
-
-        public void Dispose()
-        {
-            ViewModel?.Dispose();
         }
     }
 }

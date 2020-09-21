@@ -99,7 +99,7 @@
                              HorizontalAlignment="Center" 
                              VerticalAlignment="Center"/>
 
-                    <Button Content="Create Mod"
+                    <Button Content="{DynamicResource CreateModDialogSave}"
                             Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                             Style="{DynamicResource UnpaddedStretchedGridButton}"
                             PreviewMouseDown="Save_PreviewMouseDown">

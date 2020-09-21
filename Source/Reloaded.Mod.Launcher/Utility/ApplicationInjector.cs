@@ -68,21 +68,8 @@ namespace Reloaded.Mod.Launcher.Utility
 
         private string GetBootstrapperPath(Process process)
         {
-            // If the LoaderConfig is not bound, read it from disk.
-            if (! IoC.IsExplicitlyBound<LoaderConfig>())
-            {
-                if (process.Is64Bit())
-                    return LoaderConfigReader.ReadConfiguration().Bootstrapper64Path;
-                else
-                    return LoaderConfigReader.ReadConfiguration().Bootstrapper32Path;
-            }
-            else
-            {
-                if (process.Is64Bit())
-                    return IoC.Get<LoaderConfig>().Bootstrapper64Path;
-                else
-                    return IoC.Get<LoaderConfig>().Bootstrapper32Path;
-            }
+            var config = IoC.Get<LoaderConfig>();
+            return process.Is64Bit() ? config.Bootstrapper64Path : config.Bootstrapper32Path;
         }
 
         /* Native Imports */

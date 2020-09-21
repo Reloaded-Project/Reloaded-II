@@ -111,7 +111,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 await Task.Run(Update.CheckForModUpdatesAsync);
                 if (Update.CheckMissingDependencies(out var missingDependencies))
                 {
-                    try { await Update.DownloadPackagesAsync(missingDependencies, false, false); }
+                    try { await Update.DownloadNuGetPackagesAsync(missingDependencies, false, false); }
                     catch (Exception e) { }
                 }
 

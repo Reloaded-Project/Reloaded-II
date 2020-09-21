@@ -1,0 +1,89 @@
+﻿<default:ReloadedWindow  x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs.ConfigureNuGetFeedsDialog"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs"
+                         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+                         xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+                         xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
+                         mc:Ignorable="d"
+                         Title="{DynamicResource TitleConfigNuGetFeeds}" 
+                         Height="Auto" 
+                         Width="500"
+                         SizeToContent="WidthAndHeight"
+                         WindowStartupLocation="CenterOwner"
+                         Style="{DynamicResource ReloadedWindow}">
+    <Grid DataContext="{Binding Path=RealViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+
+        <Grid.Resources>
+            <system:Double x:Key="ColumnWidth">350</system:Double>
+        </Grid.Resources>
+
+        <!-- All Content. -->
+        <ScrollViewer>
+            <Grid Margin="{DynamicResource PageMargin}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="{DynamicResource ColumnWidth}">
+                <StackPanel>
+
+                    <!-- Feed Selection -->
+                    <ComboBox SelectedItem="{Binding CurrentFeed, UpdateSourceTrigger=PropertyChanged}" 
+                              ItemsSource="{Binding Feeds, UpdateSourceTrigger=PropertyChanged}" 
+                              Margin="{DynamicResource CommonItemVerticalMargin}" 
+                              DisplayMemberPath="Name"
+                              IsSynchronizedWithCurrentItem="True"/>
+
+                    <!-- Add & Delete -->
+                    <Grid Margin="{DynamicResource CommonItemVerticalMargin}" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Column="0"
+                                Content="{DynamicResource AddAppNewButton}"
+                                Margin="{DynamicResource CommonItemHorizontalMargin}" 
+                                Style="{DynamicResource UnpaddedStretchedGridButton}"
+                                Command="{Binding CreateNewFeedCommand}" />
+
+                        <Button Grid.Column="1"
+                                Content="{DynamicResource AddAppDeleteButton}"
+                                Margin="{DynamicResource CommonItemHorizontalMargin}"
+                                Style="{DynamicResource UnpaddedStretchedGridButton}"
+                                Command="{Binding DeleteFeedCommand}" />
+                    </Grid>
+
+                    <!-- Feed Name -->
+                    <TextBox Text="{Binding CurrentFeed.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{DynamicResource TextboxWithPlaceholder}" 
+                             Tag="{DynamicResource ConfigNuGetFeedsName}" 
+                             ToolTip="{DynamicResource ConfigNuGetFeedsName}"
+                             ToolTipService.InitialShowDelay="0"
+                             Margin="{DynamicResource CommonItemVerticalMargin}" />
+
+                    <!-- Feed URL -->
+                    <TextBox Text="{Binding CurrentFeed.URL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{DynamicResource TextboxWithPlaceholder}" 
+                             Tag="{DynamicResource ConfigNuGetFeedsURL}" 
+                             ToolTip="{DynamicResource ConfigNuGetFeedsURLTooltip}"
+                             ToolTipService.InitialShowDelay="0"
+                             Margin="{DynamicResource CommonItemVerticalMargin}" />
+
+                    <!-- Feed Description -->
+                    <TextBox Text="{Binding CurrentFeed.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{DynamicResource TextboxWithPlaceholder}" 
+                             Tag="{DynamicResource ConfigNuGetFeedsDescription}" 
+                             ToolTip="{DynamicResource ConfigNuGetFeedsDescription}"
+                             ToolTipService.InitialShowDelay="0"
+                             Margin="{DynamicResource CommonItemVerticalMargin}"
+                             TextWrapping="Wrap" />
+
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</default:ReloadedWindow>

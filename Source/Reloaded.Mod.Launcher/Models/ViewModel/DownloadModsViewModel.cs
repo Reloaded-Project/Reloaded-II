@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -8,6 +9,7 @@ using Reloaded.Mod.Launcher.Commands.DownloadModsPage;
 using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.WPF.MVVM;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
@@ -20,13 +22,13 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public DownloadModStatus                      DownloadModStatus   { get; set; }
         public DownloadModCommand                     DownloadModCommand  { get; set; }
 
-        private NugetHelper             _nugetHelper;
+        private AggregateNugetRepository _nugetRepository;
         private CancellationTokenSource _tokenSource;
 
         /* Construction - Deconstruction */
-        public DownloadModsViewModel(NugetHelper nugetHelper)
+        public DownloadModsViewModel(AggregateNugetRepository _nugetRepository)
         {
-            _nugetHelper = nugetHelper;
+            this._nugetRepository = _nugetRepository;
             DownloadModEntries = new ObservableCollection<DownloadModEntry>();
             DownloadModCommand = new DownloadModCommand(this);
             PropertyChanged += OnSearchQueryChanged;
@@ -41,8 +43,11 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             _tokenSource?.Cancel();
             _tokenSource = new CancellationTokenSource();
 
-            var searchResults = await _nugetHelper.Search(SearchQuery, false, 50, _tokenSource.Token);
-            var modEntries = searchResults.Select(x => new DownloadModEntry(x.Identity.Id, x.Authors, x.Description, x.Identity.Version));
+            var searchTuples = await _nugetRepository.Search(SearchQuery, false, 50, _tokenSource.Token);
+            var modEntries   = new List<DownloadModEntry>();
+            foreach (var tuple in searchTuples)
+                modEntries.AddRange(tuple.Generic.Select(x => new DownloadModEntry(x, tuple.Repository)));
+
             Collections.ModifyObservableCollection(DownloadModEntries, modEntries);
         }
 

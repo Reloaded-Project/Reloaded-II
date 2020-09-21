@@ -62,6 +62,8 @@
 
     <!-- Mod Manager: Create Mod Page -->
     <sys:String x:Key="TitleCreateModDialog">Create Mod</sys:String>
+
+    <sys:String x:Key="CreateModDialogSave">Create Mod</sys:String>
     <sys:String x:Key="CreateModDialogId">Unique Id</sys:String>
     <sys:String x:Key="CreateModDialogName">Name</sys:String>
     <sys:String x:Key="CreateModDialogAuthor">Author</sys:String>
@@ -238,5 +240,14 @@
     <sys:String x:Key="LoaderSettingsTwitter">Tweet Me</sys:String>
     <sys:String x:Key="LoaderSettingsDonate">Sponsor Me on GitHub</sys:String>
     <sys:String x:Key="LoaderSettingsDiscord">Join the Discord Server</sys:String>
+
+    <!-- Update 1.7.0: NuGet Feeds -->
+    <sys:String x:Key="TitleConfigNuGetFeeds">Configure NuGet Sources</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsButton">Configure Sources</sys:String> <!-- Button in Download Mods Menu -->
+
+    <sys:String x:Key="ConfigNuGetFeedsName">Name (Required)</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURL">URL (Required)</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURLTooltip">Example: http://167.71.128.50:5000/v3/index.json</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsDescription">Description</sys:String>
 
 </ResourceDictionary>

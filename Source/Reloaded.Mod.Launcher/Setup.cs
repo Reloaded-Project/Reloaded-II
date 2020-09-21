@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using Reloaded.Mod.Launcher.Misc;
@@ -16,6 +17,8 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Dependency;
 using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
 using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
 
@@ -132,7 +135,7 @@ namespace Reloaded.Mod.Launcher
             {
                 try
                 {
-                    await Update.DownloadPackagesAsync(missingDependencies, false, false);
+                    await Update.DownloadNuGetPackagesAsync(missingDependencies, false, false);
                 }
                 catch (Exception)
                 {
@@ -190,31 +193,25 @@ namespace Reloaded.Mod.Launcher
         {
             Task.Run(BasicDllInjector.PreloadAddresses); // Fire and Forget
 
-            LoaderConfig config;
-            try
-            {
-                config = LoaderConfigReader.ReadConfiguration();
-            }
-            catch (Exception ex)
-            {
-                config = new LoaderConfig();
-                config.SanitizeConfig();
-                LoaderConfigReader.WriteConfiguration(config);
-                Errors.HandleException(ex, "Failed to parse Reloaded-II launcher configuration.\n" +
-                                           "This is a rare bug, your settings have been reset.\n" +
-                                           "If you have encountered this please report this to the GitHub issue tracker.\n" +
-                                           "Any information on how to reproduce this would be very, very welcome.\n");
-            }
-
-            IoC.Kernel.Bind<LoaderConfig>().ToConstant(config);
+            var config = IoC.Get<LoaderConfig>();
             IoC.GetConstant<MainPageViewModel>();
             IoC.GetConstant<ManageModsViewModel>();   // Consumes MainPageViewModel, LoaderConfig
             IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, MainPageViewModel
 
             try
             {
-                var helper = await NugetHelper.FromSourceUrlAsync(SharedConstants.NuGetApiEndpoint);
-                IoC.Kernel.Rebind<NugetHelper>().ToConstant(helper);
+                var aggregateRepo = new INugetRepository[config.NuGetFeeds.Length];
+                for (var x = 0; x < config.NuGetFeeds.Length; x++)
+                {
+                    try
+                    {
+                        var repository = await NugetRepository.FromSourceUrlAsync(config.NuGetFeeds[x].URL);
+                        aggregateRepo[x] = repository;
+                    }
+                    catch (Exception) { /* Ignored */ }
+                }
+
+                IoC.Kernel.Rebind<AggregateNugetRepository>().ToConstant(new AggregateNugetRepository(aggregateRepo));
                 IoC.GetConstant<DownloadModsViewModel>(); // Consumes ManageModsViewModel, NugetHelper
             }
             catch (Exception)

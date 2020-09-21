@@ -10,31 +10,34 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Interfaces;
+using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.Update.Resolvers
 {
     public class NugetRepositoryResolver : IModResolver
     {
-        private static NugetHelper _nugetHelper;
-        private IPackageSearchMetadata _packageMetadata;
+        private static AggregateNugetRepository _nugetRepository;
+        private NugetTuple<IPackageSearchMetadata> _metadata;
         private ModConfig _modConfig;
 
-        static NugetRepositoryResolver()
+        public NugetRepositoryResolver(UpdaterData data)
         {
-            _nugetHelper = Task.Run(() => NugetHelper.FromSourceUrlAsync(SharedConstants.NuGetApiEndpoint)).Result;
+            _nugetRepository = data.AggregateNugetRepository;
         }
 
         /* Interface Implementation */
         public IPackageExtractor Extractor { get; set; } = new NugetRepositoryExtractor();
         public bool IsCompatible(PathGenericTuple<ModConfig> mod)
         {
-            var packages = Task.Run(() => _nugetHelper.GetPackageDetails(mod.Object.ModId, false, true)).Result;
-            if (!packages.Any())
+            var package = Task.Run(() => _nugetRepository.GetLatestPackageDetails(mod.Object.ModId, false, true)).Result;
+            if (package == null)
                 return false;
 
-            _packageMetadata = packages.Last();
+            _metadata = package;
             return true;
         }
 
@@ -49,12 +52,12 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         }
 
         #pragma warning disable 1998
-        public async Task<IReadOnlyList<Version>> GetPackageVersionsAsync(CancellationToken cancellationToken = new CancellationToken())
+        public async Task<IReadOnlyList<Version>> GetPackageVersionsAsync(CancellationToken cancellationToken = default)
         #pragma warning restore 1998
         {
             try
             {
-                return new Version[] { Version.Parse(_packageMetadata.Identity.Version.ToString()) };
+                return new Version[] { Version.Parse(_metadata.Generic.Identity.Version.ToString()) };
             }
             catch (Exception)
             {
@@ -67,9 +70,9 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             return -1;
         }
 
-        public async Task DownloadPackageAsync(Version version, string destFilePath, IProgress<double> progress = null, CancellationToken cancellationToken = new CancellationToken())
+        public async Task DownloadPackageAsync(Version version, string destFilePath, IProgress<double> progress = null, CancellationToken cancellationToken = default)
         {
-            var downloadResourceResult = await _nugetHelper.DownloadPackageAsync(_packageMetadata, cancellationToken);
+            var downloadResourceResult = await _metadata.Repository.DownloadPackageAsync(_metadata.Generic, cancellationToken);
             using (var fileStream = File.OpenWrite(destFilePath))
             {
                 downloadResourceResult.PackageStream.CopyTo(fileStream);
