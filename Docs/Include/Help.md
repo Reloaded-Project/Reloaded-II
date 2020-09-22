@@ -20,12 +20,9 @@ Complete documentation for Reloaded is available on GitHub: https://github.com/R
 
 Before running Reloaded you should download all of the requirements listed.
 
-**Used by the mod loader:**
+**Used by the mod loader and launcher:**
 - .NET Core 3.1 x64: https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.2-windows-x64-installer
 - .NET Core 3.1 x86: https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.2-windows-x86-installer
-
-**Used by the launcher:**
-- .NET 5 x64: https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-5.0.0-preview.8-windows-x64-installer
 
 **And also (although most likely you will already have this):**
 - Visual C++ Redist 2015/17/19 x64: https://aka.ms/vs/16/release/VC_redist.x64.exe
