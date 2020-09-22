@@ -59,6 +59,7 @@ Remove-Item "$dumperOutputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x64" -Recurse
 Remove-Item "$outputPath/ref" -Recurse
+Remove-Item "$outputPath/runtimes" -Recurse # Potentially Dangerous
 
 # Remove debug/compile leftovers.
 Get-ChildItem "$loader32OutputPath" -Include *.exe -Recurse | Remove-Item -Force -Recurse
