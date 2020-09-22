@@ -6,13 +6,13 @@
 
   <ItemGroup>
     <PackageReference Include="NetCoreInstallChecker" Version="1.0.3" />
-    <PackageReference Include="NuGet.Packaging" Version="5.5.1" />
-    <PackageReference Include="NuGet.Packaging.Core" Version="5.5.1" />
-    <PackageReference Include="NuGet.Protocol" Version="5.5.1" />
-    <PackageReference Include="Octokit" Version="0.47.0" />
-    <PackageReference Include="Onova" Version="2.6.0" />
+    <PackageReference Include="NuGet.Packaging" Version="5.7.0" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="5.7.0" />
+    <PackageReference Include="NuGet.Protocol" Version="5.7.0" />
+    <PackageReference Include="Octokit" Version="0.48.0" />
+    <PackageReference Include="Onova" Version="2.6.2" />
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
-    <PackageReference Include="SharpCompress" Version="0.25.1" />
+    <PackageReference Include="SharpCompress" Version="0.26.0" />
   </ItemGroup>
 
   <ItemGroup>
