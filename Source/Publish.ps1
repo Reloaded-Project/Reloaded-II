@@ -1,3 +1,10 @@
+# Set to true to build .NET 5
+# Only after the following bugs are fixed:
+# - https://github.com/dotnet/wpf/issues/3516 (Affects Launcher)
+# - https://github.com/dotnet/runtime/issues/39176 (Affects Loader)
+# For now, please edit `TargetFramework` in Reloaded.Mod.Launcher and `Reloaded.Mod.Loader` manually before flipping this switch.
+$isNet5 = $false
+
 # Build Locations
 $outputPath = "Output/Launcher/"
 $outputPath32 = "Output/Launcher/x86"
@@ -31,8 +38,17 @@ dotnet restore
 
 devenv Reloaded-II.sln /Project Reloaded.Mod.Loader.Bootstrapper /Build Release
 dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false /p:PublishSingleFile=true -o "$dumperOutputPath"
-dotnet publish "$launcherProjectPath" -c Release -r win-x64 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true -o "$outputPath"
-dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true -o "$outputPath32"
+
+if ($isNet5) 
+{
+    dotnet publish "$launcherProjectPath" -c Release -r win-x64 -f net5.0-windows --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true -o "$outputPath"
+    dotnet publish "$launcherProjectPath" -c Release -r win-x86 -f net5.0-windows --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true -o "$outputPath32"
+}
+else 
+{
+    dotnet publish "$launcherProjectPath" -c Release -f netcoreapp3.1 -o "$outputPath"
+}
+
 dotnet publish "$loaderProjectPath" -c Release -r win-x64 --self-contained false -o "$loader64OutputPath" /p:PublishReadyToRun=true
 dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false -o "$loader32OutputPath" /p:PublishReadyToRun=true
 dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
