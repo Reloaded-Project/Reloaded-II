@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
 	<UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
@@ -12,6 +12,7 @@
     <ApplicationIcon>appicon.ico</ApplicationIcon>
 	<OutputPath>..\Output\Launcher\</OutputPath>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -72,6 +73,9 @@
     <Reference Include="Xceed.Wpf.Toolkit">
       <HintPath>Dependencies\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
+	<Reference Include="PropertyChanged">
+	  <HintPath>Dependencies\PropertyChanged.dll</HintPath>
+	</Reference>
   </ItemGroup>
 
   <ItemGroup>
