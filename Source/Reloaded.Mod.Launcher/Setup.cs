@@ -53,10 +53,10 @@ namespace Reloaded.Mod.Launcher
                 // Allow for debugging before crashing.
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
                 RegisterReloadedProtocol();
-                CheckForMissingDependencies();
 
                 updateText(_xamlSplashCreatingDefaultConfig.Get());
                 CreateNewConfigIfNotExist();
+                CheckForMissingDependencies();
 
                 updateText(_xamlCreatingTemplates.Get());
                 CreateTemplates();
@@ -131,7 +131,7 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static void CheckForMissingDependencies()
         {
-            var deps = new DependencyChecker(IntPtr.Size == 8);
+            var deps = new DependencyChecker(IoC.Get<LoaderConfig>(), IntPtr.Size == 8);
             if (!deps.AllAvailable)
             {
                 ActionWrappers.ExecuteWithApplicationDispatcher(() =>
@@ -226,6 +226,10 @@ namespace Reloaded.Mod.Launcher
         {
             if (!LoaderConfigReader.ConfigurationExists())
                 LoaderConfigReader.WriteConfiguration(new LoaderConfig());
+
+            var config = IoC.Get<LoaderConfig>();
+            SetLoaderPaths(config, Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
+            LoaderConfigReader.WriteConfiguration(config);
         }
 
         /// <summary>
@@ -260,10 +264,6 @@ namespace Reloaded.Mod.Launcher
             {
                 // Probably no internet access. 
             }
-
-            /* Set loader DLL path. */
-            SetLoaderPaths(config, Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
-            LoaderConfigReader.WriteConfiguration(config);
         }
 
         /// <summary>

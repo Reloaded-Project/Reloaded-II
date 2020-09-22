@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NetCoreInstallChecker;
 using NetCoreInstallChecker.Structs;
 using NetCoreInstallChecker.Structs.Config;
 using NetCoreInstallChecker.Structs.Config.Enum;
 using RedistributableChecker;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Dependency.Interfaces;
 
 namespace Reloaded.Mod.Loader.Update.Dependency
@@ -24,44 +27,42 @@ namespace Reloaded.Mod.Loader.Update.Dependency
         /// </summary>
         public IDependency[] Dependencies { get; }
 
-        private const string CoreLoaderVersion = "3.1.0";
-        private const string CoreLauncherVersion = "5.0.0";
-
-        public DependencyChecker(bool is64Bit)
+        public DependencyChecker(LoaderConfig config, bool is64Bit)
         {
             var deps = new List<IDependency>();
 
-            deps.Add(new NetCoreDependency($".NET Core {CoreLoaderVersion} x86", ResolveLoaderCore(false)));
+            var core32 = GetRuntimeOptionsForDll(config.LoaderPath32);
+            deps.Add(new NetCoreDependency($".NET Core {core32.Framework.Version} x86", ResolveCore(core32, false)));
             deps.Add(new RedistributableDependency("Visual C++ Redistributable x86", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x86), false));
 
             if (is64Bit)
             {
-                deps.Add(new NetCoreDependency($".NET Core {CoreLoaderVersion} x64", ResolveLoaderCore(true)));
+                var core64 = GetRuntimeOptionsForDll(config.LoaderPath64);
+                deps.Add(new NetCoreDependency($".NET Core {core64.Framework.Version} x64", ResolveCore(core64, false)));
                 deps.Add(new RedistributableDependency("Visual C++ Redistributable x64", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x64), true));
-                deps.Add(new NetCoreDependency($"[Launcher] .NET Core {CoreLauncherVersion} x64", ResolveLauncherCore()));
             }
 
             Dependencies = deps.ToArray();
         }
 
         /// <summary>
-        /// Resolves .NET Core dependencies for the loader.
+        /// Attempts to get the runtime options for a DLL or EXE by finding a runtime configuration file.
         /// </summary>
-        private DependencySearchResult<FrameworkOptionsTuple> ResolveLoaderCore(bool is64Bit)
+        /// <param name="dllPath">Full path to a given DLL or exe.</param>
+        /// <returns>Options if succeeded, else throws.</returns>
+        private RuntimeOptions GetRuntimeOptionsForDll(string dllPath)
         {
-            var framework = new Framework("Microsoft.WindowsDesktop.App", CoreLoaderVersion);
-            var options   = new RuntimeOptions("netcoreapp3.1", framework, RollForwardPolicy.Minor);
-            return ResolveCore(options, is64Bit);
-        }
+            if (string.IsNullOrEmpty(dllPath))
+                throw new ArgumentException("Given DLL Path is null or empty.");
 
-        /// <summary>
-        /// Resolves .NET Core dependencies for the launcher.
-        /// </summary>
-        private DependencySearchResult<FrameworkOptionsTuple> ResolveLauncherCore()
-        {
-            var framework = new Framework("Microsoft.WindowsDesktop.App", CoreLauncherVersion);
-            var options   = new RuntimeOptions("net5.0-windows", framework, RollForwardPolicy.Minor);
-            return ResolveCore(options, true);
+            if (!File.Exists(dllPath))
+                throw new ArgumentException("Given DLL does not exist.");
+
+            var configFilePath = Path.ChangeExtension(dllPath, "runtimeconfig.json");
+            if (!File.Exists(configFilePath))
+                throw new FileNotFoundException("Configuration file (runtimeconfig.json) not found for given DLL.");
+            
+            return RuntimeOptions.FromFile(configFilePath);
         }
 
         /// <summary>
