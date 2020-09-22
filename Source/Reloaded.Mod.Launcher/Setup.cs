@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using Microsoft.Win32;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
@@ -70,6 +71,7 @@ namespace Reloaded.Mod.Launcher
 
                 updateText(_xamlRunningSanityChecks.Get());
                 DoSanityTests();
+                CleanupAfterOldVersions();
 
                 // Wait until splash screen time.
                 updateText($"{_xamlSplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");
@@ -78,6 +80,49 @@ namespace Reloaded.Mod.Launcher
                 {
                     await Task.Delay(100);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Cleans up files/folders after upgrades from old loader versions.
+        /// </summary>
+        private static void CleanupAfterOldVersions()
+        {
+            var launcherFolder = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+
+            DestroyFolder(launcherFolder, "Languages");
+            DestroyFolder(launcherFolder, "Styles");
+
+            #if !DEBUG
+            DestroyFileType(launcherFolder, "*.pdb");
+            DestroyFileType(launcherFolder, "*.xml");
+            #endif
+            
+            // Check for .NET 5 Single File
+            // This code is unused until .NET 5 upgrade.
+            if (Environment.Version >= Version.Parse("5.0.0"))
+            {
+                // Currently no API to check if in bundle (single file app); however, we know that CodeBase returns true when loaded from memory.
+                var resAsm = Application.ResourceAssembly;
+                if (resAsm.CodeBase != null || string.IsNullOrEmpty(resAsm.CodeBase))
+                {
+                    // TODO: Needs more testing. Seems to work but might be problematic.
+                    DestroyFileType(launcherFolder, "*.json");
+                    DestroyFileType(launcherFolder, "*.dll");
+                }
+            }
+
+            void DestroyFolder(string baseFolder, string folderName)
+            {
+                var folderPath = Path.Combine(baseFolder, folderName);
+                ActionWrappers.TryCatchDiscard(() => Directory.Delete(folderPath, true));
+            }
+
+            void DestroyFileType(string baseFolder, string searchPattern)
+            {
+                var files = Directory.GetFiles(baseFolder, searchPattern);
+                foreach (var file in files)
+                    ActionWrappers.TryCatchDiscard(() => File.Delete(file));
             }
         }
 
