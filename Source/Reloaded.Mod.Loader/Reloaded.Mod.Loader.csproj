@@ -3,7 +3,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyTitle>Reloaded.Mod.Loader</AssemblyTitle>
     <Product>Reloaded.Mod.Loader</Product>
-    <Copyright>Copyright ©  2019</Copyright>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <EnableDynamicLoading>true</EnableDynamicLoading>
@@ -16,18 +15,11 @@
     <OutputType>WinExe</OutputType>
     <StartupObject />
     <Platforms>x86;x64</Platforms>
-  
-</PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x86'">
     <OutputPath>..\\Output\\Launcher\\Loader\\x86</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <OutputPath>..\\Output\\Launcher\\Loader\\x86</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutputPath>..\\Output\\Launcher\\Loader\\x64</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <PropertyGroup Condition="'$(Platform)'=='x64'">
     <OutputPath>..\\Output\\Launcher\\Loader\\x64</OutputPath>
   </PropertyGroup>
   <ItemGroup>
