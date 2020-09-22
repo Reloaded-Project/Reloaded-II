@@ -2,7 +2,7 @@
 # Only after the following bugs are fixed:
 # - https://github.com/dotnet/wpf/issues/3516 (Affects Launcher)
 # - https://github.com/dotnet/runtime/issues/39176 (Affects Loader)
-# For now, please edit `TargetFramework` in Reloaded.Mod.Launcher and `Reloaded.Mod.Loader` manually before flipping this switch.
+# For now, please edit `TargetFramework` in Reloaded.Mod.Launcher, Reloaded.Mod.Loader and NuGetConverter manually before flipping this switch.
 $isNet5 = $false
 
 # Build Locations
@@ -46,7 +46,7 @@ if ($isNet5)
 }
 else 
 {
-    dotnet publish "$launcherProjectPath" -c Release -f netcoreapp3.1 -o "$outputPath"
+    dotnet publish "$launcherProjectPath" -c Release -f netcoreapp3.1 --self-contained false -o "$outputPath"
 }
 
 dotnet publish "$loaderProjectPath" -c Release -r win-x64 --self-contained false -o "$loader64OutputPath" /p:PublishReadyToRun=true
