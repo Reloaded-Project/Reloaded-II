@@ -35,12 +35,13 @@ namespace Reloaded.Mod.Loader.IO
         /// </summary>
         public static LoaderConfig ReadConfiguration()
         {
-            if (! File.Exists(StaticConfigFilePath))
-                throw new FileNotFoundException($"Reloaded II's static config file path {StaticConfigFilePath} does not exist." +
-                                    $" Reloaded II may not be installed.");
+            var config = new LoaderConfig();
+            if (ConfigurationExists())
+            {
+                string jsonFile = File.ReadAllText(StaticConfigFilePath);
+                config = JsonSerializer.Deserialize<LoaderConfig>(jsonFile);
+            }
 
-            string jsonFile = File.ReadAllText(StaticConfigFilePath);
-            var config      = JsonSerializer.Deserialize<LoaderConfig>(jsonFile);
             config.SanitizeConfig();
             return config;
         }

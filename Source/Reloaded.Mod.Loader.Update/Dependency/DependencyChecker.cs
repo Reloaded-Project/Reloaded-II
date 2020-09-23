@@ -38,7 +38,7 @@ namespace Reloaded.Mod.Loader.Update.Dependency
             if (is64Bit)
             {
                 var core64 = GetRuntimeOptionsForDll(config.LoaderPath64);
-                deps.Add(new NetCoreDependency($".NET Core {core64.Framework.Version} x64", ResolveCore(core64, false)));
+                deps.Add(new NetCoreDependency($".NET Core {core64.Framework.Version} x64", ResolveCore(core64, true)));
                 deps.Add(new RedistributableDependency("Visual C++ Redistributable x64", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x64), true));
             }
 

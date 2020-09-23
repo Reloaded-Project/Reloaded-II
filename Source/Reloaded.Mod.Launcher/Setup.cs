@@ -224,9 +224,6 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static void CreateNewConfigIfNotExist()
         {
-            if (!LoaderConfigReader.ConfigurationExists())
-                LoaderConfigReader.WriteConfiguration(new LoaderConfig());
-
             var config = IoC.Get<LoaderConfig>();
             SetLoaderPaths(config, Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
             LoaderConfigReader.WriteConfiguration(config);
