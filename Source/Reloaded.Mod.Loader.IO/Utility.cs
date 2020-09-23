@@ -7,8 +7,6 @@ namespace Reloaded.Mod.Loader.IO
 {
     public static class Utility
     {
-        private static object _getFilesLock = new object();
-
         /// <summary>
         /// Gets a list of all the files contained within a specific directory.
         /// </summary>

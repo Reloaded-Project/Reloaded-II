@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Reloaded.Mod.Interfaces;
@@ -12,7 +11,6 @@ using Reloaded.Mod.Loader.Logging;
 using Reloaded.Mod.Loader.Mods;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Utilities;
-using Reloaded.Mod.Shared;
 using Console = Reloaded.Mod.Loader.Logging.Console;
 
 namespace Reloaded.Mod.Loader
