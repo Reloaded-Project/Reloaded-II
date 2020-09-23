@@ -59,6 +59,7 @@ namespace Reloaded.Mod.Loader
 
         private static void DumpLogOnCrash(object sender, UnhandledExceptionEventArgs e)
         {
+            _loader?.Console?.WaitForConsoleInit();
             _loader?.Console?.WriteLine($"Saving crash log to: {_loader?.Logger?.FlushPath}", _loader.Console.ColorRed);
             _loader?.Logger?.Flush();
         }
@@ -108,6 +109,7 @@ namespace Reloaded.Mod.Loader
         {
             // This method is singled out to avoid loading System.Windows.Forms at startup; because it is lazy loaded.
             var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA crash log has been saved to: {_loader?.Logger?.FlushPath}";
+            _loader?.Console?.WaitForConsoleInit();
             _loader?.Console?.WriteLine(errorMessage, _loader.Console.ColorRed);
             _loader?.Logger?.Flush();
             MessageBox.Show(errorMessage);
