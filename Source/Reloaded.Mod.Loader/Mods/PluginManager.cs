@@ -81,11 +81,10 @@ namespace Reloaded.Mod.Loader.Mods
         /// <param name="modPaths">Tuples of individual mod configurations and the paths to those configurations.</param>
         public void LoadMods(List<PathGenericTuple<IModConfig>> modPaths)
         {
-            PreloadAssemblyMetadata(modPaths);
-
             /* Load mods. */
             if (modPaths.Count > 0)
             {
+                PreloadAssemblyMetadata(modPaths);
                 var modInstances = ExecuteWithStopwatch($"Prepare All Mods (Total)", PrepareAllMods, modPaths);
                 ExecuteWithStopwatch($"Initialized All Mods (Total)", StartAllInstances, modInstances);
             }
