@@ -203,22 +203,27 @@ namespace Reloaded.Mod.Loader
         private IApplicationConfig FindThisApplication()
         {
             var configurations = ApplicationConfig.GetAllApplications(LoaderConfig.ApplicationConfigDirectory);
-            var fullPath = Path.GetFullPath(Process.GetCurrentProcess().GetExecutablePath());
+            var fullPath       = NormalizePath(Environment.GetCommandLineArgs()[0]);
 
             foreach (var configuration in configurations)
             {
                 var application = configuration.Object;
                 var appLocation = application.AppLocation;
-
-                if (String.IsNullOrEmpty(appLocation))
+                
+                if (string.IsNullOrEmpty(appLocation))
                     continue;
 
-                var fullAppLocation = Path.GetFullPath(application.AppLocation);
+                var fullAppLocation = NormalizePath(application.AppLocation);
                 if (fullAppLocation == fullPath)
                     return application;
             }
 
             return null;
+        }
+
+        private static string NormalizePath(string path)
+        {
+            return Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         }
     }
 }
