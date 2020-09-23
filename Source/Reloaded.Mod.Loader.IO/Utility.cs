@@ -22,19 +22,22 @@ namespace Reloaded.Mod.Loader.IO
             GetFilesExDirectories(directory, maxDepth, minDepth, 0, directories);
 
             // Wait for all threads to terminate.
-            var files           = new List<string>();
-            var localLockObject = new object();
-            var partitioner     = Partitioner.Create(0, directories.Count);
-            Parallel.ForEach(partitioner, (tuple, state) =>
+            var files = new List<string>();
+            if (directories.Count > 0) 
             {
-                var localFiles = new List<string>();
-                for (int x = tuple.Item1; x < tuple.Item2; x++)
-                    localFiles.AddRange(Directory.GetFiles(directories[x], fileName, SearchOption.TopDirectoryOnly));
+                var localLockObject = new object();
+                var partitioner = Partitioner.Create(0, directories.Count);
+                Parallel.ForEach(partitioner, (tuple, state) =>
+                {
+                    var localFiles = new List<string>();
+                    for (int x = tuple.Item1; x < tuple.Item2; x++)
+                        localFiles.AddRange(Directory.GetFiles(directories[x], fileName, SearchOption.TopDirectoryOnly));
 
-                lock (localLockObject) 
-                    files.AddRange(localFiles);
-            });
-
+                    lock (localLockObject)
+                        files.AddRange(localFiles);
+                });
+            }
+            
             return files;
         }
 
