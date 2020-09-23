@@ -6,10 +6,11 @@
 $isNet5 = $false
 
 # Build Locations
-$outputPath = "Output/Launcher/"
-$outputPath32 = "Output/Launcher/x86"
-$toolsPath  = "Output/Tools/"
-$dumperOutputPath = "$outputPath/Loader/"
+$buildPath = "Output"
+$outputPath = "$buildPath/Publish"
+$outputPath32 = "$buildPath/Publish/x86"
+$toolsPath  = "$buildPath/Tools/"
+$loaderOutputPath = "$outputPath/Loader/"
 $loader32OutputPath = "$outputPath/Loader/x86"
 $loader64OutputPath = "$outputPath/Loader/x64"
 
@@ -24,7 +25,7 @@ $nugetConverterProjectPath = "Tools/NugetConverter/NugetConverter.csproj"
 $publishDirectory = "Publish"
 $releaseFileName = "/Release.zip"
 $toolsReleaseFileName = "/Tools.zip"
-$cleanupPaths = ("$outputPath", "$toolsPath", "$publishDirectory")
+$cleanupPaths = ("$buildPath", "$toolsPath", "$publishDirectory")
 
 [Environment]::CurrentDirectory = $PWD
 
@@ -36,8 +37,8 @@ foreach ($cleanupPath in $cleanupPaths) {
 # Build using Visual Studio & Dotnet Publish
 dotnet restore	
 
-devenv Reloaded-II.sln /Project Reloaded.Mod.Loader.Bootstrapper /Build Release
-dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false /p:PublishSingleFile=true -o "$dumperOutputPath"
+msbuild $bootstrapperPath /p:Configuration=Release /p:Platform=x64 /p:OutDir="../$loaderOutputPath"
+dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false /p:PublishSingleFile=true -o "$loaderOutputPath"
 
 if ($isNet5) 
 {
@@ -47,6 +48,7 @@ if ($isNet5)
 else 
 {
     dotnet publish "$launcherProjectPath" -c Release -f netcoreapp3.1 --self-contained false -o "$outputPath"
+	dotnet publish "$launcherProjectPath" -c Release -f netcoreapp3.1 --self-contained false /p:Platform=x86 -o "$outputPath32"
 }
 
 dotnet publish "$loaderProjectPath" -c Release -r win-x64 --self-contained false -o "$loader64OutputPath" /p:PublishReadyToRun=true
@@ -55,11 +57,10 @@ dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contain
 
 Move-Item -Path "$outputPath32/Reloaded-II.exe" -Destination "$outputPath/Reloaded-II32.exe"
 Remove-Item "$outputPath32" -Recurse
-Remove-Item "$dumperOutputPath/win-x86" -Recurse
+Remove-Item "$loaderOutputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x86" -Recurse
 Remove-Item "$outputPath/win-x64" -Recurse
 Remove-Item "$outputPath/ref" -Recurse
-Remove-Item "$outputPath/runtimes" -Recurse # Potentially Dangerous
 
 # Remove debug/compile leftovers.
 Get-ChildItem "$loader32OutputPath" -Include *.exe -Recurse | Remove-Item -Force -Recurse
