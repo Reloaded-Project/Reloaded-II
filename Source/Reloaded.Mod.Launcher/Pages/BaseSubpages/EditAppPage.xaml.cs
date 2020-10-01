@@ -29,6 +29,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         public void Dispose()
         {
             ViewModel?.Dispose();
+            IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
         }
 
         private void SaveCurrentSelectedItem()
