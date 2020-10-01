@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using PropertyChanged;
 using Reloaded.Mod.Launcher.Commands.EditAppPage;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
@@ -29,16 +30,17 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public event NotifyCollectionChangedEventHandler ApplicationsChanged = (sender, args) => { };
 
         /* The page to display. */
+        [DoNotNotify]
         public BaseSubPage Page
         {
             get => _baseSubPage;
             set
             {
-                if (_baseSubPage != value)
-                {
-                    _baseSubPage = value;
-                    RaisePropertyChangedEvent(nameof(Page));
-                }
+                if (_baseSubPage == value) 
+                    return;
+
+                _baseSubPage = value;
+                RaisePropertyChangedEvent(nameof(Page));
             }
         }
 
