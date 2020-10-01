@@ -234,8 +234,6 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static async Task SetupViewModelsAsync()
         {
-            Task.Run(BasicDllInjector.PreloadAddresses); // Fire and Forget
-
             var config = IoC.Get<LoaderConfig>();
             IoC.GetConstant<MainPageViewModel>();
             IoC.GetConstant<ManageModsViewModel>();   // Consumes MainPageViewModel, LoaderConfig

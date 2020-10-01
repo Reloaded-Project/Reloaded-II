@@ -21,8 +21,7 @@ namespace Reloaded.Mod.Launcher.Utility
     {
         private static IntPtr x64LoadLibraryAddress;
         private static IntPtr x86LoadLibraryAddress;
-
-        private IntPtr _loadLibraryAddress;
+        private static bool initialized;
 
         private readonly Process _process;
         private readonly ExternalMemory _memory;
@@ -36,16 +35,18 @@ namespace Reloaded.Mod.Launcher.Utility
             // Set the Location and Handle to the Process to be Injected.
             _process = process;
             _memory  = new ExternalMemory(process);
-
-            _loadLibraryAddress = _process.Is64Bit() ? x64LoadLibraryAddress : x86LoadLibraryAddress;
         }
 
         /// <param name="libraryPath">Full path to library to load.</param>
         /// <returns>0 if injection failed.</returns>
         public int Inject(string libraryPath)
         {
+            if (!initialized)
+                PreloadAddresses();
+
+            var loadLibraryAddress = _process.Is64Bit() ? x64LoadLibraryAddress : x86LoadLibraryAddress;
             IntPtr libraryNameMemoryAddress = WriteLoadLibraryParameter(libraryPath);
-            int result = ExecuteFunction(_loadLibraryAddress, libraryNameMemoryAddress);
+            int result = ExecuteFunction(loadLibraryAddress, libraryNameMemoryAddress);
             _memory.Free(libraryNameMemoryAddress);
             return result;
         }
@@ -53,11 +54,12 @@ namespace Reloaded.Mod.Launcher.Utility
         public static void PreloadAddresses()
         {
             // Dummy. Static constructor only needed.
-            ActionWrappers.TryCatch(() =>
+            if (!initialized)
             {
-                x64LoadLibraryAddress = Getx64LoadLibraryAddress();
-                x86LoadLibraryAddress = Getx86LoadLibraryAddress();
-            });
+                ActionWrappers.TryCatch(() => { x64LoadLibraryAddress = Getx64LoadLibraryAddress(); });
+                ActionWrappers.TryCatch(() => { x86LoadLibraryAddress = Getx86LoadLibraryAddress(); });
+                initialized = true;
+            }
         }
 
         private IntPtr WriteLoadLibraryParameter(string libraryPath)
