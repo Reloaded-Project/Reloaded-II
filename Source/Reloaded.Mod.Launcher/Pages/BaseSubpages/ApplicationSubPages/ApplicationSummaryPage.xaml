@@ -75,19 +75,19 @@
                                       Grid.Column="0"
                                       IsThreeState="True" />
 
-                            <TextBlock Text="{Binding Tuple.ModConfig.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock Text="{Binding Tuple.ModConfig.ModName, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" 
                                        Margin="{DynamicResource ListEntryItemMarginSmall}"
                                        Grid.Column="1"/>
 
-                            <TextBlock Text="{Binding Tuple.ModConfig.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock Text="{Binding Tuple.ModConfig.ModAuthor, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Center" 
                                        Margin="{DynamicResource ListEntryItemMarginSmall}"
                                        Grid.Column="2"/>
 
-                            <TextBlock Text="{Binding Tuple.ModConfig.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock Text="{Binding Tuple.ModConfig.ModVersion, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Center" 
                                        Margin="{DynamicResource ListEntryItemMarginSmall}"
