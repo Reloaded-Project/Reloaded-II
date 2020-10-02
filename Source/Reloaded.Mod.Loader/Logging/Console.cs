@@ -17,14 +17,15 @@ namespace Reloaded.Mod.Loader.Logging
         public event EventHandler<string> OnPrintMessage = (sender, s) => { };
 
         /// <summary>
-        /// Indicates if console is initialized or not.
-        /// If console is not yet initialized, all write operations will be buffered into the async collection.
+        /// Indicates if console is ready to be used or not.
+        /// If console is not yet ready, all write operations will be buffered into the async collection.
         /// </summary>
-        public bool ConsoleInitialized { get; private set; }
+        public bool ConsoleReady { get; private set; }
 
         private BlockingCollection<LogMessage> _messages = new BlockingCollection<LogMessage>();
         private Thread _loggingThread;
-        private bool _consoleEnabled = false;
+        private bool _consoleAllocated = false;
+        private bool _initializationStarted = false;
 
         /* Default constructor */
         public Console() { }
@@ -32,11 +33,19 @@ namespace Reloaded.Mod.Loader.Logging
         /// <summary>
         /// Asynchronously initializes the console.
         /// </summary>
-        public void InitConsoleAsync()
+        /// <param name="isEnabled">True to enable the console, else false.</param>
+        public void InitConsoleAsync(bool isEnabled)
         {
+            if (_initializationStarted) 
+                return;
+
+            _initializationStarted = true;
+            if (!isEnabled)
+                return;
+
             Task.Run(() =>
             {
-                _consoleEnabled = ConsoleAllocator.Alloc();
+                _consoleAllocated = ConsoleAllocator.Alloc();
                 Colorful.Console.BackgroundColor = BackgroundColor;
                 Colorful.Console.ForegroundColor = TextColor;
                 Colorful.Console.Clear();
@@ -45,7 +54,7 @@ namespace Reloaded.Mod.Loader.Logging
                 _loggingThread.Start();
 
                 PrintBanner();
-                ConsoleInitialized = true;
+                ConsoleReady = true;
             });
         }
 
@@ -55,10 +64,10 @@ namespace Reloaded.Mod.Loader.Logging
 
         public void WriteLine(string message, Color color)
         {
-            if (!_consoleEnabled)
+            if (!_consoleAllocated)
                 return;
 
-            if (ConsoleInitialized)
+            if (ConsoleReady)
             {
                 Colorful.Console.WriteLine(message, color);
                 OnPrintMessage?.Invoke(this, message);
@@ -71,10 +80,10 @@ namespace Reloaded.Mod.Loader.Logging
 
         public void Write(string message, Color color)
         {
-            if (!_consoleEnabled)
+            if (!_consoleAllocated)
                 return;
 
-            if (ConsoleInitialized)
+            if (ConsoleReady)
             {
                 Colorful.Console.Write(message, color);
                 OnPrintMessage?.Invoke(this, message);
@@ -116,9 +125,12 @@ namespace Reloaded.Mod.Loader.Logging
         /// <summary>
         /// Synchronously waits for console initialization using blocking.
         /// </summary>
-        public void WaitForConsoleInit()
+        public void WaitForConsoleInit(CancellationToken token = default)
         {
-            while (!ConsoleInitialized)
+            if (!_initializationStarted)
+                return;
+
+            while (!ConsoleReady)
                 Thread.Sleep(1);
         }
 

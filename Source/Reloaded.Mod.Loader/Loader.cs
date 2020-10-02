@@ -40,8 +40,7 @@ namespace Reloaded.Mod.Loader
             Logger = new Logger(Console, Path.GetTempPath());
 
             Manager = new PluginManager(this);
-            if (LoaderConfig.ShowConsole)
-                Console.InitConsoleAsync();
+            Console.InitConsoleAsync(LoaderConfig.ShowConsole);
         }
 
         ~Loader()
