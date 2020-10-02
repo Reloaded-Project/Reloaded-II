@@ -1,4 +1,9 @@
-﻿using Reloaded.Mod.Launcher.Models.ViewModel;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Utility;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {
@@ -12,7 +17,15 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         public DownloadModsPage()
         {
             InitializeComponent();
+
             ViewModel = IoC.GetConstant<DownloadModsViewModel>();
+            this.AnimateInStarted += TryGetSearchResults;
+        }
+
+        private async void TryGetSearchResults()
+        {
+            try { await ViewModel.GetSearchResults(); }
+            catch (OperationCanceledException) { /* ignored */ }
         }
     }
 }

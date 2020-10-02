@@ -8,6 +8,7 @@
       xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
       xmlns:commands="clr-namespace:Reloaded.Mod.Launcher.Commands.DownloadModsPage"
       xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
+      xmlns:misc="clr-namespace:Reloaded.Mod.Launcher.Misc"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="756"
       Title="{DynamicResource TitleDownloadMods}">
@@ -33,11 +34,12 @@
                  Margin="{DynamicResource CommonItemVerticalMargin}"/>
 
         <!-- List -->
-        <DataGrid 
+        <DataGrid
             Grid.Row="1"
             HorizontalAlignment="Stretch"
             ItemsSource="{Binding DownloadModEntries, UpdateSourceTrigger=PropertyChanged}"
             SelectedValue="{Binding DownloadModEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            misc:FixDataGridColumnWidths.Value="true"
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Top"
             
@@ -54,7 +56,7 @@
             Margin="{DynamicResource CommonItemVerticalMargin}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name}" Width="Auto" IsReadOnly="True" />
-                <DataGridTextColumn Header="{DynamicResource CreateModDialogDescription}" Binding="{Binding Description}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogDescription}" Binding="{Binding Description, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors}" Width="Auto" IsReadOnly="True" />
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version}" Width="Auto" IsReadOnly="True"/>
             </DataGrid.Columns>

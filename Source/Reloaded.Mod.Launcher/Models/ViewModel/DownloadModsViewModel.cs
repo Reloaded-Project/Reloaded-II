@@ -31,23 +31,23 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             DownloadModEntries = new ObservableCollection<DownloadModEntry>();
             DownloadModCommand = new DownloadModCommand(this);
             PropertyChanged += OnSearchQueryChanged;
-            #pragma warning disable 4014
-            GetSearchResults(); // Fire and forget.
-            #pragma warning restore 4014
         }
 
         /* Business Logic */
-        private async Task GetSearchResults()
+        public async Task GetSearchResults()
         {
             _tokenSource?.Cancel();
             _tokenSource = new CancellationTokenSource();
 
             var searchTuples = await _nugetRepository.Search(SearchQuery, false, 50, _tokenSource.Token);
-            var modEntries   = new List<DownloadModEntry>();
-            foreach (var tuple in searchTuples)
-                modEntries.AddRange(tuple.Generic.Select(x => new DownloadModEntry(x, tuple.Repository)));
+            if (!_tokenSource.Token.IsCancellationRequested)
+            {
+                var modEntries = new List<DownloadModEntry>();
+                foreach (var tuple in searchTuples)
+                    modEntries.AddRange(tuple.Generic.Select(x => new DownloadModEntry(x, tuple.Repository)));
 
-            Collections.ModifyObservableCollection(DownloadModEntries, modEntries);
+                Collections.ModifyObservableCollection(DownloadModEntries, modEntries);
+            }
         }
 
         private void OnSearchQueryChanged(object sender, PropertyChangedEventArgs e)
