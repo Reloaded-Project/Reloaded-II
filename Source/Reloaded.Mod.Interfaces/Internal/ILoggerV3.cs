@@ -30,5 +30,10 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// </summary>
         /// <param name="message">The message to print.</param>
         void WriteAsync(string message) { throw new NotImplementedException(); }
+
+        /// <summary>
+        /// Blocks until console initialization has completed.
+        /// </summary>
+        void WaitForConsoleInit() { throw new NotImplementedException(); }
     }
 }
