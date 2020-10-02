@@ -10,6 +10,7 @@ using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
 using static System.Environment;
+using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
 
 namespace Reloaded.Mod.Loader
 {
@@ -35,7 +36,7 @@ namespace Reloaded.Mod.Loader
                 _stopWatch = new Stopwatch();
                 _stopWatch.Start();
 
-                AppDomain.CurrentDomain.UnhandledException += DumpLogOnCrash;
+                AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
                 ExecuteTimed("Create Loader", CreateLoader);
                 var createHostTask = Task.Run(() => ExecuteTimed("Create Loader Host (Async)", CreateHost));
                 var checkDrmTask   = Task.Run(() => ExecuteTimed("Checking for DRM (Async)", CheckForDRM));
@@ -43,7 +44,7 @@ namespace Reloaded.Mod.Loader
 
                 checkDrmTask.Wait();
                 createHostTask.Wait();
-                _loader?.Console?.WriteLineAsync($"[Reloaded] Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
+                _loader?.Console?.WriteLineAsync(AddLogPrefix($"Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms"));
                 _stopWatch.Reset();
             }
             catch (Exception ex)
@@ -57,11 +58,13 @@ namespace Reloaded.Mod.Loader
         private static void CreateLoader() => _loader = new Loader();
         private static void CreateHost() => _server = new Host(_loader);
 
-        private static void DumpLogOnCrash(object sender, UnhandledExceptionEventArgs e)
+        private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            _loader?.Console?.WaitForConsoleInit();
-            _loader?.Console?.WriteLine($"Saving crash log to: {_loader?.Logger?.FlushPath}", _loader.Console.ColorRed);
-            _loader?.Logger?.Flush();
+            var exception = (Exception)e.ExceptionObject;
+            var message = $"Unhandled Exception: {exception.Message}\n" +
+                          $"Stack Trace: {exception.StackTrace}";
+
+            _loader?.Console?.WriteLine(AddLogPrefix(message), _loader.Console.ColorRed);
         }
 
         /* Initialize Mod Loader (DLL_PROCESS_ATTACH) */
@@ -101,14 +104,14 @@ namespace Reloaded.Mod.Loader
         {
             long initialTime = _stopWatch.ElapsedMilliseconds;
             action();
-            _loader?.Console?.WriteLine($"[Reloaded] {text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms");
+            _loader?.Console?.WriteLineAsync(AddLogPrefix($"{text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms"));
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void HandleException(Exception ex)
         {
             // This method is singled out to avoid loading System.Windows.Forms at startup; because it is lazy loaded.
-            var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA crash log has been saved to: {_loader?.Logger?.FlushPath}";
+            var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA log is available at: {_loader?.Logger?.FlushPath}";
             _loader?.Console?.WaitForConsoleInit();
             _loader?.Console?.WriteLine(errorMessage, _loader.Console.ColorRed);
             _loader?.Logger?.Flush();

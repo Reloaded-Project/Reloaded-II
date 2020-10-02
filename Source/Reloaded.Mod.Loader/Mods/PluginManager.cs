@@ -14,6 +14,7 @@ using Reloaded.Mod.Loader.Exceptions;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Mods.Structs;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
+using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
 
 namespace Reloaded.Mod.Loader.Mods
 {
@@ -366,9 +367,9 @@ namespace Reloaded.Mod.Loader.Mods
         }
 
         /* Utility */
-        private void WriteLineAsync(string message, string prefix = "[Reloaded] ")
+        private void WriteLineAsync(string message)
         {
-            _loader?.Console?.WriteLineAsync($"{prefix}{message}");
+            _loader?.Console?.WriteLineAsync(AddLogPrefix(message));
         }
 
         private void ExecuteWithStopwatch<T>(string message, Action<T> code, T parameter)
