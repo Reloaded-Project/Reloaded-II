@@ -14,7 +14,7 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
     public class AggregateNugetRepository
     {
         public AggregateNugetRepository(INugetRepository[] sources) => Sources = sources.ToList();
-        public AggregateNugetRepository(string[] sources) => Sources = sources.Select(x => (INugetRepository)NugetRepository.FromSourceUrlAsync(x).Result).ToList();
+        public AggregateNugetRepository(string[] sources) => Sources = sources.Select(x => (INugetRepository)NugetRepository.FromSourceUrl(x)).ToList();
         public AggregateNugetRepository() { }
 
         /// <summary>

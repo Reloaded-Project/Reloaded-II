@@ -246,7 +246,7 @@ namespace Reloaded.Mod.Launcher
                 {
                     try
                     {
-                        var repository = await NugetRepository.FromSourceUrlAsync(config.NuGetFeeds[x].URL);
+                        var repository = NugetRepository.FromSourceUrl(config.NuGetFeeds[x].URL);
                         aggregateRepo[x] = repository;
                     }
                     catch (Exception) { /* Ignored */ }

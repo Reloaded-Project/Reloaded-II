@@ -15,7 +15,7 @@ namespace Reloaded.Mod.Loader.Tests.Update.NuGet
 
         public NugetRepositoryTests()
         {
-            _nugetRepository = NugetRepository.FromSourceUrlAsync(TestNugetFeed).Result;
+            _nugetRepository = NugetRepository.FromSourceUrl(TestNugetFeed);
         }
 
         [Fact]

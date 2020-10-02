@@ -24,20 +24,20 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         private PackageSource       _packageSource;
         private SourceRepository    _sourceRepository;
 
-        private DownloadResource        _downloadResource;
-        private PackageMetadataResource _packageMetadataResource;
-        private PackageSearchResource   _packageSearchResource;
+        private Lazy<DownloadResource>        _downloadResource;
+        private Lazy<PackageMetadataResource> _packageMetadataResource;
+        private Lazy<PackageSearchResource>   _packageSearchResource;
 
         /// <param name="nugetSourceUrl">Source of a specific NuGet feed such as https://api.nuget.org/v3/index.json</param>
-        public static async Task<NugetRepository> FromSourceUrlAsync(string nugetSourceUrl)
+        public static NugetRepository FromSourceUrl(string nugetSourceUrl)
         {
-            var nugetHelper = new NugetRepository();
-            nugetHelper._packageSource = new PackageSource(nugetSourceUrl);
-            nugetHelper._sourceRepository = new SourceRepository(nugetHelper._packageSource, Repository.Provider.GetCoreV3());
+            var nugetHelper                 = new NugetRepository();
+            nugetHelper._packageSource      = new PackageSource(nugetSourceUrl);
+            nugetHelper._sourceRepository   = new SourceRepository(nugetHelper._packageSource, Repository.Provider.GetCoreV3());
 
-            nugetHelper._downloadResource = await nugetHelper._sourceRepository.GetResourceAsync<DownloadResource>();
-            nugetHelper._packageMetadataResource = await nugetHelper._sourceRepository.GetResourceAsync<PackageMetadataResource>();
-            nugetHelper._packageSearchResource = await nugetHelper._sourceRepository.GetResourceAsync<PackageSearchResource>();
+            nugetHelper._downloadResource        = new Lazy<DownloadResource>(() => nugetHelper._sourceRepository.GetResourceAsync<DownloadResource>().Result);
+            nugetHelper._packageMetadataResource = new Lazy<PackageMetadataResource>(() => nugetHelper._sourceRepository.GetResourceAsync<PackageMetadataResource>().Result);
+            nugetHelper._packageSearchResource   = new Lazy<PackageSearchResource>(nugetHelper._sourceRepository.GetResourceAsync<PackageSearchResource>().Result);
 
             return nugetHelper;
         }
@@ -50,7 +50,7 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         /// <param name="token">A cancellation token to allow cancellation of the task.</param>
         public async Task<IEnumerable<IPackageSearchMetadata>> Search(string searchString, bool includePrereleases, int results = 50, CancellationToken token = default)
         {
-            return await _packageSearchResource.SearchAsync(searchString, new SearchFilter(includePrereleases), 0, results, _nullLogger, token);
+            return await _packageSearchResource.Value.SearchAsync(searchString, new SearchFilter(includePrereleases), 0, results, _nullLogger, token);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         {
             var packageIdentity = new PackageIdentity(packageMetadata.Identity.Id, packageMetadata.Identity.Version);
             var downloadContext = new PackageDownloadContext(new SourceCacheContext(), Environment.CurrentDirectory, true);
-            return await _downloadResource.GetDownloadResourceResultAsync(packageIdentity, downloadContext, Path.GetTempPath(), _nullLogger, token);
+            return await _downloadResource.Value.GetDownloadResourceResultAsync(packageIdentity, downloadContext, Path.GetTempPath(), _nullLogger, token);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         /// <returns>Return contains an array of versions for this package.</returns>
         public async Task<IEnumerable<IPackageSearchMetadata>> GetPackageDetails(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
-            return await _packageMetadataResource.GetMetadataAsync(packageId, includePrerelease, includeUnlisted, _sourceCacheContext, _nullLogger, token);
+            return await _packageMetadataResource.Value.GetMetadataAsync(packageId, includePrerelease, includeUnlisted, _sourceCacheContext, _nullLogger, token);
         }
 
         /// <summary>
