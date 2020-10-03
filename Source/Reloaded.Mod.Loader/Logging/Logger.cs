@@ -28,10 +28,15 @@ namespace Reloaded.Mod.Loader.Logging
         /// <param name="outputDir">The directory to which the log is output to.</param>
         public Logger(Console console, string outputDir)
         {
+            var executableName    = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
+            var universalDateTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH.mm.ss");
+            Directory.CreateDirectory(outputDir);
+
             _logItems = new List<string>(MaxBufferLength + 1);
-            _console = console;
+            _console  = console;
             _console.OnPrintMessage += OnPrintMessage;
-            FlushPath = Path.Combine(outputDir, "ReloadedLog.txt");
+
+            FlushPath   = Path.Combine(outputDir, $"{universalDateTime} ~ {executableName}.txt");
             _textStream = File.CreateText(FlushPath);
             _textStream.AutoFlush = false;
         }
