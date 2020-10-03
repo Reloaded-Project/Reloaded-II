@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
+using Reloaded.Mod.Shared;
 using static System.Environment;
 using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
 
@@ -25,6 +26,7 @@ namespace Reloaded.Mod.Loader
         private static Loader _loader;
         private static Host _server;
         private static MemoryMappedFile _memoryMappedFile;
+        private static BasicPeParser _basicPeParser;
 
         /* Ensures DLL Resolution */
         public static void Main() { } // Dummy for R2R images.
@@ -39,7 +41,7 @@ namespace Reloaded.Mod.Loader
                 AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
                 ExecuteTimed("Create Loader", CreateLoader);
                 var createHostTask = Task.Run(() => ExecuteTimed("Create Loader Host (Async)", CreateHost));
-                var checkDrmTask   = Task.Run(() => ExecuteTimed("Checking for DRM (Async)", CheckForDRM));
+                var checkDrmTask   = Task.Run(() => ExecuteTimed("Parsing PE Header, Checking DRM (Async)", PerformPeOperations));
                 ExecuteTimed("Loading Mods (Total)", LoadMods);
 
                 checkDrmTask.Wait();
@@ -53,10 +55,14 @@ namespace Reloaded.Mod.Loader
             }
         }
 
-        private static void LoadMods() => _loader.LoadForCurrentProcess();
-        private static void CheckForDRM() => DRMNotifier.PrintWarnings(_loader.Console);
+        private static void LoadMods()     => _loader.LoadForCurrentProcess();
         private static void CreateLoader() => _loader = new Loader();
-        private static void CreateHost() => _server = new Host(_loader);
+        private static void CreateHost()   => _server = new Host(_loader);
+        private static unsafe void PerformPeOperations()
+        {
+            _basicPeParser = new BasicPeParser(Environment.GetCommandLineArgs()[0]);
+            DRMNotifier.PrintWarnings(_basicPeParser, _loader.Console);
+        }
 
         private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {

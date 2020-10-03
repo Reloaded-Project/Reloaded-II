@@ -14,26 +14,24 @@ namespace Reloaded.Mod.Shared
         public static unsafe bool HasSteamStub(string filePath)
         {
             using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return HasSteamStub(fileStream);
+            return HasSteamStub(fileStream, false);
         }
 
         /// <summary>
         /// Returns true if Steam Stub DRM was found.
         /// </summary>
-        public static unsafe bool HasSteamStub(Stream stream)
+        public static unsafe bool HasSteamStub(Stream stream, bool isMapped)
         {
-            using var parser = new BasicPeParser(stream);
-            return parser.ImageSectionHeaders.Any(x => x.Name.ToString() == SteamBindSection);
+            using var parser = new BasicPeParser(stream, isMapped);
+            return HasSteamStub(parser);
         }
 
         /// <summary>
-        /// Returns true if Steam Stub DRM is in the current process.
+        /// Returns true if Steam Stub DRM was found.
         /// </summary>
-        public static unsafe bool CheckCurrentProcess()
+        public static unsafe bool HasSteamStub(BasicPeParser parser)
         {
-            var process = Process.GetCurrentProcess();
-            using var stream = new UnmanagedMemoryStream((byte*)process.MainModule.BaseAddress, process.MainModule.ModuleMemorySize);
-            return HasSteamStub(stream);
+            return parser.ImageSectionHeaders.Any(x => x.Name.ToString() == SteamBindSection);
         }
     }
 }
