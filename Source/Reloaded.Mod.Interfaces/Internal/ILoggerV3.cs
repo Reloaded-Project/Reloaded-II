@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 
 namespace Reloaded.Mod.Interfaces.Internal
 {
@@ -34,6 +35,6 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// <summary>
         /// Blocks until console initialization has completed.
         /// </summary>
-        void WaitForConsoleInit() { throw new NotImplementedException(); }
+        void WaitForConsoleInit(CancellationToken token) { throw new NotImplementedException(); }
     }
 }
