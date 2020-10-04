@@ -86,6 +86,11 @@ namespace Reloaded.Mod.Loader.IO.Config
         public bool ShowConsole { get; set; } = true;
 
         /// <summary>
+        /// Amount of time in hours since last modified that log files get updated.
+        /// </summary>
+        public int LogFileCompressTimeHours { get; set; } = 6;
+
+        /// <summary>
         /// A list of all available NuGet feeds from which mod packages might be obtained.
         /// </summary>
         public NugetFeed[] NuGetFeeds { get; set; } = DefaultFeeds;

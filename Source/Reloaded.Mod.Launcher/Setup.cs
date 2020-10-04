@@ -72,6 +72,7 @@ namespace Reloaded.Mod.Launcher
                 updateText(_xamlRunningSanityChecks.Get());
                 DoSanityTests();
                 CleanupAfterOldVersions();
+                Task.Run(CompressOldLogs);
 
                 // Wait until splash screen time.
                 updateText($"{_xamlSplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");
@@ -81,6 +82,15 @@ namespace Reloaded.Mod.Launcher
                     await Task.Delay(100);
                 }
             }
+        }
+
+        /// <summary>
+        /// Compresses old loader log files into a zip archive.
+        /// </summary>
+        private static void CompressOldLogs()
+        {
+            using var logCompressor = new LogFileCompressor(Paths.ArchivedLogPath);
+            logCompressor.AddFiles(Paths.LogPath, TimeSpan.FromHours(IoC.Get<LoaderConfig>().LogFileCompressTimeHours));
         }
 
         /// <summary>
