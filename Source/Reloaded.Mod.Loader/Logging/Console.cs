@@ -26,46 +26,48 @@ namespace Reloaded.Mod.Loader.Logging
         /// Indicates if console is ready to be used or not.
         /// If console is not yet ready, all write operations will be buffered into the async collection.
         /// </summary>
-        public bool ConsoleReady { get; private set; }
+        public bool IsReady { get; private set; }
+
+        /// <summary>
+        /// True if the console is enabled, else false.
+        /// </summary>
+        public bool IsEnabled { get; private set; }
 
         private BlockingCollection<LogMessage> _messages = new BlockingCollection<LogMessage>();
         private Thread _loggingThread;
-        private bool _consoleAllocated = false;
-        private bool _initializationStarted = false;
         private bool _isShuttingDown = false;
         private Kernel32.ConsoleCtrlDelegate _consoleCtrlDelegate;
 
         /* Default constructor */
-        public Console() { }
 
         /// <summary>
-        /// Asynchronously initializes the console.
+        /// Creates a new console instance, asynchronously initializing the console.
         /// </summary>
-        /// <param name="isEnabled">True to enable the console, else false.</param>
-        public void InitConsoleAsync(bool isEnabled)
+        /// <param name="enabled">True if console is enabled, else false.</param>
+        public Console(bool enabled)
         {
-            if (_initializationStarted) 
-                return;
+            IsEnabled = enabled;
 
-            _initializationStarted = true;
-            if (!isEnabled)
+            if (!IsEnabled)
                 return;
 
             Task.Run(() =>
             {
-                _consoleAllocated = ConsoleAllocator.Alloc();
-                _consoleCtrlDelegate = NotifyOnConsoleClose;
+                var consoleAllocated = ConsoleAllocator.Alloc();
+                if (!consoleAllocated)
+                    return;
 
+                _consoleCtrlDelegate = NotifyOnConsoleClose;
                 Kernel32.SetConsoleCtrlHandler(_consoleCtrlDelegate, true);
                 Colorful.Console.BackgroundColor = BackgroundColor;
                 Colorful.Console.ForegroundColor = TextColor;
                 Colorful.Console.Clear();
-                
+
                 _loggingThread = new Thread(ProcessQueue) { IsBackground = true };
                 _loggingThread.Start();
-
                 PrintBanner();
-                ConsoleReady = true;
+
+                IsReady = true;
             });
         }
 
@@ -75,10 +77,7 @@ namespace Reloaded.Mod.Loader.Logging
 
         public void WriteLine(string message, Color color)
         {
-            if (!_consoleAllocated)
-                return;
-
-            if (ConsoleReady)
+            if (IsReady)
             {
                 Colorful.Console.WriteLine(message, color);
                 OnPrintMessage?.Invoke(this, message);
@@ -91,10 +90,7 @@ namespace Reloaded.Mod.Loader.Logging
 
         public void Write(string message, Color color)
         {
-            if (!_consoleAllocated)
-                return;
-
-            if (ConsoleReady)
+            if (IsReady)
             {
                 Colorful.Console.Write(message, color);
                 OnPrintMessage?.Invoke(this, message);
@@ -110,13 +106,13 @@ namespace Reloaded.Mod.Loader.Logging
         
         public void WriteLineAsync(string message, Color color)
         {
-            if (!_isShuttingDown)
+            if (!_isShuttingDown && IsEnabled)
                 _messages.Add(new LogMessage(LogMessageType.WriteLine, message, color));
         }
 
         public void WriteAsync(string message, Color color)
         {
-            if (!_isShuttingDown)
+            if (!_isShuttingDown && IsEnabled)
                 _messages.Add(new LogMessage(LogMessageType.Write, message, color));
         }
 
@@ -147,10 +143,10 @@ namespace Reloaded.Mod.Loader.Logging
         /// </summary>
         public void WaitForConsoleInit(CancellationToken token = default)
         {
-            if (!_initializationStarted)
+            if (!IsEnabled)
                 return;
 
-            while (!ConsoleReady)
+            while (!IsReady)
             {
                 Thread.Sleep(1);
                 if (token.IsCancellationRequested)
@@ -164,11 +160,11 @@ namespace Reloaded.Mod.Loader.Logging
         /// </summary>
         public void Shutdown()
         {
-            if (!_initializationStarted)
+            if (!IsEnabled)
                 return;
 
             _isShuttingDown = true;
-            if (ConsoleReady)
+            if (IsReady)
             {
                 while (_loggingThread.IsAlive)
                     Thread.Sleep(1);

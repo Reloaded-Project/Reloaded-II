@@ -36,11 +36,11 @@ namespace Reloaded.Mod.Loader
         {
             IsTesting = isTesting;
             LoaderConfig = LoaderConfigReader.ReadConfiguration();
-            Console = new Console();
-            Logger = new Logger(Console, Paths.LogPath);
+            Console = new Console(LoaderConfig.ShowConsole);
+            if (Console.IsEnabled)
+                Logger  = new Logger(Console, Paths.LogPath);
 
             Manager = new PluginManager(this);
-            Console.InitConsoleAsync(LoaderConfig.ShowConsole);
         }
 
         ~Loader()

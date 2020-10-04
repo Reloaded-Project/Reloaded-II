@@ -32,6 +32,11 @@ namespace Reloaded.Mod.Loader.IO
         public static readonly string LogPath = Path.Combine(ConfigFolder, "Logs");
 
         /// <summary>
+        /// Location of the logs archive, used to store old loader logs.
+        /// </summary>
+        public static readonly string ArchivedLogPath = Path.Combine(LogPath, "Logs.zip");
+
+        /// <summary>
         /// Gets the name of the Kernel32 Address Dumper; a tool which extracts the address of Kernel32 and shares it using mapped files.
         /// </summary>
         /// <param name="launcherPath">Path to the launcher folder.</param>
