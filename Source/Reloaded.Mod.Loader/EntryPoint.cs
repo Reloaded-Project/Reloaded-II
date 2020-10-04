@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
@@ -7,10 +7,12 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Reloaded.Hooks;
+using Reloaded.Hooks.Definitions;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
-using Reloaded.Mod.Loader.Utilities.Hooking;
+using Reloaded.Mod.Loader.Utilities.Native;
 using Reloaded.Mod.Shared;
 using static System.Environment;
 using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
@@ -29,7 +31,7 @@ namespace Reloaded.Mod.Loader
         private static Host _server;
         private static MemoryMappedFile _memoryMappedFile;
         private static BasicPeParser _basicPeParser;
-        private static IndirectHook<ExitProcess> _exitProcessHook;
+        private static IHook<ExitProcess> _exitProcessHook;
 
         /* Ensures DLL Resolution */
         public static void Main() { } // Dummy for R2R images.
@@ -69,9 +71,11 @@ namespace Reloaded.Mod.Loader
             DRMNotifier.PrintWarnings(_basicPeParser, _loader.Console);
 
             // Hook native import for ExitProcess. (So we can save log on exit)
-            if (ImportAddressTable.TryGetFunctionPtrAddress("kernel32.dll", "ExitProcess", out var address))
+            var kernel32 = Kernel32.GetModuleHandle("kernel32.dll");
+            var address  = Kernel32.GetProcAddress(kernel32, "ExitProcess");
+            if (address != IntPtr.Zero)
             {
-                _exitProcessHook = new IndirectHook<ExitProcess>(address, SaveLogOnExitProcess).Activate();
+                _exitProcessHook = new Hook<ExitProcess>(SaveLogOnExitProcess, (long)address).Activate();
             }
         }
 
@@ -79,6 +83,7 @@ namespace Reloaded.Mod.Loader
         {
             _loader?.Console?.WriteLineAsync(AddLogPrefix("ExitProcess Hook: Log End"));
             _loader?.Console?.Shutdown();
+            _loader?.Logger?.Flush();
             _exitProcessHook.OriginalFunction(uExitCode);
         }
 
@@ -155,7 +160,9 @@ namespace Reloaded.Mod.Loader
             ProfileOptimization.StartProfile("Loader.profile");
         }
         
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        [Hooks.Definitions.X64.Function(Hooks.Definitions.X64.CallingConventions.Microsoft)]
+        [Hooks.Definitions.X86.Function(Hooks.Definitions.X86.CallingConventions.Cdecl)]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void ExitProcess(uint uExitCode);
     }
     // ReSharper restore UnusedMember.Global

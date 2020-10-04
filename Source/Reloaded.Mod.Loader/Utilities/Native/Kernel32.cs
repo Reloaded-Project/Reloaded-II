@@ -6,6 +6,9 @@ namespace Reloaded.Mod.Loader.Utilities.Native
     public static class Kernel32
     {
         [DllImport("kernel32.dll")]
+        public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+
+        [DllImport("kernel32.dll")]
         public static extern IntPtr GetModuleHandle(string lpModuleName);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Ansi)]
