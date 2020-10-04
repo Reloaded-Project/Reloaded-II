@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Reloaded.Memory.Sources;
 using Reloaded.Mod.Launcher.Misc;
+using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Shared;
 
@@ -107,7 +108,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
         private static Process StartKernelAddressDumper()
         {
-            string location = AppDomain.CurrentDomain.BaseDirectory + $"\\{LoaderConfig.Kernel32AddressDumperPath}";
+            string location = Paths.GetKernel32AddressDumperPath(AppDomain.CurrentDomain.BaseDirectory);
             return Process.Start(location);
         }
 

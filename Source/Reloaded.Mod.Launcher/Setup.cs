@@ -270,22 +270,22 @@ namespace Reloaded.Mod.Launcher
                 throw new DllNotFoundException("The provided launcher directory is null or empty. This is a bug. Report this to the developer.");
 
             // Loader configuration.
-            var loaderPath32 = Path.Combine(launcherDirectory, $"Loader\\x86\\{LoaderConfig.LoaderDllName}");
+            var loaderPath32 = Paths.GetLoaderPath32(launcherDirectory);
             if (! File.Exists(loaderPath32))
-                throw new DllNotFoundException($"(x86) {LoaderConfig.LoaderDllName} {Errors.LoaderNotFound()}");
+                throw new DllNotFoundException($"(x86) {Path.GetFileName(loaderPath32)} {Errors.LoaderNotFound()}");
 
-            var loaderPath64 = Path.Combine(launcherDirectory, $"Loader\\x64\\{LoaderConfig.LoaderDllName}");
+            var loaderPath64 = Paths.GetLoaderPath64(launcherDirectory);
             if (!File.Exists(loaderPath64))
-                throw new DllNotFoundException($"(x64) {LoaderConfig.LoaderDllName} {Errors.LoaderNotFound()}");
+                throw new DllNotFoundException($"(x64) {Path.GetFileName(loaderPath64)} {Errors.LoaderNotFound()}");
 
             // Bootstrappers.
-            var bootstrapper32Path = Path.Combine(launcherDirectory, $"Loader\\X86\\Bootstrapper\\{LoaderConfig.Bootstrapper32Name}");
+            var bootstrapper32Path = Paths.GetBootstrapperPath32(launcherDirectory);
             if (!File.Exists(bootstrapper32Path))
-                throw new DllNotFoundException($"{LoaderConfig.Bootstrapper32Name} {Errors.LoaderNotFound()}");
+                throw new DllNotFoundException($"{Path.GetFileName(bootstrapper32Path)} {Errors.LoaderNotFound()}");
 
-            var bootstrapper64Path = Path.Combine(launcherDirectory, $"Loader\\X64\\Bootstrapper\\{LoaderConfig.Bootstrapper64Name}");
+            var bootstrapper64Path = Paths.GetBootstrapperPath64(launcherDirectory);
             if (!File.Exists(bootstrapper64Path))
-                throw new DllNotFoundException($"{LoaderConfig.Bootstrapper64Name} {Errors.LoaderNotFound()}");
+                throw new DllNotFoundException($"{Path.GetFileName(bootstrapper64Path)} {Errors.LoaderNotFound()}");
 
             // Set to config.
             config.LauncherPath = Process.GetCurrentProcess().MainModule.FileName;

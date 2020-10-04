@@ -37,7 +37,7 @@ namespace Reloaded.Mod.Loader
             IsTesting = isTesting;
             LoaderConfig = LoaderConfigReader.ReadConfiguration();
             Console = new Console();
-            Logger = new Logger(Console, Path.Combine(Path.GetTempPath(), "Reloaded-II"));
+            Logger = new Logger(Console, Paths.LogPath);
 
             Manager = new PluginManager(this);
             Console.InitConsoleAsync(LoaderConfig.ShowConsole);

@@ -10,24 +10,14 @@ namespace Reloaded.Mod.Loader.IO
     /// </summary>
     public class LoaderConfigReader
     {
-        /// <summary>
-        /// Name of Reloaded's folder inside AppData/Roaming.
-        /// </summary>
-        public const string ReloadedFolderName = "Reloaded-Mod-Loader-II"; // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
-
-        /// <summary>
-        /// Location of the static configuration file, used to locate the mod loader install.
-        /// </summary>
-        private static readonly string StaticConfigFilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{ReloadedFolderName}\\{LoaderConfig.ConfigFileName}";
-
-        public static string ConfigurationPath() => StaticConfigFilePath;
+        public static string ConfigurationPath() => Paths.LauncherConfigPath;
 
         /// <summary>
         /// Returns true if the configuration file exists, else false.
         /// </summary>
         public static bool ConfigurationExists()
         {
-            return File.Exists(StaticConfigFilePath);
+            return File.Exists(Paths.LauncherConfigPath);
         }
 
         /// <summary>
@@ -38,7 +28,7 @@ namespace Reloaded.Mod.Loader.IO
             var config = new LoaderConfig();
             if (ConfigurationExists())
             {
-                string jsonFile = File.ReadAllText(StaticConfigFilePath);
+                string jsonFile = File.ReadAllText(Paths.LauncherConfigPath);
                 config = JsonSerializer.Deserialize<LoaderConfig>(jsonFile);
             }
 
@@ -52,12 +42,12 @@ namespace Reloaded.Mod.Loader.IO
         /// <param name="config">The new mod loader configuration to write.</param>
         public static void WriteConfiguration(LoaderConfig config)
         {
-            string directory = Path.GetDirectoryName(StaticConfigFilePath);
+            string directory = Path.GetDirectoryName(Paths.LauncherConfigPath);
             if (! Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
             string jsonFile = JsonSerializer.Serialize(config, new JsonSerializerOptions() { WriteIndented = true });
-            File.WriteAllText(StaticConfigFilePath, jsonFile);
+            File.WriteAllText(Paths.LauncherConfigPath, jsonFile);
         }
     }
 }

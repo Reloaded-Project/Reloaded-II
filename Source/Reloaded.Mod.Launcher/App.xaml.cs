@@ -124,7 +124,7 @@ namespace Reloaded.Mod.Launcher
         private void EnableProfileOptimization()
         {
             // Start Profile Optimization
-            var profileRoot = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), LoaderConfigReader.ReloadedFolderName, "ProfileOptimization");
+            var profileRoot = Paths.ProfileOptimizationPath;
             Directory.CreateDirectory(profileRoot);
 
             // Define the folder where to save the profile files

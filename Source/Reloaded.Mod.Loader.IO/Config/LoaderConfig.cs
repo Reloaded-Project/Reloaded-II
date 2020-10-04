@@ -10,19 +10,10 @@ namespace Reloaded.Mod.Loader.IO.Config
 {
     public class LoaderConfig : ObservableObject
     {
-        public const string LoaderDllName = "Reloaded.Mod.Loader.dll";
-        public const string Bootstrapper32Name = "Reloaded.Mod.Loader.Bootstrapper.dll";
-        public const string Bootstrapper64Name = "Reloaded.Mod.Loader.Bootstrapper.dll";
-        public const string Kernel32AddressDumperPath = "Loader/Kernel32AddressDumper.exe";
-
-        /// <summary>
-        /// The name of the configuration file as stored on disk.
-        /// </summary>
-        public const string ConfigFileName = "ReloadedII.json"; // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
-
         private const string DefaultApplicationConfigDirectory  = "Apps";
         private const string DefaultModConfigDirectory          = "Mods";
         private const string DefaultPluginConfigDirectory       = "Plugins";
+
         private static readonly NugetFeed[] DefaultFeeds        = new NugetFeed[]
         {
             new NugetFeed("Official Repository", SharedConstants.NuGetApiEndpoint, "Package repository of Sewer56, the developer of Reloaded. " +
