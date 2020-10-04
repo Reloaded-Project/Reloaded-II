@@ -26,6 +26,7 @@ namespace Reloaded.Mod.Loader.Logging
         private Thread _loggingThread;
         private bool _consoleAllocated = false;
         private bool _initializationStarted = false;
+        private bool _isShuttingDown = false;
 
         /* Default constructor */
         public Console() { }
@@ -94,11 +95,20 @@ namespace Reloaded.Mod.Loader.Logging
             }
         }
 
-        public void WriteLineAsync(string message) => WriteLineAsync(message, TextColor);
-        public void WriteLineAsync(string message, Color color) => _messages.Add(new LogMessage(LogMessageType.WriteLine, message, color));
-
         public void WriteAsync(string message) => WriteAsync(message, TextColor);
-        public void WriteAsync(string message, Color color) => _messages.Add(new LogMessage(LogMessageType.Write, message, color));
+        public void WriteLineAsync(string message) => WriteLineAsync(message, TextColor);
+        
+        public void WriteLineAsync(string message, Color color)
+        {
+            if (!_isShuttingDown)
+                _messages.Add(new LogMessage(LogMessageType.WriteLine, message, color));
+        }
+
+        public void WriteAsync(string message, Color color)
+        {
+            if (!_isShuttingDown)
+                _messages.Add(new LogMessage(LogMessageType.Write, message, color));
+        }
 
         // Default Colours
         public Color BackgroundColor     { get; set; } = Color.FromArgb(20, 25, 31);
@@ -131,7 +141,28 @@ namespace Reloaded.Mod.Loader.Logging
                 return;
 
             while (!ConsoleReady)
+            {
                 Thread.Sleep(1);
+                if (token.IsCancellationRequested)
+                    return;
+            }
+        }
+
+        /// <summary>
+        /// Blocks the console from accepting any more asynchronous/buffered messages and
+        /// waits until all existing buffered messages have been processed.
+        /// </summary>
+        public void Shutdown()
+        {
+            if (!_initializationStarted)
+                return;
+
+            _isShuttingDown = true;
+            if (ConsoleReady)
+            {
+                while (_messages.Count > 0)
+                    Thread.Sleep(1);
+            }
         }
 
         private void ProcessQueue()
@@ -151,6 +182,10 @@ namespace Reloaded.Mod.Loader.Logging
                         Write(message.Message, message.Color);
                         break;
                 }
+
+                // Exit thread if console is shutting down and we're done here.
+                if (_messages.Count == 0 && _isShuttingDown)
+                    return;
             }
         }
 

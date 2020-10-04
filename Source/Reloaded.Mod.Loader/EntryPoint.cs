@@ -4,11 +4,13 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
+using Reloaded.Mod.Loader.Utilities.Hooking;
 using Reloaded.Mod.Shared;
 using static System.Environment;
 using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
@@ -27,6 +29,7 @@ namespace Reloaded.Mod.Loader
         private static Host _server;
         private static MemoryMappedFile _memoryMappedFile;
         private static BasicPeParser _basicPeParser;
+        private static IndirectHook<ExitProcess> _exitProcessHook;
 
         /* Ensures DLL Resolution */
         public static void Main() { } // Dummy for R2R images.
@@ -61,7 +64,22 @@ namespace Reloaded.Mod.Loader
         private static unsafe void PerformPeOperations()
         {
             _basicPeParser = new BasicPeParser(Environment.GetCommandLineArgs()[0]);
+
+            // Check for Steam DRM.
             DRMNotifier.PrintWarnings(_basicPeParser, _loader.Console);
+
+            // Hook native import for ExitProcess. (So we can save log on exit)
+            if (ImportAddressTable.TryGetFunctionPtrAddress("kernel32.dll", "ExitProcess", out var address))
+            {
+                _exitProcessHook = new IndirectHook<ExitProcess>(address, SaveLogOnExitProcess).Activate();
+            }
+        }
+
+        private static void SaveLogOnExitProcess(uint uExitCode)
+        {
+            _loader?.Console?.WriteLineAsync(AddLogPrefix("ExitProcess Hook: Log End"));
+            _loader?.Console?.Shutdown();
+            _exitProcessHook.OriginalFunction(uExitCode);
         }
 
         private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -136,6 +154,9 @@ namespace Reloaded.Mod.Loader
             // Start profiling and save it in Startup.profile
             ProfileOptimization.StartProfile("Loader.profile");
         }
+        
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate void ExitProcess(uint uExitCode);
     }
     // ReSharper restore UnusedMember.Global
 }
