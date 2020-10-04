@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Drawing;
 using System.Linq;
@@ -9,12 +9,18 @@ using Colorful;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.Logging.Init;
 using Reloaded.Mod.Loader.Logging.Structs;
+using Reloaded.Mod.Loader.Utilities.Native;
 
 namespace Reloaded.Mod.Loader.Logging
 {
     public class Console : ILogger
     {
         public event EventHandler<string> OnPrintMessage = (sender, s) => { };
+        
+        /// <summary>
+        /// Executed when the console is about to be closed.
+        /// </summary>
+        public event Action OnConsoleClose = () => { };
 
         /// <summary>
         /// Indicates if console is ready to be used or not.
@@ -27,6 +33,7 @@ namespace Reloaded.Mod.Loader.Logging
         private bool _consoleAllocated = false;
         private bool _initializationStarted = false;
         private bool _isShuttingDown = false;
+        private Kernel32.ConsoleCtrlDelegate _consoleCtrlDelegate;
 
         /* Default constructor */
         public Console() { }
@@ -47,10 +54,13 @@ namespace Reloaded.Mod.Loader.Logging
             Task.Run(() =>
             {
                 _consoleAllocated = ConsoleAllocator.Alloc();
+                _consoleCtrlDelegate = NotifyOnConsoleClose;
+
+                Kernel32.SetConsoleCtrlHandler(_consoleCtrlDelegate, true);
                 Colorful.Console.BackgroundColor = BackgroundColor;
                 Colorful.Console.ForegroundColor = TextColor;
                 Colorful.Console.Clear();
-
+                
                 _loggingThread = new Thread(ProcessQueue) { IsBackground = true };
                 _loggingThread.Start();
 
@@ -167,9 +177,10 @@ namespace Reloaded.Mod.Loader.Logging
 
         private void ProcessQueue()
         {
+            WaitForConsoleInit();
+
             while (true)
             {
-                WaitForConsoleInit();
                 var message = _messages.Take();
 
                 switch (message.Type)
@@ -187,6 +198,14 @@ namespace Reloaded.Mod.Loader.Logging
                 if (_messages.Count == 0 && _isShuttingDown)
                     return;
             }
+        }
+
+        private bool NotifyOnConsoleClose(Kernel32.CtrlTypes ctrltype)
+        {
+            if (ctrltype == Kernel32.CtrlTypes.CTRL_CLOSE_EVENT)
+                OnConsoleClose?.Invoke();
+
+            return false;
         }
 
         /* Default Banner */

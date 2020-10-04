@@ -46,7 +46,7 @@ namespace Reloaded.Mod.Loader
                 AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
                 ExecuteTimed("Create Loader", CreateLoader);
                 var createHostTask = Task.Run(() => ExecuteTimed("Create Loader Host (Async)", CreateHost));
-                var checkDrmTask   = Task.Run(() => ExecuteTimed("Parsing PE Header, Checking DRM (Async)", PerformPeOperations));
+                var checkDrmTask   = Task.Run(() => ExecuteTimed("Checking DRM, Hooking Process Exit (Async)", PerformPeOperations));
                 ExecuteTimed("Loading Mods (Total)", LoadMods);
 
                 checkDrmTask.Wait();
@@ -75,16 +75,25 @@ namespace Reloaded.Mod.Loader
             var address  = Kernel32.GetProcAddress(kernel32, "ExitProcess");
             if (address != IntPtr.Zero)
             {
-                _exitProcessHook = new Hook<ExitProcess>(SaveLogOnExitProcess, (long)address).Activate();
+                _exitProcessHook = new Hook<ExitProcess>(ExitProcessImpl, (long)address).Activate();
             }
+
+            // Hook Console Close
+            if (_loader?.Console != null)
+                _loader.Console.OnConsoleClose += SaveAndFlushLog;
         }
 
-        private static void SaveLogOnExitProcess(uint uExitCode)
+        private static void ExitProcessImpl(uint uExitCode)
+        {
+            SaveAndFlushLog();
+            _exitProcessHook.OriginalFunction(uExitCode);
+        }
+
+        private static void SaveAndFlushLog()
         {
             _loader?.Console?.WriteLineAsync(AddLogPrefix("ExitProcess Hook: Log End"));
             _loader?.Console?.Shutdown();
             _loader?.Logger?.Flush();
-            _exitProcessHook.OriginalFunction(uExitCode);
         }
 
         private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
