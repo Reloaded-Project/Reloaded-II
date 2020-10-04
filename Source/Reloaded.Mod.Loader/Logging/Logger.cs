@@ -72,7 +72,7 @@ namespace Reloaded.Mod.Loader.Logging
             if (_logItems.Count == MaxBufferLength)
                 Flush();
 
-            _logItems.Add(message);
+            _logItems.Add($"[{DateTime.UtcNow:HH:mm:ss}] {message}");
         }
 
         /// <inheritdoc />
