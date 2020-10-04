@@ -4,6 +4,9 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet.Structures
 {
     public class Metadata
     {
+        [XmlElement(ElementName = "title")]
+        public string Title    { get; set; }
+
         [XmlElement(ElementName = "id")]
         public string Id      { get; set; }
 
@@ -20,8 +23,9 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet.Structures
         public DependencyGroup Dependencies { get; set; }
 
         public Metadata() { }
-        public Metadata(string id, string version, string authors, string description, DependencyGroup dependencies)
+        public Metadata(string title, string id, string version, string authors, string description, DependencyGroup dependencies)
         {
+            Title = title;
             Id = id;
             Version = version;
             Authors = authors;

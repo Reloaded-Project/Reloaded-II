@@ -87,7 +87,7 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
         {
             var dependencies = modConfig.ModDependencies.Select(x => new Structures.Dependency(x, "0.0.0")).ToArray();
             var dependencyGroup = new DependencyGroup(dependencies);
-            var metadata = new Metadata(modConfig.ModId, modConfig.ModVersion, modConfig.ModAuthor, modConfig.ModDescription, dependencyGroup);
+            var metadata = new Metadata(modConfig.ModName, modConfig.ModId, modConfig.ModVersion, modConfig.ModAuthor, modConfig.ModDescription, dependencyGroup);
             return new Package(metadata);
         }
 
