@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Drawing;
 using System.Linq;
@@ -160,7 +160,7 @@ namespace Reloaded.Mod.Loader.Logging
             _isShuttingDown = true;
             if (ConsoleReady)
             {
-                while (_messages.Count > 0)
+                while (_loggingThread.IsAlive)
                     Thread.Sleep(1);
             }
         }
