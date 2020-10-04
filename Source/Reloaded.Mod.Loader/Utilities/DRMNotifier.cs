@@ -1,4 +1,5 @@
-﻿using Reloaded.Mod.Loader.Logging;
+﻿using System.Diagnostics;
+using Reloaded.Mod.Loader.Logging;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.Utilities
@@ -8,9 +9,9 @@ namespace Reloaded.Mod.Loader.Utilities
     /// </summary>
     public static class DRMNotifier
     {
-        public static void PrintWarnings(Console console)
+        public static void PrintWarnings(BasicPeParser parser, Console console)
         {
-            if (SteamStubScanner.CheckCurrentProcess())
+            if (SteamStubScanner.HasSteamStub(parser))
                 console.WriteLine("Warning: Steam Stub (Embedded Steam DRM) found.\n" +
                                   "This means EXE is encrypted at launch, which may render many mods unusable.\n" +
                                   "It is recommended that you either remove the DRM using `Steamless` or launch Reloaded II via another mod loader " +

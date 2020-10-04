@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using Reloaded.Memory.Streams;
 using Reloaded.Mod.Shared.PeParser;
+using Reloaded.Mod.Shared.PeParser.Interfaces;
 
 namespace Reloaded.Mod.Shared
 {
@@ -19,6 +20,7 @@ namespace Reloaded.Mod.Shared
         private IMAGE_DATA_DIRECTORY[] _dataDirectories;
         private IMAGE_SECTION_HEADER[] _imageSectionHeaders;
         private IMAGE_IMPORT_DESCRIPTOR[] _importDescriptors;
+        private bool _isMapped;
 
         /// <summary>
         /// Determines if the file header is 32bit or not.
@@ -47,6 +49,7 @@ namespace Reloaded.Mod.Shared
         public IMAGE_DATA_DIRECTORY[]   DataDirectories => _dataDirectories;
         public IMAGE_SECTION_HEADER[]   ImageSectionHeaders => _imageSectionHeaders;
         public IMAGE_IMPORT_DESCRIPTOR[] ImportDescriptors => _importDescriptors;
+        
 
         /// <summary>
         /// Basic parser for a PE header. Not 100% specification complete, just parses what is needed for Reloaded's use case.
@@ -54,6 +57,7 @@ namespace Reloaded.Mod.Shared
         /// <param name="filePath">Path to the file.</param>
         public BasicPeParser(string filePath)
         {
+            _isMapped = false;
             FromStream(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read));
         }
 
@@ -61,8 +65,10 @@ namespace Reloaded.Mod.Shared
         /// Basic parser for a PE header. Not 100% specification complete, just parses what is needed for Reloaded's use case.
         /// </summary>
         /// <param name="stream">Stream which starts at the beginning of the file, the DOS header.</param>
-        public BasicPeParser(Stream stream)
+        /// <param name="isMapped">True if the PE is mapped (has been loaded) into memory.</param>
+        public BasicPeParser(Stream stream, bool isMapped)
         {
+            _isMapped = isMapped;
             FromStream(stream);
         }
 
@@ -109,10 +115,19 @@ namespace Reloaded.Mod.Shared
         }
 
         /// <summary>
-        /// Converts a "Relative Virtual Address" to absolute address.
+        /// Converts a "Relative Virtual Address" to an absolute address.
+        /// This is the address in memory, if we are reading a mapped PE; other
         /// </summary>
         public bool TryRvaToAbsoluteAddress(long rva, out long absoluteAddress)
         {
+            // If it's already mapped into memory then RVA == Absolute
+            if (_isMapped)
+            {
+                absoluteAddress = rva;
+                return true;
+            }
+
+            // If it's not mapped, check what section it's in and adjust for pointer to raw data.
             absoluteAddress = 0;
             if (rva == 0)
                 return false;

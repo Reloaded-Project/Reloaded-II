@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+	<LangVersion>preview</LangVersion>
     <AssemblyTitle>Reloaded.Mod.Loader</AssemblyTitle>
     <Product>Reloaded.Mod.Loader</Product>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -30,8 +31,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.11" />
+    <PackageReference Include="Reloaded.Hooks" Version="2.4.0" />
     <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
-    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.3.1-lazyloading"/>
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.3.1-lazyloading" />
   </ItemGroup>
   <!-- Build x64 automatically after x86 -->
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

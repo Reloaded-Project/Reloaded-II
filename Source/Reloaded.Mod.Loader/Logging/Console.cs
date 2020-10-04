@@ -9,12 +9,18 @@ using Colorful;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.Logging.Init;
 using Reloaded.Mod.Loader.Logging.Structs;
+using Reloaded.Mod.Loader.Utilities.Native;
 
 namespace Reloaded.Mod.Loader.Logging
 {
     public class Console : ILogger
     {
         public event EventHandler<string> OnPrintMessage = (sender, s) => { };
+        
+        /// <summary>
+        /// Executed when the console is about to be closed.
+        /// </summary>
+        public event Action OnConsoleClose = () => { };
 
         /// <summary>
         /// Indicates if console is ready to be used or not.
@@ -26,6 +32,8 @@ namespace Reloaded.Mod.Loader.Logging
         private Thread _loggingThread;
         private bool _consoleAllocated = false;
         private bool _initializationStarted = false;
+        private bool _isShuttingDown = false;
+        private Kernel32.ConsoleCtrlDelegate _consoleCtrlDelegate;
 
         /* Default constructor */
         public Console() { }
@@ -46,10 +54,13 @@ namespace Reloaded.Mod.Loader.Logging
             Task.Run(() =>
             {
                 _consoleAllocated = ConsoleAllocator.Alloc();
+                _consoleCtrlDelegate = NotifyOnConsoleClose;
+
+                Kernel32.SetConsoleCtrlHandler(_consoleCtrlDelegate, true);
                 Colorful.Console.BackgroundColor = BackgroundColor;
                 Colorful.Console.ForegroundColor = TextColor;
                 Colorful.Console.Clear();
-
+                
                 _loggingThread = new Thread(ProcessQueue) { IsBackground = true };
                 _loggingThread.Start();
 
@@ -94,11 +105,20 @@ namespace Reloaded.Mod.Loader.Logging
             }
         }
 
-        public void WriteLineAsync(string message) => WriteLineAsync(message, TextColor);
-        public void WriteLineAsync(string message, Color color) => _messages.Add(new LogMessage(LogMessageType.WriteLine, message, color));
-
         public void WriteAsync(string message) => WriteAsync(message, TextColor);
-        public void WriteAsync(string message, Color color) => _messages.Add(new LogMessage(LogMessageType.Write, message, color));
+        public void WriteLineAsync(string message) => WriteLineAsync(message, TextColor);
+        
+        public void WriteLineAsync(string message, Color color)
+        {
+            if (!_isShuttingDown)
+                _messages.Add(new LogMessage(LogMessageType.WriteLine, message, color));
+        }
+
+        public void WriteAsync(string message, Color color)
+        {
+            if (!_isShuttingDown)
+                _messages.Add(new LogMessage(LogMessageType.Write, message, color));
+        }
 
         // Default Colours
         public Color BackgroundColor     { get; set; } = Color.FromArgb(20, 25, 31);
@@ -131,14 +151,36 @@ namespace Reloaded.Mod.Loader.Logging
                 return;
 
             while (!ConsoleReady)
+            {
                 Thread.Sleep(1);
+                if (token.IsCancellationRequested)
+                    return;
+            }
+        }
+
+        /// <summary>
+        /// Blocks the console from accepting any more asynchronous/buffered messages and
+        /// waits until all existing buffered messages have been processed.
+        /// </summary>
+        public void Shutdown()
+        {
+            if (!_initializationStarted)
+                return;
+
+            _isShuttingDown = true;
+            if (ConsoleReady)
+            {
+                while (_loggingThread.IsAlive)
+                    Thread.Sleep(1);
+            }
         }
 
         private void ProcessQueue()
         {
+            WaitForConsoleInit();
+
             while (true)
             {
-                WaitForConsoleInit();
                 var message = _messages.Take();
 
                 switch (message.Type)
@@ -151,7 +193,19 @@ namespace Reloaded.Mod.Loader.Logging
                         Write(message.Message, message.Color);
                         break;
                 }
+
+                // Exit thread if console is shutting down and we're done here.
+                if (_messages.Count == 0 && _isShuttingDown)
+                    return;
             }
+        }
+
+        private bool NotifyOnConsoleClose(Kernel32.CtrlTypes ctrltype)
+        {
+            if (ctrltype == Kernel32.CtrlTypes.CTRL_CLOSE_EVENT)
+                OnConsoleClose?.Invoke();
+
+            return false;
         }
 
         /* Default Banner */

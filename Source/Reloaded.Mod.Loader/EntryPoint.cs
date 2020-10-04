@@ -1,14 +1,19 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Reloaded.Hooks;
+using Reloaded.Hooks.Definitions;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
+using Reloaded.Mod.Loader.Utilities.Native;
+using Reloaded.Mod.Shared;
 using static System.Environment;
 using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
 
@@ -25,6 +30,8 @@ namespace Reloaded.Mod.Loader
         private static Loader _loader;
         private static Host _server;
         private static MemoryMappedFile _memoryMappedFile;
+        private static BasicPeParser _basicPeParser;
+        private static IHook<ExitProcess> _exitProcessHook;
 
         /* Ensures DLL Resolution */
         public static void Main() { } // Dummy for R2R images.
@@ -39,7 +46,7 @@ namespace Reloaded.Mod.Loader
                 AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
                 ExecuteTimed("Create Loader", CreateLoader);
                 var createHostTask = Task.Run(() => ExecuteTimed("Create Loader Host (Async)", CreateHost));
-                var checkDrmTask   = Task.Run(() => ExecuteTimed("Checking for DRM (Async)", CheckForDRM));
+                var checkDrmTask   = Task.Run(() => ExecuteTimed("Checking DRM, Hooking Process Exit (Async)", PerformPeOperations));
                 ExecuteTimed("Loading Mods (Total)", LoadMods);
 
                 checkDrmTask.Wait();
@@ -53,10 +60,41 @@ namespace Reloaded.Mod.Loader
             }
         }
 
-        private static void LoadMods() => _loader.LoadForCurrentProcess();
-        private static void CheckForDRM() => DRMNotifier.PrintWarnings(_loader.Console);
+        private static void LoadMods()     => _loader.LoadForCurrentProcess();
         private static void CreateLoader() => _loader = new Loader();
-        private static void CreateHost() => _server = new Host(_loader);
+        private static void CreateHost()   => _server = new Host(_loader);
+        private static unsafe void PerformPeOperations()
+        {
+            _basicPeParser = new BasicPeParser(Environment.GetCommandLineArgs()[0]);
+
+            // Check for Steam DRM.
+            DRMNotifier.PrintWarnings(_basicPeParser, _loader.Console);
+
+            // Hook native import for ExitProcess. (So we can save log on exit)
+            var kernel32 = Kernel32.GetModuleHandle("kernel32.dll");
+            var address  = Kernel32.GetProcAddress(kernel32, "ExitProcess");
+            if (address != IntPtr.Zero)
+            {
+                _exitProcessHook = new Hook<ExitProcess>(ExitProcessImpl, (long)address).Activate();
+            }
+
+            // Hook Console Close
+            if (_loader?.Console != null)
+                _loader.Console.OnConsoleClose += SaveAndFlushLog;
+        }
+
+        private static void ExitProcessImpl(uint uExitCode)
+        {
+            SaveAndFlushLog();
+            _exitProcessHook.OriginalFunction(uExitCode);
+        }
+
+        private static void SaveAndFlushLog()
+        {
+            _loader?.Console?.WriteLineAsync(AddLogPrefix("ExitProcess Hook: Log End"));
+            _loader?.Console?.Shutdown();
+            _loader?.Logger?.Flush();
+        }
 
         private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
@@ -130,6 +168,11 @@ namespace Reloaded.Mod.Loader
             // Start profiling and save it in Startup.profile
             ProfileOptimization.StartProfile("Loader.profile");
         }
+        
+        [Hooks.Definitions.X64.Function(Hooks.Definitions.X64.CallingConventions.Microsoft)]
+        [Hooks.Definitions.X86.Function(Hooks.Definitions.X86.CallingConventions.Cdecl)]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void ExitProcess(uint uExitCode);
     }
     // ReSharper restore UnusedMember.Global
 }
