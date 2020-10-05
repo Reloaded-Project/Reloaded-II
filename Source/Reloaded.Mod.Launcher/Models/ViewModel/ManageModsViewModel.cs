@@ -14,7 +14,7 @@ using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Utilities;
 using static Reloaded.Mod.Launcher.Utility.ActionWrappers;
-using static Reloaded.Mod.Loader.IO.FileSystemWatcherFactory;
+using static Reloaded.Mod.Loader.IO.Utility.FileSystemWatcherFactory;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Reloaded.Mod.Loader.IO
+namespace Reloaded.Mod.Loader.IO.Utility
 {
     /// <summary>
     /// Factory class which provides convenience methods to create instances of <see cref="FileSystemWatcher"/>.

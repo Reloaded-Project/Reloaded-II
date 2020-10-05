@@ -39,7 +39,7 @@ namespace Reloaded.Mod.Loader.IO
         public List<PathGenericTuple<TConfigType>> ReadConfigurations(string directory, string fileName, CancellationToken token = default, int maxDepth = 1, int minDepth = 1)
         {
             // Get all config files to load.
-            var configurationPaths = Utility.GetFilesEx(directory, fileName, maxDepth, minDepth);
+            var configurationPaths = Utility.Utility.GetFilesEx(directory, fileName, maxDepth, minDepth);
 
             // Configurations to be returned
             var configurations = new List<PathGenericTuple<TConfigType>>(configurationPaths.Count);

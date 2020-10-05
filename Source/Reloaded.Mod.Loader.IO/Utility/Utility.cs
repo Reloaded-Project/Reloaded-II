@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Reloaded.Mod.Loader.IO
+namespace Reloaded.Mod.Loader.IO.Utility
 {
     public static class Utility
     {
