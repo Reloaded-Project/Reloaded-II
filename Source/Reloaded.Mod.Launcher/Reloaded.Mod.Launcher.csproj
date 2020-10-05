@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -7,7 +7,7 @@
 	<UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
-    <Version>1.7.0</Version>
+    <Version>1.7.1</Version>
     <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | $(Version) ($([System.DateTime]::UtcNow.ToString("s")))</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
