@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Weaving;
 using Reloaded.Mod.Loader.Update.Dependency;
 using Reloaded.Mod.Loader.Update.Dependency.Interfaces;
-using Reloaded.Mod.Shared;
 using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs

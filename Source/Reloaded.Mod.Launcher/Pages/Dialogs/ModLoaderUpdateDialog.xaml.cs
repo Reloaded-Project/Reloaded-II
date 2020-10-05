@@ -10,7 +10,6 @@ using Reloaded.Mod.Shared;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
-using ProcessExtensions = Reloaded.Mod.Shared.ProcessExtensions;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs
 {

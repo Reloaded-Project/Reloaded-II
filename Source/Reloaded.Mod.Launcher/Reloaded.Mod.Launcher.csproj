@@ -14,8 +14,9 @@
 	<OutputPath>..\Output\Launcher\</OutputPath>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <None Remove="Assets\**" />
     <None Remove="Theme\**" />

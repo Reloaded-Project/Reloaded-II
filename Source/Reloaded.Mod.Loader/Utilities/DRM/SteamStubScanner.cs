@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using Reloaded.Mod.Shared;
 
-namespace Reloaded.Mod.Shared
+namespace Reloaded.Mod.Loader.Utilities.DRM
 {
     public static class SteamStubScanner
     {

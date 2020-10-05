@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Reloaded.Mod.Launcher.Commands.Dialog;
 using Reloaded.Mod.Launcher.Models.ViewModel;
-using Reloaded.Mod.Shared;
+using Reloaded.Mod.Launcher.Utility;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {

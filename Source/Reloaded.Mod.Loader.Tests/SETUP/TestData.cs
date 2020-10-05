@@ -74,7 +74,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
 
                 ThisApplication = new ApplicationConfig(IdOfThisApp,
                                                         "Reloaded Mod Loader Tests",
-                                                        Process.GetCurrentProcess().GetExecutablePath(),
+                                                        Environment.GetCommandLineArgs()[0],
                                                         new[] { TestModConfigA.ModId, TestModConfigB.ModId, TestModConfigD.ModId });
 
                 ConfigurationPathOfThisApp = Path.Combine(TestConfig.ApplicationConfigDirectory, IdOfThisApp, ApplicationConfig.ConfigFileName);

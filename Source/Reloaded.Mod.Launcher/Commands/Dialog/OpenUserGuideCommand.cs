@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using Reloaded.Mod.Shared;
+using Reloaded.Mod.Launcher.Utility;
 
 namespace Reloaded.Mod.Launcher.Commands.Dialog
 {

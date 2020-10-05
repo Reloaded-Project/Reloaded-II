@@ -30,7 +30,7 @@ namespace Reloaded.Mod.Launcher.Utility
             if (_refreshInterval == null)
                 _refreshInterval = new XamlResource<int>("ReloadedProcessListRefreshInterval");
 
-            _processes  = new ObservableCollection<int>(Shared.ProcessExtensions.GetProcessIds());
+            _processes  = new ObservableCollection<int>(ProcessExtensions.GetProcessIds());
             _processes.CollectionChanged += ProcessesChanged;
             _timer = new Timer(Tick, null, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(_refreshInterval.Get()));
         }
@@ -39,7 +39,7 @@ namespace Reloaded.Mod.Launcher.Utility
         {
             lock (_lock)
             {
-                var processIds = Shared.ProcessExtensions.GetProcessIds();
+                var processIds = ProcessExtensions.GetProcessIds();
                 Collections.ModifyObservableCollection(_processes, processIds);
             }
         }

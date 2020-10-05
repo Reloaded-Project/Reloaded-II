@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.ViewModel;
-using Reloaded.Mod.Shared;
+using Reloaded.Mod.Launcher.Utility;
 
 namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 {

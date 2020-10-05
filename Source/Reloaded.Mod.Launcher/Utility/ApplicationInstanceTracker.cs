@@ -8,7 +8,6 @@ using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Utility.Interfaces;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Server;
-using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -144,7 +143,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
         private void AddProcess(Process newProcess)
         {
-            if (string.Equals(Shared.ProcessExtensions.GetExecutablePath(newProcess), _applicationPath, StringComparison.InvariantCultureIgnoreCase))
+            if (string.Equals(ProcessExtensions.GetExecutablePath(newProcess), _applicationPath, StringComparison.InvariantCultureIgnoreCase))
             {
                 _processes.Add(newProcess);
                 RaiseOnProcessesChanged();

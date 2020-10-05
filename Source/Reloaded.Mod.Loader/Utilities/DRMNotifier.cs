@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Reloaded.Mod.Loader.Logging;
+using Reloaded.Mod.Loader.Utilities.DRM;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.Utilities
