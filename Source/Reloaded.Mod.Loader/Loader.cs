@@ -37,7 +37,7 @@ namespace Reloaded.Mod.Loader
             IsTesting = isTesting;
             LoaderConfig = LoaderConfigReader.ReadConfiguration();
             Console = new Console(LoaderConfig.ShowConsole);
-            if (Console.IsEnabled)
+            if (Console.IsEnabled && !isTesting)
                 Logger  = new Logger(Console, Paths.LogPath);
 
             Manager = new PluginManager(this);
