@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 
@@ -43,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Utility
         public void AddFiles(string folderPath, TimeSpan span, string filter = "*.txt")
         {
             var files = Directory.GetFiles(folderPath, filter);
-            var now   = DateTime.UtcNow;
+            var now   = DateTime.Now;
 
             foreach (var file in files)
             {

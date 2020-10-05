@@ -31,7 +31,7 @@ namespace Reloaded.Mod.Loader.Logging
         public Logger(Console console, string outputDir)
         {
             var executableName    = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
-            var universalDateTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH.mm.ss");
+            var universalDateTime = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
             Directory.CreateDirectory(outputDir);
 
             _logItems = new List<string>(MaxBufferLength + 1);
@@ -72,7 +72,7 @@ namespace Reloaded.Mod.Loader.Logging
             if (_logItems.Count == MaxBufferLength)
                 Flush();
 
-            _logItems.Add($"[{DateTime.UtcNow:HH:mm:ss}] {message}");
+            _logItems.Add($"[{DateTime.Now:HH:mm:ss}] {message}");
         }
 
         /// <inheritdoc />
