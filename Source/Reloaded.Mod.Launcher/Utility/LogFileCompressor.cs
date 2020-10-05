@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -33,6 +34,23 @@ namespace Reloaded.Mod.Launcher.Utility
         /// Alias for Dispose.
         /// </summary>
         public void Close() => Dispose();
+
+        /// <summary>
+        /// Deletes files from the archive older than the specified amount of time (since last modified).
+        /// </summary>
+        /// <param name="span">The maximum amount of time to keep files. Files older will be removed.</param>
+        public void DeleteOldFiles(TimeSpan span)
+        {
+            var now = DateTime.Now;
+            foreach (var entry in _archive.Entries.ToArray())
+            {
+                var timeSince = now - entry.LastWriteTime;
+                if (timeSince > span)
+                {
+                    entry.Delete();
+                }
+            }
+        }
 
         /// <summary>
         /// Adds all of the files from a given folder into the archive and deletes the original files.

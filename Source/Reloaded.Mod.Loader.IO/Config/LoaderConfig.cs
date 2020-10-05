@@ -91,6 +91,11 @@ namespace Reloaded.Mod.Loader.IO.Config
         public int LogFileCompressTimeHours { get; set; } = 6;
 
         /// <summary>
+        /// Amount of time in hours since last modified that log files get deleted.
+        /// </summary>
+        public int LogFileDeleteHours { get; set; } = 336;
+
+        /// <summary>
         /// A list of all available NuGet feeds from which mod packages might be obtained.
         /// </summary>
         public NugetFeed[] NuGetFeeds { get; set; } = DefaultFeeds;

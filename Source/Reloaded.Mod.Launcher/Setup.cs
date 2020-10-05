@@ -90,7 +90,9 @@ namespace Reloaded.Mod.Launcher
         private static void CompressOldLogs()
         {
             using var logCompressor = new LogFileCompressor(Paths.ArchivedLogPath);
-            logCompressor.AddFiles(Paths.LogPath, TimeSpan.FromHours(IoC.Get<LoaderConfig>().LogFileCompressTimeHours));
+            var loaderConfig = IoC.Get<LoaderConfig>();
+            logCompressor.AddFiles(Paths.LogPath, TimeSpan.FromHours(loaderConfig.LogFileCompressTimeHours));
+            logCompressor.DeleteOldFiles(TimeSpan.FromHours(loaderConfig.LogFileDeleteHours));
         }
 
         /// <summary>
