@@ -8,6 +8,7 @@ using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
+    [Equals(DoNotAddEqualityOperators = true)]
     public class LoaderConfig : ObservableObject
     {
         private const string DefaultApplicationConfigDirectory  = "Apps";
