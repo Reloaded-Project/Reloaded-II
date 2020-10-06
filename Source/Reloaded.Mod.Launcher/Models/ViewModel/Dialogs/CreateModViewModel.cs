@@ -56,8 +56,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
             Config.ModDependencies = Dependencies.Where(x => x.Enabled).Select(x => x.Generic.ModId).ToArray();
             Config.SupportedAppId = Constants.EmptyStringArray;
 
-            var configLoader = new ConfigReader<ModConfig>();
-            configLoader.WriteConfiguration(configSaveDirectory, (ModConfig) Config);
+            ConfigReader<ModConfig>.WriteConfiguration(configSaveDirectory, (ModConfig) Config);
 
             // Save Image 
             var encoder = new PngBitmapEncoder();

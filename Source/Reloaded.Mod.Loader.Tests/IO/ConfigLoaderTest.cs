@@ -16,9 +16,6 @@ namespace Reloaded.Mod.Loader.Tests.IO
         private ModConfig _testModConfig;
         private ApplicationConfig _testAppConfig;
 
-        private ConfigReader<ModConfig> _modConfigReader;
-        private ConfigReader<ApplicationConfig> _appConfigReader;
-
         /* Before Tests */
         public ConfigLoaderTest()
         {
@@ -28,9 +25,6 @@ namespace Reloaded.Mod.Loader.Tests.IO
             _testAppConfig = new ApplicationConfig();
             _testAppConfig.SetNullValues();
             _testModConfig.SetNullValues();
-            
-            _modConfigReader = new ConfigReader<ModConfig>();
-            _appConfigReader = new ConfigReader<ApplicationConfig>();
         }
 
         /* After tests */
@@ -67,12 +61,12 @@ namespace Reloaded.Mod.Loader.Tests.IO
                 };
 
                 /* Write to directories. */
-                _modConfigReader.WriteConfiguration(filePaths[0], _testModConfig);
-                _appConfigReader.WriteConfiguration(filePaths[1], _testAppConfig);
+                ConfigReader<ModConfig>.WriteConfiguration(filePaths[0], _testModConfig);
+                ConfigReader<ApplicationConfig>.WriteConfiguration(filePaths[1], _testAppConfig);
 
                 /* Find in directories. */
-                var modPathConfigTuple = _modConfigReader.ReadConfigurations(currentDirectory, ModConfigFileName, default, 2)[0];
-                var appPathConfigTuple = _appConfigReader.ReadConfigurations(currentDirectory, AppConfigFileName, default, 2)[0];
+                var modPathConfigTuple = ConfigReader<ModConfig>.ReadConfigurations(currentDirectory, ModConfigFileName, default, 2)[0];
+                var appPathConfigTuple = ConfigReader<ApplicationConfig>.ReadConfigurations(currentDirectory, AppConfigFileName, default, 2)[0];
 
                 /* Validate Tuples. */
                 Assert.Equal(Path.GetFullPath(filePaths[0]), Path.GetFullPath(modPathConfigTuple.Path));
@@ -99,12 +93,12 @@ namespace Reloaded.Mod.Loader.Tests.IO
         public void ReadWriteFile()
         {
             /* Write first. */
-            _modConfigReader.WriteConfiguration(ModConfigFileName, _testModConfig);
-            _appConfigReader.WriteConfiguration(AppConfigFileName, _testAppConfig);
+            ConfigReader<ModConfig>.WriteConfiguration(ModConfigFileName, _testModConfig);
+            ConfigReader<ApplicationConfig>.WriteConfiguration(AppConfigFileName, _testAppConfig);
 
             /* Read back. */
-            var modConfigCopy = _modConfigReader.ReadConfiguration(ModConfigFileName);
-            var appConfigCopy = _appConfigReader.ReadConfiguration(AppConfigFileName);
+            var modConfigCopy = ConfigReader<ModConfig>.ReadConfiguration(ModConfigFileName);
+            var appConfigCopy = ConfigReader<ApplicationConfig>.ReadConfiguration(AppConfigFileName);
 
             /* Test for equality. */
             /* Need to cast or it will compare by reference/address (interfaces). */

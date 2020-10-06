@@ -130,8 +130,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             await archiveExtractor.ExtractPackageAsync(data, temporaryDirectory);
 
             /* Get name of package. */
-            var configReader = new ConfigReader<ModConfig>();
-            var configs      = configReader.ReadConfigurations(temporaryDirectory, ModConfig.ConfigFileName, default, int.MaxValue);
+            var configs      = ConfigReader<ModConfig>.ReadConfigurations(temporaryDirectory, ModConfig.ConfigFileName, default, int.MaxValue);
             var loaderConfig = IoC.Get<LoaderConfig>();
 
             foreach (var config in configs)

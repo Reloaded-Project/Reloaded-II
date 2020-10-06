@@ -26,8 +26,6 @@ namespace Reloaded.Mod.Loader.IO.Config
         private const string DefaultVersion = "1.0.0";
         private const string DefaultDescription = "Template for a Reloaded Mod Configuration";
 
-        private static readonly ConfigReader<ModConfig> _modConfigReader = new ConfigReader<ModConfig>();
-
         /* Class members. */
         public string ModId             { get; set; } = DefaultId;
         public string ModName           { get; set; } = DefaultName;
@@ -228,7 +226,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             if (modDirectory == null)
                 modDirectory = LoaderConfig.ReadConfiguration().ModConfigDirectory;
 
-            return _modConfigReader.ReadConfigurations(modDirectory, ConfigFileName, token, 2, 2);
+            return ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, 2, 2);
         }
 
         /// <summary>

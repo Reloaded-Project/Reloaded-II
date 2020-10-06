@@ -19,8 +19,6 @@ namespace Reloaded.Mod.Loader.IO.Config
         private static string DefaultName = "Reloaded Application Template";
         private static string DefaultIcon = "Icon.png";
 
-        private static readonly ConfigReader<ApplicationConfig> _appConfigReader = new ConfigReader<ApplicationConfig>();
-
         /* Class Members */
         public string AppId                 { get; set; } = DefaultId;
         public string AppName               { get; set; } = DefaultName;
@@ -60,11 +58,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Writes the configuration to a specified file path.
         /// </summary>
-        public static void WriteConfiguration(string path, ApplicationConfig config)
-        {
-            var applicationConfigLoader = new ConfigReader<ApplicationConfig>();
-            applicationConfigLoader.WriteConfiguration(path, config);
-        }
+        public static void WriteConfiguration(string path, ApplicationConfig config) => ConfigReader<ApplicationConfig>.WriteConfiguration(path, config);
 
         /// <summary>
         /// Attempts to obtain the location of the application icon.
@@ -99,7 +93,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             if (appDirectory == null)
                 appDirectory = LoaderConfig.ReadConfiguration().ApplicationConfigDirectory;
 
-            return _appConfigReader.ReadConfigurations(appDirectory, ConfigFileName, token, 2);
+            return ConfigReader<ApplicationConfig>.ReadConfigurations(appDirectory, ConfigFileName, token, 2);
         }
 
         /// <summary>
