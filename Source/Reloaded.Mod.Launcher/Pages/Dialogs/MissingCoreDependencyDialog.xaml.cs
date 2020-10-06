@@ -14,7 +14,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
     /// </summary>
     public partial class MissingCoreDependencyDialog : ReloadedWindow
     {
-        public MissingCoreDependencyDialogViewModel ViewModel { get; set; }
+        public new MissingCoreDependencyDialogViewModel ViewModel { get; set; }
 
         public MissingCoreDependencyDialog(DependencyChecker deps)
         {

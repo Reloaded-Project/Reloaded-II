@@ -73,7 +73,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
                 var release     = releases.Result.First(x => x.TagName.Contains(targetVersion.ToString()));
                 ReleaseText     = release.Body;
             }
-            catch (Exception ex) { /* Ignored */ }
+            catch (Exception) { /* Ignored */ }
         }
 
         public async Task Update()

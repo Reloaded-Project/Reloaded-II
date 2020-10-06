@@ -62,7 +62,7 @@ namespace Reloaded.Mod.Launcher
                 CreateTemplates();
 
                 updateText(_xamlSplashPreparingResources.Get());
-                await SetupViewModelsAsync();
+                await Task.Run(SetupViewModelsAsync);
 
                 updateText(_xamlCheckingForUpdates.Get());
                 #pragma warning disable 4014
@@ -72,7 +72,7 @@ namespace Reloaded.Mod.Launcher
                 updateText(_xamlRunningSanityChecks.Get());
                 DoSanityTests();
                 CleanupAfterOldVersions();
-                Task.Run(CompressOldLogs);
+                var _ = Task.Run(CompressOldLogs);
 
                 // Wait until splash screen time.
                 updateText($"{_xamlSplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");
@@ -244,7 +244,7 @@ namespace Reloaded.Mod.Launcher
         /// <summary>
         /// Sets up viewmodels to be used in the individual mod loader pages.
         /// </summary>
-        private static async Task SetupViewModelsAsync()
+        private static void SetupViewModelsAsync()
         {
             var config = IoC.Get<LoaderConfig>();
             IoC.GetConstant<MainPageViewModel>();

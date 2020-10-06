@@ -17,7 +17,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
     /// </summary>
     public partial class SetDependenciesDialog : ReloadedWindow
     {
-        public SetDependenciesDialogViewmodel ViewModel { get; set; }
+        public new SetDependenciesDialogViewmodel ViewModel { get; set; }
 
         public SetDependenciesDialog(ManageModsViewModel manageModsViewModel)
         {
