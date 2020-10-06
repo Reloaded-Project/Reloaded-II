@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,6 +10,8 @@ namespace Reloaded.Mod.Loader.IO.Utility
 {
     public static class IOEx
     {
+        private static readonly char[] InvalidFilePathChars = Path.GetInvalidPathChars().Union(Path.GetInvalidFileNameChars()).ToArray();
+
         /// <summary>
         /// Moves a directory from a given source path to a target path, overwriting all files.
         /// </summary>
@@ -99,6 +102,20 @@ namespace Reloaded.Mod.Loader.IO.Utility
             }
             
             return files;
+        }
+
+        /// <summary>
+        /// Removes invalid characters from a specified file path.
+        /// </summary>
+        public static string ForceValidFilePath(string text)
+        {
+            foreach (char c in InvalidFilePathChars)
+            {
+                if (c != '\\' || c != '/')
+                    text = text.Replace(c.ToString(), "");
+            }
+
+            return text;
         }
 
         private static void GetFilesExDirectories(string directory, int maxDepth, int minDepth, int currentDepth, List<string> directories)
