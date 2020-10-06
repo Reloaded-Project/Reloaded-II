@@ -4,7 +4,6 @@ using System.IO;
 using System.Text.Json;
 using System.Threading;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Structs;
 
 namespace Reloaded.Mod.Loader.IO

@@ -1,5 +1,4 @@
 ﻿using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.IO.Interfaces;
 using Reloaded.Mod.Loader.IO.Misc;
 using Reloaded.Mod.Loader.IO.Weaving;
 

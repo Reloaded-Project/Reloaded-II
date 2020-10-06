@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.IO.Interfaces
+﻿namespace Reloaded.Mod.Loader.IO.Config
 {
     /// <summary>
     /// Interface used to categorize configuration files.
