@@ -1,6 +1,5 @@
 ﻿using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.IO.Misc;
-using Reloaded.Mod.Loader.IO.Weaving;
+using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
@@ -12,7 +11,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /* Class Members */
         public string[] EnabledMods { get; set; }
 
-        public ModSet() { EnabledMods = Constants.EmptyStringArray; }
+        public ModSet() { EnabledMods = Utility.Utility.EmptyStringArray; }
         public ModSet(IApplicationConfig applicationConfig) => EnabledMods = applicationConfig.EnabledMods;
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <inheritdoc />
         public void SetNullValues()
         {
-            EnabledMods ??= Constants.EmptyStringArray;
+            EnabledMods ??= Utility.Utility.EmptyStringArray;
         }
     }
 }

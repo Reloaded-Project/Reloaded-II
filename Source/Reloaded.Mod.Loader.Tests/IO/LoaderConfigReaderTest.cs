@@ -24,8 +24,8 @@ namespace Reloaded.Mod.Loader.Tests.IO
             var config = TestData.MakeTestConfig();
 
             // Write and read back the config.
-            Mod.Loader.IO.LoaderConfigReader.WriteConfiguration(config);
-            var newConfig = Mod.Loader.IO.LoaderConfigReader.ReadConfiguration();
+            LoaderConfig.WriteConfiguration(config);
+            var newConfig = LoaderConfig.ReadConfiguration();
 
             // Restore old config and assert.
             Assert.Equal(config, newConfig);
@@ -44,8 +44,8 @@ namespace Reloaded.Mod.Loader.Tests.IO
             config.PluginConfigDirectory = "0Plugins";
 
             // Write and read back the config.
-            Mod.Loader.IO.LoaderConfigReader.WriteConfiguration(config);
-            var newConfig = Mod.Loader.IO.LoaderConfigReader.ReadConfiguration();
+            LoaderConfig.WriteConfiguration(config);
+            var newConfig = LoaderConfig.ReadConfiguration();
 
             // Restore old config and assert.
             Assert.True(Directory.Exists(newConfig.ApplicationConfigDirectory));

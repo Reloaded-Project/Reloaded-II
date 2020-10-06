@@ -18,7 +18,7 @@ namespace Reloaded.Mod.Loader.IO
     public class ConfigReader<TConfigType> where TConfigType : IConfig, new()
     {
         /* Documentation: See IConfigLoader. */
-        public static JsonSerializerOptions Options = new JsonSerializerOptions()
+        public static readonly JsonSerializerOptions Options = new JsonSerializerOptions()
         {
             WriteIndented = true
         };

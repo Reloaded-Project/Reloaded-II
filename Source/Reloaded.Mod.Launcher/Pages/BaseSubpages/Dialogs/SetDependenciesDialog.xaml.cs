@@ -6,7 +6,7 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Weaving;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
 

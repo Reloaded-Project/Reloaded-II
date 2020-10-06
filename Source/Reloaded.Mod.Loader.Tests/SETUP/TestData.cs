@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Misc;
-using Reloaded.Mod.Shared;
+using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Loader.Tests.SETUP
 {
@@ -59,12 +57,12 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
         public TestData()
         {
             // Backup config and override on filesystem with new.
-            bool configExists = File.Exists(LoaderConfigReader.ConfigurationPath());
+            bool configExists = File.Exists(Paths.LauncherConfigPath);
             if (configExists)
-                OriginalConfig = LoaderConfigReader.ReadConfiguration();
+                OriginalConfig = LoaderConfig.ReadConfiguration();
 
             TestConfig = MakeTestConfig();
-            LoaderConfigReader.WriteConfiguration(TestConfig);
+            LoaderConfig.WriteConfiguration(TestConfig);
 
             try
             {
@@ -87,7 +85,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
             catch (Exception)
             {
                 if (OriginalConfig != null)
-                    LoaderConfigReader.WriteConfiguration(OriginalConfig);
+                    LoaderConfig.WriteConfiguration(OriginalConfig);
                 throw;
             }
         }
@@ -95,9 +93,9 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
         public void Dispose()
         {
             if (OriginalConfig != null)
-                LoaderConfigReader.WriteConfiguration(OriginalConfig);
+                LoaderConfig.WriteConfiguration(OriginalConfig);
             else
-                File.Delete(LoaderConfigReader.ConfigurationPath());
+                File.Delete(Paths.LauncherConfigPath);
         }
 
         /* Make LoaderConfig for Testing */
@@ -107,7 +105,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
             config.ApplicationConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ApplicationConfigDirectory, "Apps");
             config.ModConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ModConfigDirectory, "Mods");
             config.PluginConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.PluginConfigDirectory, "Plugins");
-            config.EnabledPlugins = Constants.EmptyStringArray;
+            config.EnabledPlugins = Utility.EmptyStringArray;
             return config;
         }
 

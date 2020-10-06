@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Reloaded.Mod.Loader.IO.Config.Structs;
-using Reloaded.Mod.Loader.IO.Misc;
-using Reloaded.Mod.Loader.IO.Weaving;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.IO.Config
@@ -110,7 +110,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public void SanitizeConfig()
         {
             // System.Text.Json might deserialize this as null.
-            EnabledPlugins ??= Constants.EmptyStringArray;
+            EnabledPlugins ??= Utility.Utility.EmptyStringArray;
             NuGetFeeds ??= DefaultFeeds;
             ResetMissingDirectories();
         }
@@ -128,6 +128,44 @@ namespace Reloaded.Mod.Loader.IO.Config
             {
                 /* Access not allowed to directories.*/
             }
+        }
+
+        /// <summary>
+        /// Returns true if the configuration file exists, else false.
+        /// </summary>
+        public static bool ConfigurationExists()
+        {
+            return File.Exists(Paths.LauncherConfigPath);
+        }
+
+        /// <summary>
+        /// Loads the mod loader configuration from disk.
+        /// </summary>
+        public static LoaderConfig ReadConfiguration()
+        {
+            var config = new LoaderConfig();
+            if (ConfigurationExists())
+            {
+                string jsonFile = File.ReadAllText(Paths.LauncherConfigPath);
+                config = JsonSerializer.Deserialize<LoaderConfig>(jsonFile);
+            }
+
+            config.SanitizeConfig();
+            return config;
+        }
+
+        /// <summary>
+        /// Writes a new mod loader configuration to disk.
+        /// </summary>
+        /// <param name="config">The new mod loader configuration to write.</param>
+        public static void WriteConfiguration(LoaderConfig config)
+        {
+            string directory = Path.GetDirectoryName(Paths.LauncherConfigPath);
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            string jsonFile = JsonSerializer.Serialize(config, new JsonSerializerOptions() { WriteIndented = true });
+            File.WriteAllText(Paths.LauncherConfigPath, jsonFile);
         }
 
         // Sets default directory if does not exist.

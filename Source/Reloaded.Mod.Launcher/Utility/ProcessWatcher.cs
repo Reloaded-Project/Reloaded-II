@@ -4,8 +4,8 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Threading;
 using Reloaded.Mod.Launcher.Utility.Interfaces;
-using Reloaded.Mod.Loader.IO.Weaving;
 using Reloaded.WPF.Utilities;
+using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
 namespace Reloaded.Mod.Launcher.Utility
 {

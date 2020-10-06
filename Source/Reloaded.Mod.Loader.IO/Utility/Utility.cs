@@ -7,6 +7,8 @@ namespace Reloaded.Mod.Loader.IO.Utility
 {
     public static class Utility
     {
+        public static readonly string[] EmptyStringArray = new string[0];
+
         /// <summary>
         /// Gets a list of all the files contained within a specific directory.
         /// </summary>

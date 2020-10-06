@@ -238,7 +238,7 @@ namespace Reloaded.Mod.Launcher
         {
             var config = IoC.Get<LoaderConfig>();
             SetLoaderPaths(config, Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
-            LoaderConfigReader.WriteConfiguration(config);
+            LoaderConfig.WriteConfiguration(config);
         }
 
         /// <summary>

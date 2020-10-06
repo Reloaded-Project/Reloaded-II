@@ -2,7 +2,7 @@
 
 using System.ComponentModel;
 
-namespace Reloaded.Mod.Loader.IO.Weaving
+namespace Reloaded.Mod.Loader.IO.Utility
 {
     /// <summary>
     /// An abstract class that implements the bare minimum of the INotifyPropertyChanged interface.

@@ -6,7 +6,7 @@ using System.Windows.Input;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Config.Structs;
-using Reloaded.Mod.Loader.IO.Weaving;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
@@ -63,7 +63,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         public void Save()
         {
             _config.NuGetFeeds = Feeds.ToArray();
-            LoaderConfigReader.WriteConfiguration(_config);
+            LoaderConfig.WriteConfiguration(_config);
         }
     }
 
