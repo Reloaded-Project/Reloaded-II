@@ -4,7 +4,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Reloaded.Mod.Loader.IO.Config.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
@@ -17,8 +16,8 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         private static readonly NugetFeed[] DefaultFeeds        = new NugetFeed[]
         {
-            new NugetFeed("Official Repository", SharedConstants.NuGetApiEndpoint, "Package repository of Sewer56, the developer of Reloaded. " +
-                                                                                   "Contains personal and popular community packages."),
+            new NugetFeed("Official Repository", "http://167.71.128.50:5000/v3/index.json", "Package repository of Sewer56, the developer of Reloaded. " +
+                                                                                            "Contains personal and popular community packages."),
         };
 
         /// <summary>

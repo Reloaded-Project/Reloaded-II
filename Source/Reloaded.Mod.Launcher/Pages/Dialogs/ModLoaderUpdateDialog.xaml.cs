@@ -10,6 +10,7 @@ using Reloaded.Mod.Shared;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
+using Constants = Reloaded.Mod.Launcher.Misc.Constants;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs
 {
@@ -69,7 +70,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             try
             {
                 var client      = new GitHubClient(new ProductHeaderValue("Reloaded-II"));
-                var releases    = client.Repository.Release.GetAll(SharedConstants.GitRepositoryAccount, SharedConstants.GitRepositoryName);
+                var releases    = client.Repository.Release.GetAll(Misc.Constants.GitRepositoryAccount, Constants.GitRepositoryName);
                 var release     = releases.Result.First(x => x.TagName.Contains(targetVersion.ToString()));
                 ReleaseText     = release.Body;
             }

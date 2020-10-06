@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Utility.Parsers;
 using Reloaded.Mod.Shared;
 using SharpCompress.Archives.SevenZip;
 

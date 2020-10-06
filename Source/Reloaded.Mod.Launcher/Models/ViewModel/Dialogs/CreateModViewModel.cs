@@ -11,9 +11,9 @@ using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.WPF.MVVM;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.WPF.Utilities;
-using PathSanitizer = Reloaded.Mod.Shared.PathSanitizer;
+using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
 {
@@ -46,7 +46,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
         {
             // Make folder path and save folder.
             string modConfigDirectory = IoC.Get<LoaderConfig>().ModConfigDirectory;
-            string modDirectory = Path.Combine(modConfigDirectory, PathSanitizer.ForceValidFilePath(Config.ModId));
+            string modDirectory = Path.Combine(modConfigDirectory, IOEx.ForceValidFilePath(Config.ModId));
             Directory.CreateDirectory(modDirectory);
 
             // Save Config

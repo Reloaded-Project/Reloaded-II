@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Reloaded.Mod.Shared.PeParser
+namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser
 {
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct IMAGE_IMPORT_BY_NAME

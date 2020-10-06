@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Reloaded.Mod.Shared.PeParser
+namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser
 {
     [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
     public struct IMAGE_SECTION_HEADER

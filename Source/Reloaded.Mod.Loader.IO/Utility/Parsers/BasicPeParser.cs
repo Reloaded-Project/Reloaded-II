@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Reloaded.Memory.Streams;
-using Reloaded.Mod.Shared.PeParser;
-using Reloaded.Mod.Shared.PeParser.Interfaces;
+using Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser;
 
-namespace Reloaded.Mod.Shared
+namespace Reloaded.Mod.Loader.IO.Utility.Parsers
 {
     /// <summary>
     /// Basic parser of PE Portable Executable Format
