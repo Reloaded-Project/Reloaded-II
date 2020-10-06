@@ -105,7 +105,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
             config.ApplicationConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ApplicationConfigDirectory, "Apps");
             config.ModConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ModConfigDirectory, "Mods");
             config.PluginConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.PluginConfigDirectory, "Plugins");
-            config.EnabledPlugins = Utility.EmptyStringArray;
+            config.EnabledPlugins = EmptyArray<string>.Instance;
             return config;
         }
 

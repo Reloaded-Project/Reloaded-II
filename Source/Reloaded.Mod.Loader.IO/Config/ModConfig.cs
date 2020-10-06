@@ -394,9 +394,9 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <inheritdoc />
         public void SetNullValues()
         {
-            ModDependencies ??= Utility.Utility.EmptyStringArray;
-            OptionalDependencies ??= Utility.Utility.EmptyStringArray;
-            SupportedAppId ??= Utility.Utility.EmptyStringArray;
+            ModDependencies ??= EmptyArray<string>.Instance;
+            OptionalDependencies ??= EmptyArray<string>.Instance;
+            SupportedAppId ??= EmptyArray<string>.Instance;
         }
 
         /*

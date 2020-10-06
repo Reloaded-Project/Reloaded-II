@@ -110,7 +110,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public void SanitizeConfig()
         {
             // System.Text.Json might deserialize this as null.
-            EnabledPlugins ??= Utility.Utility.EmptyStringArray;
+            EnabledPlugins ??= EmptyArray<string>.Instance;
             NuGetFeeds ??= DefaultFeeds;
             ResetMissingDirectories();
         }

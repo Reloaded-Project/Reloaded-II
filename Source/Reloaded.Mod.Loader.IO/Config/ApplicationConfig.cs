@@ -41,7 +41,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             AppId = appId;
             AppName = appName;
             AppLocation = appLocation;
-            EnabledMods = Utility.Utility.EmptyStringArray;
+            EnabledMods = EmptyArray<string>.Instance; 
         }
 
         public ApplicationConfig(string appId, string appName, string appLocation, string[] enabledMods) : this(appId, appName, appLocation)
@@ -167,7 +167,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <inheritdoc />
         public void SetNullValues()
         {
-            EnabledMods ??= Utility.Utility.EmptyStringArray;
+            EnabledMods ??= EmptyArray<string>.Instance;
         }
 
         public override int GetHashCode() => (AppId != null ? AppId.GetHashCode() : 0);

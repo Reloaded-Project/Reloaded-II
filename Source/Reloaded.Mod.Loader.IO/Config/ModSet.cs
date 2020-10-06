@@ -8,7 +8,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /* Class Members */
         public string[] EnabledMods { get; set; }
 
-        public ModSet() { EnabledMods = Utility.Utility.EmptyStringArray; }
+        public ModSet() { EnabledMods = EmptyArray<string>.Instance; }
         public ModSet(IApplicationConfig applicationConfig) => EnabledMods = applicationConfig.EnabledMods;
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <inheritdoc />
         public void SetNullValues()
         {
-            EnabledMods ??= Utility.Utility.EmptyStringArray;
+            EnabledMods ??= EmptyArray<string>.Instance;
         }
     }
 }
