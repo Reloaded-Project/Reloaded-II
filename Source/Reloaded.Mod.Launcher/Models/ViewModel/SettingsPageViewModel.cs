@@ -35,7 +35,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
             Copyright = version.LegalCopyright;
             RuntimeVersion = $"Core: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}";
-            Application.Current.Dispatcher.Invoke(() =>
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 SelectCurrentLanguage();
                 SelectCurrentTheme();

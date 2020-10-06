@@ -27,13 +27,13 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(() =>
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 void Update()
                 {
                     ViewModel.Updater
                         .Update(ViewModel.Summary, new Progress<double>(d => { ViewModel.Progress = (int)(d * 100); }))
-                        .ContinueWith(x => this.Dispatcher.Invoke(this.Close));
+                        .ContinueWith(x => ActionWrappers.ExecuteWithApplicationDispatcher(this.Close));
                 }
                 
                 if (ApplicationInstanceTracker.GetAllProcesses(out _))

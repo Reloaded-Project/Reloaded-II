@@ -73,7 +73,7 @@ namespace Reloaded.Mod.Launcher.Pages
         /// </summary>
         private void UpdateText(string newText)
         {
-            this.Dispatcher.Invoke(() => { _splashViewModel.Text = newText; });
+            ActionWrappers.ExecuteWithApplicationDispatcher(() => { _splashViewModel.Text = newText; });
         }
     }
 }

@@ -71,7 +71,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
         private void OnAvailableXamlFilesUpdated(object sender, FileSystemEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(PopulateXamlFiles);
+            ActionWrappers.ExecuteWithApplicationDispatcher(PopulateXamlFiles);
         }
 
 

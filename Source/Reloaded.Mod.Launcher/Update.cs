@@ -76,17 +76,18 @@ namespace Reloaded.Mod.Launcher
 
                 if (updateDetails.HasUpdates())
                 {
-                    Application.Current.Dispatcher?.Invoke(() =>
+                    ActionWrappers.ExecuteWithApplicationDispatcher(() =>
                     {
                         var dialog = new ModUpdateDialog(updater, updateDetails);
                         dialog.ShowDialog();
-                        return true;
                     });
+
+                    return true;
                 }
             }
             catch (Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message + "|" + e.StackTrace);
+                MessageBox.Show(e.Message + "|" + e.StackTrace);
                 return false;
             }
 
