@@ -13,7 +13,7 @@ using Reloaded.Mod.Loader.IO.Utility;
 namespace Reloaded.Mod.Loader.IO.Config
 {
     [Equals(DoNotAddEqualityOperators = true, DoNotAddGetHashCode = true)]
-    public class ModConfig : ObservableObject, IConfig, IModConfig
+    public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     {
         /* Constants */
         public const string ConfigFileName  = "ModConfig.json";

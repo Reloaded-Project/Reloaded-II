@@ -10,7 +10,6 @@ using Octokit;
 using Onova.Services;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update.Abstract;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Utilities;
@@ -61,7 +60,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 
                 MakeTimestampsIfNotExist(allModsWithConfigs);
 
-                var orderedModsWithConfigs  = allModsWithConfigs.OrderBy(x => GitHubUserConfig.FromPath(GitHubUserConfig.GetFilePath(GetModDirectory(x))).LastCheckTimestamp);
+                var orderedModsWithConfigs  = allModsWithConfigs.OrderBy(x => IConfig<GitHubUserConfig>.FromPath(GitHubUserConfig.GetFilePath(GetModDirectory(x))).LastCheckTimestamp);
                 var allowedMods             = orderedModsWithConfigs.Take(UnregisteredRateLimit).Select(x => x.Object);
                 AllowedMods                 = new HashSet<ModConfig>(allowedMods);
             }
@@ -94,8 +93,8 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         {
             _modTuple = mod;
             string path = GitHubConfig.GetFilePath(GetModDirectory(mod));
-            _githubConfig = GitHubConfig.FromPath(path);
-            _githubUserConfig = GitHubUserConfig.FromPath(path);
+            _githubConfig = IConfig<GitHubConfig>.FromPath(path);
+            _githubUserConfig = IConfig<GitHubUserConfig>.FromPath(path);
         }
 
         public Version GetCurrentVersion()
@@ -151,7 +150,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         public void PostUpdateCallback(bool hasUpdates)
         {
             _githubUserConfig.LastCheckTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
-            GitHubUserConfig.ToPath(_githubUserConfig, GitHubUserConfig.GetFilePath(GetModDirectory(_modTuple)));
+            IConfig<GitHubUserConfig>.ToPath(_githubUserConfig, GitHubUserConfig.GetFilePath(GetModDirectory(_modTuple)));
         }
 
         /* Helper classes */
@@ -161,7 +160,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             {
                 var configPath = GitHubUserConfig.GetFilePath(GetModDirectory(modWithConfig));
                 if (!File.Exists(configPath))
-                    GitHubUserConfig.ToPath(new GitHubUserConfig(0), configPath);
+                    IConfig<GitHubUserConfig>.ToPath(new GitHubUserConfig(0), configPath);
             }
         }
 
@@ -206,7 +205,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         }
 
         /* GitHub Config. */
-        public class GitHubUserConfig : JsonSerializable<GitHubUserConfig>
+        public class GitHubUserConfig : IConfig<GitHubUserConfig>
         {
             public const string     ConfigFileName = "ReloadedGithubUserConfig.json";
             public static string    GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";
@@ -221,7 +220,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             }
         }
 
-        public class GitHubConfig : JsonSerializable<GitHubConfig>
+        public class GitHubConfig : IConfig<GitHubConfig>
         {
             public const string     ConfigFileName = "ReloadedGithubUpdater.json";
             public static string    GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Onova.Services;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update.Abstract;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Resolvers.GameBanana;
@@ -36,7 +35,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         public void Construct(PathGenericTuple<ModConfig> mod)
         {
             Mod = mod;
-            Config = GameBananaConfig.FromPath(ConfigPath);
+            Config = IConfig<GameBananaConfig>.FromPath(ConfigPath);
         }
 
         public Version GetCurrentVersion()
@@ -92,7 +91,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             return Version.Parse($"{time.Year}.{time.Month}.{time.Day}.{(int)time.TimeOfDay.TotalSeconds}");
         }
 
-        public class GameBananaConfig : JsonSerializable<GameBananaConfig>
+        public class GameBananaConfig : IConfig<GameBananaConfig>
         {
             public const string ConfigFileName = "ReloadedGamebananaUpdater.json";
             public static string GetFilePath(string directoryFullPath) => $"{directoryFullPath}\\{ConfigFileName}";

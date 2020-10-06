@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using System.Threading;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -15,14 +14,8 @@ namespace Reloaded.Mod.Loader.IO
     ///     A json config class that implements interface <see cref="IConfig"/>.
     ///     Examples: <see cref="ModConfig"/>, <see cref="ApplicationConfig"/>.
     /// </typeparam>
-    public static class ConfigReader<TConfigType> where TConfigType : IConfig, new()
+    public static class ConfigReader<TConfigType> where TConfigType : IConfig<TConfigType>, new()
     {
-        /* Documentation: See IConfigLoader. */
-        public static readonly JsonSerializerOptions Options = new JsonSerializerOptions()
-        {
-            WriteIndented = true
-        };
-
         /* Implementation with Cancellation. */
 
         /// <summary>
@@ -64,8 +57,12 @@ namespace Reloaded.Mod.Loader.IO
         public static void WriteConfigurations(PathGenericTuple<TConfigType>[] configurations, CancellationToken token = default)
         {
             foreach (var configuration in configurations)
+            {
                 if (!token.IsCancellationRequested)
-                    WriteConfiguration(configuration.Path, configuration.Object);
+                    return;
+
+                WriteConfiguration(configuration.Path, configuration.Object);
+            }
         }
 
         /// <summary>
@@ -91,28 +88,13 @@ namespace Reloaded.Mod.Loader.IO
         /// Loads a given mod configurations from an absolute file path.
         /// </summary>
         /// <param name="path">The absolute file path of the config file.</param>
-        public static TConfigType ReadConfiguration(string path)
-        {
-            string jsonFile = File.ReadAllText(path);
-            var result = JsonSerializer.Deserialize<TConfigType>(jsonFile, Options);
-            result.SetNullValues();
-            return result;
-        }
+        public static TConfigType ReadConfiguration(string path) => IConfig<TConfigType>.FromPath(path);
 
         /// <summary>
         /// Writes a given mod configurations to an absolute file path.
         /// </summary>
         /// <param name="path">The absolute path to write the configurations file to.</param>
         /// <param name="config">The mod configurations to commit to file.</param>
-        public static void WriteConfiguration(string path, TConfigType config)
-        {
-            string fullPath = Path.GetFullPath(path);
-            string directoryOfPath = Path.GetDirectoryName(fullPath);
-            if (!Directory.Exists(directoryOfPath))
-                Directory.CreateDirectory(directoryOfPath);
-
-            string jsonFile = JsonSerializer.Serialize(config, Options);
-            File.WriteAllText(fullPath, jsonFile);
-        }
+        public static void WriteConfiguration(string path, TConfigType config) => IConfig<TConfigType>.ToPath(config, path);
     }
 }

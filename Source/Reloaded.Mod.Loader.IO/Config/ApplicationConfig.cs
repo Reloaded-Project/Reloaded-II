@@ -10,7 +10,7 @@ using Reloaded.Mod.Loader.IO.Utility;
 namespace Reloaded.Mod.Loader.IO.Config
 {
     [Equals(DoNotAddEqualityOperators = true, DoNotAddGetHashCode = true)]
-    public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig
+    public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<ApplicationConfig>
     {
         public const string ConfigFileName = "AppConfig.json";
         

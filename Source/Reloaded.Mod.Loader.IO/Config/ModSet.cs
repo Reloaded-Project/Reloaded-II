@@ -3,7 +3,7 @@ using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
-    public class ModSet : ObservableObject, IConfig
+    public class ModSet : ObservableObject, IConfig<ModSet>
     {
         /* Class Members */
         public string[] EnabledMods { get; set; }

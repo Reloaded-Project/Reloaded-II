@@ -316,8 +316,8 @@ namespace Reloaded.Mod.Launcher
             if (!Directory.Exists(templatesDirectory))
                 Directory.CreateDirectory(templatesDirectory);
             
-            GitHubLatestUpdateResolver.GitHubConfig.ToPath(new GitHubLatestUpdateResolver.GitHubConfig(), $"{GitHubLatestUpdateResolver.GitHubConfig.GetFilePath(templatesDirectory)}");
-            GameBananaUpdateResolver.GameBananaConfig.ToPath(new GameBananaUpdateResolver.GameBananaConfig(), $"{GameBananaUpdateResolver.GameBananaConfig.GetFilePath(templatesDirectory)}");
+            IConfig<GitHubLatestUpdateResolver.GitHubConfig>.ToPath(new GitHubLatestUpdateResolver.GitHubConfig(), $"{GitHubLatestUpdateResolver.GitHubConfig.GetFilePath(templatesDirectory)}");
+            IConfig<GameBananaUpdateResolver.GameBananaConfig>.ToPath(new GameBananaUpdateResolver.GameBananaConfig(), $"{GameBananaUpdateResolver.GameBananaConfig.GetFilePath(templatesDirectory)}");
         }
 
         /// <summary>
