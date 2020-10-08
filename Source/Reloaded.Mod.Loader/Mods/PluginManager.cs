@@ -317,12 +317,13 @@ namespace Reloaded.Mod.Loader.Mods
                     var configPathTuple = configPathTuples[x];
                     var dllPath = configPathTuple.Object.GetDllPath(configPathTuple.Path);
                     if (!File.Exists(dllPath) || configPathTuple.Object.IsNativeMod(configPathTuple.Path))
-                        return;
+                        continue;
 
                     if (GetMetadataForDllMod(dllPath, out var exports, out bool isUnloadable))
                         _modIdToMetadata[configPathTuple.Object.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
                 }
             });
+            
         }
 
         private bool GetMetadataForDllMod(string dllPath, out Type[] exports, out bool isUnloadable)
@@ -335,15 +336,33 @@ namespace Reloaded.Mod.Loader.Mods
                 config.DefaultContext = _loadContext;
                 config.IsLazyLoaded = true;
             });
+
             var defaultAssembly = loader.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
 
             var exportsEntryPoint = types.FirstOrDefault(t => typeof(IExports).IsAssignableFrom(t) && !t.IsAbstract);
             if (exportsEntryPoint != null)
             {
-                var plugin = (IExports) Activator.CreateInstance(exportsEntryPoint);
-                exports = plugin.GetTypes();
-                LoadTypesIntoCurrentContext(exports);
+                var pluginExports = (IExports) Activator.CreateInstance(exportsEntryPoint);
+                var exportedTypes = pluginExports.GetTypes();
+                var assemblies    = LoadTypesIntoCurrentContext(exportedTypes);
+                exports           = new Type[exportedTypes.Length];
+
+                // Find exports in assemblies that were just loaded into the default ALC.
+                // If we don't do this; the assemblies will stay loaded in the other ALC because we are still holding a reference to them.
+                var assemblyToTypes = new Dictionary<Assembly, Type[]>();
+                foreach (var asm in assemblies)
+                {
+                    if (!assemblyToTypes.ContainsKey(asm)) 
+                        assemblyToTypes[asm] = asm.GetTypes();
+                }
+
+                for (int x = 0; x < assemblies.Length; x++)
+                {
+                    var target        = exportedTypes[x];
+                    var assemblyTypes = assemblyToTypes[assemblies[x]];
+                    exports[x]        = assemblyTypes.First(y => y.FullName == target.FullName);
+                }
             }
 
             var modEntryPoint = types.FirstOrDefault(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
@@ -357,13 +376,16 @@ namespace Reloaded.Mod.Loader.Mods
             return true;
         }
 
-        private void LoadTypesIntoCurrentContext(IEnumerable<Type> types)
+        private Assembly[] LoadTypesIntoCurrentContext(IReadOnlyList<Type> types)
         {
-            foreach (var type in types)
+            var assemblies = new Assembly[types.Count];
+            for (var x = 0; x < types.Count; x++)
             {
-                var path = new Uri(type.Module.Assembly.CodeBase).LocalPath;
-                _loadContext.LoadFromAssemblyPath(path);
+                var path = new Uri(types[x].Module.Assembly.CodeBase).LocalPath;
+                assemblies[x] = _loadContext.LoadFromAssemblyPath(path);
             }
+
+            return assemblies;
         }
 
         /* Utility */
