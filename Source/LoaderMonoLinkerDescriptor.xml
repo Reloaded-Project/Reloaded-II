@@ -1,0 +1,60 @@
+<!--
+This is a descriptor file (for Mod Loader) to be used with the Mono IL Linker;
+https://github.com/mono/linker/blob/master/docs/illink-options.md which 
+strips out unused IL Code from the final compilation.
+
+For a brief period of time; I performed experiments with stripping out unused code in this
+Framework Dependent Application (FDD) after compilation by running the linker manually.
+(.NET Core publish only supports this for self contained)
+
+It worked, however, in the end I determined that the memory savings for the mod loader are insignificant (< 2MB).
+Space savings were equally insignificant, clocking in at less than 1MB. 
+
+While the launcher would have seen considerably better results, using the Linker is still fairly risky and requires
+a lot of manual corrections, such as in this file.
+
+Savings on release ZIPs would have been nice, maybe 2-3.5MB. However, because this feature is 
+only officially supported for self contained, I would have also needed to make my own tooling 
+to apply it to Framework Dependent Deployment (FDD). This would involve finding the appropriate 
+IL linker build and the appropriate version of CrossGen after parsing the `runtimeconfig`; then invoking
+them correctly. For so little gain, I didn't find that to be a worthwhile effort. 
+ 
+
+For future reference, the linker command looks something like this:
+
+dotnet illink.dll 
+-a "$RELOADEDPATH\Loader\X86\Reloaded.Mod.Loader.dll" 
+-x "LoaderMonoLinkerDescriptor.xml" 
+-d "C:\Program Files (x86)\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.8" 
+-d "C:\Program Files (x86)\dotnet\shared\Microsoft.NETCore.App\3.1.8"
+-out "$RELOADEDPATH\Loader\X86\Linked"
+-->
+
+<linker>
+  <!-- Preserve Interfaces known by Mods, Regardless if Used or Not -->
+  <assembly fullname="Reloaded.Mod.Interfaces" preserve="all" />
+  
+  <!-- Reloaded.Mod.Loader: All is preserved here due to specific APIs -->
+  <assembly fullname="Reloaded.Mod.Loader" preserve="all" />
+  
+  <!-- Reloaded.Mod.Loader.Server -->
+  <assembly fullname="Reloaded.Mod.Loader.Server"> 
+  
+	<!-- So we don't lose any data when receiving/sending -->
+    <type fullname="Reloaded.Mod.Loader.Server.Messages*" preserve="all"/>
+  
+  </assembly>
+  
+  <!-- Reloaded.Mod.Loader.IO: Reflection/Serialization Based Attributes -->
+  <assembly fullname="Reloaded.Mod.Loader.IO">
+  
+	<!-- So we don't lose any data on serialize/deserialize. -->
+    <type fullname="Reloaded.Mod.Loader.IO.Config*" preserve="all"/>
+	
+	<!-- So we don't break Fody implementation -->
+    <type fullname="Reloaded.Mod.Loader.IO.Utility.ObservableObject" preserve="all"/>
+  </assembly>
+
+  <assembly fullname="Colorful.Console" preserve="all"/>
+  <assembly fullname="Iced" preserve="all" />
+</linker>
