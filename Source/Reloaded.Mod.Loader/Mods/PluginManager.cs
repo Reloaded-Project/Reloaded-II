@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading.Tasks;
 using McMaster.NETCore.Plugins;
+using McMaster.NETCore.Plugins.Loader;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Loader.Exceptions;
@@ -42,7 +43,7 @@ namespace Reloaded.Mod.Loader.Mods
         {
             _loader = loader;
             LoaderApi = new LoaderAPI(_loader);
-            _loadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly());
+            _loadContext = BuildSharedLoadContext();
         }
 
         public void Dispose()
@@ -345,7 +346,7 @@ namespace Reloaded.Mod.Loader.Mods
             {
                 var pluginExports = (IExports) Activator.CreateInstance(exportsEntryPoint);
                 var exportedTypes = pluginExports.GetTypes();
-                var assemblies    = LoadTypesIntoCurrentContext(exportedTypes);
+                var assemblies    = LoadTypesIntoSharedContext(exportedTypes);
                 exports           = new Type[exportedTypes.Length];
 
                 // Find exports in assemblies that were just loaded into the default ALC.
@@ -376,7 +377,7 @@ namespace Reloaded.Mod.Loader.Mods
             return true;
         }
 
-        private Assembly[] LoadTypesIntoCurrentContext(IReadOnlyList<Type> types)
+        private Assembly[] LoadTypesIntoSharedContext(IReadOnlyList<Type> types)
         {
             var assemblies = new Assembly[types.Count];
             for (var x = 0; x < types.Count; x++)
@@ -386,6 +387,23 @@ namespace Reloaded.Mod.Loader.Mods
             }
 
             return assemblies;
+        }
+
+        /// <summary>
+        /// Creates a new Shared <see cref="AssemblyLoadContext"/> used for storing plugin shared interfaces.
+        /// </summary>
+        private AssemblyLoadContext BuildSharedLoadContext()
+        {
+            var loaderFolder      = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var interFacesAsmName = typeof(IModLoader).Assembly.GetName();
+            var interFacesAsmFile = $"{interFacesAsmName.Name}.dll";
+            var builder           = new AssemblyLoadContextBuilder()
+                .EnableUnloading()
+                .IsLazyLoaded(true)
+                .PreferDefaultLoadContextAssembly(interFacesAsmName)
+                .SetMainAssemblyPath(Path.Combine(loaderFolder, interFacesAsmFile));
+
+            return builder.Build();
         }
 
         /* Utility */
