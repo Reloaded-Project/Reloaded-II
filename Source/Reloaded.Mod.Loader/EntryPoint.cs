@@ -114,6 +114,10 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         public static int Initialize(IntPtr unusedPtr, int unusedSize)
         {
+            var process = Process.GetCurrentProcess();
+            GC.Collect();
+            var memoryUsageOld = process.WorkingSet64 / 1024;
+            var privateMemoryUsageOld = process.PrivateMemorySize64 / 1024;
             EnableProfileOptimization();
 
             // Write port as a Memory Mapped File, to allow Mod Loader's Launcher to discover the mod port.
@@ -126,6 +130,22 @@ namespace Reloaded.Mod.Loader
 
             // Setup Loader
             SetupLoader();
+
+            GC.Collect();
+            process = Process.GetCurrentProcess();
+            var memoryUsageNew = process.WorkingSet64 / 1024;
+            var privateMemoryUsageNew = process.PrivateMemorySize64 / 1024;
+            _loader?.Console?.WaitForConsoleInit();
+
+            _loader?.Console?.WriteLine($"R2R + Shared Types");
+            _loader?.Console?.WriteLine($"Working Set Old: {memoryUsageOld}KB");
+            _loader?.Console?.WriteLine($"Private Working Set Old: {privateMemoryUsageOld}KB");
+
+            _loader?.Console?.WriteLine($"Working Set After Load: {memoryUsageNew}KB");
+            _loader?.Console?.WriteLine($"Private Working Set After Load: {privateMemoryUsageNew}KB");
+
+            _loader?.Console?.WriteLine($"Working Set Delta: {memoryUsageNew - memoryUsageOld}KB");
+            _loader?.Console?.WriteLine($"Private Working Set Delta: {privateMemoryUsageNew - privateMemoryUsageOld}KB");
 
             // Only write port on completed initialization.
             // If port is 0, assume in loading state
