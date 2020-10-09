@@ -30,7 +30,7 @@
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Colorful.Console" Version="1.2.11" />
+    <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Reloaded.Hooks" Version="2.4.0" />
     <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.3.1-lazyloading" />
