@@ -13,6 +13,8 @@ namespace Reloaded.Mod.Loader.IO.Config
         private const string DefaultApplicationConfigDirectory  = "Apps";
         private const string DefaultModConfigDirectory          = "Mods";
         private const string DefaultPluginConfigDirectory       = "Plugins";
+        private const string DefaultLanguageFile                = "en-GB.xaml";
+        private const string DefaultThemeFile                   = "Default.xaml";
 
         private static readonly NugetFeed[] DefaultFeeds        = new NugetFeed[]
         {
@@ -66,17 +68,17 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
         /// </summary>
-        public string[] EnabledPlugins { get; set; } = new string[0] { };
+        public string[] EnabledPlugins { get; set; } = EmptyArray<string>.Instance;
 
         /// <summary>
         /// The language file used by the Reloaded II launcher.
         /// </summary>
-        public string LanguageFile { get; set; } = "en-GB.xaml";
+        public string LanguageFile { get; set; } = DefaultLanguageFile;
 
         /// <summary>
         /// The theme file used by the Reloaded-II launcher.
         /// </summary>
-        public string ThemeFile { get; set; } = "Default.xaml";
+        public string ThemeFile { get; set; } = DefaultThemeFile;
 
         public bool FirstLaunch { get; set; } = true;
 

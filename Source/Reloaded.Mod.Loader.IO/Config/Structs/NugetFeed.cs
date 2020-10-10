@@ -1,5 +1,6 @@
 ﻿namespace Reloaded.Mod.Loader.IO.Config.Structs
 {
+    [Equals(DoNotAddEqualityOperators = true)]
     public class NugetFeed
     {
         /// <summary>
