@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using static System.Environment;
 
 namespace Reloaded.Mod.Loader.IO
@@ -10,6 +11,11 @@ namespace Reloaded.Mod.Loader.IO
     {
         private const string BootstrapperDllName = "Reloaded.Mod.Loader.Bootstrapper.dll";
         private const string Kernel32AddressDumperRelativePath = "Loader/Kernel32AddressDumper.exe";
+
+        /// <summary>
+        /// Gets the folder containing this library; and most likely the currently executing program.
+        /// </summary>
+        public static string CurrentProgramFolder { get; } = Path.GetDirectoryName(typeof(Paths).Assembly.Location);
 
         /// <summary>
         /// Gets the path of the Reloaded folder in AppData where Reloaded configuration and user data reside.

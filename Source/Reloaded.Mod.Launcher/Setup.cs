@@ -32,7 +32,6 @@ namespace Reloaded.Mod.Launcher
         private static XamlResource<string> _xamlSplashPreparingResources = new XamlResource<string>("SplashPreparingResources");
         private static XamlResource<string> _xamlCheckingForUpdates = new XamlResource<string>("SplashCheckingForUpdates");
         private static XamlResource<string> _xamlSplashLoadCompleteIn = new XamlResource<string>("SplashLoadCompleteIn");
-        private static XamlResource<string> _xamlCreatingTemplates = new XamlResource<string>("SplashCreatingTemplates");
         private static XamlResource<string> _xamlRunningSanityChecks = new XamlResource<string>("SplashRunningSanityChecks");
 
         /// <summary>
@@ -55,11 +54,8 @@ namespace Reloaded.Mod.Launcher
                 RegisterReloadedProtocol();
 
                 updateText(_xamlSplashCreatingDefaultConfig.Get());
-                CreateNewConfigIfNotExist();
+                UpdateDefaultConfig();
                 CheckForMissingDependencies();
-
-                updateText(_xamlCreatingTemplates.Get());
-                CreateTemplates();
 
                 updateText(_xamlSplashPreparingResources.Get());
                 await Task.Run(SetupViewModelsAsync);
@@ -104,12 +100,13 @@ namespace Reloaded.Mod.Launcher
 
             DestroyFolder(launcherFolder, "Languages");
             DestroyFolder(launcherFolder, "Styles");
+            DestroyFolder(launcherFolder, "Templates");
 
             #if !DEBUG
             DestroyFileType(launcherFolder, "*.pdb");
             DestroyFileType(launcherFolder, "*.xml");
             #endif
-            
+
             // Check for .NET 5 Single File
             // This code is unused until .NET 5 upgrade.
             if (Environment.Version >= Version.Parse("5.0.0"))
@@ -234,10 +231,10 @@ namespace Reloaded.Mod.Launcher
         /// <summary>
         /// Creates a new configuration if the config does not exist.
         /// </summary>
-        private static void CreateNewConfigIfNotExist()
+        private static void UpdateDefaultConfig()
         {
-            var config = IoC.Get<LoaderConfig>();
-            SetLoaderPaths(config, Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]));
+            var config      = IoC.Get<LoaderConfig>();
+            SetLoaderPaths(config, Paths.CurrentProgramFolder);
             LoaderConfig.WriteConfiguration(config);
         }
 
@@ -305,19 +302,6 @@ namespace Reloaded.Mod.Launcher
             config.LoaderPath64 = loaderPath64;
             config.Bootstrapper32Path = bootstrapper32Path;
             config.Bootstrapper64Path = bootstrapper64Path;
-        }
-
-        /// <summary>
-        /// Creates templates for configurations not available in the GUI.
-        /// </summary>
-        private static void CreateTemplates()
-        {
-            var templatesDirectory = Path.GetFullPath("Templates");
-            if (!Directory.Exists(templatesDirectory))
-                Directory.CreateDirectory(templatesDirectory);
-            
-            IConfig<GitHubLatestUpdateResolver.GitHubConfig>.ToPath(new GitHubLatestUpdateResolver.GitHubConfig(), $"{GitHubLatestUpdateResolver.GitHubConfig.GetFilePath(templatesDirectory)}");
-            IConfig<GameBananaUpdateResolver.GameBananaConfig>.ToPath(new GameBananaUpdateResolver.GameBananaConfig(), $"{GameBananaUpdateResolver.GameBananaConfig.GetFilePath(templatesDirectory)}");
         }
 
         /// <summary>

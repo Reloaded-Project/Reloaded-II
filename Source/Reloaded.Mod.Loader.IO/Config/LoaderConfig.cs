@@ -104,9 +104,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         /* Some mods are universal :wink: */
 
-        public LoaderConfig()
-        {
-        }
+        public LoaderConfig() { }
 
         public void SanitizeConfig()
         {
@@ -173,18 +171,18 @@ namespace Reloaded.Mod.Loader.IO.Config
         private static string IfNotExistsMakeDefaultDirectory(string directoryPath, string defaultDirectory)
         {
             if (!Directory.Exists(directoryPath))
-                return CreateDirectoryRelativeToCurrent(defaultDirectory);
+                return CreateDirectoryRelativeToProgram(defaultDirectory);
 
             return directoryPath;
         }
 
         /// <summary>
-        /// Creates a directory relative to the current directory
-        /// and returns the full path of the supplied directory parameter.
+        /// Creates a directory relative to the current assembly directory.
+        /// Returns the full path of the supplied directory parameter.
         /// </summary>
-        private static string CreateDirectoryRelativeToCurrent(string directoryPath)
+        private static string CreateDirectoryRelativeToProgram(string directoryPath)
         {
-            string fullDirectoryPath = Path.GetFullPath(directoryPath);
+            string fullDirectoryPath = Path.GetFullPath(Path.Combine(Paths.CurrentProgramFolder, directoryPath));
             Directory.CreateDirectory(fullDirectoryPath);
             return fullDirectoryPath;
         }

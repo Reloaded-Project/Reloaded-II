@@ -20,7 +20,7 @@
     <sys:String x:Key="SplashCleaningConfigurations">Cleaning App/Loader/Mod Configurations</sys:String>
     <sys:String x:Key="SplashPreparingResources">Setting up Resources</sys:String>
     <sys:String x:Key="SplashLoadCompleteIn">Load Complete in:</sys:String>
-    <sys:String x:Key="SplashCreatingTemplates">Creating Templates</sys:String>
+    <sys:String x:Key="SplashCreatingTemplates">Creating Templates</sys:String> <!-- Unused as of 1.8.0 -->
     <sys:String x:Key="SplashCheckingForUpdates">Checking for Updates</sys:String>
     <sys:String x:Key="SplashRunningSanityChecks">Running Sanity Checks</sys:String>
 
