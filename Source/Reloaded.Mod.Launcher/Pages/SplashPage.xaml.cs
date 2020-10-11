@@ -64,7 +64,7 @@ namespace Reloaded.Mod.Launcher.Pages
                 firstLaunchWindow.Owner = Window.GetWindow(this);
                 firstLaunchWindow.ShowDialog();
                 loaderConfig.FirstLaunch = false;
-                LoaderConfig.WriteConfiguration(loaderConfig);
+                IConfig<LoaderConfig>.ToPathAsync(loaderConfig, Paths.LoaderConfigPath);
             }
         }
 

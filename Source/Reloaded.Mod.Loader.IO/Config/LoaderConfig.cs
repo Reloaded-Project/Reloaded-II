@@ -8,7 +8,7 @@ using Reloaded.Mod.Loader.IO.Utility;
 namespace Reloaded.Mod.Loader.IO.Config
 {
     [Equals(DoNotAddEqualityOperators = true)]
-    public class LoaderConfig : ObservableObject
+    public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     {
         private const string DefaultApplicationConfigDirectory  = "Apps";
         private const string DefaultModConfigDirectory          = "Mods";
@@ -127,44 +127,6 @@ namespace Reloaded.Mod.Loader.IO.Config
             {
                 /* Access not allowed to directories.*/
             }
-        }
-
-        /// <summary>
-        /// Returns true if the configuration file exists, else false.
-        /// </summary>
-        public static bool ConfigurationExists()
-        {
-            return File.Exists(Paths.LauncherConfigPath);
-        }
-
-        /// <summary>
-        /// Loads the mod loader configuration from disk.
-        /// </summary>
-        public static LoaderConfig ReadConfiguration()
-        {
-            var config = new LoaderConfig();
-            if (ConfigurationExists())
-            {
-                string jsonFile = File.ReadAllText(Paths.LauncherConfigPath);
-                config = JsonSerializer.Deserialize<LoaderConfig>(jsonFile);
-            }
-
-            config.SanitizeConfig();
-            return config;
-        }
-
-        /// <summary>
-        /// Writes a new mod loader configuration to disk.
-        /// </summary>
-        /// <param name="config">The new mod loader configuration to write.</param>
-        public static void WriteConfiguration(LoaderConfig config)
-        {
-            string directory = Path.GetDirectoryName(Paths.LauncherConfigPath);
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-            string jsonFile = JsonSerializer.Serialize(config, new JsonSerializerOptions() { WriteIndented = true });
-            File.WriteAllText(Paths.LauncherConfigPath, jsonFile);
         }
 
         // Sets default directory if does not exist.

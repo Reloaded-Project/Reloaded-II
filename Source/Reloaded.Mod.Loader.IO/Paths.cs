@@ -23,9 +23,9 @@ namespace Reloaded.Mod.Loader.IO
         public static string ConfigFolder { get; } = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Reloaded-Mod-Loader-II"); // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
 
         /// <summary>
-        /// Location of the static configuration file, used to locate the mod loader install.
+        /// Location of the static configuration file, used to control the launcher.
         /// </summary>
-        public static readonly string LauncherConfigPath = Path.Combine(ConfigFolder, "ReloadedII.json"); // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
+        public static readonly string LoaderConfigPath = Path.Combine(ConfigFolder, "ReloadedII.json"); // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
 
         /// <summary>
         /// Location of the profile optimization folder, used to enable Multicore-JIT.

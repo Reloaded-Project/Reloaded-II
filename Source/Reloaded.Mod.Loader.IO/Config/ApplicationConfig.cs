@@ -91,7 +91,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public static List<PathGenericTuple<ApplicationConfig>> GetAllApplications(string appDirectory = null, CancellationToken token = default)
         {
             if (appDirectory == null)
-                appDirectory = LoaderConfig.ReadConfiguration().ApplicationConfigDirectory;
+                appDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).ApplicationConfigDirectory;
 
             return ConfigReader<ApplicationConfig>.ReadConfigurations(appDirectory, ConfigFileName, token, 2);
         }
@@ -165,7 +165,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         }
 
         /// <inheritdoc />
-        public void SetNullValues()
+        public void SanitizeConfig()
         {
             EnabledMods ??= EmptyArray<string>.Instance;
         }

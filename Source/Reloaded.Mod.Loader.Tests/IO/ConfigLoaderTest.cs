@@ -23,8 +23,8 @@ namespace Reloaded.Mod.Loader.Tests.IO
 
             _testModConfig = new ModConfig();
             _testAppConfig = new ApplicationConfig();
-            _testAppConfig.SetNullValues();
-            _testModConfig.SetNullValues();
+            _testAppConfig.SanitizeConfig();
+            _testModConfig.SanitizeConfig();
         }
 
         /* After tests */

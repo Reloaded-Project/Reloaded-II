@@ -224,7 +224,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public static List<PathGenericTuple<ModConfig>> GetAllMods(string modDirectory = null, CancellationToken token = default)
         {
             if (modDirectory == null)
-                modDirectory = LoaderConfig.ReadConfiguration().ModConfigDirectory;
+                modDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).ModConfigDirectory;
 
             return ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, 2, 2);
         }
@@ -392,7 +392,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         }
 
         /// <inheritdoc />
-        public void SetNullValues()
+        public void SanitizeConfig()
         {
             ModDependencies ??= EmptyArray<string>.Instance;
             OptionalDependencies ??= EmptyArray<string>.Instance;

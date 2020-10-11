@@ -233,9 +233,9 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static void UpdateDefaultConfig()
         {
-            var config      = IoC.Get<LoaderConfig>();
+            var config = IoC.Get<LoaderConfig>();
             SetLoaderPaths(config, Paths.CurrentProgramFolder);
-            LoaderConfig.WriteConfiguration(config);
+            IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath);
         }
 
         /// <summary>

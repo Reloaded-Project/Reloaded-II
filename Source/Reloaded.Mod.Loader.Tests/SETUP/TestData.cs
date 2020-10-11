@@ -57,12 +57,9 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
         public TestData()
         {
             // Backup config and override on filesystem with new.
-            bool configExists = File.Exists(Paths.LauncherConfigPath);
-            if (configExists)
-                OriginalConfig = LoaderConfig.ReadConfiguration();
-
+            OriginalConfig = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath);
             TestConfig = MakeTestConfig();
-            LoaderConfig.WriteConfiguration(TestConfig);
+            IConfig<LoaderConfig>.ToPath(TestConfig, Paths.LoaderConfigPath);
 
             try
             {
@@ -84,18 +81,14 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
             }
             catch (Exception)
             {
-                if (OriginalConfig != null)
-                    LoaderConfig.WriteConfiguration(OriginalConfig);
+                IConfig<LoaderConfig>.ToPath(OriginalConfig, Paths.LoaderConfigPath);
                 throw;
             }
         }
 
         public void Dispose()
         {
-            if (OriginalConfig != null)
-                LoaderConfig.WriteConfiguration(OriginalConfig);
-            else
-                File.Delete(Paths.LauncherConfigPath);
+            IConfig<LoaderConfig>.ToPath(OriginalConfig, Paths.LoaderConfigPath);
         }
 
         /* Make LoaderConfig for Testing */

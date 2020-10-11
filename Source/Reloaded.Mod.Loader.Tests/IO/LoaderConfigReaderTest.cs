@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Tests.SETUP;
 using Xunit;
@@ -24,8 +25,8 @@ namespace Reloaded.Mod.Loader.Tests.IO
             var config = TestData.MakeTestConfig();
 
             // Write and read back the config.
-            LoaderConfig.WriteConfiguration(config);
-            var newConfig = LoaderConfig.ReadConfiguration();
+            IConfig<LoaderConfig>.ToPath(config, Paths.LoaderConfigPath);
+            var newConfig = IConfig<LoaderConfig>.FromPath(Paths.LoaderConfigPath);
 
             // Restore old config and assert.
             Assert.Equal(config, newConfig);
@@ -44,8 +45,8 @@ namespace Reloaded.Mod.Loader.Tests.IO
             config.PluginConfigDirectory = "0Plugins";
 
             // Write and read back the config.
-            LoaderConfig.WriteConfiguration(config);
-            var newConfig = LoaderConfig.ReadConfiguration();
+            IConfig<LoaderConfig>.ToPath(config, Paths.LoaderConfigPath);
+            var newConfig = IConfig<LoaderConfig>.FromPath(Paths.LoaderConfigPath);
 
             // Restore old config and assert.
             Assert.True(Directory.Exists(newConfig.ApplicationConfigDirectory));

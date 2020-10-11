@@ -63,7 +63,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         public void Save()
         {
             _config.NuGetFeeds = Feeds.ToArray();
-            LoaderConfig.WriteConfiguration(_config);
+            IConfig<LoaderConfig>.ToPathAsync(_config, Paths.LoaderConfigPath);
         }
     }
 

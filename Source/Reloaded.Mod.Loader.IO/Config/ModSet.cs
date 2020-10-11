@@ -27,7 +27,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public void Save(string filePath) => ConfigReader<ModSet>.WriteConfiguration(filePath, this);
 
         /// <inheritdoc />
-        public void SetNullValues()
+        public void SanitizeConfig()
         {
             EnabledMods ??= EmptyArray<string>.Instance;
         }

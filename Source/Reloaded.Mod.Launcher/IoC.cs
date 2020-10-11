@@ -23,13 +23,13 @@ namespace Reloaded.Mod.Launcher
             LoaderConfig config;
             try
             {
-                config = LoaderConfig.ReadConfiguration();
+                config = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath);
             }
             catch (Exception ex)
             {
                 config = new LoaderConfig();
                 config.SanitizeConfig();
-                LoaderConfig.WriteConfiguration(config);
+                IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath);
                 Errors.HandleException(ex, "Failed to parse Reloaded-II launcher configuration.\n" +
                                            "This is a rare bug, your settings have been reset.\n" +
                                            "If you have encountered this please report this to the GitHub issue tracker.\n" +

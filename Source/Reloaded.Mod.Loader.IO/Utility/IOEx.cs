@@ -31,7 +31,7 @@ namespace Reloaded.Mod.Loader.IO.Utility
                 var destFileName = Path.GetFileName(sourceFilePath);
                 var destFilePath = Path.Combine(target, destFileName);
 
-                while (File.Exists(destFilePath) && !CheckWriteAccess(destFilePath))
+                while (File.Exists(destFilePath) && !CheckFileAccess(destFilePath, FileMode.Open, FileAccess.Write))
                     Thread.Sleep(100);
 
                 if (File.Exists(destFilePath))
@@ -53,23 +53,75 @@ namespace Reloaded.Mod.Loader.IO.Utility
         }
 
         /// <summary>
-        /// Checks whether a file with a specific path can be written to.
+        /// Waits for write access to be available for a file.
         /// </summary>
-        public static bool CheckWriteAccess(string filePath)
+        /// <param name="filePath">The path to the file.</param>
+        /// <param name="mode">A mode that determines whether the file should be opened, created etc.</param>
+        /// <param name="access">Required access types for the file.</param>
+        /// <param name="token">The token.</param>
+        public static FileStream OpenFile(string filePath, FileMode mode = FileMode.OpenOrCreate, FileAccess access = FileAccess.ReadWrite, CancellationToken token = default)
+        {
+            FileStream stream;
+
+            while ((stream = TryOpenOrCreateFileStream(filePath, mode, access)) == null) 
+            {
+                if (token.IsCancellationRequested)
+                    return null;
+
+                Thread.Sleep(1);
+            }
+
+            return stream;
+        }
+
+        /// <summary>
+        /// Waits for write access to be available for a file.
+        /// </summary>
+        /// <param name="filePath">The path to the file.</param>
+        /// <param name="mode">A mode that determines whether the file should be opened, created etc.</param>
+        /// <param name="access">Required access types for the file.</param>
+        /// <param name="token">The token.</param>
+        public static async Task<FileStream> OpenFileAsync(string filePath, FileMode mode = FileMode.OpenOrCreate, FileAccess access = FileAccess.ReadWrite, CancellationToken token = default)
+        {
+            FileStream stream;
+            while ((stream = TryOpenOrCreateFileStream(filePath, mode, access)) == null)
+            {
+                if (token.IsCancellationRequested)
+                    return null;
+
+                await Task.Delay(1, token);
+            }
+
+            return stream;
+        }
+
+        /// <summary>
+        /// Tries to open a stream for a specified file.
+        /// Returns null if it fails due to file lock.
+        /// </summary>
+        public static FileStream TryOpenOrCreateFileStream(string filePath, FileMode mode = FileMode.OpenOrCreate, FileAccess access = FileAccess.ReadWrite)
         {
             try
             {
-                File.Open(filePath, FileMode.Open, FileAccess.Write).Dispose();
-                return true;
+                return File.Open(filePath, mode, access);
             }
             catch (UnauthorizedAccessException)
             {
-                return false;
+                return null;
             }
             catch (IOException)
             {
-                return false;
+                return null;
             }
+        }
+
+        /// <summary>
+        /// Checks whether a file with a specific path can be opened.
+        /// </summary>
+        public static bool CheckFileAccess(string filePath, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite)
+        {
+            using var stream = TryOpenOrCreateFileStream(filePath, mode, access);
+            return stream != null;
         }
 
         /// <summary>
