@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
+    <PackageReference Include="NetCoreInstallChecker" Version="1.1.0" />
     <PackageReference Include="Reloaded.Hooks" Version="2.4.0" />
     <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.3.1-lazyloading" />

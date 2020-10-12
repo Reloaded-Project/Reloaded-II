@@ -87,7 +87,7 @@ namespace Reloaded.Mod.Loader.Mods
 
             foreach (var mod in modifications)
             {
-                var defaultAssembly = mod.Loader?.LoadDefaultAssembly();
+                var defaultAssembly = mod.Context?.LoadDefaultAssembly();
                 var entryPoints = defaultAssembly?.GetTypes().Where(t => typeof(T).IsAssignableFrom(t) && !t.IsAbstract);
                 if (entryPoints == null) 
                     continue;

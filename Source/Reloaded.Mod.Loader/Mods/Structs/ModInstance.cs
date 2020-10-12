@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Runtime.Loader;
 using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
+using Reloaded.Mod.Loader.Utilities;
 
 namespace Reloaded.Mod.Loader.Mods.Structs
 {
@@ -11,7 +13,7 @@ namespace Reloaded.Mod.Loader.Mods.Structs
     /// </summary>
     public class ModInstance : IDisposable
     {
-        public PluginLoader Loader { get; private set; }
+        public LoadContext Context { get; private set; }
         public IModV1 Mod { get; private set; }
 
         public IModConfig ModConfig { get; set; }
@@ -40,9 +42,9 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         }
 
         /* Dll Mods */
-        public ModInstance(PluginLoader loader, IModV1 mod, IModConfig config)
+        public ModInstance(LoadContext context, IModV1 mod, IModConfig config)
         {
-            Loader = loader;
+            Context = context;
             Mod = mod;
             ModConfig = config;
 
@@ -61,13 +63,14 @@ namespace Reloaded.Mod.Loader.Mods.Structs
             {
                 Mod?.Disposing?.Invoke();
                 Mod?.Unload();
-                Loader?.Dispose();
-
+                Context?.Dispose();
+                
                 // Clean up references.
-                Loader = null;
+                Context = null;
                 Mod = null;
-                GC.Collect(2, GCCollectionMode.Forced, true);
+
                 GC.SuppressFinalize(this);
+                GC.Collect();
 
                 // Blocking GC happens here to ensure no reference to unloaded assembly still exists.
             }
