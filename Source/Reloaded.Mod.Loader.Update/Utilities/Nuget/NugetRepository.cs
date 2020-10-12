@@ -37,7 +37,7 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
 
             nugetHelper._downloadResource        = new Lazy<DownloadResource>(() => nugetHelper._sourceRepository.GetResourceAsync<DownloadResource>().Result);
             nugetHelper._packageMetadataResource = new Lazy<PackageMetadataResource>(() => nugetHelper._sourceRepository.GetResourceAsync<PackageMetadataResource>().Result);
-            nugetHelper._packageSearchResource   = new Lazy<PackageSearchResource>(nugetHelper._sourceRepository.GetResourceAsync<PackageSearchResource>().Result);
+            nugetHelper._packageSearchResource   = new Lazy<PackageSearchResource>(() => nugetHelper._sourceRepository.GetResourceAsync<PackageSearchResource>().Result);
 
             return nugetHelper;
         }
