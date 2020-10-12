@@ -31,9 +31,6 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         public bool IsTesting { get; private set; }
 
-        // Just for optimization to faster preload/find 
-        static Loader() => LoadContext.Preload();
-
         /// <summary>
         /// Initialize the loader.
         /// </summary>
