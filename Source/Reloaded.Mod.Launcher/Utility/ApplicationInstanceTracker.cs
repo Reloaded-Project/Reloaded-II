@@ -36,16 +36,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
             if (!token.IsCancellationRequested)
             {
-                // On Wine (and modified Windows OS) WMI might not work.
-                try
-                {
-                    _processWatcher = App.IsElevated ? (IProcessWatcher)new WmiProcessWatcher() : ProcessWatcher.Instance;
-                }
-                catch (Exception)
-                {
-                    _processWatcher = ProcessWatcher.Instance;
-                }
-
+                _processWatcher = IoC.Get<IProcessWatcher>();
                 _processWatcher.OnNewProcess += ProcessWatcherOnOnNewProcess;
                 _processWatcher.OnRemovedProcess += ProcessWatcherOnOnRemovedProcess;
             }
