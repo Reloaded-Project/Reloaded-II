@@ -19,7 +19,7 @@ namespace Reloaded.Mod.Launcher.Utility
         public AutoInjector(MainPageViewModel mainPageViewModel)
         {
             _mainPageViewModel = mainPageViewModel;
-            _processWatcher    = App.IsElevated ? (IProcessWatcher) new WmiProcessWatcher() : ProcessWatcher.Instance;
+            _processWatcher    = IoC.Get<IProcessWatcher>();
             _processWatcher.OnNewProcess += ProcessWatcherOnOnNewProcess;
         }
 

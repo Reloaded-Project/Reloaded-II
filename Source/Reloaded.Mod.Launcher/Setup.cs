@@ -12,6 +12,7 @@ using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Launcher.Utility.Interfaces;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Dependency;
@@ -246,6 +247,8 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         private static async Task SetupViewModelsAsync()
         {
+            IoC.Kernel.Rebind<IProcessWatcher>().ToConstant(IProcessWatcher.Get());
+
             var config = IoC.Get<LoaderConfig>();
             IoC.GetConstant<MainPageViewModel>();
             IoC.GetConstant<ManageModsViewModel>();   // Consumes MainPageViewModel, LoaderConfig
