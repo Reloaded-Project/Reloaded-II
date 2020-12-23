@@ -7,6 +7,7 @@ using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Config.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
@@ -62,8 +63,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         /// </summary>
         public void Save()
         {
-            _config.NuGetFeeds = Feeds.ToArray();
+            _config.NuGetFeeds = Feeds.Where(x => !string.IsNullOrEmpty(x.URL)).ToArray();
             IConfig<LoaderConfig>.ToPathAsync(_config, Paths.LoaderConfigPath);
+            IoC.Get<AggregateNugetRepository>().FromFeeds(Feeds);
         }
     }
 

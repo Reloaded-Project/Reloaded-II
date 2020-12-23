@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Protocol.Core.Types;
+using Reloaded.Mod.Loader.IO.Config.Structs;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 
@@ -13,6 +15,7 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
     /// </summary>
     public class AggregateNugetRepository
     {
+        public AggregateNugetRepository(NugetFeed[] feeds) => FromFeeds(feeds);
         public AggregateNugetRepository(INugetRepository[] sources) => Sources = sources.ToList();
         public AggregateNugetRepository(string[] sources) => Sources = sources.Select(x => (INugetRepository)NugetRepository.FromSourceUrl(x)).ToList();
         public AggregateNugetRepository() { }
@@ -20,7 +23,23 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         /// <summary>
         /// All the sources for the helper.
         /// </summary>
-        public List<INugetRepository> Sources { get; } = new List<INugetRepository>();
+        public List<INugetRepository> Sources { get; private set; } = new List<INugetRepository>();
+
+        /// <summary>
+        /// Imports a set of feeds, replacing the current set of <see cref="Sources"/>.
+        /// </summary>
+        /// <param name="feeds">The feeds to import.</param>
+        public void FromFeeds(IReadOnlyList<NugetFeed> feeds)
+        {
+            var aggregateRepo = new INugetRepository[feeds.Count];
+            for (var x = 0; x < feeds.Count; x++)
+            {
+                var repository = NugetRepository.FromSourceUrl(feeds[x].URL);
+                aggregateRepo[x] = repository;
+            }
+
+            Sources = aggregateRepo.ToList();
+        }
 
         /// <summary>
         /// Searches for packages using a specific term in all sources.

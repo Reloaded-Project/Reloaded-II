@@ -16,7 +16,7 @@ namespace Reloaded.Mod.Launcher.Misc
         public static string FailedToStartProcess()                 => ApplicationResourceAcquirer.GetTypeOrAlternative("ErrorFailedToStartProcess", "Failed to start the process. Is your path correct?");
         public static string DllInjectionFailed()                   => ApplicationResourceAcquirer.GetTypeOrAlternative("ErrorDllInjectionFailed", "Failed to DLL inject into application process.");
         public static string PathToApplicationInvalid()             => ApplicationResourceAcquirer.GetTypeOrAlternative("ErrorPathToApplicationInvalid", "The path to the application to be launched is invalid. Please re-check your application configuration.");
-        public static string ErrorGetProcAddress32Failed()             => ApplicationResourceAcquirer.GetTypeOrAlternative("ErrorGetProcAddress32Failed", "Warning: You are probably missing the x86 version of .NET Core, 32-bit applications will not work.\nPlease re-check the requirements listed on the download page.\nActual Error: Failed to acquire address of GetProcAddress for x86.");
+        public static string ErrorGetProcAddress32Failed()          => ApplicationResourceAcquirer.GetTypeOrAlternative("ErrorGetProcAddress32Failed", "Warning: You are probably missing the x86 version of .NET Core, 32-bit applications will not work.\nPlease re-check the requirements listed on the download page.\nActual Error: Failed to acquire address of GetProcAddress for x86.");
 
         /// <summary>
         /// Handles a generic thrown exception.

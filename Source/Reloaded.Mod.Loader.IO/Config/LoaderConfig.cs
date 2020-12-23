@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Reloaded.Mod.Loader.IO.Config.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
+using static System.String;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
@@ -26,44 +28,44 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Contains the path to the Reloaded Mod Loader II DLL.
         /// </summary>
         [JsonPropertyName("LoaderPath32")] // Just a safeguard in case someone decides to refactor and native bootstrapper fails to find property.
-        public string LoaderPath32 { get; set; } = String.Empty;
+        public string LoaderPath32 { get; set; } = Empty;
 
         /// <summary>
         /// Contains the path to the Reloaded Mod Loader II DLL.
         /// </summary>
         [JsonPropertyName("LoaderPath64")] // Just a safeguard in case someone decides to refactor and native bootstrapper fails to find property.
-        public string LoaderPath64 { get; set; } = String.Empty;
+        public string LoaderPath64 { get; set; } = Empty;
 
         /// <summary>
         /// Contains the path to the Reloaded Mod Loader II Launcher.
         /// </summary>
         [JsonPropertyName("LauncherPath")] // Just a safeguard in case someone decides to refactor and native bootstrapper fails to find property.
-        public string LauncherPath { get; set; } = String.Empty;
+        public string LauncherPath { get; set; } = Empty;
 
         /// <summary>
         /// Path to the mod loader bootstrapper for X86 processes.
         /// </summary>
-        public string Bootstrapper32Path { get; set; } = String.Empty;
+        public string Bootstrapper32Path { get; set; } = Empty;
 
         /// <summary>
         /// Path to the mod loader bootstrapper for X64 processes.
         /// </summary>
-        public string Bootstrapper64Path { get; set; } = String.Empty;
+        public string Bootstrapper64Path { get; set; } = Empty;
 
         /// <summary>
         /// The directory which houses all Reloaded Application information (e.g. Games etc.)
         /// </summary>
-        public string ApplicationConfigDirectory { get; set; } = String.Empty;
+        public string ApplicationConfigDirectory { get; set; } = Empty;
 
         /// <summary>
         /// Contains the directory which houses all Reloaded mods.
         /// </summary>
-        public string ModConfigDirectory { get; set; } = String.Empty;
+        public string ModConfigDirectory { get; set; } = Empty;
 
         /// <summary>
         /// Contains the directory which houses all Reloaded plugins.
         /// </summary>
-        public string PluginConfigDirectory { get; set; } = String.Empty;
+        public string PluginConfigDirectory { get; set; } = Empty;
 
         /// <summary>
         /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
@@ -112,6 +114,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             EnabledPlugins ??= EmptyArray<string>.Instance;
             NuGetFeeds ??= DefaultFeeds;
             ResetMissingDirectories();
+            CleanEmptyFeeds();
         }
 
         // Creates directories/folders if they do not exist.
@@ -127,6 +130,12 @@ namespace Reloaded.Mod.Loader.IO.Config
             {
                 /* Access not allowed to directories.*/
             }
+        }
+
+        // Removes empty NuGet feeds.*
+        private void CleanEmptyFeeds()
+        {
+            NuGetFeeds = NuGetFeeds?.Where(x => !IsNullOrEmpty(x.URL)).ToArray();
         }
 
         // Sets default directory if does not exist.

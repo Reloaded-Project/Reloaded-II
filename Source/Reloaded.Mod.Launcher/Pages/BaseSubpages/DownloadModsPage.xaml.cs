@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility;
 
@@ -24,8 +25,14 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 
         private async void TryGetSearchResults()
         {
-            try { await ViewModel.GetSearchResults(); }
-            catch (OperationCanceledException) { /* ignored */ }
+            try
+            {
+                await ViewModel.GetSearchResults();
+            }
+            catch (Exception ex)
+            {
+                Errors.HandleException(ex, "Failed to search for mods to download.");
+            }
         }
     }
 }

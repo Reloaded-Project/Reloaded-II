@@ -236,6 +236,7 @@ namespace Reloaded.Mod.Launcher
         {
             var config = IoC.Get<LoaderConfig>();
             SetLoaderPaths(config, Paths.CurrentProgramFolder);
+
             IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath);
         }
 
@@ -253,18 +254,7 @@ namespace Reloaded.Mod.Launcher
 
             try
             {
-                var aggregateRepo = new INugetRepository[config.NuGetFeeds.Length];
-                for (var x = 0; x < config.NuGetFeeds.Length; x++)
-                {
-                    try
-                    {
-                        var repository = NugetRepository.FromSourceUrl(config.NuGetFeeds[x].URL);
-                        aggregateRepo[x] = repository;
-                    }
-                    catch (Exception) { /* Ignored */ }
-                }
-
-                IoC.Kernel.Rebind<AggregateNugetRepository>().ToConstant(new AggregateNugetRepository(aggregateRepo));
+                IoC.Kernel.Rebind<AggregateNugetRepository>().ToConstant(new AggregateNugetRepository(config.NuGetFeeds));
                 IoC.GetConstant<DownloadModsViewModel>(); // Consumes ManageModsViewModel, NugetHelper
             }
             catch (Exception)
