@@ -50,7 +50,8 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         /// <param name="token">A cancellation token to allow cancellation of the task.</param>
         public async Task<IEnumerable<IPackageSearchMetadata>> Search(string searchString, bool includePrereleases, int results = 50, CancellationToken token = default)
         {
-            return await _packageSearchResource.Value.SearchAsync(searchString, new SearchFilter(includePrereleases), 0, results, _nullLogger, token);
+            try { return await _packageSearchResource.Value.SearchAsync(searchString, new SearchFilter(includePrereleases), 0, results, _nullLogger, token); }
+            catch (Exception) { return new IPackageSearchMetadata[0]; }
         }
 
         /// <summary>
@@ -62,11 +63,18 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         /// <param name="includePrerelease">Allows to grab a prerelease package with the supplied id.</param>
         public async Task<DownloadResourceResult> DownloadPackageAsync(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
-            var package = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
-            if (package.Any())
-                return await DownloadPackageAsync(package.Last(), token);
+            try
+            {
+                var package = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
+                if (package.Any())
+                    return await DownloadPackageAsync(package.Last(), token);
 
-            throw new Exception("Package with given ID was not found.");
+                return new DownloadResourceResult(DownloadResourceResultStatus.NotFound);
+            }
+            catch (Exception)
+            {
+                return new DownloadResourceResult(DownloadResourceResultStatus.NotFound);
+            }
         }
 
         /// <summary>
@@ -78,7 +86,15 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         {
             var packageIdentity = new PackageIdentity(packageMetadata.Identity.Id, packageMetadata.Identity.Version);
             var downloadContext = new PackageDownloadContext(new SourceCacheContext(), Environment.CurrentDirectory, true);
-            return await _downloadResource.Value.GetDownloadResourceResultAsync(packageIdentity, downloadContext, Path.GetTempPath(), _nullLogger, token);
+
+            try
+            {
+                return await _downloadResource.Value.GetDownloadResourceResultAsync(packageIdentity, downloadContext, Path.GetTempPath(), _nullLogger, token);
+            }
+            catch (Exception)
+            {
+                return new DownloadResourceResult(DownloadResourceResultStatus.NotFound);
+            }
         }
 
         /// <summary>
@@ -91,7 +107,8 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         /// <returns>Return contains an array of versions for this package.</returns>
         public async Task<IEnumerable<IPackageSearchMetadata>> GetPackageDetails(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
-            return await _packageMetadataResource.Value.GetMetadataAsync(packageId, includePrerelease, includeUnlisted, _sourceCacheContext, _nullLogger, token);
+            try { return await _packageMetadataResource.Value.GetMetadataAsync(packageId, includePrerelease, includeUnlisted, _sourceCacheContext, _nullLogger, token); }
+            catch (Exception) { return new IPackageSearchMetadata[0]; }
         }
 
         /// <summary>
@@ -103,8 +120,15 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         /// <param name="token">A cancellation token to allow cancellation of the task.</param>
         public async Task<FindDependenciesResult> FindDependencies(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
-            var packages = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
-            return await FindDependencies(Nuget.GetNewestVersion(packages), includePrerelease, includeUnlisted, token);
+            try
+            {
+                var packages = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
+                return await FindDependencies(Nuget.GetNewestVersion(packages), includePrerelease, includeUnlisted, token);
+            }
+            catch (Exception)
+            {
+                return new FindDependenciesResult(new HashSet<IPackageSearchMetadata>(1), new HashSet<string>(1));
+            }
         }
 
         /// <summary>
@@ -117,8 +141,16 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         public async Task<FindDependenciesResult> FindDependencies(IPackageSearchMetadata packageSearchMetadata, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
             var result = new FindDependenciesResult(new HashSet<IPackageSearchMetadata>(), new HashSet<string>());
-            await FindDependenciesRecursiveAsync(packageSearchMetadata, includePrerelease, includeUnlisted, result.Dependencies, result.PackagesNotFound, token);
-            return result;
+            
+            try
+            {
+                await FindDependenciesRecursiveAsync(packageSearchMetadata, includePrerelease, includeUnlisted, result.Dependencies, result.PackagesNotFound, token);
+                return result;
+            }
+            catch (Exception e)
+            {
+                return new FindDependenciesResult(new HashSet<IPackageSearchMetadata>(1), new HashSet<string>(1));
+            }
         }
 
         /// <summary>
