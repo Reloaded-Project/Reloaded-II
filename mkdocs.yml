@@ -1,0 +1,45 @@
+site_name: Reloaded II Documentation
+site_url: https://reloaded-project.github.io/Reloaded-II/
+
+repo_name: Reloaded-Project/Reloaded-II
+repo_url: https://github.com/Reloaded-Project/Reloaded-II
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Sewer56
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/TheSewer56
+
+theme:
+  name: material
+  palette:
+    primary: red
+    accent: red
+    scheme: slate
+    
+pages:
+  - Home: index.md
+  - For Users:
+    - Frequently Asked Questions: FAQ.md
+    - Quick Start: QuickStart.md
+    - Advanced:
+        - Injection Methods: InjectionMethods.md
+  - For Modders:
+    - Getting Started: GettingStartedMods.md
+    - Publishing Mods: UpdateSupport.md
+  - For Programmers:
+    - Building Mods: DeveloperModGuide.md
+    - Inter Mod Communication: InterModCommunication.md
+    - Miscellaneous:
+        - API Overview: APIOverview.md
+        - Optimizing Mods: OptimizingMods.md
+        - Shared Libraries: https://github.com/Sewer56/Reloaded.SharedLib.Hooks
+        - Writing Mods for Actively Developed Games/Apps: https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications
+        - Writing Native Mods: NativeMods.md
+        
+  - For Contributors:
+    - Building Reloaded: BuildingReloaded.md
+    - Project Structure: ProjectStructure.md
+    - High Level Architecture: Reloaded-II-Architecture.md
+    - Translating Reloaded: LocalizingReloaded.md

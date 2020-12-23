@@ -1,10 +1,3 @@
-<div align="center">
-	<h1>Reloaded II: Localization</h1>
-	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
-	<br/> <br/>
-	<strong>¿Cómo está?</strong>
-</div>
-
 # Localization
 
 Reloaded-II supports localization, meaning that the entirety of the launcher's user interface can be translated to, or viewed in another language.

@@ -1,74 +1,57 @@
-<div align="center">
-	<h1>Reloaded II: Mod Updates</h1>
-	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
-	<br/> <br/>
-	<strong>Simple, but effective!</strong>
-	<br/>
-    Also quite fast!
-</div>
+# Publishing Mods
 
-# Table of Contents
-- [Supported Archive Formats](#supported-archive-formats)
-- [Existing Services](#existing-services)
-    - [Reloaded II Repository](#reloaded-ii-repository)
-    - [GitHub](#github)
-        - [Determining Version](#determining-version)
-        - [User Configuration](#user-configuration)
-        - [Limitations](#limitations)
-    - [GameBanana](#gamebanana)
-        - [File Name Pattern](#file-name-pattern)
-        - [Item Type](#item-type)
-        - [Item Id](#item-id)
-        - [Determining Version](#determining-version)
-- [Programmers: New Services](#programmers-new-services)
-    - [1. Write a Resolver](#1-write-a-resolver)
-    - [2. Add resolver to list of Resolvers](#2-add-resolver-to-list-of-resolvers)
+---
+**Warning**
 
-# Supported Archive Formats
+Please be careful to not include any configuration files inside your mod updates as doing so would overwrite the user's own settings.
 
-See: [SharpCompress Supported Format Table](https://github.com/adamhathcock/sharpcompress/blob/master/FORMATS.md#supported-format-table)
+---
 
-# Existing Services
+At the time of writing the supported archive formats are: `rar`, `zip`, `tar`, `gzip`, `7z`, `lz`
 
-**Note:** When the mod loader checks for updates, it will only use maximum one of the compatible sources below.
+See [SharpCompress Supported Format Table](https://github.com/adamhathcock/sharpcompress/blob/master/FORMATS.md#supported-format-table) for more details.
 
-The mod loader goes through each of the sources, listed in the exact same order as sections below and picks the first appropriate service which is supported.
+## Supported Update Sources
+
+When the mod loader checks for updates, it will use the first source it finds from the list below (in the order used in this document).
 
 This is to speed up the time it takes to check for updates, as asking every source for every mod could otherwise take significant amount of time.
 
-### Reloaded II Repository
+### NuGet
 
-**Support:** A package is considered as "supported" if it is uploaded to this service.
+NuGet is the primary source for downloading mods and searching for missing mod dependencies.
+Users can directly download mods via the `Download Mods` menu.
 
-This is a self hosted official service for distributing Reloaded-II mods. When any dependencies of a given mod are missing, this is also the repository used for resolving dependencies. 
+Reloaded comes preconfigured with a single [official server](http://167.71.128.50:5000/home) intended for hosting code mods.
 
-This repository is open to everyone: Registration free!
+#### Creating a Package
+You can generate a NuGet package for your mod from inside the launcher using the `Convert to NuGet format` button.
 
-To upload: first generate a NuGet package for your mod from inside the launcher using the `Convert to NuGet format` button.
-
-![Example](https://i.imgur.com/V7uq4Jl.png)
+![Example](./Images/ConvertToNuget.png)
 
 Once conversion completes, Reloaded will open a folder containing the newly generated `.nupkg` file.
 
-To upload this file, use the `dotnet` commandline utility that ships with the .NET Core SDK (if you are using Reloaded-II you'll probably have this).
+---
+**Note**
+
+There also exists a standalone NuGet Package Converter released as part of `Tools.zip` alongside Reloaded releases on GitHub.
+
+---
+
+#### Uploading Packages
+
+You can now upload this to a NuGet server. The easiest way is to install the [.NET SDK](https://dotnet.microsoft.com/download/dotnet/thank-you/sdk-5.0.101-windows-x64-installer) and use the `dotnet` commandline utility. 
+
+Example: 
 
 ```
-dotnet nuget push -s http://167.71.128.50:5000/v3/index.json -k YOUR-UNIQUE-KEY package.nupkg
+# Upload package.nupkg to the official Reloaded server.
+dotnet nuget push -s http://167.71.128.50:5000/v3/index.json -k API-KEY package.nupkg
 ```
 
-Before you upload however, you **must** read the [Upload Page](http://167.71.128.50:5000/upload) for some additional important information.
-
-Please be respectful and also follow the [Site Rules](http://167.71.128.50:5000/home).
-
-```
-Note for Serious Programmers:
-
-There exists a standalone NuGet Package Converter released as part of Tools.zip alongside Reloaded releases (starting with 1.6.2). If you are using CI/CD for your mods, feel free to use this as part of your automatic deployment process.
-```
+[Upload instructions for the official Reloaded package server](http://167.71.128.50:5000/upload).
 
 ### GitHub
-
-**Support:** A package is considered as "supported" if the file below exists.
 
 Support for mod updates from GitHub Releases can be added by copying the `ReloadedGithubUpdater.json` file from the Launcher's `Template` folder the to mod folder.
 
@@ -84,14 +67,15 @@ After copying, you should then edit the file to include the user/organization na
 }
 ```
 
-##### Determining Version
+#### Determining Version
 To determine the current version of the mod, the GitHub service uses the `ModVersion` field inside of your mod's `ModConfig.json`.
 
-To determine the version on GitHub, the GitHub service uses the `tag` assigned to each release. 
+It compares the version to the tag, which is set when you make a release on GitHub:
+![](./Images/GitHubTag.png)
 
 If the GitHub version is higher than the local one, there is an update.
 
-##### User Configuration
+#### User Configuration
 
 Each mod with GitHub update support can be configured by the user. This can be done by editing the `ReloadedGithubUserConfig.json`  file, in the mod folder using a standard text editor. 
 
@@ -107,7 +91,7 @@ If not present, this file will appear the next time the Reloaded Launcher is lau
 
 **Note:** *ReloadedGithubUserConfig.json should not be included in any mod downloads!*
 
-##### Limitations
+#### Limitations
 - Prereleases are supported but semantic versioning is not. Please do not add any prefixes/suffixes to your release tags.
 
 - GitHub only allows 60 requests an hour for unauthenticated users. This means that if you have many mods with GitHub update support, they might not receive updates immediately.
@@ -115,11 +99,9 @@ If not present, this file will appear the next time the Reloaded Launcher is lau
 
 ### GameBanana
 
-**Support:** A package is considered as "supported" if the file below exists.
-
 Support for mod updates from GameBanana can be added by copying the `ReloadedGamebananaUpdater.json` file from the Launcher's `Template` folder the to mod folder.
 
-After copying, you should then edit the file to include the entry ID and type.
+First, [upload your mod as a private submission](./Images/GameBananaPrivate.png), copy the file to your mod folder and then edit the file to include the entry ID and type.
 
 *Example:*
 
@@ -131,12 +113,16 @@ After copying, you should then edit the file to include the entry ID and type.
 }
 ```
 
-##### File Name Pattern
-The `FileNamePattern` is a piece of text which the name of the uploaded file (media) must contain to be recognized as the correct file upload. The default is `rii-`.
+#### File Name Pattern
+Specifies text which must be contained by the file used for updates. 
+The default is `rii-`, so a valid file names could be: 
 
-It is used to distinguish the Reloaded II download from downloads that might come in other formats, e.g. for other mod loaders.
+- `rii-supercoolmod.zip`.
+- `supercoolmod-rii-by-coolguy123.zip`
 
-**File Pattern Guidelines:**
+The pattern is used to distinguish the Reloaded II download from downloads that might come in other formats, e.g. for other mod loaders and/or extras.
+
+##### File Pattern Guidelines
 
 ✅ Piece of text at the beginning (preferred) or end of the file name.
 
@@ -146,13 +132,21 @@ It is used to distinguish the Reloaded II download from downloads that might com
 
 Gamebanana adds suffixes to duplicate file names, even if original file is removed. So if you upload `rii-midnighthill.7z`, remove it, and reupload it again, the file might be named something like `rii-midnighthill_eaa22.7z`.
 
-**Warning**
+---
+Warning
+
 - Some characters are removed/replaced when uploading files to GameBanana.
 - Long file names (~32+ characters) might get trimmed down.
+- Text comparison used is case insensitive.
 
-The text comparison used by the GameBanana service is case insensitive.
+---
 
-##### Item Type
+#### Item Id
+The Item ID of your submission can be obtained from the URL of your submission: 
+
+![](./Images/GameBananaUrl.png)
+
+#### Item Type
 A list of item types can be obtained from the following page: [GameBanana API Item Types](https://api.gamebanana.com/Core/Item/Data/AllowedItemTypes?). 
 
 The item type should match the submission type of your mod. The type of submission of your mod can be found in the URL in plural form.
@@ -161,19 +155,12 @@ e.g. `gamebanana.com/skins/162715`=> `Skin`
 
 e.g. `gamebanana.com/gamefiles/7104`=> `Gamefile`
 
-##### Item Id
-The Item ID of your submission can be obtained from the URL of your submission: 
-![](https://i.imgur.com/WQBjezg.png)
-
-In order to obtain your Item ID, it is recommended that you first upload your mod as private: 
-![](https://i.imgur.com/o1lvS4n.png)
-
-##### Determining Version
+#### Determining Version
 To compare versions of the mod, the GameBanana service uses the `Upload Date` of the and compares it against the last modified date of your mod's `ModConfig.json`.
 
 If the GameBanana upload is more recent than the last edit of `ModConfig.json`, a new update will be reported.
 
-# Programmers: New Services
+## Adding Support (for Programmers)
 
 Here is a simple rundown of how to add a new service for a 3rd party website.
 

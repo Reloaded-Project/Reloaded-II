@@ -1,10 +1,3 @@
-<div align="center">
-	<h1>Reloaded II: Optimizing Mods</h1>
-	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
-	<br/> <br/>
-	<strong>.NET is like an 86.<br/>Slow start but good round the corners.</strong>
-</div>
-
 # Optimizing Mods
 
 This document details various methods and techniques in which mods may be optimized to run for the end user. 
@@ -76,7 +69,12 @@ In other words, only one of the mods' hooks works.
 
 #### Publish as ReadyToRun
 
-.NET Core 3 has a new type of officially supported file format for publishing applications known as *ReadyToRun* (abbreviated as R2R).
+---
+**Note:** *This optimization is available as part of the mod template and used when you run the included `Publish.ps1` script.*
+
+---
+
+.NET Core 3+ has a new type of officially supported file format for publishing applications known as *ReadyToRun* (abbreviated as R2R).
 
 The main advantage of R2R is that it boasts **significant** improvement to startup times by shipping native code alongside IL code to essentially create hybrid assemblies.
 

@@ -1,14 +1,3 @@
-<div align="center">
-	<h1>Reloaded II: Project Structure</h1>
-	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
-	<br/> <br/>
-	<strong>Who, what, when, where and why?</strong>
-	<br/>
-    What does each component do?
-    <br/>
-    Here's a short summary.
-</div>
-
 ## Components
 
 ### Reloaded.Mod.Interfaces 
