@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Shared.PeParser.Interfaces
+﻿namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser.Interfaces
 {
     public interface IThunk
     {

@@ -15,7 +15,7 @@ namespace Reloaded.Mod.Interfaces.Internal
         // Print Message
 
         /// <summary>
-        /// This is an alias for <see cref="ILoggerV2.WriteLine"/>
+        /// This is an alias for <see cref="ILoggerV2.WriteLine(string,System.Drawing.Color)"/>
         /// </summary>
         /// <param name="message">The message to print.</param>
         /// <param name="color">The color to print the message in.</param>

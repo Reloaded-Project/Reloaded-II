@@ -1,5 +1,5 @@
 ﻿using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Weaving;
+using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Launcher.Models.Model
 {

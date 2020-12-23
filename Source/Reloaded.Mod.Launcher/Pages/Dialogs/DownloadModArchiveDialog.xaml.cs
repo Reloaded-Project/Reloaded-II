@@ -9,10 +9,11 @@ using System.Windows;
 using System.Windows.Controls;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Utilities;
-using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
+using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs
 {
@@ -130,8 +131,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             await archiveExtractor.ExtractPackageAsync(data, temporaryDirectory);
 
             /* Get name of package. */
-            var configReader = new ConfigReader<ModConfig>();
-            var configs      = configReader.ReadConfigurations(temporaryDirectory, ModConfig.ConfigFileName, default, int.MaxValue);
+            var configs      = ConfigReader<ModConfig>.ReadConfigurations(temporaryDirectory, ModConfig.ConfigFileName, default, int.MaxValue);
             var loaderConfig = IoC.Get<LoaderConfig>();
 
             foreach (var config in configs)

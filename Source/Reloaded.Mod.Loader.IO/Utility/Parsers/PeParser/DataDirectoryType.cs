@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Shared.PeParser
+﻿namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser
 {
     public enum DataDirectoryType
     {

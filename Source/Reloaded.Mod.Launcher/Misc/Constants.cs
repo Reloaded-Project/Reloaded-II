@@ -18,6 +18,10 @@ namespace Reloaded.Mod.Launcher.Misc
         public const string ParameterArguments = "--arguments";
         public const string ParameterDownload  = "--download";
 
+        public const string GitRepositoryAccount = "Reloaded-Project";
+        public const string GitRepositoryName = "Reloaded-II";
+        public const string GitRepositoryReleaseName = "Release.zip";
+
         public const string ReloadedProtocol = "R2";
         public const int    IcoMaxHeight = 256;
         public const int    IcoMaxWidth = 256;

@@ -111,7 +111,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 if (Update.CheckMissingDependencies(out var missingDependencies))
                 {
                     try { await Update.DownloadNuGetPackagesAsync(missingDependencies, false, false); }
-                    catch (Exception e) { }
+                    catch (Exception) { }
                 }
 
                 CheckModCompatibility();

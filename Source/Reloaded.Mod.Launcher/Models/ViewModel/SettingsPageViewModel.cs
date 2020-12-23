@@ -44,7 +44,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public void SaveConfig()
         {
-            LoaderConfigReader.WriteConfiguration(LoaderConfig);
+            IConfig<LoaderConfig>.ToPathAsync(LoaderConfig, Paths.LoaderConfigPath);
         }
 
         public void SaveNewLanguage()

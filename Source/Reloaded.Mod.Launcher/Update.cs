@@ -19,6 +19,7 @@ using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
+using Constants = Reloaded.Mod.Launcher.Misc.Constants;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Reloaded.Mod.Launcher
@@ -40,7 +41,7 @@ namespace Reloaded.Mod.Launcher
             try
             {
                 using (var manager = new UpdateManager(
-                    new GithubPackageResolver(SharedConstants.GitRepositoryAccount, SharedConstants.GitRepositoryName, SharedConstants.GitRepositoryReleaseName),
+                    new GithubPackageResolver(Misc.Constants.GitRepositoryAccount, Misc.Constants.GitRepositoryName, Constants.GitRepositoryReleaseName),
                     new ArchiveExtractor()))
                 {
                     // Check for new version and, if available, perform full update and restart

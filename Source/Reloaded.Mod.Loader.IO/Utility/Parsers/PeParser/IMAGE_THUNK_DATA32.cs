@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
-using Reloaded.Mod.Shared.PeParser.Interfaces;
+using Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser.Interfaces;
 
-namespace Reloaded.Mod.Shared.PeParser
+namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser
 {
 	[StructLayout(LayoutKind.Explicit)]
     public struct IMAGE_THUNK_DATA32 : IThunk

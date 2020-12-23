@@ -7,22 +7,6 @@ namespace Reloaded.Mod.Launcher.Utility
     public static class Collections
     {
         /// <summary>
-        /// Updates a given <see cref="ObservableCollection{T}"/> to turn the collection of <see cref="oldItems"/> to <see cref="newItems"/>.
-        /// If the old item collection is null, the new item collection is inserted.
-        /// </summary>
-        public static void UpdateObservableCollection<TItemType>(ref ObservableCollection<TItemType> oldItems, IEnumerable<TItemType> newItems)
-        {
-            if (oldItems != null)
-            {
-                ModifyObservableCollection(oldItems, newItems);
-            }
-            else
-            {
-                oldItems = new ObservableCollection<TItemType>(newItems);
-            }
-        }
-
-        /// <summary>
         /// Modifies a given <see cref="ObservableCollection{T}"/> to turn the collection of <see cref="oldItems"/> to <see cref="newItems"/>.
         /// </summary>
         public static void ModifyObservableCollection<TItemType>(ObservableCollection<TItemType> oldItems, IEnumerable<TItemType> newItems)

@@ -5,15 +5,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using System.Threading.Tasks;
-using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Loader.Exceptions;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Mods.Structs;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
+using Reloaded.Mod.Loader.Utilities;
 using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
 
 namespace Reloaded.Mod.Loader.Mods
@@ -31,18 +30,19 @@ namespace Reloaded.Mod.Loader.Mods
         private readonly ConcurrentDictionary<string, ModAssemblyMetadata> _modIdToMetadata = new ConcurrentDictionary<string, ModAssemblyMetadata>();  
         private readonly ConcurrentDictionary<string, string> _modIdToFolder  = new ConcurrentDictionary<string, string>(); // Maps Mod ID to folder containing mod.
 
-        private AssemblyLoadContext _loadContext;
+        private LoadContext _sharedContext;
         private readonly Loader _loader;
 
         /// <summary>
         /// Initializes the <see cref="PluginManager"/>
         /// </summary>
         /// <param name="loader">Instance of the mod loader.</param>
-        public PluginManager(Loader loader)
+        /// <param name="sharedContext">Used only for testing. Sets shared load context used for plugins.</param>
+        public PluginManager(Loader loader, LoadContext sharedContext = null)
         {
             _loader = loader;
             LoaderApi = new LoaderAPI(_loader);
-            _loadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly());
+            _sharedContext = sharedContext ?? LoadContext.BuildSharedLoadContext();
         }
 
         public void Dispose()
@@ -236,19 +236,14 @@ namespace Reloaded.Mod.Loader.Mods
             var dllPath = tuple.Object.GetDllPath(tuple.Path);
             _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
-            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object), config =>
-            {
-                config.DefaultContext = _loadContext;
-                config.IsLazyLoaded = true;
-            });
-
-            var defaultAssembly = loader.LoadDefaultAssembly();
+            var loadContext     = LoadContext.BuildModLoadContext(dllPath, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Object), _sharedContext.Context);
+            var defaultAssembly = loadContext.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
             var entryPoint      = types.FirstOrDefault(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
 
             // Load entrypoint.
             var plugin = (IModV1) Activator.CreateInstance(entryPoint);
-            return new ModInstance(loader, plugin, tuple.Object);
+            return new ModInstance(loadContext, plugin, tuple.Object);
         }
 
         private ModInstance PrepareNativeMod(PathGenericTuple<IModConfig> tuple)
@@ -331,13 +326,8 @@ namespace Reloaded.Mod.Loader.Mods
             exports      = DefaultExportedTypes; // Preventing heap allocation here.
             isUnloadable = false;
 
-            var loader = PluginLoader.CreateFromAssemblyFile(dllPath, true, SharedTypes, config =>
-            {
-                config.DefaultContext = _loadContext;
-                config.IsLazyLoaded = true;
-            });
-
-            var defaultAssembly = loader.LoadDefaultAssembly();
+            var loadContext     = LoadContext.BuildModLoadContext(dllPath, true, SharedTypes, _sharedContext.Context);
+            var defaultAssembly = loadContext.LoadDefaultAssembly();
             var types           = defaultAssembly.GetTypes();
 
             var exportsEntryPoint = types.FirstOrDefault(t => typeof(IExports).IsAssignableFrom(t) && !t.IsAbstract);
@@ -345,7 +335,7 @@ namespace Reloaded.Mod.Loader.Mods
             {
                 var pluginExports = (IExports) Activator.CreateInstance(exportsEntryPoint);
                 var exportedTypes = pluginExports.GetTypes();
-                var assemblies    = LoadTypesIntoCurrentContext(exportedTypes);
+                var assemblies    = LoadTypesIntoSharedContext(exportedTypes);
                 exports           = new Type[exportedTypes.Length];
 
                 // Find exports in assemblies that were just loaded into the default ALC.
@@ -372,17 +362,17 @@ namespace Reloaded.Mod.Loader.Mods
                 isUnloadable = plugin.CanUnload();
             }
 
-            loader.Dispose();
+            loadContext.Dispose();
             return true;
         }
 
-        private Assembly[] LoadTypesIntoCurrentContext(IReadOnlyList<Type> types)
+        private Assembly[] LoadTypesIntoSharedContext(IReadOnlyList<Type> types)
         {
             var assemblies = new Assembly[types.Count];
             for (var x = 0; x < types.Count; x++)
             {
                 var path = new Uri(types[x].Module.Assembly.CodeBase).LocalPath;
-                assemblies[x] = _loadContext.LoadFromAssemblyPath(path);
+                assemblies[x] = _sharedContext.Context.LoadFromAssemblyPath(path);
             }
 
             return assemblies;

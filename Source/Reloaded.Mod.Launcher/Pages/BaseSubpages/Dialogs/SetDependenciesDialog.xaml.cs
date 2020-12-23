@@ -6,7 +6,7 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Weaving;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
 
@@ -17,7 +17,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
     /// </summary>
     public partial class SetDependenciesDialog : ReloadedWindow
     {
-        public SetDependenciesDialogViewmodel ViewModel { get; set; }
+        public new SetDependenciesDialogViewmodel ViewModel { get; set; }
 
         public SetDependenciesDialog(ManageModsViewModel manageModsViewModel)
         {

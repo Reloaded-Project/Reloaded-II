@@ -6,7 +6,7 @@ using System.Windows.Input;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Config.Structs;
-using Reloaded.Mod.Loader.IO.Weaving;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
@@ -28,7 +28,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         /// <inheritdoc />
         public void Dispose() => RealViewModel?.Dispose();
 
-        private void SaveOnClose(object? sender, EventArgs e)
+        private void SaveOnClose(object sender, EventArgs e)
         {
             RealViewModel.Save();
             Dispose();
@@ -63,7 +63,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         public void Save()
         {
             _config.NuGetFeeds = Feeds.ToArray();
-            LoaderConfigReader.WriteConfiguration(_config);
+            IConfig<LoaderConfig>.ToPathAsync(_config, Paths.LoaderConfigPath);
         }
     }
 
@@ -73,10 +73,10 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         public CreateNewFeedCommand(ConfigureNuGetFeedsDialogViewModel viewModel) => ViewModel = viewModel;
 
         /// <inheritdoc />
-        public bool CanExecute(object? parameter) => true;
+        public bool CanExecute(object parameter) => true;
 
         /// <inheritdoc />
-        public void Execute(object? parameter)
+        public void Execute(object parameter)
         {
             var feed = new NugetFeed("New NuGet Feed", "");
             ViewModel.Feeds.Add(feed);
@@ -84,7 +84,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         }
 
         /// <inheritdoc />
-        public event EventHandler? CanExecuteChanged;
+        public event EventHandler CanExecuteChanged;
     }
 
     public class DeleteFeedCommand : ICommand, IDisposable
@@ -99,17 +99,17 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         /// <inheritdoc />
         public void Dispose() => ViewModel.PropertyChanged -= ViewModelOnPropertyChanged;
 
-        private void ViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        private void ViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ViewModel.CurrentFeed))
                 CanExecuteChanged?.Invoke(sender, e);
         }
 
         /// <inheritdoc />
-        public bool CanExecute(object? parameter) => ViewModel.CurrentFeed != null;
+        public bool CanExecute(object parameter) => ViewModel.CurrentFeed != null;
 
         /// <inheritdoc />
-        public void Execute(object? parameter)
+        public void Execute(object parameter)
         {
             if (ViewModel.CurrentFeed == null) 
                 return;
@@ -119,6 +119,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         }
 
         /// <inheritdoc />
-        public event EventHandler? CanExecuteChanged;
+        public event EventHandler CanExecuteChanged;
     }
 }

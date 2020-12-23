@@ -6,15 +6,13 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Mod.Loader.IO;
+using Reloaded.Mod.Loader.IO.Utility.Parsers;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
 using Reloaded.Mod.Loader.Utilities.Native;
-using Reloaded.Mod.Shared;
-using static System.Environment;
 using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
 
 namespace Reloaded.Mod.Loader
@@ -153,7 +151,7 @@ namespace Reloaded.Mod.Loader
             _loader?.Console?.WaitForConsoleInit();
             _loader?.Console?.WriteLine(errorMessage, _loader.Console.ColorRed);
             _loader?.Logger?.Flush();
-            MessageBox.Show(errorMessage);
+            User32.MessageBox(0, errorMessage, "Oh Noes!", 0);
         }
 
         private static void EnableProfileOptimization()

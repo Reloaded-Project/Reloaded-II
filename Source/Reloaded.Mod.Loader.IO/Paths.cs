@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using static System.Environment;
 
 namespace Reloaded.Mod.Loader.IO
@@ -12,14 +13,19 @@ namespace Reloaded.Mod.Loader.IO
         private const string Kernel32AddressDumperRelativePath = "Loader/Kernel32AddressDumper.exe";
 
         /// <summary>
+        /// Gets the folder containing this library; and most likely the currently executing program.
+        /// </summary>
+        public static string CurrentProgramFolder { get; } = Path.GetDirectoryName(typeof(Paths).Assembly.Location);
+
+        /// <summary>
         /// Gets the path of the Reloaded folder in AppData where Reloaded configuration and user data reside.
         /// </summary>
         public static string ConfigFolder { get; } = Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Reloaded-Mod-Loader-II"); // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
 
         /// <summary>
-        /// Location of the static configuration file, used to locate the mod loader install.
+        /// Location of the static configuration file, used to control the launcher.
         /// </summary>
-        public static readonly string LauncherConfigPath = Path.Combine(ConfigFolder, "ReloadedII.json"); // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
+        public static readonly string LoaderConfigPath = Path.Combine(ConfigFolder, "ReloadedII.json"); // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
 
         /// <summary>
         /// Location of the profile optimization folder, used to enable Multicore-JIT.

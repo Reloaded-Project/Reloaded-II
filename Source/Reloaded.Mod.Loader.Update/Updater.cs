@@ -5,6 +5,7 @@ using Onova;
 using Onova.Models;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.Mod.Shared;
 
@@ -44,7 +45,7 @@ namespace Reloaded.Mod.Loader.Update
 
                     // Note: Since R2R Support was added, we cannot predict which DLL will be in use. Just return the config file as main file.
                     string filePath = modTuple.Path;
-                    var metadata    = new AssemblyMetadata(PathSanitizer.ForceValidFilePath(modTuple.Object.ModName), version, filePath);
+                    var metadata    = new AssemblyMetadata(IOEx.ForceValidFilePath(modTuple.Object.ModName), version, filePath);
 
                     var manager         = new UpdateManager(metadata, resolverTuple.Resolver, resolverTuple.Resolver.Extractor);
                     var updateResult    = await manager.CheckForUpdatesAsync();

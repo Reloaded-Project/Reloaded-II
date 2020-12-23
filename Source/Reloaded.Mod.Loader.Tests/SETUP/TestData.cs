@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Misc;
-using Reloaded.Mod.Shared;
+using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Loader.Tests.SETUP
 {
@@ -59,12 +57,9 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
         public TestData()
         {
             // Backup config and override on filesystem with new.
-            bool configExists = File.Exists(LoaderConfigReader.ConfigurationPath());
-            if (configExists)
-                OriginalConfig = LoaderConfigReader.ReadConfiguration();
-
+            OriginalConfig = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath);
             TestConfig = MakeTestConfig();
-            LoaderConfigReader.WriteConfiguration(TestConfig);
+            IConfig<LoaderConfig>.ToPath(TestConfig, Paths.LoaderConfigPath);
 
             try
             {
@@ -86,18 +81,14 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
             }
             catch (Exception)
             {
-                if (OriginalConfig != null)
-                    LoaderConfigReader.WriteConfiguration(OriginalConfig);
+                IConfig<LoaderConfig>.ToPath(OriginalConfig, Paths.LoaderConfigPath);
                 throw;
             }
         }
 
         public void Dispose()
         {
-            if (OriginalConfig != null)
-                LoaderConfigReader.WriteConfiguration(OriginalConfig);
-            else
-                File.Delete(LoaderConfigReader.ConfigurationPath());
+            IConfig<LoaderConfig>.ToPath(OriginalConfig, Paths.LoaderConfigPath);
         }
 
         /* Make LoaderConfig for Testing */
@@ -107,7 +98,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
             config.ApplicationConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ApplicationConfigDirectory, "Apps");
             config.ModConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ModConfigDirectory, "Mods");
             config.PluginConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.PluginConfigDirectory, "Plugins");
-            config.EnabledPlugins = Constants.EmptyStringArray;
+            config.EnabledPlugins = EmptyArray<string>.Instance;
             return config;
         }
 

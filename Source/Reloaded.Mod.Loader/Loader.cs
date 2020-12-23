@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Loader;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.Exceptions;
 using Reloaded.Mod.Loader.IO;
@@ -35,12 +37,22 @@ namespace Reloaded.Mod.Loader
         public Loader(bool isTesting = false)
         {
             IsTesting = isTesting;
-            LoaderConfig = LoaderConfigReader.ReadConfiguration();
+            LoaderConfig = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath);
             Console = new Console(LoaderConfig.ShowConsole);
-            if (Console.IsEnabled && !isTesting)
-                Logger  = new Logger(Console, Paths.LogPath);
 
-            Manager = new PluginManager(this);
+            if (isTesting)
+            {
+                var executingAssembly = Assembly.GetExecutingAssembly();
+                var location          = executingAssembly.Location;
+                Manager = new PluginManager(this, new LoadContext(AssemblyLoadContext.GetLoadContext(executingAssembly), location));
+            }
+            else
+            {
+                if (Console.IsEnabled)
+                    Logger = new Logger(Console, Paths.LogPath);
+
+                Manager = new PluginManager(this);
+            }
         }
 
         ~Loader()

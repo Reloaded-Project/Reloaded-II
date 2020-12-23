@@ -1,24 +1,25 @@
 ﻿using System;
 using System.IO;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Reloaded.Mod.Loader.IO.Config.Structs;
-using Reloaded.Mod.Loader.IO.Misc;
-using Reloaded.Mod.Loader.IO.Weaving;
-using Reloaded.Mod.Shared;
+using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Loader.IO.Config
 {
     [Equals(DoNotAddEqualityOperators = true)]
-    public class LoaderConfig : ObservableObject
+    public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     {
         private const string DefaultApplicationConfigDirectory  = "Apps";
         private const string DefaultModConfigDirectory          = "Mods";
         private const string DefaultPluginConfigDirectory       = "Plugins";
+        private const string DefaultLanguageFile                = "en-GB.xaml";
+        private const string DefaultThemeFile                   = "Default.xaml";
 
         private static readonly NugetFeed[] DefaultFeeds        = new NugetFeed[]
         {
-            new NugetFeed("Official Repository", SharedConstants.NuGetApiEndpoint, "Package repository of Sewer56, the developer of Reloaded. " +
-                                                                                   "Contains personal and popular community packages."),
+            new NugetFeed("Official Repository", "http://167.71.128.50:5000/v3/index.json", "Package repository of Sewer56, the developer of Reloaded. " +
+                                                                                            "Contains personal and popular community packages."),
         };
 
         /// <summary>
@@ -67,17 +68,17 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
         /// </summary>
-        public string[] EnabledPlugins { get; set; } = new string[0] { };
+        public string[] EnabledPlugins { get; set; } = EmptyArray<string>.Instance;
 
         /// <summary>
         /// The language file used by the Reloaded II launcher.
         /// </summary>
-        public string LanguageFile { get; set; } = "en-GB.xaml";
+        public string LanguageFile { get; set; } = DefaultLanguageFile;
 
         /// <summary>
         /// The theme file used by the Reloaded-II launcher.
         /// </summary>
-        public string ThemeFile { get; set; } = "Default.xaml";
+        public string ThemeFile { get; set; } = DefaultThemeFile;
 
         public bool FirstLaunch { get; set; } = true;
 
@@ -103,14 +104,12 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         /* Some mods are universal :wink: */
 
-        public LoaderConfig()
-        {
-        }
+        public LoaderConfig() { }
 
         public void SanitizeConfig()
         {
             // System.Text.Json might deserialize this as null.
-            EnabledPlugins ??= Constants.EmptyStringArray;
+            EnabledPlugins ??= EmptyArray<string>.Instance;
             NuGetFeeds ??= DefaultFeeds;
             ResetMissingDirectories();
         }
@@ -134,18 +133,18 @@ namespace Reloaded.Mod.Loader.IO.Config
         private static string IfNotExistsMakeDefaultDirectory(string directoryPath, string defaultDirectory)
         {
             if (!Directory.Exists(directoryPath))
-                return CreateDirectoryRelativeToCurrent(defaultDirectory);
+                return CreateDirectoryRelativeToProgram(defaultDirectory);
 
             return directoryPath;
         }
 
         /// <summary>
-        /// Creates a directory relative to the current directory
-        /// and returns the full path of the supplied directory parameter.
+        /// Creates a directory relative to the current assembly directory.
+        /// Returns the full path of the supplied directory parameter.
         /// </summary>
-        private static string CreateDirectoryRelativeToCurrent(string directoryPath)
+        private static string CreateDirectoryRelativeToProgram(string directoryPath)
         {
-            string fullDirectoryPath = Path.GetFullPath(directoryPath);
+            string fullDirectoryPath = Path.GetFullPath(Path.Combine(Paths.CurrentProgramFolder, directoryPath));
             Directory.CreateDirectory(fullDirectoryPath);
             return fullDirectoryPath;
         }

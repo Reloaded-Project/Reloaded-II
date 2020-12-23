@@ -1,4 +1,4 @@
-﻿using Reloaded.Mod.Loader.IO.Weaving;
+﻿using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Loader.IO.Structs
 {

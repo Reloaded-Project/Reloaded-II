@@ -25,15 +25,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         public ApplicationViewModel          ApplicationViewModel   { get; set; }
         public Client                        Client                 { get; set; }
         public ModInfo                       SelectedMod            { get; set; }
-        public ObservableCollection<ModInfo> CurrentMods
-        {
-            get => _currentMods;
-            set => _currentMods = value;
-        }
+        public ObservableCollection<ModInfo> CurrentMods            { get; set; } = new ObservableCollection<ModInfo>();
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private System.Timers.Timer _refreshTimer;
-        private ObservableCollection<ModInfo> _currentMods;
 
         public ReloadedApplicationViewModel(ApplicationViewModel applicationViewModel)
         {
@@ -107,7 +102,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
                 var loadedMods = await Task.Run(RefreshTask);
                 ActionWrappers.ExecuteWithApplicationDispatcher(() =>
                 {
-                    Collections.UpdateObservableCollection(ref _currentMods, loadedMods.Mods);
+                    Collections.ModifyObservableCollection(CurrentMods, loadedMods.Mods);
                     RaisePropertyChangedEvent(nameof(CurrentMods));
                 });
             }

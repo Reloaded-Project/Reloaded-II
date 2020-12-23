@@ -1,7 +1,6 @@
-﻿using Reloaded.Mod.Shared;
-
-namespace Reloaded.Mod.Loader.IO.Config.Structs
+﻿namespace Reloaded.Mod.Loader.IO.Config.Structs
 {
+    [Equals(DoNotAddEqualityOperators = true)]
     public class NugetFeed
     {
         /// <summary>
@@ -10,7 +9,7 @@ namespace Reloaded.Mod.Loader.IO.Config.Structs
         public string Name { get; set; }
 
         /// <summary>
-        /// Path to the NuGet API endpoint e.g. <see cref="SharedConstants.NuGetApiEndpoint"/>
+        /// Path to the NuGet API endpoint.
         /// </summary>
         public string URL { get; set; }
 

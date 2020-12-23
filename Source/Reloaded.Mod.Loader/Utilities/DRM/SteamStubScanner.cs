@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using Reloaded.Mod.Loader.IO.Utility.Parsers;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.Utilities.DRM
