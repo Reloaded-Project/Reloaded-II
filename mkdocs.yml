@@ -21,8 +21,8 @@ theme:
 pages:
   - Home: index.md
   - For Users:
-    - Frequently Asked Questions: FAQ.md
     - Quick Start: QuickStart.md
+    - Frequently Asked Questions: FAQ.md
     - Advanced:
         - Injection Methods: InjectionMethods.md
   - For Modders:

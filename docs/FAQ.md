@@ -11,8 +11,6 @@ Anything else is unofficial.
 
 GitHub is always kept up to date while Gamebanana is sometimes updated slightly less periodically. Regardless of what you download, the launcher will always offer to update itself to the latest up to date version.
 
-Complete documentation for Reloaded is available on GitHub: https://github.com/Reloaded-Project/Reloaded-II#reloaded-for-end-users.
-
 ## Reloaded doesn't boot, what should I do?
 
 Have you installed the dependencies?
