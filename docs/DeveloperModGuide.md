@@ -1,27 +1,7 @@
-<div align="center">
-	<h1>Reloaded II: Building Mods</h1>
-	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
-	<br/> <br/>
-	<strong>Easy as 1,2,3</strong>
-	<br/>
-    The other steps are boring...
-    <br/>
-    So to bring balance to the universe, I just cut them out.
-</div>
-
-# Table of Contents
-- [Prerequisites](#prerequisites)
-- [Project from Template](#project-from-template)
-    - [1. Import the Visual Studio Template](#1-import-the-visual-studio-template)
-    - [2. Update the Mod Configuration and Image](#2-update-the-mod-configuration-and-image)
-    - [3. Building And Debugging](#3-building-and-debugging)
-    - [4. Publishing](#4-publishing)
-- [Creating Project From Scratch](#creating-project-from-scratch)
-
 # Prerequisites
 
 - Visual Studio 2017+
-- .NET Core 3.0 SDK (or newer)
+- .NET Core SDK (3.0 or newer)
 
 # Project from Template
 

@@ -1,10 +1,3 @@
-<div align="center">
-	<h1>Reloaded II: Native Mods</h1>
-	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
-	<br/> <br/>
-    <b>C++ is Oldschool</b>
-</div>
-
 # About Native Mods
 
 Intended for communities who want to try out using Reloaded or transitioning to the mod loader or have a niche reason to use C/C++, Reloaded II has limited support for native C/C++ modifications compiled as DLLs. As standard, this is implemented through the use of DLL Exports.
@@ -53,3 +46,6 @@ That said, if you are hooking/detouring functions **I would strongly advise agai
 Specifically, you will need to use a good hooking/detouring library that fully respects stacked function hooks. It must allow for hook deactivation in a way that avoids touching both your C++ DLL and overwriting the original prologue of the hooked function. 
 
 Here is an example of how such a hooking library may be implemented: [Reloaded.Hooks](https://github.com/Reloaded-Project/Reloaded.Hooks/issues/2).
+
+## CoreRT/NativeAOT?
+Yes you can; mad scientist. 

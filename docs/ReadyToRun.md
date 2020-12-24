@@ -1,15 +1,3 @@
-<div align="center">
-	<h1>Reloaded II: Ready To Run Guide</h1>
-	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
-	<br/> <br/>
-	<strong>User Guides?</strong>
-	<br/>
-    Imagine being Todd Rogers
-    <br/>
-    And starting in SECOND GEAR.
-</div>
-
-
 # ReadyToRun
 
 .NET Core 3 has a new type of officially supported file format for publishing applications known as *ReadyToRun* (abbreviated as R2R).

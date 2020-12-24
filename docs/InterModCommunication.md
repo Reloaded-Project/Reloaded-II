@@ -1,27 +1,3 @@
-<div align="center">
-	<h1>Reloaded II: Inter Mod Communication</h1>
-	<img src="./Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
-	<br/> <br/>
-	<strong>No DLL Exports? No problem!</strong>
-	<br/>
-    Providing a Reloaded-native implementation to a rare but sometimes useful feature.
-</div>
-
-# Table of Contents
-
-- [Table of Contents](#table-of-contents)
-- [Introduction](#introduction)
-  - [How Does it Work?](#how-does-it-work)
-  - [Using Controllers And Plugins](#using-controllers-and-plugins)
-    - [Instantiation](#instantiation)
-    - [Number of Instances](#number-of-instances)
-    - [Disposal](#disposal)
-  - [Using Plugins](#using-plugins)
-  - [Using Controllers](#using-controllers-1)
-  - [Sharing Interfaces](#sharing-interfaces)
-  - [Recommendations &amp; Limitations](#recommendations-amp-limitations)
-  - [Example Mods](#example-mods)
-
 # Introduction
 
 Sometimes you might want to check the state of another mod or or instruct it to perform a certain action. Reloaded-II provides two mechanisms for what it considers "Inter Mod Communication", dubbed *"Plugins and Controllers"*.
@@ -46,7 +22,7 @@ This may be illustrated by the following diagram:
 Communication with the Mod Loader is performed using the `IModLoader` interface, available at your mod's entry point. 
 
 
-## Using Controllers And Plugins
+## About Controllers And Plugins
 
 ### Instantiation
 
@@ -163,7 +139,7 @@ Acquiring new instances of **Plugins** is performed through the use of the `Make
 
 ```csharp
 // _loader is an instance of IModLoader
-WeakReference<ISharedInterface>[] interfaces = _loader.MakeInterfaces<ISharedInterface>();
+var interfaces = _loader.MakeInterfaces<ISharedInterface>();
 ```
 
 ## Using Controllers
@@ -251,35 +227,16 @@ Changes to existing interfaces will break mods using the interfaces. This should
 
 If you want to add more functionality to existing interfaces, either make a new interface or extend the current interface via inheritance. After being published (Mod Released), interfaces should never change (this includes method names).
 
-Controller interfaces should be named with no version suffix and inherit newer versions of itself such that an end user.
-
-**Example:** Registering upgraded controller via inheritance:
+Here is an example of the recommended setup:
 
 ```csharp
-// _controller implements IController which inherits IControllerV2 and IControllerV1.
-// Although most consumers will use interface without version suffix it is recommended to register every version of interface, if possible.
-ModLoader.AddOrReplaceController<IController>(this, _controller); 
-ModLoader.AddOrReplaceController<IControllerV1>(this, _controller); ModLoader.AddOrReplaceController<IControllerV2>(this, _controller);
-```
+// Recommended setup using inheritance.
+// User can acquire `IController` and have the latest version known at compile time.
+interface IController : IControllerV3 { /* Dummy */ } 
 
-**Example Controller Interfaces:**
-The following are examples of valid controller interfaces.
-
-```csharp
-// Each controller with its own implementation, inheriting the next.
-interface IControllerV3 { void DoZ(); }
-interface IControllerV2 : IControllerV3 { void DoY(); }
-interface IController : IControllerV2 { void DoX(); }
-```
-
-```csharp
-// Base implementation inherits all following controllers.
-interface IController : IControllerV2, IControllerV3 { void DoX(); }
-```
-
-```csharp
-// Empty base implementation inheriting other controllers.
-interface IController : IControllerV1, IControllerV2, IControllerV3 { }
+interface IControllerV3 : IControllerV2 { void DoZ(); }
+interface IControllerV2 : IControllerV1 { void DoY(); }
+interface IControllerV1 { void DoX(); }
 ```
 
 ## Example Mods
@@ -298,3 +255,5 @@ The following examples contain mods that export interfaces to be used by other m
 **Game Specific**
 
 - [Sonic Heroes Controller Hook](https://github.com/Sewer56/Heroes.Controller.Hook.ReloadedII) (Allows other mods to receive/send game inputs.)
+
+Interfaces are available within the projects whose names end on `.Interfaces`, e.g. `Reloaded.Universal.Redirector.Interfaces`.

@@ -1,6 +1,6 @@
 <div align="center">
 	<h1>Reloaded II</h1>
-	<img src="./Docs/Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
+	<img src="./docs/Images/Reloaded/Reloaded Logo.png" width="150" align="center" />
 	<br/> <br/>
 	<strong>Nothing else matters.</strong>
 	<br/>
@@ -13,7 +13,7 @@
 **[Reloaded II]** is a Universal DLL Injection based Mod Loader and Management System.
 
 <div align="center">
-	<img src="./Docs/Images/Header.png" width="550" align="center" />
+	<img src="./docs/Images/Header.png" width="550" align="center" />
 	<br/><br/>
 </div>
 
@@ -21,31 +21,13 @@ Designed mostly for hacking games, it is a completely free and open source publi
 
 Made from the ground up **proudly** using the C# programming language.
 
-## Reloaded: For End Users
-- [FAQ: Frequently Asked Questions](./Docs/FAQ.md)
-- [Quick Start](./Docs/QuickStart.md)
-- [Installation/Injection Methods](./Docs/InjectionMethods.md) (Recommended Read for Power Users)
+## Getting Started
+- [Quick Start](./docs/QuickStart.md)
+- [FAQ: Frequently Asked Questions](./docs/FAQ.md)
 
-## Reloaded: For Modders
-- [Getting Started: Modifications](./Docs/GettingStartedMods.md)
-- [Publishing Your Mods](./Docs/UpdateSupport.md)
+For more information, please visit [the documentation](https://reloaded-project.github.io/Reloaded-II/), it's cool.
 
-## Reloaded: For Programmers 
-- [Getting Started: Building Mods](./Docs/DeveloperModGuide.md)
-- [Inter Mod Communication](./Docs/InterModCommunication.md)
-
-**Miscellaneous**
-- [Communication & Loader API](./Docs/APIOverview.md)
-- [Optimizing Mods](./Docs/OptimizingMods.md)
-- [Shared Libraries](https://github.com/Sewer56/Reloaded.SharedLib.Hooks)
-- [Writing Mods For Actively Developed Games/Applications](https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications)
-- [Loading Native Mods](./Docs/NativeMods.md)
-
-## Reloaded: For Potential Contributors
-- [Getting Started: Building Reloaded](./Docs/BuildingReloaded.md)
-- [Getting Started: Project Structure](./Docs/ProjectStructure.md)
-- [Reloaded II's Architecture: Behind the Scenes](./Docs/Reloaded-II-Architecture.md)
-- [Localizing Reloaded](./Docs/LocalizingReloaded.md)
+## Contributions
 
 Contributions to this project are **highly encouraged**.
 
