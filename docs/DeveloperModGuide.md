@@ -1,9 +1,11 @@
-# Prerequisites
+# Building Mods
+
+## Prerequisites
 
 - Visual Studio 2017+
 - .NET Core SDK (3.0 or newer)
 
-# Project from Template
+## Project from Template
 
 ### 1. Import the Visual Studio Template
 The template, named `Reloaded II Mod Template.zip` can be found in the root of this repository.
@@ -32,8 +34,6 @@ To debug your mods, the easiest option is to simply add `Debugger.Launch();` to 
 
 ![Debugger Launch](./Images/DebuggerLaunch.png)
 
-
-
 ### 4. Publishing
 
 In order to publish your mod, open the mod folder in file explorer and run the `Publish.ps1` script (*Right Click -> Run with Powershell*). 
@@ -46,7 +46,7 @@ Publishing performs an additional optimization to your mod called `ReadyToRun`. 
 
 **P.S.** If you are also publishing the source code (e.g. to a public git repository), don't forget to reset the project output path before you commit.
 
-# Creating Project From Scratch 
+## Creating Project From Scratch 
 
 If you would rather not use a template, [here](./ProjectFromScratch.md) is how to recreate the template and create a mod project from scratch.
 
