@@ -80,7 +80,7 @@ namespace Reloaded.Mod.Loader.Mods
         /// Loads a collection of mods.
         /// </summary>
         /// <param name="modPaths">Tuples of individual mod configurations and the paths to those configurations.</param>
-        public void LoadMods(List<PathGenericTuple<IModConfig>> modPaths)
+        public void LoadMods(List<PathTuple<IModConfig>> modPaths)
         {
             /* Load mods. */
             if (modPaths.Count > 0)
@@ -91,7 +91,7 @@ namespace Reloaded.Mod.Loader.Mods
             }
         }
 
-        private ModInstance[] PrepareAllMods(List<PathGenericTuple<IModConfig>> modPaths)
+        private ModInstance[] PrepareAllMods(List<PathTuple<IModConfig>> modPaths)
         {
             var partitioner = Partitioner.Create(0, modPaths.Count);
             var modInstances = new ModInstance[modPaths.Count];
@@ -217,7 +217,7 @@ namespace Reloaded.Mod.Loader.Mods
         /// </summary>
         /// <exception cref="ArgumentException">Mod with specified ID is already loaded.</exception>
         /// <param name="tuple">A tuple of mod config and path to config.</param>
-        private ModInstance GetModInstance(PathGenericTuple<IModConfig> tuple)
+        private ModInstance GetModInstance(PathTuple<IModConfig> tuple)
         {
             // Check if mod with ID already loaded.
             if (IsModLoaded(tuple.Object.ModId))
@@ -230,7 +230,7 @@ namespace Reloaded.Mod.Loader.Mods
             return PrepareNonDllMod(tuple);
         }
 
-        private ModInstance PrepareDllMod(PathGenericTuple<IModConfig> tuple)
+        private ModInstance PrepareDllMod(PathTuple<IModConfig> tuple)
         {
             var modId = tuple.Object.ModId;
             var dllPath = tuple.Object.GetDllPath(tuple.Path);
@@ -246,7 +246,7 @@ namespace Reloaded.Mod.Loader.Mods
             return new ModInstance(loadContext, plugin, tuple.Object);
         }
 
-        private ModInstance PrepareNativeMod(PathGenericTuple<IModConfig> tuple)
+        private ModInstance PrepareNativeMod(PathTuple<IModConfig> tuple)
         {
             var modId = tuple.Object.ModId;
             var dllPath = tuple.Object.GetNativeDllPath(tuple.Path);
@@ -254,7 +254,7 @@ namespace Reloaded.Mod.Loader.Mods
             return new ModInstance(new NativeMod(dllPath), tuple.Object);
         }
 
-        private ModInstance PrepareNonDllMod(PathGenericTuple<IModConfig> tuple)
+        private ModInstance PrepareNonDllMod(PathTuple<IModConfig> tuple)
         {
             // If invalid file path, get directory.
             // If directory, use directory.
@@ -301,8 +301,8 @@ namespace Reloaded.Mod.Loader.Mods
             return exports.ToArray();
         }
 
-        private void PreloadAssemblyMetadata(List<PathGenericTuple<IModConfig>> configPathTuples) => ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", PreloadAssemblyMetadataParallel, configPathTuples);
-        private void PreloadAssemblyMetadataParallel(List<PathGenericTuple<IModConfig>> configPathTuples)
+        private void PreloadAssemblyMetadata(List<PathTuple<IModConfig>> configPathTuples) => ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", PreloadAssemblyMetadataParallel, configPathTuples);
+        private void PreloadAssemblyMetadataParallel(List<PathTuple<IModConfig>> configPathTuples)
         {
             var partitioner = Partitioner.Create(0, configPathTuples.Count);
             Parallel.ForEach(partitioner, (tuple, state) =>

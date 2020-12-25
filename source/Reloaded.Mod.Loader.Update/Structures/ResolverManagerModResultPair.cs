@@ -11,9 +11,9 @@ namespace Reloaded.Mod.Loader.Update.Structures
         public IModResolver Resolver { get; private set; }
         public IUpdateManager Manager { get; private set; }
         public CheckForUpdatesResult Result { get; private set; }
-        public PathGenericTuple<ModConfig> ModTuple { get; private set; }
+        public PathTuple<ModConfig> ModTuple { get; private set; }
 
-        public ResolverManagerModResultPair(IModResolver resolver, IUpdateManager manager, CheckForUpdatesResult result, PathGenericTuple<ModConfig> modTuple)
+        public ResolverManagerModResultPair(IModResolver resolver, IUpdateManager manager, CheckForUpdatesResult result, PathTuple<ModConfig> modTuple)
         {
             Resolver = resolver;
             Manager = manager;

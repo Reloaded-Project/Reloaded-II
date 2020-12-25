@@ -68,7 +68,7 @@ namespace Reloaded.Mod.Launcher
         public static async Task<bool> CheckForModUpdatesAsync()
         {
             var manageModsViewModel = IoC.Get<ManageModsViewModel>();
-            var allMods = manageModsViewModel.Mods.Select(x => new PathGenericTuple<ModConfig>(x.ModConfigPath, (ModConfig) x.ModConfig)).ToArray();
+            var allMods = manageModsViewModel.Mods.Select(x => new PathTuple<ModConfig>(x.ModConfigPath, (ModConfig) x.ModConfig)).ToArray();
 
             try
             {

@@ -16,12 +16,12 @@ namespace Reloaded.Mod.Loader.Update
     /// </summary>
     public class Updater
     {
-        private IEnumerable<PathGenericTuple<ModConfig>>    _mods;
+        private IEnumerable<PathTuple<ModConfig>>    _mods;
         private List<ResolverManagerModResultPair>          _resolversWithUpdates;
         private UpdaterData _data;
 
         /* Instantiation */
-        public Updater(IEnumerable<PathGenericTuple<ModConfig>> mods, UpdaterData data)
+        public Updater(IEnumerable<PathTuple<ModConfig>> mods, UpdaterData data)
         {
             _mods = mods;
             _data = data;

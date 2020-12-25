@@ -105,7 +105,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// </summary>
         public Uri GetImageForModConfig(PathGenericTuple<ModConfig> modConfig)
         {
-            return ModConfig.TryGetIconPath(modConfig.Path, modConfig.Object, out string iconPath) ? new Uri(iconPath, UriKind.RelativeOrAbsolute) : Constants.PlaceholderImagePath;
+            return modConfig.Object.TryGetIconPath(modConfig.Path, out string iconPath) ? new Uri(iconPath, UriKind.RelativeOrAbsolute) : Constants.PlaceholderImagePath;
         }
 
         /// <summary>

@@ -150,7 +150,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// Obtains an image to represent a given application.
         /// The image is either a custom one or the icon of the application.
         /// </summary>
-        private ImageSource GetImageForAppConfig(PathGenericTuple<ApplicationConfig> applicationConfig)
+        private ImageSource GetImageForAppConfig(PathTuple<ApplicationConfig> applicationConfig)
         {
             // Check if custom icon exists.
             if (!string.IsNullOrEmpty(applicationConfig.Object.AppIcon))

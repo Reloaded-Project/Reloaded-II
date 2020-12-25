@@ -140,7 +140,7 @@ namespace Reloaded.Mod.Loader
         /// <param name="modId">The modId to find.</param>
         /// <param name="allMods">List of all mod configurations, read during the operation.</param>
         /// <exception cref="ReloadedException">A mod to load has not been found.</exception>
-        public PathGenericTuple<IModConfig> FindMod(string modId, out List<PathGenericTuple<ModConfig>> allMods)
+        public PathTuple<IModConfig> FindMod(string modId, out List<PathTuple<ModConfig>> allMods)
         {
             // Get mod with ID
             allMods = ModConfig.GetAllMods(LoaderConfig.ModConfigDirectory);
@@ -149,7 +149,7 @@ namespace Reloaded.Mod.Loader
             if (mod != null)
             {
                 var dllPath = mod.Object.GetDllPath(mod.Path);
-                return new PathGenericTuple<IModConfig>(dllPath, mod.Object);
+                return new PathTuple<IModConfig>(dllPath, mod.Object);
             }
 
             throw new ReloadedException(Errors.ModToLoadNotFound(modId));
@@ -158,7 +158,7 @@ namespace Reloaded.Mod.Loader
         /// <summary>
         /// Loads a collection of mods with their associated dependencies.
         /// </summary>
-        private void LoadModsWithDependencies(IEnumerable<ModConfig> modsToLoad, List<PathGenericTuple<ModConfig>> allMods = null)
+        private void LoadModsWithDependencies(IEnumerable<ModConfig> modsToLoad, List<PathTuple<ModConfig>> allMods = null)
         {
             // Cache configuration paths for all mods.
             if (allMods == null)
@@ -173,12 +173,12 @@ namespace Reloaded.Mod.Loader
             var allUniqueModsToLoad = modsToLoad.Concat(dependenciesToLoad).Distinct();
             var allSortedModsToLoad = ModConfig.SortMods(allUniqueModsToLoad);
 
-            var modPaths            = new List<PathGenericTuple<IModConfig>>();
+            var modPaths            = new List<PathTuple<IModConfig>>();
             foreach (var modToLoad in allSortedModsToLoad)
             {
                 // Reloaded does not allow loading same mod multiple times.
                 if (! Manager.IsModLoaded(modToLoad.ModId))
-                    modPaths.Add(new PathGenericTuple<IModConfig>(configToPathDictionary[modToLoad], modToLoad));
+                    modPaths.Add(new PathTuple<IModConfig>(configToPathDictionary[modToLoad], modToLoad));
             }
 
             Manager.LoadMods(modPaths);
