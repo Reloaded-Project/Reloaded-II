@@ -33,7 +33,7 @@ namespace Reloaded.Mod.Loader.Update.Structures
                 _updates = new List<ModUpdate>();
                 foreach (var resultPairs in ResolverManagerResultPairs)
                 {
-                    var modId = resultPairs.ModTuple.Object.ModId;
+                    var modId = resultPairs.ModTuple.Config.ModId;
                     var oldVersion = resultPairs.Resolver.GetCurrentVersion();
                     var newVersion = resultPairs.Result.LastVersion;
                     var updateSize = resultPairs.Resolver.GetSize();

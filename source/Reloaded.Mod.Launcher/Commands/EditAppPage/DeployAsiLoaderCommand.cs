@@ -8,6 +8,8 @@ using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Commands.EditAppPage
@@ -19,21 +21,21 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
         private static XamlResource<string> _xamlAsiLoaderDialogLoaderDeployed = new XamlResource<string>("AsiLoaderDialogLoaderDeployed");
         private static XamlResource<string> _xamlAsiLoaderDialogBootstrapperDeployed = new XamlResource<string>("AsiLoaderDialogBootstrapperDeployed");
 
-        private ImageApplicationPathTuple Application { get; set; }
+        private PathTuple<ApplicationConfig> Application { get; set; }
         private AsiLoaderDeployer Deployer { get; set; }
         private EditAppViewModel ViewModel { get; set; }
 
         public DeployAsiLoaderCommand(EditAppViewModel addAppViewModel)
         {
             ViewModel = addAppViewModel;
-            ViewModel.PropertyChanged += AddAppViewModelOnPropertyChanged;
+            ViewModel.PropertyChanged += OnApplicationChanged;
             SetCurrentApplication();
         }
 
         public void Dispose()
         {
             UnSetCurrentApplication();
-            ViewModel.PropertyChanged -= AddAppViewModelOnPropertyChanged;
+            ViewModel.PropertyChanged -= OnApplicationChanged;
             GC.SuppressFinalize(this);
         }
 
@@ -54,7 +56,7 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
                 Application.Config.PropertyChanged -= LocationPropertyChanged;
         }
 
-        private void AddAppViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnApplicationChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ViewModel.Application))
             {

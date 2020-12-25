@@ -10,19 +10,18 @@ using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.WPF.MVVM;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.WPF.Utilities;
 using static Reloaded.Mod.Launcher.Utility.ActionWrappers;
 using static Reloaded.Mod.Loader.IO.Utility.FileSystemWatcherFactory;
+using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
     public class ManageModsViewModel : ObservableObject
     {
-        /* Mod Config Loader. */
-        private static MainPageViewModel _mainPageViewModel;
-
         /* Fired when the available mods collection changes. */
         
         /// <summary>
@@ -45,20 +44,21 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         /* If false, events to reload mod list are not sent. */
         private bool _monitorNewMods = true;
+        private ApplicationConfigService _appConfigService;
 
         /* Get Applications Task */
-        private CancellableExecuteActionTimer _getApplicationsActionTimer = new CancellableExecuteActionTimer(new XamlResource<int>("RefreshModsEventTickTimer").Get());
+        private TaskScheduler _getApplicationsActionTimer = new TaskScheduler(new XamlResource<int>("RefreshModsEventTickTimer").Get());
         private readonly FileSystemWatcher _createWatcher; 
         private readonly FileSystemWatcher _deleteFileWatcher;
         private readonly FileSystemWatcher _deleteDirectoryWatcher;
 
-        public ManageModsViewModel(MainPageViewModel mainPageViewModel, LoaderConfig loaderConfig)
+        public ManageModsViewModel(ApplicationConfigService appConfigService, LoaderConfig loaderConfig)
         {
             Mods = new ObservableCollection<ImageModPathTuple>();
             Mods.CollectionChanged += (sender, args) => ModsChanged(sender, args);
             GetModifications();
 
-            _mainPageViewModel = mainPageViewModel;
+            _appConfigService = appConfigService;
             string modDirectory = loaderConfig.ModConfigDirectory;
 
             _createWatcher = CreateGeneric(modDirectory, ExecuteGetModifications, FileSystemWatcherEvents.Changed | FileSystemWatcherEvents.Created);
@@ -82,7 +82,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 return;
 
             var supportedAppIds = newModTuple.ModConfig.SupportedAppId;
-            var tuples = _mainPageViewModel.Applications.Select(x => new BooleanGenericTuple<ApplicationConfig>(supportedAppIds.Contains(x.Config.AppId), x.Config));
+            var tuples = _appConfigService.Applications.Select(x => new BooleanGenericTuple<ApplicationConfig>(supportedAppIds.Contains(x.Config.AppId), x.Config));
             EnabledAppIds = new ObservableCollection<BooleanGenericTuple<ApplicationConfig>>(tuples);
         }
 
@@ -103,9 +103,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// <summary>
         /// Obtains an image to represent a given mod, either a custom one or the default placeholder.
         /// </summary>
-        public Uri GetImageForModConfig(PathGenericTuple<ModConfig> modConfig)
+        public Uri GetImageForModConfig(PathTuple<ModConfig> modConfig)
         {
-            return modConfig.Object.TryGetIconPath(modConfig.Path, out string iconPath) ? new Uri(iconPath, UriKind.RelativeOrAbsolute) : Constants.PlaceholderImagePath;
+            return modConfig.Config.TryGetIconPath(modConfig.Path, out string iconPath) ? new Uri(iconPath, UriKind.RelativeOrAbsolute) : Constants.PlaceholderImagePath;
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 var modConfigs = ModConfig.GetAllMods(IoC.Get<LoaderConfig>().ModConfigDirectory, cancellationToken);
                 if (!cancellationToken.IsCancellationRequested)
                 {
-                    var mods = modConfigs.Select(x => new ImageModPathTuple(GetImageForModConfig(x), x.Object, x.Path));
+                    var mods = modConfigs.Select(x => new ImageModPathTuple(GetImageForModConfig(x), x.Config, x.Path));
                     ExecuteWithApplicationDispatcher(() => Collections.ModifyObservableCollection(Mods, mods));
                     OnGetModifications();
                 }
@@ -143,7 +143,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void ExecuteGetModifications()
         {
             if (_monitorNewMods)
-                _getApplicationsActionTimer.SetActionAndReset(GetModifications);
+                _getApplicationsActionTimer.Schedule(GetModifications);
         }
 
         private void OnDeleteDirectory(object sender, FileSystemEventArgs e)

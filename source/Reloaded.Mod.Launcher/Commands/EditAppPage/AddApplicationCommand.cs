@@ -8,6 +8,7 @@ using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Commands.EditAppPage
@@ -21,11 +22,13 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
         private XamlResource<string> _xamlAddAppExecutableTitle = new XamlResource<string>("AddAppExecutableTitle");
         private XamlResource<string> _xamlAddAppExecutableFilter = new XamlResource<string>("AddAppExecutableFilter");
         private readonly MainPageViewModel _mainPageViewModel;
-        private ApplicationConfig _lastConfig;
+        private ApplicationConfig _newConfig;
+        private ApplicationConfigService _configService;
 
-        public AddApplicationCommand(MainPageViewModel viewModel)
+        public AddApplicationCommand(MainPageViewModel viewModel, ApplicationConfigService configService)
         {
             _mainPageViewModel = viewModel;
+            _configService = configService;
         }
 
         public bool CanExecute(object parameter) => true;
@@ -40,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
 
             // Get file information and populate initial application details.
             var fileInfo = FileVersionInfo.GetVersionInfo(exePath);
-            IApplicationConfig config = new ApplicationConfig(Path.GetFileName(fileInfo.FileName).ToLower(), fileInfo.ProductName, exePath);
+            var config = new ApplicationConfig(Path.GetFileName(fileInfo.FileName).ToLower(), fileInfo.ProductName, exePath);
 
             // Set AppName if empty & Ensure no duplicate ID.
             if (string.IsNullOrEmpty(config.AppName))
@@ -56,20 +59,20 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
 
             // Write file to disk.
             Directory.CreateDirectory(applicationDirectory);
-            ApplicationConfig.WriteConfiguration(applicationConfigFile, (ApplicationConfig)config);
+            IConfig<ApplicationConfig>.ToPath(config, applicationConfigFile);
 
-            // TODO: Enter Application Screen
-            _lastConfig = (ApplicationConfig)config;
-            _mainPageViewModel.ApplicationsChanged += ApplicationsChanged;
+            // Listen to event for when the new application is discovered.
+            _newConfig = (ApplicationConfig)config;
+            _configService.Applications.CollectionChanged += ApplicationsChanged;
         }
 
         private void ApplicationsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var newConfig = _mainPageViewModel.Applications.FirstOrDefault(x => x.Config.AppId == _lastConfig.AppId);
+            var newConfig = _configService.Applications.FirstOrDefault(x => x.Config.AppId == _newConfig.AppId);
             if (newConfig != null)
                 _mainPageViewModel.SwitchToApplication(newConfig);
 
-            _mainPageViewModel.ApplicationsChanged -= ApplicationsChanged;
+            _configService.Applications.CollectionChanged -= ApplicationsChanged;
         }
 
         public event EventHandler CanExecuteChanged = (sender, args) => { };
@@ -80,7 +83,7 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
         private void UpdateIdIfDuplicate(IApplicationConfig config)
         {
             // Ensure no duplication of AppId
-            while (_mainPageViewModel.Applications.Any(x => x.Config.AppId == config.AppId))
+            while (_configService.Applications.Any(x => x.Config.AppId == config.AppId))
             {
                 config.AppId += "_dup";
             }

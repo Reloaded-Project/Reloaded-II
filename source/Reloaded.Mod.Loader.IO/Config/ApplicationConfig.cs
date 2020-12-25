@@ -49,16 +49,19 @@ namespace Reloaded.Mod.Loader.IO.Config
             EnabledMods = enabledMods;
         }
 
+        /// <summary>
+        /// Attempts to obtain the location of the application icon.
+        /// </summary>
+        /// <param name="configPath">Path to the application configuration.</param>
+        /// <param name="logoFilePath">The file path to the logo. This returns a valid file path, even if the actual logo file does not exist.</param>
+        /// <returns>True if the logo file exists, else false.</returns>
+        public bool TryGetApplicationIcon(string configPath, out string logoFilePath) => TryGetApplicationIcon(configPath, this, out logoFilePath);
+
         /*
            ---------
            Utilities
            --------- 
         */
-
-        /// <summary>
-        /// Writes the configuration to a specified file path.
-        /// </summary>
-        public static void WriteConfiguration(string path, ApplicationConfig config) => ConfigReader<ApplicationConfig>.WriteConfiguration(path, config);
 
         /// <summary>
         /// Attempts to obtain the location of the application icon.
@@ -135,7 +138,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             // Get dictionary of mods by Mod ID
             var modDictionary = new Dictionary<string, PathTuple<ModConfig>>();
             foreach (var mod in modifications)
-                modDictionary[mod.Object.ModId] = mod;
+                modDictionary[mod.Config.ModId] = mod;
 
             // Add enabled mods.
             var totalModList = new List<BooleanGenericTuple<PathTuple<ModConfig>>>(modifications.Count);
@@ -147,7 +150,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 
             // Add disabled mods.
             var enabledModIdSet = config.EnabledMods.ToHashSet();
-            var disabledMods    = modifications.Where(x => !enabledModIdSet.Contains(x.Object.ModId));
+            var disabledMods    = modifications.Where(x => !enabledModIdSet.Contains(x.Config.ModId));
             totalModList.AddRange(disabledMods.Select(x => new BooleanGenericTuple<PathTuple<ModConfig>>(false, x)));
             return totalModList;
         }

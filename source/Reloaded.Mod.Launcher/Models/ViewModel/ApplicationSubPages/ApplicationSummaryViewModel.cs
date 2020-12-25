@@ -8,6 +8,7 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.Model;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 
@@ -17,7 +18,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
     {
         public ObservableCollection<ModEntry> AllMods { get; set; }
         public ModEntry SelectedMod { get; set; }
-        public ImageApplicationPathTuple ApplicationTuple { get; set; }
+        public PathTuple<ApplicationConfig> ApplicationTuple { get; set; }
 
         public OpenModFolderCommand OpenModFolderCommand { get; set; }
         public ConfigureModCommand ConfigureModCommand { get; set; }
@@ -65,7 +66,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         /// <summary>
         /// Builds the initial set of mods to display in the list.
         /// </summary>
-        private List<ModEntry> GetInitialModSet(ApplicationViewModel model, ImageApplicationPathTuple applicationTuple)
+        private List<ModEntry> GetInitialModSet(ApplicationViewModel model, PathTuple<ApplicationConfig> applicationTuple)
         {
             // Note: Must put items in top to bottom load order.
             var enabledModIds   = applicationTuple.Config.EnabledMods;

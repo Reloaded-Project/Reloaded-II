@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility.Parsers;
 using Reloaded.Mod.Shared;
 using SharpCompress.Archives.SevenZip;
@@ -12,12 +13,12 @@ namespace Reloaded.Mod.Launcher.Utility
 {
     public class AsiLoaderDeployer
     {
-        public ImageApplicationPathTuple Application { get; }
+        public PathTuple<ApplicationConfig> Application { get; }
 
         /// <summary>
         /// Deploys Ultimate ASI Loader to a given application profile.
         /// </summary>
-        public AsiLoaderDeployer(ImageApplicationPathTuple application)
+        public AsiLoaderDeployer(PathTuple<ApplicationConfig> application)
         {
             Application = application;
         }

@@ -10,6 +10,7 @@
              xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.EditAppPage"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
+             xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
              mc:Ignorable="d"
              d:DesignHeight="600" 
              d:DesignWidth="756"
@@ -33,10 +34,16 @@
                 <Viewbox Width="{StaticResource DetailsImageWidth}" 
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
                              Margin="{DynamicResource CommonItemVerticalMargin}">
-                    <Image Source="{Binding Application.Image, IsAsync=True, UpdateSourceTrigger=PropertyChanged}" 
-                               ToolTip="{DynamicResource AddAppImageTooltip}" 
-                               ToolTipService.InitialShowDelay="0"
-                               PreviewMouseDown="Image_PreviewMouseDown"/>
+                    <Image ToolTip="{DynamicResource AddAppImageTooltip}" 
+                           ToolTipService.InitialShowDelay="0"
+                           PreviewMouseDown="Image_PreviewMouseDown">
+                        <Image.Source>
+                            <MultiBinding Converter="{x:Static converters:ApplicationPathTupleToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="Application"/>
+                                <Binding Path="Application.Config.AppIcon"/>
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
                 </Viewbox>
 
 

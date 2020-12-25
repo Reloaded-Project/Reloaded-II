@@ -61,7 +61,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
                 MakeTimestampsIfNotExist(allModsWithConfigs);
 
                 var orderedModsWithConfigs  = allModsWithConfigs.OrderBy(x => IConfig<GitHubUserConfig>.FromPath(GitHubUserConfig.GetFilePath(GetModDirectory(x))).LastCheckTimestamp);
-                var allowedMods             = orderedModsWithConfigs.Take(UnregisteredRateLimit).Select(x => x.Object);
+                var allowedMods             = orderedModsWithConfigs.Take(UnregisteredRateLimit).Select(x => x.Config);
                 AllowedMods                 = new HashSet<ModConfig>(allowedMods);
             }
             catch (Exception)
@@ -80,7 +80,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
                 {
                     string path = GitHubConfig.GetFilePath(GetModDirectory(mod));
 
-                    if (File.Exists(path) && AllowedMods.Contains(mod.Object))
+                    if (File.Exists(path) && AllowedMods.Contains(mod.Config))
                         return true;
                 }
             }
@@ -99,7 +99,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 
         public Version GetCurrentVersion()
         {
-            return Version.Parse(_modTuple.Object.ModVersion);
+            return Version.Parse(_modTuple.Config.ModVersion);
         }
 
         public async Task<IReadOnlyList<Version>> GetPackageVersionsAsync(CancellationToken cancellationToken = new CancellationToken())

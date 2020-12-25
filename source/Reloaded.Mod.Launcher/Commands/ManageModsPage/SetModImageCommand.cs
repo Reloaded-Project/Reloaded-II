@@ -59,7 +59,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
                 // No need to write file on disk, file will be updated by binding.
                 ImageSource source = Imaging.BitmapFromUri(new Uri(iconPath, UriKind.Absolute));
                 _manageModsViewModel.Icon = source;
-                modTuple.Image = _manageModsViewModel.GetImageForModConfig(new PathGenericTuple<ModConfig>(modTuple.ModConfigPath, (ModConfig) modTuple.ModConfig));
+                modTuple.Image = _manageModsViewModel.GetImageForModConfig(new PathTuple<ModConfig>(modTuple.ModConfigPath, (ModConfig) modTuple.ModConfig));
             }
         }
 

@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Windows;
 using Reloaded.Mod.Launcher.Models.Model;
+using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
 
@@ -14,7 +16,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
     {
         public new IncompatibleModArchiveViewmodel ViewModel { get; set; }
 
-        public IncompatibleModDialog(IEnumerable<ImageModPathTuple> modConfigs, ImageApplicationPathTuple config)
+        public IncompatibleModDialog(IEnumerable<ImageModPathTuple> modConfigs, PathTuple<ApplicationConfig> config)
         {
             InitializeComponent();
             ViewModel = new IncompatibleModArchiveViewmodel(modConfigs, config);
@@ -35,11 +37,11 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
 
     public class IncompatibleModArchiveViewmodel : ObservableObject
     {
-        public ImageApplicationPathTuple ApplicationConfig { get; set; }
+        public PathTuple<ApplicationConfig> ApplicationConfig { get; set; }
         public IEnumerable<ImageModPathTuple> Mods { get; set; }
 
         /* Setup & Teardown */
-        public IncompatibleModArchiveViewmodel(IEnumerable<ImageModPathTuple> modConfigs, ImageApplicationPathTuple applicationConfig)
+        public IncompatibleModArchiveViewmodel(IEnumerable<ImageModPathTuple> modConfigs, PathTuple<ApplicationConfig> applicationConfig)
         {
             Mods = modConfigs;
             ApplicationConfig = applicationConfig;

@@ -4,14 +4,15 @@ using System.Windows;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.WPF.MVVM;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
     public class SettingsPageViewModel : ObservableObject
     {
-        public MainPageViewModel MainPageViewModel { get; set; }
         public ManageModsViewModel ManageModsViewModel { get; set; }
+        public ApplicationConfigService AppConfigService { get; set; }
 
         public int TotalApplicationsInstalled { get; set; }
         public int TotalModsInstalled { get; set; }
@@ -21,15 +22,15 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public XamlFileSelector LanguageSelector => App.LanguageSelector;
         public XamlFileSelector ThemeSelector => App.ThemeSelector;
 
-        public SettingsPageViewModel(MainPageViewModel mainPageViewModel, ManageModsViewModel manageModsViewModel, LoaderConfig loaderConfig)
+        public SettingsPageViewModel(ApplicationConfigService appConfigService, ManageModsViewModel manageModsViewModel, LoaderConfig loaderConfig)
         {
+            AppConfigService = appConfigService;
             LoaderConfig = loaderConfig;
-            MainPageViewModel = mainPageViewModel;
             ManageModsViewModel = manageModsViewModel;
 
             UpdateTotalApplicationsInstalled();
             UpdateTotalModsInstalled();
-            MainPageViewModel.ApplicationsChanged += MainPageViewModelOnApplicationsChanged;
+            AppConfigService.Applications.CollectionChanged += MainPageViewModelOnApplicationsChanged;
             ManageModsViewModel.ModsChanged += ManageModsViewModelOnModsChanged;
 
             var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
@@ -84,7 +85,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         }
 
         /* Functions */
-        private void UpdateTotalApplicationsInstalled() => TotalApplicationsInstalled = MainPageViewModel.Applications.Count;
+        private void UpdateTotalApplicationsInstalled() => TotalApplicationsInstalled = AppConfigService.Applications.Count;
         private void UpdateTotalModsInstalled() => TotalModsInstalled = ManageModsViewModel.Mods.Count;
 
         /* Events */

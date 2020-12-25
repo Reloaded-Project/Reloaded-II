@@ -88,9 +88,9 @@ namespace Reloaded.Mod.Launcher
 
             applicationToLaunch = Path.GetFullPath(applicationToLaunch);
             var application = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().ApplicationConfigDirectory)
-                .FirstOrDefault(x => Path.GetFullPath(x.Object.AppLocation) == applicationToLaunch);
+                .FirstOrDefault(x => Path.GetFullPath(x.Config.AppLocation) == applicationToLaunch);
             if (application != null)
-                arguments = $"{arguments} {application.Object.AppArguments}";
+                arguments = $"{arguments} {application.Config.AppArguments}";
 
             // Launch the application.
             var launcher = ApplicationLauncher.FromLocationAndArguments(applicationToLaunch, arguments);

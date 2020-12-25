@@ -71,8 +71,8 @@ namespace Reloaded.Mod.Loader.Tests.IO
                 /* Validate Tuples. */
                 Assert.Equal(Path.GetFullPath(filePaths[0]), Path.GetFullPath(modPathConfigTuple.Path));
                 Assert.Equal(Path.GetFullPath(filePaths[1]), Path.GetFullPath(appPathConfigTuple.Path));
-                Assert.Equal(_testModConfig, modPathConfigTuple.Object);
-                Assert.Equal(_testAppConfig, appPathConfigTuple.Object);
+                Assert.Equal(_testModConfig, modPathConfigTuple.Config);
+                Assert.Equal(_testAppConfig, appPathConfigTuple.Config);
             }
             catch (Exception)
             {

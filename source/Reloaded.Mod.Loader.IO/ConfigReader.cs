@@ -28,20 +28,20 @@ namespace Reloaded.Mod.Loader.IO
         /// <param name="maxDepth">Maximum depth (inclusive) in directories to get files from where 1 is only this directory.</param>
         /// <param name="minDepth">Minimum depth (inclusive) in directories to get files from where 1 is this directory.</param>
         /// <returns>Tuples containing the path the configurations was loaded from and the corresponding config class.</returns>
-        public static List<PathGenericTuple<TConfigType>> ReadConfigurations(string directory, string fileName, CancellationToken token = default, int maxDepth = 1, int minDepth = 1)
+        public static List<PathTuple<TConfigType>> ReadConfigurations(string directory, string fileName, CancellationToken token = default, int maxDepth = 1, int minDepth = 1)
         {
             // Get all config files to load.
             var configurationPaths = Utility.IOEx.GetFilesEx(directory, fileName, maxDepth, minDepth);
 
             // Configurations to be returned
-            var configurations = new List<PathGenericTuple<TConfigType>>(configurationPaths.Count);
+            var configurations = new List<PathTuple<TConfigType>>(configurationPaths.Count);
             foreach (string configurationPath in configurationPaths)
             {
                 if (token.IsCancellationRequested)
                     return configurations;
 
                 if (TryReadConfiguration(configurationPath, out var config))
-                    configurations.Add(new PathGenericTuple<TConfigType>(configurationPath, config));
+                    configurations.Add(new PathTuple<TConfigType>(configurationPath, config));
             }
 
             return configurations;
@@ -54,14 +54,14 @@ namespace Reloaded.Mod.Loader.IO
         /// </summary>
         /// <param name="configurations">List of file path and config class tuples to write to disk.</param>
         /// <param name="token">Cancels the task if necessary.</param>
-        public static void WriteConfigurations(PathGenericTuple<TConfigType>[] configurations, CancellationToken token = default)
+        public static void WriteConfigurations(PathTuple<TConfigType>[] configurations, CancellationToken token = default)
         {
             foreach (var configuration in configurations)
             {
                 if (!token.IsCancellationRequested)
                     return;
 
-                WriteConfiguration(configuration.Path, configuration.Object);
+                WriteConfiguration(configuration.Path, configuration.Config);
             }
         }
 

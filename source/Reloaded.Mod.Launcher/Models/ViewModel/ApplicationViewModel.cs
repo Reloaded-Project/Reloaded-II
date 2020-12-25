@@ -12,9 +12,11 @@ using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.WPF.MVVM;
+using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.WPF.Utilities;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
+using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
@@ -34,7 +36,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// </summary>
         public event Action OnLoadModSet = () => { };
 
-        public ImageApplicationPathTuple ApplicationTuple { get; }
+        public PathTuple<ApplicationConfig> ApplicationTuple { get; }
         public ManageModsViewModel ManageModsViewModel    { get; }
         public ApplicationInstanceTracker InstanceTracker { get; private set; }
 
@@ -46,7 +48,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public Process SelectedProcess { get; set; }
         public ICommand MakeShortcutCommand { get; set; }
 
-        public ApplicationViewModel(ImageApplicationPathTuple tuple, ManageModsViewModel modsViewModel)
+        public ApplicationViewModel(PathTuple<ApplicationConfig> tuple, ManageModsViewModel modsViewModel)
         {
             ApplicationTuple    = tuple;
             ManageModsViewModel = modsViewModel;

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
@@ -15,10 +16,10 @@ using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Launcher.Utility.Interfaces;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Services;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Dependency;
-using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher
@@ -59,6 +60,7 @@ namespace Reloaded.Mod.Launcher
                 CheckForMissingDependencies();
 
                 updateText(_xamlSplashPreparingResources.Get());
+                await Task.Run(SetupServicesAsync);
                 await Task.Run(SetupViewModelsAsync);
 
                 updateText(_xamlCheckingForUpdates.Get());
@@ -80,6 +82,8 @@ namespace Reloaded.Mod.Launcher
                 }
             }
         }
+
+        
 
         /// <summary>
         /// Compresses old loader log files into a zip archive.
@@ -157,7 +161,7 @@ namespace Reloaded.Mod.Launcher
         /// Sanity check after loading mod sets.
         /// </summary>
         /// <param name="incompatibleModIds">List of incompatible mods.</param>
-        public static bool TryGetIncompatibleMods(ImageApplicationPathTuple application, IEnumerable<ImageModPathTuple> mods, out List<ImageModPathTuple> incompatibleModIds)
+        public static bool TryGetIncompatibleMods(PathTuple<ApplicationConfig> application, IEnumerable<ImageModPathTuple> mods, out List<ImageModPathTuple> incompatibleModIds)
         {
             var enabledModIds = application.Config.EnabledMods;
             incompatibleModIds = new List<ImageModPathTuple>(enabledModIds.Length);
@@ -204,7 +208,7 @@ namespace Reloaded.Mod.Launcher
             ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 // Needs to be ran after SetupViewModelsAsync
-                var apps = IoC.GetConstant<MainPageViewModel>().Applications;
+                var apps = IoC.GetConstant<ApplicationConfigService>().Applications;
                 var mods = IoC.GetConstant<ManageModsViewModel>().Mods;
 
                 foreach (var app in apps)
@@ -241,16 +245,27 @@ namespace Reloaded.Mod.Launcher
         }
 
         /// <summary>
+        /// Sets up services which can be used by the various viewmodels.
+        /// </summary>
+        private static void SetupServicesAsync()
+        {
+            var config = IoC.Get<LoaderConfig>();
+            SynchronizationContext synchronizationContext = null;
+            ActionWrappers.ExecuteWithApplicationDispatcher(() => synchronizationContext = SynchronizationContext.Current);
+
+            IoC.Kernel.Rebind<IProcessWatcher>().ToConstant(IProcessWatcher.Get());
+            IoC.Kernel.Rebind<ApplicationConfigService>().ToConstant(new ApplicationConfigService(config, synchronizationContext));
+        }
+
+        /// <summary>
         /// Sets up viewmodels to be used in the individual mod loader pages.
         /// </summary>
         private static void SetupViewModelsAsync()
         {
-            IoC.Kernel.Rebind<IProcessWatcher>().ToConstant(IProcessWatcher.Get());
-
             var config = IoC.Get<LoaderConfig>();
             IoC.GetConstant<MainPageViewModel>();
-            IoC.GetConstant<ManageModsViewModel>();   // Consumes MainPageViewModel, LoaderConfig
-            IoC.GetConstant<SettingsPageViewModel>(); // Consumes ManageModsViewModel, MainPageViewModel
+            IoC.GetConstant<ManageModsViewModel>();  
+            IoC.GetConstant<SettingsPageViewModel>(); 
 
             try
             {

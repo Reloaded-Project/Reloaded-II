@@ -7,11 +7,12 @@ using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Server.Messages.Response;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
-using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Utilities;
+using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 {
