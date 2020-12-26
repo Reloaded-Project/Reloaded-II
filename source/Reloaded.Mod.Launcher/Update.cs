@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Protocol.Core.Types;
@@ -29,12 +30,16 @@ namespace Reloaded.Mod.Launcher
     {
         /* Strings */
         private static XamlResource<string> _xamlCheckUpdatesFailed = new XamlResource<string>("ErrorCheckUpdatesFailed");
+        private static bool _hasInternetConnection = CheckForInternetConnection();
 
         /// <summary>
         /// Checks if there are any updates for the mod loader.
         /// </summary>
         public static async Task CheckForLoaderUpdatesAsync()
         {
+            if (!_hasInternetConnection)
+                return;
+
             // Check for loader updates.
             try
             {
@@ -65,6 +70,9 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         public static async Task<bool> CheckForModUpdatesAsync()
         {
+            if (!_hasInternetConnection)
+                return false;
+
             var modConfigService = IoC.Get<ModConfigService>();
             var allMods = modConfigService.Mods.Select(x => new PathTuple<ModConfig>(x.Path, (ModConfig) x.Config)).ToArray();
 
@@ -102,6 +110,9 @@ namespace Reloaded.Mod.Launcher
         /// <param name="token">Used to cancel the operation.</param>
         public static async Task DownloadNuGetPackagesAsync(IEnumerable<string> modIds, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
+            if (!_hasInternetConnection)
+                return;
+
             var aggregateRepository = IoC.Get<AggregateNugetRepository>();
             var packages            = new List<NugetTuple<IPackageSearchMetadata>>();
             var missingPackages     = new List<string>();
@@ -131,6 +142,9 @@ namespace Reloaded.Mod.Launcher
         /// <param name="token">Used to cancel the operation.</param>
         public static async Task DownloadNuGetPackagesAsync(NugetTuple<IPackageSearchMetadata> package, List<string> missingPackages, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
+            if (!_hasInternetConnection)
+                return;
+
             await DownloadNuGetPackagesAsync(new List<NugetTuple<IPackageSearchMetadata>>() { package }, missingPackages, includePrerelease, includeUnlisted, token);
         }
 
@@ -144,6 +158,9 @@ namespace Reloaded.Mod.Launcher
         /// <param name="token">Used to cancel the operation.</param>
         public static async Task DownloadNuGetPackagesAsync(List<NugetTuple<IPackageSearchMetadata>> packages, List<string> missingPackages, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
         {
+            if (!_hasInternetConnection)
+                return;
+
             /* Get dependencies of every mod. */
             foreach (var package in packages.ToArray())
             {
@@ -200,6 +217,24 @@ namespace Reloaded.Mod.Launcher
 
             missingDependencies = missingDeps.ToList();
             return missingDependencies.Count > 0;
+        }
+
+        /// <summary>
+        /// Checks if the user is connected to the internet using the same method Chromium OS does.
+        /// </summary>
+        /// <returns></returns>
+        public static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using var client = new WebClient();
+                using (client.OpenRead("http://clients3.google.com/generate_204"))
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
