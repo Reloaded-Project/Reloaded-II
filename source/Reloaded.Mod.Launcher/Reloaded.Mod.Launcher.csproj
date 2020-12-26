@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
 	<LangVersion>preview</LangVersion>
 	<UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
@@ -15,6 +15,7 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<RuntimeFrameworkVersion>5.0.1</RuntimeFrameworkVersion>
   </PropertyGroup>
 	
   <ItemGroup>

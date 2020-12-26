@@ -1,9 +1,7 @@
-# Set to true to build .NET 5
+# Single File Publish Currently Disabled because it's Broken with WPF.
 # Only after the following bugs are fixed:
-# - https://github.com/dotnet/wpf/issues/3516 (Affects Launcher)
-# - https://github.com/dotnet/runtime/issues/39176 (Affects Loader)
-# For now, please edit `TargetFramework` in Reloaded.Mod.Launcher, Reloaded.Mod.Loader and NuGetConverter manually before flipping this switch.
-$isNet5 = $false
+# - https://github.com/dotnet/wpf/issues/3516 was fixed but now there's a new problem
+$publishSingleFile = $false
 
 # Build Locations
 $buildPath = "Output"
@@ -40,15 +38,15 @@ dotnet restore
 msbuild $bootstrapperPath /p:Configuration=Release /p:Platform=x64 /p:OutDir="../$loaderOutputPath"
 dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false /p:PublishSingleFile=true -o "$loaderOutputPath"
 
-if ($isNet5) 
+if ($publishSingleFile) 
 {
-    dotnet publish "$launcherProjectPath" -c Release -r win-x64 -f net5.0-windows --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true -o "$outputPath"
-    dotnet publish "$launcherProjectPath" -c Release -r win-x86 -f net5.0-windows --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true -o "$outputPath32"
+	dotnet publish "$launcherProjectPath" -c Release -r win-x64 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true /p:Configuration=SingleFile -o "$outputPath"
+	dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true /p:Configuration=SingleFile -o "$outputPath32"
 }
 else 
 {
-    dotnet publish "$launcherProjectPath" -c Release -f netcoreapp3.1 --self-contained false -o "$outputPath"
-	dotnet publish "$launcherProjectPath" -c Release -f netcoreapp3.1 --self-contained false /p:Platform=x86 -o "$outputPath32"
+	dotnet publish "$launcherProjectPath" -c Release -r win-x64 --self-contained false /p:PublishReadyToRun=false -o "$outputPath"
+	dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false /p:PublishReadyToRun=false -o "$outputPath32"
 }
 
 dotnet publish "$loaderProjectPath" -c Release -r win-x64 --self-contained false -o "$loader64OutputPath" /p:PublishReadyToRun=true

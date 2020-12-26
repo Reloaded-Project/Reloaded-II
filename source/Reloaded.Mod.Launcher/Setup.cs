@@ -21,6 +21,7 @@ using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Dependency;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.WPF.Utilities;
+using MessageBox = System.Windows.MessageBox;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -116,7 +117,8 @@ namespace Reloaded.Mod.Launcher
             {
                 // Currently no API to check if in bundle (single file app); however, we know that CodeBase returns true when loaded from memory.
                 var resAsm = Application.ResourceAssembly;
-                if (resAsm.CodeBase != null || string.IsNullOrEmpty(resAsm.CodeBase))
+                var configuration = resAsm.GetCustomAttribute<AssemblyConfigurationAttribute>();
+                if (configuration != null && configuration.Configuration.Contains("SingleFile"))
                 {
                     // TODO: Needs more testing. Seems to work but might be problematic.
                     DestroyFileType(launcherFolder, "*.json");
