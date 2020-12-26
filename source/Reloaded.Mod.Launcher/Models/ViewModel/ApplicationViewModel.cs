@@ -107,10 +107,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             if ((bool)dialog.ShowDialog())
             {
                 ModSet.FromFile(dialog.FileName).ToApplicationConfig(ApplicationTuple.Config);
-                ApplicationTuple.Save();
+                ApplicationTuple.SaveAsync();
                 
                 // Check for mod updates/dependencies.
-                await Task.Run(Update.CheckForModUpdatesAsync);
                 if (Update.CheckMissingDependencies(out var missingDependencies))
                 {
                     try { await Update.DownloadNuGetPackagesAsync(missingDependencies, false, false); }
