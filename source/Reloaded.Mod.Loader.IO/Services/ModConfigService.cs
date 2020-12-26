@@ -16,12 +16,12 @@ namespace Reloaded.Mod.Loader.IO.Services
     public class ModConfigService
     {
         /// <summary>
-        /// Current up to date list of all applications.
+        /// Current up to date list of all mods.
         /// </summary>
         public ObservableCollection<PathTuple<ModConfig>> Mods { get; set; } = new ObservableCollection<PathTuple<ModConfig>>();
 
         /// <summary>
-        /// The folder containing all of the folders of application profiles.
+        /// The folder containing all of the folders of mod profiles.
         /// </summary>
         public string ConfigDirectory { get; }
 
@@ -31,6 +31,7 @@ namespace Reloaded.Mod.Loader.IO.Services
         private readonly FileSystemWatcher _deleteFileWatcher;
         private readonly FileSystemWatcher _deleteDirectoryWatcher;
         private SynchronizationContext _context = SynchronizationContext.Current;
+        private object _lock = new object();
 
         /// <summary>
         /// Creates the service instance given an instance of the configuration.
@@ -80,19 +81,25 @@ namespace Reloaded.Mod.Loader.IO.Services
 
         private void OnDeleteDirectory(object sender, FileSystemEventArgs e)
         {
-            var allMods = Mods;
-            var deletedMod = allMods.FirstOrDefault(x => x.Path.Equals(e.FullPath));
+            lock (_lock)
+            {
+                var allMods = Mods;
+                var deletedMod = allMods.FirstOrDefault(x => Path.GetDirectoryName(x.Path).Equals(e.FullPath));
 
-            if (deletedMod != null)
-                _context.Post(() => Mods.Remove(deletedMod));
+                if (deletedMod != null)
+                    _context.Post(() => Mods.Remove(deletedMod));
+            }
         }
 
         private void OnDeleteFile(object sender, FileSystemEventArgs e)
         {
-            var allApps = Mods;
-            var deletedApp = allApps.First(x => Path.GetDirectoryName(x.Path).Equals(e.FullPath));
-            if (deletedApp != null)
-                _context.Post(() => Mods.Remove(deletedApp));
+            lock (_lock)
+            {
+                var allMods = Mods;
+                var deletedMod = allMods.FirstOrDefault(x => x.Path.Equals(e.FullPath));
+                if (deletedMod != null)
+                    _context.Post(() => Mods.Remove(deletedMod));
+            }
         }
     }
 }

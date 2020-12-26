@@ -33,7 +33,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public void SetNewMod(PathTuple<ModConfig> oldModTuple, PathTuple<ModConfig> newModTuple)
         {
             // Save old collection.
-            if (oldModTuple != null)
+            if (oldModTuple != null && ModConfigService.Mods.Contains(oldModTuple))
                 SaveMod(oldModTuple);
 
             // Make new collection.

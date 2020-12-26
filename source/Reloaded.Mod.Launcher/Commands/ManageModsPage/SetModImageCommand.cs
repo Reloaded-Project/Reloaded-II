@@ -52,6 +52,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
                 // Copy image and set config file path.
                 File.Copy(imagePath, iconPath, true);
                 modTuple.Config.ModIcon = iconFileName;
+                modTuple.Save();
             }
         }
 

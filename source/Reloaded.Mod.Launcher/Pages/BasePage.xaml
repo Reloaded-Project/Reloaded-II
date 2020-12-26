@@ -23,7 +23,7 @@
             <!-- Sort the mod list -->
             <CollectionViewSource x:Key="FilteredApps" Source="{Binding ConfigService.Applications, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                 <CollectionViewSource.SortDescriptions>
-                    <componentModel:SortDescription PropertyName="Object.AppName"/>
+                    <componentModel:SortDescription PropertyName="Config.AppName"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 

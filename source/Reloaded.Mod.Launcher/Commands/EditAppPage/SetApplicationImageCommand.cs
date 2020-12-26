@@ -50,10 +50,9 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
                 string applicationIconPath = Path.Combine(applicationDirectory, applicationIconFileName);
 
                 // Copy image and set config file path.
-                application.Config.AppIcon = null;
-
                 File.Copy(imagePath, applicationIconPath, true);
                 application.Config.AppIcon = applicationIconFileName;
+                application.Save();
             }
         }
 

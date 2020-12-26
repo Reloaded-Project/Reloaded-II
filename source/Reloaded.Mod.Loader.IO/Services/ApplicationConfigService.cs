@@ -31,6 +31,7 @@ namespace Reloaded.Mod.Loader.IO.Services
         private readonly FileSystemWatcher _deleteFileWatcher;
         private readonly FileSystemWatcher _deleteDirectoryWatcher;
         private SynchronizationContext _context = SynchronizationContext.Current;
+        private object _lock = new object();
 
         /// <summary>
         /// Creates the service instance given an instance of the configuration.
@@ -77,19 +78,25 @@ namespace Reloaded.Mod.Loader.IO.Services
 
         private void OnDeleteFile(object sender, FileSystemEventArgs e)
         {
-            var allApps    = Applications;
-            var deletedApp = allApps.FirstOrDefault(x => x.Path.Equals(e.FullPath));
-                
-            if (deletedApp != null)
-                _context.Post(() => Applications.Remove(deletedApp));
+            lock (_lock)
+            {
+                var allApps = Applications;
+                var deletedApp = allApps.FirstOrDefault(x => x.Path.Equals(e.FullPath));
+
+                if (deletedApp != null)
+                    _context.Post(() => Applications.Remove(deletedApp));
+            }
         }
 
         private void OnDeleteDirectory(object sender, FileSystemEventArgs e)
         {
-            var allApps     = Applications;
-            var deletedApp  = allApps.First(x => Path.GetDirectoryName(x.Path).Equals(e.FullPath));
-            if (deletedApp != null)
-                _context.Post(() => Applications.Remove(deletedApp));
+            lock (_lock)
+            {
+                var allApps = Applications;
+                var deletedApp = allApps.FirstOrDefault(x => Path.GetDirectoryName(x.Path).Equals(e.FullPath));
+                if (deletedApp != null)
+                    _context.Post(() => Applications.Remove(deletedApp));
+            }
         }
     }
 }
