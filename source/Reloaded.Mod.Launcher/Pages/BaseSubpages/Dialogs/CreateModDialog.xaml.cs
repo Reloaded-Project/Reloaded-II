@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.WPF.Theme.Default;

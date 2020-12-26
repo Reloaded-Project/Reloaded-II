@@ -7,7 +7,6 @@ using System.Text;
 using Reloaded.Memory.Sources;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Launcher.Utility

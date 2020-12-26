@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
 using Reloaded.Mod.Launcher.Misc;
-using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;

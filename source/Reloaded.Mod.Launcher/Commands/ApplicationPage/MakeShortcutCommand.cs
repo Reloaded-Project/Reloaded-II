@@ -7,7 +7,6 @@ using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.EditAppPage.Shortcuts;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Misc;
-using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Utilities;

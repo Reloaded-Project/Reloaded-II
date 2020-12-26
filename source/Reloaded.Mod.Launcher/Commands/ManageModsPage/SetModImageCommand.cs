@@ -1,12 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Input;
-using System.Windows.Media;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Commands.ManageModsPage

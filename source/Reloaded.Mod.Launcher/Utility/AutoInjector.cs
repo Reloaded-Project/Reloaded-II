@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility.Interfaces;
 using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Launcher.Utility
 {

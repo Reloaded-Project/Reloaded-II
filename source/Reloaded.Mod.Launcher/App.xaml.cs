@@ -7,7 +7,6 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Windows;
-using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;

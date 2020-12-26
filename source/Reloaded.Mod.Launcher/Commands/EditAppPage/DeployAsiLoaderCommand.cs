@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.Templates;
-using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;

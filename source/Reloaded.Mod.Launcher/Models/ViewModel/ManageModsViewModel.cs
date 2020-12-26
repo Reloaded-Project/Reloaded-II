@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Media;
 using Reloaded.Mod.Launcher.Commands.ManageModsPage;
-using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;

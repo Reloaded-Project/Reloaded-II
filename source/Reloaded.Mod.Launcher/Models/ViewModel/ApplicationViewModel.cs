@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Launcher.Commands.ApplicationPage;
 using Reloaded.Mod.Launcher.Misc;
-using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;

@@ -11,7 +11,6 @@ using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Extractors;
-using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.WPF.Theme.Default;
 using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
