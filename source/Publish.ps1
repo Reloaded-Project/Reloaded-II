@@ -40,19 +40,25 @@ dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-containe
 
 if ($publishSingleFile) 
 {
+	# Build separate self contained 32, 64-bit exe.
 	dotnet publish "$launcherProjectPath" -c Release -r win-x64 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true /p:Configuration=SingleFile -o "$outputPath"
 	dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true /p:Configuration=SingleFile -o "$outputPath32"
 }
 else 
 {
-	dotnet publish "$launcherProjectPath" -c Release -r win-x64 --self-contained false /p:PublishReadyToRun=false -o "$outputPath"
-	dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false /p:PublishReadyToRun=false -o "$outputPath32"
+	# Build AnyCPU, and then copy 32-bit exe. 
+	dotnet publish "$launcherProjectPath" -c Release --self-contained false -o "$outputPath"
+	dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false -o "$outputPath32"
 }
 
+# Build Loader
 dotnet publish "$loaderProjectPath" -c Release -r win-x64 --self-contained false -o "$loader64OutputPath" /p:PublishReadyToRun=true
 dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false -o "$loader32OutputPath" /p:PublishReadyToRun=true
+
+# Build Tools
 dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
 
+# Copy 32-bit EXE and cleanup folders.
 Move-Item -Path "$outputPath32/Reloaded-II.exe" -Destination "$outputPath/Reloaded-II32.exe"
 Remove-Item "$outputPath32" -Recurse
 Remove-Item "$loaderOutputPath/win-x86" -Recurse
