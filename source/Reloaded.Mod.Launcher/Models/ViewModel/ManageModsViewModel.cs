@@ -24,6 +24,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             ModConfigService = modConfigService;
             _appConfigService = appConfigService;
             _setModImageCommand = new SetModImageCommand(this);
+
+            SelectedModTuple = ModConfigService.Mods.FirstOrDefault();
         }
 
         /// <summary>

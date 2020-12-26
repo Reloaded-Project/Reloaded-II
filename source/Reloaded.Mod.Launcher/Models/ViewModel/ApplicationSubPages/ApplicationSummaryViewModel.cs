@@ -34,6 +34,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             _applicationViewModel.OnGetModsForThisApp += BuildModList;
             _applicationViewModel.OnLoadModSet += BuildModList;
             BuildModList();
+
+            SelectedMod = AllMods.FirstOrDefault();
         }
 
         ~ApplicationSummaryViewModel()
