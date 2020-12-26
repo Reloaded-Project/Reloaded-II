@@ -35,7 +35,6 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
 
         public void Dispose()
         {
-            GC.Collect();
             _summaryViewModel.PropertyChanged -= SummaryViewModelOnPropertyChanged;
         }
 

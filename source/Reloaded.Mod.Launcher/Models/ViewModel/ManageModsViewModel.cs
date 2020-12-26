@@ -12,7 +12,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
     {
         /* Fields for Data Binding */
         public PathTuple<ModConfig> SelectedModTuple { get; set; }
-        public ObservableCollection<BooleanGenericTuple<ApplicationConfig>> EnabledAppIds { get; set; }
+        public ObservableCollection<BooleanGenericTuple<ApplicationConfig>> EnabledAppIds { get; set; } = new ObservableCollection<BooleanGenericTuple<ApplicationConfig>>();
         public ModConfigService ModConfigService { get; set; }
 
         /* If false, events to reload mod list are not sent. */
@@ -56,7 +56,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             if (EnabledAppIds != null)
                 oldModTuple.Config.SupportedAppId = EnabledAppIds.Where(x => x.Enabled).Select(x => x.Generic.AppId).ToArray();
 
-            oldModTuple.Save();
+            oldModTuple.SaveAsync();
         }
         
         /// <summary>

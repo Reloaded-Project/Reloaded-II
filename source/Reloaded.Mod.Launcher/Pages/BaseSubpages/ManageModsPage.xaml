@@ -61,8 +61,8 @@
                                PreviewMouseDown="Image_PreviewMouseDown">
                             <Image.Source>
                                 <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding Path="SelectedModTuple"/>
-                                    <Binding Path="SelectedModTuple.Config.ModIcon"/>
+                                    <Binding Path="SelectedModTuple" IsAsync="True"/>
+                                    <Binding Path="SelectedModTuple.Config.ModIcon" IsAsync="True"/>
                                 </MultiBinding>
                             </Image.Source>
                         </Image>
