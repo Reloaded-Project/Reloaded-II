@@ -49,7 +49,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
             }
 
             var tuple = (ModEntry)e.Item;
-            e.Accepted = tuple.Tuple.ModConfig.ModName.Contains(ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase);
+            e.Accepted = tuple.Tuple.Config.ModName.Contains(ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

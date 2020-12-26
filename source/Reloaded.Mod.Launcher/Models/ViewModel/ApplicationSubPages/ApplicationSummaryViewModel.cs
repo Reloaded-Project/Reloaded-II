@@ -23,7 +23,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         public OpenModFolderCommand OpenModFolderCommand { get; set; }
         public ConfigureModCommand ConfigureModCommand { get; set; }
 
-        public ImageSource Icon { get; set; }
         private ApplicationViewModel _applicationViewModel;
 
         public ApplicationSummaryViewModel(ApplicationViewModel model)
@@ -34,7 +33,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             _applicationViewModel = model;
 
             // Wait for parent to fully initialize.
-            PropertyChanged += UpdateIcon;
             _applicationViewModel.OnGetModsForThisApp += BuildModList;
             _applicationViewModel.OnLoadModSet += BuildModList;
             BuildModList();
@@ -73,9 +71,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             var modsForThisApp  = model.ModsForThisApp.ToArray();
 
             // Get dictionary of mods for this app by Mod ID
-            var modDictionary  = new Dictionary<string, ImageModPathTuple>();
+            var modDictionary  = new Dictionary<string, PathTuple<ModConfig>>();
             foreach (var mod in modsForThisApp)
-                modDictionary[mod.ModConfig.ModId] = mod;
+                modDictionary[mod.Config.ModId] = mod;
 
             // Add enabled mods.
             var totalModList = new List<ModEntry>(modsForThisApp.Length);
@@ -87,12 +85,12 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 
             // Add disabled mods.
             var enabledModIdSet = applicationTuple.Config.EnabledMods.ToHashSet();
-            var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.ModConfig.ModId));
+            var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId));
             totalModList.AddRange(disabledMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
             return totalModList;
         }
 
-        private ModEntry MakeSaveSubscribedModEntry(bool? isEnabled, ImageModPathTuple item)
+        private ModEntry MakeSaveSubscribedModEntry(bool? isEnabled, PathTuple<ModConfig> item)
         {
             // Make BooleanGenericTuple that saves application on Enabled change.
             var tuple = new ModEntry(isEnabled, item);
@@ -109,19 +107,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 
         private void SaveApplication()
         {
-            ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled == true).Select(x => x.Tuple.ModConfig.ModId).ToArray();
+            ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
             ApplicationTuple.Save();
-        }
-
-        private void UpdateIcon(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(SelectedMod))
-            {
-                if (SelectedMod?.Tuple != null)
-                {
-                    Icon = Imaging.BitmapFromUri(SelectedMod.Tuple.Image);
-                }
-            }
         }
     }
 }

@@ -21,9 +21,9 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
         private XamlResource<string> _xamlCreateModDialogSelectorFilter = new XamlResource<string>("CreateModDialogImageSelectorFilter");
         private readonly ManageModsViewModel _manageModsViewModel;
 
-        public SetModImageCommand()
+        public SetModImageCommand(ManageModsViewModel manageModsViewModel)
         {
-            _manageModsViewModel = IoC.Get<ManageModsViewModel>();
+            _manageModsViewModel = manageModsViewModel;
         }
 
         public bool CanExecute(object parameter)
@@ -44,7 +44,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
             // Get selected item.
             var modTuple = _manageModsViewModel.SelectedModTuple;
-            string modDirectory = Path.GetDirectoryName(modTuple.ModConfigPath);
+            string modDirectory = Path.GetDirectoryName(modTuple.Path);
 
             // Set icon name and save.
             string iconFileName = Path.GetFileName(imagePath);
@@ -54,12 +54,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
                 // Copy image and set config file path.
                 File.Copy(imagePath, iconPath, true);
-                modTuple.ModConfig.ModIcon = iconFileName;
-
-                // No need to write file on disk, file will be updated by binding.
-                ImageSource source = Imaging.BitmapFromUri(new Uri(iconPath, UriKind.Absolute));
-                _manageModsViewModel.Icon = source;
-                modTuple.Image = _manageModsViewModel.GetImageForModConfig(new PathTuple<ModConfig>(modTuple.ModConfigPath, (ModConfig) modTuple.ModConfig));
+                modTuple.Config.ModIcon = iconFileName;
             }
         }
 

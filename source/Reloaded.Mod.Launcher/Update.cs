@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using NuGet.Protocol.Core.Types;
 using Onova;
 using Onova.Services;
-using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
-using Reloaded.Mod.Shared;
 using Reloaded.WPF.Utilities;
 using Constants = Reloaded.Mod.Launcher.Misc.Constants;
 using MessageBox = System.Windows.MessageBox;
@@ -67,8 +65,8 @@ namespace Reloaded.Mod.Launcher
         /// </summary>
         public static async Task<bool> CheckForModUpdatesAsync()
         {
-            var manageModsViewModel = IoC.Get<ManageModsViewModel>();
-            var allMods = manageModsViewModel.Mods.Select(x => new PathTuple<ModConfig>(x.ModConfigPath, (ModConfig) x.ModConfig)).ToArray();
+            var modConfigService = IoC.Get<ModConfigService>();
+            var allMods = modConfigService.Mods.Select(x => new PathTuple<ModConfig>(x.Path, (ModConfig) x.Config)).ToArray();
 
             try
             {
@@ -158,10 +156,10 @@ namespace Reloaded.Mod.Launcher
             }
 
             /* Remove already existing packages. */
-            var allMods = IoC.Get<ManageModsViewModel>().Mods.ToArray();
+            var allMods = IoC.Get<ModConfigService>().Mods.ToArray();
             HashSet<string> allModIds = new HashSet<string>(allMods.Length);
             foreach (var mod in allMods)
-                allModIds.Add(mod.ModConfig.ModId);
+                allModIds.Add(mod.Config.ModId);
 
             // Remove mods we already have.
             packages = packages.Where(x => !allModIds.Contains(x.Generic.Identity.Id)).ToList();
@@ -181,19 +179,19 @@ namespace Reloaded.Mod.Launcher
         /// <returns>True if there ar missing dependencies, else false.</returns>
         public static bool CheckMissingDependencies(out List<string> missingDependencies)
         {
-            var manageModsViewModel = IoC.Get<ManageModsViewModel>();
+            var modConfigService = IoC.Get<ModConfigService>();
 
             // Get all mods and build list of IDs
-            var allMods             = manageModsViewModel.Mods.ToArray();
+            var allMods = modConfigService.Mods.ToArray();
             HashSet<string> allModIds = new HashSet<string>(allMods.Length);
             foreach (var mod in allMods)
-                allModIds.Add(mod.ModConfig.ModId);
+                allModIds.Add(mod.Config.ModId);
 
             // Build list of missing dependencies.
             var missingDeps = new HashSet<string>(allModIds.Count);
             foreach (var mod in allMods)
             {
-                foreach (var dependency in mod.ModConfig.ModDependencies)
+                foreach (var dependency in mod.Config.ModDependencies)
                 {
                     if (! allModIds.Contains(dependency))
                         missingDeps.Add(dependency);

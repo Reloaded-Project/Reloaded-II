@@ -10,6 +10,7 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.WPF.Utilities;
@@ -28,13 +29,13 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
         private XamlResource<string> _xamlCreateModDialogSelectorFilter = new XamlResource<string>("CreateModDialogImageSelectorFilter");
         private readonly CollectionViewSource _dependenciesViewSource;
 
-        public CreateModViewModel(ManageModsViewModel manageModsViewModel, DictionaryResourceManipulator manipulator)
+        public CreateModViewModel(ModConfigService modConfigService, DictionaryResourceManipulator manipulator)
         {
             /* Build Dependencies */
-            var mods = manageModsViewModel.Mods; // In case collection changes during window open.
+            var mods = modConfigService.Mods; // In case collection changes during window open.
             foreach (var mod in mods)
             {
-                Dependencies.Add(new BooleanGenericTuple<IModConfig>(false, mod.ModConfig));
+                Dependencies.Add(new BooleanGenericTuple<IModConfig>(false, mod.Config));
             }
 
             _dependenciesViewSource = manipulator.Get<CollectionViewSource>("SortedDependencies");

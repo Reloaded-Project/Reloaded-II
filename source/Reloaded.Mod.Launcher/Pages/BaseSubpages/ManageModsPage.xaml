@@ -3,13 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:designTimeModels="clr-namespace:Reloaded.Mod.Launcher.Models.DesignTimeModel"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
              xmlns:manageModsPageCommands="clr-namespace:Reloaded.Mod.Launcher.Commands.ManageModsPage"
              xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
+             xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="756"
              Title="{DynamicResource TitleManageMods}">
@@ -28,7 +27,7 @@
             <manageModsPageCommands:ManageDependenciesCommand x:Key="ManageDependenciesCommand"/>
 
             <!-- Sort the mod list -->
-            <CollectionViewSource x:Key="SortedMods" Source="{Binding Mods, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
+            <CollectionViewSource x:Key="SortedMods" Source="{Binding ModConfigService.Mods, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                 <CollectionViewSource.SortDescriptions>
                     <componentModel:SortDescription PropertyName="ModConfig.ModName"/>
                 </CollectionViewSource.SortDescriptions>
@@ -57,11 +56,16 @@
                     <Viewbox Width="{StaticResource DetailsImageSize}"
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
                              Margin="{DynamicResource CommonItemVerticalMargin}">
-                        <Image d:DataContext="{x:Static designTimeModels:ModIcon.Instance}"
-                               Source="{Binding Icon}"
-                               ToolTip="{DynamicResource AddAppImageTooltip}"
+                        <Image ToolTip="{DynamicResource AddAppImageTooltip}"
                                ToolTipService.InitialShowDelay="0"
-                               PreviewMouseDown="Image_PreviewMouseDown"/>
+                               PreviewMouseDown="Image_PreviewMouseDown">
+                            <Image.Source>
+                                <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="SelectedModTuple"/>
+                                    <Binding Path="SelectedModTuple.Config.ModIcon"/>
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
                     </Viewbox>
 
                     <!-- Add / Delete Mod -->
@@ -83,19 +87,19 @@
                     </Grid>
 
                     <!-- Mod Properties -->
-                    <TextBox Text="{Binding Path=SelectedModTuple.ModConfig.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Text="{Binding Path=SelectedModTuple.Config.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogName}"/>
 
-                    <TextBox Text="{Binding Path=SelectedModTuple.ModConfig.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox Text="{Binding Path=SelectedModTuple.Config.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogAuthor}"/>
 
-                    <TextBox Text="{Binding Path=SelectedModTuple.ModConfig.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Text="{Binding Path=SelectedModTuple.Config.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogVersion}"/>
 
-                    <TextBox Text="{Binding Path=SelectedModTuple.ModConfig.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Text="{Binding Path=SelectedModTuple.Config.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogDescription}"/>
 
@@ -178,7 +182,7 @@
                             VerticalContentAlignment="Top">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ModConfig.ModName}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                                    <TextBlock Text="{Binding Config.ModName}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>

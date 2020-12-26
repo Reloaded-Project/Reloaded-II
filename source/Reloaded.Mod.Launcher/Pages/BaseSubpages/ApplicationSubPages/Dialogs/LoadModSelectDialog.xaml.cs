@@ -6,6 +6,8 @@ using System.Windows.Data;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
+using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
 
@@ -18,7 +20,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs
     {
         public ApplicationViewModel ApplicationViewModel { get; set; }
         public ReloadedApplicationViewModel ReloadedApplicationViewModel { get; set; }
-        public ImageModPathTuple SelectedMod { get; set; }
+        public PathTuple<ModConfig> SelectedMod { get; set; }
 
         private readonly CollectionViewSource _modsViewSource;
 
@@ -43,12 +45,10 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs
                 return;
             }
 
-            
-
-            var tuple = (ImageModPathTuple) e.Item;
-            e.Accepted = tuple.ModConfig.ModName.IndexOf(this.ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase) >= 0;
+            var tuple = (PathTuple<ModConfig>) e.Item;
+            e.Accepted = tuple.Config.ModName.Contains(this.ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase);
             if (! e.Accepted)
-                e.Accepted = tuple.ModConfig.ModId.IndexOf(this.ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase) >= 0;
+                e.Accepted = tuple.Config.ModId.Contains(this.ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private void ModsFilter_TextChanged(object sender, TextChangedEventArgs e)
@@ -59,7 +59,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs
         /* Select/Pick Code */
         private void LoadMod_Click(object sender, RoutedEventArgs e)
         {
-            try { Task.Run(() => ReloadedApplicationViewModel.Client?.LoadMod(SelectedMod.ModConfig.ModId)); }
+            try { Task.Run(() => ReloadedApplicationViewModel.Client?.LoadMod(SelectedMod.Config.ModId)); }
             catch (Exception) { /* Ignored */ }
             this.Close();
         }

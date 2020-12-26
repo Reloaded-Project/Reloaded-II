@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -12,6 +13,7 @@ using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.WPF.Utilities;
@@ -37,10 +39,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public event Action OnLoadModSet = () => { };
 
         public PathTuple<ApplicationConfig> ApplicationTuple { get; }
-        public ManageModsViewModel ManageModsViewModel    { get; }
+        public ModConfigService ModConfigService    { get; }
         public ApplicationInstanceTracker InstanceTracker { get; private set; }
 
-        public ObservableCollection<ImageModPathTuple> ModsForThisApp { get; private set; } = new ObservableCollection<ImageModPathTuple>();
+        public ObservableCollection<PathTuple<ModConfig>> ModsForThisApp { get; private set; } = new ObservableCollection<PathTuple<ModConfig>>();
         public ObservableCollection<Process> ProcessesWithReloaded    { get; private set; } = new ObservableCollection<Process>();
         public ObservableCollection<Process> ProcessesWithoutReloaded { get; private set; } = new ObservableCollection<Process>();
         public Timer RefreshProcessesWithLoaderTimer { get; private set; }
@@ -48,15 +50,15 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public Process SelectedProcess { get; set; }
         public ICommand MakeShortcutCommand { get; set; }
 
-        public ApplicationViewModel(PathTuple<ApplicationConfig> tuple, ManageModsViewModel modsViewModel)
+        public ApplicationViewModel(PathTuple<ApplicationConfig> tuple, ModConfigService modConfigService)
         {
             ApplicationTuple    = tuple;
-            ManageModsViewModel = modsViewModel;
+            ModConfigService    = modConfigService;
             MakeShortcutCommand = new MakeShortcutCommand(tuple);
 
             IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
             InstanceTracker = new ApplicationInstanceTracker(tuple.Config.AppLocation);
-            ManageModsViewModel.OnGetModifications += OnGetModifications;
+            ModConfigService.Mods.CollectionChanged += OnGetModifications;
             InstanceTracker.OnProcessesChanged += OnProcessesChanged;
 
             UpdateReloadedProcesses();
@@ -72,7 +74,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public void Dispose()
         {
-            ManageModsViewModel.OnGetModifications -= OnGetModifications;
+            ModConfigService.Mods.CollectionChanged -= OnGetModifications;
             InstanceTracker.OnProcessesChanged -= OnProcessesChanged;
 
             RefreshProcessesWithLoaderTimer?.Dispose();
@@ -127,14 +129,14 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// </summary>
         public void CheckModCompatibility()
         {
-            if (Setup.TryGetIncompatibleMods(ApplicationTuple, ManageModsViewModel.Mods, out var incompatible))
+            if (Setup.TryGetIncompatibleMods(ApplicationTuple, ModConfigService.Mods, out var incompatible))
                 new IncompatibleModDialog(incompatible, ApplicationTuple).ShowDialog();
         }
 
         // == Events ==
         private void RefreshTimerCallback(object state) => UpdateReloadedProcesses();
         private void OnProcessesChanged(Process[] processes) => UpdateReloadedProcesses();
-        private void OnGetModifications() => GetModsForThisApp();
+        private void OnGetModifications(object sender, NotifyCollectionChangedEventArgs e) => GetModsForThisApp();
 
         private void UpdateReloadedProcesses()
         {
@@ -149,9 +151,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void GetModsForThisApp()
         {
             string appId = ApplicationTuple.Config.AppId;
-            var newMods  = ManageModsViewModel.Mods.Where(x => x.ModConfig.SupportedAppId != null && x.ModConfig.SupportedAppId.Contains(appId));
+            var newMods  = ModConfigService.Mods.Where(x => x.Config.SupportedAppId != null && x.Config.SupportedAppId.Contains(appId));
 
-            ModsForThisApp = new ObservableCollection<ImageModPathTuple>(newMods);
+            ModsForThisApp = new ObservableCollection<PathTuple<ModConfig>>(newMods);
             OnGetModsForThisApp();
         }
     }

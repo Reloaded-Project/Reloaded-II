@@ -60,8 +60,8 @@
                       IsReadOnly="True"
                       AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ModId" Binding="{Binding ModConfig.ModId}" Width="*" IsReadOnly="True" />
-                    <DataGridTextColumn Header="ModName" Binding="{Binding ModConfig.ModName}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="ModId" Binding="{Binding Config.ModId}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="ModName" Binding="{Binding Config.ModName}" Width="*" IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

@@ -18,8 +18,12 @@
   </PropertyGroup>
 	
   <ItemGroup>
+    <Compile Remove="Models\Services\**" />
+    <EmbeddedResource Remove="Models\Services\**" />
     <None Remove="Assets\**" />
+    <None Remove="Models\Services\**" />
     <None Remove="Theme\**" />
+    <Page Remove="Models\Services\**" />
     <None Remove="LICENSE.txt" />
   </ItemGroup>
 	
@@ -84,9 +88,5 @@
     <ApplicationDefinition Update="App.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ApplicationDefinition>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Services\" />
   </ItemGroup>
 </Project>

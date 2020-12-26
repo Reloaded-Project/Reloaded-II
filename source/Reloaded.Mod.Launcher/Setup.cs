@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -83,8 +84,6 @@ namespace Reloaded.Mod.Launcher
             }
         }
 
-        
-
         /// <summary>
         /// Compresses old loader log files into a zip archive.
         /// </summary>
@@ -161,19 +160,19 @@ namespace Reloaded.Mod.Launcher
         /// Sanity check after loading mod sets.
         /// </summary>
         /// <param name="incompatibleModIds">List of incompatible mods.</param>
-        public static bool TryGetIncompatibleMods(PathTuple<ApplicationConfig> application, IEnumerable<ImageModPathTuple> mods, out List<ImageModPathTuple> incompatibleModIds)
+        public static bool TryGetIncompatibleMods(PathTuple<ApplicationConfig> application, ObservableCollection<PathTuple<ModConfig>> mods, out List<PathTuple<ModConfig>> incompatibleModIds)
         {
             var enabledModIds = application.Config.EnabledMods;
-            incompatibleModIds = new List<ImageModPathTuple>(enabledModIds.Length);
+            incompatibleModIds = new List<PathTuple<ModConfig>>(enabledModIds.Length);
 
             foreach (var enabledModId in enabledModIds)
             {
                 // ReSharper disable once PossibleMultipleEnumeration
-                var mod = mods.FirstOrDefault(x => x.ModConfig.ModId == enabledModId);
+                var mod = mods.FirstOrDefault(x => x.Config.ModId == enabledModId);
                 if (mod == null)
                     continue;
 
-                if (!mod.ModConfig.SupportedAppId.Contains(application.Config.AppId))
+                if (!mod.Config.SupportedAppId.Contains(application.Config.AppId))
                     incompatibleModIds.Add(mod);
             }
 
@@ -209,7 +208,7 @@ namespace Reloaded.Mod.Launcher
             {
                 // Needs to be ran after SetupViewModelsAsync
                 var apps = IoC.GetConstant<ApplicationConfigService>().Applications;
-                var mods = IoC.GetConstant<ManageModsViewModel>().Mods;
+                var mods = IoC.GetConstant<ModConfigService>().Mods;
 
                 foreach (var app in apps)
                 {
@@ -255,6 +254,7 @@ namespace Reloaded.Mod.Launcher
 
             IoC.Kernel.Rebind<IProcessWatcher>().ToConstant(IProcessWatcher.Get());
             IoC.Kernel.Rebind<ApplicationConfigService>().ToConstant(new ApplicationConfigService(config, synchronizationContext));
+            IoC.Kernel.Rebind<ModConfigService>().ToConstant(new ModConfigService(config, synchronizationContext));
         }
 
         /// <summary>
@@ -321,6 +321,5 @@ namespace Reloaded.Mod.Launcher
             await Update.CheckForLoaderUpdatesAsync();
             await CheckForMissingModDependencies();
         }
-
     }
 }

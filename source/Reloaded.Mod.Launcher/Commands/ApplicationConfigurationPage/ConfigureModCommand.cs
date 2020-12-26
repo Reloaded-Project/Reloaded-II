@@ -80,8 +80,8 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
         [MethodImpl(MethodImplOptions.NoInlining)]
         private bool TryGetConfigurator(ModEntry selectedMod, out IConfigurator configurator, out PluginLoader loader)
         {
-            var config = selectedMod.Tuple.ModConfig;
-            string dllPath = config.GetManagedDllPath(selectedMod.Tuple.ModConfigPath);
+            var config = selectedMod.Tuple.Config;
+            string dllPath = config.GetManagedDllPath(selectedMod.Tuple.Path);
             configurator = null;
             loader = null;
 
@@ -100,7 +100,7 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
             if (entryPoint != null)
             {
                 configurator = (IConfigurator)Activator.CreateInstance(entryPoint);
-                configurator.SetModDirectory(Path.GetFullPath(Path.GetDirectoryName(selectedMod.Tuple.ModConfigPath)));
+                configurator.SetModDirectory(Path.GetFullPath(Path.GetDirectoryName(selectedMod.Tuple.Path)));
                 return true;
             }
 

@@ -11,8 +11,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 {
     public class SettingsPageViewModel : ObservableObject
     {
-        public ManageModsViewModel ManageModsViewModel { get; set; }
         public ApplicationConfigService AppConfigService { get; set; }
+        public ModConfigService ModConfigService { get; set; }
 
         public int TotalApplicationsInstalled { get; set; }
         public int TotalModsInstalled { get; set; }
@@ -22,16 +22,16 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public XamlFileSelector LanguageSelector => App.LanguageSelector;
         public XamlFileSelector ThemeSelector => App.ThemeSelector;
 
-        public SettingsPageViewModel(ApplicationConfigService appConfigService, ManageModsViewModel manageModsViewModel, LoaderConfig loaderConfig)
+        public SettingsPageViewModel(ApplicationConfigService appConfigService, ModConfigService modConfigService, LoaderConfig loaderConfig)
         {
             AppConfigService = appConfigService;
+            ModConfigService = modConfigService;
             LoaderConfig = loaderConfig;
-            ManageModsViewModel = manageModsViewModel;
 
             UpdateTotalApplicationsInstalled();
             UpdateTotalModsInstalled();
             AppConfigService.Applications.CollectionChanged += MainPageViewModelOnApplicationsChanged;
-            ManageModsViewModel.ModsChanged += ManageModsViewModelOnModsChanged;
+            ModConfigService.Mods.CollectionChanged += ManageModsViewModelOnModsChanged;
 
             var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
             Copyright = version.LegalCopyright;
@@ -86,7 +86,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         /* Functions */
         private void UpdateTotalApplicationsInstalled() => TotalApplicationsInstalled = AppConfigService.Applications.Count;
-        private void UpdateTotalModsInstalled() => TotalModsInstalled = ManageModsViewModel.Mods.Count;
+        private void UpdateTotalModsInstalled() => TotalModsInstalled = ModConfigService.Mods.Count;
 
         /* Events */
         private void ManageModsViewModelOnModsChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateTotalModsInstalled();
