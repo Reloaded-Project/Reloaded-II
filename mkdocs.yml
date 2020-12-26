@@ -24,6 +24,7 @@ pages:
     - Quick Start: QuickStart.md
     - Frequently Asked Questions: FAQ.md
     - Advanced:
+        - NuGet Sources: NuGetSources.md
         - Injection Methods: InjectionMethods.md
   - For Modders:
     - Getting Started: GettingStartedMods.md
