@@ -30,6 +30,6 @@ Reloaded handles NuGet errors silently. If it cannot contact a NuGet server; it 
 
 ## Hosting A Server
 
-Reloaded-II uses the NuGet V3 API and as such any API compliant NuGet server should work correctly without problems. The official Reloaded server uses a modified version of [BaGet](https://github.com/loic-sharma/BaGet), forked as [BaGet-Reloaded](https://github.com/Sewer56/BaGet-ReloadedII). Self hosting instructions for a clean VM are provided in the repository.
+Reloaded-II uses the NuGet V3 API and as such any API compliant NuGet server should work correctly without problems. The official Reloaded server uses a modified version of [BaGet](https://github.com/loic-sharma/BaGet), forked as [BaGet-Reloaded](https://github.com/Sewer56/BaGet-ReloadedII). Self hosting instructions for a clean VPS are provided in the repository.
 
 Other servers/services known to work properly are [MyGet](https://www.myget.org) as well as the official [NuGet Gallery](https://github.com/NuGet/NuGetGallery).
