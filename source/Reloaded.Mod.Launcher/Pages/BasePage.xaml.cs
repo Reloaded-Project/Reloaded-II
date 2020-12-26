@@ -1,8 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages;
+using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 
 namespace Reloaded.Mod.Launcher.Pages
 {
@@ -46,7 +47,7 @@ namespace Reloaded.Mod.Launcher.Pages
             // Prepare for parameter transfer.
             if (sender is FrameworkElement element)
             {
-                if (element.DataContext is ImageApplicationPathTuple tuple)
+                if (element.DataContext is PathTuple<ApplicationConfig> tuple)
                 {
                     ViewModel.SwitchToApplication(tuple);
                 }

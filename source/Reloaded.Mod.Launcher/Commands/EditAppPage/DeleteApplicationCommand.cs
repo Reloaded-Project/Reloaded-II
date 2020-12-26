@@ -42,15 +42,15 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
         {
             // Find Application in Viewmodel's list and remove it.
             var app   = _editAppViewModel.Application.Config;
-            var entry = _editAppViewModel.MainPageViewModel.Applications.First(x => x.Config.Equals(app));
-            _editAppViewModel.MainPageViewModel.Applications.Remove(entry);
+            var entry = _editAppViewModel.AppConfigService.Applications.First(x => x.Config.Equals(app));
+            _editAppViewModel.AppConfigService.Applications.Remove(entry);
 
             // Delete folder contents.
-            var directory = Path.GetDirectoryName(entry.ConfigPath) ?? throw new InvalidOperationException(Errors.FailedToGetDirectoryOfApplication());
+            var directory = Path.GetDirectoryName(entry.Path) ?? throw new InvalidOperationException(Errors.FailedToGetDirectoryOfApplication());
             Directory.Delete(directory, true);
 
             // File system watcher automatically updates collection in MainPageViewModel.Applications
-            _editAppViewModel.MainPageViewModel.Page = Pages.BaseSubpages.BaseSubPage.SettingsPage;
+            IoC.Get<MainPageViewModel>().Page = Pages.BaseSubpages.BaseSubPage.SettingsPage;
         }
     }
 }

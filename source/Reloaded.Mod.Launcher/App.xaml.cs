@@ -7,7 +7,6 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Windows;
-using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
@@ -88,9 +87,9 @@ namespace Reloaded.Mod.Launcher
 
             applicationToLaunch = Path.GetFullPath(applicationToLaunch);
             var application = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().ApplicationConfigDirectory)
-                .FirstOrDefault(x => Path.GetFullPath(x.Object.AppLocation) == applicationToLaunch);
+                .FirstOrDefault(x => Path.GetFullPath(x.Config.AppLocation) == applicationToLaunch);
             if (application != null)
-                arguments = $"{arguments} {application.Object.AppArguments}";
+                arguments = $"{arguments} {application.Config.AppArguments}";
 
             // Launch the application.
             var launcher = ApplicationLauncher.FromLocationAndArguments(applicationToLaunch, arguments);

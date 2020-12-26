@@ -45,7 +45,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
         {
             if (_manageModsViewModel.SelectedModTuple != null)
             {
-                string directoryPath = Path.GetDirectoryName(_manageModsViewModel.SelectedModTuple.ModConfigPath);
+                string directoryPath = Path.GetDirectoryName(_manageModsViewModel.SelectedModTuple.Path);
                 if (Directory.Exists(directoryPath))
                     return _canExecute;
             }
@@ -60,9 +60,9 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
             // Start
             var selectedMod      = _manageModsViewModel.SelectedModTuple;
-            var modDirectory     = Path.GetDirectoryName(selectedMod.ModConfigPath);
+            var modDirectory     = Path.GetDirectoryName(selectedMod.Path);
             var outputPath       = Path.GetDirectoryName(modDirectory);
-            Converter.FromModDirectory(modDirectory, outputPath, selectedMod.ModConfig);
+            Converter.FromModDirectory(modDirectory, outputPath, selectedMod.Config);
             ProcessExtensions.OpenFileWithExplorer(outputPath);
 
             // End

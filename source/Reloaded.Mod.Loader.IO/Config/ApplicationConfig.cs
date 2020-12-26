@@ -49,16 +49,19 @@ namespace Reloaded.Mod.Loader.IO.Config
             EnabledMods = enabledMods;
         }
 
+        /// <summary>
+        /// Attempts to obtain the location of the application icon.
+        /// </summary>
+        /// <param name="configPath">Path to the application configuration.</param>
+        /// <param name="logoFilePath">The file path to the logo. This returns a valid file path, even if the actual logo file does not exist.</param>
+        /// <returns>True if the logo file exists, else false.</returns>
+        public bool TryGetApplicationIcon(string configPath, out string logoFilePath) => TryGetApplicationIcon(configPath, this, out logoFilePath);
+
         /*
            ---------
            Utilities
            --------- 
         */
-
-        /// <summary>
-        /// Writes the configuration to a specified file path.
-        /// </summary>
-        public static void WriteConfiguration(string path, ApplicationConfig config) => ConfigReader<ApplicationConfig>.WriteConfiguration(path, config);
 
         /// <summary>
         /// Attempts to obtain the location of the application icon.
@@ -88,7 +91,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// all apps.
         /// </summary>
         /// <param name="appDirectory">(Optional) Directory containing all of the applications.</param>
-        public static List<PathGenericTuple<ApplicationConfig>> GetAllApplications(string appDirectory = null, CancellationToken token = default)
+        public static List<PathTuple<ApplicationConfig>> GetAllApplications(string appDirectory = null, CancellationToken token = default)
         {
             if (appDirectory == null)
                 appDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).ApplicationConfigDirectory;
@@ -103,7 +106,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <param name="config">The application to get all mods for.</param>
         /// <param name="allMods">A list of all available modifications, including those not in use by the config.</param>
         /// <param name="modDirectory">(Optional) Directory containing all of the mods.</param>
-        public static List<BooleanGenericTuple<PathGenericTuple<ModConfig>>> GetAllMods(IApplicationConfig config, out List<PathGenericTuple<ModConfig>> allMods, string modDirectory = null)
+        public static List<BooleanGenericTuple<PathTuple<ModConfig>>> GetAllMods(IApplicationConfig config, out List<PathTuple<ModConfig>> allMods, string modDirectory = null)
         {
             allMods = ModConfig.GetAllMods(modDirectory);
             return GetAllMods(config, allMods);
@@ -115,7 +118,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         /// <param name="config">The application to get all mods for.</param>
         /// <param name="modDirectory">(Optional) Directory containing all of the mods.</param>
-        public static List<BooleanGenericTuple<PathGenericTuple<ModConfig>>> GetAllMods(IApplicationConfig config, string modDirectory = null)
+        public static List<BooleanGenericTuple<PathTuple<ModConfig>>> GetAllMods(IApplicationConfig config, string modDirectory = null)
         {
             var modifications = ModConfig.GetAllMods(modDirectory);
             return GetAllMods(config, modifications);
@@ -127,28 +130,28 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         /// <param name="config">The application to get all mods for.</param>
         /// <param name="modifications">List of modifications to retrieve all mods from.</param>
-        public static List<BooleanGenericTuple<PathGenericTuple<ModConfig>>> GetAllMods(IApplicationConfig config, List<PathGenericTuple<ModConfig>> modifications)
+        public static List<BooleanGenericTuple<PathTuple<ModConfig>>> GetAllMods(IApplicationConfig config, List<PathTuple<ModConfig>> modifications)
         {
             // Note: Must put items in top to bottom load order.
             var enabledModIds  = config.EnabledMods;
 
             // Get dictionary of mods by Mod ID
-            var modDictionary = new Dictionary<string, PathGenericTuple<ModConfig>>();
+            var modDictionary = new Dictionary<string, PathTuple<ModConfig>>();
             foreach (var mod in modifications)
-                modDictionary[mod.Object.ModId] = mod;
+                modDictionary[mod.Config.ModId] = mod;
 
             // Add enabled mods.
-            var totalModList = new List<BooleanGenericTuple<PathGenericTuple<ModConfig>>>(modifications.Count);
+            var totalModList = new List<BooleanGenericTuple<PathTuple<ModConfig>>>(modifications.Count);
             foreach (var enabledModId in enabledModIds)
             {
                 if (modDictionary.ContainsKey(enabledModId))
-                    totalModList.Add(new BooleanGenericTuple<PathGenericTuple<ModConfig>>(true, modDictionary[enabledModId]));
+                    totalModList.Add(new BooleanGenericTuple<PathTuple<ModConfig>>(true, modDictionary[enabledModId]));
             }
 
             // Add disabled mods.
             var enabledModIdSet = config.EnabledMods.ToHashSet();
-            var disabledMods    = modifications.Where(x => !enabledModIdSet.Contains(x.Object.ModId));
-            totalModList.AddRange(disabledMods.Select(x => new BooleanGenericTuple<PathGenericTuple<ModConfig>>(false, x)));
+            var disabledMods    = modifications.Where(x => !enabledModIdSet.Contains(x.Config.ModId));
+            totalModList.AddRange(disabledMods.Select(x => new BooleanGenericTuple<PathTuple<ModConfig>>(false, x)));
             return totalModList;
         }
 

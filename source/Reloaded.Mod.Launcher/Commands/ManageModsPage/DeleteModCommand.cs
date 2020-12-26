@@ -52,16 +52,13 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
         public void Execute(object parameter)
         {
-            // Find Application in Viewmodel's list and remove it.
-            var app = _manageModsViewModel.SelectedModTuple;
-            var entry = _manageModsViewModel.Mods.First(x => x.ModConfig.Equals(app.ModConfig));
-            _manageModsViewModel.Mods.Remove(entry);
+            // Find mod in mod list.
+            var app   = _manageModsViewModel.SelectedModTuple;
+            var entry = _manageModsViewModel.ModConfigService.Mods.First(x => x.Config.Equals(app.Config));
 
             // Delete folder contents.
-            var directory = Path.GetDirectoryName(entry.ModConfigPath) ?? throw new InvalidOperationException(Errors.FailedToGetDirectoryOfMod());
+            var directory = Path.GetDirectoryName(entry.Path) ?? throw new InvalidOperationException(Errors.FailedToGetDirectoryOfMod());
             Directory.Delete(directory, true);
-
-            // File system watcher automatically updates collection in MainPageViewModel.Applications
         }
     }
 }

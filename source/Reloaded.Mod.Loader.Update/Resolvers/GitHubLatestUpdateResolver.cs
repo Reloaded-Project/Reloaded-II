@@ -42,7 +42,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             return CachedRateLimit;
         }
 
-        private PathGenericTuple<ModConfig> _modTuple;
+        private PathTuple<ModConfig> _modTuple;
         private GitHubConfig _githubConfig;
         private GitHubUserConfig _githubUserConfig;
         private IReadOnlyList<Release> _releases;
@@ -61,7 +61,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
                 MakeTimestampsIfNotExist(allModsWithConfigs);
 
                 var orderedModsWithConfigs  = allModsWithConfigs.OrderBy(x => IConfig<GitHubUserConfig>.FromPath(GitHubUserConfig.GetFilePath(GetModDirectory(x))).LastCheckTimestamp);
-                var allowedMods             = orderedModsWithConfigs.Take(UnregisteredRateLimit).Select(x => x.Object);
+                var allowedMods             = orderedModsWithConfigs.Take(UnregisteredRateLimit).Select(x => x.Config);
                 AllowedMods                 = new HashSet<ModConfig>(allowedMods);
             }
             catch (Exception)
@@ -72,7 +72,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 
         /* Interface Implementation */
         public IPackageExtractor Extractor { get; set; } = new ArchiveExtractor();
-        public bool IsCompatible(PathGenericTuple<ModConfig> mod)
+        public bool IsCompatible(PathTuple<ModConfig> mod)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
                 {
                     string path = GitHubConfig.GetFilePath(GetModDirectory(mod));
 
-                    if (File.Exists(path) && AllowedMods.Contains(mod.Object))
+                    if (File.Exists(path) && AllowedMods.Contains(mod.Config))
                         return true;
                 }
             }
@@ -89,7 +89,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             return false;
         }
 
-        public void Construct(PathGenericTuple<ModConfig> mod)
+        public void Construct(PathTuple<ModConfig> mod)
         {
             _modTuple = mod;
             string path = GitHubConfig.GetFilePath(GetModDirectory(mod));
@@ -99,7 +99,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 
         public Version GetCurrentVersion()
         {
-            return Version.Parse(_modTuple.Object.ModVersion);
+            return Version.Parse(_modTuple.Config.ModVersion);
         }
 
         public async Task<IReadOnlyList<Version>> GetPackageVersionsAsync(CancellationToken cancellationToken = new CancellationToken())
@@ -154,7 +154,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         }
 
         /* Helper classes */
-        private static void MakeTimestampsIfNotExist(IEnumerable<PathGenericTuple<ModConfig>> mods)
+        private static void MakeTimestampsIfNotExist(IEnumerable<PathTuple<ModConfig>> mods)
         {
             foreach (var modWithConfig in mods)
             {
@@ -164,7 +164,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             }
         }
 
-        private static string GetModDirectory(PathGenericTuple<ModConfig> mod)
+        private static string GetModDirectory(PathTuple<ModConfig> mod)
         {
             return Path.GetDirectoryName(mod.Path);
         }

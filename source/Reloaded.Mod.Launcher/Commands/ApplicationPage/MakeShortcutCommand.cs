@@ -7,8 +7,8 @@ using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.EditAppPage.Shortcuts;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Misc;
-using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Utilities;
 using File = System.IO.File;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
@@ -19,9 +19,9 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationPage
     {
         private XamlResource<string> _xamlShortcutCreatedTitle = new XamlResource<string>("AddAppShortcutCreatedTitle");
         private XamlResource<string> _xamlShortcutCreatedMessage = new XamlResource<string>("AddAppShortcutCreatedMessage");
-        private ImageApplicationPathTuple _config;
+        private PathTuple<ApplicationConfig> _config;
 
-        public MakeShortcutCommand(ImageApplicationPathTuple config)
+        public MakeShortcutCommand(PathTuple<ApplicationConfig> config)
         {
             _config = config;
         }
@@ -47,7 +47,7 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationPage
 
             if (_config != null)
             {
-                var hasIcon = ApplicationConfig.TryGetApplicationIcon(_config.ConfigPath, _config.Config, out var logoPath);
+                var hasIcon = _config.Config.TryGetApplicationIcon(_config.Path, out var logoPath);
                 if (hasIcon)
                 {
                     // Make path for icon.

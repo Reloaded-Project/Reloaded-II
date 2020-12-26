@@ -21,7 +21,7 @@
             </Style>
 
             <!-- Sort the mod list -->
-            <CollectionViewSource x:Key="FilteredApps" Source="{Binding Applications, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
+            <CollectionViewSource x:Key="FilteredApps" Source="{Binding ConfigService.Applications, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                 <CollectionViewSource.SortDescriptions>
                     <componentModel:SortDescription PropertyName="Config.AppName"/>
                 </CollectionViewSource.SortDescriptions>
@@ -90,8 +90,14 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <controls:CircleButton TooltipText="{Binding Path=Config.AppName}"
-                                                       ImageSource="{Binding Path=Image, UpdateSourceTrigger=PropertyChanged}"
-                                                       PreviewMouseDown="Application_PreviewMouseDown"/>
+                                                       PreviewMouseDown="Application_PreviewMouseDown">
+                                    <controls:CircleButton.ImageSource>
+                                        <MultiBinding Converter="{x:Static converters:ApplicationPathTupleToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding Path="."/>
+                                            <Binding Path="Config.AppIcon"/>
+                                        </MultiBinding>
+                                    </controls:CircleButton.ImageSource>
+                                </controls:CircleButton>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

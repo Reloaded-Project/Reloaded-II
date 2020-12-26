@@ -53,7 +53,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Returns true if the mod is native, else false.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         public bool IsNativeMod(string configPath)
         {
             return IsNativeMod(configPath, this);
@@ -62,7 +62,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Returns true if the mod consists of ReadyToRun (R2R) executables, else false.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         public bool IsR2R(string configPath)
         {
             return IsR2R(configPath, this);
@@ -71,7 +71,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Retrieves the path to the individual managed DLL for this mod.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         public string GetManagedDllPath(string configPath)
         {
             return GetManagedDllPath(configPath, this);
@@ -80,7 +80,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Retrieves the path to the individual DLL (managed or native) for this mod.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         public string GetDllPath(string configPath)
         {
             return IsNativeMod(configPath) ? GetNativeDllPath(configPath) : GetManagedDllPath(configPath);
@@ -89,7 +89,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Retrieves the path to the native DLL for this mod, autodetecting if 32 or 64 bit..
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         public string GetNativeDllPath(string configPath)
         {
             return Environment.Is64BitProcess ? GetNativeDllPath64(configPath, this) : GetNativeDllPath32(configPath, this);
@@ -98,7 +98,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Tries to retrieve the full path to the icon that represents this mod.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         /// <param name="iconPath">Full path to the icon.</param>
         public bool TryGetIconPath(string configPath, out string iconPath)
         {
@@ -114,7 +114,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Retrieves the path to the individual DLL for this mod.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         /// <param name="modConfig">The individual mod configuration.</param>
         public static string GetManagedDllPath(string configPath, ModConfig modConfig)
         {
@@ -128,7 +128,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Retrieves the path to the individual DLL for this mod if the mod is using 32-bit Ready2Run format.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         /// <param name="modConfig">The individual mod configuration.</param>
         public static string GetR2RManagedDllPath32(string configPath, ModConfig modConfig)
         {
@@ -139,7 +139,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Retrieves the path to the individual DLL for this mod if the mod is using 64-bit Ready2Run format.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         /// <param name="modConfig">The individual mod configuration.</param>
         public static string GetR2RManagedDllPath64(string configPath, ModConfig modConfig)
         {
@@ -150,7 +150,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Returns true if the mod is native, else false.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         /// <param name="modConfig">The individual mod configuration.</param>
         public static bool IsNativeMod(string configPath, ModConfig modConfig)
         {
@@ -160,7 +160,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Returns true if the mod consists of ReadyToRun (R2R) executables, else false.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         public static bool IsR2R(string configPath, ModConfig modConfig)
         {
             return (!String.IsNullOrEmpty(modConfig.ModR2RManagedDll32) && File.Exists(GetR2RManagedDllPath32(configPath, modConfig))) ||
@@ -170,7 +170,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Retrieves the path to the native 32-bit DLL for this mod, autodetecting if 32 or 64 bit..
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         /// <param name="modConfig">The individual mod configuration.</param>
         public static string GetNativeDllPath(string configPath, ModConfig modConfig)
         {
@@ -180,7 +180,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Retrieves the path to native 32-bit DLL for this mod.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         /// <param name="modConfig">The individual mod configuration.</param>
         public static string GetNativeDllPath32(string configPath, ModConfig modConfig)
         {
@@ -191,7 +191,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Retrieves the path to native 64-bit DLL for this mod.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         /// <param name="modConfig">The individual mod configuration.</param>
         public static string GetNativeDllPath64(string configPath, ModConfig modConfig)
         {
@@ -202,7 +202,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Tries to retrieve the full path to the icon that represents this mod.
         /// </summary>
-        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathGenericTuple{TGeneric}"/>)</param>
+        /// <param name="configPath">The full path to the <see cref="ConfigFileName"/> configuration file. (See <see cref="PathTuple{TGeneric}"/>)</param>
         /// <param name="modConfig">The individual mod configuration.</param>
         /// <param name="iconPath">Full path to the icon.</param>
         public static bool TryGetIconPath(string configPath, ModConfig modConfig, out string iconPath)
@@ -221,7 +221,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Finds all mods on the filesystem, parses them and returns a list of all mods.
         /// </summary>
         /// <param name="modDirectory">(Optional) Directory containing all of the mods.</param>
-        public static List<PathGenericTuple<ModConfig>> GetAllMods(string modDirectory = null, CancellationToken token = default)
+        public static List<PathTuple<ModConfig>> GetAllMods(string modDirectory = null, CancellationToken token = default)
         {
             if (modDirectory == null)
                 modDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).ModConfigDirectory;
@@ -239,7 +239,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public static ModDependencySet GetDependencies(IEnumerable<ModConfig> configurations, IEnumerable<ModConfig> allMods = null, string modDirectory = null)
         {
-            var allModsCollection   = allMods ?? GetAllMods(modDirectory).Select(x => x.Object);
+            var allModsCollection   = allMods ?? GetAllMods(modDirectory).Select(x => x.Config);
             var dependencySets      = new List<ModDependencySet>();
 
             foreach (var config in configurations)
@@ -258,7 +258,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         public static ModDependencySet GetDependencies(ModConfig config, IEnumerable<ModConfig> allMods = null)
         {
             if (allMods == null)
-                allMods = GetAllMods().Select(x => x.Object);
+                allMods = GetAllMods().Select(x => x.Config);
 
             var dependencySet = new ModDependencySet();
 

@@ -49,11 +49,8 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
         public void Execute(object parameter)
         {
-            _manageModsViewModel.InvokeWithoutMonitoringMods(() =>
-            {
-                var dialog = new SetDependenciesDialog(_manageModsViewModel);
-                dialog.ShowDialog();
-            });
+            var dialog = new SetDependenciesDialog(_manageModsViewModel.ModConfigService, _manageModsViewModel.SelectedModTuple);
+            dialog.ShowDialog();
         }
     }
 }

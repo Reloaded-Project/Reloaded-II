@@ -33,7 +33,7 @@ namespace Reloaded.Mod.Loader.Update
         /// <param name="mod">The mod in question.</param>
         /// <param name="data">All data passed to the updater.</param>
         /// <returns>A resolver that can handle the mod, else null.</returns>
-        public static IModResolver GetResolver(PathGenericTuple<ModConfig> mod, Structures.UpdaterData data)
+        public static IModResolver GetResolver(PathTuple<ModConfig> mod, Structures.UpdaterData data)
         {
             foreach (var resolver in new Resolvers(data).All)
             {

@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
@@ -14,42 +14,44 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
     /// </summary>
     public partial class CreateModDialog : ReloadedWindow
     {
-        public CreateModViewModel RealViewModel { get; set; }
+        public CreateModViewModel RealViewModel  { get; set; }
+        public ModConfigService ModConfigService { get; set; }
+
         private XamlResource<string> _xamlTitleCreateModNonUniqueId = new XamlResource<string>("TitleCreateModNonUniqueId");
         private XamlResource<string> _xamlMessageCreateModNonUniqueId = new XamlResource<string>("MessageCreateModNonUniqueId");
 
-        public CreateModDialog()
+        public CreateModDialog(ModConfigService service)
         {
             InitializeComponent();
-            RealViewModel = new CreateModViewModel(IoC.Get<ManageModsViewModel>(), new DictionaryResourceManipulator(this.Contents.Resources));
+            ModConfigService = service;
+            RealViewModel = new CreateModViewModel(ModConfigService, new DictionaryResourceManipulator(this.Contents.Resources));
         }
 
         private void ModIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                this.RealViewModel.Image = RealViewModel.GetImage();
-            }
+            if (e.LeftButton != MouseButtonState.Pressed) 
+                return;
+
+            this.RealViewModel.Image = RealViewModel.GetImage();
         }
 
         private void Save_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                if (IsUnique())
-                {
-                    RealViewModel.Save();
-                    var window = Window.GetWindow((DependencyObject)sender);
-                    window.Close();
-                }
-            }
+            if (e.LeftButton != MouseButtonState.Pressed) 
+                return;
+
+            if (!IsUnique()) 
+                return;
+
+            RealViewModel.Save();
+            var window = Window.GetWindow((DependencyObject)sender);
+            window.Close();
         }
 
         /* Check if not duplicate. */
         public bool IsUnique()
         {
-            var modsViewModel = IoC.Get<ManageModsViewModel>();
-            if (modsViewModel.Mods.Count(x => x.ModConfig.ModId.Equals(RealViewModel.Config.ModId)) > 0)
+            if (ModConfigService.Mods.Any(x => x.Config.ModId.Equals(RealViewModel.Config.ModId)))
             {
                 var messageBoxDialog = new MessageBox(_xamlTitleCreateModNonUniqueId.Get(),
                                                       _xamlMessageCreateModNonUniqueId.Get());

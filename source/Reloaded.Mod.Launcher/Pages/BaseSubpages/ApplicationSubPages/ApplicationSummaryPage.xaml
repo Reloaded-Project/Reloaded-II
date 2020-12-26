@@ -7,6 +7,7 @@
       xmlns:system="clr-namespace:System;assembly=mscorlib"
       xmlns:dd="urn:gong-wpf-dragdrop"
       xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
+      xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="600" 
       d:DesignWidth="576"
@@ -75,19 +76,19 @@
                                       Grid.Column="0"
                                       IsThreeState="True" />
 
-                            <TextBlock Text="{Binding Tuple.ModConfig.ModName, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock Text="{Binding Tuple.Config.ModName, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" 
                                        Margin="{DynamicResource ListEntryItemMarginSmall}"
                                        Grid.Column="1"/>
 
-                            <TextBlock Text="{Binding Tuple.ModConfig.ModAuthor, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock Text="{Binding Tuple.Config.ModAuthor, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Center" 
                                        Margin="{DynamicResource ListEntryItemMarginSmall}"
                                        Grid.Column="2"/>
 
-                            <TextBlock Text="{Binding Tuple.ModConfig.ModVersion, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock Text="{Binding Tuple.Config.ModVersion, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Center" 
                                        Margin="{DynamicResource ListEntryItemMarginSmall}"
@@ -107,24 +108,30 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Application Image -->
+            <!-- Mod Image -->
             <Border Grid.Column="0" x:Name="BannerImage" BorderBrush="{DynamicResource BorderColorBrush}" Background="Transparent" BorderThickness="1" >
                 <Viewbox Width="{StaticResource ImageSize}"
                          Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}">
-                    <Image Source="{Binding Icon}"
-                           Style="{DynamicResource HighQualityImage}"/>
+                    <Image Style="{DynamicResource HighQualityImage}">
+                        <Image.Source>
+                            <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="SelectedMod.Tuple" IsAsync="True"/>
+                                <Binding Path="SelectedMod.Tuple.Config.ModIcon" IsAsync="True"/>
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
                 </Viewbox>
             </Border>
 
-            <!-- Application Details -->
+            <!-- Mod Details -->
             <Grid Grid.Column="2" MaxHeight="{Binding Path=ActualHeight, ElementName=BannerImage}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="{DynamicResource GridInterPanelMargin}"/>
                     <RowDefinition Height='*'/>
                 </Grid.RowDefinitions>
-                
-                <!-- Actions for current application -->
+
+                <!-- Actions for current Mod -->
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -144,7 +151,7 @@
                 </Grid>
 
                 <!-- Mod Details -->
-                <TextBlock Text="{Binding SelectedMod.Tuple.ModConfig.ModDescription, UpdateSourceTrigger=PropertyChanged, FallbackValue={StaticResource DummyText}}" 
+                <TextBlock Text="{Binding SelectedMod.Tuple.Config.ModDescription, UpdateSourceTrigger=PropertyChanged, FallbackValue={StaticResource DummyText}}" 
                            Grid.Row="2"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Stretch"

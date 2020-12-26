@@ -82,7 +82,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <param name="filePath">The absolute path to write the configurations file to.</param>
         /// <param name="config">The mod configurations to commit to file.</param>
         /// <param name="token">Token that can be used to cancel deserialization</param>
-        public static async void ToPathAsync(TType config, string filePath, CancellationToken token = default)
+        public static async Task ToPathAsync(TType config, string filePath, CancellationToken token = default)
         {
             string fullPath = Path.GetFullPath(filePath);
             CreateDirectoryIfNotExist(Path.GetDirectoryName(fullPath));

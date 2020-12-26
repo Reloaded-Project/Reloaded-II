@@ -17,14 +17,14 @@ namespace Reloaded.Mod.Loader.Update.Interfaces
         /// </summary>
         /// <param name="mod">The mod to check.</param>
         /// <returns>True if this mod supports updating through this source.</returns>
-        bool IsCompatible(PathGenericTuple<ModConfig> mod);
+        bool IsCompatible(PathTuple<ModConfig> mod);
 
         /// <summary>
         /// Sets up this resolver to work with this mod.
         /// This will be called if IsCompatible == true.
         /// </summary>
         /// <param name="mod">The mod to set up the resolver for.</param>
-        void Construct(PathGenericTuple<ModConfig> mod);
+        void Construct(PathTuple<ModConfig> mod);
 
         /// <summary>
         /// Retrieves the current version of the mod.

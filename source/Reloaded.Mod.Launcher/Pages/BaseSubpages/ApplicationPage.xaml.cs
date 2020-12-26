@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.WPF.Pages.Animations;
 using Reloaded.WPF.Pages.Animations.Enum;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
@@ -20,7 +21,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         public ApplicationPage()
         {
             InitializeComponent();
-            ViewModel = new ApplicationViewModel(IoC.Get<MainPageViewModel>().SelectedApplication, IoC.Get<ManageModsViewModel>());
+            ViewModel = new ApplicationViewModel(IoC.Get<MainPageViewModel>().SelectedApplication, IoC.Get<ModConfigService>());
             this.AnimateOutStarted += Dispose;
         }
 

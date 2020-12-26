@@ -82,7 +82,7 @@ namespace Reloaded.Mod.Launcher.Utility
         public static bool GetAllProcesses(out IEnumerable<Process> processes)
         {
             var applications        = ApplicationConfig.GetAllApplications();
-            var trackers            = applications.Select(x => new ApplicationInstanceTracker(x.Object.AppLocation));
+            var trackers            = applications.Select(x => new ApplicationInstanceTracker(x.Config.AppLocation));
             processes               = trackers.SelectMany(x => x.GetProcesses().ReloadedProcesses);
 
             return processes.Any();

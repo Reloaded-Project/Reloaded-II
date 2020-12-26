@@ -16,7 +16,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 {
     public class GameBananaUpdateResolver : IModResolver
     {
-        public PathGenericTuple<ModConfig> Mod  { get; set; }
+        public PathTuple<ModConfig> Mod  { get; set; }
         public string ConfigPath                { get; set; }
         public GameBananaConfig Config          { get; set; }
         public GameBananaItem Item              { get; set; }
@@ -25,14 +25,14 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
         /* Interface Implementation */
         public IPackageExtractor Extractor { get; set; } = new ArchiveExtractor();
 
-        public bool IsCompatible(PathGenericTuple<ModConfig> mod)
+        public bool IsCompatible(PathTuple<ModConfig> mod)
         {
             var modDirectory = Path.GetDirectoryName(mod.Path);
             ConfigPath = GameBananaConfig.GetFilePath(modDirectory);
             return File.Exists(ConfigPath);
         }
 
-        public void Construct(PathGenericTuple<ModConfig> mod)
+        public void Construct(PathTuple<ModConfig> mod)
         {
             Mod = mod;
             Config = IConfig<GameBananaConfig>.FromPath(ConfigPath);

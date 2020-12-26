@@ -28,9 +28,9 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
 
         /* Interface Implementation */
         public IPackageExtractor Extractor { get; set; } = new NugetRepositoryExtractor();
-        public bool IsCompatible(PathGenericTuple<ModConfig> mod)
+        public bool IsCompatible(PathTuple<ModConfig> mod)
         {
-            var package = Task.Run(() => _nugetRepository.GetLatestPackageDetails(mod.Object.ModId, false, true)).Result;
+            var package = Task.Run(() => _nugetRepository.GetLatestPackageDetails(mod.Config.ModId, false, true)).Result;
             if (package == null)
                 return false;
 
@@ -38,9 +38,9 @@ namespace Reloaded.Mod.Loader.Update.Resolvers
             return true;
         }
 
-        public void Construct(PathGenericTuple<ModConfig> mod)
+        public void Construct(PathTuple<ModConfig> mod)
         {
-            _modConfig = mod.Object;
+            _modConfig = mod.Config;
         }
 
         public Version GetCurrentVersion()

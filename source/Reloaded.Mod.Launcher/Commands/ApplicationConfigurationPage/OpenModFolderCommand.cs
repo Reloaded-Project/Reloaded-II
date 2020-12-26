@@ -45,7 +45,7 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
         {
             if (_summaryViewModel.SelectedMod != null)
             {
-                string directoryPath = Path.GetDirectoryName(_summaryViewModel.SelectedMod.Tuple.ModConfigPath);
+                string directoryPath = Path.GetDirectoryName(_summaryViewModel.SelectedMod.Tuple.Path);
                 if (Directory.Exists(directoryPath))
                     return true;
             }
@@ -56,7 +56,7 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
         public void Execute(object parameter)
         {
-            string directoryPath = Path.GetDirectoryName(_summaryViewModel.SelectedMod.Tuple.ModConfigPath);
+            string directoryPath = Path.GetDirectoryName(_summaryViewModel.SelectedMod.Tuple.Path);
             ProcessExtensions.OpenFileWithExplorer(directoryPath);
         }
     }

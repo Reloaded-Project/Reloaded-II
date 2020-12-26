@@ -6,7 +6,6 @@ using System.Windows;
 using Octokit;
 using Onova;
 using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Shared;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;

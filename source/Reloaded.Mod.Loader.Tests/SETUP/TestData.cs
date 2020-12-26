@@ -64,8 +64,8 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
             try
             {
                 // Populate configurations.
-                ModConfigurations = ModConfig.GetAllMods().Select(x => x.Object).ToArray();
-                AppConfigurations = ApplicationConfig.GetAllApplications().Select(x => x.Object).ToArray();
+                ModConfigurations = ModConfig.GetAllMods().Select(x => x.Config).ToArray();
+                AppConfigurations = ApplicationConfig.GetAllApplications().Select(x => x.Config).ToArray();
 
                 ThisApplication = new ApplicationConfig(IdOfThisApp,
                                                         "Reloaded Mod Loader Tests",
@@ -73,7 +73,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
                                                         new[] { TestModConfigA.ModId, TestModConfigB.ModId, TestModConfigD.ModId });
 
                 ConfigurationPathOfThisApp = Path.Combine(TestConfig.ApplicationConfigDirectory, IdOfThisApp, ApplicationConfig.ConfigFileName);
-                ApplicationConfig.WriteConfiguration(ConfigurationPathOfThisApp, ThisApplication);
+                IConfig<ApplicationConfig>.ToPath(ThisApplication, ConfigurationPathOfThisApp);
 
                 // Populate nonexisting dependencies.
                 NonexistingDependencies.Add(TestModB.Program.NonexistingDependencyName);

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
-using Reloaded.Mod.Launcher.Utility;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {

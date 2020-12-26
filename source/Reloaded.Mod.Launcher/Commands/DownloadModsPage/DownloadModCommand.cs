@@ -8,6 +8,7 @@ using NuGet.Protocol.Core.Types;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 
@@ -16,7 +17,7 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
     public class DownloadModCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
         private readonly DownloadModsViewModel _downloadModsViewModel;
-        private readonly ManageModsViewModel   _manageModsViewModel;
+        private readonly ModConfigService _modConfigService;
         private bool _canExecute = true;
 
         /* Create & Dispose */
@@ -25,9 +26,10 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
             try
             {
                 _downloadModsViewModel = downloadModsViewModel;
-                _manageModsViewModel = IoC.Get<ManageModsViewModel>();
-                _downloadModsViewModel.PropertyChanged += DownloadModsPropertyChanged;
-                _manageModsViewModel.Mods.CollectionChanged += ModsOnCollectionChanged;
+                _modConfigService = IoC.Get<ModConfigService>();
+
+                _downloadModsViewModel.PropertyChanged += OnSelectedModChanged;
+                _modConfigService.Mods.CollectionChanged += ModsOnCollectionChanged;
             }
             catch (Exception)
             {
@@ -42,8 +44,8 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
 
         public void Dispose()
         {
-            _downloadModsViewModel.PropertyChanged -= DownloadModsPropertyChanged;
-            _manageModsViewModel.Mods.CollectionChanged -= ModsOnCollectionChanged;
+            _downloadModsViewModel.PropertyChanged -= OnSelectedModChanged;
+            _modConfigService.Mods.CollectionChanged -= ModsOnCollectionChanged;
             GC.SuppressFinalize(this);
         }
 
@@ -54,7 +56,7 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
-        private void DownloadModsPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnSelectedModChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(_downloadModsViewModel.DownloadModEntry))
                 RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -68,19 +70,18 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
                 return false;
 
             if (_downloadModsViewModel.DownloadModEntry == null)
-            {
-                _downloadModsViewModel.DownloadModStatus = DownloadModStatus.Default;
-                return false;
-            }
+                return ReturnResult(false, DownloadModStatus.Default);
 
-            if (_manageModsViewModel.Mods.Any(x => x.ModConfig.ModId == _downloadModsViewModel.DownloadModEntry.Id))
-            {
-                _downloadModsViewModel.DownloadModStatus = DownloadModStatus.AlreadyDownloaded;
-                return false;
-            }
+            if (_modConfigService.Mods.Any(x => x.Config.ModId == _downloadModsViewModel.DownloadModEntry.Id))
+                return ReturnResult(false, DownloadModStatus.AlreadyDownloaded);
 
-            _downloadModsViewModel.DownloadModStatus = DownloadModStatus.Default;
-            return true;
+            return ReturnResult(true, DownloadModStatus.Default);
+
+            bool ReturnResult(bool canExecute, DownloadModStatus status)
+            {
+                _downloadModsViewModel.DownloadModStatus = status;
+                return canExecute;
+            }
         }
 
         public async void Execute(object parameter)

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility.Interfaces;
-using Reloaded.Mod.Shared;
+using Reloaded.Mod.Loader.IO.Services;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -12,14 +11,14 @@ namespace Reloaded.Mod.Launcher.Utility
     /// </summary>
     public class AutoInjector
     {
-        private MainPageViewModel _mainPageViewModel;
+        private ApplicationConfigService _configService;
         private IProcessWatcher   _processWatcher;
 
         /* Construction */
-        public AutoInjector(MainPageViewModel mainPageViewModel)
+        public AutoInjector(ApplicationConfigService configService)
         {
-            _mainPageViewModel = mainPageViewModel;
-            _processWatcher    = IoC.Get<IProcessWatcher>();
+            _configService  = configService;
+            _processWatcher = IoC.Get<IProcessWatcher>();
             _processWatcher.OnNewProcess += ProcessWatcherOnOnNewProcess;
         }
 
@@ -29,7 +28,7 @@ namespace Reloaded.Mod.Launcher.Utility
             try
             {
                 string fullPath = newProcess.GetExecutablePath();
-                var config = _mainPageViewModel.Applications.FirstOrDefault(x => string.Equals(x.Config.AppLocation, fullPath, StringComparison.OrdinalIgnoreCase));
+                var config = _configService.Applications.FirstOrDefault(x => string.Equals(x.Config.AppLocation, fullPath, StringComparison.OrdinalIgnoreCase));
                 if (config != null && config.Config.AutoInject)
                 {
                     var appInjector = new ApplicationInjector(newProcess);

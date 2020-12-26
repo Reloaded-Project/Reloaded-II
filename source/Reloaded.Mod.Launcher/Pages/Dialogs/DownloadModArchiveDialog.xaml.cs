@@ -11,7 +11,6 @@ using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Extractors;
-using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.WPF.Theme.Default;
 using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
@@ -136,7 +135,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
 
             foreach (var config in configs)
             {
-                string configId = config.Object.ModId;
+                string configId = config.Config.ModId;
                 string configDirectory = Path.GetDirectoryName(config.Path);
                 string targetDirectory = Path.Combine(loaderConfig.ModConfigDirectory, configId);
                 IOEx.MoveDirectory(configDirectory, targetDirectory);

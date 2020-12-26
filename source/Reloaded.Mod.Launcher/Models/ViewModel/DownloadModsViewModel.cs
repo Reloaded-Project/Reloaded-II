@@ -7,9 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Reloaded.Mod.Launcher.Commands.DownloadModsPage;
 using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
-using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-using Reloaded.WPF.MVVM;
+using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel
 {

@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Utility;
 using static Reloaded.Mod.Loader.IO.Utility.FileSystemWatcherFactory.FileSystemWatcherEvents;
 

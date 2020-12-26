@@ -1,4 +1,5 @@
-﻿using Reloaded.Mod.Loader.IO.Structs;
+﻿using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Launcher.Models.Model
@@ -12,11 +13,11 @@ namespace Reloaded.Mod.Launcher.Models.Model
 
         public bool? Enabled            { get; set; }
         public bool IsEditable          { get; set; }
-        public ImageModPathTuple Tuple  { get; set; }
+        public PathTuple<ModConfig> Tuple  { get; set; }
 
-        public ModEntry(bool? enabled, ImageModPathTuple tuple)
+        public ModEntry(bool? enabled, PathTuple<ModConfig> tuple)
         {
-            IsEditable = !tuple.ModConfig.IsLibrary;
+            IsEditable = !tuple.Config.IsLibrary;
             Enabled = !IsEditable ? null : enabled;
             Tuple = tuple;
         }
