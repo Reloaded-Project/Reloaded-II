@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
 	<LangVersion>preview</LangVersion>
@@ -11,7 +11,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU1605</NoWarn>
-	<Version>1.7.2</Version>
+	<Version>1.8.0</Version>
     <ApplicationIcon />
     <OutputType>WinExe</OutputType>
     <StartupObject />
