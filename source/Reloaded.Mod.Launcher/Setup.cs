@@ -240,7 +240,6 @@ namespace Reloaded.Mod.Launcher
         {
             var config = IoC.Get<LoaderConfig>();
             SetLoaderPaths(config, Paths.CurrentProgramFolder);
-
             IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath);
         }
 

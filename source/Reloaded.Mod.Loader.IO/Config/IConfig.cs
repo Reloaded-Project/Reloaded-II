@@ -38,7 +38,15 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// Loads a given mod configurations from an absolute file path or default if file does not exist.
         /// </summary>
         /// <param name="filePath">The absolute file path of the config file.</param>
-        public static TType FromPathOrDefault(string filePath) => File.Exists(filePath) ? FromPath(filePath) : new TType();
+        public static TType FromPathOrDefault(string filePath)
+        {
+            if (File.Exists(filePath))
+                return FromPath(filePath);
+            
+            var result = new TType();
+            result.SanitizeConfig();
+            return result;
+        }
 
         /// <summary>
         /// Loads a given mod configurations from an absolute file path.
@@ -58,7 +66,15 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         /// <param name="filePath">The absolute file path of the config file.</param>
         /// <param name="token">Token that can be used to cancel deserialization</param>
-        public static async Task<TType> FromPathAsyncOrDefault(string filePath, CancellationToken token = default) => File.Exists(filePath) ? await FromPathAsync(filePath, token) : new TType();
+        public static async Task<TType> FromPathAsyncOrDefault(string filePath, CancellationToken token = default)
+        {
+            if (File.Exists(filePath))
+                return await FromPathAsync(filePath, token);
+
+            var result = new TType();
+            result.SanitizeConfig();
+            return result;
+        }
 
         /// <summary>
         /// Writes a given mod configurations to an absolute file path.
