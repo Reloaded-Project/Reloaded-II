@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Reloaded.Mod.Launcher.Commands.DownloadModsPage;
 using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
 using Reloaded.Mod.Loader.IO.Utility;
@@ -37,7 +38,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public async Task GetSearchResults()
         {
             _tokenSource?.Cancel();
-            _tokenSource = new CancellationTokenSource();
+            _tokenSource = new CancellationTokenSource(500);
 
             var searchTuples = await _nugetRepository.Search(SearchQuery, false, 50, _tokenSource.Token);
             if (!_tokenSource.Token.IsCancellationRequested)
