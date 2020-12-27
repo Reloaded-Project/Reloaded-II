@@ -49,16 +49,14 @@ namespace Reloaded.Mod.Loader.IO.Services
             GetModifications();
         }
 
-        /*
         /// <summary>
         /// Attempts to move the folder used for storing mod profiles to a new directory.
         /// </summary>
         /// <param name="newDirectory">Path to the new directory.</param>
         public void MoveFolder(string newDirectory)
         {
-
+            throw new NotImplementedException("This feature will be implemented in the future.");
         }
-        */
 
         /// <summary>
         /// Populates the mod list governed by <see cref="Mods"/>.
