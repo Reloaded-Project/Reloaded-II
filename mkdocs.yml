@@ -11,6 +11,10 @@ extra:
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/TheSewer56
 
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+
 theme:
   name: material
   palette:
