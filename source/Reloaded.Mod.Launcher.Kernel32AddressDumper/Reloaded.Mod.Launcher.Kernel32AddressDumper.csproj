@@ -3,7 +3,7 @@
     <ProjectGuid>{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AssemblyName>Kernel32AddressDumper</AssemblyName>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>..\Output\Launcher\Loader\</OutputPath>
     <AssemblyTitle>Reloaded.Mod.Launcher.Kernel32AddressDumper</AssemblyTitle>
