@@ -2,7 +2,7 @@
   "profiles": {
     "Reloaded.Mod.Launcher": {
       "commandName": "Project",
-      "remoteDebugEnabled": true,
+      "remoteDebugEnabled": false,
       "remoteDebugMachine": "96955e13-dd92-4d62-adfa-faa67f5721f5",
       "authenticationMode": "None"
     }
