@@ -44,6 +44,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         public NugetFeed CurrentFeed                  { get; set; }
         public ObservableCollection<NugetFeed> Feeds  { get; set; }
 
+        public bool IsEnabled => CurrentFeed != null;
+
         private LoaderConfig _config                  { get; set; }
 
         /// <inheritdoc />

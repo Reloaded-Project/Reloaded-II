@@ -1,7 +1,9 @@
-﻿namespace Reloaded.Mod.Loader.IO.Config.Structs
+﻿using Reloaded.Mod.Loader.IO.Utility;
+
+namespace Reloaded.Mod.Loader.IO.Config.Structs
 {
     [Equals(DoNotAddEqualityOperators = true)]
-    public class NugetFeed
+    public class NugetFeed : ObservableObject
     {
         /// <summary>
         /// Name for the NuGet Feed.

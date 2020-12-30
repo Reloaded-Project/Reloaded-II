@@ -54,7 +54,8 @@
                                 Content="{DynamicResource AddAppDeleteButton}"
                                 Margin="{DynamicResource CommonItemHorizontalMargin}"
                                 Style="{DynamicResource UnpaddedStretchedGridButton}"
-                                Command="{Binding DeleteFeedCommand}" />
+                                Command="{Binding DeleteFeedCommand}"
+                                IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                     <!-- Feed Name -->
@@ -63,7 +64,8 @@
                              Tag="{DynamicResource ConfigNuGetFeedsName}" 
                              ToolTip="{DynamicResource ConfigNuGetFeedsName}"
                              ToolTipService.InitialShowDelay="0"
-                             Margin="{DynamicResource CommonItemVerticalMargin}" />
+                             Margin="{DynamicResource CommonItemVerticalMargin}" 
+                             IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
 
                     <!-- Feed URL -->
                     <TextBox Text="{Binding CurrentFeed.URL, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -71,7 +73,8 @@
                              Tag="{DynamicResource ConfigNuGetFeedsURL}" 
                              ToolTip="{DynamicResource ConfigNuGetFeedsURLTooltip}"
                              ToolTipService.InitialShowDelay="0"
-                             Margin="{DynamicResource CommonItemVerticalMargin}" />
+                             Margin="{DynamicResource CommonItemVerticalMargin}"
+                             IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
 
                     <!-- Feed Description -->
                     <TextBox Text="{Binding CurrentFeed.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -80,6 +83,7 @@
                              ToolTip="{DynamicResource ConfigNuGetFeedsDescription}"
                              ToolTipService.InitialShowDelay="0"
                              Margin="{DynamicResource CommonItemVerticalMargin}"
+                             IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" 
                              TextWrapping="Wrap" />
 
                 </StackPanel>
