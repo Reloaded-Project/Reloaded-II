@@ -11,7 +11,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU1605</NoWarn>
-	<Version>1.8.2</Version>
+	<Version>1.8.3</Version>
     <ApplicationIcon />
     <OutputType>WinExe</OutputType>
     <StartupObject />

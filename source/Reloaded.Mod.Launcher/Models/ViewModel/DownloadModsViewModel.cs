@@ -38,7 +38,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public async Task GetSearchResults()
         {
             _tokenSource?.Cancel();
-            _tokenSource = new CancellationTokenSource(500);
+            _tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
             var searchTuples = await _nugetRepository.Search(SearchQuery, false, 50, _tokenSource.Token);
             if (!_tokenSource.Token.IsCancellationRequested)
