@@ -34,7 +34,10 @@ Once conversion completes, Reloaded will open a folder containing the newly gene
 ---
 **Note**
 
-There also exists a standalone NuGet Package Converter released as part of `Tools.zip` alongside Reloaded releases on GitHub.
+There also exists a standalone NuGet Package Converter; you can get it from either of the 2 sources:
+
+- Via [Github Releases](github.com/Reloaded-Project/Reloaded-II/releases) (`Tools.zip`).
+- Via [Chocolatey](https://chocolatey.org/packages/reloaded-ii-tools).
 
 ---
 
