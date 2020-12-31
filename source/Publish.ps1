@@ -25,6 +25,8 @@ $releaseFileName = "/Release.zip"
 $toolsReleaseFileName = "/Tools.zip"
 $cleanupPaths = ("$buildPath", "$toolsPath", "$publishDirectory")
 
+# Set Working Directory
+Split-Path $MyInvocation.MyCommand.Path | Push-Location
 [Environment]::CurrentDirectory = $PWD
 
 # Clean output directory
@@ -87,3 +89,6 @@ New-Item "$publishDirectory" -ItemType Directory
 Add-Type -A System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory("$outputPath", "$publishDirectory" + "$releaseFileName")
 [IO.Compression.ZipFile]::CreateFromDirectory("$toolsPath", "$publishDirectory" + "$toolsReleaseFileName")
+
+# Restore Working Directory
+Pop-Location
