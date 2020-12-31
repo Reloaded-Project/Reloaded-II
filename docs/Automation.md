@@ -48,6 +48,20 @@ Replace `secure: 8Lqo9jP/L0PP7rNCr/FOdV8fc13U3U4kmDY5n9RMajb70SnIjujZz9J4tSGb9rA
 
 Please remember to **encrypt** your token! You should be using [this tool](https://ci.appveyor.com/tools/encrypt) to do so.
 
+### Upload to Official Package Repository on Build
+
+Add to your `deploy:` section.
+
+```yaml
+- provider: NuGet
+  server: http://167.71.128.50:5000/
+  api_key:
+    secure: /Ayzh3D/4Otzg80B1jc/6ltVaugqU8TP4fn/b4KA0as=
+  skip_symbols: true
+  on:
+    APPVEYOR_REPO_TAG: true
+```
+
 ## Auto-Building Packages
 
 ### 1. Install NuGetPackageConverter
