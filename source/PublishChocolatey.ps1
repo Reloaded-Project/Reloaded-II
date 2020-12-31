@@ -12,12 +12,10 @@ Split-Path $MyInvocation.MyCommand.Path | Push-Location
 [Environment]::CurrentDirectory = $PWD
 
 # Clean Choco Tools Folder
-Write-Host "Cleaning Chocolatey Tools Folder"
-
-foreach ($cleanupPath in $chocoToolsPath) {
-    Get-ChildItem "$cleanupPath" -Include *.exe -Recurse | Remove-Item -Force -Recurse
-	Get-ChildItem "$cleanupPath" -Include *.dll -Recurse | Remove-Item -Force -Recurse
-}
+Write-Host "Cleaning Chocolatey Folders"
+Get-ChildItem "$chocoPath" -Include *.nupkg -Recurse | Remove-Item -Force -Recurse
+Get-ChildItem "$chocoToolsPath" -Include *.exe -Recurse | Remove-Item -Force -Recurse
+Get-ChildItem "$chocoToolsPath" -Include *.dll -Recurse | Remove-Item -Force -Recurse
 
 # Copying to Tools Folder
 Write-Host "Copying Output Binaries"
