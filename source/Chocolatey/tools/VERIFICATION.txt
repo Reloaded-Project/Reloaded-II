@@ -1,0 +1,8 @@
+﻿I am the author of this software.
+This tiny commandline tool/utility is intended to be used both as general utility for programmers and for continous integration/continous development purposes.
+It creates NuGet packages (.nupkg) given a directory containing a plugin or a compressed zipped archive containing a plugin.
+
+Updates to this package are expected to be infrequent due to the small scale nature of the tool.
+The tool's source code lives in https://github.com/Reloaded-Project/Reloaded-II/tree/master/source/Tools/NuGetConverter
+
+More small tools are likely to be added to this package in the future.

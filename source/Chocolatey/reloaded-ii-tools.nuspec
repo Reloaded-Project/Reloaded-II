@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>reloaded-ii-tools</id>
+    <version>1.0.0</version>
+    <packageSourceUrl>https://github.com/Reloaded-Project/Reloaded-II</packageSourceUrl>
+    <owners>Sewer56</owners>
+	
+    <title>Reloaded-II Tools</title>
+    <authors>Sewer56</authors>
+    <projectUrl>https://github.com/Reloaded-Project/Reloaded-II</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/Reloaded-Project/Reloaded-II/master/docs/Images/Reloaded/Reloaded%20Logo.png</iconUrl>
+    <copyright>Sewer56, 2019+</copyright>
+    <licenseUrl>https://github.com/Reloaded-Project/Reloaded-II/blob/master/LICENSE.md</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/Reloaded-Project/Reloaded-II</projectSourceUrl>
+    <docsUrl>https://reloaded-project.github.io/Reloaded-II/</docsUrl>
+    <tags>reloaded-ii</tags>
+    <summary>Standalone tools for working with Reloaded-II packages.</summary>
+    <description>
+# Description
+
+This is a set of .NET Core self contained tools for working with Reloaded-II. Specifically, building mods and various tasks of automation.
+
+## List of Tools
+NuGetConverter: Converts Reloaded-II mods and/or zips to NuGet packages.
+
+## NuGetConverter
+.NET Core Self Contained Tool that creates NuGet packages for Reloaded-II
+	
+This is a tiny self-contained .NET 5 commandline utility created to convert [Reloaded-II](https://github.com/Reloaded-Project/Reloaded-II) mods into redistributable NuGet packages. 
+
+```
+Usage: NuGetConverter.exe [Mod Folder or Archive Path] [Output Path]\
+Example: NuGetConverter.exe Mod.zip Mod.nupkg\
+Example: NuGetConverter.exe reloaded.test.mod reloaded.test.mod.nupkg\
+Example: NuGetConverter.exe reloaded.test.mod ./packages/reloaded.test.mod.nupkg
+```
+	</description>
+	
+    <dependencies>
+      <dependency id="dotnet-5.0-desktopruntime"  />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="tools/**" target="tools" />
+  </files>
+</package>
