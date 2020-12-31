@@ -1,2 +1,6 @@
 # Unignore Local NuGet Packages Folder
 !/Packages/*  
+
+# Chocolatey
+Chocolatey/tools/*.exe
+Chocolatey/tools/*.dll
