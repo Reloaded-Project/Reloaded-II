@@ -88,6 +88,8 @@ deploy:
   # Rest of fields here.
 ```
 
+![](./Images/AutoDocumentation.png)
+
 ## Auto-Building Packages
 
 ### 1. Install NuGetPackageConverter
