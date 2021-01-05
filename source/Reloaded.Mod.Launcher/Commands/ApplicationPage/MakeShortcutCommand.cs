@@ -53,17 +53,8 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationPage
                     // Make path for icon.
                     string newPath = Path.ChangeExtension(logoPath, ".ico");
 
-                    // Convert to ICO and save.
-                    var bitmapImage = Imaging.BitmapFromUri(new Uri(logoPath, UriKind.Absolute));
-                    var bitmap = Imaging.BitmapImageToBitmap(bitmapImage);
-                    var resizedBitmap = Imaging.ResizeImage(bitmap, Constants.IcoMaxWidth, Constants.IcoMaxHeight);
-
-                    using (var newIcon = Icon.FromHandle(resizedBitmap.GetHicon()))
-                    using (Stream newIconStream = new FileStream(newPath, FileMode.Create))
-                    {
-                        newIcon.Save(newIconStream);
-                    }
-
+                    // Convert to ICO.
+                    Imaging.TryConvertToIcon(logoPath, newPath);
                     shell.SetIconLocation(newPath, 0);
                 }
                 else
