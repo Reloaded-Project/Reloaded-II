@@ -62,6 +62,8 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
                     window.ShowDialog();
                 }
             }
+
+            GC.Collect();
         }
 
         // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.
@@ -70,7 +72,11 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
         {
             var selectedMod = _summaryViewModel.SelectedMod;
             if (selectedMod != null)
-                return TryGetConfigurator(selectedMod, out _, out _);
+            {
+                var result = TryGetConfigurator(selectedMod, out _, out _);
+                GC.Collect();
+                return result;
+            }
 
             return false;
         }
