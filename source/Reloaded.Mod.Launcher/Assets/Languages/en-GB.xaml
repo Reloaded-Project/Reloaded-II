@@ -211,7 +211,7 @@
     <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">Failed to get directory of mod to delete.</sys:String>
     <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">Failed to get directory of application to delete.</sys:String>
     <sys:String x:Key="ErrorLoaderNotFound">was not found. This may be caused by Antivirus software deleting and/or breaking changes in GitHub repository.</sys:String> <!-- Loader DLL Name displays before this message -->
-    <sys:String x:Key="ErrorFailedToStartProcess">Failed to start the process. Is your path correct?</sys:String>
+    <sys:String x:Key="ErrorFailedToStartProcess" xml:space="preserve">Failed to start the process. This generally happens due to one of the 3 issues:&#x0a;- Path to the EXE is incorrect (have you moved the application?)&#x0a;- The program is configured to run as administrator (right click -> properties) but Reloaded is running in user mode.&#x0a;- Interference from e.g. Antivirus software. Check your logs.&#x0a;Here is the error returned from Windows: </sys:String>
     <sys:String x:Key="ErrorDllInjectionFailed">Failed to DLL inject into application process.</sys:String>
     <sys:String x:Key="ErrorPathToApplicationInvalid">The path to the application to be launched is invalid. Please re-check your application configuration.</sys:String>
     <sys:String x:Key="ErrorCheckUpdatesFailed">Failed to check for updates. We are either being rate limited by GitHub or not connected to the internet.</sys:String>

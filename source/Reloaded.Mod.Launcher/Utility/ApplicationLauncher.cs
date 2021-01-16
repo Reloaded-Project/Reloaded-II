@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -59,7 +60,10 @@ namespace Reloaded.Mod.Launcher.Utility
                                                 IntPtr.Zero, Path.GetDirectoryName(_location), ref startupInfo, ref processInformation);
 
             if (!success)
-                throw new ArgumentException(Errors.FailedToStartProcess());
+            {
+                string windowsErrorMessage = new Win32Exception(Marshal.GetLastWin32Error()).Message;
+                throw new ArgumentException($"{Errors.FailedToStartProcess()} {windowsErrorMessage}");
+            }
 
             // DLL Injection
             var process         = Process.GetProcessById((int) processInformation.dwProcessId);
@@ -84,7 +88,7 @@ namespace Reloaded.Mod.Launcher.Utility
             [DllImport("kernel32.dll")]
             public static extern uint ResumeThread(IntPtr hThread);
 
-            [DllImport("kernel32.dll")]
+            [DllImport("kernel32.dll", SetLastError = true)]
             public static extern bool CreateProcessW([MarshalAs(UnmanagedType.LPWStr)] string lpApplicationName, [MarshalAs(UnmanagedType.LPWStr)] string lpCommandLine,
                 ref SECURITY_ATTRIBUTES lpProcessAttributes, ref SECURITY_ATTRIBUTES lpThreadAttributes, bool bInheritHandles, ProcessCreationFlags dwCreationFlags, IntPtr lpEnvironment,
                 [MarshalAs(UnmanagedType.LPWStr)] string lpCurrentDirectory,
