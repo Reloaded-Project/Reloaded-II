@@ -44,6 +44,6 @@ Example: NuGetConverter.exe reloaded.test.mod ./packages/reloaded.test.mod.nupkg
     </dependencies>
   </metadata>
   <files>
-    <file src="tools/**" target="tools" />
+    <file src="tools/**" />
   </files>
 </package>
