@@ -12,7 +12,7 @@ using Reloaded.WPF.MVVM;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 {
-    public class ApplicationSummaryViewModel : ObservableObject, IDisposable
+    public class AppSummaryViewModel : ObservableObject, IDisposable
     {
         public ObservableCollection<ModEntry> AllMods { get; set; }
         public ModEntry SelectedMod { get; set; }
@@ -23,7 +23,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 
         private ApplicationViewModel _applicationViewModel;
 
-        public ApplicationSummaryViewModel(ApplicationViewModel model)
+        public AppSummaryViewModel(ApplicationViewModel model)
         {
             ApplicationTuple = model.ApplicationTuple;
             OpenModFolderCommand = new OpenModFolderCommand(this);
@@ -38,7 +38,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             SelectedMod = AllMods.FirstOrDefault();
         }
 
-        ~ApplicationSummaryViewModel()
+        ~AppSummaryViewModel()
         {
             Dispose();
         }

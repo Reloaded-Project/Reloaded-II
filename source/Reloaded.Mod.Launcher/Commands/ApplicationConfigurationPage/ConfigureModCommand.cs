@@ -19,9 +19,9 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
     public class ConfigureModCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
         private static Type[] _sharedTypes = { typeof(IConfigurator) };
-        private readonly ApplicationSummaryViewModel _summaryViewModel;
+        private readonly AppSummaryViewModel _summaryViewModel;
 
-        public ConfigureModCommand(ApplicationSummaryViewModel summaryViewModel)
+        public ConfigureModCommand(AppSummaryViewModel summaryViewModel)
         {
             _summaryViewModel = summaryViewModel;
             _summaryViewModel.PropertyChanged += SummaryViewModelOnPropertyChanged;

@@ -16,7 +16,7 @@ using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 {
-    public class ReloadedApplicationViewModel : ObservableObject, IDisposable
+    public class ReloadedAppViewModel : ObservableObject, IDisposable
     {
         private static XamlResource<int> _xamlModLoaderSetupTimeout = new XamlResource<int>("ReloadedProcessModLoaderSetupTimeout");
         private static XamlResource<int> _xamlModLoaderSetupSleepTime = new XamlResource<int>("ReloadedProcessModLoaderSetupSleepTime");
@@ -31,7 +31,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private System.Timers.Timer _refreshTimer;
 
-        public ReloadedApplicationViewModel(ApplicationViewModel applicationViewModel)
+        public ReloadedAppViewModel(ApplicationViewModel applicationViewModel)
         {
             ApplicationViewModel = applicationViewModel;
             ApplicationViewModel.SelectedProcess.EnableRaisingEvents = true;
@@ -50,7 +50,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             _refreshTimer.Enabled = true;
         }
 
-        ~ReloadedApplicationViewModel()
+        ~ReloadedAppViewModel()
         {
             Dispose();
         }

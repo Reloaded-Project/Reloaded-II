@@ -26,7 +26,7 @@ namespace Reloaded.Mod.Launcher.Converters
                 case ApplicationSubPage.ReloadedProcess:
                     return IoC.Get<ReloadedProcessPage>();
                 case ApplicationSubPage.ApplicationSummary:
-                    return IoC.Get<ApplicationSummaryPage>();
+                    return IoC.Get<AppSummaryPage>();
                 case ApplicationSubPage.EditApplication:
                     return IoC.Get<EditAppPage>();
                 default:

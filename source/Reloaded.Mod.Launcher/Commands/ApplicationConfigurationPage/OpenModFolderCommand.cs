@@ -12,9 +12,9 @@ namespace Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage
 {
     public class OpenModFolderCommand : WithCanExecuteChanged, ICommand, IDisposable
     {
-        private readonly ApplicationSummaryViewModel _summaryViewModel;
+        private readonly AppSummaryViewModel _summaryViewModel;
 
-        public OpenModFolderCommand(ApplicationSummaryViewModel summaryViewModel)
+        public OpenModFolderCommand(AppSummaryViewModel summaryViewModel)
         {
             _summaryViewModel = summaryViewModel;
             _summaryViewModel.PropertyChanged += SummaryViewModelPropertyChanged;

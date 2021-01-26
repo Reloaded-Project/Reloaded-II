@@ -8,12 +8,12 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
     /// </summary>
     public partial class ReloadedProcessPage : ApplicationSubPage
     {
-        public ReloadedApplicationViewModel ViewModel { get; set; }
+        public ReloadedAppViewModel ViewModel { get; set; }
 
         public ReloadedProcessPage(ApplicationViewModel model)
         {
             InitializeComponent();
-            ViewModel = new ReloadedApplicationViewModel(model);
+            ViewModel = new ReloadedAppViewModel(model);
             this.AnimateOutStarted += Dispose;
         }
 

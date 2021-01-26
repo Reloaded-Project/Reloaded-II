@@ -18,16 +18,16 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs
     public partial class LoadModSelectDialog : ReloadedWindow
     {
         public ApplicationViewModel ApplicationViewModel { get; set; }
-        public ReloadedApplicationViewModel ReloadedApplicationViewModel { get; set; }
+        public ReloadedAppViewModel ReloadedAppViewModel { get; set; }
         public PathTuple<ModConfig> SelectedMod { get; set; }
 
         private readonly CollectionViewSource _modsViewSource;
 
-        public LoadModSelectDialog(ApplicationViewModel applicationViewModel, ReloadedApplicationViewModel reloadedApplicationViewModel)
+        public LoadModSelectDialog(ApplicationViewModel applicationViewModel, ReloadedAppViewModel reloadedAppViewModel)
         {
             InitializeComponent();
             ApplicationViewModel = applicationViewModel;
-            ReloadedApplicationViewModel = reloadedApplicationViewModel;
+            ReloadedAppViewModel = reloadedAppViewModel;
 
             // Setup filters
             var manipulator = new DictionaryResourceManipulator(this.Contents.Resources);
@@ -58,7 +58,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs
         /* Select/Pick Code */
         private void LoadMod_Click(object sender, RoutedEventArgs e)
         {
-            try { Task.Run(() => ReloadedApplicationViewModel.Client?.LoadMod(SelectedMod.Config.ModId)); }
+            try { Task.Run(() => ReloadedAppViewModel.Client?.LoadMod(SelectedMod.Config.ModId)); }
             catch (Exception) { /* Ignored */ }
             this.Close();
         }
