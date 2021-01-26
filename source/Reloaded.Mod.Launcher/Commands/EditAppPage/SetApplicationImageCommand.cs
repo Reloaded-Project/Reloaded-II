@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Commands.EditAppPage

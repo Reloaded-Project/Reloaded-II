@@ -6,7 +6,7 @@ using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.MVVM;
 
-namespace Reloaded.Mod.Launcher.Models.ViewModel
+namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 {
     public class EditAppViewModel : ObservableObject, IDisposable
     {
@@ -28,7 +28,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public void SaveSelectedItem()
         {
-            try { Application.Save(); }
+            try { Application?.Save(); }
             catch (Exception) { Debug.WriteLine($"{nameof(EditAppViewModel)}: Failed to save current selected item."); }
         }
 

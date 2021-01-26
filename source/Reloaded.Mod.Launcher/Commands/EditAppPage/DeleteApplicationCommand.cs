@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.Templates;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
 
 namespace Reloaded.Mod.Launcher.Commands.EditAppPage
 {
@@ -40,17 +41,18 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
 
         public void Execute(object parameter)
         {
-            // Find Application in Viewmodel's list and remove it.
+            // Problem: EditAppPage.Dispose saves the item.
+            IoC.Get<MainPageViewModel>().Page = Pages.BaseSubpages.BaseSubPage.SettingsPage;
+
+            // Find Application in Viewmodel's list.
             var app   = _editAppViewModel.Application.Config;
             var entry = _editAppViewModel.AppConfigService.Applications.First(x => x.Config.Equals(app));
-            _editAppViewModel.AppConfigService.Applications.Remove(entry);
+            _editAppViewModel.Application = null;
 
-            // Delete folder contents.
+            // Delete folder.
             var directory = Path.GetDirectoryName(entry.Path) ?? throw new InvalidOperationException(Errors.FailedToGetDirectoryOfApplication());
             Directory.Delete(directory, true);
 
-            // File system watcher automatically updates collection in MainPageViewModel.Applications
-            IoC.Get<MainPageViewModel>().Page = Pages.BaseSubpages.BaseSubPage.SettingsPage;
         }
     }
 }
