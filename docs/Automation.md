@@ -66,9 +66,9 @@ Add to your `deploy:` section.
 
 Using the [auto-changelog]((https://github.com/CookPete/auto-changelog)) library by [Pete Cook](https://github.com/CookPete).
 
-Add to build script (after clone) as such:
+Add to after build script as such:
 ```yaml
-build_script:
+after_build:
 - ps: |-
     # Build the Changelog
     if ($env:APPVEYOR_REPO_TAG -eq "true")
@@ -77,6 +77,7 @@ build_script:
         & npm install -g auto-changelog
         & auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --starting-version $env:APPVEYOR_REPO_TAG_NAME -o $env:CHANGELOG_PATH 
         $env:CHANGELOG_TEXT = Get-Content -Path $env:CHANGELOG_PATH -Raw
+		$env:CHANGELOG_TEXT = $env:CHANGELOG_TEXT -replace "\n", "`\n"
     }
 ```
 
