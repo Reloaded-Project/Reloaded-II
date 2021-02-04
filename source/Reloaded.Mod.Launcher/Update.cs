@@ -225,16 +225,32 @@ namespace Reloaded.Mod.Launcher
         /// <returns></returns>
         public static bool CheckForInternetConnection()
         {
-            try
+            var urls = new List<string>()
             {
-                using var client = new WebClient();
-                using (client.OpenRead("http://clients3.google.com/generate_204"))
-                    return true;
-            }
-            catch
+                "http://clients1.google.com/generate_204",
+                "http://clients2.google.com/generate_204",
+                "http://clients3.google.com/generate_204",
+                "https://google.com",
+                "https://github.com",
+                "https://en.wikipedia.org",
+                "https://baidu.com" // In case of Firewall of People's Republic of China.
+            };
+
+            foreach (var url in urls)
             {
-                return false;
+                try
+                {
+                    using var client = new WebClient();
+                    using (client.OpenRead(url))
+                        return true;
+                }
+                catch
+                {
+                    // ignored
+                }
             }
+
+            return false;
         }
     }
 }
