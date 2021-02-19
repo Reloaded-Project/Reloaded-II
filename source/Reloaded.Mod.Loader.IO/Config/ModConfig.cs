@@ -105,6 +105,14 @@ namespace Reloaded.Mod.Loader.IO.Config
             return TryGetIconPath(configPath, this, out iconPath);
         }
 
+        /// <summary>
+        /// Checks if any DLL paths are set for this config.
+        /// </summary>
+        public bool HasDllPath()
+        {
+            return HasDllPath(this);
+        }
+
         /*
            ---------
            Utilities
@@ -197,6 +205,17 @@ namespace Reloaded.Mod.Loader.IO.Config
         {
             string configDirectory = Path.GetDirectoryName(configPath);
             return Path.Combine(configDirectory, modConfig.ModNativeDll64);
+        }
+
+        /// <summary>
+        /// Checks if any DLL paths are set for this config.
+        /// </summary>
+        /// <param name="modConfig">The individual mod configuration.</param>
+        public static bool HasDllPath(ModConfig modConfig)
+        {
+            return !string.IsNullOrEmpty(modConfig.ModDll)
+                   || !string.IsNullOrEmpty(modConfig.ModNativeDll32) || !string.IsNullOrEmpty(modConfig.ModNativeDll64)
+                   || !string.IsNullOrEmpty(modConfig.ModR2RManagedDll32) || !string.IsNullOrEmpty(modConfig.ModR2RManagedDll64);
         }
 
         /// <summary>
