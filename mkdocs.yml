@@ -43,6 +43,7 @@ pages:
         - Shared Libraries: https://github.com/Sewer56/Reloaded.SharedLib.Hooks
         - Writing Mods for Actively Developed Games/Apps: https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications
         - Writing Native Mods: NativeMods.md
+        - Troubleshooting: Troubleshooting.md
         
   - For Contributors:
     - Building Reloaded: BuildingReloaded.md

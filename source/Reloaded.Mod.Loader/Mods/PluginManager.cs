@@ -86,7 +86,7 @@ namespace Reloaded.Mod.Loader.Mods
             /* Load mods. */
             if (modPaths.Count > 0)
             {
-                PreloadAssemblyMetadata(modPaths);
+                ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", PreloadAssemblyMetadata, modPaths);
                 var modInstances = ExecuteWithStopwatch($"Prepare All Mods (Total)", PrepareAllMods, modPaths);
                 ExecuteWithStopwatch($"Initialized All Mods (Total)", StartAllInstances, modInstances);
             }
@@ -94,19 +94,22 @@ namespace Reloaded.Mod.Loader.Mods
 
         private ModInstance[] PrepareAllMods(List<PathTuple<ModConfig>> modPaths)
         {
-            var partitioner = Partitioner.Create(0, modPaths.Count);
             var modInstances = new ModInstance[modPaths.Count];
-
-            Parallel.ForEach(partitioner, (range, loopState) =>
+            if (_loader.LoaderConfig.LoadModsInParallel)
             {
-                // Loop over each range element without a delegate invocation.
-                for (int i = range.Item1; i < range.Item2; i++)
+                var partitioner = Partitioner.Create(0, modPaths.Count);
+                Parallel.ForEach(partitioner, (range, loopState) =>
                 {
-                    var modPath = modPaths[i];
-                    modInstances[i] = ExecuteWithStopwatch($"Prepared Mod: {modPath.Config.ModId}", GetModInstance, modPath);
-                }
-            });
-
+                    for (int x = range.Item1; x < range.Item2; x++)
+                        modInstances[x] = ExecuteWithStopwatch($"Prepared Mod: {modPaths[x].Config.ModId}", GetModInstance, modPaths[x]);
+                });
+            }
+            else
+            {
+                for (int x = 0; x < modInstances.Length; x++)
+                    modInstances[x] = ExecuteWithStopwatch($"Prepared Mod: {modPaths[x].Config.ModId}", GetModInstance, modPaths[x]);
+            }
+            
             return modInstances;
         }
 
@@ -302,24 +305,32 @@ namespace Reloaded.Mod.Loader.Mods
             return exports.ToArray();
         }
 
-        private void PreloadAssemblyMetadata(List<PathTuple<ModConfig>> configPathTuples) => ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", PreloadAssemblyMetadataParallel, configPathTuples);
-        private void PreloadAssemblyMetadataParallel(List<PathTuple<ModConfig>> configPathTuples)
+        private void PreloadAssemblyMetadata(List<PathTuple<ModConfig>> configPathTuples)
         {
-            var partitioner = Partitioner.Create(0, configPathTuples.Count);
-            Parallel.ForEach(partitioner, (tuple, state) =>
+            if (_loader.LoaderConfig.LoadModsInParallel)
             {
-                for (int x = tuple.Item1; x < tuple.Item2; x++)
+                var partitioner = Partitioner.Create(0, configPathTuples.Count);
+                Parallel.ForEach(partitioner, (tuple, state) =>
                 {
-                    var configPathTuple = configPathTuples[x];
-                    var dllPath = configPathTuple.Config.GetDllPath(configPathTuple.Path);
-                    if (!File.Exists(dllPath) || configPathTuple.Config.IsNativeMod(configPathTuple.Path))
-                        continue;
+                    for (int x = tuple.Item1; x < tuple.Item2; x++)
+                        PreloadAssemblyMetadataItem(configPathTuples[x]);
+                });
+            }
+            else
+            {
+                for (int x = 0; x < configPathTuples.Count; x++)
+                    PreloadAssemblyMetadataItem(configPathTuples[x]);
+            }
+        }
 
-                    if (GetMetadataForDllMod(dllPath, out var exports, out bool isUnloadable))
-                        _modIdToMetadata[configPathTuple.Config.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
-                }
-            });
-            
+        private void PreloadAssemblyMetadataItem(PathTuple<ModConfig> tuple)
+        {
+            var dllPath = tuple.Config.GetDllPath(tuple.Path);
+            if (!File.Exists(dllPath) || tuple.Config.IsNativeMod(tuple.Path))
+                return;
+
+            if (GetMetadataForDllMod(dllPath, out var exports, out bool isUnloadable))
+                _modIdToMetadata[tuple.Config.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
         }
 
         private bool GetMetadataForDllMod(string dllPath, out Type[] exports, out bool isUnloadable)

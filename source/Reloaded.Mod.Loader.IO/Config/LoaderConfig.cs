@@ -104,6 +104,12 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         public NugetFeed[] NuGetFeeds { get; set; } = DefaultFeeds;
 
+        /// <summary>
+        /// If true, mods are loaded in parallel whenever possible.
+        /// Else false.
+        /// </summary>
+        public bool LoadModsInParallel { get; set; } = true;
+
         /* Some mods are universal :wink: */
 
         public LoaderConfig() { }
