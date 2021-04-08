@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader.Logging.Init
 {
@@ -15,6 +16,13 @@ namespace Reloaded.Mod.Loader.Logging.Init
         /// </summary>
         public static bool Alloc()
         {
+            // Hack for Wine: In Wine, GetConsoleWindow is stubbed and thus cannot evaluate properly.
+            if (Environment.IsWine)
+            {
+                AllocConsole();
+                return true;
+            }
+
             if (!ConsoleExists)
                 return AllocConsole();
 
@@ -26,6 +34,13 @@ namespace Reloaded.Mod.Loader.Logging.Init
         /// </summary>
         public static bool Free()
         {
+            // Hack for Wine: In Wine, GetConsoleWindow is stubbed and thus cannot evaluate properly.
+            if (Environment.IsWine)
+            {
+                FreeConsole();
+                return true;
+            }
+
             if (ConsoleExists)
                 return FreeConsole();
 
