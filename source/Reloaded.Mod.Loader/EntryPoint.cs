@@ -63,7 +63,7 @@ namespace Reloaded.Mod.Loader
         private static void CreateHost()   => _server = new Host(_loader);
         private static unsafe void PerformPeOperations()
         {
-            _basicPeParser = new BasicPeParser(Environment.GetCommandLineArgs()[0]);
+            _basicPeParser = new BasicPeParser(Process.GetCurrentProcess().MainModule.FileName);
 
             // Check for Steam DRM.
             DRMNotifier.PrintWarnings(_basicPeParser, _loader.Console);

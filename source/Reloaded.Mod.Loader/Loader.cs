@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -212,7 +213,7 @@ namespace Reloaded.Mod.Loader
         private IApplicationConfig FindThisApplication()
         {
             var configurations = ApplicationConfig.GetAllApplications(LoaderConfig.ApplicationConfigDirectory);
-            var fullPath       = NormalizePath(Environment.GetCommandLineArgs()[0]);
+            var fullPath       = NormalizePath(Path.GetFullPath(Process.GetCurrentProcess().MainModule.FileName));
 
             foreach (var configuration in configurations)
             {
