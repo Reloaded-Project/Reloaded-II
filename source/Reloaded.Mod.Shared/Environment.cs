@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Reloaded.Mod.Shared
@@ -9,6 +11,11 @@ namespace Reloaded.Mod.Shared
         /// True if executing under Wine, else false.
         /// </summary>
         public static bool IsWine { get; private set; }
+
+        /// <summary>
+        /// Gets the full path to the current process.
+        /// </summary>
+        public static Lazy<string> CurrentProcessLocation { get; private set; } = new Lazy<string>(() => Path.GetFullPath(Process.GetCurrentProcess().MainModule.FileName));
 
         static Environment()
         {

@@ -213,7 +213,7 @@ namespace Reloaded.Mod.Loader
         private IApplicationConfig FindThisApplication()
         {
             var configurations = ApplicationConfig.GetAllApplications(LoaderConfig.ApplicationConfigDirectory);
-            var fullPath       = NormalizePath(Path.GetFullPath(Process.GetCurrentProcess().MainModule.FileName));
+            var fullPath       = NormalizePath(Environment.CurrentProcessLocation.Value);
 
             foreach (var configuration in configurations)
             {
