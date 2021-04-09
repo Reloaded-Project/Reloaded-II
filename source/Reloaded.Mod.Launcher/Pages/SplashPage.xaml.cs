@@ -31,7 +31,7 @@ namespace Reloaded.Mod.Launcher.Pages
             _splashViewModel    = new SplashViewModel();
             this.DataContext    = _splashViewModel;
             _setupApplicationTask = Task.Run(() => Setup.SetupApplicationAsync(UpdateText, _xamlSplashMinimumTime.Get()));
-            this.Loaded        += (a, b) => ActionWrappers.ExecuteWithApplicationDispatcher(Load);
+            ActionWrappers.ExecuteWithApplicationDispatcherAsync(Load);
         }
 
         private async void Load()
