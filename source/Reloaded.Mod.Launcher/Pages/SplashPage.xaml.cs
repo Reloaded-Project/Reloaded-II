@@ -60,11 +60,12 @@ namespace Reloaded.Mod.Launcher.Pages
             var loaderConfig = IoC.Get<LoaderConfig>();
             if (loaderConfig.FirstLaunch)
             {
-                var firstLaunchWindow = new FirstLaunch();
+                IConfig<LoaderConfig>.ToPath(loaderConfig, Paths.LoaderConfigPath);
+
+                var firstLaunchWindow   = new FirstLaunch();
                 firstLaunchWindow.Owner = Window.GetWindow(this);
                 firstLaunchWindow.ShowDialog();
                 loaderConfig.FirstLaunch = false;
-                IConfig<LoaderConfig>.ToPathAsync(loaderConfig, Paths.LoaderConfigPath);
             }
         }
 

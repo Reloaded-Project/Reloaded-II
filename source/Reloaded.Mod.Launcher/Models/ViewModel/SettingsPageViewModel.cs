@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
@@ -42,26 +43,26 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             });
         }
 
-        public void SaveConfig()
+        public async Task SaveConfig()
         {
-            IConfig<LoaderConfig>.ToPathAsync(LoaderConfig, Paths.LoaderConfigPath);
+            await IConfig<LoaderConfig>.ToPathAsync(LoaderConfig, Paths.LoaderConfigPath);
         }
 
-        public void SaveNewLanguage()
+        public async Task SaveNewLanguage()
         {
             if (LanguageSelector.File != null)
             {
                 LoaderConfig.LanguageFile = LanguageSelector.File;
-                SaveConfig();
+                await SaveConfig();
             }
         }
 
-        public void SaveNewTheme()
+        public async Task SaveNewTheme()
         {
             if (ThemeSelector.File != null)
             {
                 LoaderConfig.ThemeFile = ThemeSelector.File;
-                SaveConfig();
+                await SaveConfig();
 
                 // TODO: This is a bug workaround for where the language ComboBox gets reset after a theme change.
                 SelectCurrentLanguage();

@@ -66,7 +66,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         public void Save()
         {
             _config.NuGetFeeds = Feeds.Where(x => !string.IsNullOrEmpty(x.URL)).ToArray();
-            IConfig<LoaderConfig>.ToPathAsync(_config, Paths.LoaderConfigPath);
+            IConfig<LoaderConfig>.ToPath(_config, Paths.LoaderConfigPath);
             IoC.Get<AggregateNugetRepository>().FromFeeds(Feeds);
         }
     }

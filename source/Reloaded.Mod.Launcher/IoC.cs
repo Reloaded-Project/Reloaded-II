@@ -29,11 +29,12 @@ namespace Reloaded.Mod.Launcher
             {
                 config = new LoaderConfig();
                 config.SanitizeConfig();
-                IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath);
                 Errors.HandleException(ex, "Failed to parse Reloaded-II launcher configuration.\n" +
                                            "This is a rare bug, your settings have been reset.\n" +
                                            "If you have encountered this please report this to the GitHub issue tracker.\n" +
                                            "Any information on how to reproduce this would be very, very welcome.\n");
+
+                IConfig<LoaderConfig>.ToPath(config, Paths.LoaderConfigPath);
             }
 
             Kernel.Bind<LoaderConfig>().ToConstant(config);

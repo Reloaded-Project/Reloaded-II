@@ -57,12 +57,12 @@ namespace Reloaded.Mod.Launcher
                 RegisterReloadedProtocol();
 
                 updateText(_xamlSplashCreatingDefaultConfig.Get());
-                UpdateDefaultConfig();
+                await UpdateDefaultConfig();
                 CheckForMissingDependencies();
 
                 updateText(_xamlSplashPreparingResources.Get());
-                await Task.Run(SetupServicesAsync);
-                await Task.Run(SetupViewModelsAsync);
+                await Task.Run(SetupServices);
+                await Task.Run(SetupViewModels);
 
                 updateText(_xamlCheckingForUpdates.Get());
                 #pragma warning disable 4014
@@ -185,7 +185,7 @@ namespace Reloaded.Mod.Launcher
         /// and opens a menu allowing to download if mods are unavailable.
         /// </summary>
         /// <returns></returns>
-        public static async Task CheckForMissingModDependencies()
+        public static async Task CheckForMissingModDependenciesAsync()
         {
             if (Update.CheckMissingDependencies(out var missingDependencies))
             {
@@ -234,19 +234,19 @@ namespace Reloaded.Mod.Launcher
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e) => Errors.HandleException((Exception) e.ExceptionObject);
 
         /// <summary>
-        /// Creates a new configuration if the config does not exist.
+        /// Updates the default config.
         /// </summary>
-        private static void UpdateDefaultConfig()
+        private static async Task UpdateDefaultConfig()
         {
             var config = IoC.Get<LoaderConfig>();
             SetLoaderPaths(config, Paths.CurrentProgramFolder);
-            IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath);
+            await IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath);
         }
 
         /// <summary>
         /// Sets up services which can be used by the various viewmodels.
         /// </summary>
-        private static void SetupServicesAsync()
+        private static void SetupServices()
         {
             var config = IoC.Get<LoaderConfig>();
             SynchronizationContext synchronizationContext = null;
@@ -260,7 +260,7 @@ namespace Reloaded.Mod.Launcher
         /// <summary>
         /// Sets up viewmodels to be used in the individual mod loader pages.
         /// </summary>
-        private static void SetupViewModelsAsync()
+        private static void SetupViewModels()
         {
             var config = IoC.Get<LoaderConfig>();
             IoC.GetConstant<MainPageViewModel>();
@@ -319,7 +319,7 @@ namespace Reloaded.Mod.Launcher
         {
             await Task.Run(Update.CheckForModUpdatesAsync);
             await Update.CheckForLoaderUpdatesAsync();
-            await CheckForMissingModDependencies();
+            await CheckForMissingModDependenciesAsync();
         }
     }
 }

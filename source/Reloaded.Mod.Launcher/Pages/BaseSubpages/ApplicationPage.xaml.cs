@@ -91,7 +91,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
             {
                 ViewModel.ApplicationTuple.Save();
                 ViewModel.CheckModCompatibility();
-                await Setup.CheckForMissingModDependencies();
+                await Setup.CheckForMissingModDependenciesAsync();
 
                 var appConfig = ViewModel.ApplicationTuple.Config;
                 var launcher  = ApplicationLauncher.FromApplicationConfig(appConfig);
