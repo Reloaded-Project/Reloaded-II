@@ -24,8 +24,8 @@
                 </TextBlock>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="{DynamicResource MessageBoxButtonCancel}" Style="{DynamicResource GridButton}" PreviewMouseDown="Cancel_PreviewMouseDown"/>
-                    <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource GridButton}" PreviewMouseDown="OK_PreviewMouseDown"/>
+                    <Button x:Name="CancelBtn" Content="{DynamicResource MessageBoxButtonCancel}" Style="{DynamicResource GridButton}" PreviewMouseDown="Cancel_PreviewMouseDown"/>
+                    <Button x:Name="OKBtn" Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource GridButton}" PreviewMouseDown="OK_PreviewMouseDown"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

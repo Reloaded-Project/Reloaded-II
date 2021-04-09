@@ -250,4 +250,9 @@
     <sys:String x:Key="ConfigNuGetFeedsURLTooltip">Example: http://167.71.128.50:5000/v3/index.json</sys:String>
     <sys:String x:Key="ConfigNuGetFeedsDescription">Description</sys:String>
 
+    <!-- Update 1.7.9: Wine Compatibility Notes -->
+    <sys:String x:Key="WineCompatibilityNoticeTitle">Wine Compatibility Notice</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeText" xml:space="preserve">It appears that you are trying to run an application using the launcher from inside Wine.&#x0a;This operation is likely to fail, due to target application requiring special tricks to run or isolation (such as different wine prefix) preventing DLL Injection.&#x0a;&#x0a;To run under Wine, it is recommended that you deploy ASI Loader (See: Edit Application menu) and run the game outside the launcher.&#x0a;Please note that Reloaded isn't frequently tested under Wine.</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeOk">Try Anyway</sys:String>
+
 </ResourceDictionary>
