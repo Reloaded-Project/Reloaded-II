@@ -49,6 +49,7 @@ namespace Reloaded.Mod.Loader.Logging
 
             _consoleProxy = proxy;
             _logger = logger;
+            _logger.WaitForConsoleInitFunc = WaitForConsoleInit;
             _logger.OnWriteLine += OnWriteLine;
             _logger.OnWrite     += OnWrite;
 

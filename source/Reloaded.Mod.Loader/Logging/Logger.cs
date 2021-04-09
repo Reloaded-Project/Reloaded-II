@@ -18,6 +18,8 @@ namespace Reloaded.Mod.Loader.Logging
         /// <inheritdoc />
         public event EventHandler<(string text, Color color)> OnWrite;
 
+        public Action<CancellationToken> WaitForConsoleInitFunc;
+
         private BlockingCollection<LogMessage> _messages = new BlockingCollection<LogMessage>();
         private Thread _loggingThread;
         private bool _isShuttingDown = false;
@@ -68,6 +70,8 @@ namespace Reloaded.Mod.Loader.Logging
             if (!_isShuttingDown)
                 _messages.Add(new LogMessage(LogMessageType.Write, message, color));
         }
+
+        public void WaitForConsoleInit(CancellationToken token) => WaitForConsoleInitFunc?.Invoke(token);
 
         // Default Colours
         public Color BackgroundColor     { get; set; } = Color.FromArgb(20, 25, 31);
