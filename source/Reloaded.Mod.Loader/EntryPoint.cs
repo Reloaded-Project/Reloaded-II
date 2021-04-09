@@ -14,6 +14,7 @@ using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
 using Reloaded.Mod.Loader.Utilities.Native;
 using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
+using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader
 {
@@ -49,7 +50,7 @@ namespace Reloaded.Mod.Loader
 
                 checkDrmTask.Wait();
                 createHostTask.Wait();
-                _loader?.Console?.WriteLineAsync(AddLogPrefix($"Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms"));
+                _loader?.Logger?.WriteLineAsync(AddLogPrefix($"Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms"));
                 _stopWatch.Reset();
             }
             catch (Exception ex)
@@ -66,18 +67,16 @@ namespace Reloaded.Mod.Loader
             _basicPeParser = new BasicPeParser(Environment.CurrentProcessLocation.Value);
 
             // Check for Steam DRM.
-            DRMNotifier.PrintWarnings(_basicPeParser, _loader.Console);
+            DRMNotifier.PrintWarnings(_basicPeParser, _loader.Logger);
 
             // Hook native import for ExitProcess. (So we can save log on exit)
             var kernel32 = Kernel32.GetModuleHandle("kernel32.dll");
             var address  = Kernel32.GetProcAddress(kernel32, "ExitProcess");
             if (address != IntPtr.Zero)
-            {
                 _exitProcessHook = new Hook<ExitProcess>(ExitProcessImpl, (long)address).Activate();
-            }
 
             // Hook Console Close
-            if (_loader?.Console != null)
+            if (_loader.Console != null)
                 _loader.Console.OnConsoleClose += SaveAndFlushLog;
         }
 
@@ -89,9 +88,9 @@ namespace Reloaded.Mod.Loader
 
         private static void SaveAndFlushLog()
         {
-            _loader?.Console?.WriteLineAsync(AddLogPrefix("ExitProcess Hook: Log End"));
-            _loader?.Console?.Shutdown();
-            _loader?.Logger?.Flush();
+            _loader?.Logger?.WriteLineAsync(AddLogPrefix("ExitProcess Hook: Log End"));
+            _loader?.Logger?.Shutdown();
+            _loader?.LogWriter?.Flush();
         }
 
         private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -100,7 +99,7 @@ namespace Reloaded.Mod.Loader
             var message = $"Unhandled Exception: {exception.Message}\n" +
                           $"Stack Trace: {exception.StackTrace}";
 
-            _loader?.Console?.WriteLine(AddLogPrefix(message), _loader.Console.ColorRed);
+            _loader?.Logger?.WriteLine(AddLogPrefix(message), _loader.Logger.ColorRed);
         }
 
         /* Initialize Mod Loader (DLL_PROCESS_ATTACH) */
@@ -140,17 +139,17 @@ namespace Reloaded.Mod.Loader
         {
             long initialTime = _stopWatch.ElapsedMilliseconds;
             action();
-            _loader?.Console?.WriteLineAsync(AddLogPrefix($"{text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms"));
+            _loader?.Logger?.WriteLineAsync(AddLogPrefix($"{text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms"));
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void HandleException(Exception ex)
         {
             // This method is singled out to avoid loading System.Windows.Forms at startup; because it is lazy loaded.
-            var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA log is available at: {_loader?.Logger?.FlushPath}";
+            var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA log is available at: {_loader?.LogWriter?.FlushPath}";
             _loader?.Console?.WaitForConsoleInit();
-            _loader?.Console?.WriteLine(errorMessage, _loader.Console.ColorRed);
-            _loader?.Logger?.Flush();
+            _loader?.Logger?.WriteLine(errorMessage, _loader.Logger.ColorRed);
+            _loader?.LogWriter?.Flush();
             User32.MessageBox(0, errorMessage, "Oh Noes!", 0);
         }
 
