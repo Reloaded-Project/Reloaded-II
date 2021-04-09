@@ -8,8 +8,9 @@ namespace Reloaded.Mod.Interfaces.Internal
         // Events
         
         /// <summary>
-        /// Executed after printing a line or text to the console.
+        /// [Legacy] Executed when a user of the logger calls <see cref="ILoggerV2.WriteLine(string)"/>, <see cref="ILoggerV2.Write(string)"/> and derivatives.
         /// </summary>
+        [Obsolete("Use OnWriteLine instead. This event exists for backwards compatibility with original API only.")]
         event EventHandler<string> OnPrintMessage;
 
         // Print Message
