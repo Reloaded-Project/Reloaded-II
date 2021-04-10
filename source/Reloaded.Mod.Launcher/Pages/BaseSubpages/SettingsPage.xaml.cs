@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Reloaded.Mod.Launcher.Commands.Dialog;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility;
@@ -32,6 +33,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         private void Twitter_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => ProcessExtensions.OpenFileWithDefaultProgram("https://twitter.com/TheSewer56");
         private void Donate_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => ProcessExtensions.OpenFileWithDefaultProgram("https://github.com/sponsors/Sewer56");
 
-        
+        private void LogFiles_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => ViewModel.OpenLogFileLocation();
+        private void ConfigFile_PreviewMouseDown(object sender, MouseButtonEventArgs e) => ViewModel.OpenConfigFile();
     }
 }

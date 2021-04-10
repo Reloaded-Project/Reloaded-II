@@ -29,6 +29,22 @@
         </Style.Triggers>
     </Style>
 
+    <!-- PopupLabel with colour change on hover -->
+    <Style x:Key="PopupLabelWithColourChange" TargetType="{x:Type UserControl}">
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource ForegroundFadeTextToAccentLightest}"/>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource ForegroundFadeAccentLightestToText}"/>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- Textblock with colour change on hover -->
     <Style x:Key="RIIDefaultTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextBlock}">
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>

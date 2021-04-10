@@ -255,4 +255,12 @@
     <sys:String x:Key="WineCompatibilityNoticeText" xml:space="preserve">It appears that you are trying to run an application using the launcher from inside Wine.&#x0a;This operation is likely to fail, due to target application requiring special tricks to run or isolation (such as different wine prefix) preventing DLL Injection.&#x0a;&#x0a;To run under Wine, it is recommended that you deploy ASI Loader (See: Edit Application menu) and run the game outside the launcher.&#x0a;Please note that Reloaded isn't frequently tested under Wine.</sys:String>
     <sys:String x:Key="WineCompatibilityNoticeOk">Try Anyway</sys:String>
 
+    <!-- Update 1.8.0: Configuration -->
+    <sys:String x:Key="LoaderSettingsConfigPopup">Reloaded Settings</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigLanguage">Language</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigTheme">Theme</sys:String>
+
+    <sys:String x:Key="LoaderSettingsConfigLog">View Log Files</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigFile">Open Config File</sys:String>
+
 </ResourceDictionary>

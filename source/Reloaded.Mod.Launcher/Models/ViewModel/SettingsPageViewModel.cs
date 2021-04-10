@@ -72,6 +72,9 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public void SelectCurrentLanguage() => SelectXamlFile(LanguageSelector, LoaderConfig.LanguageFile);
         public void SelectCurrentTheme()    => SelectXamlFile(ThemeSelector, LoaderConfig.ThemeFile);
 
+        public void OpenLogFileLocation() => ProcessExtensions.OpenFileWithDefaultProgram(Paths.LogPath);
+        public void OpenConfigFile() => ProcessExtensions.OpenFileWithDefaultProgram(Paths.LoaderConfigPath);
+
         private void SelectXamlFile(XamlFileSelector selector, string fileName)
         {
             foreach (var file in selector.Files)

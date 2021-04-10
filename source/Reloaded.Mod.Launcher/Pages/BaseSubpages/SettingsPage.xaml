@@ -1,4 +1,4 @@
-﻿<pages:ReloadedIIPage x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.SettingsPage"
+<pages:ReloadedIIPage x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,6 +6,8 @@
     xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
     xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
     xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
+    xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     mc:Ignorable="d"
     d:DesignHeight="600" 
     d:DesignWidth="756"
@@ -20,6 +22,10 @@
                     <Setter Property="Margin" Value="{DynamicResource ListEntryItemMarginSmall}"/>
                     <Setter Property="ToolTipService.InitialShowDelay" Value="0" />
                 </Style>
+
+                <system:Double x:Key="ComboBoxWidth">133</system:Double>
+                <GridLength x:Key="SettingsGridWidth">200</GridLength>
+                <system:Double x:Key="ButtonWidth">250</system:Double>  
             </Grid.Resources>
 
             <DockPanel LastChildFill="False">
@@ -74,37 +80,91 @@
                     </StackPanel>
 
                     <!-- Toggle Show Console -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
-                              HorizontalAlignment="Center" 
-                              IsChecked="{Binding LoaderConfig.ShowConsole}"
-                              Content="{DynamicResource LoaderSettingsShowConsole}"
-                              Style="{DynamicResource DefaultCheckBox}"/>
+                    <controls:PopupLabel ButtonText="{DynamicResource LoaderSettingsConfigPopup}" FontSize="{DynamicResource FontSizeLarger}"
+                                         Margin="{DynamicResource CommonItemVerticalMargin}" HiddenVisibilityType="Collapsed" IsOpen="False"
+                                         Style="{DynamicResource PopupLabelWithColourChange}">
+                        <controls:PopupLabel.HiddenContent>
+                            <Grid HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{StaticResource SettingsGridWidth}"/>
+                                    <ColumnDefinition Width="{StaticResource SettingsGridWidth}"/>
+                                </Grid.ColumnDefinitions>
 
-                        <ComboBox IsSynchronizedWithCurrentItem="True"
-                              Margin="{DynamicResource CommonItemCombinedMargin}"
-                              SelectedItem="{Binding LanguageSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                              ItemsSource="{Binding LanguageSelector.Files, UpdateSourceTrigger=PropertyChanged}"
-                              MaxWidth="133" Width="133" SelectionChanged="LanguageChanged">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
 
-                        <ComboBox IsSynchronizedWithCurrentItem="True"
-                                  Margin="{DynamicResource CommonItemCombinedMargin}"
-                                  SelectedItem="{Binding ThemeSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                  ItemsSource="{Binding ThemeSelector.Files, UpdateSourceTrigger=PropertyChanged}"
-                                  MaxWidth="133" Width="133" SelectionChanged="ThemeChanged">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </StackPanel>
+                                <!-- Language -->
+                                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                           Text="{DynamicResource LoaderSettingsConfigLanguage}" 
+                                           Style="{DynamicResource TextblockWithColourChange}" />
+
+                                <ComboBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                          Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                          IsSynchronizedWithCurrentItem="True"
+                                          SelectedItem="{Binding LanguageSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                          ItemsSource="{Binding LanguageSelector.Files, UpdateSourceTrigger=PropertyChanged}"
+                                          MaxWidth="{StaticResource ComboBoxWidth}" Width="{StaticResource ComboBoxWidth}" 
+                                          SelectionChanged="LanguageChanged">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+
+                                <!-- Theme -->
+                                <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                           Text="{DynamicResource LoaderSettingsConfigTheme}" 
+                                           Style="{DynamicResource TextblockWithColourChange}"/>
+
+                                <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                          Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                          IsSynchronizedWithCurrentItem="True"
+                                          SelectedItem="{Binding ThemeSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                          ItemsSource="{Binding ThemeSelector.Files, UpdateSourceTrigger=PropertyChanged}"
+                                          MaxWidth="{StaticResource ComboBoxWidth}" Width="{StaticResource ComboBoxWidth}" 
+                                          SelectionChanged="ThemeChanged">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+
+                                <!-- Show Console -->
+                                <CheckBox Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
+                                          Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                          IsChecked="{Binding LoaderConfig.ShowConsole}"
+                                          Content="{DynamicResource LoaderSettingsShowConsole}"
+                                          Style="{DynamicResource DefaultCheckBox}" />
+
+                                <!-- Open Log Files -->
+                                <Button Grid.Row="3" Grid.ColumnSpan="2"
+                                        Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                        Style="{DynamicResource UnpaddedStretchedGridButton}"
+                                        Content="{DynamicResource LoaderSettingsConfigLog}" 
+                                        Width="{StaticResource ButtonWidth}"
+                                        PreviewMouseDown="LogFiles_PreviewMouseDown"/>
+
+                                <!-- Open Config File -->
+                                <Button Grid.Row="4" Grid.ColumnSpan="2"
+                                        Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                        Style="{DynamicResource UnpaddedStretchedGridButton}"
+                                        Content="{DynamicResource LoaderSettingsConfigFile}" 
+                                        Width="{StaticResource ButtonWidth}"
+                                        PreviewMouseDown="ConfigFile_PreviewMouseDown"/>
+
+                            </Grid>
+                        </controls:PopupLabel.HiddenContent>
+                    </controls:PopupLabel>
 
                     <!-- Bottom Row: Statistics and Warning -->
                     <Grid DockPanel.Dock="Bottom">
