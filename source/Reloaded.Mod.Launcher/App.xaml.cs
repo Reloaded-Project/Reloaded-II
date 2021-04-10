@@ -7,6 +7,7 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Windows;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
@@ -60,13 +61,7 @@ namespace Reloaded.Mod.Launcher
         private void OnStartup(object sender, StartupEventArgs e)
         {
             EnableProfileOptimization();
-
-            // Ideally this should be in Setup, however the download dialogs should be localized.
-            var launcherFolder = Path.GetDirectoryName(GetCommandLineArgs()[0]);
-            LanguageSelector = new XamlFileSelector($"{launcherFolder}\\Assets\\Languages");
-            ThemeSelector = new XamlFileSelector($"{launcherFolder}\\Theme");
-            Resources.MergedDictionaries.Add(LanguageSelector);
-            Resources.MergedDictionaries.Add(ThemeSelector);
+            SetupResources();
 
             // Check if Download Mod
             if (_commandLineArguments.TryGetValue(Constants.ParameterDownload, out string downloadUrl))
@@ -74,6 +69,16 @@ namespace Reloaded.Mod.Launcher
 
             _commandLineArguments = null;
             this.Startup -= OnStartup;
+        }
+
+        private void SetupResources()
+        {
+            // Ideally this should be in Setup, however the download dialogs should be localized.
+            var launcherFolder = Path.GetDirectoryName(GetCommandLineArgs()[0]);
+            LanguageSelector = new XamlFileSelector($"{launcherFolder}\\Assets\\Languages");
+            ThemeSelector = new XamlFileSelector($"{launcherFolder}\\Theme");
+            Resources.MergedDictionaries.Add(LanguageSelector);
+            Resources.MergedDictionaries.Add(ThemeSelector);
         }
 
         // Excluding most likely unused code from JIT
@@ -86,11 +91,26 @@ namespace Reloaded.Mod.Launcher
                 arguments = "";
 
             applicationToLaunch = Path.GetFullPath(applicationToLaunch);
-            var application = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().ApplicationConfigDirectory)
-                .FirstOrDefault(x => Path.GetFullPath(x.Config.AppLocation) == applicationToLaunch);
+            var application = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().ApplicationConfigDirectory).FirstOrDefault(x => Path.GetFullPath(x.Config.AppLocation) == applicationToLaunch);
             if (application != null)
                 arguments = $"{arguments} {application.Config.AppArguments}";
 
+            // Show warning for Wine users.
+            if (Shared.Environment.IsWine)
+            {
+                // Set up UI Resources, since they're needed for the dialog.
+                SetupResources();
+                if (CompatibilityDialogs.WineShowLaunchDialog())
+                    StartGame(applicationToLaunch, arguments);
+            }
+            else
+            {
+                StartGame(applicationToLaunch, arguments);
+            }
+        }
+
+        private static void StartGame(string applicationToLaunch, string arguments)
+        {
             // Launch the application.
             var launcher = ApplicationLauncher.FromLocationAndArguments(applicationToLaunch, arguments);
             launcher.Start();

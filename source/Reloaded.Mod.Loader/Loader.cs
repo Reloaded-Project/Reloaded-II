@@ -11,10 +11,12 @@ using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Logging;
+using Reloaded.Mod.Loader.Logging.Interfaces;
 using Reloaded.Mod.Loader.Mods;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Utilities;
 using Console = Reloaded.Mod.Loader.Logging.Console;
+using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader
 {
@@ -22,8 +24,9 @@ namespace Reloaded.Mod.Loader
     {
         public bool IsLoaded { get; private set; }
         public IApplicationConfig Application { get; private set; }
-        public Console Console { get; }
         public Logger Logger { get; }
+        public Console Console { get; }
+        public LogWriter LogWriter { get; }
         public PluginManager Manager { get; private set; }
         public LoaderConfig LoaderConfig { get; private set; }
 
@@ -39,7 +42,8 @@ namespace Reloaded.Mod.Loader
         {
             IsTesting = isTesting;
             LoaderConfig = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath);
-            Console = new Console(LoaderConfig.ShowConsole);
+            Logger  = new Logger();
+            Console = new Console(LoaderConfig.ShowConsole, Logger, Environment.IsWine ? (IConsoleProxy) new SystemConsoleProxy() : new ColorfulConsoleProxy());
 
             if (isTesting)
             {
@@ -50,7 +54,7 @@ namespace Reloaded.Mod.Loader
             else
             {
                 if (Console.IsEnabled)
-                    Logger = new Logger(Console, Paths.LogPath);
+                    LogWriter = new LogWriter(Logger, Paths.LogPath);
 
                 Manager = new PluginManager(this);
             }

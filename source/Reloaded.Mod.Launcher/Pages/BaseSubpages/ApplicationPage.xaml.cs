@@ -2,12 +2,14 @@
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Models.ViewModel;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.WPF.Pages.Animations;
 using Reloaded.WPF.Pages.Animations.Enum;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Enum.ApplicationSubPage;
+using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 {
@@ -95,7 +97,9 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
 
                 var appConfig = ViewModel.ApplicationTuple.Config;
                 var launcher  = ApplicationLauncher.FromApplicationConfig(appConfig);
-                launcher.Start();
+
+                if (!Environment.IsWine || (Environment.IsWine && CompatibilityDialogs.WineShowLaunchDialog()))
+                    launcher.Start();
             }
         }
 

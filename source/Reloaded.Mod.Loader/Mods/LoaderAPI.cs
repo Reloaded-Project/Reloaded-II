@@ -60,7 +60,7 @@ namespace Reloaded.Mod.Loader.Mods
         /* Properties */
         public Version GetLoaderVersion()           => Assembly.GetExecutingAssembly().GetName().Version;
         public IApplicationConfigV1 GetAppConfig()  => _loader.Application;
-        public ILoggerV1 GetLogger()                => _loader.Console;
+        public ILoggerV1 GetLogger()                => _loader.Logger;
 
         /* Functions */
         public ModGenericTuple<IModConfigV1>[] GetActiveMods()

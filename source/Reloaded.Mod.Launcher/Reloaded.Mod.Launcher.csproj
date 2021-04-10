@@ -63,6 +63,7 @@
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
     <PackageReference Include="Reloaded.WPF" Version="3.0.4" />
+    <PackageReference Include="Reloaded.WPF.Animations" Version="1.2.3" />
     <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.4" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Management" Version="4.7.0" />

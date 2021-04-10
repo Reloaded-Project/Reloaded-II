@@ -22,7 +22,8 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         }
 
         private void OnMainWindowExit(object sender, CancelEventArgs e) => OnLeavingPage();
-        private void OnLeavingPage() => ViewModel.SaveConfig();
+        private async void OnLeavingPage() => await ViewModel.SaveConfigAsync();
+
         private void Documents_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => new OpenDocumentationCommand().Execute(null);
         private void LanguageChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) => ViewModel.SaveNewLanguage();
         private void ThemeChanged(object sender, SelectionChangedEventArgs e) => ViewModel.SaveNewTheme();

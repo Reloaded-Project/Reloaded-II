@@ -234,9 +234,9 @@ namespace Reloaded.Mod.Loader.Mods
                 if (File.Exists(dllPath))
                     return tuple.Config.IsNativeMod(tuple.Path) ? PrepareNativeMod(tuple) : PrepareDllMod(tuple);
                 else
-                    _loader?.Console?.WriteLineAsync(AddLogPrefix($"DLL Not Found! {Path.GetFileName(dllPath)}\n" +
+                    _loader?.Logger?.WriteLineAsync(AddLogPrefix($"DLL Not Found! {Path.GetFileName(dllPath)}\n" +
                                                                   $"Mod Name: {tuple.Config.ModName}, Mod ID: {tuple.Config.ModId}\n" +
-                                                                  $"Please re-download the mod. It is either corrupt or you may have downloaded the source code by accident."), _loader.Console.ColorRed);
+                                                                  $"Please re-download the mod. It is either corrupt or you may have downloaded the source code by accident."), _loader.Logger.ColorRed);
             }
 
             return PrepareNonDllMod(tuple);
@@ -401,7 +401,7 @@ namespace Reloaded.Mod.Loader.Mods
         /* Utility */
         private void WriteLineAsync(string message)
         {
-            _loader?.Console?.WriteLineAsync(AddLogPrefix(message));
+            _loader?.Logger?.WriteLineAsync(AddLogPrefix(message));
         }
 
         private void ExecuteWithStopwatch<T>(string message, Action<T> code, T parameter)

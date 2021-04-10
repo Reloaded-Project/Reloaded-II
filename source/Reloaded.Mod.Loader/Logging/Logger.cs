@@ -1,81 +1,122 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
+using System.Collections.Concurrent;
+using System.Drawing;
 using System.Threading;
+using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Loader.Logging.Structs;
 
 namespace Reloaded.Mod.Loader.Logging
 {
-    /// <summary>
-    /// Basic logger used for storing crash logs
-    /// </summary>
-    public class Logger : IDisposable
+    public class Logger : ILogger
     {
-        private const int MaxBufferLength = 1000;
-
-        /// <summary>
-        /// Gets the path to which the log will be flushed to.
-        /// </summary>
-        public string FlushPath { get; }
-
-        private Timer _autoFlushThread;
-        private StreamWriter  _textStream;
-        private Console       _console;
-        private List<string>  _logItems;
-
-        /// <summary>
-        /// Intercepts logs from the console and provides the ability to flush them to a file in the event of a crash.
-        /// </summary>
-        /// <param name="console">The console to intercept logs from.</param>
-        /// <param name="outputDir">The directory to which the log is output to.</param>
-        public Logger(Console console, string outputDir)
-        {
-            var executableName    = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
-            var universalDateTime = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
-            Directory.CreateDirectory(outputDir);
-
-            _logItems = new List<string>(MaxBufferLength + 1);
-            _console  = console;
-            _console.OnPrintMessage += OnPrintMessage;
-
-            FlushPath   = Path.Combine(outputDir, $"{universalDateTime} ~ {executableName}.txt");
-            _textStream = File.CreateText(FlushPath);
-            _textStream.AutoFlush = false;
-            _autoFlushThread = new Timer(AutoFlush, null, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(250));
-        }
-
-        /// <summary>
-        /// Note: The default value of 250ms per potential flush should fit within the time limit provided for applications to close up, e.g. Console Control Handlers (SetConsoleCtrlHandler).
-        ///       Flushing periodically is also prone to power loss or forced kills via TerminateProcess() etc.
-        /// </summary>
-        private void AutoFlush(object state) => Flush();
-
-        /// <summary>
-        /// Flushes the current contents of the log.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void Flush()
-        {
-            if (_logItems.Count <= 0) 
-                return;
-
-            foreach (var item in _logItems)
-                _textStream.WriteLine(item);
-
-            _textStream.Flush();
-            _logItems.Clear();
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        private void OnPrintMessage(object sender, string message)
-        {
-            if (_logItems.Count == MaxBufferLength)
-                Flush();
-
-            _logItems.Add($"[{DateTime.Now:HH:mm:ss}] {message}");
-        }
+        /// <inheritdoc />
+        public event EventHandler<string> OnPrintMessage;
+        
+        /// <inheritdoc />
+        public event EventHandler<(string text, Color color)> OnWriteLine;
 
         /// <inheritdoc />
-        public void Dispose() => _console.OnPrintMessage -= OnPrintMessage;
+        public event EventHandler<(string text, Color color)> OnWrite;
+
+        public Action<CancellationToken> WaitForConsoleInitFunc;
+
+        private BlockingCollection<LogMessage> _messages = new BlockingCollection<LogMessage>();
+        private Thread _loggingThread;
+        private bool _isShuttingDown = false;
+
+        public Logger()
+        {
+            _loggingThread = new Thread(ProcessQueue) { IsBackground = true };
+            _loggingThread.Start();
+        }
+
+        /// <summary>
+        /// Blocks the console from accepting any more asynchronous/buffered messages and
+        /// waits until all existing buffered messages have been processed.
+        /// </summary>
+        public void Shutdown()
+        {
+            _isShuttingDown = true;
+            while (_loggingThread.IsAlive)
+                Thread.Sleep(1);
+        }
+
+        // Interface Implementation
+        public void PrintMessage(string message, Color color)   => WriteLine(message, color);
+        public void WriteLine(string message)                   => WriteLine(message, TextColor);
+        public void Write(string message)                       => Write(message, TextColor);
+        public void WriteLine(string message, Color color)
+        {
+            OnPrintMessage?.Invoke(this, message);
+            OnWriteLine?.Invoke(this, (message, color));
+        }
+
+        public void Write(string message, Color color)
+        {
+            OnPrintMessage?.Invoke(this, message);
+            OnWrite?.Invoke(this, (message, color));
+        }
+
+        public void WriteAsync(string message) => WriteAsync(message, TextColor);
+        public void WriteLineAsync(string message) => WriteLineAsync(message, TextColor);
+        public void WriteLineAsync(string message, Color color)
+        {
+            if (!_isShuttingDown)
+                _messages.Add(new LogMessage(LogMessageType.WriteLine, message, color));
+        }
+
+        public void WriteAsync(string message, Color color)
+        {
+            if (!_isShuttingDown)
+                _messages.Add(new LogMessage(LogMessageType.Write, message, color));
+        }
+
+        public void WaitForConsoleInit(CancellationToken token) => WaitForConsoleInitFunc?.Invoke(token);
+
+        // Default Colours
+        public Color BackgroundColor     { get; set; } = Color.FromArgb(20, 25, 31);
+        public Color TextColor           { get; set; } = Color.FromArgb(239, 240, 235);
+
+        public Color ColorRed            { get; set; } = Color.FromArgb(255, 92, 87);
+        public Color ColorRedLight       { get; set; } = Color.FromArgb(220, 163, 163);
+
+        public Color ColorGreen          { get; set; } = Color.FromArgb(90, 247, 142);
+        public Color ColorGreenLight     { get; set; } = Color.FromArgb(195, 191, 159);
+
+        public Color ColorYellow         { get; set; } = Color.FromArgb(243, 249, 157);
+        public Color ColorYellowLight    { get; set; } = Color.FromArgb(240, 223, 175);
+
+        public Color ColorBlue           { get; set; } = Color.FromArgb(87, 199, 255);
+        public Color ColorBlueLight      { get; set; } = Color.FromArgb(148, 191, 243);
+
+        public Color ColorPink           { get; set; } = Color.FromArgb(255, 106, 193);
+        public Color ColorPinkLight      { get; set; } = Color.FromArgb(236, 147, 211);
+
+        public Color ColorLightBlue      { get; set; } = Color.FromArgb(154, 237, 254);
+        public Color ColorLightBlueLight { get; set; } = Color.FromArgb(147, 224, 227);
+
+        // Business Logic
+        private void ProcessQueue()
+        {
+            while (true)
+            {
+                var message = _messages.Take();
+
+                switch (message.Type)
+                {
+                    default:
+                    case LogMessageType.WriteLine:
+                        WriteLine(message.Message, message.Color);
+                        break;
+                    case LogMessageType.Write:
+                        Write(message.Message, message.Color);
+                        break;
+                }
+
+                // Exit thread if console is shutting down and we're done here.
+                if (_messages.Count == 0 && _isShuttingDown)
+                    return;
+            }
+        }
     }
 }

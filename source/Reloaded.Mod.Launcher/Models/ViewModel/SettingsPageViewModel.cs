@@ -43,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             });
         }
 
-        public async Task SaveConfig()
+        public async Task SaveConfigAsync()
         {
             await IConfig<LoaderConfig>.ToPathAsync(LoaderConfig, Paths.LoaderConfigPath);
         }
@@ -53,7 +53,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             if (LanguageSelector.File != null)
             {
                 LoaderConfig.LanguageFile = LanguageSelector.File;
-                await SaveConfig();
+                await SaveConfigAsync();
             }
         }
 
@@ -62,7 +62,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             if (ThemeSelector.File != null)
             {
                 LoaderConfig.ThemeFile = ThemeSelector.File;
-                await SaveConfig();
+                await SaveConfigAsync();
 
                 // TODO: This is a bug workaround for where the language ComboBox gets reset after a theme change.
                 SelectCurrentLanguage();
