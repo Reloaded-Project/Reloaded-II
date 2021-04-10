@@ -5,6 +5,7 @@ using System.Linq;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Utility;
+using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader.Tests.SETUP
 {
@@ -69,7 +70,7 @@ namespace Reloaded.Mod.Loader.Tests.SETUP
 
                 ThisApplication = new ApplicationConfig(IdOfThisApp,
                                                         "Reloaded Mod Loader Tests",
-                                                        Environment.GetCommandLineArgs()[0],
+                                                        Environment.CurrentProcessLocation.Value,
                                                         new[] { TestModConfigA.ModId, TestModConfigB.ModId, TestModConfigD.ModId });
 
                 ConfigurationPathOfThisApp = Path.Combine(TestConfig.ApplicationConfigDirectory, IdOfThisApp, ApplicationConfig.ConfigFileName);

@@ -16,7 +16,6 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         public LoaderTest()
         {
             _testData = new TestData();
-
             _loader = new Mod.Loader.Loader(true);
             _loader.LoadForCurrentProcess();
         }
