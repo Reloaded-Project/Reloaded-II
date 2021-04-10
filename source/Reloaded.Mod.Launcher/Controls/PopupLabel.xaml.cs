@@ -21,7 +21,7 @@ namespace Reloaded.Mod.Launcher.Controls
         private XamlResource<double> _xamlExitFadeOpacityEnd;
 
         public static readonly DependencyProperty ButtonTextProperty = DependencyProperty.Register(nameof(ButtonText), typeof(String), typeof(PopupLabel), new PropertyMetadata("Close Me!"));
-        public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(PopupLabel), new PropertyMetadata(true, IsOpenChangedCallback));
+        public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(PopupLabel), new PropertyMetadata(DefaultIsOpen, IsOpenChangedCallback));
         public static readonly DependencyProperty HiddenContentProperty = DependencyProperty.Register(nameof(HiddenContent), typeof(object), typeof(PopupLabel));
         public static readonly DependencyProperty HiddenVisibilityTypeProperty = DependencyProperty.Register(nameof(HiddenVisibilityType), typeof(Visibility), typeof(PopupLabel), new PropertyMetadata(Visibility.Collapsed));
 
@@ -30,6 +30,7 @@ namespace Reloaded.Mod.Launcher.Controls
         private const string DisabledRight = " ▼​";
         private const string EnabledLeft  = "▲ ​";
         private const string EnabledRight = " ▲​";
+        private const bool DefaultIsOpen = true;
 
         private bool _isWrapped = false;
 
@@ -70,6 +71,11 @@ namespace Reloaded.Mod.Launcher.Controls
             set => SetValue(HiddenVisibilityTypeProperty, value);
         }
 
+        /// <summary>
+        /// Executed when the <see cref="IsOpen"/> property changes.
+        /// </summary>
+        public EventHandler<DependencyPropertyChangedEventArgs> IsOpenChanged { get; set; }
+
         public PopupLabel()
         {
             InitializeComponent();
@@ -81,7 +87,7 @@ namespace Reloaded.Mod.Launcher.Controls
             // Update text and whether content is visible on load.
             this.Loaded += (sender, args) =>
             {
-                IsOpenChangedCallback(this, new DependencyPropertyChangedEventArgs(IsOpenProperty, !IsOpen, IsOpen));
+                IsOpenChangedCallback(this, new DependencyPropertyChangedEventArgs(IsOpenProperty, DefaultIsOpen, IsOpen));
 
                 if (IsOpen)
                     AnimateIn();
@@ -139,7 +145,7 @@ namespace Reloaded.Mod.Launcher.Controls
 
         private static void IsOpenChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PopupLabel label)
+            if (d is PopupLabel label && (bool) e.NewValue != (bool) e.OldValue)
             {
                 string originalText = label.ButtonText;
                 if (label._isWrapped)
@@ -154,6 +160,7 @@ namespace Reloaded.Mod.Launcher.Controls
                     $"{DisabledLeft}{originalText}{DisabledRight}";
 
                 label._isWrapped = true;
+                label.IsOpenChanged?.Invoke(label, e);
             }
         }
     }
