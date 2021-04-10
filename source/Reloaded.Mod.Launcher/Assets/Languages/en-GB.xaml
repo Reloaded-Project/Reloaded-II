@@ -259,8 +259,11 @@
     <sys:String x:Key="LoaderSettingsConfigPopup">Reloaded Settings</sys:String>
     <sys:String x:Key="LoaderSettingsConfigLanguage">Language</sys:String>
     <sys:String x:Key="LoaderSettingsConfigTheme">Theme</sys:String>
-
     <sys:String x:Key="LoaderSettingsConfigLog">View Log Files</sys:String>
     <sys:String x:Key="LoaderSettingsConfigFile">Open Config File</sys:String>
+
+    <!-- Update 1.8.0: Extra Error(s) -->
+    <sys:String x:Key="ErrorFailedToObtainPort" xml:space="preserve">Failed to obtain port for the Reloaded instance running inside the process.&#x0a;The application has either crashed, Reloaded failed to load or Reloaded has not initialized within the timeout limit.</sys:String>
+
 
 </ResourceDictionary>

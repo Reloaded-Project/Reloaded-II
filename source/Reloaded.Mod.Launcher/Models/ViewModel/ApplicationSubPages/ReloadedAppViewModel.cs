@@ -33,12 +33,21 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 
         public ReloadedAppViewModel(ApplicationViewModel applicationViewModel)
         {
+            /* Try establish connection. */
+            int port = 0;
+            try
+            {
+                port = ActionWrappers.TryGetValue(GetPort, _xamlModLoaderSetupTimeout.Get(), _xamlModLoaderSetupSleepTime.Get());
+            }
+            catch (Exception ex)
+            {
+                Errors.HandleException(new Exception(Errors.ErrorFailedToObtainPort(), ex));
+                return;
+            }
+
             ApplicationViewModel = applicationViewModel;
             ApplicationViewModel.SelectedProcess.EnableRaisingEvents = true;
             ApplicationViewModel.SelectedProcess.Exited += SelectedProcessOnExited;
-
-            /* Try establish connection. */
-            int port = ActionWrappers.TryGetValue(GetPort, _xamlModLoaderSetupTimeout.Get(), _xamlModLoaderSetupSleepTime.Get());
 
             Client = new Client(port);
             Client.OnReceiveException += ClientOnReceiveException;

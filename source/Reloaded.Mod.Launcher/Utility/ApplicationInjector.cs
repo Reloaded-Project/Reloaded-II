@@ -51,18 +51,26 @@ namespace Reloaded.Mod.Launcher.Utility
                 return false;
             }
 
-            ActionWrappers.TryGetValueWhile(() =>
+            try
             {
-                // Exit if application crashes while loading Reloaded..
-                if (_process.HasExited)
-                    return 0;
+                ActionWrappers.TryGetValueWhile(() =>
+                {
+                    // Exit if application crashes while loading Reloaded..
+                    if (_process.HasExited)
+                        return 0;
 
-                var port = Client.GetPort((int)_process.Id);
-                if (port == 0)
-                    throw new Exception("Reloaded is still loading.");
+                    var port = Client.GetPort((int)_process.Id);
+                    if (port == 0)
+                        throw new Exception("Reloaded is still loading.");
 
-                return port;
-            }, WhileCondition, _xamlModLoaderSetupTimeout.Get(), _xamlModLoaderSetupSleepTime.Get());
+                    return port;
+                }, WhileCondition, _xamlModLoaderSetupTimeout.Get(), _xamlModLoaderSetupSleepTime.Get());
+            }
+            catch (Exception e)
+            {                
+                Errors.HandleException(new Exception(Errors.ErrorFailedToObtainPort(), e));
+                return;
+            }
         }
 
         private string GetBootstrapperPath(Process process)
