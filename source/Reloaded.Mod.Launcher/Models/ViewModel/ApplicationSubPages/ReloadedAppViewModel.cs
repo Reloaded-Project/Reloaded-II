@@ -33,6 +33,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 
         public ReloadedAppViewModel(ApplicationViewModel applicationViewModel)
         {
+            ApplicationViewModel = applicationViewModel;
+            ApplicationViewModel.SelectedProcess.EnableRaisingEvents = true;
+            ApplicationViewModel.SelectedProcess.Exited += SelectedProcessOnExited;
+
             /* Try establish connection. */
             int port = 0;
             try
@@ -44,10 +48,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
                 Errors.HandleException(new Exception(Errors.ErrorFailedToObtainPort(), ex));
                 return;
             }
-
-            ApplicationViewModel = applicationViewModel;
-            ApplicationViewModel.SelectedProcess.EnableRaisingEvents = true;
-            ApplicationViewModel.SelectedProcess.Exited += SelectedProcessOnExited;
 
             Client = new Client(port);
             Client.OnReceiveException += ClientOnReceiveException;
