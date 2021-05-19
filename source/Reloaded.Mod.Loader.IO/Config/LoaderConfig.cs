@@ -20,7 +20,7 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         private static readonly NugetFeed[] DefaultFeeds        = new NugetFeed[]
         {
-            new NugetFeed("Official Repository", "http://167.71.128.50:5000/v3/index.json", "Package repository of Sewer56, the developer of Reloaded. " +
+            new NugetFeed("Official Repository", "http://packages.sewer56.moe:5000/v3/index.json", "Package repository of Sewer56, the developer of Reloaded. " +
                                                                                             "Contains personal and popular community packages."),
         };
 
@@ -121,6 +121,16 @@ namespace Reloaded.Mod.Loader.IO.Config
             NuGetFeeds ??= DefaultFeeds;
             ResetMissingDirectories();
             CleanEmptyFeeds();
+            RerouteDefaultFeed();
+        }
+
+        private void RerouteDefaultFeed()
+        {
+            foreach (var feed in NuGetFeeds)
+            {
+                if (feed.URL.Equals("http://167.71.128.50:5000/v3/index.json", StringComparison.OrdinalIgnoreCase))
+                    feed.URL = DefaultFeeds[0].URL;
+            }
         }
 
         // Creates directories/folders if they do not exist.
