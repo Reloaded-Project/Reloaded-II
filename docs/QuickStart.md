@@ -1,5 +1,4 @@
 # Quick Start
-To run Reloaded-II, please start `Reloaded-II.exe` as administrator.
 
 ## Add an Application
 To add an application such as a game, simply click the plus button on the top of the sidebar `Add an Application`. Inside the menu, click new and select an application to make a profile for:
