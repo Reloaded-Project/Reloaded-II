@@ -3,7 +3,7 @@
 NuGet is the primary source for downloading mods and searching for missing mod dependencies.
 You can directly download mods from NuGet servers via the `Download Mods` menu.
 
-Reloaded comes preconfigured with a single [official server](http://167.71.128.50:5000/home) intended for hosting code mods.
+Reloaded comes preconfigured with a single [official server](http://packages.sewer56.moe:5000/home) intended for hosting code mods.
 
 ## Adding new Sources
 
@@ -19,7 +19,7 @@ Example URLs:
 
 - Official NuGet Gallery Index: [https://api.nuget.org/v3/index.json](https://api.nuget.org/v3/index.json)
 - Example MyGet Index URL: [https://www.myget.org/F/reloaded-ii-tests/api/v3/index.json](https://www.myget.org/F/reloaded-ii-tests/api/v3/index.json)
-- Official BaGet Server URL: [167.71.128.50:5000/v3/index.json](167.71.128.50:5000/v3/index.json)
+- Official BaGet Server URL: [http://packages.sewer56.moe:5000/v3/index.json](http://packages.sewer56.moe:5000/v3/index.json)
 
 ------------
 **Please Note:**

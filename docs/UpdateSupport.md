@@ -22,7 +22,7 @@ This is to speed up the time it takes to check for updates, as asking every sour
 NuGet is the primary source for downloading mods and searching for missing mod dependencies.
 Users can directly download mods via the `Download Mods` menu.
 
-Reloaded comes preconfigured with a single [official server](http://167.71.128.50:5000/home) intended for hosting code mods.
+Reloaded comes preconfigured with a single [official server](http://packages.sewer56.moe:5000/home) intended for hosting code mods.
 
 #### Creating a Package: In Launcher
 
@@ -49,10 +49,10 @@ Example:
 
 ```
 # Upload package.nupkg to the official Reloaded server.
-dotnet nuget push -s http://167.71.128.50:5000/v3/index.json -k API-KEY package.nupkg
+dotnet nuget push -s http://packages.sewer56.moe:5000/v3/index.json -k API-KEY package.nupkg
 ```
 
-[Upload instructions for the official Reloaded package server](http://167.71.128.50:5000/upload).
+[Upload instructions for the official Reloaded package server](http://packages.sewer56.moe:5000/upload).
 
 ### GitHub
 
