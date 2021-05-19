@@ -1,0 +1,1230 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://reloaded-project.github.io/Reloaded-II/UpdateSupport/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
+    
+    
+      
+        <title>Publishing Mods - Reloaded II Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bde7dde4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ef5552">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="red">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#publishing-mods" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Reloaded II Documentation" class="md-header__button md-logo" aria-label="Reloaded II Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reloaded II Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Publishing Mods
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/Reloaded-Project/Reloaded-II/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Reloaded-Project/Reloaded-II
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Reloaded II Documentation" class="md-nav__button md-logo" aria-label="Reloaded II Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Reloaded II Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/Reloaded-Project/Reloaded-II/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Reloaded-Project/Reloaded-II
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        For Users
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="For Users" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          For Users
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QuickStart/" class="md-nav__link">
+        Quick Start
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        Frequently Asked Questions
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      <label class="md-nav__link" for="__nav_2_3">
+        Advanced
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Advanced" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          Advanced
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NuGetSources/" class="md-nav__link">
+        NuGet Sources
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../InjectionMethods/" class="md-nav__link">
+        Injection Methods
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        For Modders
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="For Modders" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          For Modders
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GettingStartedMods/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Publishing Mods
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Publishing Mods
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#supported-update-sources" class="md-nav__link">
+    Supported Update Sources
+  </a>
+  
+    <nav class="md-nav" aria-label="Supported Update Sources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nuget" class="md-nav__link">
+    NuGet
+  </a>
+  
+    <nav class="md-nav" aria-label="NuGet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-package-in-launcher" class="md-nav__link">
+    Creating a Package: In Launcher
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-package-standalone-utility" class="md-nav__link">
+    Creating a Package: Standalone Utility
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uploading-packages" class="md-nav__link">
+    Uploading Packages
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github" class="md-nav__link">
+    GitHub
+  </a>
+  
+    <nav class="md-nav" aria-label="GitHub">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#determining-version" class="md-nav__link">
+    Determining Version
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-configuration" class="md-nav__link">
+    User Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    Limitations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gamebanana" class="md-nav__link">
+    GameBanana
+  </a>
+  
+    <nav class="md-nav" aria-label="GameBanana">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-name-pattern" class="md-nav__link">
+    File Name Pattern
+  </a>
+  
+    <nav class="md-nav" aria-label="File Name Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-pattern-guidelines" class="md-nav__link">
+    File Pattern Guidelines
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#item-id" class="md-nav__link">
+    Item Id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#item-type" class="md-nav__link">
+    Item Type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#determining-version_1" class="md-nav__link">
+    Determining Version
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-support-for-programmers" class="md-nav__link">
+    Adding Support (for Programmers)
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding Support (for Programmers)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-write-a-resolver" class="md-nav__link">
+    1. Write a Resolver
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-resolver-to-list-of-resolvers" class="md-nav__link">
+    2. Add resolver to list of Resolvers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        For Programmers
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="For Programmers" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          For Programmers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DeveloperModGuide/" class="md-nav__link">
+        Building Mods
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../InterModCommunication/" class="md-nav__link">
+        Inter Mod Communication
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" >
+      
+      <label class="md-nav__link" for="__nav_4_3">
+        Miscellaneous
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Miscellaneous" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Miscellaneous
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Automation/" class="md-nav__link">
+        Automation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../APIOverview/" class="md-nav__link">
+        API Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OptimizingMods/" class="md-nav__link">
+        Optimizing Mods
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sewer56/Reloaded.SharedLib.Hooks" class="md-nav__link">
+        Shared Libraries
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications" class="md-nav__link">
+        Writing Mods for Actively Developed Games/Apps
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NativeMods/" class="md-nav__link">
+        Writing Native Mods
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Troubleshooting/" class="md-nav__link">
+        Troubleshooting
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        For Contributors
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="For Contributors" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          For Contributors
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BuildingReloaded/" class="md-nav__link">
+        Building Reloaded
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ProjectStructure/" class="md-nav__link">
+        Project Structure
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Reloaded-II-Architecture/" class="md-nav__link">
+        High Level Architecture
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LocalizingReloaded/" class="md-nav__link">
+        Translating Reloaded
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#supported-update-sources" class="md-nav__link">
+    Supported Update Sources
+  </a>
+  
+    <nav class="md-nav" aria-label="Supported Update Sources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nuget" class="md-nav__link">
+    NuGet
+  </a>
+  
+    <nav class="md-nav" aria-label="NuGet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-package-in-launcher" class="md-nav__link">
+    Creating a Package: In Launcher
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-package-standalone-utility" class="md-nav__link">
+    Creating a Package: Standalone Utility
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uploading-packages" class="md-nav__link">
+    Uploading Packages
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github" class="md-nav__link">
+    GitHub
+  </a>
+  
+    <nav class="md-nav" aria-label="GitHub">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#determining-version" class="md-nav__link">
+    Determining Version
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-configuration" class="md-nav__link">
+    User Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    Limitations
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gamebanana" class="md-nav__link">
+    GameBanana
+  </a>
+  
+    <nav class="md-nav" aria-label="GameBanana">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-name-pattern" class="md-nav__link">
+    File Name Pattern
+  </a>
+  
+    <nav class="md-nav" aria-label="File Name Pattern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file-pattern-guidelines" class="md-nav__link">
+    File Pattern Guidelines
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#item-id" class="md-nav__link">
+    Item Id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#item-type" class="md-nav__link">
+    Item Type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#determining-version_1" class="md-nav__link">
+    Determining Version
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-support-for-programmers" class="md-nav__link">
+    Adding Support (for Programmers)
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding Support (for Programmers)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-write-a-resolver" class="md-nav__link">
+    1. Write a Resolver
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-resolver-to-list-of-resolvers" class="md-nav__link">
+    2. Add resolver to list of Resolvers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Reloaded-Project/Reloaded-II/edit/master/docs/UpdateSupport.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="publishing-mods">Publishing Mods</h1>
+<hr />
+<p><strong>Warning</strong></p>
+<p>Please be careful to not include any configuration files inside your mod updates as doing so would overwrite the user's own settings.</p>
+<hr />
+<p>At the time of writing the supported archive formats are: <code>rar</code>, <code>zip</code>, <code>tar</code>, <code>gzip</code>, <code>7z</code>, <code>lz</code></p>
+<p>See <a href="https://github.com/adamhathcock/sharpcompress/blob/master/FORMATS.md#supported-format-table">SharpCompress Supported Format Table</a> for more details.</p>
+<h2 id="supported-update-sources">Supported Update Sources</h2>
+<p>When the mod loader checks for updates, it will use the first source it finds from the list below (in the order used in this document).</p>
+<p>This is to speed up the time it takes to check for updates, as asking every source for every mod could otherwise take significant amount of time.</p>
+<h3 id="nuget">NuGet</h3>
+<p>NuGet is the primary source for downloading mods and searching for missing mod dependencies.
+Users can directly download mods via the <code>Download Mods</code> menu.</p>
+<p>Reloaded comes preconfigured with a single <a href="http://packages.sewer56.moe:5000/home">official server</a> intended for hosting code mods.</p>
+<h4 id="creating-a-package-in-launcher">Creating a Package: In Launcher</h4>
+<p>You can generate a NuGet package for your mod from inside the launcher using the <code>Convert to NuGet format</code> button.</p>
+<p><img alt="Example" src="../Images/ConvertToNuget.png" /></p>
+<p>Once conversion completes, Reloaded will open a folder containing the newly generated <code>.nupkg</code> file. Be careful and make sure you don't include any files generated by your mod (e.g. Config Files).</p>
+<h4 id="creating-a-package-standalone-utility">Creating a Package: Standalone Utility</h4>
+<p>Alternatively, there exists a standalone NuGet Package Converter; you can get it from either of the 2 sources:</p>
+<ul>
+<li>Via <a href="https://github.com/Reloaded-Project/Reloaded-II/releases">Github Releases</a> (<code>Tools.zip</code>).</li>
+<li>Via <a href="https://chocolatey.org/packages/reloaded-ii-tools">Chocolatey</a>.</li>
+</ul>
+<p>Use from command line 😇</p>
+<h4 id="uploading-packages">Uploading Packages</h4>
+<p>You can now upload this to a NuGet server. The easiest way is to install the <a href="https://dotnet.microsoft.com/download/dotnet/thank-you/sdk-5.0.101-windows-x64-installer">.NET SDK</a> and use the <code>dotnet</code> commandline utility. </p>
+<p>Example: </p>
+<div class="highlight"><pre><span></span><code># Upload package.nupkg to the official Reloaded server.
+dotnet nuget push -s http://packages.sewer56.moe:5000/v3/index.json -k API-KEY package.nupkg
+</code></pre></div>
+<p><a href="http://packages.sewer56.moe:5000/upload">Upload instructions for the official Reloaded package server</a>.</p>
+<h3 id="github">GitHub</h3>
+<p>Support for mod updates from GitHub Releases can be added by copying the <code>ReloadedGithubUpdater.json</code> file from the Launcher's <code>Template</code> folder the to mod folder.</p>
+<p>After copying, you should then edit the file to include the user/organization name, repository and name of the mod archive.</p>
+<p><em>Example:</em></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;UserName&quot;</span><span class="p">:</span> <span class="s2">&quot;Reloaded-Project&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;RepositoryName&quot;</span><span class="p">:</span> <span class="s2">&quot;Reloaded.Mod.Universal.Redirector&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;AssetFileName&quot;</span><span class="p">:</span> <span class="s2">&quot;Mod.zip&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="determining-version">Determining Version</h4>
+<p>To determine the current version of the mod, the GitHub service uses the <code>ModVersion</code> field inside of your mod's <code>ModConfig.json</code>.</p>
+<p>It compares the version to the tag, which is set when you make a release on GitHub:
+<img alt="" src="../Images/GitHubTag.png" /></p>
+<p>If the GitHub version is higher than the local one, there is an update.</p>
+<h4 id="user-configuration">User Configuration</h4>
+<p>Each mod with GitHub update support can be configured by the user. This can be done by editing the <code>ReloadedGithubUserConfig.json</code>  file, in the mod folder using a standard text editor. </p>
+<p><strong>Example file:</strong>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;LastCheckTimestamp&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;EnablePrereleases&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>If not present, this file will appear the next time the Reloaded Launcher is launched.</p>
+<p><strong>Note:</strong> <em>ReloadedGithubUserConfig.json should not be included in any mod downloads!</em></p>
+<h4 id="limitations">Limitations</h4>
+<ul>
+<li>
+<p>Prereleases are supported but semantic versioning is not. Please do not add any prefixes/suffixes to your release tags.</p>
+</li>
+<li>
+<p>GitHub only allows 60 requests an hour for unauthenticated users. This means that if you have many mods with GitHub update support, they might not receive updates immediately.</p>
+<ul>
+<li>The GitHub service tracks when each mod has been checked, ensuring that each mod gets the chance to check for updates, even if there are more than 60.</li>
+</ul>
+</li>
+</ul>
+<h3 id="gamebanana">GameBanana</h3>
+<p>Support for mod updates from GameBanana can be added by copying the <code>ReloadedGamebananaUpdater.json</code> file from the Launcher's <code>Template</code> folder the to mod folder.</p>
+<p>First, <a href="../Images/GameBananaPrivate.png">upload your mod as a private submission</a>, copy the file to your mod folder and then edit the file to include the entry ID and type.</p>
+<p><em>Example:</em></p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="nt">&quot;FileNamePattern&quot;</span><span class="p">:</span> <span class="s2">&quot;rii-&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ItemType&quot;</span><span class="p">:</span> <span class="s2">&quot;Skin&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ItemId&quot;</span><span class="p">:</span> <span class="mi">162715</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="file-name-pattern">File Name Pattern</h4>
+<p>Specifies text which must be contained by the file used for updates. 
+The default is <code>rii-</code>, so a valid file names could be: </p>
+<ul>
+<li><code>rii-supercoolmod.zip</code>.</li>
+<li><code>supercoolmod-rii-by-coolguy123.zip</code></li>
+</ul>
+<p>The pattern is used to distinguish the Reloaded II download from downloads that might come in other formats, e.g. for other mod loaders and/or extras.</p>
+<h5 id="file-pattern-guidelines">File Pattern Guidelines</h5>
+<p>✅ Piece of text at the beginning (preferred) or end of the file name.</p>
+<p>✅ Use a pattern that will only match the name of one file.</p>
+<p>❌ Do not include file extensions in your pattern.</p>
+<p>Gamebanana adds suffixes to duplicate file names, even if original file is removed. So if you upload <code>rii-midnighthill.7z</code>, remove it, and reupload it again, the file might be named something like <code>rii-midnighthill_eaa22.7z</code>.</p>
+<hr />
+<p>Warning</p>
+<ul>
+<li>Some characters are removed/replaced when uploading files to GameBanana.</li>
+<li>Long file names (~32+ characters) might get trimmed down.</li>
+<li>Text comparison used is case insensitive.</li>
+</ul>
+<hr />
+<h4 id="item-id">Item Id</h4>
+<p>The Item ID of your submission can be obtained from the URL of your submission: </p>
+<p><img alt="" src="../Images/GameBananaUrl.png" /></p>
+<h4 id="item-type">Item Type</h4>
+<p>A list of item types can be obtained from the following page: <a href="https://api.gamebanana.com/Core/Item/Data/AllowedItemTypes?">GameBanana API Item Types</a>. </p>
+<p>The item type should match the submission type of your mod. The type of submission of your mod can be found in the URL in plural form.</p>
+<p>e.g. <code>gamebanana.com/skins/162715</code>=&gt; <code>Skin</code></p>
+<p>e.g. <code>gamebanana.com/gamefiles/7104</code>=&gt; <code>Gamefile</code></p>
+<h4 id="determining-version_1">Determining Version</h4>
+<p>To compare versions of the mod, the GameBanana service uses the <code>Upload Date</code> of the and compares it against the last modified date of your mod's <code>ModConfig.json</code>.</p>
+<p>If the GameBanana upload is more recent than the last edit of <code>ModConfig.json</code>, a new update will be reported.</p>
+<h2 id="adding-support-for-programmers">Adding Support (for Programmers)</h2>
+<p>Here is a simple rundown of how to add a new service for a 3rd party website.</p>
+<h3 id="1-write-a-resolver">1. Write a Resolver</h3>
+<p>Inside the <code>Resolvers</code> folder of the <code>Reloaded.Mod.Loader.Update</code> project, write a class that implements the <code>IModResolver</code> class.</p>
+<p><strong>Example:</strong> See <code>GitHubLatestUpdateResolver</code>.</p>
+<p>The class only needs to be able to determine if there's a newer version, Reloaded-II will always autoselect newest version to update regardless of how many updates are available.</p>
+<h3 id="2-add-resolver-to-list-of-resolvers">2. Add resolver to list of Resolvers</h3>
+<p>Inside <code>ResolverFactory</code>, add your new resolver to the <code>Resolvers</code> array inside <code>ResolverCollection</code>.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../GettingStartedMods/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Getting Started
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../DeveloperModGuide/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Building Mods
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/Sewer56" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/TheSewer56" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      
+    
+  </body>
+</html>
