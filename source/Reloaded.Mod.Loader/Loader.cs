@@ -48,7 +48,7 @@ namespace Reloaded.Mod.Loader
             if (isTesting)
             {
                 var executingAssembly = Assembly.GetExecutingAssembly();
-                var location          = executingAssembly.Location;
+                var location    = executingAssembly.Location;
                 Manager = new PluginManager(this, new LoadContext(AssemblyLoadContext.GetLoadContext(executingAssembly), location));
             }
             else
