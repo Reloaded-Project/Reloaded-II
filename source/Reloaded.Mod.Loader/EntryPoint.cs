@@ -31,10 +31,10 @@ namespace Reloaded.Mod.Loader
         private static Loader _loader;
         private static Host _server;
         private static MemoryMappedFile _memoryMappedFile;
-        private static IHook<ExitProcess> _exitProcessHook;
         private static DelayInjector _delayInjector;
         private static Process _process;
         private static SteamHook _steamHook;
+        private static ProcessExitHook _exitHook;
 
         /* For ReadyToRun Feature */
         public static void Main() { } // Dummy for R2R images.
@@ -45,7 +45,7 @@ namespace Reloaded.Mod.Loader
         /// Initializes the mod loader.
         /// Returns the port on the local machine (but that wouldn't probably be used).
         /// </summary>
-        public static int Initialize(IntPtr unusedPtr, int unusedSize)
+        public static int Initialize(IntPtr argument, int argSize)
         {
             EnableProfileOptimization();
 
@@ -97,11 +97,8 @@ namespace Reloaded.Mod.Loader
         private static void CreateHost()   => _server = new Host(_loader);
         private static void SetupHooks()
         {
-            // Hook native import for ExitProcess. (So we can save log on exit)
-            var kernel32 = Kernel32.GetModuleHandle("kernel32.dll");
-            var address = Kernel32.GetProcAddress(kernel32, "ExitProcess");
-            if (address != IntPtr.Zero)
-                _exitProcessHook = new Hook<ExitProcess>(ExitProcessImpl, (long)address).Activate();
+            // Hook ExitProcess to ensure log save on process exit.
+            _exitHook = new ProcessExitHook(SaveAndFlushLog);
 
             // Hook Console Close
             if (_loader.Console != null)
@@ -134,13 +131,7 @@ namespace Reloaded.Mod.Loader
                 }, _loader.Logger);
             }
         }
-
-        private static void ExitProcessImpl(uint uExitCode)
-        {
-            SaveAndFlushLog();
-            _exitProcessHook.OriginalFunction(uExitCode);
-        }
-
+        
         private static void SaveAndFlushLog()
         {
             _loader?.Logger?.WriteLineAsync(AddLogPrefix("ExitProcess Hook: Log End"));
@@ -192,11 +183,6 @@ namespace Reloaded.Mod.Loader
             // Start profiling and save it in Startup.profile
             ProfileOptimization.StartProfile("Loader.profile");
         }
-        
-        [Hooks.Definitions.X64.Function(Hooks.Definitions.X64.CallingConventions.Microsoft)]
-        [Hooks.Definitions.X86.Function(Hooks.Definitions.X86.CallingConventions.Cdecl)]
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate void ExitProcess(uint uExitCode);
     }
     // ReSharper restore UnusedMember.Global
 }
