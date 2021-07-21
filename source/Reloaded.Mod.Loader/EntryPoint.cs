@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Runtime;
@@ -16,7 +17,7 @@ using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
 using Reloaded.Mod.Loader.Utilities.Native;
 using Reloaded.Mod.Loader.Utilities.Steam;
-using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
+using static Reloaded.Mod.Loader.Utilities.LogMessageExtensions;
 using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader
@@ -37,6 +38,8 @@ namespace Reloaded.Mod.Loader
         private static SteamHook _steamHook;
         private static ProcessExitHook _exitHook;
         private static EntryPointParameters _parameters;
+
+        private static Logger Logger => _loader?.Logger;
 
         /* For ReadyToRun Feature */
         public static void Main() { } // Dummy for R2R images.
@@ -87,7 +90,7 @@ namespace Reloaded.Mod.Loader
 
                 setupHooksTask.Wait();
                 createHostTask.Wait();
-                _loader?.Logger?.WriteLineAsync(AddLogPrefix($"Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms"));
+                Logger?.LogWriteLineAsync($"Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
                 _stopWatch.Reset();
             }
             catch (Exception ex)
@@ -102,13 +105,13 @@ namespace Reloaded.Mod.Loader
             if (parameters != (void*)0)
             {
                 if (!parameters->IsLatestVersion())
-                    _loader?.Logger?.WriteLineAsync(AddLogPrefix($"Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is does not match expected version (Expected Version: {EntryPointParameters.CurrentVersion}, Actual Version: {parameters->Version}). Please upgrade the bootstrapper. If you are using ASI Loader re-deploy, otherwise copy Reloaded.Mod.Loader.Bootstrapper.dll."), _loader.Logger.ColorYellow);
+                    Logger?.LogWriteLineAsync($"Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is does not match expected version (Expected Version: {EntryPointParameters.CurrentVersion}, Actual Version: {parameters->Version}). Please upgrade the bootstrapper. If you are using ASI Loader re-deploy, otherwise copy Reloaded.Mod.Loader.Bootstrapper.dll.", Logger.ColorYellow);
 
                 _parameters = EntryPointParameters.Copy(parameters);
             }
             else
             {
-                _loader?.Logger?.WriteLineAsync(AddLogPrefix($"Expected EntryPointParameters but did not receive any. Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is likely outdated. Please upgrade by copying a newer version of Reloaded.Mod.Loader.Bootstrapper.dll if integrating with another mod loader or re-deploy ASI Loader (if using ASI Loader)."), _loader.Logger.ColorYellow);
+                Logger?.LogWriteLineAsync($"Expected EntryPointParameters but did not receive any. Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is likely outdated. Please upgrade by copying a newer version of Reloaded.Mod.Loader.Bootstrapper.dll if integrating with another mod loader or re-deploy ASI Loader (if using ASI Loader).", Logger.ColorYellow);
             }
         }
 
@@ -135,7 +138,7 @@ namespace Reloaded.Mod.Loader
             // Note: If loaded externally, we assume another mod loader or DLL override took care of bypassing DRM.
             bool loadedFromExternalSource = (_parameters.Flags & EntryPointFlags.LoadedExternally) != 0;
             if (loadedFromExternalSource)
-                _loader?.Logger?.WriteLineAsync(AddLogPrefix($"Note: Reloaded is being loaded from an external source or mod loader."), _loader.Logger.ColorGreen);
+                Logger?.LogWriteLineAsync($"Note: Reloaded is being loaded from an external source or mod loader.", Logger.ColorGreen);
 
             if (!requiresDelayStart || loadedFromExternalSource)
             {
@@ -143,13 +146,13 @@ namespace Reloaded.Mod.Loader
             }
             else
             {
-                _loader?.Logger?.WriteLineAsync(AddLogPrefix($"DRM Requiring Delayed Initialization ({drmTypes}) Found.\n" +
-                                                             $"Reloaded will try to initialize late to bypass this DRM.\n" +
-                                                             $"Please note this feature is experimental."), _loader.Logger.ColorPinkLight);
+                Logger?.LogWriteLineAsync($"DRM Requiring Delayed Initialization ({drmTypes}) Found.\n" +
+                                          $"Reloaded will try to initialize late to bypass this DRM.\n" +
+                                          $"Please note this feature is experimental.", Logger.ColorPinkLight);
                 
                 _delayInjector = new DelayInjector(() =>
                 {
-                    _loader?.Logger?.WriteLineAsync(AddLogPrefix($"Loading via Delayed Injection (DRM Workaround)"), _loader.Logger.ColorPinkLight);
+                    Logger?.LogWriteLineAsync($"Loading via Delayed Injection (DRM Workaround)", Logger.ColorPinkLight);
                     _loader.LoadForCurrentProcess();
                 }, _loader.Logger);
             }
@@ -157,8 +160,8 @@ namespace Reloaded.Mod.Loader
         
         private static void SaveAndFlushLog()
         {
-            _loader?.Logger?.WriteLineAsync(AddLogPrefix("ExitProcess Hook: Log End"));
-            _loader?.Logger?.Shutdown();
+            Logger?.LogWriteLineAsync("ExitProcess Hook: Log End");
+            Logger?.Shutdown();
             _loader?.LogWriter?.Flush();
         }
 
@@ -168,7 +171,7 @@ namespace Reloaded.Mod.Loader
             var message = $"Unhandled Exception: {exception.Message}\n" +
                           $"Stack Trace: {exception.StackTrace}";
 
-            _loader?.Logger?.WriteLine(AddLogPrefix(message), _loader.Logger.ColorRed);
+            Logger?.LogWriteLine(message, _loader.Logger.ColorRed);
         }
 
         /* Utility Functions */
@@ -180,7 +183,7 @@ namespace Reloaded.Mod.Loader
         {
             long initialTime = _stopWatch.ElapsedMilliseconds;
             action();
-            _loader?.Logger?.WriteLineAsync(AddLogPrefix($"{text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms"));
+            Logger?.LogWriteLineAsync($"{text} | Time: {_stopWatch.ElapsedMilliseconds - initialTime}ms");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -189,7 +192,7 @@ namespace Reloaded.Mod.Loader
             // This method is singled out to avoid loading System.Windows.Forms at startup; because it is lazy loaded.
             var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA log is available at: {_loader?.LogWriter?.FlushPath}";
             _loader?.Console?.WaitForConsoleInit();
-            _loader?.Logger?.WriteLine(errorMessage, _loader.Logger.ColorRed);
+            Logger?.LogWriteLine(errorMessage, Logger.ColorRed);
             _loader?.LogWriter?.Flush();
             User32.MessageBox(0, errorMessage, "Oh Noes!", 0);
         }

@@ -10,7 +10,7 @@ using Reloaded.Memory.Buffers;
 using Reloaded.Memory.Interop;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.Utilities.Asm;
-using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
+using static Reloaded.Mod.Loader.Utilities.LogMessageExtensions;
 
 namespace Reloaded.Mod.Loader.Utilities
 {
@@ -107,7 +107,7 @@ namespace Reloaded.Mod.Loader.Utilities
         {
             // Dispose first to prevent potential recursion.
             var entryDll = _dlls[*_asmEntryDllOrdinal];
-            _logger.WriteLineAsync(AddLogPrefix($"Delay Injection via Entry Point: {entryDll.Name}, {entryDll.Functions[*_asmEntryFunctionOrdinal]}"), _logger.ColorPinkLight);
+            _logger.LogWriteLineAsync($"Delay Injection via Entry Point: {entryDll.Name}, {entryDll.Functions[*_asmEntryFunctionOrdinal]}", _logger.ColorPinkLight);
             Dispose();
             _method?.Invoke();
         }
