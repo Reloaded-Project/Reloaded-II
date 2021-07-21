@@ -16,8 +16,9 @@ enum EntryPointFlags : int
 struct EntryPointParameters
 {
 public:
+	int version { 1 };
 	EntryPointFlags flags { None };
-
+	
 	EntryPointParameters() = default;
 };
 

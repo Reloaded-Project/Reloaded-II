@@ -11,6 +11,7 @@ using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Utility.Parsers;
+using Reloaded.Mod.Loader.Logging;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Utilities;
 using Reloaded.Mod.Loader.Utilities.Native;
@@ -48,9 +49,6 @@ namespace Reloaded.Mod.Loader
         /// </summary>
         public static unsafe int Initialize(IntPtr argument, int argSize)
         {
-            if (argument != IntPtr.Zero)
-                _parameters = EntryPointParameters.Copy((EntryPointParameters*) argument, argSize);
-
             EnableProfileOptimization();
 
             // Write port as a Memory Mapped File, to allow Mod Loader's Launcher to discover the mod port.
@@ -63,7 +61,7 @@ namespace Reloaded.Mod.Loader
             binaryWriter.Write((int)0);
 
             // Setup Loader
-            SetupLoader();
+            SetupLoader((EntryPointParameters*) argument);
 
             // Only write port on completed initialization.
             // If port is 0, assume in loading state
@@ -72,7 +70,7 @@ namespace Reloaded.Mod.Loader
             return _server?.Port ?? 0;
         }
 
-        private static void SetupLoader()
+        private static unsafe void SetupLoader(EntryPointParameters* parameters)
         {
             try
             {
@@ -82,6 +80,7 @@ namespace Reloaded.Mod.Loader
 
                 AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
                 ExecuteTimed("Create Loader", CreateLoader);
+                InitialiseParameters(parameters);
                 var createHostTask = Task.Run(() => ExecuteTimed("Create Loader Host (Async)", CreateHost));
                 var setupHooksTask = Task.Run(() => ExecuteTimed("Setting Up Hooks (Async)", SetupHooks));
                 ExecuteTimed("Loading Mods (Total)", LoadMods);
@@ -98,6 +97,21 @@ namespace Reloaded.Mod.Loader
         }
 
         private static void CreateLoader() => _loader = new Loader();
+        private static unsafe void InitialiseParameters(EntryPointParameters* parameters)
+        {
+            if (parameters != (void*)0)
+            {
+                if (!parameters->IsLatestVersion())
+                    _loader?.Logger?.WriteLineAsync(AddLogPrefix($"Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is does not match expected version (Expected Version: {EntryPointParameters.CurrentVersion}, Actual Version: {parameters->Version}). Please upgrade the bootstrapper. If you are using ASI Loader re-deploy, otherwise copy Reloaded.Mod.Loader.Bootstrapper.dll."), _loader.Logger.ColorYellow);
+
+                _parameters = EntryPointParameters.Copy(parameters);
+            }
+            else
+            {
+                _loader?.Logger?.WriteLineAsync(AddLogPrefix($"Expected EntryPointParameters but did not receive any. Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is likely outdated. Please upgrade by copying a newer version of Reloaded.Mod.Loader.Bootstrapper.dll if integrating with another mod loader or re-deploy ASI Loader (if using ASI Loader)."), _loader.Logger.ColorYellow);
+            }
+        }
+
         private static void CreateHost()   => _server = new Host(_loader);
         private static void SetupHooks()
         {
@@ -200,30 +214,48 @@ namespace Reloaded.Mod.Loader
     /// </summary>
     public struct EntryPointParameters
     {
+        /*
+            NOTE: Change CurrentVersion when adding new fields or extending current fields.
+                  Also update EntryPointParameter.h in bootstrapper accordingly.
+        */
+
+        /// <summary>
+        /// Current version of parameters.
+        /// </summary>
+        public const int CurrentVersion = 1;
+
         // Version 1
+        public int Version;
         public EntryPointFlags Flags;
 
         // Version 2
         // ...
 
         /// <summary>
+        /// Checks if struct is using latest version.
+        /// </summary>
+        public bool IsLatestVersion() => Version == CurrentVersion;
+
+        /// <summary>
         /// Copies data from the passed in native struct to a new struct.
         /// This allows for old bootstrappers to work with more recent parameters.
         /// </summary>
         /// <param name="pointer">Pointer passed in from native code.</param>
-        /// <param name="size">The size of the data passed from native code.</param>
-        public static unsafe EntryPointParameters Copy(EntryPointParameters* pointer, int size)
+        public static unsafe EntryPointParameters Copy(EntryPointParameters* pointer)
         {
             // Copy whole if possible.
-            if (size == sizeof(EntryPointParameters))
+            if (pointer->IsLatestVersion())
                 return *pointer;
 
             // Otherwise construct from available size.
             EntryPointParameters result = default;
 
             // Version 1
-            if (size >= 4)
+            if (pointer->Version >= 1)
+            {
+                result.Version = pointer->Version;
                 result.Flags = pointer->Flags;
+            }
 
             return result;
         }
