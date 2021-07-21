@@ -35,6 +35,7 @@ namespace Reloaded.Mod.Loader
         private static Process _process;
         private static SteamHook _steamHook;
         private static ProcessExitHook _exitHook;
+        private static EntryPointParameters _parameters;
 
         /* For ReadyToRun Feature */
         public static void Main() { } // Dummy for R2R images.
@@ -45,8 +46,11 @@ namespace Reloaded.Mod.Loader
         /// Initializes the mod loader.
         /// Returns the port on the local machine (but that wouldn't probably be used).
         /// </summary>
-        public static int Initialize(IntPtr argument, int argSize)
+        public static unsafe int Initialize(IntPtr argument, int argSize)
         {
+            if (argument != IntPtr.Zero)
+                _parameters = EntryPointParameters.Copy((EntryPointParameters*) argument, argSize);
+
             EnableProfileOptimization();
 
             // Write port as a Memory Mapped File, to allow Mod Loader's Launcher to discover the mod port.
@@ -114,7 +118,12 @@ namespace Reloaded.Mod.Loader
             var basicPeParser = new BasicPeParser(Environment.CurrentProcessLocation.Value);
             var drmTypes = DRMHelper.CheckDrmAndNotify(basicPeParser, _loader.Logger, out bool requiresDelayStart);
             
-            if (!requiresDelayStart)
+            // Note: If loaded externally, we assume another mod loader or DLL override took care of bypassing DRM.
+            bool loadedFromExternalSource = (_parameters.Flags & EntryPointFlags.LoadedExternally) != 0;
+            if (loadedFromExternalSource)
+                _loader?.Logger?.WriteLineAsync(AddLogPrefix($"Note: Reloaded is being loaded from an external source or mod loader."), _loader.Logger.ColorGreen);
+
+            if (!requiresDelayStart || loadedFromExternalSource)
             {
                 _loader.LoadForCurrentProcess();
             }
@@ -184,5 +193,51 @@ namespace Reloaded.Mod.Loader
             ProfileOptimization.StartProfile("Loader.profile");
         }
     }
+
+    /// <summary>
+    /// Parameters used to pass properties from native code to managed code.
+    /// See: EntryPointParameters.h
+    /// </summary>
+    public struct EntryPointParameters
+    {
+        // Version 1
+        public EntryPointFlags Flags;
+
+        // Version 2
+        // ...
+
+        /// <summary>
+        /// Copies data from the passed in native struct to a new struct.
+        /// This allows for old bootstrappers to work with more recent parameters.
+        /// </summary>
+        /// <param name="pointer">Pointer passed in from native code.</param>
+        /// <param name="size">The size of the data passed from native code.</param>
+        public static unsafe EntryPointParameters Copy(EntryPointParameters* pointer, int size)
+        {
+            // Copy whole if possible.
+            if (size == sizeof(EntryPointParameters))
+                return *pointer;
+
+            // Otherwise construct from available size.
+            EntryPointParameters result = default;
+
+            // Version 1
+            if (size >= 4)
+                result.Flags = pointer->Flags;
+
+            return result;
+        }
+    }
+
+    /// <summary>
+    /// See: EntryPointParameters.h
+    /// </summary>
+    [Flags]
+    public enum EntryPointFlags : int
+    {
+        None = 0,
+        LoadedExternally = 1, 
+    }
+
     // ReSharper restore UnusedMember.Global
 }

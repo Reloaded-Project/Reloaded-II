@@ -14,6 +14,7 @@
 #include "LoaderConfig.h"
 #include <shellapi.h>
 #include <sstream>
+#include "EntryPointParameter.h"
 
 using json = nlohmann::json;
 
@@ -29,6 +30,7 @@ HMODULE thisProcessModule;
 ReloadedPaths paths;
 HANDLE initializeThreadHandle;
 HANDLE bootstrapperMemoryMappedFileHandle;
+EntryPointParameters entryPointParameters;
 
 // Reloaded Init Functions
 DWORD WINAPI load_reloaded_async(LPVOID lpParam);
@@ -179,7 +181,7 @@ bool load_reloaded(ReloadedPaths& reloadedPaths)
 		throw std::exception("Failed to load .NET assembly.");
 	}
 
-	initialize(nullptr, 0);
+	initialize(&entryPointParameters, sizeof(EntryPointParameters));
 	return true;
 }
 
@@ -250,6 +252,7 @@ extern "C"
 	__declspec(dllexport) void InitializeASI()
 	{
 		std::cout << "[Reloaded II Bootstrapper] Ultimate ASI Loader Entrypoint Hit" << std::endl;
+		entryPointParameters.flags |= LoadedExternally;
 		WaitForSingleObject(initializeThreadHandle, INFINITE);
 	}
 }

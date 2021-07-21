@@ -199,6 +199,7 @@
     <ClInclude Include="core-setup\coreclr_delegates.h" />
     <ClInclude Include="core-setup\hostfxr.h" />
     <ClInclude Include="CoreCLR.hpp" />
+    <ClInclude Include="EntryPointParameter.h" />
     <ClInclude Include="LoaderConfig.h" />
     <ClInclude Include="nethost\nethost.h" />
     <ClInclude Include="framework.h" />

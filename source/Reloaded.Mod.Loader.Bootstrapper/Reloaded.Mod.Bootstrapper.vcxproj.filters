@@ -57,6 +57,9 @@
     <ClInclude Include="nlohmann\json.hpp">
       <Filter>Header Files\nlohmann</Filter>
     </ClInclude>
+    <ClInclude Include="EntryPointParameter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
