@@ -148,7 +148,8 @@ namespace Reloaded.Mod.Loader
             {
                 Logger?.LogWriteLineAsync($"DRM Requiring Delayed Initialization ({drmTypes}) Found.\n" +
                                           $"Reloaded will try to initialize late to bypass this DRM.\n" +
-                                          $"Please note this feature is experimental.", Logger.ColorWarning);
+                                          $"Please note this feature is experimental.\n" +
+                                          $"If you encounter issues, report and/or try ASI Loader `Edit Application -> Deploy ASI Loader`", Logger.ColorWarning);
                 
                 _delayInjector = new DelayInjector(() =>
                 {
