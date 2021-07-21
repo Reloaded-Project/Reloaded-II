@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using Indieteur.SAMAPI;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Loader.Logging;
 
 namespace Reloaded.Mod.Loader.Utilities.Steam
 {
@@ -22,7 +23,7 @@ namespace Reloaded.Mod.Loader.Utilities.Steam
         private string _applicationFolder;
 
         /* Setup */
-        public SteamHook(IReloadedHooks hooks, ILogger logger, string applicationFolder)
+        public SteamHook(IReloadedHooks hooks, Logger logger, string applicationFolder)
         {
             _applicationFolder = applicationFolder;
             var steamApiPath = Environment.Is64BitProcess ? Path.GetFullPath(SteamAPI64) : Path.GetFullPath(SteamAPI32);
@@ -43,16 +44,16 @@ namespace Reloaded.Mod.Loader.Utilities.Steam
                 var functionPtr = Native.Kernel32.GetProcAddress(libraryHandle, functionName);
                 if (functionPtr == IntPtr.Zero)
                 {
-                    logger.SteamWriteLineAsync($"{functionName} not found.", logger.ColorYellowLight);
+                    logger.SteamWriteLineAsync($"{functionName} not found.", logger.ColorWarning);
                     return null;
                 }
 
-                logger.SteamWriteLineAsync($"{functionName} hooked successfully.", logger.ColorGreenLight);
+                logger.SteamWriteLineAsync($"{functionName} hooked successfully.", logger.ColorSuccess);
                 return hooks.CreateHook<T>(handler, (long)functionPtr).Activate();
             }
         }
 
-        private void DropSteamAppId(ILogger logger)
+        private void DropSteamAppId(Logger logger)
         {
             try
             {
@@ -62,16 +63,16 @@ namespace Reloaded.Mod.Loader.Utilities.Steam
                     if (!_applicationFolder.Contains(app.InstallDir))
                         continue;
 
-                    logger.SteamWriteLineAsync($"Found Steam Library Entry with Id {app.AppID}. Dropping {SteamAppId.FileName}.", logger.ColorGreenLight);
+                    logger.SteamWriteLineAsync($"Found Steam Library Entry with Id {app.AppID}. Dropping {SteamAppId.FileName}.", logger.ColorSuccess);
                     SteamAppId.WriteToDirectory(_applicationFolder, app.AppID);
                     return;
                 }
 
-                logger.SteamWriteLineAsync($"Application not found in any Steam library. Recommend dropping a {SteamAppId.FileName} yourself.", logger.ColorRedLight);
+                logger.SteamWriteLineAsync($"Application not found in any Steam library. Recommend dropping a {SteamAppId.FileName} yourself.", logger.ColorError);
             }
             catch (Exception e)
             {
-                logger.SteamWriteLineAsync($"Failed to scan through Steam games and locate current game. Error: {e.Message}, {e.StackTrace}", logger.ColorRedLight);
+                logger.SteamWriteLineAsync($"Failed to scan through Steam games and locate current game. Error: {e.Message}, {e.StackTrace}", logger.ColorError);
             }
         }
 

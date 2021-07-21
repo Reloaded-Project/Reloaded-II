@@ -242,7 +242,7 @@ namespace Reloaded.Mod.Loader.Mods
                     Logger?.LogWriteLineAsync($"DLL Not Found! {Path.GetFileName(dllPath)}\n" +
                                    $"Mod Name: {tuple.Config.ModName}, Mod ID: {tuple.Config.ModId}\n" +
                                    $"Please re-download the mod. It is either corrupt or you may have downloaded the source code by accident.",
-                                    _loader.Logger.ColorRed);
+                                    _loader.Logger.ColorError);
             }
 
             return PrepareNonDllMod(tuple);

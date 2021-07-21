@@ -29,7 +29,7 @@ namespace Reloaded.Mod.Loader.Utilities
             {
                 logger?.WriteLineAsync("Warning: Steam Stub (Embedded Steam DRM) found.\n" +
                               "This means EXE is encrypted at launch. Support for bypassing this DRM is experimental.\n" +
-                              "If you find issues, remove the DRM using `Steamless` or try using ASI Loader `Edit Application -> Deploy ASI Loader`", logger.ColorYellowLight);
+                              "If you find issues, remove the DRM using `Steamless` or try using ASI Loader `Edit Application -> Deploy ASI Loader`", logger.ColorWarning);
 
                 requiresDelayStart = true;
                 drmType |= DrmType.SteamStub;

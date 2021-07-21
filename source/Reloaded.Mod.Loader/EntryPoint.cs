@@ -105,13 +105,13 @@ namespace Reloaded.Mod.Loader
             if (parameters != (void*)0)
             {
                 if (!parameters->IsLatestVersion())
-                    Logger?.LogWriteLineAsync($"Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is does not match expected version (Expected Version: {EntryPointParameters.CurrentVersion}, Actual Version: {parameters->Version}). Please upgrade the bootstrapper. If you are using ASI Loader re-deploy, otherwise copy Reloaded.Mod.Loader.Bootstrapper.dll.", Logger.ColorYellow);
+                    Logger?.LogWriteLineAsync($"Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is does not match expected version (Expected Version: {EntryPointParameters.CurrentVersion}, Actual Version: {parameters->Version}). Please upgrade the bootstrapper. If you are using ASI Loader re-deploy, otherwise copy Reloaded.Mod.Loader.Bootstrapper.dll.", Logger.ColorWarning);
 
                 _parameters = EntryPointParameters.Copy(parameters);
             }
             else
             {
-                Logger?.LogWriteLineAsync($"Expected EntryPointParameters but did not receive any. Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is likely outdated. Please upgrade by copying a newer version of Reloaded.Mod.Loader.Bootstrapper.dll if integrating with another mod loader or re-deploy ASI Loader (if using ASI Loader).", Logger.ColorYellow);
+                Logger?.LogWriteLineAsync($"Expected EntryPointParameters but did not receive any. Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is likely outdated. Please upgrade by copying a newer version of Reloaded.Mod.Loader.Bootstrapper.dll if integrating with another mod loader or re-deploy ASI Loader (if using ASI Loader).", Logger.ColorWarning);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Reloaded.Mod.Loader
             // Note: If loaded externally, we assume another mod loader or DLL override took care of bypassing DRM.
             bool loadedFromExternalSource = (_parameters.Flags & EntryPointFlags.LoadedExternally) != 0;
             if (loadedFromExternalSource)
-                Logger?.LogWriteLineAsync($"Note: Reloaded is being loaded from an external source or mod loader.", Logger.ColorGreen);
+                Logger?.LogWriteLineAsync($"Note: Reloaded is being loaded from an external source or mod loader.", Logger.ColorInformation);
 
             if (!requiresDelayStart || loadedFromExternalSource)
             {
@@ -148,11 +148,11 @@ namespace Reloaded.Mod.Loader
             {
                 Logger?.LogWriteLineAsync($"DRM Requiring Delayed Initialization ({drmTypes}) Found.\n" +
                                           $"Reloaded will try to initialize late to bypass this DRM.\n" +
-                                          $"Please note this feature is experimental.", Logger.ColorPinkLight);
+                                          $"Please note this feature is experimental.", Logger.ColorWarning);
                 
                 _delayInjector = new DelayInjector(() =>
                 {
-                    Logger?.LogWriteLineAsync($"Loading via Delayed Injection (DRM Workaround)", Logger.ColorPinkLight);
+                    Logger?.LogWriteLineAsync($"Loading via Delayed Injection (DRM Workaround)", Logger.ColorInformation);
                     _loader.LoadForCurrentProcess();
                 }, _loader.Logger);
             }
@@ -171,7 +171,7 @@ namespace Reloaded.Mod.Loader
             var message = $"Unhandled Exception: {exception.Message}\n" +
                           $"Stack Trace: {exception.StackTrace}";
 
-            Logger?.LogWriteLine(message, _loader.Logger.ColorRed);
+            Logger?.LogWriteLine(message, _loader.Logger.ColorError);
         }
 
         /* Utility Functions */
@@ -192,7 +192,7 @@ namespace Reloaded.Mod.Loader
             // This method is singled out to avoid loading System.Windows.Forms at startup; because it is lazy loaded.
             var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA log is available at: {_loader?.LogWriter?.FlushPath}";
             _loader?.Console?.WaitForConsoleInit();
-            Logger?.LogWriteLine(errorMessage, Logger.ColorRed);
+            Logger?.LogWriteLine(errorMessage, Logger.ColorError);
             _loader?.LogWriter?.Flush();
             User32.MessageBox(0, errorMessage, "Oh Noes!", 0);
         }
