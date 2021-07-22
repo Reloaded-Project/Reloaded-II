@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,10 +12,11 @@ using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Loader.Exceptions;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.Logging;
 using Reloaded.Mod.Loader.Mods.Structs;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Utilities;
-using static Reloaded.Mod.Loader.Utilities.LogMessageFormatter;
+using static Reloaded.Mod.Loader.Utilities.LogMessageExtensions;
 
 namespace Reloaded.Mod.Loader.Mods
 {
@@ -24,6 +26,8 @@ namespace Reloaded.Mod.Loader.Mods
     public class PluginManager : IDisposable
     {
         public LoaderAPI LoaderApi { get; }
+        private Logger Logger => _loader?.Logger;
+
         private static readonly Type[] DefaultExportedTypes = new Type[0];
         private static readonly Type[] SharedTypes = { typeof(IModLoader), typeof(IMod) };
 
@@ -33,6 +37,7 @@ namespace Reloaded.Mod.Loader.Mods
 
         private LoadContext _sharedContext;
         private readonly Loader _loader;
+
 
         /// <summary>
         /// Initializes the <see cref="PluginManager"/>
@@ -234,9 +239,10 @@ namespace Reloaded.Mod.Loader.Mods
                 if (File.Exists(dllPath))
                     return tuple.Config.IsNativeMod(tuple.Path) ? PrepareNativeMod(tuple) : PrepareDllMod(tuple);
                 else
-                    _loader?.Logger?.WriteLineAsync(AddLogPrefix($"DLL Not Found! {Path.GetFileName(dllPath)}\n" +
-                                                                  $"Mod Name: {tuple.Config.ModName}, Mod ID: {tuple.Config.ModId}\n" +
-                                                                  $"Please re-download the mod. It is either corrupt or you may have downloaded the source code by accident."), _loader.Logger.ColorRed);
+                    Logger?.LogWriteLineAsync($"DLL Not Found! {Path.GetFileName(dllPath)}\n" +
+                                   $"Mod Name: {tuple.Config.ModName}, Mod ID: {tuple.Config.ModId}\n" +
+                                   $"Please re-download the mod. It is either corrupt or you may have downloaded the source code by accident.",
+                                    _loader.Logger.ColorError);
             }
 
             return PrepareNonDllMod(tuple);
@@ -399,17 +405,13 @@ namespace Reloaded.Mod.Loader.Mods
         }
 
         /* Utility */
-        private void WriteLineAsync(string message)
-        {
-            _loader?.Logger?.WriteLineAsync(AddLogPrefix(message));
-        }
 
         private void ExecuteWithStopwatch<T>(string message, Action<T> code, T parameter)
         {
             var _stopwatch = new Stopwatch();
             _stopwatch.Start();
             code(parameter);
-            WriteLineAsync($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
+            Logger?.LogWriteLineAsync($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
         }
 
         private Y ExecuteWithStopwatch<T, Y>(string message, Func<T, Y> code, T parameter)
@@ -417,7 +419,7 @@ namespace Reloaded.Mod.Loader.Mods
             var _stopwatch = new Stopwatch();
             _stopwatch.Start();
             var result = code(parameter);
-            WriteLineAsync($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
+            Logger?.LogWriteLineAsync($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
             return result;
         }
     }

@@ -14,8 +14,8 @@ namespace Reloaded.Mod.Loader.Utilities.Native
         [DllImport("kernel32.dll")]
         public static extern IntPtr GetModuleHandle(string lpModuleName);
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Ansi)]
-        public static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpFileName);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        public static extern IntPtr LoadLibraryW(string lpFileName);
 
         // Delegate type to be used as the Handler Routine for SCCH
         public delegate Boolean ConsoleCtrlDelegate(CtrlTypes CtrlType);

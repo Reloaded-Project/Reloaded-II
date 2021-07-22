@@ -95,6 +95,11 @@ namespace Reloaded.Mod.Loader.Logging
         public Color ColorLightBlue      { get; set; } = Color.FromArgb(154, 237, 254);
         public Color ColorLightBlueLight { get; set; } = Color.FromArgb(147, 224, 227);
 
+        public Color ColorInformation => ColorBlueLight;
+        public Color ColorWarning => ColorYellowLight;
+        public Color ColorError => ColorRedLight;
+        public Color ColorSuccess => ColorGreenLight;
+
         // Business Logic
         private void ProcessQueue()
         {

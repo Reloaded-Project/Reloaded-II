@@ -57,6 +57,9 @@
     <ClInclude Include="nlohmann\json.hpp">
       <Filter>Header Files\nlohmann</Filter>
     </ClInclude>
+    <ClInclude Include="EntryPointParameter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -95,10 +98,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="nethost\x86-libs\nethost.lib">
+    <Library Include="nethost\x86-libs\libnethost.lib">
       <Filter>Header Files\nethost\x86-libs</Filter>
     </Library>
-    <Library Include="nethost\x64-libs\nethost.lib">
+    <Library Include="nethost\x64-libs\libnethost.lib">
       <Filter>Header Files\nethost\x64-libs</Filter>
     </Library>
   </ItemGroup>

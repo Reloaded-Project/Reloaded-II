@@ -43,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Utility
 
             try
             {
-                return GetFirstDllFile(peParser) != null;
+                return GetFirstSupportedDllFile(peParser) != null;
             }
             catch (Exception)
             {
@@ -52,77 +52,49 @@ namespace Reloaded.Mod.Launcher.Utility
         }
 
         /// <summary>
-        /// Deploys the ASI loader to the game folder.
+        /// Deploys the ASI loader (if needed) and bootstrapper to the game folder.
         /// </summary>
-        public void DeployAsiLoader(out string loaderPath, out string bootstrapperPath)
+        public void DeployAsiLoader(out string asiLoaderPath, out string bootstrapperPath)
         {
-            loaderPath = null;
-            DeployBootstrapper(out bool loaderAlreadyInstalled, out bootstrapperPath);
-            if (loaderAlreadyInstalled) 
+            asiLoaderPath = null;
+            DeployBootstrapper(out bool alreadyHasAsiPlugins, out bootstrapperPath);
+            if (alreadyHasAsiPlugins) 
                 return;
 
             using var peParser = new BasicPeParser(Application.Config.AppLocation);
             var appDirectory = Path.GetDirectoryName(Application.Config.AppLocation);
-            var dllName      = GetFirstDllFile(peParser);
-            loaderPath       = Path.Combine(appDirectory, dllName);
-            ExtractAsiLoader(loaderPath, !peParser.Is32BitHeader);
+            var dllName      = GetFirstSupportedDllFile(peParser);
+            asiLoaderPath       = Path.Combine(appDirectory, dllName);
+            ExtractAsiLoader(asiLoaderPath, !peParser.Is32BitHeader);
         }
 
         /// <summary>
-        /// Gets the location to install the bootstrapper to.
+        /// Gets the path to which the bootstrapper will be copied to should it be installed.
         /// </summary>
-        private string GetBootstrapperInstallPath(out bool alreadyInstalled)
+        /// <param name="alreadyHasAsiPlugins">True if at least 1 ASI plugin is already installed.</param>
+        /// <returns>The path to which the bootstrapper will be copied to.</returns>
+        public string GetBootstrapperInstallPath(out bool alreadyHasAsiPlugins)
         {
-            alreadyInstalled = false;
-
-            if (IsLoaderAlreadyInstalled(out string installPath))
-            {
-                alreadyInstalled = true;
-                return installPath;
-            }
-
-            var appDirectory = Path.GetDirectoryName(Application.Config.AppLocation);
-            var pluginDirectory = Path.Combine(appDirectory, AsiCommonDirectories[0]);
-            Directory.CreateDirectory(pluginDirectory);
-            return pluginDirectory;
-        }
-
-        private void DeployBootstrapper(out bool loaderAlreadyInstalled, out string bootstrapperInstallPath)
-        {
-            bootstrapperInstallPath = "";
-
-            var installFolder    = GetBootstrapperInstallPath(out loaderAlreadyInstalled);
-            var bootstrapperPath = Is64Bit(Application.Config.AppLocation) ? IoC.Get<LoaderConfig>().Bootstrapper64Path
-                                                                           : IoC.Get<LoaderConfig>().Bootstrapper32Path;
-            string[] filesToCopy = Directory.GetFiles(Path.GetDirectoryName(bootstrapperPath), "*.dll", SearchOption.TopDirectoryOnly);
-            string fileToRename  = Path.GetFileName(bootstrapperPath);
-
-            foreach (var file in filesToCopy)
-            {
-                var fileName = Path.GetFileName(file);
-                if (fileName != fileToRename)
-                    File.Copy(file, Path.Combine(installFolder, fileName), true);
-                else
-                {
-                    bootstrapperInstallPath = Path.Combine(installFolder, Path.ChangeExtension(fileName, PluginExtension));
-                    File.Copy(file, bootstrapperInstallPath, true);
-                }
-            }
+            var installFolder = GetBootstrapperInstallFolder(out alreadyHasAsiPlugins);
+            var bootstrapperPath = GetBootstrapperDllPath();
+            return Path.Combine(installFolder, Path.ChangeExtension(Path.GetFileName(bootstrapperPath), PluginExtension));
         }
 
         /// <summary>
-        /// Returns true if loader is already installed, else false.
+        /// Returns true if ASI loader is already installed, else false.
+        /// This check works by checking the existence of ASI files in a supported directory.
         /// </summary>
-        public bool IsLoaderAlreadyInstalled(out string modPath)
+        private bool AreAnyAsiPluginsInstalled(out string modPath)
         {
             var appDirectory = Path.GetDirectoryName(Application.Config.AppLocation);
             foreach (var directory in AsiCommonDirectories)
             {
                 var directoryPath = Path.Combine(appDirectory, directory);
-                if (!Directory.Exists(directoryPath)) 
+
+                if (!Directory.Exists(directoryPath))
                     continue;
 
-                if (!Directory.GetFiles(directoryPath).Any(x => x.EndsWith(PluginExtension, StringComparison.OrdinalIgnoreCase))) 
+                if (!Directory.GetFiles(directoryPath).Any(x => x.EndsWith(PluginExtension, StringComparison.OrdinalIgnoreCase)))
                     continue;
 
                 modPath = directoryPath;
@@ -134,10 +106,47 @@ namespace Reloaded.Mod.Launcher.Utility
         }
 
         /// <summary>
+        /// Gets the folder to install the bootstrapper to.
+        /// Returned folder should be created if it did not previously exist.
+        /// </summary>
+        /// <param name="alreadyHasAsiPlugins">Whether a supported folder with at least one ASI Plugin already exists. Assume loader already installed if it does.</param>
+        private string GetBootstrapperInstallFolder(out bool alreadyHasAsiPlugins)
+        {
+            alreadyHasAsiPlugins = false;
+
+            if (AreAnyAsiPluginsInstalled(out string installPath))
+            {
+                alreadyHasAsiPlugins = true;
+                return installPath;
+            }
+
+            var appDirectory = Path.GetDirectoryName(Application.Config.AppLocation);
+            var pluginDirectory = Path.Combine(appDirectory, AsiCommonDirectories[0]);
+            Directory.CreateDirectory(pluginDirectory);
+            return pluginDirectory;
+        }
+
+        /// <summary>
+        /// Gets the path of the bootstrapper DLL to copy.
+        /// </summary>
+        private string GetBootstrapperDllPath()
+        {
+            return Is64Bit(Application.Config.AppLocation)
+                    ? IoC.Get<LoaderConfig>().Bootstrapper64Path
+                    : IoC.Get<LoaderConfig>().Bootstrapper32Path;
+        }
+
+        private void DeployBootstrapper(out bool alreadyHasAsiPlugins, out string bootstrapperInstallPath)
+        {
+            bootstrapperInstallPath = GetBootstrapperInstallPath(out alreadyHasAsiPlugins);
+            File.Copy(GetBootstrapperDllPath(), bootstrapperInstallPath, true);
+        }
+
+        /// <summary>
         /// Get name of first DLL file using which ASI loader can be installed.
         /// </summary>
         /// <param name="peParser">Parsed PE file.</param>
-        private string GetFirstDllFile(BasicPeParser peParser)
+        private string GetFirstSupportedDllFile(BasicPeParser peParser)
         {
             string GetSupportedDll(BasicPeParser file, string[] supportedDlls)
             {
