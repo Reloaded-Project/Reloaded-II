@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
-    <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

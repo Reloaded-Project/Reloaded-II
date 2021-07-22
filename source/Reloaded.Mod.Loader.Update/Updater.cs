@@ -7,7 +7,6 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Structures;
-using Reloaded.Mod.Shared;
 
 namespace Reloaded.Mod.Loader.Update
 {
