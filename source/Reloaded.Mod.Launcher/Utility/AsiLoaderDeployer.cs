@@ -81,6 +81,16 @@ namespace Reloaded.Mod.Launcher.Utility
         }
 
         /// <summary>
+        /// Gets the path of the bootstrapper DLL to copy.
+        /// </summary>
+        public string GetBootstrapperDllPath()
+        {
+            return Is64Bit(Application.Config.AppLocation)
+                ? IoC.Get<LoaderConfig>().Bootstrapper64Path
+                : IoC.Get<LoaderConfig>().Bootstrapper32Path;
+        }
+
+        /// <summary>
         /// Returns true if ASI loader is already installed, else false.
         /// This check works by checking the existence of ASI files in a supported directory.
         /// </summary>
@@ -124,16 +134,6 @@ namespace Reloaded.Mod.Launcher.Utility
             var pluginDirectory = Path.Combine(appDirectory, AsiCommonDirectories[0]);
             Directory.CreateDirectory(pluginDirectory);
             return pluginDirectory;
-        }
-
-        /// <summary>
-        /// Gets the path of the bootstrapper DLL to copy.
-        /// </summary>
-        private string GetBootstrapperDllPath()
-        {
-            return Is64Bit(Application.Config.AppLocation)
-                    ? IoC.Get<LoaderConfig>().Bootstrapper64Path
-                    : IoC.Get<LoaderConfig>().Bootstrapper32Path;
         }
 
         private void DeployBootstrapper(out bool alreadyHasAsiPlugins, out string bootstrapperInstallPath)

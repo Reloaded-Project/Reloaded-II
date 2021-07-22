@@ -213,8 +213,23 @@ namespace Reloaded.Mod.Launcher
 
                 foreach (var app in apps)
                 {
+                    // Incompatible Mods
                     if (TryGetIncompatibleMods(app, mods, out var incompatible))
                         new IncompatibleModDialog(incompatible, app).ShowDialog();
+
+                    // Bootstrapper Update
+                    var deployer = new AsiLoaderDeployer(app);
+                    var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
+                    if (!File.Exists(bootstrapperInstallPath)) 
+                        continue;
+
+                    var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
+                    if (!updater.NeedsUpdate())
+                        continue;
+
+                    var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
+                    try { File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true); }
+                    catch (Exception e) { }
                 }
             });
         }
