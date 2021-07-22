@@ -37,6 +37,9 @@ namespace Reloaded.Mod.Launcher
         private static XamlResource<string> _xamlSplashLoadCompleteIn = new XamlResource<string>("SplashLoadCompleteIn");
         private static XamlResource<string> _xamlRunningSanityChecks = new XamlResource<string>("SplashRunningSanityChecks");
 
+        private static XamlResource<string> _xamlBootstrapperUpdateTitle = new XamlResource<string>("BootstrapperUpdateTitle");
+        private static XamlResource<string> _xamlBootstrapperUpdateDescription = new XamlResource<string>("BootstrapperUpdateDescription");
+
         /// <summary>
         /// Sets up the overall application state for either running or testing.
         /// Note: This method uses Task.Delay for waiting the minimum splash delay without blocking the thread, it is synchronous.
@@ -210,6 +213,7 @@ namespace Reloaded.Mod.Launcher
                 // Needs to be ran after SetupViewModelsAsync
                 var apps = IoC.GetConstant<ApplicationConfigService>().Applications;
                 var mods = IoC.GetConstant<ModConfigService>().Mods;
+                var updatedBootstrappers = new List<string>();
 
                 foreach (var app in apps)
                 {
@@ -228,8 +232,23 @@ namespace Reloaded.Mod.Launcher
                         continue;
 
                     var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
-                    try { File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true); }
+                    try
+                    {
+                        File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
+                        updatedBootstrappers.Add(app.Config.AppName);
+                    }
                     catch (Exception e) { }
+                }
+
+                if (updatedBootstrappers.Count > 0)
+                {
+                    var messageBox = new Pages.Dialogs.MessageBox
+                    (
+                        _xamlBootstrapperUpdateTitle.Get(), 
+                        string.Format(_xamlBootstrapperUpdateDescription.Get(), String.Join('\n', updatedBootstrappers))
+                    );
+
+                    messageBox.ShowDialog();
                 }
             });
         }

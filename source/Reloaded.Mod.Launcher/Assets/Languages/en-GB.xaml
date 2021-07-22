@@ -265,5 +265,8 @@
     <!-- Update 1.8.0: Extra Error(s) -->
     <sys:String x:Key="ErrorFailedToObtainPort" xml:space="preserve">Failed to obtain port for the Reloaded instance running inside the process.&#x0a;The application has either crashed, Reloaded failed to load or Reloaded has not initialized within the timeout limit.</sys:String>
 
+    <!-- Update 1.10.0: Reloaded Bootstrapper Update -->
+    <sys:String x:Key="BootstrapperUpdateTitle" xml:space="preserve">Bootstrapper Updated</sys:String>
+    <sys:String x:Key="BootstrapperUpdateDescription" xml:space="preserve">Reloaded Bootstrapper was Auto-Updated for the Following Programs:&#x0a;{0}</sys:String>
 
 </ResourceDictionary>
