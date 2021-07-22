@@ -206,7 +206,9 @@
     <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ReloadedPaths.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoreCLR.cpp" />
@@ -235,6 +237,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="version.rc" />
   </ItemGroup>
   <!-- Build X64 and X86 at same time. -->
   <Target Name="AfterBuild">
