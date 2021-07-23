@@ -1,4 +1,7 @@
-﻿namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
+﻿using System;
+using NetCoreInstallChecker.Structs.Config.Enum;
+
+namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
 {
     public class RedistributableDependency : IDependency
     {
@@ -7,21 +10,29 @@
 
         /// <inheritdoc />
         public bool Available { get; }
-        public bool Is64Bit { get; }
 
-        public RedistributableDependency(string name, bool available, bool is64Bit)
+        /// <inheritdoc />
+        public Architecture Architecture { get; }
+
+        public RedistributableDependency(string name, bool available, Architecture architecture)
         {
             Available = available;
-            Is64Bit  = is64Bit;
+            Architecture = architecture;
             Name = name;
         }
 
         /// <inheritdoc />
         public string[] GetUrls()
         {
-            return Is64Bit
-                ? new[]{ "https://aka.ms/vs/16/release/VC_redist.x64.exe" }
-                : new[]{ "https://aka.ms/vs/16/release/VC_redist.x86.exe" };
+            switch (Architecture)
+            {
+                case Architecture.Amd64:
+                    return new []{ "https://aka.ms/vs/16/release/VC_redist.x64.exe" };
+                case Architecture.x86:
+                    return new[] { "https://aka.ms/vs/16/release/VC_redist.x86.exe" };
+                default:
+                    throw new NotSupportedException();
+            }
         }
     }
 }

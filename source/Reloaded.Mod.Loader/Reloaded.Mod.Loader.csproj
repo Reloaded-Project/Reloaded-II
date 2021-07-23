@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
 	  <LangVersion>preview</LangVersion>
@@ -32,7 +32,6 @@
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.4" />
-    <PackageReference Include="NetCoreInstallChecker" Version="1.1.0" />
     <PackageReference Include="Reloaded.Hooks" Version="3.2.3" />
     <PackageReference Include="Reloaded.Memory" Version="4.1.1" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.3.1-lazyloading" />

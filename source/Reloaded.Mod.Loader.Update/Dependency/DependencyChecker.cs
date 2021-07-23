@@ -32,14 +32,14 @@ namespace Reloaded.Mod.Loader.Update.Dependency
             var deps = new List<IDependency>();
 
             var core32 = GetRuntimeOptionsForDll(config.LoaderPath32);
-            deps.Add(new NetCoreDependency($".NET Core {core32.Framework.Version} x86", ResolveCore(core32, false)));
-            deps.Add(new RedistributableDependency("Visual C++ Redistributable x86", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x86), false));
+            deps.Add(new NetCoreDependency($".NET Core {core32.GetAllFrameworks()[0].Version} x86", ResolveCore(core32, false), Architecture.x86));
+            deps.Add(new RedistributableDependency("Visual C++ Redistributable x86", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x86), Architecture.x86));
 
             if (is64Bit)
             {
                 var core64 = GetRuntimeOptionsForDll(config.LoaderPath64);
-                deps.Add(new NetCoreDependency($".NET Core {core64.Framework.Version} x64", ResolveCore(core64, true)));
-                deps.Add(new RedistributableDependency("Visual C++ Redistributable x64", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x64), true));
+                deps.Add(new NetCoreDependency($".NET Core {core64.GetAllFrameworks()[0].Version} x64", ResolveCore(core64, true), Architecture.Amd64));
+                deps.Add(new RedistributableDependency("Visual C++ Redistributable x64", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x64), Architecture.Amd64));
             }
 
             Dependencies = deps.ToArray();
@@ -68,7 +68,7 @@ namespace Reloaded.Mod.Loader.Update.Dependency
         /// <summary>
         /// Resolves .NET Core dependencies.
         /// </summary>
-        private DependencySearchResult<FrameworkOptionsTuple> ResolveCore(RuntimeOptions options, bool is64Bit)
+        private DependencySearchResult<FrameworkOptionsTuple, Framework> ResolveCore(RuntimeOptions options, bool is64Bit)
         {
             var finder   = new FrameworkFinder(is64Bit);
             var resolver = new DependencyResolver(finder);

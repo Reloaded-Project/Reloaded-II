@@ -1,4 +1,6 @@
-﻿namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
+﻿using NetCoreInstallChecker.Structs.Config.Enum;
+
+namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
 {
     public interface IDependency
     {
@@ -11,6 +13,11 @@
         /// True if the dependency is available, else false.
         /// </summary>
         bool Available { get; }
+
+        /// <summary>
+        /// The operating architecture of the dependency.
+        /// </summary>
+        Architecture Architecture { get; }
 
         /// <summary>
         /// Gets the URLs to download the dependency.

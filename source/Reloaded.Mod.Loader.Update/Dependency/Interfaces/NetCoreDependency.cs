@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using NetCoreInstallChecker.Structs;
+using NetCoreInstallChecker.Structs.Config;
+using NetCoreInstallChecker.Structs.Config.Enum;
 
 namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
 {
@@ -12,12 +14,16 @@ namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
         /// <inheritdoc />
         public bool Available => Result.Available;
 
-        public DependencySearchResult<FrameworkOptionsTuple> Result { get; }
+        /// <inheritdoc />
+        public Architecture Architecture { get; }
 
-        public NetCoreDependency(string name, DependencySearchResult<FrameworkOptionsTuple> result)
+        public DependencySearchResult<FrameworkOptionsTuple, Framework> Result { get; }
+
+        public NetCoreDependency(string name, DependencySearchResult<FrameworkOptionsTuple, Framework> result, Architecture architecture)
         {
             Name = name;
             Result = result;
+            Architecture = architecture;
         }
 
         /// <inheritdoc />
@@ -30,7 +36,7 @@ namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
             foreach (var dependency in Result.MissingDependencies)
             {
                 string url;
-                try { url = dependency.Framework.GetInstallUrl(); }
+                try { url = dependency.GetWindowsDownloadUrl(Architecture, Format.Executable); }
                 catch (Exception) { url = ""; }
 
                 urls.Add(url);
