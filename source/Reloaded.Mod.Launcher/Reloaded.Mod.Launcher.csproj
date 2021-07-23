@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
 	  <LangVersion>preview</LangVersion>
 	  <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
@@ -15,7 +15,6 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	  <RuntimeFrameworkVersion>5.0.1</RuntimeFrameworkVersion>
   </PropertyGroup>
 	
   <ItemGroup>
@@ -90,5 +89,11 @@
     <ApplicationDefinition Update="App.xaml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ApplicationDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="PropertyChanged.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
