@@ -3,19 +3,19 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
-	<LangVersion>preview</LangVersion>
-	<UseWPF>true</UseWPF>
+	  <LangVersion>preview</LangVersion>
+	  <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
     <Version>1.10.0</Version>
     <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | $(Version) ($([System.DateTime]::UtcNow.ToString("s")))</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
-	<OutputPath>..\Output\Launcher\</OutputPath>
+	  <OutputPath>..\Output\Launcher\</OutputPath>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<RuntimeFrameworkVersion>5.0.1</RuntimeFrameworkVersion>
+	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	  <RuntimeFrameworkVersion>5.0.1</RuntimeFrameworkVersion>
   </PropertyGroup>
 	
   <ItemGroup>

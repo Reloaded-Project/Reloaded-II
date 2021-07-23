@@ -2,22 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-	<Version>1.8.6</Version>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<LangVersion>preview</LangVersion>
-	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<NoWarn>1701;1702;CS1591</NoWarn>
-
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<Authors>Sewer56</Authors>
-	<Company />
-	<Description>Contains code for parsing Reloaded-II's various configuration files as well as providing services for reading configurations in real time. This is an "internal" package; no documentation is provided and the API can change at any time.</Description>
-	<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-	<PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
-	<PackageIconUrl>https://avatars1.githubusercontent.com/u/45473408</PackageIconUrl>
-	<RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
-	<RepositoryType>git</RepositoryType>
-	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	  <Version>1.8.6</Version>
+	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	  <LangVersion>preview</LangVersion>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <NoWarn>1701;1702;CS1591</NoWarn>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <Authors>Sewer56</Authors>
+	  <Company />
+	  <Description>Contains code for parsing Reloaded-II's various configuration files as well as providing services for reading configurations in real time. This is an "internal" package; no documentation is provided and the API can change at any time.</Description>
+	  <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+	  <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
+	  <PackageIconUrl>https://avatars1.githubusercontent.com/u/45473408</PackageIconUrl>
+	  <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
+	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 	
   <ItemGroup>
