@@ -228,8 +228,12 @@ namespace Reloaded.Mod.Launcher
                         continue;
 
                     var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
-                    if (!updater.NeedsUpdate())
-                        continue;
+                    try
+                    {
+                        if (!updater.NeedsUpdate())
+                            continue;
+                    }
+                    catch (Exception e) { /* ignored */ }
 
                     var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
                     try
@@ -237,7 +241,7 @@ namespace Reloaded.Mod.Launcher
                         File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
                         updatedBootstrappers.Add(app.Config.AppName);
                     }
-                    catch (Exception e) { }
+                    catch (Exception e) { /* ignored */  }
                 }
 
                 if (updatedBootstrappers.Count > 0)

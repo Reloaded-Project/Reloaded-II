@@ -269,4 +269,7 @@
     <sys:String x:Key="BootstrapperUpdateTitle" xml:space="preserve">Bootstrapper Updated</sys:String>
     <sys:String x:Key="BootstrapperUpdateDescription" xml:space="preserve">Reloaded Bootstrapper was Auto-Updated for the Following Programs:&#x0a;{0}</sys:String>
 
+    <!-- Update 1.10.1: Reloaded Bootstrapper Hotfix -->
+    <sys:String x:Key="BootstrapperCreateDirectoryError" xml:space="preserve">Failed to create directory to deploy bootstrapper. Consider trying running Reloaded as administrator.&#x0a;Actual error: {0}</sys:String>
+
 </ResourceDictionary>
