@@ -5,12 +5,15 @@ using System.Reflection;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility.Parsers;
+using Reloaded.WPF.Utilities;
 using SharpCompress.Archives.SevenZip;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
     public class AsiLoaderDeployer
     {
+        private static XamlResource<string> _xamlBootstrapperCreateDirectoryError = new XamlResource<string>("BootstrapperCreateDirectoryError");
+
         public PathTuple<ApplicationConfig> Application { get; }
 
         /// <summary>
@@ -132,13 +135,26 @@ namespace Reloaded.Mod.Launcher.Utility
 
             var appDirectory = Path.GetDirectoryName(Application.Config.AppLocation);
             var pluginDirectory = Path.Combine(appDirectory, AsiCommonDirectories[0]);
-            Directory.CreateDirectory(pluginDirectory);
             return pluginDirectory;
         }
 
         private void DeployBootstrapper(out bool alreadyHasAsiPlugins, out string bootstrapperInstallPath)
         {
             bootstrapperInstallPath = GetBootstrapperInstallPath(out alreadyHasAsiPlugins);
+            var bootstrapperDir = Path.GetDirectoryName(bootstrapperInstallPath);
+
+            if (!Directory.Exists(bootstrapperDir))
+            {
+                try
+                {
+                    Directory.CreateDirectory(bootstrapperDir);
+                }
+                catch (Exception e)
+                {
+                    throw new IOException(string.Format(_xamlBootstrapperCreateDirectoryError.Get(), e.Message));
+                }
+            }
+
             File.Copy(GetBootstrapperDllPath(), bootstrapperInstallPath, true);
         }
 
