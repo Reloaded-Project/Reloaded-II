@@ -222,26 +222,30 @@ namespace Reloaded.Mod.Launcher
                         new IncompatibleModDialog(incompatible, app).ShowDialog();
 
                     // Bootstrapper Update
-                    var deployer = new AsiLoaderDeployer(app);
-                    var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
-                    if (!File.Exists(bootstrapperInstallPath)) 
-                        continue;
-
-                    var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
                     try
                     {
-                        if (!updater.NeedsUpdate())
+                        var deployer = new AsiLoaderDeployer(app);
+                        var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
+                        if (!File.Exists(bootstrapperInstallPath))
                             continue;
+
+                        var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
+                        try
+                        {
+                            if (!updater.NeedsUpdate())
+                                continue;
+                        }
+                        catch (Exception e) { /* ignored */ }
+
+                        var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
+                        try
+                        {
+                            File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
+                            updatedBootstrappers.Add(app.Config.AppName);
+                        }
+                        catch (Exception e) { /* ignored */  }
                     }
                     catch (Exception e) { /* ignored */ }
-
-                    var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
-                    try
-                    {
-                        File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
-                        updatedBootstrappers.Add(app.Config.AppName);
-                    }
-                    catch (Exception e) { /* ignored */  }
                 }
 
                 if (updatedBootstrappers.Count > 0)
