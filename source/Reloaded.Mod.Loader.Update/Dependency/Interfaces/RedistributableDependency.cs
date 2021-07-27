@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using NetCoreInstallChecker.Structs.Config.Enum;
 
 namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
@@ -22,14 +23,14 @@ namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
         }
 
         /// <inheritdoc />
-        public string[] GetUrls()
+        public Task<string[]> GetUrlsAsync()
         {
             switch (Architecture)
             {
                 case Architecture.Amd64:
-                    return new []{ "https://aka.ms/vs/16/release/VC_redist.x64.exe" };
+                    return Task.FromResult(new []{ "https://aka.ms/vs/16/release/VC_redist.x64.exe" });
                 case Architecture.x86:
-                    return new[] { "https://aka.ms/vs/16/release/VC_redist.x86.exe" };
+                    return Task.FromResult(new [] { "https://aka.ms/vs/16/release/VC_redist.x86.exe" });
                 default:
                     throw new NotSupportedException();
             }

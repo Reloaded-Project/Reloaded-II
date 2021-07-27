@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using NetCoreInstallChecker;
 using NetCoreInstallChecker.Structs;
 using NetCoreInstallChecker.Structs.Config;
 using NetCoreInstallChecker.Structs.Config.Enum;
@@ -27,7 +29,7 @@ namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
         }
 
         /// <inheritdoc />
-        public string[] GetUrls()
+        public async Task<string[]> GetUrlsAsync()
         {
             if (Result.Available) 
                 return new[] {""};
@@ -36,7 +38,11 @@ namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
             foreach (var dependency in Result.MissingDependencies)
             {
                 string url;
-                try { url = dependency.GetWindowsDownloadUrl(Architecture, Format.Executable); }
+                try
+                {
+                    var downloader = new FrameworkDownloader(dependency.NuGetVersion, dependency.FrameworkName);
+                    url = await downloader.GetDownloadUrlAsync(Architecture, Platform.Windows, Format.Executable, true);
+                }
                 catch (Exception) { url = ""; }
 
                 urls.Add(url);

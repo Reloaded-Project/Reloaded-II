@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetCoreInstallChecker" Version="2.1.0" />
+    <PackageReference Include="NetCoreInstallChecker" Version="3.0.0" />
     <PackageReference Include="NuGet.Packaging" Version="5.7.0" />
     <PackageReference Include="NuGet.Packaging.Core" Version="5.7.0" />
     <PackageReference Include="NuGet.Protocol" Version="5.7.0" />

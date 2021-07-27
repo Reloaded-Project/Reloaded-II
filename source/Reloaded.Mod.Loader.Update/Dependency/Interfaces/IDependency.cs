@@ -1,4 +1,5 @@
-﻿using NetCoreInstallChecker.Structs.Config.Enum;
+﻿using System.Threading.Tasks;
+using NetCoreInstallChecker.Structs.Config.Enum;
 
 namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
 {
@@ -22,6 +23,6 @@ namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
         /// <summary>
         /// Gets the URLs to download the dependency.
         /// </summary>
-        string[] GetUrls();
+        Task<string[]> GetUrlsAsync();
     }
 }

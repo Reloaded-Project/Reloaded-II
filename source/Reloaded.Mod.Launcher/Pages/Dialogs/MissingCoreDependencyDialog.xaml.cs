@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Utility;
@@ -22,10 +23,10 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             InitializeComponent();
         }
 
-        private void DownloadButtonClick(object sender, RoutedEventArgs e)
+        private async void DownloadButtonClick(object sender, RoutedEventArgs e)
         {
             var model = (DependencyModel)((FrameworkElement)sender).DataContext;
-            model.OpenUrls();
+            await model.OpenUrlsAsync();
         }
     }
 
@@ -50,9 +51,9 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             Dependency = dependency;
         }
 
-        public void OpenUrls()
+        public async Task OpenUrlsAsync()
         {
-            foreach (var url in Dependency.GetUrls()) 
+            foreach (var url in await Dependency.GetUrlsAsync()) 
                 ProcessExtensions.OpenFileWithDefaultProgram(url);
         }
     }
