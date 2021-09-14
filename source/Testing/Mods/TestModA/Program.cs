@@ -5,7 +5,7 @@ using TestInterfaces;
 
 namespace TestModA
 {
-    public class Program : IModV1, ITestHelper, ITestModA, IExports
+    public class Program : IModV2, ITestHelper, ITestModA, IExports
     {
         public string MyId { get; set; } = "TestModA";
         public DateTime LoadTime { get; set; }
@@ -16,10 +16,11 @@ namespace TestModA
 
         /* Entry point. */
         public Action Disposing { get; }
-        public void Start(IModLoaderV1 loader)
+        public void StartEx(IModLoaderV1 loader, IModConfigV1 modConfig)
         {
             LoadTime = DateTime.Now;
             _controller = new Controller();
+            
             loader.AddOrReplaceController<IController>(this, _controller);
         }
 

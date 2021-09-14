@@ -80,7 +80,14 @@ namespace Reloaded.Mod.Loader.Mods.Structs
         {
             if (!_started)
             {
-                Mod?.Start(loader);
+                if (Mod != null)
+                {
+                    if (Mod is IModV2 modV2)
+                        modV2.StartEx(loader, ModConfig);
+                    else
+                        Mod.Start(loader);
+                }
+                
                 State = ModState.Running;
                 _started = true;
             }

@@ -8,7 +8,7 @@ namespace Reloaded.Mod.Loader.Mods.Structs
     /// <summary>
     /// A wrapper for Reloaded's <see cref="IMod"/> interface for a native DLL.
     /// </summary>
-    public class NativeMod : IMod
+    public class NativeMod : IModV1
     {
         /// <summary>
         /// Handle to the native module.
