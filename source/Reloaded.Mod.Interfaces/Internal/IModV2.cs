@@ -11,6 +11,6 @@ namespace Reloaded.Mod.Interfaces.Internal
         /// </summary>
         /// <param name="loader">Interface which allows for the access of Mod Loader specific functionality.</param>
         /// <param name="config">Config for the individual mod.</param>
-        void StartEx(IModLoaderV1 loader, IModConfigV1 config);
+        void StartEx(IModLoaderV1 loader, IModConfigV1 config) { Start(loader); }
     }
 }
