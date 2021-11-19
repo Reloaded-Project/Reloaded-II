@@ -1,0 +1,27 @@
+﻿<hc:GlowWindow x:Class="Reloaded.Mod.Installer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Reloaded.Mod.Installer"
+        mc:Ignorable="d"
+        Title="Reloaded Installer" 
+        Height="450" 
+        Width="800" Loaded="OnLoaded"
+        DataContext="{Binding Path=ViewModel, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Self}}"
+        Closing="OnClosing">
+    <Grid Margin="32" Name="PanelMain">
+        <!-- Background Progress -->
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="Installing" Margin="0,0,0,20" HorizontalAlignment="Center" Style="{StaticResource TextBlockLarge}"/>
+            <hc:StepBar Name="DownloadStep" Margin="0,0,0,10" StepIndex="{Binding Path=CurrentStepNo}">
+                <hc:StepBarItem Content="Downloading"/>
+                <hc:StepBarItem Content="Extracting"/>
+                <hc:StepBarItem Content="Installing Runtimes"/>
+            </hc:StepBar>
+            <ProgressBar Value="{Binding Path=Progress}" Margin="0,20,0,10"/>
+            <TextBlock Text="{Binding CurrentStepDescription}" Margin="0,10,0,10" HorizontalAlignment="Center" Style="{StaticResource TextBlockSubTitle}"/>
+        </StackPanel>
+    </Grid>
+</hc:GlowWindow>
