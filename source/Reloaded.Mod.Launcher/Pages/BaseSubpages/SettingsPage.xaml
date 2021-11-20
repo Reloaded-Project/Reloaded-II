@@ -7,7 +7,8 @@
     xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
     xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
     xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime" 
+    xmlns:hc="https://handyorg.github.io/handycontrol"
     mc:Ignorable="d"
     d:DesignHeight="600" 
     d:DesignWidth="756"
@@ -38,6 +39,12 @@
                        Source="{DynamicResource ReloadedNoBrackets}"
                        StretchDirection="Both"
                        Margin="{DynamicResource BannerMargin}"/>
+
+                    <hc:StepBar Name="DownloadStep" Margin="0,0,0,10">
+                        <hc:StepBarItem Content="Downloading"/>
+                        <hc:StepBarItem Content="Extracting"/>
+                        <hc:StepBarItem Content="Installing Runtimes"/>
+                    </hc:StepBar>
 
                     <TextBlock DockPanel.Dock="Bottom"
                            HorizontalAlignment="Center"
