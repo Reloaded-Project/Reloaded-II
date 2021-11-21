@@ -1,0 +1,51 @@
+﻿<default:ReloadedPage x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages.AddApplication"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+              xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages"
+              xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+              mc:Ignorable="d" 
+              d:DesignHeight="450" d:DesignWidth="800"
+              Width="Auto"
+              Height="Auto"
+              Title="AddApplication">
+
+    <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+        <StackPanel VerticalAlignment="Center">
+
+            <!-- Description -->
+            <TextBlock Text="{DynamicResource FirstLaunchExAddApplicationDescription1}" 
+                       Margin="{DynamicResource CommonItemVerticalMargin}" 
+                       Style="{DynamicResource RIIDefaultTextBlock}"
+                       TextWrapping="Wrap" />
+
+            <!-- Image Example -->
+            <Image Style="{DynamicResource HighQualityImage}"
+                   Source="{DynamicResource TutorialAddAppExample}"
+                   MaxWidth="600"
+                   StretchDirection="Both"
+                   Width="Auto"
+                   Margin="{DynamicResource BannerMargin}"/>
+
+            <!-- Description -->
+            <TextBlock Text="{DynamicResource FirstLaunchExAddApplicationDescription2}" 
+                       Margin="{DynamicResource CommonItemVerticalMargin}" 
+                       Style="{DynamicResource RIIDefaultTextBlock}"
+                       TextWrapping="Wrap" />
+
+            <!-- OK -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="{DynamicResource FirstLaunchExAddApplicationButton}" Style="{DynamicResource DefaultButton}" Margin="{DynamicResource CommonItemVerticalMargin}" 
+                        Click="AddApplication_Click"/>
+
+                <Button Content="{DynamicResource FirstLaunchExAddApplicationSkipStepButton}" Style="{DynamicResource DefaultButton}" Margin="{DynamicResource CommonItemVerticalMargin}" 
+                        Click="SkipStep_Click"/>
+
+                <Button Content="{DynamicResource FirstLaunchExAddApplicationSkipTutorialButton}" Style="{DynamicResource DefaultButton}" Margin="{DynamicResource CommonItemVerticalMargin}" 
+                        Click="SkipTutorial_Click"/>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</default:ReloadedPage>

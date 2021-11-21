@@ -40,16 +40,10 @@
                        StretchDirection="Both"
                        Margin="{DynamicResource BannerMargin}"/>
 
-                    <hc:StepBar Name="DownloadStep" Margin="0,0,0,10">
-                        <hc:StepBarItem Content="Downloading"/>
-                        <hc:StepBarItem Content="Extracting"/>
-                        <hc:StepBarItem Content="Installing Runtimes"/>
-                    </hc:StepBar>
-
                     <TextBlock DockPanel.Dock="Bottom"
-                           HorizontalAlignment="Center"
-                           Style="{DynamicResource BuildTextBlock}"
-                           Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
+                               HorizontalAlignment="Center"
+                               Style="{DynamicResource BuildTextBlock}"
+                               Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
 
 
                     <TextBlock DockPanel.Dock="Bottom"

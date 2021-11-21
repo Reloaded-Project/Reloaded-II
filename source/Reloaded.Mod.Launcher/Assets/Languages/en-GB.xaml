@@ -98,8 +98,8 @@
     <sys:String x:Key="ApplicationOtherInstances">Other Instances</sys:String>       <!-- Unused as of 1.7.0 -->
     <sys:String x:Key="ApplicationReloadedInstances">Reloaded Instances</sys:String> <!-- Unused as of 1.7.0 -->
 
-    <!-- First Launch -->
-    <sys:String x:Key="TitleFirstLaunch">Welcome to Reloaded II</sys:String>
+    <!-- First Launch | Unused, Superseeded by 1.12.0 - New First Launch Experience -->
+    <sys:String x:Key="TitleFirstLaunch">Welcome to Reloaded II</sys:String> <!-- Unused as of 1.12.0 -->
     <sys:String x:Key="FirstLaunchLineOne">It's your first time using Reloaded II.</sys:String>
     <sys:String x:Key="FirstLaunchLineTwo">Before getting started, you might consider checking out the following links:</sys:String>
     <sys:String x:Key="FirstLaunchLineDocumentation">Documentation</sys:String>
@@ -271,5 +271,35 @@
 
     <!-- Update 1.10.1: Reloaded Bootstrapper Hotfix -->
     <sys:String x:Key="BootstrapperCreateDirectoryError" xml:space="preserve">Failed to create directory to deploy bootstrapper. Consider trying running Reloaded as administrator.&#x0a;Actual error: {0}</sys:String>
+
+    <!-- Update 1.12.0: New First Launch Experience -->
+    <sys:String x:Key="TitleFirstLaunchEx">Reloaded II Tutorial</sys:String>
+
+    <sys:String x:Key="FirstLaunchExStepAddApplication">Add Application</sys:String>
+    <sys:String x:Key="FirstLaunchExStepExtractMod">Extract Mods</sys:String>
+    <sys:String x:Key="FirstLaunchExStepConfigureMod">Configure Mods</sys:String>
+    <sys:String x:Key="FirstLaunchExStepEnableMod">Enable Mods</sys:String>
+    <sys:String x:Key="FirstLaunchExStepComplete">Complete</sys:String>
+
+    <sys:String x:Key="FirstLaunchExAddApplicationButton">Add Application</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationSkipTutorialButton">Skip The Tutorial</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationSkipStepButton">Skip This Step</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription1" xml:space="preserve">First step to getting started with Reloaded is to add an Application you'll be modding.&#x0a;(Normally found on the + button, bottom left of launcher)</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription2">Make sure you add the App, not the Launcher, as demonstrated above.</sys:String>
+
+    <sys:String x:Key="FirstLaunchExAddModExtractDescription1">To install mods, simply extract a downloaded zip to the 'Mods' folder.</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractDescription2">If there is no single folder inside the downloaded mod, create one yourself.</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractPrev">Previous</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractNext">Next</sys:String>
+
+    <sys:String x:Key="FirstLaunchExConfigureModDescription1">Some mods might support additional configuration, allowing you to tweak things.</sys:String>
+    <sys:String x:Key="FirstLaunchExConfigureModDescription2">If the "Configure Mod" is red when the mod is highlighted, it can be configured.</sys:String>
+
+    <sys:String x:Key="FirstLaunchExEnableModDescription1">To enable mods, simply press the square checkbox.</sys:String>
+    <sys:String x:Key="FirstLaunchExEnableModDescription2">A mod is enabled if the checkbox is red, disabled if it is grey.</sys:String>
+
+    <sys:String x:Key="FirstLaunchExCompleteDescription1">Thanks for trying Reloaded II.</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription2">You might also find the following links useful:</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription3">You can also find these links in [Mod Loader Settings].</sys:String>
 
 </ResourceDictionary>

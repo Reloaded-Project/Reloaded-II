@@ -1,0 +1,69 @@
+﻿<default:ReloadedPage x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages.Complete"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages"
+                    xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
+                    xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+                    mc:Ignorable="d" 
+                    d:DesignHeight="450" d:DesignWidth="800"
+                    Width="600"
+                    Height="Auto"
+                    Title="Complete">
+    <Grid>
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="{DynamicResource FirstLaunchExCompleteDescription1}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource RIIDefaultTextBlock}"/>
+            <TextBlock Text="{DynamicResource FirstLaunchExCompleteDescription2}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource RIIDefaultTextBlock}"/>
+
+            <!-- Buttons -->
+            <Grid Margin="{DynamicResource CommonItemVerticalMargin}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" PreviewMouseDown="Documents_PreviewMouseDown">
+                    <Image Height="48" 
+                               Source="{DynamicResource IconGitHub}"
+                               Style="{DynamicResource HighQualityImage}"
+                               Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                    <TextBlock Text="{DynamicResource FirstLaunchLineDocumentation}"
+                                   FontSize="{DynamicResource FontSizeLarge}"
+                                   Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                   Style="{DynamicResource TextblockWithColourChange}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" PreviewMouseDown="UserGuide_PreviewMouseDown">
+                    <Image Height="48" 
+                               Source="{DynamicResource IconInfo}"
+                               Style="{DynamicResource HighQualityImage}"
+                               Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                    <TextBlock Text="{DynamicResource FirstLaunchLineUserguide}"
+                                   FontSize="{DynamicResource FontSizeLarge}"
+                                   Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                   Style="{DynamicResource TextblockWithColourChange}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Text -->
+            <TextBlock Text="{DynamicResource FirstLaunchExCompleteDescription3}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource RIIDefaultTextBlock}"/>
+
+            <!-- Exit -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                <Button Content="{DynamicResource FirstLaunchExAddModExtractPrev}" Style="{DynamicResource DefaultButton}" Margin="{DynamicResource CommonItemVerticalMargin}" 
+                        Click="Previous_Click"/>
+
+                <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource DefaultButton}" Margin="{DynamicResource CommonItemVerticalMargin}" 
+                        Click="OK_Click"/>
+
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</default:ReloadedPage>
