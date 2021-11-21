@@ -32,14 +32,20 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
         }
 
         public bool CanExecute(object parameter) => true;
-
+        
+        /// <param name="parameter">Optional parameter. Returns true if user created an application, else false.</param>
         public void Execute(object parameter)
         {
+            var param = parameter == null ? new AddApplicationCommandParams() : parameter as AddApplicationCommandParams;
+
             // Select EXE
             string exePath = SelectEXEFile();
 
             if (string.IsNullOrEmpty(exePath) || !File.Exists(exePath))
+            {
+                param.ResultCreatedApplication = false;
                 return;
+            }
 
             // Get file information and populate initial application details.
             var fileInfo = FileVersionInfo.GetVersionInfo(exePath);
@@ -64,6 +70,9 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
             // Listen to event for when the new application is discovered.
             _newConfig = (ApplicationConfig)config;
             _configService.Applications.CollectionChanged += ApplicationsChanged;
+
+            // Set return value
+            param.ResultCreatedApplication = true;
         }
 
         private void ApplicationsChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -104,6 +113,11 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
             }
 
             return "";
+        }
+
+        public class AddApplicationCommandParams
+        {
+            public bool ResultCreatedApplication;
         }
     }
 }

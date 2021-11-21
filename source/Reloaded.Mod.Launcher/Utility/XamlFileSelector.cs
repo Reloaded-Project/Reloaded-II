@@ -21,6 +21,11 @@ namespace Reloaded.Mod.Launcher.Utility
         public ObservableCollection<string> Files { get; set; } = new ObservableCollection<string>();
         public string File { get; set; }
 
+        /// <summary>
+        /// Executed after a new XAML file has been set as the source.
+        /// </summary>
+        public event Action NewXamlSet;
+
         private string Directory { get; set; }
         private FileSystemWatcher _directoryWatcher;
 
@@ -54,6 +59,7 @@ namespace Reloaded.Mod.Launcher.Utility
                    As this in practice occurs over a theme or language switch, it should be largely unnoticeable to the end user.
                 */
                 GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+                NewXamlSet?.Invoke();
             }
         }
 

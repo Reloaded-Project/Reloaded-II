@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,9 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Windows;
+using HandyControl.Data;
+using HandyControl.Themes;
+using HandyControl.Tools;
 using Reloaded.Mod.Launcher.Misc;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
@@ -79,6 +83,30 @@ namespace Reloaded.Mod.Launcher
             ThemeSelector = new XamlFileSelector($"{launcherFolder}\\Theme");
             Resources.MergedDictionaries.Add(LanguageSelector);
             Resources.MergedDictionaries.Add(ThemeSelector);
+            ThemeSelector.NewXamlSet += OnThemeChanged;
+        }
+
+        private void OnThemeChanged()
+        {
+            void TryAssignResource(string originalResource, string targetResource)
+            {
+                try { Resources[targetResource] = Resources[originalResource]; }
+                catch (Exception) { }
+            }
+
+            // HandyControl Compatibility
+            TryAssignResource("AccentColorLighter", "DarkAccentColor");
+            TryAssignResource("AccentColorLight", "SecondaryTitleColor");
+            TryAssignResource("AccentColorLight", "TitleColor");
+            TryAssignResource("AccentColorLighter", "DarkPrimaryColor");
+            TryAssignResource("AccentColorLighter", "PrimaryColor");
+            TryAssignResource("AccentColorLight", "LightPrimaryColor");
+            if (Current.MainWindow != null)
+            {
+                Current.MainWindow.ApplyTemplate();
+                Current.MainWindow.OnApplyTemplate();
+                Current.MainWindow.InvalidateVisual();
+            }
         }
 
         // Excluding most likely unused code from JIT

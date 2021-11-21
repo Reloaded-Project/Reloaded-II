@@ -4,62 +4,40 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
+        xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
         mc:Ignorable="d"
         MinHeight="10"
         MinWidth="10"
         SizeToContent="WidthAndHeight"
         Height="Auto" 
         Width="Auto"
+        MaxWidth="900"
         WindowStartupLocation="CenterScreen"
-        Title="{DynamicResource TitleFirstLaunch}"
+        Title="{DynamicResource TitleFirstLaunchEx}"
         Style="{DynamicResource ReloadedWindow}">
-    <ScrollViewer>
+    <ScrollViewer DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
         <Grid Margin="{DynamicResource PageMarginSmall}">
-        
+
+            <!-- Complete Container -->
             <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="{DynamicResource FirstLaunchLineOne}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource RIIDefaultTextBlock}"/>
-                <TextBlock Text="{DynamicResource FirstLaunchLineTwo}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource RIIDefaultTextBlock}"/>
+                <hc:StepBar Margin="{DynamicResource CommonItemVerticalMargin}" StepIndex="{Binding FirstLaunchPage, Converter={x:Static converters:FirstLaunchPageToIntConverter.Instance}}">
+                    <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepAddApplication}"/>
+                    <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepExtractMod}"/>
+                    <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepConfigureMod}"/>
+                    <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepEnableMod}"/>
+                    <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepComplete}"/>
+                </hc:StepBar>
 
-                <!-- Buttons -->
-                <Grid Margin="{DynamicResource CommonItemVerticalMargin}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" PreviewMouseDown="Documents_PreviewMouseDown">
-                        <Image Height="48" 
-                               Source="{DynamicResource IconGitHub}"
-                               Style="{DynamicResource HighQualityImage}"
-                               Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                        <TextBlock Text="{DynamicResource FirstLaunchLineDocumentation}"
-                                   FontSize="{DynamicResource FontSizeLarge}"
-                                   Margin="{DynamicResource ListEntryItemMarginSmall}"
-                                   Style="{DynamicResource TextblockWithColourChange}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" PreviewMouseDown="UserGuide_PreviewMouseDown">
-                        <Image Height="48" 
-                               Source="{DynamicResource IconInfo}"
-                               Style="{DynamicResource HighQualityImage}"
-                               Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                        <TextBlock Text="{DynamicResource FirstLaunchLineUserguide}"
-                                   FontSize="{DynamicResource FontSizeLarge}"
-                                   Margin="{DynamicResource ListEntryItemMarginSmall}"
-                                   Style="{DynamicResource TextblockWithColourChange}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Grid>
-
-                <!-- Text -->
-                <TextBlock Text="{DynamicResource FirstLaunchLineThree}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource RIIDefaultTextBlock}"/>
-
-                <!-- OK -->
-                <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource UnpaddedStretchedButton}" Margin="{DynamicResource CommonItemVerticalMargin}" 
-                        Click="OK_Click"/>
+                <!-- Child Page -->
+                <controls:PageHost x:Name="PageHost" 
+                                   CurrentPage="{Binding FirstLaunchPage, Converter={x:Static converters:FirstLaunchPageToPageConverter.Instance}}"
+                                   ClipToBounds="True"
+                                   Width="Auto"
+                                   Height="Auto"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"/>
             </StackPanel>
         </Grid>
     </ScrollViewer>

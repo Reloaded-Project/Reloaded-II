@@ -1,8 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Theme.Default.R_II">
+                    xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Theme.Default.R_II" xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
     <ImageSource x:Key="IconAddApp">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconAddApp.png</ImageSource>
+    <system:String x:Key="VideoExtractMod">pack://siteoforigin:,,,/Theme/Default/R-II/Images/InstallMod.mp4</system:String>
+    <system:String x:Key="VideoConfigureMod">pack://siteoforigin:,,,/Theme/Default/R-II/Images/ConfigureMod.mp4</system:String>
+    <system:String x:Key="VideoEnableMod">pack://siteoforigin:,,,/Theme/Default/R-II/Images/EnableMod.mp4</system:String>
+
     <ImageSource x:Key="IconDiscord">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconDiscord.png</ImageSource>
     <ImageSource x:Key="IconDownloadMods">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconDownloadMods.png</ImageSource>
     <ImageSource x:Key="IconGitHub">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconGitHub.png</ImageSource>
@@ -14,5 +18,7 @@
     <ImageSource x:Key="IconTwitter">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconTwitter.png</ImageSource>
     <ImageSource x:Key="ModPlaceholder">pack://siteoforigin:,,,/Theme/Default/R-II/Images/ModPlaceholder.png</ImageSource>
     <ImageSource x:Key="ReloadedNoBrackets">pack://siteoforigin:,,,/Theme/Default/R-II/Images/ReloadedNoBrackets.png</ImageSource>
+
+    <ImageSource x:Key="TutorialAddAppExample">pack://siteoforigin:,,,/Theme/Default/R-II/Images/TutorialAddAppExample.png</ImageSource>
 
 </ResourceDictionary>
