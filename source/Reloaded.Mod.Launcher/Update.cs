@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Protocol.Core.Types;
-using Onova;
-using Onova.Services;
+using NuGet.Versioning;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO.Config;
@@ -18,8 +18,14 @@ using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 using Reloaded.WPF.Utilities;
+using Sewer56.Update;
+using Sewer56.Update.Extractors.SevenZipSharp;
+using Sewer56.Update.Packaging.Structures;
+using Sewer56.Update.Resolvers.GitHub;
+using Sewer56.Update.Structures;
 using Constants = Reloaded.Mod.Launcher.Misc.Constants;
 using MessageBox = System.Windows.MessageBox;
+using Version = Reloaded.Mod.Launcher.Utility.Version;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -31,7 +37,7 @@ namespace Reloaded.Mod.Launcher
         /* Strings */
         private static XamlResource<string> _xamlCheckUpdatesFailed = new XamlResource<string>("ErrorCheckUpdatesFailed");
         private static bool _hasInternetConnection = CheckForInternetConnection();
-
+        
         /// <summary>
         /// Checks if there are any updates for the mod loader.
         /// </summary>
@@ -41,27 +47,36 @@ namespace Reloaded.Mod.Launcher
                 return;
 
             // Check for loader updates.
+            UpdateManager<Empty> manager = null;
             try
             {
-                using (var manager = new UpdateManager(
-                    new GithubPackageResolver(Misc.Constants.GitRepositoryAccount, Misc.Constants.GitRepositoryName, Constants.GitRepositoryReleaseName),
-                    new ArchiveExtractor()))
+                var resolver = new GitHubReleaseResolver(new GitHubResolverConfiguration()
                 {
-                    // Check for new version and, if available, perform full update and restart
-                    var result = await manager.CheckForUpdatesAsync();
-                    if (result.CanUpdate)
+                    LegacyFallbackPattern = Constants.GitRepositoryReleaseName,
+                    RepositoryName = Constants.GitRepositoryName,
+                    UserName = Constants.GitRepositoryAccount
+                });
+
+                var metadata = new ItemMetadata(Version.GetReleaseVersion(), Constants.ApplicationPath, null);
+                manager  = await UpdateManager<Empty>.CreateAsync(metadata, resolver, new SevenZipSharpExtractor());
+
+                // Check for new version and, if available, perform full update and restart
+                var result = await manager.CheckForUpdatesAsync();
+                if (result.CanUpdate)
+                {
+                    ActionWrappers.ExecuteWithApplicationDispatcher(() =>
                     {
-                        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
-                        {
-                            var dialog = new ModLoaderUpdateDialog(manager, result.LastVersion);
-                            dialog.ShowDialog();
-                        });
-                    }
+                        var dialog = new ModLoaderUpdateDialog(manager, result.LastVersion);
+                        dialog.ShowDialog();
+                    });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show(_xamlCheckUpdatesFailed.Get());
+                manager?.Dispose();
+                MessageBox.Show($"{_xamlCheckUpdatesFailed.Get()}\n" +
+                                $"Actual error: {ex.Message}\n" +
+                                $"{ex.StackTrace}");
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
@@ -34,7 +35,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             ModConfigService.Mods.CollectionChanged += ManageModsViewModelOnModsChanged;
 
             var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
-            Copyright = version.LegalCopyright;
+            Copyright = Regex.Replace(version.LegalCopyright, @"\|.*", $"| {Version.GetReleaseVersion().ToNormalizedString()}");
             RuntimeVersion = $"Core: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}";
             ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {

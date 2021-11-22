@@ -15,8 +15,8 @@ namespace Reloaded.Mod.Loader.Update
     /// </summary>
     public class Updater
     {
-        private IEnumerable<PathTuple<ModConfig>>    _mods;
-        private List<ResolverManagerModResultPair>          _resolversWithUpdates;
+        private IEnumerable<PathTuple<ModConfig>>  _mods;
+        private List<ResolverManagerModResultPair> _resolversWithUpdates;
         private UpdaterData _data;
 
         /* Instantiation */

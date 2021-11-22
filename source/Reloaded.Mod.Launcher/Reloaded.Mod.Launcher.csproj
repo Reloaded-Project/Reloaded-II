@@ -8,11 +8,11 @@
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
     <Version>1.12.0</Version>
-    <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.Year) | $(Version) ($([System.DateTime]::UtcNow.ToString("s")))</Copyright>
+    <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.ToString("s")) | $(Version)</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
 	  <OutputPath>..\Output\Launcher\</OutputPath>
-    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <SatelliteResourceLanguages>none</SatelliteResourceLanguages> <!-- Hack -->
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <RuntimeFrameworkVersion>5.0.1</RuntimeFrameworkVersion>
@@ -57,7 +57,6 @@
     <PackageReference Include="HandyControl" Version="3.2.0" />
     <PackageReference Include="Markdig.Wpf" Version="0.4.0" />
     <PackageReference Include="Ninject" Version="3.3.4" />
-    <PackageReference Include="Octokit" Version="0.48.0" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="1.1.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.9">
       <PrivateAssets>all</PrivateAssets>

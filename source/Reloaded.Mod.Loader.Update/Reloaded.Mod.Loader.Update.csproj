@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,13 +10,19 @@
     <PackageReference Include="NuGet.Packaging" Version="5.7.0" />
     <PackageReference Include="NuGet.Packaging.Core" Version="5.7.0" />
     <PackageReference Include="NuGet.Protocol" Version="5.7.0" />
-    <PackageReference Include="Octokit" Version="0.48.0" />
+    <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="Onova" Version="2.6.2" />
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
+    <PackageReference Include="Sewer56.Update" Version="1.2.2" />
+    <PackageReference Include="Sewer56.Update.Extractors.SevenZipSharp" Version="1.0.2" GeneratePathProperty="true" />
+    <PackageReference Include="Sewer56.Update.Resolvers.GameBanana" Version="1.1.0" />
+    <PackageReference Include="Sewer56.Update.Resolvers.GitHub" Version="1.1.0" />
+    <PackageReference Include="Sewer56.Update.Resolvers.NuGet" Version="1.1.0" />
     <PackageReference Include="SharpCompress" Version="0.29.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Reloaded.Mod.Installer.DependencyInstaller\Reloaded.Mod.Installer.DependencyInstaller.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
   </ItemGroup>
 

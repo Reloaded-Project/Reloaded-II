@@ -3,13 +3,17 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using NuGet.Versioning;
 using Octokit;
-using Onova;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.WPF.MVVM;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
+using Sewer56.Update;
+using Sewer56.Update.Packaging.Structures;
+using Sewer56.Update.Structures;
 using Constants = Reloaded.Mod.Launcher.Misc.Constants;
+using Version = Reloaded.Mod.Launcher.Utility.Version;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs
 {
@@ -20,7 +24,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
     {
         public new ModLoaderUpdateDialogViewModel ViewModel { get; set; }
 
-        public ModLoaderUpdateDialog(UpdateManager manager, Version targetVersion)
+        public ModLoaderUpdateDialog(UpdateManager<Empty> manager, NuGetVersion targetVersion)
         {
             InitializeComponent();
             ViewModel = new ModLoaderUpdateDialogViewModel(manager, targetVersion);
@@ -31,7 +35,8 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
 
         private void ViewChangelogClick(object sender, RoutedEventArgs e)
         {
-            ProcessExtensions.OpenFileWithDefaultProgram("https://github.com/Reloaded-Project/Reloaded-II/releases");
+            var url = string.IsNullOrEmpty(ViewModel.ReleaseUrl) ? "https://github.com/Reloaded-Project/Reloaded-II/releases" : ViewModel.ReleaseUrl;
+            ProcessExtensions.OpenFileWithDefaultProgram(url);
         }
 
         private async void UpdateClick(object sender, RoutedEventArgs e)
@@ -53,16 +58,17 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
         public string CurrentVersion    { get; set; }
         public string NewVersion        { get; set; }
         public string ReleaseText       { get; set; } = _xamlUpdateLoaderChangelogUnavailable.Get();
+        public string ReleaseUrl        { get; set; }
 
-        private UpdateManager _manager;
-        private Version _targetVersion;
+        private UpdateManager<Empty> _manager;
+        private NuGetVersion _targetVersion;
 
-        public ModLoaderUpdateDialogViewModel(UpdateManager manager, Version targetVersion)
+        public ModLoaderUpdateDialogViewModel(UpdateManager<Empty> manager, NuGetVersion targetVersion)
         {
             _manager = manager; 
             _targetVersion = targetVersion;
 
-            CurrentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            CurrentVersion = Version.GetReleaseVersion().ToNormalizedString();
             NewVersion     = _targetVersion.ToString();
 
             // Try fetch Release info.
@@ -71,6 +77,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
                 var client      = new GitHubClient(new ProductHeaderValue("Reloaded-II"));
                 var releases    = client.Repository.Release.GetAll(Misc.Constants.GitRepositoryAccount, Constants.GitRepositoryName);
                 var release     = releases.Result.First(x => x.TagName.Contains(targetVersion.ToString()));
+                ReleaseUrl      = release.HtmlUrl;
                 ReleaseText     = release.Body;
             }
             catch (Exception) { /* Ignored */ }
@@ -95,7 +102,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             else
             {
                 await _manager.PrepareUpdateAsync(_targetVersion, new Progress<double>(d => { Progress = (int)(d * 100); }));
-                _manager.LaunchUpdater(_targetVersion, true);
+                await _manager.StartUpdateAsync(_targetVersion, new OutOfProcessOptions() { Restart = true }, null);
                 Environment.Exit(0);
             }
         }

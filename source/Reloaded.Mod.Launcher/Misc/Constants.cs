@@ -29,6 +29,9 @@ namespace Reloaded.Mod.Launcher.Misc
         public static readonly string ApplicationPath      = Process.GetCurrentProcess().MainModule.FileName;
         public static readonly string ApplicationDirectory = Path.GetDirectoryName(ApplicationPath);
 
+        public const string VersionFileName = "version.txt";
+        public static readonly string VersionFilePath = Path.Combine(ApplicationDirectory, VersionFileName);
+
         public static Uri PlaceholderImagePath
         {
             get

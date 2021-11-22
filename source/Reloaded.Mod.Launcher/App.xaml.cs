@@ -50,6 +50,10 @@ namespace Reloaded.Mod.Launcher
         {
             PopulateCommandLineArgs();
 
+            // Update handler
+            if (Sewer56.Update.Hooks.Startup.HandleCommandLineArgs(GetCommandLineArgs()))
+                return;
+
             // Check if Kill Process
             if (_commandLineArguments.TryGetValue(Constants.ParameterKill, out string processId))
                 KillProcessWithId(processId);

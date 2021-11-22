@@ -22,6 +22,7 @@ using Reloaded.Mod.Loader.Update.Dependency;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.WPF.Utilities;
 using MessageBox = System.Windows.MessageBox;
+using Version = System.Version;
 
 namespace Reloaded.Mod.Launcher
 {
@@ -74,7 +75,6 @@ namespace Reloaded.Mod.Launcher
 
                 updateText(_xamlRunningSanityChecks.Get());
                 DoSanityTests();
-                CleanupAfterOldVersions();
                 var _ = Task.Run(CompressOldLogs);
 
                 // Wait until splash screen time.
@@ -96,51 +96,6 @@ namespace Reloaded.Mod.Launcher
             var loaderConfig = IoC.Get<LoaderConfig>();
             logCompressor.AddFiles(Paths.LogPath, TimeSpan.FromHours(loaderConfig.LogFileCompressTimeHours));
             logCompressor.DeleteOldFiles(TimeSpan.FromHours(loaderConfig.LogFileDeleteHours));
-        }
-
-        /// <summary>
-        /// Cleans up files/folders after upgrades from old loader versions.
-        /// </summary>
-        private static void CleanupAfterOldVersions()
-        {
-            var launcherFolder = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-
-            DestroyFolder(launcherFolder, "Languages");
-            DestroyFolder(launcherFolder, "Styles");
-            DestroyFolder(launcherFolder, "Templates");
-
-            #if !DEBUG
-            DestroyFileType(launcherFolder, "*.pdb");
-            DestroyFileType(launcherFolder, "*.xml");
-            #endif
-
-            // Check for .NET 5 Single File
-            // This code is unused until .NET 5 upgrade.
-            if (Environment.Version >= Version.Parse("5.0.0"))
-            {
-                // Currently no API to check if in bundle (single file app); however, we know that CodeBase returns true when loaded from memory.
-                var resAsm = Application.ResourceAssembly;
-                var configuration = resAsm.GetCustomAttribute<AssemblyConfigurationAttribute>();
-                if (configuration != null && configuration.Configuration.Contains("SingleFile"))
-                {
-                    // TODO: Needs more testing. Seems to work but might be problematic.
-                    DestroyFileType(launcherFolder, "*.json");
-                    DestroyFileType(launcherFolder, "*.dll");
-                }
-            }
-
-            void DestroyFolder(string baseFolder, string folderName)
-            {
-                var folderPath = Path.Combine(baseFolder, folderName);
-                ActionWrappers.TryCatchDiscard(() => Directory.Delete(folderPath, true));
-            }
-
-            void DestroyFileType(string baseFolder, string searchPattern)
-            {
-                var files = Directory.GetFiles(baseFolder, searchPattern);
-                foreach (var file in files)
-                    ActionWrappers.TryCatchDiscard(() => File.Delete(file));
-            }
         }
 
         /// <summary>
