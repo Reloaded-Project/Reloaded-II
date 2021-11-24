@@ -166,8 +166,8 @@ namespace Reloaded.Mod.Launcher
             ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 // Needs to be ran after SetupViewModelsAsync
-                var apps = IoC.GetConstant<ApplicationConfigService>().Applications;
-                var mods = IoC.GetConstant<ModConfigService>().Mods;
+                var apps = IoC.GetConstant<ApplicationConfigService>().Items;
+                var mods = IoC.GetConstant<ModConfigService>().Items;
                 var updatedBootstrappers = new List<string>();
 
                 foreach (var app in apps)

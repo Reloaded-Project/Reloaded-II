@@ -28,7 +28,7 @@ namespace Reloaded.Mod.Launcher.Utility
             try
             {
                 string fullPath = newProcess.GetExecutablePath();
-                var config = _configService.Applications.FirstOrDefault(x => string.Equals(x.Config.AppLocation, fullPath, StringComparison.OrdinalIgnoreCase));
+                var config = _configService.Items.FirstOrDefault(x => string.Equals(x.Config.AppLocation, fullPath, StringComparison.OrdinalIgnoreCase));
                 if (config != null && config.Config.AutoInject)
                 {
                     var appInjector = new ApplicationInjector(newProcess);

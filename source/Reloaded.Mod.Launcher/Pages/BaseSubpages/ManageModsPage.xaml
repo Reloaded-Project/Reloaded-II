@@ -27,7 +27,7 @@
             <manageModsPageCommands:ManageDependenciesCommand x:Key="ManageDependenciesCommand"/>
 
             <!-- Sort the mod list -->
-            <CollectionViewSource x:Key="SortedMods" Source="{Binding ModConfigService.Mods, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
+            <CollectionViewSource x:Key="SortedMods" Source="{Binding ModConfigService.Items, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                 <CollectionViewSource.SortDescriptions>
                     <componentModel:SortDescription PropertyName="ModConfig.ModName"/>
                 </CollectionViewSource.SortDescriptions>

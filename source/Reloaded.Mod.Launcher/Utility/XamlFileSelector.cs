@@ -32,7 +32,7 @@ namespace Reloaded.Mod.Launcher.Utility
         public XamlFileSelector(string directoryPath)
         {
             Directory = directoryPath;
-            _directoryWatcher = FileSystemWatcherFactory.CreateChangeCreateDelete(Directory, OnAvailableXamlFilesUpdated, Changed | Created | Deleted, false, XamlFilter);
+            _directoryWatcher = FileSystemWatcherFactory.Create(Directory, OnAvailableXamlFilesUpdated, null, Changed | Created | Deleted, false, XamlFilter);
             this.PropertyChanged += OnPropertyChanged;
             PopulateXamlFiles();
         }

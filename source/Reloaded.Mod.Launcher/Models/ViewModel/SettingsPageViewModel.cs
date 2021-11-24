@@ -31,8 +31,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             UpdateTotalApplicationsInstalled();
             UpdateTotalModsInstalled();
-            AppConfigService.Applications.CollectionChanged += MainPageViewModelOnApplicationsChanged;
-            ModConfigService.Mods.CollectionChanged += ManageModsViewModelOnModsChanged;
+            AppConfigService.Items.CollectionChanged += MainPageViewModelOnApplicationsChanged;
+            ModConfigService.Items.CollectionChanged += ManageModsViewModelOnModsChanged;
 
             var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
             Copyright = Regex.Replace(version.LegalCopyright, @"\|.*", $"| {Version.GetReleaseVersion().ToNormalizedString()}");
@@ -89,8 +89,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         }
 
         /* Functions */
-        private void UpdateTotalApplicationsInstalled() => TotalApplicationsInstalled = AppConfigService.Applications.Count;
-        private void UpdateTotalModsInstalled() => TotalModsInstalled = ModConfigService.Mods.Count;
+        private void UpdateTotalApplicationsInstalled() => TotalApplicationsInstalled = AppConfigService.Items.Count;
+        private void UpdateTotalModsInstalled() => TotalModsInstalled = ModConfigService.Items.Count;
 
         /* Events */
         private void ManageModsViewModelOnModsChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateTotalModsInstalled();

@@ -54,7 +54,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
         {
             // Find mod in mod list.
             var app   = _manageModsViewModel.SelectedModTuple;
-            var entry = _manageModsViewModel.ModConfigService.Mods.First(x => x.Config.Equals(app.Config));
+            var entry = _manageModsViewModel.ModConfigService.Items.First(x => x.Config.Equals(app.Config));
 
             // Delete folder contents.
             var directory = Path.GetDirectoryName(entry.Path) ?? throw new InvalidOperationException(Errors.FailedToGetDirectoryOfMod());

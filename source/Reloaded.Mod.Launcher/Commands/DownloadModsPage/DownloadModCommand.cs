@@ -29,7 +29,7 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
                 _modConfigService = IoC.Get<ModConfigService>();
 
                 _downloadModsViewModel.PropertyChanged += OnSelectedModChanged;
-                _modConfigService.Mods.CollectionChanged += ModsOnCollectionChanged;
+                _modConfigService.Items.CollectionChanged += ModsOnCollectionChanged;
             }
             catch (Exception)
             {
@@ -45,7 +45,7 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
         public void Dispose()
         {
             _downloadModsViewModel.PropertyChanged -= OnSelectedModChanged;
-            _modConfigService.Mods.CollectionChanged -= ModsOnCollectionChanged;
+            _modConfigService.Items.CollectionChanged -= ModsOnCollectionChanged;
             GC.SuppressFinalize(this);
         }
 
@@ -72,7 +72,7 @@ namespace Reloaded.Mod.Launcher.Commands.DownloadModsPage
             if (_downloadModsViewModel.DownloadModEntry == null)
                 return ReturnResult(false, DownloadModStatus.Default);
 
-            if (_modConfigService.Mods.Any(x => x.Config.ModId == _downloadModsViewModel.DownloadModEntry.Id))
+            if (_modConfigService.Items.Any(x => x.Config.ModId == _downloadModsViewModel.DownloadModEntry.Id))
                 return ReturnResult(false, DownloadModStatus.AlreadyDownloaded);
 
             return ReturnResult(true, DownloadModStatus.Default);

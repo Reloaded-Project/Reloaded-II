@@ -46,7 +46,7 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
 
             // Find Application in Viewmodel's list.
             var app   = _editAppViewModel.Application.Config;
-            var entry = _editAppViewModel.AppConfigService.Applications.First(x => x.Config.Equals(app));
+            var entry = _editAppViewModel.AppConfigService.Items.First(x => x.Config.Equals(app));
             _editAppViewModel.Application = null;
 
             // Delete folder.

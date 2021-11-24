@@ -71,7 +71,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
 
         private void PopulateDependencies()
         {
-            var mods = ConfigService.Mods; // In case collection changes during window open.
+            var mods = ConfigService.Items; // In case collection changes during window open.
             foreach (var mod in mods)
             {
                 bool enabled = CurrentMod.Config.ModDependencies.Contains(mod.Config.ModId);

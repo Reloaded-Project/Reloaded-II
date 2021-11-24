@@ -51,7 +51,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
         /* Check if not duplicate. */
         public bool IsUnique()
         {
-            if (ModConfigService.Mods.Any(x => x.Config.ModId.Equals(RealViewModel.Config.ModId)))
+            if (ModConfigService.Items.Any(x => x.Config.ModId.Equals(RealViewModel.Config.ModId)))
             {
                 var messageBoxDialog = new MessageBox(_xamlTitleCreateModNonUniqueId.Get(),
                                                       _xamlMessageCreateModNonUniqueId.Get());

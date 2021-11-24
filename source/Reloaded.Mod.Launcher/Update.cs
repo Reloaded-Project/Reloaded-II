@@ -89,7 +89,7 @@ namespace Reloaded.Mod.Launcher
                 return false;
 
             var modConfigService = IoC.Get<ModConfigService>();
-            var allMods = modConfigService.Mods.Select(x => new PathTuple<ModConfig>(x.Path, (ModConfig) x.Config)).ToArray();
+            var allMods = modConfigService.Items.Select(x => new PathTuple<ModConfig>(x.Path, (ModConfig) x.Config)).ToArray();
 
             try
             {
@@ -188,7 +188,7 @@ namespace Reloaded.Mod.Launcher
             }
 
             /* Remove already existing packages. */
-            var allMods = IoC.Get<ModConfigService>().Mods.ToArray();
+            var allMods = IoC.Get<ModConfigService>().Items.ToArray();
             HashSet<string> allModIds = new HashSet<string>(allMods.Length);
             foreach (var mod in allMods)
                 allModIds.Add(mod.Config.ModId);
@@ -214,7 +214,7 @@ namespace Reloaded.Mod.Launcher
             var modConfigService = IoC.Get<ModConfigService>();
 
             // Get all mods and build list of IDs
-            var allMods = modConfigService.Mods.ToArray();
+            var allMods = modConfigService.Items.ToArray();
             HashSet<string> allModIds = new HashSet<string>(allMods.Length);
             foreach (var mod in allMods)
                 allModIds.Add(mod.Config.ModId);

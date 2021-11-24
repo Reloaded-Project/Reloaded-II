@@ -32,7 +32,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
         public CreateModViewModel(ModConfigService modConfigService, DictionaryResourceManipulator manipulator)
         {
             /* Build Dependencies */
-            var mods = modConfigService.Mods; // In case collection changes during window open.
+            var mods = modConfigService.Items; // In case collection changes during window open.
             foreach (var mod in mods)
             {
                 Dependencies.Add(new BooleanGenericTuple<IModConfig>(false, mod.Config));

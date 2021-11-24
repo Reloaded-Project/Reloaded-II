@@ -69,7 +69,7 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
 
             // Listen to event for when the new application is discovered.
             _newConfig = (ApplicationConfig)config;
-            _configService.Applications.CollectionChanged += ApplicationsChanged;
+            _configService.Items.CollectionChanged += ApplicationsChanged;
 
             // Set return value
             param.ResultCreatedApplication = true;
@@ -77,11 +77,11 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
 
         private void ApplicationsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var newConfig = _configService.Applications.FirstOrDefault(x => x.Config.AppId == _newConfig.AppId);
+            var newConfig = _configService.Items.FirstOrDefault(x => x.Config.AppId == _newConfig.AppId);
             if (newConfig != null)
                 _mainPageViewModel.SwitchToApplication(newConfig);
 
-            _configService.Applications.CollectionChanged -= ApplicationsChanged;
+            _configService.Items.CollectionChanged -= ApplicationsChanged;
         }
 
         public event EventHandler CanExecuteChanged = (sender, args) => { };
@@ -92,7 +92,7 @@ namespace Reloaded.Mod.Launcher.Commands.EditAppPage
         private void UpdateIdIfDuplicate(IApplicationConfig config)
         {
             // Ensure no duplication of AppId
-            while (_configService.Applications.Any(x => x.Config.AppId == config.AppId))
+            while (_configService.Items.Any(x => x.Config.AppId == config.AppId))
             {
                 config.AppId += "_dup";
             }

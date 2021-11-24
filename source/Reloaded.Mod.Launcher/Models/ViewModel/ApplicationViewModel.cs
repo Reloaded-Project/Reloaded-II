@@ -57,7 +57,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
             IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
             InstanceTracker = new ApplicationInstanceTracker(tuple.Config.AppLocation);
-            ModConfigService.Mods.CollectionChanged += OnGetModifications;
+            ModConfigService.Items.CollectionChanged += OnGetModifications;
             InstanceTracker.OnProcessesChanged += OnProcessesChanged;
 
             UpdateReloadedProcesses();
@@ -73,7 +73,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
 
         public void Dispose()
         {
-            ModConfigService.Mods.CollectionChanged -= OnGetModifications;
+            ModConfigService.Items.CollectionChanged -= OnGetModifications;
             InstanceTracker.OnProcessesChanged -= OnProcessesChanged;
 
             RefreshProcessesWithLoaderTimer?.Dispose();
@@ -127,7 +127,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         /// </summary>
         public void CheckModCompatibility()
         {
-            if (Setup.TryGetIncompatibleMods(ApplicationTuple, ModConfigService.Mods, out var incompatible))
+            if (Setup.TryGetIncompatibleMods(ApplicationTuple, ModConfigService.Items, out var incompatible))
                 new IncompatibleModDialog(incompatible, ApplicationTuple).ShowDialog();
         }
 
@@ -149,7 +149,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         private void GetModsForThisApp()
         {
             string appId = ApplicationTuple.Config.AppId;
-            var newMods  = ModConfigService.Mods.Where(x => x.Config.SupportedAppId != null && x.Config.SupportedAppId.Contains(appId));
+            var newMods  = ModConfigService.Items.Where(x => x.Config.SupportedAppId != null && x.Config.SupportedAppId.Contains(appId));
 
             ModsForThisApp = new ObservableCollection<PathTuple<ModConfig>>(newMods);
             OnGetModsForThisApp();

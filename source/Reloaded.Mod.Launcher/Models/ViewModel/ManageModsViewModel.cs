@@ -25,7 +25,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
             _appConfigService = appConfigService;
             _setModImageCommand = new SetModImageCommand(this);
 
-            SelectedModTuple = ModConfigService.Mods.FirstOrDefault();
+            SelectedModTuple = ModConfigService.Items.FirstOrDefault();
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
         public void SetNewMod(PathTuple<ModConfig> oldModTuple, PathTuple<ModConfig> newModTuple)
         {
             // Save old collection.
-            if (oldModTuple != null && ModConfigService.Mods.Contains(oldModTuple))
+            if (oldModTuple != null && ModConfigService.Items.Contains(oldModTuple))
                 SaveMod(oldModTuple);
 
             // Make new collection.
@@ -43,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel
                 return;
 
             var supportedAppIds = newModTuple.Config.SupportedAppId;
-            var tuples = _appConfigService.Applications.Select(x => new BooleanGenericTuple<ApplicationConfig>(supportedAppIds.Contains(x.Config.AppId), x.Config));
+            var tuples = _appConfigService.Items.Select(x => new BooleanGenericTuple<ApplicationConfig>(supportedAppIds.Contains(x.Config.AppId), x.Config));
             EnabledAppIds = new ObservableCollection<BooleanGenericTuple<ApplicationConfig>>(tuples);
         }
 
