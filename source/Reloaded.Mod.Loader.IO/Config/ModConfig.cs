@@ -40,6 +40,13 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string ModNativeDll64    { get; set; } = String.Empty;
         public bool   IsLibrary         { get; set; } = false;
 
+        /// <summary>
+        /// Data stored by plugins. Maps a unique string key to arbitrary data.
+        /// </summary>
+        public Dictionary<string, object> PluginData { get; set; } = new Dictionary<string, object>();
+
+        public bool IsUniversalMod { get; set; } = false;
+
         public string[] ModDependencies         { get; set; }
         public string[] OptionalDependencies    { get; set; }
         public string[] SupportedAppId          { get; set; }

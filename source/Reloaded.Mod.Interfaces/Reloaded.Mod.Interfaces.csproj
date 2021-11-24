@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.10.1</Version>
+    <Version>1.11.0</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Platforms>AnyCPU</Platforms>
     <NoWarn>1701;1702;1591</NoWarn>
