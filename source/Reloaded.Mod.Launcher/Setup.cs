@@ -251,7 +251,10 @@ namespace Reloaded.Mod.Launcher
 
             IoC.Kernel.Rebind<IProcessWatcher>().ToConstant(IProcessWatcher.Get());
             IoC.Kernel.Rebind<ApplicationConfigService>().ToConstant(new ApplicationConfigService(config, synchronizationContext));
-            IoC.Kernel.Rebind<ModConfigService>().ToConstant(new ModConfigService(config, synchronizationContext));
+
+            var modConfigService = new ModConfigService(config, synchronizationContext);
+            IoC.Kernel.Rebind<ModConfigService>().ToConstant(modConfigService);
+            IoC.Kernel.Rebind<ModUserConfigService>().ToConstant(new ModUserConfigService(config, synchronizationContext, modConfigService));
         }
 
         /// <summary>

@@ -91,6 +91,7 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// all apps.
         /// </summary>
         /// <param name="appDirectory">(Optional) Directory containing all of the applications.</param>
+        /// <param name="token">Optional token used to cancel the operation.</param>
         public static List<PathTuple<ApplicationConfig>> GetAllApplications(string appDirectory = null, CancellationToken token = default)
         {
             if (appDirectory == null)

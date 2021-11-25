@@ -5,6 +5,11 @@ namespace Reloaded.Mod.Interfaces.Internal
     public interface IModUserConfigV1
     {
         /// <summary>
+        /// The ID to which this mod belongs to.
+        /// </summary>
+        public string ModId { get; set; }
+
+        /// <summary>
         /// Data stored by plugins. Maps a unique string key to arbitrary data.
         /// </summary>
         public Dictionary<string, object> PluginData { get; set; }

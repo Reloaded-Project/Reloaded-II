@@ -14,6 +14,7 @@ namespace Reloaded.Mod.Loader.IO.Config
     {
         private const string DefaultApplicationConfigDirectory  = "Apps";
         private const string DefaultModConfigDirectory          = "Mods";
+        private const string DefaultModUserConfigDirectory      = "User/Mods";
         private const string DefaultPluginConfigDirectory       = "Plugins";
         private const string DefaultLanguageFile                = "en-GB.xaml";
         private const string DefaultThemeFile                   = "Default.xaml";
@@ -60,12 +61,17 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// <summary>
         /// Contains the directory which houses all Reloaded mods.
         /// </summary>
-        public string ModConfigDirectory { get; set; } = Empty;
+        public string ModUserConfigDirectory { get; set; } = Empty;
 
         /// <summary>
         /// Contains the directory which houses all Reloaded plugins.
         /// </summary>
         public string PluginConfigDirectory { get; set; } = Empty;
+
+        /// <summary>
+        /// Contains the directory which houses all Reloaded mods.
+        /// </summary>
+        public string ModConfigDirectory { get; set; } = Empty;
 
         /// <summary>
         /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
@@ -139,6 +145,7 @@ namespace Reloaded.Mod.Loader.IO.Config
             try
             {
                 ApplicationConfigDirectory  = IfNotExistsMakeDefaultDirectory(ApplicationConfigDirectory, DefaultApplicationConfigDirectory);
+                ModUserConfigDirectory      = IfNotExistsMakeDefaultDirectory(ModUserConfigDirectory, DefaultModUserConfigDirectory);
                 ModConfigDirectory          = IfNotExistsMakeDefaultDirectory(ModConfigDirectory, DefaultModConfigDirectory);
                 PluginConfigDirectory       = IfNotExistsMakeDefaultDirectory(PluginConfigDirectory, DefaultPluginConfigDirectory);
             }

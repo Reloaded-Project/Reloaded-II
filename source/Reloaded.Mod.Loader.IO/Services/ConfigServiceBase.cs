@@ -38,6 +38,9 @@ namespace Reloaded.Mod.Loader.IO.Services
         /// </summary>
         public string ItemFileName { get; private set; }
 
+        public event Action<PathTuple<TConfigType>> OnAddItem;
+        public event Action<PathTuple<TConfigType>> OnRemoveItem;
+
         /* Mod Monitoring */
         private FileSystemWatcher _renameWatcher;
         private FileSystemWatcher _createFolderWatcher;
@@ -158,13 +161,16 @@ namespace Reloaded.Mod.Loader.IO.Services
             ItemsByPath[itemTuple.Path] = itemTuple;
             ItemsByFolder[Path.GetDirectoryName(itemTuple.Path)] = itemTuple;
             Items.Add(itemTuple);
+            OnAddItem?.Invoke(itemTuple);
         }
+
 
         private void RemoveItem(PathTuple<TConfigType> itemTuple)
         {
             ItemsByPath.Remove(itemTuple.Path);
             ItemsByFolder.Remove(Path.GetDirectoryName(itemTuple.Path));
             Items.Remove(itemTuple);
+            OnRemoveItem?.Invoke(itemTuple);
         }
 
         private bool IsFileInItemFolder(string filePath)

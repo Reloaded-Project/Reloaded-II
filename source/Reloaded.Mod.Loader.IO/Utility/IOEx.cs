@@ -170,6 +170,15 @@ namespace Reloaded.Mod.Loader.IO.Utility
             return text;
         }
 
+        /// <summary>
+        /// Tries to delete a directory, if possible.
+        /// </summary>
+        public static void TryDeleteDirectory(string path, bool recursive = true)
+        {
+            try { Directory.Delete(path, recursive); }
+            catch (Exception e) { /* Ignored */ }
+        }
+
         private static void GetFilesExDirectories(string directory, int maxDepth, int minDepth, int currentDepth, List<string> directories)
         {
             if (currentDepth >= minDepth - 1 && currentDepth < maxDepth)
