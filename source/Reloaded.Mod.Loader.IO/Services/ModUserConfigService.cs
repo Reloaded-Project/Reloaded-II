@@ -37,40 +37,31 @@ namespace Reloaded.Mod.Loader.IO.Services
             modConfigService.OnAddItem    += CreateUserConfigOnNewConfigCreated;
             modConfigService.OnRemoveItem += DeleteUserConfigOnConfigDeleted;
 
-            CreateConfigsForModsWithoutAny();
+            CreateConfigsForModsWithoutAny(context);
         }
 
         private void OnRemoveItemHandler(PathTuple<ModUserConfig> obj) => ItemsById.Remove(obj.Config.ModId);
 
         private void OnAddItemHandler(PathTuple<ModUserConfig> obj) => ItemsById[obj.Config.ModId] = obj;
 
-        private void CreateConfigsForModsWithoutAny()
+        private void CreateConfigsForModsWithoutAny(SynchronizationContext context)
         {
-            foreach (var mod in _modConfigService.Items)
+            context.Post(() =>
             {
-                if (ItemsById.ContainsKey(mod.Config.ModId) || File.Exists(GetUserConfigPathForMod(mod.Config.ModId)))
-                    continue;
+                foreach (var mod in _modConfigService.Items)
+                {
+                    if (ItemsById.ContainsKey(mod.Config.ModId) || File.Exists(ModUserConfig.GetUserConfigPathForMod(mod.Config.ModId)))
+                        continue;
 
-                CreateUserConfigOnNewConfigCreated(mod);
-            }
+                    CreateUserConfigOnNewConfigCreated(mod);
+                }
+            });
         }
 
         private List<PathTuple<ModUserConfig>> GetAllConfigs() => ModUserConfig.GetAllUserConfigs(base.ConfigDirectory);
 
-        private void CreateUserConfigOnNewConfigCreated(PathTuple<ModConfig> tuple)
-        {
-            // Make folder path and save folder.
-            string modDirectory = GetUserConfigFolderForMod(tuple.Config.ModId);
-            Directory.CreateDirectory(modDirectory);
-
-            // Save Config
-            IConfig<ModUserConfig>.ToPath(new ModUserConfig() { ModId = tuple.Config.ModId }, GetUserConfigPathForMod(tuple.Config.ModId));
-        }
+        private void CreateUserConfigOnNewConfigCreated(PathTuple<ModConfig> tuple) => IConfig<ModUserConfig>.ToPath(new ModUserConfig() { ModId = tuple.Config.ModId }, ModUserConfig.GetUserConfigPathForMod(tuple.Config.ModId));
 
         private void DeleteUserConfigOnConfigDeleted(PathTuple<ModConfig> tuple) => IOEx.TryDeleteDirectory(Path.GetDirectoryName(tuple.Path), true);
-
-        private string GetUserConfigFolderForMod(string modId) => Path.Combine(ConfigDirectory, IOEx.ForceValidFilePath(modId));
-
-        private string GetUserConfigPathForMod(string modId) => Path.Combine(GetUserConfigFolderForMod(modId), ModUserConfig.ConfigFileName);
     }
 }

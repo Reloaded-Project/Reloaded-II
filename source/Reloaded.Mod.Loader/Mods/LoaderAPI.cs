@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
+using Reloaded.Mod.Loader.IO.Config;
 
 namespace Reloaded.Mod.Loader.Mods
 {
@@ -135,6 +137,16 @@ namespace Reloaded.Mod.Loader.Mods
         public string GetDirectoryForModId(string modId)
         {
             return _loader.Manager.GetDirectoryForModId(modId);
+        }
+
+        /* IModLoader V3 */
+        public string GetModConfigDirectory(string modId)
+        {
+            var directory = ModUserConfig.GetUserConfigFolderForMod(modId, _loader.LoaderConfig.ModUserConfigDirectory);
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            return directory;
         }
     }
 }

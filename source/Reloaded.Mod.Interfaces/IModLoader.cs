@@ -2,7 +2,7 @@
 
 namespace Reloaded.Mod.Interfaces
 {
-    public interface IModLoader : IModLoaderV2
+    public interface IModLoader : IModLoaderV3
     {
 
     }
