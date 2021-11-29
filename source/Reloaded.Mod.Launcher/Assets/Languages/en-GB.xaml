@@ -302,4 +302,9 @@
     <sys:String x:Key="FirstLaunchExCompleteDescription2">You might also find the following links useful:</sys:String>
     <sys:String x:Key="FirstLaunchExCompleteDescription3">You can also find these links in [Mod Loader Settings].</sys:String>
 
+    <!-- Update 1.12.0: Context Menu for Application Mod Items -->
+    <sys:String x:Key="ModManagerContextPublish">Publish</sys:String>
+    <sys:String x:Key="ModManagerContextOpenFolder">Open Folder</sys:String>
+    <sys:String x:Key="ModManagerContextConfigure">Configure</sys:String>
+
 </ResourceDictionary>

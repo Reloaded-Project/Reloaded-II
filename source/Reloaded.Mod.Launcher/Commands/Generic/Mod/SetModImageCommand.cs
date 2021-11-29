@@ -3,10 +3,11 @@ using System.IO;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Launcher.Misc;
-using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Utilities;
 
-namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
+namespace Reloaded.Mod.Launcher.Commands.Generic.Mod
 {
     /// <summary>
     /// Command to be used by the <see cref="EditAppPage"/> which allows
@@ -16,20 +17,14 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
     {
         private XamlResource<string> _xamlCreateModDialogSelectorTitle = new XamlResource<string>("CreateModDialogImageSelectorTitle");
         private XamlResource<string> _xamlCreateModDialogSelectorFilter = new XamlResource<string>("CreateModDialogImageSelectorFilter");
-        private readonly ManageModsViewModel _manageModsViewModel;
+        private PathTuple<ModConfig> _modTuple;
 
-        public SetModImageCommand(ManageModsViewModel manageModsViewModel)
+        public SetModImageCommand(PathTuple<ModConfig> modTuple)
         {
-            _manageModsViewModel = manageModsViewModel;
+            _modTuple = modTuple;
         }
 
-        public bool CanExecute(object parameter)
-        {
-            if (_manageModsViewModel.SelectedModTuple != null)
-                return true;
-
-            return false;
-        }
+        public bool CanExecute(object parameter) => _modTuple != null;
 
         public void Execute(object parameter)
         {
@@ -40,8 +35,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
                 return;
 
             // Get selected item.
-            var modTuple = _manageModsViewModel.SelectedModTuple;
-            string modDirectory = Path.GetDirectoryName(modTuple.Path);
+            string modDirectory = Path.GetDirectoryName(_modTuple.Path);
 
             // Set icon name and save.
             string iconFileName = Path.GetFileName(imagePath);
@@ -51,8 +45,8 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
 
                 // Copy image and set config file path.
                 File.Copy(imagePath, iconPath, true);
-                modTuple.Config.ModIcon = iconFileName;
-                modTuple.Save();
+                _modTuple.Config.ModIcon = iconFileName;
+                _modTuple.Save();
             }
         }
 
@@ -67,9 +61,7 @@ namespace Reloaded.Mod.Launcher.Commands.ManageModsPage
             dialog.Title = _xamlCreateModDialogSelectorTitle.Get();
             dialog.Filter = $"{_xamlCreateModDialogSelectorFilter.Get()} {Constants.WpfSupportedFormatsFilter}";
             if ((bool) dialog.ShowDialog())
-            {
                 return dialog.FileName;
-            }
 
             return "";
         }

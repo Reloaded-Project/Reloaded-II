@@ -56,6 +56,13 @@
                 VerticalContentAlignment="Top"
                 dd:DragDrop.IsDragSource="True"
                 dd:DragDrop.IsDropTarget="True">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{DynamicResource ModManagerContextPublish}"/>
+                        <MenuItem Header="{DynamicResource ModManagerContextOpenFolder}" Command="{Binding OpenModFolderCommand}" />
+                        <MenuItem Header="{DynamicResource ModManagerContextConfigure}" Command="{Binding ConfigureModCommand}" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>

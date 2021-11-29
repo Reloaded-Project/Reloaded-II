@@ -21,8 +21,6 @@
             <GridLength x:Key="LeftPanelWidth">250</GridLength>
 
             <!-- Functionality -->
-            <manageModsPageCommands:DeleteModCommand x:Key="DeleteModCommand"/>
-            <manageModsPageCommands:OpenModFolderCommand x:Key="OpenModFolderCommand"/>
             <manageModsPageCommands:ConvertToNugetCommand x:Key="ConvertToNugetCommand"/>
             <manageModsPageCommands:ManageDependenciesCommand x:Key="ManageDependenciesCommand"/>
 
@@ -83,7 +81,7 @@
                         <Button Grid.Column="1"
                                 Style="{DynamicResource UnpaddedStretchedGridButton}"
                                 Content="{DynamicResource AddAppDeleteButton}" 
-                                Command="{DynamicResource DeleteModCommand}"/>
+                                Command="{Binding DeleteModCommand}"/>
                     </Grid>
 
                     <!-- Mod Properties -->
@@ -113,7 +111,7 @@
                                 <Button Style="{DynamicResource UnpaddedStretchedButton}"
                                         Content="{DynamicResource ModManagerOpenModDirectory}" 
                                         Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                        Command="{StaticResource OpenModFolderCommand}"/>
+                                        Command="{Binding OpenModFolderCommand}"/>
 
                                 <Button Style="{DynamicResource UnpaddedStretchedButton}"
                                         Content="{DynamicResource ModManagerConvertToNuget}" 

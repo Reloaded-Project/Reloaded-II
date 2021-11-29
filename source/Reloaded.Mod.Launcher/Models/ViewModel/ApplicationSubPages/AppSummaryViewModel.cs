@@ -4,7 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Commands.ApplicationConfigurationPage;
+using Reloaded.Mod.Launcher.Commands.Generic;
+using Reloaded.Mod.Launcher.Commands.Generic.Mod;
 using Reloaded.Mod.Launcher.Models.Model;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -26,8 +27,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         public AppSummaryViewModel(ApplicationViewModel model)
         {
             ApplicationTuple = model.ApplicationTuple;
-            OpenModFolderCommand = new OpenModFolderCommand(this);
-            ConfigureModCommand = new ConfigureModCommand(this);
             _applicationViewModel = model;
 
             // Wait for parent to fully initialize.
@@ -36,6 +35,10 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             BuildModList();
 
             SelectedMod = AllMods.FirstOrDefault();
+
+            OpenModFolderCommand = new OpenModFolderCommand(SelectedMod?.Tuple);
+            ConfigureModCommand = new ConfigureModCommand(SelectedMod?.Tuple);
+            this.PropertyChanged += OnSelectedModChanged;
         }
 
         ~AppSummaryViewModel()
@@ -47,8 +50,6 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         {
             _applicationViewModel.OnLoadModSet -= BuildModList;
             _applicationViewModel.OnGetModsForThisApp -= BuildModList;
-            OpenModFolderCommand?.Dispose();
-            ConfigureModCommand?.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -109,6 +110,15 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         {
             ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
             ApplicationTuple.Save();
+        }
+
+        private void OnSelectedModChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(SelectedMod))
+            {
+                OpenModFolderCommand = new OpenModFolderCommand(SelectedMod?.Tuple);
+                ConfigureModCommand = new ConfigureModCommand(SelectedMod?.Tuple);
+            }
         }
     }
 }
