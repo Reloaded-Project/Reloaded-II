@@ -60,9 +60,8 @@
     <!-- Mod Manager: Set Dependencies -->
     <sys:String x:Key="TitleSetDependenciesDialog">Set Dependencies for Mod</sys:String>
 
-    <!-- Mod Manager: Create Mod Page -->
+    <!-- Mod Manager: Create Mod Page | Edit Mod Page since 1.12.0 -->
     <sys:String x:Key="TitleCreateModDialog">Create Mod</sys:String>
-
     <sys:String x:Key="CreateModDialogSave">Create Mod</sys:String>
     <sys:String x:Key="CreateModDialogId">Unique Id</sys:String>
     <sys:String x:Key="CreateModDialogName">Name</sys:String>
@@ -304,7 +303,12 @@
 
     <!-- Update 1.12.0: Context Menu for Application Mod Items -->
     <sys:String x:Key="ModManagerContextPublish">Publish</sys:String>
+    <sys:String x:Key="ModManagerContextEditMod">Edit Mod</sys:String>
     <sys:String x:Key="ModManagerContextOpenFolder">Open Folder</sys:String>
     <sys:String x:Key="ModManagerContextConfigure">Configure</sys:String>
+
+
+    <!-- Update 1.12.0: Edit Mod Dialog -->
+    <sys:String x:Key="TitleEditModDialog">Edit Mod</sys:String>
 
 </ResourceDictionary>

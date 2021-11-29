@@ -58,7 +58,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages
         {
             if (e.LeftButton != MouseButtonState.Pressed) 
                 return;
-
+            
             var createModDialog = new CreateModDialog(ViewModel.ModConfigService);
             createModDialog.Owner = Window.GetWindow(this);
             createModDialog.ShowDialog();

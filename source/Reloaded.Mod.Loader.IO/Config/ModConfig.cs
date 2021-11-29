@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using PropertyChanged;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Structs.Dependencies;
@@ -33,6 +34,8 @@ namespace Reloaded.Mod.Loader.IO.Config
         public string ModVersion        { get; set; } = DefaultVersion;
         public string ModDescription    { get; set; } = DefaultDescription;
         public string ModDll            { get; set; } = String.Empty;
+
+        [DoNotCheckEquality]
         public string ModIcon           { get; set; } = String.Empty;
         public string ModR2RManagedDll32 { get; set; } = String.Empty;
         public string ModR2RManagedDll64 { get; set; } = String.Empty;

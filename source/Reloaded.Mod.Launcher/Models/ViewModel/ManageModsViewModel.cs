@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using Reloaded.Mod.Launcher.Commands.Generic.Mod;
-using Reloaded.Mod.Launcher.Commands.ManageModsPage;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;

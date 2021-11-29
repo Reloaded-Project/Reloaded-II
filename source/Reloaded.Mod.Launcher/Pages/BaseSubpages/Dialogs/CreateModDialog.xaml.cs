@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows;
 using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.WPF.Theme.Default;
@@ -14,55 +12,34 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
     /// </summary>
     public partial class CreateModDialog : ReloadedWindow
     {
-        public CreateModViewModel RealViewModel  { get; set; }
-        public ModConfigService ModConfigService { get; set; }
-
-        private XamlResource<string> _xamlTitleCreateModNonUniqueId = new XamlResource<string>("TitleCreateModNonUniqueId");
+        private XamlResource<string> _xamlTitleCreateModNonUniqueId   = new XamlResource<string>("TitleCreateModNonUniqueId");
         private XamlResource<string> _xamlMessageCreateModNonUniqueId = new XamlResource<string>("MessageCreateModNonUniqueId");
 
-        public CreateModDialog(ModConfigService service)
+        public CreateModViewModel RealViewModel { get; set; }
+
+        public CreateModDialog(ModConfigService modConfigService)
         {
             InitializeComponent();
-            ModConfigService = service;
-            RealViewModel = new CreateModViewModel(ModConfigService, new DictionaryResourceManipulator(this.Contents.Resources));
+            RealViewModel = new CreateModViewModel(modConfigService);
         }
 
-        private void ModIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        public async void Save()
         {
-            if (e.LeftButton != MouseButtonState.Pressed) 
+            var mod = await RealViewModel.CreateMod(ShowNonUniqueWindow);
+            if (mod == null)
                 return;
 
-            this.RealViewModel.Image = RealViewModel.GetImage();
+            var createModDialog = new EditModDialog(mod, IoC.Get<ApplicationConfigService>(), IoC.Get<ModConfigService>());
+            createModDialog.Owner = Window.GetWindow(this);
+            createModDialog.ShowDialog();
+            this.Close();
         }
 
-        private void Save_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void ShowNonUniqueWindow()
         {
-            if (e.LeftButton != MouseButtonState.Pressed) 
-                return;
-
-            if (!IsUnique()) 
-                return;
-
-            RealViewModel.Save();
-            var window = Window.GetWindow((DependencyObject)sender);
-            window.Close();
+            var messageBoxDialog = new MessageBox(_xamlTitleCreateModNonUniqueId.Get(), _xamlMessageCreateModNonUniqueId.Get());
+            messageBoxDialog.Owner = this;
+            messageBoxDialog.ShowDialog();
         }
-
-        /* Check if not duplicate. */
-        public bool IsUnique()
-        {
-            if (ModConfigService.Items.Any(x => x.Config.ModId.Equals(RealViewModel.Config.ModId)))
-            {
-                var messageBoxDialog = new MessageBox(_xamlTitleCreateModNonUniqueId.Get(),
-                                                      _xamlMessageCreateModNonUniqueId.Get());
-                messageBoxDialog.Owner = this;
-                messageBoxDialog.ShowDialog();
-                return false;
-            }
-
-            return true;
-        }
-
-        private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => RealViewModel.RefreshModList();
     }
 }

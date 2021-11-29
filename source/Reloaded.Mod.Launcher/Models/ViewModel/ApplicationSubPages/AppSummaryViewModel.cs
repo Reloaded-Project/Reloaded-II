@@ -21,6 +21,7 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
 
         public OpenModFolderCommand OpenModFolderCommand { get; set; }
         public ConfigureModCommand ConfigureModCommand { get; set; }
+        public EditModCommand EditModCommand { get; set; }
 
         private ApplicationViewModel _applicationViewModel;
 
@@ -35,10 +36,8 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
             BuildModList();
 
             SelectedMod = AllMods.FirstOrDefault();
-
-            OpenModFolderCommand = new OpenModFolderCommand(SelectedMod?.Tuple);
-            ConfigureModCommand = new ConfigureModCommand(SelectedMod?.Tuple);
             this.PropertyChanged += OnSelectedModChanged;
+            UpdateCommands();
         }
 
         ~AppSummaryViewModel()
@@ -115,10 +114,14 @@ namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages
         private void OnSelectedModChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(SelectedMod))
-            {
-                OpenModFolderCommand = new OpenModFolderCommand(SelectedMod?.Tuple);
-                ConfigureModCommand = new ConfigureModCommand(SelectedMod?.Tuple);
-            }
+                UpdateCommands();
+        }
+
+        private void UpdateCommands()
+        {
+            OpenModFolderCommand = new OpenModFolderCommand(SelectedMod?.Tuple);
+            ConfigureModCommand = new ConfigureModCommand(SelectedMod?.Tuple);
+            EditModCommand = new EditModCommand(SelectedMod?.Tuple, null);
         }
     }
 }

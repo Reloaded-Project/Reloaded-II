@@ -1,114 +1,58 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using Ookii.Dialogs.Wpf;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Misc;
+using System.Threading.Tasks;
+using Reloaded.Mod.Launcher.Commands.Generic.Mod;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.WPF.Utilities;
-using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
 namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs
 {
     public class CreateModViewModel : ObservableObject
     {
-        public IModConfig Config { get; set; } = new ModConfig();
-        public ImageSource Image { get; set; } = new BitmapImage(Constants.PlaceholderImagePath);
-        public ObservableCollection<BooleanGenericTuple<IModConfig>> Dependencies { get; set; } = new ObservableCollection<BooleanGenericTuple<IModConfig>>();
-        public string ModsFilter { get; set; } = "";
+        /// <summary>
+        /// Current ID of the mod.
+        /// </summary>
+        public string ModId { get; set; }
 
-        private XamlResource<string> _xamlCreateModDialogSelectorTitle = new XamlResource<string>("CreateModDialogImageSelectorTitle");
-        private XamlResource<string> _xamlCreateModDialogSelectorFilter = new XamlResource<string>("CreateModDialogImageSelectorFilter");
-        private readonly CollectionViewSource _dependenciesViewSource;
+        private readonly ModConfigService _modConfigService;
 
-        public CreateModViewModel(ModConfigService modConfigService, DictionaryResourceManipulator manipulator)
+        public CreateModViewModel(ModConfigService modConfigService)
         {
-            /* Build Dependencies */
-            var mods = modConfigService.Items; // In case collection changes during window open.
-            foreach (var mod in mods)
-            {
-                Dependencies.Add(new BooleanGenericTuple<IModConfig>(false, mod.Config));
-            }
-
-            _dependenciesViewSource = manipulator.Get<CollectionViewSource>("SortedDependencies");
-            _dependenciesViewSource.Filter += DependenciesViewSourceOnFilter;
+            _modConfigService = modConfigService;
         }
 
-        /* Save Mod to Directory */
-        public void Save()
+        /// <summary>
+        /// Creates the mod.
+        /// </summary>
+        /// <param name="showNonUniqueWindow">Shows a message to tell the user the mod isn't unique.</param>
+        public async Task<PathTuple<ModConfig>> CreateMod(Action showNonUniqueWindow)
         {
-            // Make folder path and save folder.
-            string modConfigDirectory = IoC.Get<LoaderConfig>().ModConfigDirectory;
-            string modDirectory = Path.Combine(modConfigDirectory, IOEx.ForceValidFilePath(Config.ModId));
-            Directory.CreateDirectory(modDirectory);
+            if (!IsUnique(showNonUniqueWindow))
+                return null;
 
-            // Save Config
-            string configSaveDirectory = Path.Combine(modDirectory, ModConfig.ConfigFileName);
-            string iconSaveDirectory = Path.Combine(modDirectory, ModConfig.IconFileName);
-            Config.ModIcon = ModConfig.IconFileName;
-            Config.ModDependencies = Dependencies.Where(x => x.Enabled).Select(x => x.Generic.ModId).ToArray();
-            Config.SupportedAppId = Constants.EmptyStringArray;
-
-            ConfigReader<ModConfig>.WriteConfiguration(configSaveDirectory, (ModConfig) Config);
-
-            // Save Image 
-            var encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create((BitmapImage) Image));
-            using (FileStream stream = new FileStream(iconSaveDirectory, FileMode.OpenOrCreate))
-            {
-                encoder.Save(stream);
-            }
+            var config = new ModConfig() { ModId = ModId };
+            var modDirectory = Path.Combine(IoC.Get<LoaderConfig>().ModConfigDirectory, IOEx.ForceValidFilePath(ModId));
+            var filePath = Path.Combine(modDirectory, ModConfig.ConfigFileName);
+            await IConfig<ModConfig>.ToPathAsync(config, filePath);
+            return new PathTuple<ModConfig>(filePath, config);
         }
 
-        /* Get Image To Display */
-        public ImageSource GetImage()
+        /// <summary>
+        /// Returns true if the mod id is unique, else false.
+        /// </summary>
+        /// <param name="showNonUniqueWindow">Shows a message to tell the user the mod isn't unique.</param>
+        private bool IsUnique(Action showNonUniqueWindow)
         {
-            string imagePath = SelectImageFile();
-
-            if (String.IsNullOrEmpty(imagePath) || !File.Exists(imagePath))
+            if (_modConfigService.ItemsById.ContainsKey(ModId))
             {
-                var bitmapImage = new BitmapImage(Constants.PlaceholderImagePath);
-                bitmapImage.Freeze();
-                return bitmapImage;
+                showNonUniqueWindow();
+                return false;
             }
 
-            BitmapImage source = new BitmapImage(new Uri(imagePath, UriKind.Absolute));
-            source.Freeze();
-            return source;
-        }
-
-        public void RefreshModList() => _dependenciesViewSource.View.Refresh();
-
-        private void DependenciesViewSourceOnFilter(object sender, FilterEventArgs e)
-        {
-            if (this.ModsFilter.Length <= 0)
-            {
-                e.Accepted = true;
-                return;
-            }
-
-            var tuple = (BooleanGenericTuple<IModConfig>)e.Item;
-            e.Accepted = tuple.Generic.ModName.IndexOf(this.ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
-        }
-
-        private string SelectImageFile()
-        {
-            var dialog = new VistaOpenFileDialog();
-            dialog.Title = _xamlCreateModDialogSelectorTitle.Get();
-            dialog.Filter = $"{_xamlCreateModDialogSelectorFilter.Get()} {Constants.WpfSupportedFormatsFilter}";
-
-            if ((bool)dialog.ShowDialog())
-                return dialog.FileName;
-
-            return "";
+            return true;
         }
     }
 }
