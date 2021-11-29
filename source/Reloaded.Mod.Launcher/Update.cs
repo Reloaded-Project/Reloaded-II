@@ -13,7 +13,6 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
@@ -88,13 +87,19 @@ namespace Reloaded.Mod.Launcher
             if (!_hasInternetConnection)
                 return false;
 
+            var loaderConfig = IoC.Get<LoaderConfig>();
             var modConfigService = IoC.Get<ModConfigService>();
+            var modUserConfigService = IoC.Get<ModUserConfigService>();
             var allMods = modConfigService.Items.Select(x => new PathTuple<ModConfig>(x.Path, (ModConfig) x.Config)).ToArray();
 
             try
             {
-                var updater       = new Updater(allMods, new UpdaterData(IoC.Get<AggregateNugetRepository>()));
-                var updateDetails = await updater.GetUpdateDetails();
+                // TODO: Work from here too.
+                var nugetFeeds       = IoC.Get<AggregateNugetRepository>().Sources.Select(x => x.SourceUrl).ToList();
+                var resolverSettings = new CommonPackageResolverSettings() { AllowPrereleases = loaderConfig.ForceModPrereleases };
+                var updaterData      = new UpdaterData(nugetFeeds, resolverSettings);
+                var updater          = new Updater(allMods, modUserConfigService.ItemsById, updaterData);
+                var updateDetails    = await updater.GetUpdateDetails();
 
                 if (updateDetails.HasUpdates())
                 {

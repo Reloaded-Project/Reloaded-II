@@ -19,6 +19,8 @@ namespace Reloaded.Mod.Loader.IO.Config
 
         public bool IsUniversalMod { get; set; }
 
+        public bool? AllowPrereleases { get; set; }
+
         /*
            ---------
            Utilities

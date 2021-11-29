@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.Update;
@@ -67,7 +68,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             Updater = updater;
             Summary = summary;
             UpdateInfo = Summary.GetUpdateInfo();
-            TotalSize = Summary.GetTotalSize();
+            TotalSize = UpdateInfo.Sum(x => x.UpdateSize);
         }
     }
 }

@@ -18,6 +18,11 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
     /// </summary>
     public class NugetRepository : INugetRepository
     {
+        /// <summary>
+        /// The URL used to create this repository.
+        /// </summary>
+        public string SourceUrl { get; private set; }
+
         private static NullLogger _nullLogger = new NullLogger();
         private static SourceCacheContext _sourceCacheContext = new SourceCacheContext();
 
@@ -28,10 +33,12 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget
         private AsyncLazy<PackageMetadataResource> _packageMetadataResource;
         private AsyncLazy<PackageSearchResource>   _packageSearchResource;
 
+        private NugetRepository(string sourceUrl) => SourceUrl = sourceUrl;
+
         /// <param name="nugetSourceUrl">Source of a specific NuGet feed such as https://api.nuget.org/v3/index.json</param>
         public static NugetRepository FromSourceUrl(string nugetSourceUrl)
         {
-            var nugetHelper                 = new NugetRepository();
+            var nugetHelper                 = new NugetRepository(nugetSourceUrl);
             nugetHelper._packageSource      = new PackageSource(nugetSourceUrl);
             nugetHelper._sourceRepository   = new SourceRepository(nugetHelper._packageSource, Repository.Provider.GetCoreV3());
 

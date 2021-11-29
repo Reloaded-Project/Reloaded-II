@@ -1,8 +1,12 @@
-﻿using Reloaded.Mod.Loader.IO.Config;
+﻿using System.Collections.Generic;
+using Force.DeepCloner;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Resolvers;
 using Reloaded.Mod.Loader.Update.Structures;
+using Sewer56.Update.Interfaces;
+using Sewer56.Update.Resolvers;
 
 namespace Reloaded.Mod.Loader.Update
 {
@@ -11,37 +15,47 @@ namespace Reloaded.Mod.Loader.Update
     /// </summary>
     public static class ResolverFactory
     {
-        public class Resolvers
-        {
-            public IModResolver[] All { get; set; }
-
-            public Resolvers(UpdaterData data)
-            {
-                All = new IModResolver[]
-                {
-                    // Listed in order of preference.
-                    new NugetRepositoryResolver(data),
-                    new GitHubLatestUpdateResolver(),
-                    new GameBananaUpdateResolver()
-                };
-            }
-        }
-
         /// <summary>
         /// Returns the first appropriate resolver that can handle updating a mod.
         /// </summary>
         /// <param name="mod">The mod in question.</param>
+        /// <param name="userConfig">Contains user configuration for this mod in question.</param>
         /// <param name="data">All data passed to the updater.</param>
         /// <returns>A resolver that can handle the mod, else null.</returns>
-        public static IModResolver GetResolver(PathTuple<ModConfig> mod, Structures.UpdaterData data)
+        public static AggregatePackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
         {
-            foreach (var resolver in new Resolvers(data).All)
+            // Migrate first
+            foreach (var factory in ResolverFactoryCollection.Instance.All)
+                factory.Migrate(mod, userConfig);
+
+            // Clone data preferences.
+            data = data.DeepClone();
+            if (userConfig.Config.AllowPrereleases.HasValue)
+                data.CommonPackageResolverSettings.AllowPrereleases = userConfig.Config.AllowPrereleases.Value;
+
+            // Create resolvers.
+            var resolvers = new List<IPackageResolver>();
+            foreach (var factory in ResolverFactoryCollection.Instance.All)
             {
-                if (resolver.IsCompatible(mod))
-                    return resolver;
+                var resolver = factory.GetResolver(mod, userConfig, data);
+                if (resolver != null)
+                    resolvers.Add(resolver);
             }
 
-            return null;
+            return resolvers.Count > 0 ? new AggregatePackageResolver(resolvers) : null;
         }
+    }
+
+    public class ResolverFactoryCollection
+    {
+        public static readonly ResolverFactoryCollection Instance = new ResolverFactoryCollection();
+
+        internal IResolverFactory[] All { get; } = new IResolverFactory[]
+        {
+            // Listed in order of preference.
+            new NuGetResolverFactory(),
+            new GitHubReleasesResolverFactory(),
+            new GameBananaUpdateResolverFactory()
+        };
     }
 }

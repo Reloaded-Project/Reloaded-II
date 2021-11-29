@@ -32,6 +32,7 @@ namespace Reloaded.Mod.Loader.IO.Services
             this.OnRemoveItem += OnRemoveItemHandler;
 
             Initialize(config.ModUserConfigDirectory, ModUserConfig.ConfigFileName, GetAllConfigs, context);
+            SetItemsById();
 
             _modConfigService = modConfigService;
             modConfigService.OnAddItem    += CreateUserConfigOnNewConfigCreated;
@@ -40,9 +41,21 @@ namespace Reloaded.Mod.Loader.IO.Services
             CreateConfigsForModsWithoutAny(context);
         }
 
-        private void OnRemoveItemHandler(PathTuple<ModUserConfig> obj) => ItemsById.Remove(obj.Config.ModId);
+        private void SetItemsById()
+        {
+            foreach (var item in Items)
+                ItemsById[item.Config.ModId] = item;
+        }
 
-        private void OnAddItemHandler(PathTuple<ModUserConfig> obj) => ItemsById[obj.Config.ModId] = obj;
+        private void OnRemoveItemHandler(PathTuple<ModUserConfig> obj)
+        {
+            ItemsById.Remove(obj.Config.ModId);
+        }
+
+        private void OnAddItemHandler(PathTuple<ModUserConfig> obj)
+        {
+            ItemsById[obj.Config.ModId] = obj;
+        }
 
         private void CreateConfigsForModsWithoutAny(SynchronizationContext context)
         {

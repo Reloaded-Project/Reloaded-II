@@ -9,9 +9,11 @@ using System.Windows;
 using System.Windows.Controls;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Update.Extractors;
 using Reloaded.WPF.Theme.Default;
+using Sewer56.DeltaPatchGenerator.Lib.Utility;
+using Sewer56.Update.Extractors.SevenZipSharp;
+using Sewer56.Update.Misc;
+using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
 using ObservableObject = Reloaded.WPF.MVVM.ObservableObject;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs
@@ -41,7 +43,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
     public class DownloadModArchiveViewModel : ObservableObject
     {
         public ObservableCollection<DownloadModDetails> Mods { get; set; } = new ObservableCollection<DownloadModDetails>();
-        public int Progress { get; set; }
+        public double Progress { get; set; }
 
         /* Setup & Teardown */
         public DownloadModArchiveViewModel(IEnumerable<Uri> uri)
@@ -63,8 +65,8 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
             {
                 await mod.DownloadAndExtract((sender, args) =>
                 {
-                    var currentModProgress = args.BytesReceived / (float)args.TotalBytesToReceive;
-                    var scaledModProgress  = currentModProgress / totalMods;
+                    var currentModProgress    = args.BytesReceived / (float)args.TotalBytesToReceive;
+                    var scaledModProgress     = currentModProgress / totalMods;
                     var progressFromOtherMods = maxProgressPerMod * modsComplete;
                     Progress = (int)Math.Round(scaledModProgress + progressFromOtherMods);
                 });
@@ -116,21 +118,21 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
         /// </summary>
         public async Task DownloadAndExtract(DownloadProgressChangedEventHandler progressChanged)
         {
+            using var tempDownloadDirectory = new TemporaryFolderAllocation();
+            using var tempExtractDirectory = new TemporaryFolderAllocation();
+            var tempFilePath = Path.Combine(tempDownloadDirectory.FolderPath, Path.GetRandomFileName());
+
             // Start the modification download.
-            byte[] data;
-            using (WebClient client = new WebClient())
-            {
-                client.DownloadProgressChanged += progressChanged;
-                data = await client.DownloadDataTaskAsync(Uri);
-            }
+            using WebClient client = new WebClient();
+            client.DownloadProgressChanged += progressChanged;
+            await client.DownloadFileTaskAsync(Uri, tempFilePath);
 
             /* Extract to Temp Directory */
-            string temporaryDirectory = GetTemporaryDirectory();
-            var archiveExtractor = new ArchiveExtractor();
-            await archiveExtractor.ExtractPackageAsync(data, temporaryDirectory);
+            var archiveExtractor = new SevenZipSharpExtractor();
+            await archiveExtractor.ExtractPackageAsync(tempFilePath, tempExtractDirectory.FolderPath);
 
             /* Get name of package. */
-            var configs      = ConfigReader<ModConfig>.ReadConfigurations(temporaryDirectory, ModConfig.ConfigFileName, default, int.MaxValue);
+            var configs      = ConfigReader<ModConfig>.ReadConfigurations(tempExtractDirectory.FolderPath, ModConfig.ConfigFileName, default, int.MaxValue);
             var loaderConfig = IoC.Get<LoaderConfig>();
 
             foreach (var config in configs)
@@ -140,15 +142,6 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs
                 string targetDirectory = Path.Combine(loaderConfig.ModConfigDirectory, configId);
                 IOEx.MoveDirectory(configDirectory, targetDirectory);
             }
-
-            Directory.Delete(temporaryDirectory, true);
-        }
-
-        private string GetTemporaryDirectory()
-        {
-            string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            Directory.CreateDirectory(tempDirectory);
-            return tempDirectory;
         }
     }
 }

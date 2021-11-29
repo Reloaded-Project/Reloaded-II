@@ -1,15 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using NuGet.Versioning;
+using Reloaded.Mod.Loader.Update.Utilities;
+using Sewer56.Update.Interfaces.Extensions;
+using Sewer56.Update.Packaging.Structures;
 
 namespace Reloaded.Mod.Loader.Update.Structures
 {
     public class ModUpdateSummary
     {
-        public List<ResolverManagerModResultPair> ResolverManagerResultPairs { get; private set; }
+        public List<ManagerModResultPair> ResolverManagerResultPairs { get; private set; }
         private List<ModUpdate> _updates;
 
         /* Create summary. */
-        public ModUpdateSummary(List<ResolverManagerModResultPair> resolverManagerResultPairs)
+        public ModUpdateSummary(List<ManagerModResultPair> resolverManagerResultPairs)
         {
             ResolverManagerResultPairs = resolverManagerResultPairs;
         }
@@ -34,24 +39,16 @@ namespace Reloaded.Mod.Loader.Update.Structures
                 foreach (var resultPairs in ResolverManagerResultPairs)
                 {
                     var modId = resultPairs.ModTuple.Config.ModId;
-                    var oldVersion = resultPairs.Resolver.GetCurrentVersion();
+                    var oldVersion = resultPairs.ModTuple.Config.ModVersion;
                     var newVersion = resultPairs.Result.LastVersion;
-                    var updateSize = resultPairs.Resolver.GetSize();
+                    var resolver   = ((IPackageResolverDownloadSize)resultPairs.Manager.Resolver);
+                    var updateSize = Task.Run(() => resolver.GetDownloadFileSizeAsync(resultPairs.Result.LastVersion, resultPairs.ModTuple.GetVerificationInfo())).Result;
 
-                    _updates.Add(new ModUpdate(modId, oldVersion, newVersion, updateSize));
+                    _updates.Add(new ModUpdate(modId, NuGetVersion.Parse(oldVersion), newVersion, updateSize));
                 }
             }
 
             return _updates.ToArray();
-        }
-
-        /// <summary>
-        /// Returns the size of all of the updates combined in bytes.
-        /// </summary>
-        public long GetTotalSize()
-        {
-            var updates = GetUpdateInfo();
-            return updates.Sum(x => x.UpdateSize);
         }
     }
 }

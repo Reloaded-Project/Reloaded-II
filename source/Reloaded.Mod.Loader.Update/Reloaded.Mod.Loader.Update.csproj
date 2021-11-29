@@ -6,19 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DeepCloner" Version="0.10.3" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.0" />
     <PackageReference Include="NuGet.Packaging" Version="5.7.0" />
     <PackageReference Include="NuGet.Packaging.Core" Version="5.7.0" />
     <PackageReference Include="NuGet.Protocol" Version="5.7.0" />
     <PackageReference Include="Octokit" Version="0.50.0" />
-    <PackageReference Include="Onova" Version="2.6.2" />
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
     <PackageReference Include="Sewer56.Update" Version="1.2.2" />
     <PackageReference Include="Sewer56.Update.Extractors.SevenZipSharp" Version="1.0.2" GeneratePathProperty="true" />
     <PackageReference Include="Sewer56.Update.Resolvers.GameBanana" Version="1.1.0" />
     <PackageReference Include="Sewer56.Update.Resolvers.GitHub" Version="1.1.0" />
     <PackageReference Include="Sewer56.Update.Resolvers.NuGet" Version="1.1.0" />
-    <PackageReference Include="SharpCompress" Version="0.29.0" />
   </ItemGroup>
 
   <ItemGroup>

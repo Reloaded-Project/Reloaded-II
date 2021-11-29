@@ -116,6 +116,11 @@ namespace Reloaded.Mod.Loader.IO.Config
         /// </summary>
         public bool LoadModsInParallel { get; set; } = true;
 
+        /// <summary>
+        /// Force early versions of mods to be downloaded.
+        /// </summary>
+        public bool ForceModPrereleases { get; set; } = false;
+
         /* Some mods are universal :wink: */
 
         public LoaderConfig() { }

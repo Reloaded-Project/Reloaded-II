@@ -6,7 +6,6 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility.Parsers;
 using Reloaded.WPF.Utilities;
-using SharpCompress.Archives.SevenZip;
 
 namespace Reloaded.Mod.Launcher.Utility
 {
@@ -182,22 +181,10 @@ namespace Reloaded.Mod.Launcher.Utility
         {
             var libraryDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var compressedLoaderPath = $"{libraryDirectory}/Loader/Asi/UltimateAsiLoader.7z";
-            var archive = SevenZipArchive.Open(compressedLoaderPath);
-            ExtractFileWithName(is64bit ? "ASILoader64.dll" : "ASILoader32.dll");
-
-            void ExtractFileWithName(string name)
-            {
-                foreach (var entry in archive.Entries)
-                {
-                    if (!String.Equals(entry.Key, name, StringComparison.OrdinalIgnoreCase))
-                        continue;
-
-                    var stream = entry.OpenEntryStream();
-                    using var writeStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write);
-                    stream.CopyTo(writeStream);
-                    break;
-                }
-            }
+            
+            var archive = new SevenZip.SevenZipExtractor(compressedLoaderPath);
+            using var writeStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write);
+            archive.ExtractFile(is64bit ? "ASILoader64.dll" : "ASILoader32.dll", writeStream);
         }
 
         #region Constants

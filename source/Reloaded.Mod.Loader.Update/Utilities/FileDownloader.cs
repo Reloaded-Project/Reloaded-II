@@ -20,12 +20,10 @@ namespace Reloaded.Mod.Loader.Update.Utilities
             DownloadProgressChangedEventHandler downloadProgressChanged = null)
         {
             // Start the modification download.
-            using (WebClient client = new WebClient())
-            {
-                client.DownloadDataCompleted += downloadCompleted;
-                client.DownloadProgressChanged += downloadProgressChanged;
-                return await client.DownloadDataTaskAsync(uri);
-            }
+            using WebClient client = new WebClient();
+            client.DownloadDataCompleted += downloadCompleted;
+            client.DownloadProgressChanged += downloadProgressChanged;
+            return await client.DownloadDataTaskAsync(uri);
         }
 
     }

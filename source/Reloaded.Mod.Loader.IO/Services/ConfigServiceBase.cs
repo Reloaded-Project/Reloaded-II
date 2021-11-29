@@ -97,6 +97,7 @@ namespace Reloaded.Mod.Loader.IO.Services
                 {
                     ItemsByPath[item.Path] = item;
                     ItemsByFolder[Path.GetDirectoryName(item.Path)] = item;
+                    Items.Add(item);
                 }
 
                 _context.Post(() =>

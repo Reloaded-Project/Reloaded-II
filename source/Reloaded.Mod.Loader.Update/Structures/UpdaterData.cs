@@ -1,4 +1,6 @@
-﻿using Reloaded.Mod.Loader.Update.Utilities.Nuget;
+﻿using System.Collections.Generic;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
+using Sewer56.Update.Structures;
 
 namespace Reloaded.Mod.Loader.Update.Structures
 {
@@ -10,11 +12,17 @@ namespace Reloaded.Mod.Loader.Update.Structures
         /// <summary>
         /// Contains the repository data.
         /// </summary>
-        public AggregateNugetRepository AggregateNugetRepository { get; set; }
+        public List<string> NuGetFeeds { get; set; }
 
-        public UpdaterData(AggregateNugetRepository aggregateNugetRepository)
+        /// <summary>
+        /// Common settings for the package resolvers.
+        /// </summary>
+        public CommonPackageResolverSettings CommonPackageResolverSettings { get; set; }
+
+        public UpdaterData(List<string> nugetFeeds, CommonPackageResolverSettings commonPackageResolverSettings)
         {
-            AggregateNugetRepository = aggregateNugetRepository;
+            NuGetFeeds = nugetFeeds;
+            CommonPackageResolverSettings = commonPackageResolverSettings;
         }
     }
 }

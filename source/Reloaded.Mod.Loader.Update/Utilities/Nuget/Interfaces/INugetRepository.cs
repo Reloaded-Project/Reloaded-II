@@ -9,6 +9,11 @@ namespace Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces
     public interface INugetRepository
     {
         /// <summary>
+        /// Gets the URL used to create this repository.
+        /// </summary>
+        public string SourceUrl { get; }
+
+        /// <summary>
         /// Searches for packages using a specific term.
         /// </summary>
         /// <param name="includePrereleases">True if to include prerelease packages, else false.</param>

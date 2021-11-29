@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
-using Onova;
-using Onova.Models;
+using NuGet.Versioning;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Structures;
+using Sewer56.Update;
+using Sewer56.Update.Extractors.SevenZipSharp;
+using Sewer56.Update.Misc;
+using Sewer56.Update.Packaging.Structures;
+using Sewer56.Update.Structures;
 
 namespace Reloaded.Mod.Loader.Update
 {
@@ -16,13 +21,15 @@ namespace Reloaded.Mod.Loader.Update
     public class Updater
     {
         private IEnumerable<PathTuple<ModConfig>>  _mods;
-        private List<ResolverManagerModResultPair> _resolversWithUpdates;
+        private readonly Dictionary<string, PathTuple<ModUserConfig>> _userConfigsById;
+        private List<ManagerModResultPair> _resolversWithUpdates;
         private UpdaterData _data;
 
         /* Instantiation */
-        public Updater(IEnumerable<PathTuple<ModConfig>> mods, UpdaterData data)
+        public Updater(IEnumerable<PathTuple<ModConfig>> mods, Dictionary<string, PathTuple<ModUserConfig>> itemsById, UpdaterData data)
         {
             _mods = mods;
+            _userConfigsById = itemsById;
             _data = data;
         }
 
@@ -33,32 +40,29 @@ namespace Reloaded.Mod.Loader.Update
         /// </summary>
         public async Task<ModUpdateSummary> GetUpdateDetails()
         {
-            if (_resolversWithUpdates == null)
-            {
-                var resolverManagerPairs = new List<ResolverManagerModResultPair>();
-                var resolverTuples = GetResolvers();
-                foreach (var resolverTuple in resolverTuples)
-                {
-                    var modTuple = resolverTuple.ModTuple;
-                    var version  = resolverTuple.Resolver.GetCurrentVersion();
-
-                    // Note: Since R2R Support was added, we cannot predict which DLL will be in use. Just return the config file as main file.
-                    string filePath = modTuple.Path;
-                    var metadata    = new AssemblyMetadata(IOEx.ForceValidFilePath(modTuple.Config.ModName), version, filePath);
-
-                    var manager         = new UpdateManager(metadata, resolverTuple.Resolver, resolverTuple.Resolver.Extractor);
-                    var updateResult    = await manager.CheckForUpdatesAsync();
-
-                    if (updateResult.CanUpdate)
-                        resolverManagerPairs.Add(new ResolverManagerModResultPair(resolverTuple.Resolver, manager, updateResult, modTuple));
-                    else
-                        resolverTuple.Resolver.PostUpdateCallback(false);
-                }
-
-                _resolversWithUpdates = resolverManagerPairs;
+            if (_resolversWithUpdates != null) 
                 return new ModUpdateSummary(_resolversWithUpdates);
+            
+            // TODO: Work from Here!
+            var resolverManagerPairs = new List<ManagerModResultPair>();
+            var resolverTuples       = GetResolvers();
+            var extractor            = new SevenZipSharpExtractor();
+
+            foreach (var resolverTuple in resolverTuples)
+            {
+                var modTuple = resolverTuple.ModTuple;
+                var filePath = modTuple.Config.GetDllPath(modTuple.Path);
+                var baseDirectory = Path.GetDirectoryName(modTuple.Path);
+
+                var metadata     = new ItemMetadata(NuGetVersion.Parse(modTuple.Config.ModVersion), filePath, baseDirectory);
+                var manager      = await UpdateManager<Empty>.CreateAsync(metadata, resolverTuple.Resolver, extractor);
+                var updateResult = await manager.CheckForUpdatesAsync();
+
+                if (updateResult.CanUpdate)
+                    resolverManagerPairs.Add(new ManagerModResultPair(manager, updateResult, modTuple));
             }
 
+            _resolversWithUpdates = resolverManagerPairs;
             return new ModUpdateSummary(_resolversWithUpdates);
         }
 
@@ -70,28 +74,18 @@ namespace Reloaded.Mod.Loader.Update
         public async Task Update(ModUpdateSummary summary, IProgress<double> progressHandler = null)
         {
             // Guard against null.
-            int pairCount = summary.ResolverManagerResultPairs.Count;
+            var progressMixer      = new ProgressSlicer(progressHandler);
+            var singleItemProgress = 1.0 / summary.ResolverManagerResultPairs.Count;
 
-            var completeMods                = new Box<int>(0);
-            float completeModSegmentLength  = (float) 1 / pairCount;
-            Progress<double> totalProgressHandler = null;
-
-            if (progressHandler != null)
+            for (var x = 0; x < summary.ResolverManagerResultPairs.Count; x++)
             {
-                totalProgressHandler = new Progress<double>(progress =>
-                {
-                    progressHandler.Report((progress / pairCount) + (completeModSegmentLength * completeMods.Value));
-                });
-            }
-
-            foreach (var pair in summary.ResolverManagerResultPairs)
-            {
+                var slice   = progressMixer.Slice(singleItemProgress);
+                var pair    = summary.ResolverManagerResultPairs[x];
                 var manager = pair.Manager;
                 var version = pair.Result.LastVersion;
-                await manager.PrepareUpdateAsync(version, totalProgressHandler);
-                manager.LaunchUpdater(version, false);
-                pair.Resolver.PostUpdateCallback(true);
-                completeMods.Value += 1;
+
+                await manager.PrepareUpdateAsync(version, slice);
+                await manager.StartUpdateAsync(version, new OutOfProcessOptions(), new UpdateOptions());
             }
         }
 
@@ -100,24 +94,13 @@ namespace Reloaded.Mod.Loader.Update
             var modResolverPairs = new List<ResolverModPair>();
             foreach (var mod in _mods)
             {
-                var resolver = ResolverFactory.GetResolver(mod, _data);
+                _userConfigsById.TryGetValue(mod.Config.ModId, out var userConfig);
+                var resolver = ResolverFactory.GetResolver(mod, userConfig, _data);
                 if (resolver != null)
-                {
-                    resolver.Construct(mod);
                     modResolverPairs.Add(new ResolverModPair(resolver, mod));
-                }
             }
 
             return modResolverPairs;
-        }
-
-        private class Box<T>
-        {
-            public T Value { get; set; }
-            public Box(T value)
-            {
-                Value = value;
-            }
         }
     }
 }

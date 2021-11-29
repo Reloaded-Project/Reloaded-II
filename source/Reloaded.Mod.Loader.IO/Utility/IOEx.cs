@@ -179,6 +179,15 @@ namespace Reloaded.Mod.Loader.IO.Utility
             catch (Exception e) { /* Ignored */ }
         }
 
+        /// <summary>
+        /// Tries to delete a file, if possible.
+        /// </summary>
+        public static void TryDeleteFile(string path)
+        {
+            try { File.Delete(path); }
+            catch (Exception e) { /* Ignored */ }
+        }
+
         private static void GetFilesExDirectories(string directory, int maxDepth, int minDepth, int currentDepth, List<string> directories)
         {
             if (currentDepth >= minDepth - 1 && currentDepth < maxDepth)

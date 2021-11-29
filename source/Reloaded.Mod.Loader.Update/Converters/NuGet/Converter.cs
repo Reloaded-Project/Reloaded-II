@@ -27,7 +27,7 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
             SetNullPropertyValues(modConfig);
 
             // Create output directories.
-            var directory = GetDirectory;
+            var directory = GetDirectory();
             if (Directory.Exists(directory))
                 Directory.Delete(directory, true);
 
@@ -91,7 +91,8 @@ namespace Reloaded.Mod.Loader.Update.Converters.NuGet
             return new Package(metadata);
         }
 
-        private static string GetDirectory => $"{Path.GetTempPath()}\\{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
+        private static string GetDirectory() => $"{Path.GetTempPath()}\\{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
+
         private static void SetNullPropertyValues(object obj)
         {
             foreach (var property in obj.GetType().GetProperties())
