@@ -1,42 +1,41 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using Reloaded.Mod.Launcher.Models.Model.DownloadModsPage;
+using Reloaded.Mod.Launcher.Lib.Models.Model.DownloadPackagePage;
 using Reloaded.WPF.Utilities;
 
-namespace Reloaded.Mod.Launcher.Converters
+namespace Reloaded.Mod.Launcher.Converters;
+
+public class DownloadModStatusToString : IValueConverter
 {
-    public class DownloadModStatusToString : IValueConverter
+    public static DownloadModStatusToString Instance { get; set; } = new DownloadModStatusToString();
+
+    private XamlResource<string> _downloadModDefaultText        = new XamlResource<string>("DownloadModsDownload");
+    private XamlResource<string> _downloadModDownloading        = new XamlResource<string>("DownloadModsDownloading");
+    private XamlResource<string> _downloadModAlreadyDownloaded  = new XamlResource<string>("DownloadModsAlreadyDownloaded");
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public static DownloadModStatusToString Instance { get; set; } = new DownloadModStatusToString();
-
-        private XamlResource<string> _downloadModDefaultText        = new XamlResource<string>("DownloadModsDownload");
-        private XamlResource<string> _downloadModDownloading        = new XamlResource<string>("DownloadModsDownloading");
-        private XamlResource<string> _downloadModAlreadyDownloaded  = new XamlResource<string>("DownloadModsAlreadyDownloaded");
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        if (value is DownloadPackageStatus status)
         {
-            if (value is DownloadModStatus status)
+            switch (status)
             {
-                switch (status)
-                {
-                    case DownloadModStatus.Default:
-                        return _downloadModDefaultText.Get();
+                case DownloadPackageStatus.Default:
+                    return _downloadModDefaultText.Get();
 
-                    case DownloadModStatus.Downloading:
-                        return _downloadModDownloading.Get();
+                case DownloadPackageStatus.Downloading:
+                    return _downloadModDownloading.Get();
 
-                    default:
-                        return _downloadModAlreadyDownloaded.Get();
-                }
+                default:
+                    return _downloadModAlreadyDownloaded.Get();
             }
-
-            return _downloadModDefaultText.Get();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        return _downloadModDefaultText.Get();
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

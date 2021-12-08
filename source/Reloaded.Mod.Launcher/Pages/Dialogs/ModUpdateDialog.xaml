@@ -55,7 +55,8 @@
 
             <ProgressBar Grid.Column="0"
                              Height="{Binding Path=Height, ElementName=Button}"
-                             Value="{Binding Progress}" />
+                             Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
+                             Maximum="100" />
 
             <Button Grid.Column="2" Content="{DynamicResource UpdateModDownload}" 
                     x:Name="Button"

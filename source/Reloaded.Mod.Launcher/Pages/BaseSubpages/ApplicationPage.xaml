@@ -7,7 +7,6 @@
       xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
       xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
       xmlns:reloadedWpfControls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
-      xmlns:addAppPage="clr-namespace:Reloaded.Mod.Launcher.Commands.EditAppPage"
       xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
       mc:Ignorable="d"              
       d:DesignHeight="600" 

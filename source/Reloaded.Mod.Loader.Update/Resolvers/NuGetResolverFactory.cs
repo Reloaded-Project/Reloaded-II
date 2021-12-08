@@ -9,41 +9,44 @@ using Sewer56.Update.Resolvers.NuGet;
 using Sewer56.Update.Resolvers.NuGet.Utilities;
 using Sewer56.Update.Structures;
 
-namespace Reloaded.Mod.Loader.Update.Resolvers
+namespace Reloaded.Mod.Loader.Update.Resolvers;
+
+/// <summary>
+/// Allows for updating packages sourced from NuGet repositories.
+/// </summary>
+public class NuGetResolverFactory : IResolverFactory
 {
-    public class NuGetResolverFactory : IResolverFactory
+    /// <inheritdoc />
+    public string ResolverId { get; } = "NuGet";
+
+    /// <inheritdoc/>
+    public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig) { }
+
+    /// <inheritdoc/>
+    public IPackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
     {
-        public string ResolverId { get; } = "NuGet";
+        var resolvers = new List<IPackageResolver>();
 
-        /// <inheritdoc/>
-        public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig) { }
-
-        /// <inheritdoc/>
-        public IPackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
+        foreach (var source in data.NuGetFeeds)
         {
-            var resolvers = new List<IPackageResolver>();
-
-            foreach (var source in data.NuGetFeeds)
-            {
-                resolvers.Add(new NuGetUpdateResolver(
-                    new NuGetUpdateResolverSettings()
-                    {
-                        AllowUnlisted = false,
-                        NugetRepository = new NugetRepository(source),
-                        PackageId = mod.Config.ModId
-                    },
-                    new CommonPackageResolverSettings()
-                    {
-                        AllowPrereleases = data.CommonPackageResolverSettings.AllowPrereleases,
-                        MetadataFileName = data.CommonPackageResolverSettings.MetadataFileName
-                    }
-                ));
-            }
-
-            if (resolvers.Count > 0)
-                return new AggregatePackageResolver(resolvers);
-            
-            return null;
+            resolvers.Add(new NuGetUpdateResolver(
+                new NuGetUpdateResolverSettings()
+                {
+                    AllowUnlisted = false,
+                    NugetRepository = new NugetRepository(source),
+                    PackageId = mod.Config.ModId
+                },
+                new CommonPackageResolverSettings()
+                {
+                    AllowPrereleases = data.CommonPackageResolverSettings.AllowPrereleases,
+                    MetadataFileName = data.CommonPackageResolverSettings.MetadataFileName
+                }
+            ));
         }
+
+        if (resolvers.Count > 0)
+            return new AggregatePackageResolver(resolvers);
+            
+        return null;
     }
 }

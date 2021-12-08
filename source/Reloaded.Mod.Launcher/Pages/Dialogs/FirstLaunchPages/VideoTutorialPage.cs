@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using Reloaded.Mod.Launcher.Lib;
 using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
 using Reloaded.WPF.Theme.Default;
 

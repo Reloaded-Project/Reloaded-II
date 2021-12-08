@@ -1,20 +1,19 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser
-{
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct IMAGE_IMPORT_BY_NAME
-    {
-        public short Hint;
-        public fixed byte NameBytes[1];
+namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser;
 
-        public string Name
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+public unsafe struct IMAGE_IMPORT_BY_NAME
+{
+    public short Hint;
+    public fixed byte NameBytes[1];
+
+    public string Name
+    {
+        get
         {
-            get
-            {
-                fixed (byte* pNameBytes = NameBytes)
-                    return new string((sbyte*)pNameBytes);
-            }
+            fixed (byte* pNameBytes = NameBytes)
+                return new string((sbyte*)pNameBytes);
         }
     }
 }

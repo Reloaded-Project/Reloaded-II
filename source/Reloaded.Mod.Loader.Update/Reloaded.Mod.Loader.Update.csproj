@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>preview</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,7 @@
     <PackageReference Include="NuGet.Protocol" Version="5.7.0" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
-    <PackageReference Include="Sewer56.Update" Version="1.2.2" />
+    <PackageReference Include="Sewer56.Update" Version="1.2.4" />
     <PackageReference Include="Sewer56.Update.Extractors.SevenZipSharp" Version="1.0.2" GeneratePathProperty="true" />
     <PackageReference Include="Sewer56.Update.Resolvers.GameBanana" Version="1.1.0" />
     <PackageReference Include="Sewer56.Update.Resolvers.GitHub" Version="1.1.0" />

@@ -3,27 +3,34 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Reloaded.Mod.Launcher.Converters
+namespace Reloaded.Mod.Launcher.Converters;
+
+[ValueConversion(typeof(bool), typeof(Visibility))]
+public class BooleanToVisibilityConverter : IValueConverter
 {
-    [ValueConversion(typeof(bool), typeof(Visibility))]
-    public class BooleanToVisibilityConverter : IValueConverter
+    public static BooleanToVisibilityConverter Instance = new BooleanToVisibilityConverter(Visibility.Hidden);
+    public static BooleanToVisibilityConverter InstanceCollapsed = new BooleanToVisibilityConverter(Visibility.Collapsed);
+
+    private Visibility _hiddenState;
+
+    public BooleanToVisibilityConverter(Visibility hiddenState)
     {
-        public static BooleanToVisibilityConverter Instance = new BooleanToVisibilityConverter();
+        _hiddenState = hiddenState;
+    }
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is bool boolValue)
         {
-            if (value is bool boolValue)
-            {
-                if (boolValue)
-                    return Visibility.Visible;
-            }
-
-            return Visibility.Hidden;
+            if (boolValue)
+                return Visibility.Visible;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        return _hiddenState;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

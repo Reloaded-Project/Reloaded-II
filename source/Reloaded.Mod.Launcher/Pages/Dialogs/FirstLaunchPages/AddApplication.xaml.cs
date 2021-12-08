@@ -1,5 +1,6 @@
-﻿using Reloaded.Mod.Launcher.Commands.EditAppPage;
-using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs.FirstLaunch;
+﻿using Reloaded.Mod.Launcher.Lib;
+using Reloaded.Mod.Launcher.Lib.Commands.Application;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog.FirstLaunch;
 using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
@@ -18,14 +19,11 @@ public partial class AddApplication : ReloadedPage
 
     private void SkipTutorial_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.FirstLaunchViewModel.Close();
 
-    private void SkipStep_Click(object sender, System.Windows.RoutedEventArgs e)
-    {
-        ViewModel.FirstLaunchViewModel.GoToNextStep();
-    }
+    private void SkipStep_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.FirstLaunchViewModel.GoToNextStep();
 
     private void AddApplication_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        var parameters = new AddApplicationCommand.AddApplicationCommandParams();
+        var parameters = new AddApplicationCommandParams();
         ViewModel.AddApplicationCommand.Execute(parameters);
 
         if (parameters.ResultCreatedApplication)

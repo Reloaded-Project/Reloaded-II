@@ -115,6 +115,6 @@
                Name="ContentFrame" 
                ClipToBounds="True"
                CurrentPage="{Binding Path=Page,
-                                     Converter={x:Static converters:ApplicationBaseSubPageToPageConverter.Instance}}"/>
+                                     Converter={x:Static converters:ApplicationPageToPageConverter.Instance}}"/>
     </Grid>
 </pages:ReloadedIIPage>
