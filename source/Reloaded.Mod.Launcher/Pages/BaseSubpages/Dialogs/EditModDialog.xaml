@@ -7,6 +7,7 @@
         xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
         mc:Ignorable="d"
         Title="{DynamicResource TitleEditModDialog}" 
         Height="550" 
@@ -46,10 +47,16 @@
                              Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
                              Margin="{DynamicResource CommonItemVerticalMarginSmall}">
                         <Image x:Name="ModIcon"
-                               Source="{Binding Image}" 
                                ToolTip="{DynamicResource AddAppImageTooltip}" 
                                ToolTipService.InitialShowDelay="0"
-                               PreviewMouseDown="ModIcon_PreviewMouseDown"/>
+                               PreviewMouseDown="ModIcon_PreviewMouseDown">
+                            <Image.Source>
+                                <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="ConfigTuple" IsAsync="True"/>
+                                    <Binding Path="ConfigTuple.Config.ModIcon" IsAsync="True"/>
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
                     </Viewbox>
 
                     <!-- Mod Properties -->

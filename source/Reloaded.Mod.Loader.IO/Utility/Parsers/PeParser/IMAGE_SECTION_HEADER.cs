@@ -1,41 +1,40 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser
+namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser;
+
+[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
+public struct IMAGE_SECTION_HEADER
 {
-    [StructLayout(LayoutKind.Explicit, CharSet = CharSet.Ansi)]
-    public struct IMAGE_SECTION_HEADER
-    {
-        [FieldOffset(0)]
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
-        public string Name;
+    [FieldOffset(0)]
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
+    public string Name;
 
-        [FieldOffset(8)]
-        public uint VirtualSize;
+    [FieldOffset(8)]
+    public uint VirtualSize;
 
-        [FieldOffset(12)]
-        public uint VirtualAddress;
+    [FieldOffset(12)]
+    public uint VirtualAddress;
 
-        [FieldOffset(16)]
-        public uint SizeOfRawData;
+    [FieldOffset(16)]
+    public uint SizeOfRawData;
 
-        [FieldOffset(20)]
-        public uint PointerToRawData;
+    [FieldOffset(20)]
+    public uint PointerToRawData;
 
-        [FieldOffset(24)]
-        public uint PointerToRelocations;
+    [FieldOffset(24)]
+    public uint PointerToRelocations;
 
-        [FieldOffset(28)]
-        public uint PointerToLinenumbers;
+    [FieldOffset(28)]
+    public uint PointerToLinenumbers;
 
-        [FieldOffset(32)]
-        public ushort NumberOfRelocations;
+    [FieldOffset(32)]
+    public ushort NumberOfRelocations;
 
-        [FieldOffset(34)]
-        public ushort NumberOfLinenumbers;
+    [FieldOffset(34)]
+    public ushort NumberOfLinenumbers;
 
-        [FieldOffset(36)]
-        public DataSectionFlags Characteristics;
+    [FieldOffset(36)]
+    public DataSectionFlags Characteristics;
 
-        public string Section => new string(Name);
-    }
+    public string Section => new string(Name);
 }

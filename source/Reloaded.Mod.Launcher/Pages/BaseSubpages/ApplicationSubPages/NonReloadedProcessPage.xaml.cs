@@ -1,32 +1,32 @@
-﻿using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
-using Reloaded.Mod.Launcher.Utility;
+﻿using Reloaded.Mod.Launcher.Lib;
+using Reloaded.Mod.Launcher.Lib.Utility;
+using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
 
-namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages
+namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
+
+/// <summary>
+/// Interaction logic for NonReloadedProcessPage.xaml
+/// </summary>
+public partial class NonReloadedProcessPage : ApplicationSubPage
 {
-    /// <summary>
-    /// Interaction logic for NonReloadedProcessPage.xaml
-    /// </summary>
-    public partial class NonReloadedProcessPage : ApplicationSubPage
+    public NonReloadedPageViewModel ViewModel { get; set; }
+
+    public NonReloadedProcessPage()
     {
-        public NonReloadedPageViewModel ViewModel { get; set; }
+        InitializeComponent();
+        ViewModel = IoC.Get<NonReloadedPageViewModel>();
+    }
 
-        public NonReloadedProcessPage()
+    private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        var process = ViewModel.ApplicationViewModel.SelectedProcess;
+        if (!process!.HasExited)
         {
-            InitializeComponent();
-            ViewModel = IoC.Get<NonReloadedPageViewModel>();
-        }
+            var injector = new ApplicationInjector(ViewModel.ApplicationViewModel.SelectedProcess!);
+            injector.Inject();
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var process = ViewModel.ApplicationViewModel.SelectedProcess;
-            if (!process.HasExited)
-            {
-                var injector = new ApplicationInjector(ViewModel.ApplicationViewModel.SelectedProcess);
-                injector.Inject();
-
-                // Exit page.
-                ViewModel.ApplicationViewModel.ChangeApplicationPage(Enum.ApplicationSubPage.ReloadedProcess);
-            }
+            // Exit page.
+            ViewModel.ApplicationViewModel.ChangeApplicationPage(Lib.Models.Model.Pages.ApplicationSubPage.ReloadedProcess);
         }
     }
 }

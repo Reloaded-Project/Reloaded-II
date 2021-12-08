@@ -6,7 +6,6 @@
              xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
-             xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.EditAppPage"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
              xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"

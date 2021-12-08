@@ -1,26 +1,25 @@
-﻿using System;
+﻿using Reloaded.Mod.Launcher.Lib;
 using Reloaded.WPF.Theme.Default;
 
-namespace Reloaded.Mod.Launcher
+namespace Reloaded.Mod.Launcher;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : ReloadedWindow
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : ReloadedWindow
+    public Lib.Models.ViewModel.WindowViewModel RealViewModel { get; set; }
+
+    public MainWindow()
     {
-        public Models.ViewModel.WindowViewModel RealViewModel { get; set; }
+        // Make viewmodel of this window available.
+        RealViewModel = IoC.GetConstant<Lib.Models.ViewModel.WindowViewModel>();
 
-        public MainWindow()
-        {
-            // Make viewmodel of this window available.
-            RealViewModel = IoC.GetConstant<Models.ViewModel.WindowViewModel>();
+        // Initialize XAML.
+        InitializeComponent();
 
-            // Initialize XAML.
-            InitializeComponent();
-
-            // Bind other models.
-            IoC.Kernel.Bind<WindowViewModel>().ToConstant((WindowViewModel)this.DataContext); // Controls window properties.
-            IoC.Kernel.Bind<MainWindow>().ToConstant(this);
-        }
+        // Bind other models.
+        IoC.Kernel.Bind<WindowViewModel>().ToConstant((WindowViewModel)this.DataContext); // Controls window properties.
+        IoC.Kernel.Bind<MainWindow>().ToConstant(this);
     }
 }

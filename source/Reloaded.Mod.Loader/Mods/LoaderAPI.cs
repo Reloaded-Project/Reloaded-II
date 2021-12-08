@@ -8,145 +8,144 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Loader.IO.Config;
 
-namespace Reloaded.Mod.Loader.Mods
+namespace Reloaded.Mod.Loader.Mods;
+
+// ReSharper disable once InconsistentNaming
+public class LoaderAPI : IModLoader
 {
-    // ReSharper disable once InconsistentNaming
-    public class LoaderAPI : IModLoader
+    /* Controller to mod mapping for GetController<T>, MakeInterfaces<T> */
+    private readonly ConcurrentDictionary<Type, ModGenericTuple<object>> _controllerModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
+    private readonly ConcurrentDictionary<Type, ModGenericTuple<object>> _interfaceModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
+    private readonly Loader _loader;
+
+    public LoaderAPI(Loader loader)
     {
-        /* Controller to mod mapping for GetController<T>, MakeInterfaces<T> */
-        private readonly ConcurrentDictionary<Type, ModGenericTuple<object>> _controllerModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
-        private readonly ConcurrentDictionary<Type, ModGenericTuple<object>> _interfaceModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
-        private readonly Loader _loader;
+        _loader = loader;
+        ModUnloading += AutoDisposeController;
+        ModUnloading += AutoDisposePlugin;
+    }
 
-        public LoaderAPI(Loader loader)
+    private void AutoDisposeController(IModV1 modToRemove, IModConfigV1 modConfigToRemove)
+    {
+        // Note: Assumes no copying takes place.
+        foreach (var mapping in _controllerModMapping.ToArray())
         {
-            _loader = loader;
-            ModUnloading += AutoDisposeController;
-            ModUnloading += AutoDisposePlugin;
-        }
-
-        private void AutoDisposeController(IModV1 modToRemove, IModConfigV1 modConfigToRemove)
-        {
-            // Note: Assumes no copying takes place.
-            foreach (var mapping in _controllerModMapping.ToArray())
+            var mod = mapping.Value.Mod;
+            if (mod.Equals(modToRemove))
             {
-                var mod = mapping.Value.Mod;
-                if (mod.Equals(modToRemove))
-                {
-                    _controllerModMapping.Remove(mapping.Key, out _);
-                }
+                _controllerModMapping.Remove(mapping.Key, out _);
+            }
+        }
+    }
+
+    private void AutoDisposePlugin(IModV1 modToRemove, IModConfigV1 modConfigToRemove)
+    {
+        // Note: Assumes no copying takes place.
+        foreach (var mapping in _interfaceModMapping.ToArray())
+        {
+            var mod = mapping.Value.Mod;
+            if (mod.Equals(modToRemove))
+            {
+                _interfaceModMapping.Remove(mapping.Key, out _);
+            }
+        }
+    }
+
+    /* IModLoader V1 */
+
+    /* Events */
+    public Action OnModLoaderInitialized                { get; set; } = () => { };
+    public Action<IModV1, IModConfigV1> ModLoading      { get; set; } = (a, b) => { };
+    public Action<IModV1, IModConfigV1> ModLoaded       { get; set; } = (a, b) => { };
+    public Action<IModV1, IModConfigV1> ModUnloading    { get; set; } = (a, b) => { };
+
+    /* Properties */
+    public Version GetLoaderVersion()           => Assembly.GetExecutingAssembly().GetName().Version;
+    public IApplicationConfigV1 GetAppConfig()  => _loader.Application;
+    public ILoggerV1 GetLogger()                => _loader.Logger;
+
+    /* Functions */
+    public ModGenericTuple<IModConfigV1>[] GetActiveMods()
+    {
+        var modifications   = _loader.Manager.GetModifications();
+        var activeMods      = new ModGenericTuple<IModConfigV1>[modifications.Count];
+        using (var enumerator = modifications.GetEnumerator())
+        {
+            for (int x = 0; x < modifications.Count; x++)
+            {
+                enumerator.MoveNext();
+                var current = enumerator.Current;
+                activeMods[x] = new ModGenericTuple<IModConfigV1>(current.Mod, current.ModConfig);
             }
         }
 
-        private void AutoDisposePlugin(IModV1 modToRemove, IModConfigV1 modConfigToRemove)
+        return activeMods;
+    }
+
+    public WeakReference<T>[] MakeInterfaces<T>() where T : class
+    {
+        var modifications = _loader.Manager.GetModifications();
+        var interfaces = new List<WeakReference<T>>();
+
+        foreach (var mod in modifications)
         {
-            // Note: Assumes no copying takes place.
-            foreach (var mapping in _interfaceModMapping.ToArray())
+            var defaultAssembly = mod.Context?.LoadDefaultAssembly();
+            var entryPoints = defaultAssembly?.GetTypes().Where(t => typeof(T).IsAssignableFrom(t) && !t.IsAbstract);
+            if (entryPoints == null) 
+                continue;
+
+            foreach (var entryPoint in entryPoints)
             {
-                var mod = mapping.Value.Mod;
-                if (mod.Equals(modToRemove))
-                {
-                    _interfaceModMapping.Remove(mapping.Key, out _);
-                }
+                var instance = (T)Activator.CreateInstance(entryPoint);
+                interfaces.Add(new WeakReference<T>(instance));
+
+                // Store strong reference in mod loader only.
+                _interfaceModMapping[typeof(T)] = new ModGenericTuple<object>(mod.Mod, instance);
             }
         }
 
-        /* IModLoader V1 */
+        return interfaces.ToArray();
+    }
 
-        /* Events */
-        public Action OnModLoaderInitialized                { get; set; } = () => { };
-        public Action<IModV1, IModConfigV1> ModLoading      { get; set; } = (a, b) => { };
-        public Action<IModV1, IModConfigV1> ModLoaded       { get; set; } = (a, b) => { };
-        public Action<IModV1, IModConfigV1> ModUnloading    { get; set; } = (a, b) => { };
+    public void AddOrReplaceController<T>(IModV1 owner, T instance)
+    {
+        _controllerModMapping[typeof(T)] = new ModGenericTuple<object>(owner, instance);
+    }
 
-        /* Properties */
-        public Version GetLoaderVersion()           => Assembly.GetExecutingAssembly().GetName().Version;
-        public IApplicationConfigV1 GetAppConfig()  => _loader.Application;
-        public ILoggerV1 GetLogger()                => _loader.Logger;
+    public void RemoveController<T>()
+    {
+        _controllerModMapping.TryRemove(typeof(T), out _);
+    }
 
-        /* Functions */
-        public ModGenericTuple<IModConfigV1>[] GetActiveMods()
+    public WeakReference<T> GetController<T>() where T : class
+    {
+        var tType = typeof(T);
+        foreach (var key in _controllerModMapping.Keys)
         {
-            var modifications   = _loader.Manager.GetModifications();
-            var activeMods      = new ModGenericTuple<IModConfigV1>[modifications.Count];
-            using (var enumerator = modifications.GetEnumerator())
+            if (key.IsAssignableFrom(tType))
             {
-                for (int x = 0; x < modifications.Count; x++)
-                {
-                    enumerator.MoveNext();
-                    var current = enumerator.Current;
-                    activeMods[x] = new ModGenericTuple<IModConfigV1>(current.Mod, current.ModConfig);
-                }
+                var mapping = _controllerModMapping[key];
+                T tGeneric = (T) mapping.Generic;
+                return new WeakReference<T>(tGeneric);
             }
-
-            return activeMods;
         }
 
-        public WeakReference<T>[] MakeInterfaces<T>() where T : class
-        {
-            var modifications = _loader.Manager.GetModifications();
-            var interfaces = new List<WeakReference<T>>();
+        return null;
+    }
 
-            foreach (var mod in modifications)
-            {
-                var defaultAssembly = mod.Context?.LoadDefaultAssembly();
-                var entryPoints = defaultAssembly?.GetTypes().Where(t => typeof(T).IsAssignableFrom(t) && !t.IsAbstract);
-                if (entryPoints == null) 
-                    continue;
+    /* IModLoader V2 */
+    public string GetDirectoryForModId(string modId)
+    {
+        return _loader.Manager.GetDirectoryForModId(modId);
+    }
 
-                foreach (var entryPoint in entryPoints)
-                {
-                    var instance = (T)Activator.CreateInstance(entryPoint);
-                    interfaces.Add(new WeakReference<T>(instance));
+    /* IModLoader V3 */
+    public string GetModConfigDirectory(string modId)
+    {
+        var directory = ModUserConfig.GetUserConfigFolderForMod(modId, _loader.LoaderConfig.ModUserConfigDirectory);
+        if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
 
-                    // Store strong reference in mod loader only.
-                    _interfaceModMapping[typeof(T)] = new ModGenericTuple<object>(mod.Mod, instance);
-                }
-            }
-
-            return interfaces.ToArray();
-        }
-
-        public void AddOrReplaceController<T>(IModV1 owner, T instance)
-        {
-            _controllerModMapping[typeof(T)] = new ModGenericTuple<object>(owner, instance);
-        }
-
-        public void RemoveController<T>()
-        {
-            _controllerModMapping.TryRemove(typeof(T), out _);
-        }
-
-        public WeakReference<T> GetController<T>() where T : class
-        {
-            var tType = typeof(T);
-            foreach (var key in _controllerModMapping.Keys)
-            {
-                if (key.IsAssignableFrom(tType))
-                {
-                    var mapping = _controllerModMapping[key];
-                    T tGeneric = (T) mapping.Generic;
-                    return new WeakReference<T>(tGeneric);
-                }
-            }
-
-            return null;
-        }
-
-        /* IModLoader V2 */
-        public string GetDirectoryForModId(string modId)
-        {
-            return _loader.Manager.GetDirectoryForModId(modId);
-        }
-
-        /* IModLoader V3 */
-        public string GetModConfigDirectory(string modId)
-        {
-            var directory = ModUserConfig.GetUserConfigFolderForMod(modId, _loader.LoaderConfig.ModUserConfigDirectory);
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-            return directory;
-        }
+        return directory;
     }
 }

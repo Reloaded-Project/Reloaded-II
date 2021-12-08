@@ -133,6 +133,7 @@
     <sys:String x:Key="LoadModSetDialogTitle">Select file to load list of mods from.</sys:String>
     <sys:String x:Key="SaveModSetDialogTitle">Select path to save list of mods to.</sys:String>
 
+    <!-- Obsolete as of 1.12.0 onwards -->
     <sys:String x:Key="LoadModSetIncompatibleTitle">Compatibility Alert</sys:String>
     <sys:String x:Key="LoadModSetIncompatibleMessage">You have mods enabled that are not marked compatible with your application:</sys:String>
     <sys:String x:Key="LoadModSetIncompatibleMessage2">Pressing OK will enable the mods for your application. Pressing Cancel will disable the mods.</sys:String>
@@ -310,5 +311,10 @@
 
     <!-- Update 1.12.0: Edit Mod Dialog -->
     <sys:String x:Key="TitleEditModDialog">Edit Mod</sys:String>
+
+    <!-- Update 1.12.0: Additional Errors -->
+    <sys:String x:Key="ErrorUnableDetermineVersion">Error: Unable to Determine Reloaded II Version</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUseTitle">Mod(s) In Use</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUse">You have applications currently running Reloaded.&#x0a;Updates will download however will not be applied until all applications are closed.</sys:String>
 
 </ResourceDictionary>

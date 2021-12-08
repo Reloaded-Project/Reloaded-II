@@ -1,60 +1,54 @@
 ﻿using System.ComponentModel;
-using System.Linq;
-using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
-using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
+using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.WPF.Theme.Default;
 using Reloaded.WPF.Utilities;
-using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
-namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
+namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
+
+/// <summary>
+/// Interaction logic for CreateModDialog.xaml
+/// </summary>
+public partial class EditModDialog : ReloadedWindow
 {
-    /// <summary>
-    /// Interaction logic for CreateModDialog.xaml
-    /// </summary>
-    public partial class EditModDialog : ReloadedWindow
+    public EditModDialogViewModel RealViewModel  { get; set; }
+
+    private readonly CollectionViewSource _dependenciesViewSource;
+
+    public EditModDialog(EditModDialogViewModel viewModel)
     {
-        private readonly ApplicationConfigService _appConfigService;
+        InitializeComponent();
+        RealViewModel = viewModel;
 
-        public EditModViewModel RealViewModel  { get; set; }
-
-        public ModConfigService ModConfigService { get; set; }
-
-        public EditModDialog(PathTuple<ModConfig> modConfig, ApplicationConfigService appConfigService, ModConfigService modConfigService)
-        {
-            InitializeComponent();
-            _appConfigService = appConfigService;
-            ModConfigService  = modConfigService;
-            RealViewModel = new EditModViewModel(modConfig, ModConfigService, new DictionaryResourceManipulator(this.Contents.Resources));
-            this.Closing += OnClosing;
-        }
-
-        private void OnClosing(object sender, CancelEventArgs e)
-        {
-            RealViewModel.Save();
-        }
-
-        private void ModIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton != MouseButtonState.Pressed) 
-                return;
-
-            this.RealViewModel.Image = RealViewModel.GetImage();
-        }
-
-        private void Save_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton != MouseButtonState.Pressed) 
-                return;
-            
-            this.Close();
-        }
-
-        /* Check if not duplicate. */
-
-        private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => RealViewModel.RefreshModList();
+        this.Closing += OnClosing;
+        _dependenciesViewSource = new DictionaryResourceManipulator(this.Contents.Resources).Get<CollectionViewSource>("SortedDependencies");
+        _dependenciesViewSource.Filter += DependenciesViewSourceOnFilter;
     }
+
+    private void OnClosing(object sender, CancelEventArgs e) => RealViewModel.Save();
+
+    private void ModIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton != MouseButtonState.Pressed) 
+            return;
+
+        RealViewModel.SetNewImage();
+    }
+
+    private void Save_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton != MouseButtonState.Pressed) 
+            return;
+            
+        Close();
+    }
+
+    private void DependenciesViewSourceOnFilter(object sender, FilterEventArgs e) => e.Accepted = RealViewModel.FilterItem((BooleanGenericTuple<IModConfig>) e.Item);
+
+    /* Check if not duplicate. */
+
+    private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _dependenciesViewSource.View.Refresh();
 }

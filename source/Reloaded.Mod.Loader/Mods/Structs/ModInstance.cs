@@ -1,114 +1,111 @@
 ﻿using System;
-using System.Runtime.Loader;
-using McMaster.NETCore.Plugins;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Utilities;
 
-namespace Reloaded.Mod.Loader.Mods.Structs
+namespace Reloaded.Mod.Loader.Mods.Structs;
+
+/// <summary>
+/// Represents an individual loaded mod managed mod instance.
+/// </summary>
+public class ModInstance : IDisposable
 {
-    /// <summary>
-    /// Represents an individual loaded mod managed mod instance.
-    /// </summary>
-    public class ModInstance : IDisposable
+    public LoadContext Context { get; private set; }
+    public IModV1 Mod { get; private set; }
+
+    public IModConfig ModConfig { get; set; }
+    public ModState State { get; set; }
+    public bool CanSuspend { get; set; }
+    public bool CanUnload { get; set; }
+
+    private bool _started;
+
+    /* Non-Dll Mods */
+    public ModInstance(IModConfig config)
     {
-        public LoadContext Context { get; private set; }
-        public IModV1 Mod { get; private set; }
+        ModConfig  = config;
+        CanSuspend = false;
+        CanUnload  = true;
+    }
 
-        public IModConfig ModConfig { get; set; }
-        public ModState State { get; set; }
-        public bool CanSuspend { get; set; }
-        public bool CanUnload { get; set; }
+    /* Native Mods */
+    public ModInstance(IModV1 mod, IModConfig config)
+    {
+        Mod = mod;
+        ModConfig = config;
 
-        private bool _started;
+        CanSuspend = mod.CanSuspend();
+        CanUnload = mod.CanUnload();
+    }
 
-        /* Non-Dll Mods */
-        public ModInstance(IModConfig config)
+    /* Dll Mods */
+    public ModInstance(LoadContext context, IModV1 mod, IModConfig config)
+    {
+        Context = context;
+        Mod = mod;
+        ModConfig = config;
+
+        CanSuspend = mod.CanSuspend();
+        CanUnload = mod.CanUnload();
+    }
+
+    ~ModInstance()
+    {
+        Dispose();
+    }
+
+    public void Dispose()
+    {
+        if (CanUnload)
         {
-            ModConfig  = config;
-            CanSuspend = false;
-            CanUnload  = true;
-        }
-
-        /* Native Mods */
-        public ModInstance(IModV1 mod, IModConfig config)
-        {
-            Mod = mod;
-            ModConfig = config;
-
-            CanSuspend = mod.CanSuspend();
-            CanUnload = mod.CanUnload();
-        }
-
-        /* Dll Mods */
-        public ModInstance(LoadContext context, IModV1 mod, IModConfig config)
-        {
-            Context = context;
-            Mod = mod;
-            ModConfig = config;
-
-            CanSuspend = mod.CanSuspend();
-            CanUnload = mod.CanUnload();
-        }
-
-        ~ModInstance()
-        {
-            Dispose();
-        }
-
-        public void Dispose()
-        {
-            if (CanUnload)
-            {
-                Mod?.Disposing?.Invoke();
-                Mod?.Unload();
-                Context?.Dispose();
+            Mod?.Disposing?.Invoke();
+            Mod?.Unload();
+            Context?.Dispose();
                 
-                // Clean up references.
-                Context = null;
-                Mod = null;
+            // Clean up references.
+            Context = null;
+            Mod = null;
 
-                GC.SuppressFinalize(this);
-                GC.Collect();
+            GC.SuppressFinalize(this);
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
 
-                // Blocking GC happens here to ensure no reference to unloaded assembly still exists.
-            }
+            // Blocking GC happens here to ensure no reference to unloaded assembly still exists.
         }
+    }
 
-        public void Start(IModLoader loader)
+    public void Start(IModLoader loader)
+    {
+        if (!_started)
         {
-            if (!_started)
+            if (Mod != null)
             {
-                if (Mod != null)
-                {
-                    if (Mod is IModV2 modV2)
-                        modV2.StartEx(loader, ModConfig);
-                    else
-                        Mod.Start(loader);
-                }
+                if (Mod is IModV2 modV2)
+                    modV2.StartEx(loader, ModConfig);
+                else
+                    Mod.Start(loader);
+            }
                 
-                State = ModState.Running;
-                _started = true;
-            }
+            State = ModState.Running;
+            _started = true;
         }
+    }
 
-        public void Resume()
+    public void Resume()
+    {
+        if (CanSuspend)
         {
-            if (CanSuspend)
-            {
-                Mod?.Resume();
-                State = ModState.Running;
-            }
+            Mod?.Resume();
+            State = ModState.Running;
         }
+    }
 
-        public void Suspend()
+    public void Suspend()
+    {
+        if (CanSuspend)
         {
-            if (CanSuspend)
-            {
-                Mod?.Suspend();
-                State = ModState.Suspended;
-            }
+            Mod?.Suspend();
+            State = ModState.Suspended;
         }
     }
 }

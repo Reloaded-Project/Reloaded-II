@@ -15,6 +15,7 @@
 	  <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
 	  <RepositoryType>git</RepositoryType>
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
