@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using Reloaded.Mod.Launcher.Lib;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
 using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;

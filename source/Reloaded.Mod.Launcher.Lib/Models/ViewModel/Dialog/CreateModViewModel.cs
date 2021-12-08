@@ -1,13 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Reloaded.Mod.Launcher.Lib;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 
-namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
+namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>
 /// ViewModel used for creating an individual modification using an individual mod id.

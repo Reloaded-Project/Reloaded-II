@@ -3,8 +3,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Lib;
 using Reloaded.Mod.Launcher.Lib.Commands.General;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Models.ViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 

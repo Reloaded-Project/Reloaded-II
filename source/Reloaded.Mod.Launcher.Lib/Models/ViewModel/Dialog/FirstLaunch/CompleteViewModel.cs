@@ -1,5 +1,4 @@
 ﻿using Reloaded.Mod.Launcher.Lib.Commands.General;
-using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
 using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog.FirstLaunch;

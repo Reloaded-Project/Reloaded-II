@@ -1,9 +1,8 @@
 ﻿using System;
 using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 using Reloaded.Mod.Loader.IO.Utility;
 
-namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
+namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 
 /// <summary>
 /// ViewModel for a blank page that can be used to inject Reloaded into a process.

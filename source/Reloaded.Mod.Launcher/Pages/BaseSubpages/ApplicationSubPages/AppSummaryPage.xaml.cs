@@ -2,8 +2,8 @@
 using System.Windows.Data;
 using Reloaded.Mod.Launcher.Lib;
 using Reloaded.Mod.Launcher.Lib.Models.Model.Application;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
 using Reloaded.WPF.Utilities;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;

@@ -1,6 +1,6 @@
 ﻿using Reloaded.Mod.Launcher.Lib;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 

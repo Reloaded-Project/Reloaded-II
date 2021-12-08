@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;

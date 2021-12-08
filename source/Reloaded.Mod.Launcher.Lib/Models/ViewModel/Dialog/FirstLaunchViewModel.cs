@@ -1,9 +1,8 @@
 ﻿using System;
-using Reloaded.Mod.Launcher.Lib;
 using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
 using Reloaded.Mod.Loader.IO.Utility;
 
-namespace Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
+namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>
 /// ViewModel used to display the First Launch Window

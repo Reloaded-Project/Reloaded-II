@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Lib.Commands.Mod;
 using Reloaded.Mod.Launcher.Lib.Models.Model.Application;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 
-namespace Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
+namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 
 /// <summary>
 /// ViewModel allowing for the configuration of mods to be loaded for a certain game.

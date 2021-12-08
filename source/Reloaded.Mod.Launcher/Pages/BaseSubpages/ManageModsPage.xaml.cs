@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Models.ViewModel;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 

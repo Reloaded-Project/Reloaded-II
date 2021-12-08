@@ -7,7 +7,7 @@ using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 
-namespace Reloaded.Mod.Launcher.Models.ViewModel;
+namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
 /// <summary>
 /// ViewModel for the page responsible for mod management.

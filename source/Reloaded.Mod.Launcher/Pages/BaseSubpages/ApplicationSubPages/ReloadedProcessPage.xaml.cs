@@ -1,5 +1,5 @@
 ﻿using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Models.ViewModel.ApplicationSubPages;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 

@@ -9,7 +9,7 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Utility;
 
-namespace Reloaded.Mod.Launcher.Models.ViewModel;
+namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
 /// <summary>
 /// ViewModel for the Settings Page.
@@ -54,12 +54,12 @@ public class SettingsPageViewModel : ObservableObject
     /// <summary>
     /// Allows you to select the mod loader language.
     /// </summary>
-    public IResourceFileSelector? LanguageSelector => Lib.Lib.LanguageSelector;
+    public IResourceFileSelector? LanguageSelector => Launcher.Lib.Lib.LanguageSelector;
 
     /// <summary>
     /// Allows you to select the mod loader theme.
     /// </summary>
-    public IResourceFileSelector? ThemeSelector => Lib.Lib.ThemeSelector;
+    public IResourceFileSelector? ThemeSelector => Launcher.Lib.Lib.ThemeSelector;
 
     /// <summary/>
     public SettingsPageViewModel(ApplicationConfigService appConfigService, ModConfigService modConfigService, LoaderConfig loaderConfig)
