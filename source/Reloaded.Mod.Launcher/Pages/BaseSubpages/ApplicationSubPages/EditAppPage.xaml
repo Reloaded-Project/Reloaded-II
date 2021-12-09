@@ -22,11 +22,11 @@
         </ScrollViewer.Resources>
 
         <Grid Margin="{DynamicResource PageMargin}"
-                  HorizontalAlignment="Center"
+                  HorizontalAlignment="Stretch"
                   VerticalAlignment="Center">
 
             <!-- Grid Contents -->
-            <WrapPanel Orientation="Vertical" Grid.Column="0">
+            <StackPanel Orientation="Vertical" Grid.Column="0">
 
                 <!-- Application Image -->
                 <Viewbox Width="{StaticResource DetailsImageWidth}" 
@@ -44,13 +44,13 @@
                     </Image>
                 </Viewbox>
 
-                <!-- Delete -->
                 <TextBlock Text="{Binding Application.Config.AppId}" 
                            Style="{DynamicResource DefaultTextBlock}" 
                            ToolTip="{DynamicResource AddAppId}"
                            ToolTipService.InitialShowDelay="0"
                            HorizontalAlignment="Center" />
 
+                <!-- Delete -->
                 <Button Margin="{DynamicResource CommonItemVerticalMargin}"    
                         Content="{DynamicResource AddAppDeleteButton}"
                         Style="{DynamicResource UnpaddedStretchedGridButton}"
@@ -64,20 +64,32 @@
                          ToolTipService.InitialShowDelay="0"
                          Text="{Binding Application.Config.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
-                         Width="{StaticResource DetailsColumnWidth}"
-                         HorizontalAlignment="Center" 
+                         MinWidth="{StaticResource DetailsColumnWidth}"
+                         HorizontalAlignment="Stretch" 
                          VerticalAlignment="Center"/>
 
-                <TextBox
+                <Grid MinWidth ="{StaticResource DetailsColumnWidth}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Grid.Column="0"
                         Text="{Binding Application.Config.AppLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Width="{StaticResource DetailsColumnWidth}"
                         Margin="{DynamicResource CommonItemVerticalMargin}"
                         Style="{DynamicResource TextboxWithPlaceholder}" 
                         Tag="{DynamicResource AddAppLocation}" 
                         ToolTip="{DynamicResource AddAppLocation}"
                         ToolTipService.InitialShowDelay="0"
-                        HorizontalAlignment="Center" 
+                        HorizontalAlignment="Stretch" 
                         VerticalAlignment="Center"/>
+
+                    <Button  Margin="{DynamicResource CommonItemVerticalMargin}"    
+                             Content="{DynamicResource AddAppUpdate}"
+                             Grid.Column="2"
+                             Click="UpdateExecutablePath_Click"/>
+                </Grid>
 
                 <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
                         Text="{Binding Application.Config.AppArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -85,8 +97,8 @@
                         ToolTip="{DynamicResource AddAppArguments}"
                         ToolTipService.InitialShowDelay="0"
                         Margin="{DynamicResource CommonItemVerticalMargin}" 
-                        Width="{StaticResource DetailsColumnWidth}"
-                        HorizontalAlignment="Center" 
+                        MinWidth="{StaticResource DetailsColumnWidth}"
+                        HorizontalAlignment="Stretch" 
                         VerticalAlignment="Center"/>
 
                 <!-- The text can be a tiny bit too long, no width cap here. -->
@@ -110,7 +122,7 @@
                         </StackPanel>
                     </controls:PopupLabel.HiddenContent>
                 </controls:PopupLabel>
-            </WrapPanel>
+            </StackPanel>
 
         </Grid>
     </ScrollViewer>

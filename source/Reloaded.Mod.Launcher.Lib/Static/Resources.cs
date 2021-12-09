@@ -367,4 +367,18 @@ public static class Resources
     public static IDictionaryResource<string> EditModLibrary { get; set; }
     public static IDictionaryResource<string> EditModLibraryDescription { get; set; }
     public static IDictionaryResource<string> EditModSave { get; set; }
+    
+    // Update 1.12.0: Extended Application Configuration
+    
+    public static IDictionaryResource<string> ConfigureModsRightClickAdvice { get; set; }
+
+    // Update 1.12.0: Create Mod Dialog 
+    public static IDictionaryResource<string> CreateModDialogIdDesc1 { get; set; }
+    public static IDictionaryResource<string> CreateModDialogIdDesc2 { get; set; }
+
+    // Update 1.12.0: Edit Application Ex 
+    public static IDictionaryResource<string> AddAppId { get; set; }
+    public static IDictionaryResource<string> AddAppUpdate { get; set; }
+    public static IDictionaryResource<string> AddAppWarningTitle { get; set; }
+    public static IDictionaryResource<string> AddAppWarning { get; set; }
 }

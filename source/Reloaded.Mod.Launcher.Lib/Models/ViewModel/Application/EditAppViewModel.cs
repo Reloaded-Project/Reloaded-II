@@ -1,10 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
+using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Launcher.Lib.Commands.Application;
 using Reloaded.Mod.Launcher.Lib.Commands.Templates;
 using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
+using Reloaded.Mod.Launcher.Lib.Static;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -100,6 +103,21 @@ public class EditAppViewModel : ObservableObject
         SetApplicationImageCommand.Execute(null);
     }
 
+    /// <summary>
+    /// Used to set the new executable path for the application.
+    /// </summary>
+    public void SetNewExecutablePath()
+    {
+        var result = SelectEXEFile();
+        if (string.IsNullOrEmpty(result))
+            return;
+
+        if (!Path.GetFileName(Application.Config.AppLocation).Equals(Path.GetFileName(result), StringComparison.OrdinalIgnoreCase))
+            Actions.DisplayMessagebox(Resources.AddAppWarningTitle.Get(), Resources.AddAppWarning.Get());
+
+        Application.Config.AppLocation = result;
+    }
+
     private void RefreshCommands()
     {
         if (_lastApplication != null)
@@ -115,5 +133,18 @@ public class EditAppViewModel : ObservableObject
     {
         if (e.PropertyName!.Equals(nameof(Application.Config.AppLocation)))
             DeployAsiLoaderCommand.RaisePropertyChanged();
+    }
+
+    private string SelectEXEFile()
+    {
+        var dialog = new VistaOpenFileDialog();
+        dialog.Title = Resources.AddAppExecutableTitle.Get();
+        dialog.Filter = $"{Resources.AddAppExecutableFilter.Get()} (*.exe)|*.exe";
+        dialog.FileName = Application.Config.AppLocation;
+
+        if ((bool)dialog.ShowDialog()!)
+            return dialog.FileName;
+
+        return "";
     }
 }

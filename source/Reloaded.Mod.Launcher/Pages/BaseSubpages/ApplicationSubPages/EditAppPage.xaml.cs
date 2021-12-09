@@ -35,4 +35,5 @@ public partial class EditAppPage : ReloadedIIPage, IDisposable
 
     private void Image_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => ViewModel.SetAppImage();
 
+    private void UpdateExecutablePath_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.SetNewExecutablePath();
 }

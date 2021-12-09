@@ -344,5 +344,9 @@
 
     <!-- Update 1.12.0: Edit Application Ex -->
     <sys:String x:Key="AddAppId">Application Id</sys:String>
+    <sys:String x:Key="AddAppUpdate">Update</sys:String>
+
+    <sys:String x:Key="AddAppWarningTitle" xml:space="preserve">Executable Name Warning</sys:String>
+    <sys:String x:Key="AddAppWarning" xml:space="preserve">The executable name of the application added is different from the original.&#x0a;If you are adding another application, you should add it as a new application.</sys:String>
 
 </ResourceDictionary>
