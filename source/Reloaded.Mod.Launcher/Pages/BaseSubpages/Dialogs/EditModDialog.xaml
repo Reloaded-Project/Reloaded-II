@@ -8,145 +8,70 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:controls1="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
         mc:Ignorable="d"
         Title="{DynamicResource TitleEditModDialog}" 
-        Height="550" 
-        Width="500"
+        Height="Auto" 
+        Width="Auto"
+        MinWidth="600"
+        SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner"
         Style="{DynamicResource ReloadedWindow}">
 
-    <Grid DataContext="{Binding Path=RealViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-          x:Name="Contents">
-        
-        <!-- Grid Resources -->
-        <Grid.Resources>
-            <ResourceDictionary>
-                <system:Double x:Key="DetailsImageWidth">180</system:Double>
-                <system:Double x:Key="DetailsColumnWidth">280</system:Double>
+    <ScrollViewer>
+        <Grid DataContext="{Binding Path=RealViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+              Margin="{DynamicResource PageMargin}"
+              x:Name="Contents">
 
-                <!-- Sort the mod list -->
-                <CollectionViewSource x:Key="SortedDependencies" Source="{Binding Dependencies, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True">
-                    <CollectionViewSource.SortDescriptions>
-                        <componentModel:SortDescription PropertyName="ModConfig.ModName"/>
-                    </CollectionViewSource.SortDescriptions>
-                </CollectionViewSource>
-            </ResourceDictionary>
-        </Grid.Resources>
+            <!-- Grid Contents -->
+            <StackPanel VerticalAlignment="Stretch">
 
-        <!-- All Content. -->
-        <ScrollViewer>
-            <Grid Margin="{DynamicResource PageMargin}"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center">
+                <hc:StepBar Margin="{DynamicResource CommonItemVerticalMargin}" 
+                                DockPanel.Dock="Top"
+                                StepIndex="{Binding Page, Converter={x:Static converters:ObjectToIntConverter.Instance}}">
+                    <hc:StepBarItem Content="{DynamicResource EditModStepMain}"/>
+                    <hc:StepBarItem Content="{DynamicResource EditModStepDependencies}"/>
+                    <hc:StepBarItem Content="{DynamicResource EditModStepUpdates}"/>
+                    <hc:StepBarItem Content="{DynamicResource EditModStepComplete}"/>
+                </hc:StepBar>
 
-                <!-- Grid Contents -->
-                <WrapPanel Orientation="Vertical" Grid.Column="0">
 
-                    <!-- Application Image -->
-                    <Viewbox Width="{StaticResource DetailsImageWidth}" 
-                             Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                             Margin="{DynamicResource CommonItemVerticalMarginSmall}">
-                        <Image x:Name="ModIcon"
-                               ToolTip="{DynamicResource AddAppImageTooltip}" 
-                               ToolTipService.InitialShowDelay="0"
-                               PreviewMouseDown="ModIcon_PreviewMouseDown">
-                            <Image.Source>
-                                <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding Path="ConfigTuple" IsAsync="True"/>
-                                    <Binding Path="ConfigTuple.Config.ModIcon" IsAsync="True"/>
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                    </Viewbox>
+                <!-- Child Page -->
+                <controls1:PageHost x:Name="PageHost" 
+                                   CurrentPage="{Binding Page, Converter={x:Static converters:EditModPageToPageConverter.Instance}}"
+                                   ClipToBounds="True"
+                                   Width="Auto"
+                                   Height="Auto"
+                                   VerticalAlignment="Stretch"
+                                   HorizontalAlignment="Stretch" />
 
-                    <!-- Mod Properties -->
+                <!-- Page Switcher -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                    <TextBox
-                        Style="{DynamicResource TextboxWithPlaceholder}" 
-                        Tag="{DynamicResource CreateModDialogName}" 
-                        Text="{Binding Config.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Width="{StaticResource DetailsColumnWidth}"
-                        Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                        ToolTip="{DynamicResource CreateModDialogName}"
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center"/>
+                    <Button Content="{DynamicResource FirstLaunchExAddModExtractPrev}" 
+                            Style="{DynamicResource DefaultButton}" 
+                            Margin="{DynamicResource CommonItemVerticalMargin}" 
+                            Click="Last_Click"
+                            Visibility="{Binding CanGoToLastPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"/>
 
-                    <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
-                             Text="{Binding Config.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Tag="{DynamicResource CreateModDialogAuthor}" 
-                        ToolTip="{DynamicResource CreateModDialogAuthor}"
-                        Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
-                        Width="{StaticResource DetailsColumnWidth}"
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center"/>
+                    <Button Content="{DynamicResource FirstLaunchExAddModExtractNext}" 
+                            Style="{DynamicResource DefaultButton}" 
+                            Margin="{DynamicResource CommonItemVerticalMargin}" 
+                            Click="Next_Click"
+                            Visibility="{Binding CanGoToNextPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"/>
 
-                    <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
-                             Text="{Binding Config.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Tag="{DynamicResource CreateModDialogVersion}" 
-                             ToolTip="{DynamicResource CreateModDialogVersion}"
-                             Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
-                             Width="{StaticResource DetailsColumnWidth}"
-                             HorizontalAlignment="Center" 
-                             VerticalAlignment="Center"/>
-
-                    <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
-                             Text="{Binding Config.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Tag="{DynamicResource CreateModDialogDescription}" 
-                             ToolTip="{DynamicResource CreateModDialogDescription}"
-                             Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
-                             Width="{StaticResource DetailsColumnWidth}"
-                             HorizontalAlignment="Center" 
-                             VerticalAlignment="Center"/>
-
-                    <Button Content="{DynamicResource CreateModDialogSave}"
+                    <Button Content="{DynamicResource EditModSave}"
                             Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                            Style="{DynamicResource UnpaddedStretchedGridButton}"
-                            PreviewMouseDown="Save_PreviewMouseDown">
+                            Style="{DynamicResource DefaultButton}"
+                            PreviewMouseDown="Save_Click"
+                            Visibility="{Binding IsOnLastPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}">
                     </Button>
 
-                    <!-- Supported Dependencies -->
-                    <controls:PopupLabel ButtonText="{DynamicResource CreateModDialogDependencies}"
-                                         FontSize="{DynamicResource FontSizeSmall}"
-                                         Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                         HiddenVisibilityType="Collapsed"
-                                         IsOpen="False">
-                        <controls:PopupLabel.HiddenContent>
-                            <StackPanel>
-                                <TextBox Text="{Binding ModsFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{DynamicResource TextboxWithPlaceholder}"
-                                         Tag="{DynamicResource ModManagerSearchMods}"
-                                         Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                         TextChanged="ModsFilter_TextChanged"/>
+                </StackPanel>
 
-                                <ListView ItemsSource="{Binding Source={StaticResource SortedDependencies}}"
-                                          Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch"
-                                          VerticalContentAlignment="Top"
-                                          Height="300">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                          VerticalAlignment="Center" 
-                                                          HorizontalAlignment="Center"
-                                                          Style="{DynamicResource DefaultCheckBox}" 
-                                                          Height="{DynamicResource ListEntryCheckboxHeightSmall}"/>
 
-                                                <TextBlock Text="{Binding Generic.ModName, UpdateSourceTrigger=PropertyChanged}" 
-                                                           VerticalAlignment="Center" 
-                                                           HorizontalAlignment="Center" 
-                                                           Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </StackPanel>
-                        </controls:PopupLabel.HiddenContent>
-                    </controls:PopupLabel>
-                </WrapPanel>
-
-            </Grid>
-        </ScrollViewer>
-    </Grid>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </default:ReloadedWindow>

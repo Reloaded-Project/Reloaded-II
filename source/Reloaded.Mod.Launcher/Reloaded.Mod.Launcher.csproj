@@ -12,7 +12,6 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
 	  <OutputPath>..\Output\Launcher\</OutputPath>
-    <SatelliteResourceLanguages>none</SatelliteResourceLanguages> <!-- Hack -->
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <RuntimeFrameworkVersion>5.0.1</RuntimeFrameworkVersion>
@@ -51,7 +50,7 @@
 
   <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
-    <PackageReference Include="HandyControl" Version="3.2.0" />
+    <PackageReference Include="HandyControl" Version="3.2.0-propertygrid" />
     <PackageReference Include="Markdig.Wpf" Version="0.4.0" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.9">

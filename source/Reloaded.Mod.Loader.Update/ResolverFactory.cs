@@ -14,7 +14,18 @@ namespace Reloaded.Mod.Loader.Update;
 /// Factory which returns the first appropriate resolver for a specific mod.
 /// </summary>
 public static class ResolverFactory
-{
+{    
+    /// <summary>
+    /// List of all supported factories in preference order.
+    /// </summary>
+    public static IResolverFactory[] All { get; } =
+    {
+        // Listed in order of preference.
+        new NuGetResolverFactory(),
+        new GitHubReleasesResolverFactory(),
+        new GameBananaUpdateResolverFactory()
+    };
+
     /// <summary>
     /// Returns the first appropriate resolver that can handle updating a mod.
     /// </summary>
@@ -25,7 +36,7 @@ public static class ResolverFactory
     public static AggregatePackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
     {
         // Migrate first
-        foreach (var factory in ResolverFactoryCollection.Instance.All)
+        foreach (var factory in All)
             factory.Migrate(mod, userConfig);
 
         // Clone data preferences.
@@ -35,7 +46,7 @@ public static class ResolverFactory
 
         // Create resolvers.
         var resolvers = new List<IPackageResolver>();
-        foreach (var factory in ResolverFactoryCollection.Instance.All)
+        foreach (var factory in All)
         {
             var resolver = factory.GetResolver(mod, userConfig, data);
             if (resolver != null)
@@ -44,17 +55,4 @@ public static class ResolverFactory
 
         return resolvers.Count > 0 ? new AggregatePackageResolver(resolvers) : null;
     }
-}
-
-internal class ResolverFactoryCollection
-{
-    public static readonly ResolverFactoryCollection Instance = new ResolverFactoryCollection();
-
-    internal IResolverFactory[] All { get; } = new IResolverFactory[]
-    {
-        // Listed in order of preference.
-        new NuGetResolverFactory(),
-        new GitHubReleasesResolverFactory(),
-        new GameBananaUpdateResolverFactory()
-    };
 }

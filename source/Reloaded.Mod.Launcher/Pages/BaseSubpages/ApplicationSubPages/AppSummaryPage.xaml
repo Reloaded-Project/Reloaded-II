@@ -136,8 +136,11 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="{DynamicResource GridInterPanelMargin}"/>
-                    <RowDefinition Height='*'/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="{DynamicResource GridInterPanelMargin}"/>
+                    <RowDefinition Height='Auto'/>
                 </Grid.RowDefinitions>
+
 
                 <!-- Actions for current Mod -->
                 <Grid Grid.Row="0">
@@ -165,6 +168,12 @@
                            VerticalAlignment="Stretch"
                            Style="{DynamicResource TextblockWithColourChange}" 
                            TextWrapping="Wrap" />
+
+
+                <TextBlock Grid.Row="4"
+                           Text="{DynamicResource ConfigureModsRightClickAdvice}" 
+                           Style="{DynamicResource DefaultTextBlock}" 
+                           HorizontalAlignment="Center" />
             </Grid>
         </Grid>
     </Grid>

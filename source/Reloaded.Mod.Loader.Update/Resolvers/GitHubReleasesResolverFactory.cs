@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using Reloaded.Mod.Interfaces.Utilities;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -18,6 +19,9 @@ public class GitHubReleasesResolverFactory : IResolverFactory
     /// <inheritdoc />
     public string ResolverId { get; } = "GitHubRelease";
 
+    /// <inheritdoc />
+    public string FriendlyName { get; } = "GitHub Releases";
+
     /// <inheritdoc/>
     public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig)
     {
@@ -28,7 +32,7 @@ public class GitHubReleasesResolverFactory : IResolverFactory
     /// <inheritdoc/>
     public IPackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
     {
-        if (!mod.Config.PluginData.TryGetValue<GitHubConfig>(ResolverId, out var githubConfig))
+        if (!this.TryGetConfiguration<GitHubConfig>(mod, out var githubConfig))
             return null;
 
         return new GitHubReleaseResolver(new GitHubResolverConfiguration()
@@ -38,6 +42,14 @@ public class GitHubReleasesResolverFactory : IResolverFactory
             LegacyFallbackPattern = githubConfig.AssetFileName
         }, data.CommonPackageResolverSettings);
     }
+    
+    /// <inheritdoc />
+    public bool TryGetConfigurationOrDefault(PathTuple<ModConfig> mod, out object configuration)
+    {
+        bool result = this.TryGetConfiguration<GitHubConfig>(mod, out var config);
+        configuration = config ?? new GitHubConfig();
+        return result;
+    }
 
     private void MigrateFromLegacyModConfig(PathTuple<ModConfig> mod)
     {
@@ -46,7 +58,7 @@ public class GitHubReleasesResolverFactory : IResolverFactory
         if (File.Exists(gitHubConfigPath))
         {
             var githubConfig = IConfig<GitHubConfig>.FromPath(gitHubConfigPath);
-            mod.Config.PluginData[ResolverId] = githubConfig;
+            this.SetConfiguration(mod, githubConfig);
             mod.Save();
             IOEx.TryDeleteFile(gitHubConfigPath);
         }
@@ -75,6 +87,10 @@ public class GitHubReleasesResolverFactory : IResolverFactory
     /// </summary>
     public class GitHubConfig : IConfig<GitHubConfig>
     {
+        private const string DefaultCategory = "GitHub Settings";
+
+        private const string LegacyCategory = "Legacy Settings (Backwards Compatibility)";
+
         /// <summary/>
         public const string ConfigFileName = "ReloadedGithubUpdater.json";
 
@@ -86,16 +102,26 @@ public class GitHubReleasesResolverFactory : IResolverFactory
         /// <summary>
         /// The user name associated with the repository to fetch files from.
         /// </summary>
+        [Category(DefaultCategory)]
+        [Description("The user name associated with the repository to fetch files from.\n" +
+                     "e.g. TGEnigma for https://github.com/TGEnigma/p4gpc.modloader")]
         public string UserName       { get; set; }
 
         /// <summary>
         /// The name of the repository to fetch files from.
         /// </summary>
+        [Category(DefaultCategory)]
+        [Description("The name of the repository to fetch files from.\n" +
+                     "e.g. p4gpc.modloader for https://github.com/TGEnigma/p4gpc.modloader")]
         public string RepositoryName { get; set; }
 
         /// <summary>
         /// [Legacy] Fallback file name pattern if no metadata file is found.
         /// </summary>
+        [Category(LegacyCategory)]
+        [Description("Pattern for the file name to download if no metadata file is found.\n" +
+                     "e.g. *update.zip will look for any file ending with 'update.zip'\n" +
+                     "For backwards compatibility only. Do not use with new mods.")]
         public string AssetFileName { get; set; } = "Mod.zip";
     }
         

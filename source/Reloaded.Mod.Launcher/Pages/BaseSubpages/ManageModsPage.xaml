@@ -69,15 +69,22 @@
                         </Grid.ColumnDefinitions>
 
                         <Button Grid.Column="0"
+                                Margin="0"
                                 Style="{DynamicResource UnpaddedStretchedGridButton}"
                                 Content="{DynamicResource AddAppNewButton}" 
                                 PreviewMouseDown="Button_PreviewMouseDown"/>
 
                         <Button Grid.Column="1"
+                                Margin="0"
                                 Style="{DynamicResource UnpaddedStretchedGridButton}"
                                 Content="{DynamicResource AddAppDeleteButton}" 
                                 Command="{Binding DeleteModCommand}"/>
                     </Grid>
+
+                    <Button Style="{DynamicResource UnpaddedStretchedButton}"
+                            Content="{DynamicResource TitleEditModDialog}" 
+                            Margin="{DynamicResource CommonItemMargin}"
+                            Command="{Binding EditModCommand}"/>
 
                     <!-- Mod Properties -->
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -95,21 +102,6 @@
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogDescription}"/>
-
-                    <!-- Open Mod Folder & Manage Dependencies -->
-                    <controls:PopupLabel ButtonText="{DynamicResource ModManagerExtraOptions}"
-                                         FontSize="{DynamicResource FontSizeSmall}"
-                                         HiddenVisibilityType="Collapsed"
-                                         IsOpen="False">
-                        <controls:PopupLabel.HiddenContent>
-                            <StackPanel>
-                                <Button Style="{DynamicResource UnpaddedStretchedButton}"
-                                        Content="{DynamicResource ModManagerOpenModDirectory}" 
-                                        Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                        Command="{Binding OpenModFolderCommand}"/>
-                            </StackPanel>
-                        </controls:PopupLabel.HiddenContent>
-                    </controls:PopupLabel>
 
                 </StackPanel>
             </ScrollViewer>

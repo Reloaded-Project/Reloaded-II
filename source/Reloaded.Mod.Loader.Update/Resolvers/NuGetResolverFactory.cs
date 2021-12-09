@@ -19,6 +19,9 @@ public class NuGetResolverFactory : IResolverFactory
     /// <inheritdoc />
     public string ResolverId { get; } = "NuGet";
 
+    /// <inheritdoc />
+    public string FriendlyName { get; } = "NuGet Repository";
+
     /// <inheritdoc/>
     public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig) { }
 
@@ -48,5 +51,12 @@ public class NuGetResolverFactory : IResolverFactory
             return new AggregatePackageResolver(resolvers);
             
         return null;
+    }
+
+    /// <inheritdoc />
+    public bool TryGetConfigurationOrDefault(PathTuple<ModConfig> mod, out object configuration)
+    {
+        configuration = null;
+        return false;
     }
 }

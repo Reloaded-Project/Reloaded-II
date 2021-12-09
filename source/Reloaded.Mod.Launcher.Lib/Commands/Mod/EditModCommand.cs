@@ -31,6 +31,6 @@ public class EditModCommand : WithCanExecuteChanged, ICommand
     /// <inheritdoc />
     public void Execute(object? parameter)
     {
-        Actions.EditModDialog(new EditModDialogViewModel(_modTuple, IoC.Get<ApplicationConfigService>(), IoC.Get<ModConfigService>()), _parent);
+        Actions.EditModDialog(new EditModDialogViewModel(_modTuple!, IoC.Get<ApplicationConfigService>(), IoC.Get<ModConfigService>()), _parent);
     }
 }

@@ -1,4 +1,6 @@
-﻿using Reloaded.Mod.Launcher.Lib.Interop;
+﻿using System;
+using System.Windows.Input;
+using Reloaded.Mod.Launcher.Lib.Interop;
 #pragma warning disable CS8618
 #pragma warning disable CS1591
 
@@ -349,4 +351,20 @@ public static class Resources
     public static IDictionaryResource<string> ErrorUnableDetermineVersion { get; set; }
     public static IDictionaryResource<string> ErrorUpdateModInUseTitle { get; set; }
     public static IDictionaryResource<string> ErrorUpdateModInUse { get; set; }
+
+    // Update 1.12.0: Extended Edit Mod
+    public static IDictionaryResource<string> CreateModDialogDescriptionShort { get; set; }
+    public static IDictionaryResource<string> EditModStepMain { get; set; }
+    public static IDictionaryResource<string> EditModStepDependencies { get; set; }
+    public static IDictionaryResource<string> EditModStepUpdates { get; set; }
+    public static IDictionaryResource<string> EditModStepComplete { get; set; }
+
+    public static IDictionaryResource<string> EditModDependenciesDescription { get; set; }
+
+    public static IDictionaryResource<string> EditModUniversalMod { get; set; }
+    public static IDictionaryResource<string> EditModUniversalModDescription { get; set; }
+
+    public static IDictionaryResource<string> EditModLibrary { get; set; }
+    public static IDictionaryResource<string> EditModLibraryDescription { get; set; }
+    public static IDictionaryResource<string> EditModSave { get; set; }
 }

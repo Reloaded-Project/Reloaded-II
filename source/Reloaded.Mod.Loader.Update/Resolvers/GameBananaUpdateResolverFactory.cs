@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using Reloaded.Mod.Interfaces.Utilities;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -18,6 +19,9 @@ public class GameBananaUpdateResolverFactory : IResolverFactory
     /// <inheritdoc />
     public string ResolverId { get; } = "GameBanana";
 
+    /// <inheritdoc />
+    public string FriendlyName { get; } = "GameBanana";
+
     /// <inheritdoc/>
     public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig)
     {
@@ -27,7 +31,7 @@ public class GameBananaUpdateResolverFactory : IResolverFactory
     /// <inheritdoc/>
     public IPackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
     {
-        if (!mod.Config.PluginData.TryGetValue<GameBananaConfig>(ResolverId, out var gbConfig))
+        if (!this.TryGetConfiguration<GameBananaConfig>(mod, out var gbConfig))
             return null;
 
         return new GameBananaUpdateResolver(new GameBananaResolverConfiguration()
@@ -37,6 +41,14 @@ public class GameBananaUpdateResolverFactory : IResolverFactory
         }, data.CommonPackageResolverSettings);
     }
 
+    /// <inheritdoc />
+    public bool TryGetConfigurationOrDefault(PathTuple<ModConfig> mod, out object configuration)
+    {
+        var result = this.TryGetConfiguration<GameBananaConfig>(mod, out var config);
+        configuration = config ?? new GameBananaConfig();
+        return result;
+    }
+    
     private void MigrateFromLegacyModConfig(PathTuple<ModConfig> mod)
     {
         // Performs migration from legacy separate file config to integrated config.
@@ -44,7 +56,7 @@ public class GameBananaUpdateResolverFactory : IResolverFactory
         if (File.Exists(configPath))
         {
             var gbConfig = IConfig<GameBananaConfig>.FromPath(configPath);
-            mod.Config.PluginData[ResolverId] = gbConfig;
+            this.SetConfiguration(mod, gbConfig);
             mod.Save();
             IOEx.TryDeleteFile(configPath);
         }
@@ -60,6 +72,8 @@ public class GameBananaUpdateResolverFactory : IResolverFactory
     /// </summary>
     public class GameBananaConfig : IConfig<GameBananaConfig>
     {
+        private const string DefaultCategory = "GameBanana Settings";
+
         /// <summary/>
         public const string ConfigFileName = "ReloadedGamebananaUpdater.json";
 
@@ -69,11 +83,17 @@ public class GameBananaUpdateResolverFactory : IResolverFactory
         /// <summary>
         /// Type of the item on GameBanana, typically 'Mod'
         /// </summary>
-        public string ItemType { get; set; }
+        [Category(DefaultCategory)]
+        [Description("Type of the item on GameBanana, typically 'Mod'.")]
+        public string ItemType { get; set; } = "Mod";
 
         /// <summary>
         /// Id of the item on GameBanana, this is the last number in the URL to your mod page.
         /// </summary>
+        [Category(DefaultCategory)]
+        [Description("Id of the item on GameBanana, this is the last number in the URL to your mod page.\n" +
+                     "e.g. 150115 if your mod URL is https://gamebanana.com/mods/150115.\n" +
+                     "To get the URL to your mod page, you might need to upload your mod first as private.")]
         public long ItemId { get; set; }
     }
 }

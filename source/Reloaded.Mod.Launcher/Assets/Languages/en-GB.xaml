@@ -308,7 +308,6 @@
     <sys:String x:Key="ModManagerContextOpenFolder">Open Folder</sys:String>
     <sys:String x:Key="ModManagerContextConfigure">Configure</sys:String>
 
-
     <!-- Update 1.12.0: Edit Mod Dialog -->
     <sys:String x:Key="TitleEditModDialog">Edit Mod</sys:String>
 
@@ -316,5 +315,27 @@
     <sys:String x:Key="ErrorUnableDetermineVersion">Error: Unable to Determine Reloaded II Version</sys:String>
     <sys:String x:Key="ErrorUpdateModInUseTitle">Mod(s) In Use</sys:String>
     <sys:String x:Key="ErrorUpdateModInUse">You have applications currently running Reloaded.&#x0a;Updates will download however will not be applied until all applications are closed.</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Mod -->
+    <sys:String x:Key="CreateModDialogDescriptionShort">Description</sys:String>
+
+    <sys:String x:Key="EditModStepMain">Common Details</sys:String>
+    <sys:String x:Key="EditModStepDependencies">Mod Dependencies</sys:String>
+    <sys:String x:Key="EditModStepUpdates">Update Support</sys:String>
+    <sys:String x:Key="EditModStepComplete">Finishing Up</sys:String>
+
+    <sys:String x:Key="EditModDependenciesDescription" xml:space="preserve">If your mod requires another mod to be present, select it here.</sys:String>
+
+    <sys:String x:Key="EditModUniversalMod">Universal Mod</sys:String>
+    <sys:String x:Key="EditModUniversalModDescription">If enabled, the mod is visible by default in every application.</sys:String>
+
+    <sys:String x:Key="EditModLibrary">Library</sys:String>
+    <sys:String x:Key="EditModLibraryDescription">If enabled, the mod cannot be explicitly enabled by the user. Can only be enabled as a dependency.</sys:String>
+
+    <sys:String x:Key="EditModSave">Save</sys:String>
+    <sys:String x:Key="EditModAppsDescription">Select applications the mod should be available for.</sys:String>
+
+    <!-- Update 1.12.0: Extended Application Configuration -->
+    <sys:String x:Key="ConfigureModsRightClickAdvice">Right Click Mod for More Options</sys:String>
 
 </ResourceDictionary>

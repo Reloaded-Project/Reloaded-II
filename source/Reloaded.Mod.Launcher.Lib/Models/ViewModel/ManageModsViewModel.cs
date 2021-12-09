@@ -17,7 +17,7 @@ public class ManageModsViewModel : ObservableObject
     /// <summary>
     /// Stores the currently highlighted mod in the menu.
     /// </summary>
-    public PathTuple<ModConfig> SelectedModTuple { get; set; } = null!;
+    public PathTuple<ModConfig>? SelectedModTuple { get; set; } = null!;
 
     /// <summary>
     /// Stores the list of enabled applications for this mod.
@@ -30,7 +30,7 @@ public class ManageModsViewModel : ObservableObject
     public ModConfigService ModConfigService { get; set; }
     
     /// <summary/>
-    public OpenModFolderCommand OpenModFolderCommand { get; set; } = null!;
+    public EditModCommand EditModCommand { get; set; } = null!;
 
     /// <summary/>
     public DeleteModCommand DeleteModCommand { get; set; } = null!;
@@ -98,7 +98,7 @@ public class ManageModsViewModel : ObservableObject
 
     private void UpdateCommands()
     {
-        OpenModFolderCommand = new OpenModFolderCommand(SelectedModTuple);
+        EditModCommand = new EditModCommand(SelectedModTuple, null);
         DeleteModCommand = new DeleteModCommand(SelectedModTuple);
         _setModImageCommand = new SetModImageCommand(SelectedModTuple);
     }
