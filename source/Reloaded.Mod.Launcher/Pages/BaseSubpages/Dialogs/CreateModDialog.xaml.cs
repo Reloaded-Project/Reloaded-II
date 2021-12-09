@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using Reloaded.Mod.Launcher.Lib;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
+using Reloaded.Mod.Launcher.Lib.Static;
+using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.WPF.Theme.Default;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
@@ -20,13 +23,15 @@ public partial class CreateModDialog : ReloadedWindow
         RealViewModel = new CreateModViewModel(modConfigService);
     }
 
-    public async void Save()
+    public async Task Save()
     {
-        var mod = await RealViewModel.CreateMod(ShowNonUniqueWindow);
-        if (mod == null)
+        var createdMod = await RealViewModel.CreateMod(ShowNonUniqueWindow);
+        if (createdMod == null)
             return;
 
-        var createModDialog = new EditModDialog(new EditModDialogViewModel(mod, IoC.Get<ApplicationConfigService>(), IoC.Get<ModConfigService>()));
+        var modConfigService = IoC.Get<ModConfigService>();
+        var mod = await ActionWrappers.TryGetValueAsync(() => modConfigService.ItemsById[createdMod.Config.ModId], 5000, 32);
+        var createModDialog  = new EditModDialog(new EditModDialogViewModel(mod, IoC.Get<ApplicationConfigService>(), modConfigService));
         createModDialog.Owner = Window.GetWindow(this);
         createModDialog.ShowDialog();
         this.Close();
@@ -38,4 +43,6 @@ public partial class CreateModDialog : ReloadedWindow
         messageBoxDialog.Owner = this;
         messageBoxDialog.ShowDialog();
     }
+
+    private async void Save_Click(object sender, RoutedEventArgs e) => await Save();
 }

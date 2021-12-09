@@ -120,6 +120,40 @@ public static class ActionWrappers
         return value;
     }
 
+    /// <param name="getValue">Function that retrieves the value.</param>
+    /// <param name="timeout">The timeout in milliseconds.</param>
+    /// <param name="sleepTime">Amount of sleep per iteration/attempt.</param>
+    /// <param name="token">Token that allows for cancellation of the task.</param>
+    /// <exception cref="Exception">Timeout expired.</exception>
+    public static async Task<T?> TryGetValueAsync<T>(Func<T> getValue, int timeout, int sleepTime, CancellationToken token = default)
+    {
+        var watch = new Stopwatch();
+        watch.Start();
+        bool valueSet = false;
+        T? value = default;
+
+        while (watch.ElapsedMilliseconds < timeout)
+        {
+            if (token.IsCancellationRequested)
+                return value;
+
+            try
+            {
+                value = getValue();
+                valueSet = true;
+                break;
+            }
+            catch (Exception) { /* Ignored */ }
+
+            await Task.Delay(sleepTime, token);
+        }
+
+        if (valueSet == false)
+            throw new Exception($"Timeout limit {timeout} exceeded.");
+
+        return value;
+    }
+
     /// <summary>
     /// Attempts to obtain a value while either the timeout has not expired or the <paramref name="whileFunction"/> returns
     /// true.

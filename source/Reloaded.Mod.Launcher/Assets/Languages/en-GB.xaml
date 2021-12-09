@@ -338,4 +338,8 @@
     <!-- Update 1.12.0: Extended Application Configuration -->
     <sys:String x:Key="ConfigureModsRightClickAdvice">Right Click Mod for More Options</sys:String>
 
+    <!-- Update 1.12.0: Create Mod Dialog -->
+    <sys:String x:Key="CreateModDialogIdDesc1">Unique Mod Id</sys:String>
+    <sys:String x:Key="CreateModDialogIdDesc2">Please set a unique Mod Id in the format of "game.type.name". For example: `sonicheroes.skins.seasidehillmidnight`. Once the ID is set, it cannot be changed.</sys:String>
+
 </ResourceDictionary>

@@ -83,7 +83,7 @@
 
                     <Button Style="{DynamicResource UnpaddedStretchedButton}"
                             Content="{DynamicResource TitleEditModDialog}" 
-                            Margin="{DynamicResource CommonItemMargin}"
+                            Margin="0"
                             Command="{Binding EditModCommand}"/>
 
                     <!-- Mod Properties -->

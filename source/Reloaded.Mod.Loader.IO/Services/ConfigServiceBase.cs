@@ -168,10 +168,23 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
 
     private void AddItem(PathTuple<TConfigType> itemTuple)
     {
+        // Check for existing item.
+        bool alreadyHasItem = ItemsByPath.TryGetValue(itemTuple.Path, out var existing);
+        
         ItemsByPath[itemTuple.Path] = itemTuple;
         ItemsByFolder[Path.GetDirectoryName(itemTuple.Path)] = itemTuple;
-        Items.Add(itemTuple);
-        OnAddItem?.Invoke(itemTuple);
+        if (alreadyHasItem)
+        {
+            // Sometimes you might get directory, then file notification, so we might get a duplicate.
+            // We hackily filter out this duplicate here.
+            var index = Items.IndexOf(existing);
+            Items[index] = itemTuple;
+        }
+        else
+        {
+            Items.Add(itemTuple);
+            OnAddItem?.Invoke(itemTuple);
+        }
     }
 
     private void RemoveItem(PathTuple<TConfigType> itemTuple)

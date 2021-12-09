@@ -7,11 +7,33 @@
                 xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
                 mc:Ignorable="d"
                 Title="{DynamicResource TitleCreateModDialog}" 
-                Height="550" 
+                Height="Auto" 
                 Width="500"
+                SizeToContent="Height"
                 WindowStartupLocation="CenterOwner"
                 Style="{DynamicResource ReloadedWindow}">
-    <Grid>
-        
-    </Grid>
+    <StackPanel DataContext="{Binding Path=RealViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+          Margin="{DynamicResource PageMargin}">
+
+        <TextBlock Text="{DynamicResource CreateModDialogIdDesc1}" 
+                   Style="{DynamicResource DefaultTextBlock}" 
+                   Margin="{DynamicResource CommonItemVerticalMargin}" 
+                   HorizontalAlignment="Center" />
+
+        <TextBox Text="{Binding ModId}" 
+                 Style="{DynamicResource DefaultTextBox}" 
+                 Margin="{DynamicResource CommonItemVerticalMargin}" />
+
+        <Button Content="{DynamicResource MessageBoxButtonOK}" 
+                Style="{DynamicResource DefaultButton}" 
+                Margin="{DynamicResource CommonItemVerticalMargin}" 
+                Click="Save_Click"/>
+
+        <TextBlock Text="{DynamicResource CreateModDialogIdDesc2}" 
+                   Style="{DynamicResource DefaultTextBlock}" 
+                   Margin="{DynamicResource CommonItemVerticalMargin}" 
+                   TextWrapping="Wrap"
+                   HorizontalAlignment="Center" />
+
+    </StackPanel>
 </default:ReloadedWindow>

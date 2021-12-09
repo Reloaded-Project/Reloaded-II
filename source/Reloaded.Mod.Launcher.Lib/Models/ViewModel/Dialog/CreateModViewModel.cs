@@ -30,10 +30,10 @@ public class CreateModViewModel : ObservableObject
     /// Creates the mod.
     /// </summary>
     /// <param name="showNonUniqueWindow">Shows a message to tell the user the mod isn't unique.</param>
-    public async Task<PathTuple<ModConfig>> CreateMod(Action showNonUniqueWindow)
+    public async Task<PathTuple<ModConfig>?> CreateMod(Action showNonUniqueWindow)
     {
         if (!IsUnique(showNonUniqueWindow))
-            return null!;
+            return null;
 
         var config = new ModConfig() { ModId = ModId };
         var modDirectory = Path.Combine(IoC.Get<LoaderConfig>().ModConfigDirectory, IOEx.ForceValidFilePath(ModId));

@@ -50,9 +50,9 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
 
     public bool IsUniversalMod { get; set; } = false;
 
-    public string[] ModDependencies         { get; set; }
-    public string[] OptionalDependencies    { get; set; }
-    public string[] SupportedAppId          { get; set; }
+    public string[] ModDependencies         { get; set; } = Array.Empty<string>();
+    public string[] OptionalDependencies    { get; set; } = Array.Empty<string>();
+    public string[] SupportedAppId          { get; set; } = Array.Empty<string>();
 
     /*
        ---------------
