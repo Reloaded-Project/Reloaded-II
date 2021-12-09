@@ -44,24 +44,29 @@
                     </Image>
                 </Viewbox>
 
-
                 <!-- Delete -->
-                <Button Grid.Column="1"
-                        Margin="{DynamicResource CommonItemVerticalMargin}"    
+                <TextBlock Text="{Binding Application.Config.AppId}" 
+                           Style="{DynamicResource DefaultTextBlock}" 
+                           ToolTip="{DynamicResource AddAppId}"
+                           ToolTipService.InitialShowDelay="0"
+                           HorizontalAlignment="Center" />
+
+                <Button Margin="{DynamicResource CommonItemVerticalMargin}"    
                         Content="{DynamicResource AddAppDeleteButton}"
                         Style="{DynamicResource UnpaddedStretchedGridButton}"
                         Width="{StaticResource DetailsColumnWidth}"
                         Command="{Binding DeleteApplicationCommand, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <!-- Name, Executable Location, Commandline Arguments. -->
+                <!--  Name, Executable Location, Commandline Arguments. -->
                 <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
-                        Tag="{DynamicResource AddAppName}" 
-                        ToolTip="{DynamicResource AddAppName}"
-                        Text="{Binding Application.Config.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Margin="{DynamicResource CommonItemVerticalMargin}" 
-                        Width="{StaticResource DetailsColumnWidth}"
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center"/>
+                         Tag="{DynamicResource AddAppName}" 
+                         ToolTip="{DynamicResource AddAppName}"
+                         ToolTipService.InitialShowDelay="0"
+                         Text="{Binding Application.Config.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="{DynamicResource CommonItemVerticalMargin}" 
+                         Width="{StaticResource DetailsColumnWidth}"
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center"/>
 
                 <TextBox
                         Text="{Binding Application.Config.AppLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -70,13 +75,15 @@
                         Style="{DynamicResource TextboxWithPlaceholder}" 
                         Tag="{DynamicResource AddAppLocation}" 
                         ToolTip="{DynamicResource AddAppLocation}"
+                        ToolTipService.InitialShowDelay="0"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
 
                 <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
-                             Text="{Binding Application.Config.AppArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding Application.Config.AppArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Tag="{DynamicResource AddAppArguments}" 
                         ToolTip="{DynamicResource AddAppArguments}"
+                        ToolTipService.InitialShowDelay="0"
                         Margin="{DynamicResource CommonItemVerticalMargin}" 
                         Width="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Center" 
