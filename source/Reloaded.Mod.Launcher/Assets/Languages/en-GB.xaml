@@ -349,4 +349,39 @@
     <sys:String x:Key="AddAppWarningTitle" xml:space="preserve">Executable Name Warning</sys:String>
     <sys:String x:Key="AddAppWarning" xml:space="preserve">The executable name of the application added is different from the original.&#x0a;If you are adding another application, you should add it as a new application.</sys:String>
 
+    <!-- Update 1.12.0: Extended Errors -->
+    <sys:String x:Key="ErrorInvalidSemanticVersionTitle">Invalid Version Number</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionDescription">The version number used by mod does not conform to the `Semantic Versioning` (SemVer) standard and cannot receive updates.&#x0a;Please update your mod's version number to use SemVer.&#x0a;Examples: `1.0.0`, `1.0`, `2.0-alpha`.</sys:String>
+
+    <!-- Update 1.12.0: Publish Mod Dialog -->
+    <sys:String x:Key="TitlePublishModDialog">Publish Mod</sys:String>
+    <sys:String x:Key="PublishModTarget">Publish Target</sys:String>
+    <sys:String x:Key="PublishModTargetTooltip" xml:space="preserve">Use default unless there's an option for the place(s) you're publishing to.&#x0a;Enables/Disables certain behaviours.</sys:String>
+
+    <sys:String x:Key="PublishModExcludeTitle">Exclude Files</sys:String>
+    <sys:String x:Key="PublishModIncludeTitle">Include Files</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsTitle">Previous Version(s)</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsDescription">Providing earlier version(s) of your mod allows for the use of delta compression, a way to enable smaller download sizes when upgrading from an earlier version to a later version of a mod.</sys:String>
+    <sys:String x:Key="PublishModButtonText">Publish</sys:String>
+
+    <sys:String x:Key="PublishSelectConfigTitle">Select a Mod Configuration (ModConfig.json).</sys:String>
+    <sys:String x:Key="PublishSelectConfigFileTypeName">Configuration</sys:String>
+
+    <sys:String x:Key="ErrorInvalidModConfigTitle">Invalid Mod Configuration</sys:String>
+    <sys:String x:Key="ErrorInvalidModConfigDescription">The provided file does not represent a valid mod configuration.</sys:String>
+
+    <sys:String x:Key="ErrorNewerModConfigVersionTitle">Invalid Mod Version</sys:String>
+    <sys:String x:Key="ErrorNewerModConfigVersionDescription">The provided mod version is newer than the version to be released.</sys:String>
+
+    <sys:String x:Key="ErrorPublishModIdMismatch">Invalid Mod Id</sys:String>
+    <sys:String x:Key="ErrorPublishModIdDescription">The provided mod id does not match the id of the mod to be published.</sys:String>
+
+    <sys:String x:Key="PublishModRegexSectionTitle">File Inclusions &amp; Exclusions</sys:String>
+    <sys:String x:Key="PublishModRegexTitle">Regular Expression</sys:String>
+    <sys:String x:Key="PublishModRegexTest">Test Regular Expressions</sys:String>
+    <sys:String x:Key="PublishModRegexDialogTitle">Excluded Files</sys:String>
+
+    <sys:String x:Key="PublishModCompSettings">Compression Settings</sys:String>
+    <sys:String x:Key="PublishModCompLevel">Compression Level</sys:String>
+    <sys:String x:Key="PublishModCompMethod">Compression Method</sys:String>
 </ResourceDictionary>

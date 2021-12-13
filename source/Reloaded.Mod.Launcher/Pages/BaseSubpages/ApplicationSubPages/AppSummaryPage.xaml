@@ -58,7 +58,7 @@
                 dd:DragDrop.IsDropTarget="True">
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="{DynamicResource ModManagerContextPublish}"/>
+                        <MenuItem Header="{DynamicResource ModManagerContextPublish}" Command="{Binding PublishModCommand}" />
                         <MenuItem Header="{DynamicResource ModManagerContextEditMod}" Command="{Binding EditModCommand}" />
                         <MenuItem Header="{DynamicResource ModManagerContextOpenFolder}" Command="{Binding OpenModFolderCommand}" />
                         <MenuItem Header="{DynamicResource ModManagerContextConfigure}" Command="{Binding ConfigureModCommand}" />

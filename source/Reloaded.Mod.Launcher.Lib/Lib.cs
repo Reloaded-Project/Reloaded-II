@@ -50,6 +50,7 @@ public static class Lib
     /// <param name="showMissingCoreDependency">Provides a dialog that allows the user to show all missing .NET Core dependencies.</param>
     /// <param name="editModDialog">Provides a dialog allowing for editing of an individual mod configuration.</param>
     /// <param name="languageSelector">Allows you to select a language for the application.</param>
+    /// <param name="publishModDialog">Shows a dialog that can be used to publish an individual mod.</param>
     public static void Init(IDictionaryResourceProvider provider, SynchronizationContext context, IIconConverter iconConverter, 
         IResourceFileSelector? languageSelector, IResourceFileSelector? themeSelector,
         Actions.CreateResourceFileSelectorDelegate createResourceFileSelector,
@@ -60,7 +61,7 @@ public static class Lib
         Actions.ShowModLoaderUpdateDialogDelegate showModLoaderUpdate, Actions.ShowModUpdateDialogDelegate showModUpdate, 
         Actions.ShowNugetFetchPackageDialogDelegate showNuGetFetchPackage, Actions.ConfigureNuGetFeedsDialogDelegate configureNuGetFeeds,
         Actions.ConfigureModDialogDelegate configureModDialog, Actions.ShowMissingCoreDependencyDialogDelegate showMissingCoreDependency,
-        Actions.EditModDialogDelegate editModDialog)
+        Actions.EditModDialogDelegate editModDialog, Actions.PublishModDialogDelegate publishModDialog)
     {
         Resources.Init(provider);
         IconConverter = iconConverter;
@@ -79,5 +80,6 @@ public static class Lib
         Actions.ConfigureModDialog = configureModDialog;
         Actions.ShowMissingCoreDependencyDialog = showMissingCoreDependency;
         Actions.EditModDialog = editModDialog;
+        Actions.PublishModDialog = publishModDialog;
     }
 }

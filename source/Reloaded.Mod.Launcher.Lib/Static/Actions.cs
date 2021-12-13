@@ -77,6 +77,11 @@ public static class Actions
     public static ShowModLoadSelectDialogDelegate ShowModLoadSelectDialog { get; set; } = null!;
 
     /// <summary>
+    /// Shows a dialog that can be used to publish an individual mod.
+    /// </summary>
+    public static PublishModDialogDelegate PublishModDialog { get; set; } = null!;
+
+    /// <summary>
     /// Delegate used to display a message to user's screen.
     /// </summary>
     /// <param name="title">Title of the error.</param>
@@ -199,4 +204,10 @@ public static class Actions
     /// </summary>
     /// <param name="viewModel">The viewmodel of the mod to be loaded.</param>
     public delegate bool ShowModLoadSelectDialogDelegate(LoadModSelectDialogViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that can be used to publish an individual mod.
+    /// </summary>
+    /// <param name="viewModel">The viewmodel used for publishing an individual mod.</param>
+    public delegate bool PublishModDialogDelegate(PublishModDialogViewModel viewModel);
 }

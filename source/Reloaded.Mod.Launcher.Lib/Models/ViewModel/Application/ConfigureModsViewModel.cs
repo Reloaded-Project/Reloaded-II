@@ -42,6 +42,9 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// <summary/>
     public EditModCommand EditModCommand { get; set; } = null!;
 
+    /// <summary/>
+    public PublishModCommand PublishModCommand { get; set; } = null!;
+
     private ApplicationViewModel _applicationViewModel;
 
     /// <inheritdoc />
@@ -141,5 +144,6 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         OpenModFolderCommand = new OpenModFolderCommand(SelectedMod?.Tuple);
         ConfigureModCommand = new ConfigureModCommand(SelectedMod?.Tuple);
         EditModCommand = new EditModCommand(SelectedMod?.Tuple, null);
+        PublishModCommand = new PublishModCommand(SelectedMod?.Tuple);
     }
 }

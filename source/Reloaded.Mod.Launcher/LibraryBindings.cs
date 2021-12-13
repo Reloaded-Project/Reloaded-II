@@ -36,8 +36,17 @@ public static class LibraryBindings
             configureNuGetFeeds: ConfigureNuGetFeeds,
             configureModDialog: ConfigureModDialog,
             showMissingCoreDependency: ShowMissingCoreDependency,
-            editModDialog: EditModDialog
+            editModDialog: EditModDialog,
+            publishModDialog: PublishModDialog
         );
+    }
+
+    private static bool PublishModDialog(PublishModDialogViewModel viewmodel)
+    {
+        var window = new PublishModDialog(viewmodel);
+        var result = window.ShowDialog();
+
+        return result.HasValue && result.Value;
     }
 
     private static IResourceFileSelector CreateResourceFileSelector(string directoryPath)

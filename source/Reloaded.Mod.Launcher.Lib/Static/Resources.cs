@@ -381,4 +381,39 @@ public static class Resources
     public static IDictionaryResource<string> AddAppUpdate { get; set; }
     public static IDictionaryResource<string> AddAppWarningTitle { get; set; }
     public static IDictionaryResource<string> AddAppWarning { get; set; }
+
+    // Update 1.12.0 Extended Errors
+    public static IDictionaryResource<string> ErrorInvalidSemanticVersionTitle { get; set; }
+    public static IDictionaryResource<string> ErrorInvalidSemanticVersionDescription { get; set; }
+
+    // Update 1.12.0: Publish Mod Dialog
+    public static IDictionaryResource<string> PublishModTitle { get; set; }
+    public static IDictionaryResource<string> PublishModTarget { get; set; }
+    public static IDictionaryResource<string> PublishModTargetTooltip { get; set; }
+    public static IDictionaryResource<string> PublishModExcludeTitle { get; set; }
+    public static IDictionaryResource<string> PublishModIncludeTitle { get; set; }
+    public static IDictionaryResource<string> PublishModPreviousVersionsTitle { get; set; }
+    public static IDictionaryResource<string> PublishModPreviousVersionsDescription { get; set; }
+    public static IDictionaryResource<string> PublishModButtonText { get; set; }
+
+    public static IDictionaryResource<string> PublishSelectConfigTitle { get; set; }
+    public static IDictionaryResource<string> PublishSelectConfigFileTypeName { get; set; }
+
+    public static IDictionaryResource<string> ErrorInvalidModConfigTitle { get; set; }
+    public static IDictionaryResource<string> ErrorInvalidModConfigDescription { get; set; }
+
+    public static IDictionaryResource<string> ErrorNewerModConfigVersionTitle { get; set; }
+    public static IDictionaryResource<string> ErrorNewerModConfigVersionDescription { get; set; }
+
+    public static IDictionaryResource<string> ErrorPublishModIdMismatch { get; set; }
+    public static IDictionaryResource<string> ErrorPublishModIdDescription { get; set; }
+
+    public static IDictionaryResource<string> PublishModRegexSectionTitle { get; set; }
+    public static IDictionaryResource<string> PublishModRegexTitle { get; set; }
+    public static IDictionaryResource<string> PublishModRegexTest { get; set; }
+    public static IDictionaryResource<string> PublishModRegexDialogTitle { get; set; }
+
+    public static IDictionaryResource<string> PublishModCompSettings { get; set; }
+    public static IDictionaryResource<string> PublishModCompLevel { get; set; }
+    public static IDictionaryResource<string> PublishModCompMethod { get; set; }
 }
