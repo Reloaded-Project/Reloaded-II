@@ -8,6 +8,7 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Lib.Commands.Mod;
 using Reloaded.Mod.Launcher.Lib.Models.Model.Application;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 
@@ -43,15 +44,20 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     public EditModCommand EditModCommand { get; set; } = null!;
 
     /// <summary/>
+    public EditModUserConfigCommand EditModUserConfigCommand { get; set; } = null!;
+
+    /// <summary/>
     public PublishModCommand PublishModCommand { get; set; } = null!;
 
     private ApplicationViewModel _applicationViewModel;
+    private readonly ModUserConfigService _userConfigService;
 
     /// <inheritdoc />
-    public ConfigureModsViewModel(ApplicationViewModel model)
+    public ConfigureModsViewModel(ApplicationViewModel model, ModUserConfigService userConfigService)
     {
         ApplicationTuple = model.ApplicationTuple;
         _applicationViewModel = model;
+        _userConfigService = userConfigService;
 
         // Wait for parent to fully initialize.
         _applicationViewModel.OnGetModsForThisApp += BuildModList;
@@ -141,9 +147,15 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
     private void UpdateCommands()
     {
-        OpenModFolderCommand = new OpenModFolderCommand(SelectedMod?.Tuple);
-        ConfigureModCommand = new ConfigureModCommand(SelectedMod?.Tuple);
-        EditModCommand = new EditModCommand(SelectedMod?.Tuple, null);
-        PublishModCommand = new PublishModCommand(SelectedMod?.Tuple);
+        if (SelectedMod == null) 
+            return;
+
+        OpenModFolderCommand = new OpenModFolderCommand(SelectedMod.Tuple);
+        ConfigureModCommand = new ConfigureModCommand(SelectedMod.Tuple);
+        EditModCommand = new EditModCommand(SelectedMod.Tuple, null);
+        PublishModCommand = new PublishModCommand(SelectedMod.Tuple);
+
+        var userConfig = _userConfigService.ItemsById.GetValueOrDefault(SelectedMod.Tuple.Config.ModId);
+        EditModUserConfigCommand = new EditModUserConfigCommand(userConfig);
     }
 }

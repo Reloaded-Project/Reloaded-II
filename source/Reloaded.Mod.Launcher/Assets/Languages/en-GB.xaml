@@ -305,6 +305,7 @@
     <!-- Update 1.12.0: Context Menu for Application Mod Items -->
     <sys:String x:Key="ModManagerContextPublish">Publish</sys:String>
     <sys:String x:Key="ModManagerContextEditMod">Edit Mod</sys:String>
+    <sys:String x:Key="ModManagerContextEditModUser">User Config</sys:String>
     <sys:String x:Key="ModManagerContextOpenFolder">Open Folder</sys:String>
     <sys:String x:Key="ModManagerContextConfigure">Configure</sys:String>
 
@@ -371,7 +372,7 @@
     <sys:String x:Key="ErrorInvalidModConfigDescription">The provided file does not represent a valid mod configuration.</sys:String>
 
     <sys:String x:Key="ErrorNewerModConfigVersionTitle">Invalid Mod Version</sys:String>
-    <sys:String x:Key="ErrorNewerModConfigVersionDescription">The provided mod version is newer than the version to be released.</sys:String>
+    <sys:String x:Key="ErrorNewerModConfigVersionDescription">The provided mod version is newer or already equal to the version to be released.</sys:String>
 
     <sys:String x:Key="ErrorPublishModIdMismatch">Invalid Mod Id</sys:String>
     <sys:String x:Key="ErrorPublishModIdDescription">The provided mod id does not match the id of the mod to be published.</sys:String>
@@ -384,4 +385,10 @@
     <sys:String x:Key="PublishModCompSettings">Compression Settings</sys:String>
     <sys:String x:Key="PublishModCompLevel">Compression Level</sys:String>
     <sys:String x:Key="PublishModCompMethod">Compression Method</sys:String>
+
+    <!-- Update 1.12.0: Edit Mod User Config -->
+    <sys:String x:Key="TitleEditModUserConfig">Edit User Config</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleases">Allow Beta Versions</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleasesTooltip">Allows early versions of the mod to be downloaded.</sys:String>
+
 </ResourceDictionary>

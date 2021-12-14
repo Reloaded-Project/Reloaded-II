@@ -82,6 +82,11 @@ public static class Actions
     public static PublishModDialogDelegate PublishModDialog { get; set; } = null!;
 
     /// <summary>
+    /// Shows a dialog allowing the user to edit their individual user config.
+    /// </summary>
+    public static ShowEditModUserConfigDialogDelegate ShowEditModUserConfig { get; set; } = null!;
+
+    /// <summary>
     /// Delegate used to display a message to user's screen.
     /// </summary>
     /// <param name="title">Title of the error.</param>
@@ -210,4 +215,10 @@ public static class Actions
     /// </summary>
     /// <param name="viewModel">The viewmodel used for publishing an individual mod.</param>
     public delegate bool PublishModDialogDelegate(PublishModDialogViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that can be used to edit the user config of an individual mod.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for editing the user config of an individual mod.</param>
+    public delegate bool ShowEditModUserConfigDialogDelegate(EditModUserConfigDialogViewModel viewModel);
 }

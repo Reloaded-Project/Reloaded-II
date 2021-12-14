@@ -37,71 +37,14 @@ public static class LibraryBindings
             configureModDialog: ConfigureModDialog,
             showMissingCoreDependency: ShowMissingCoreDependency,
             editModDialog: EditModDialog,
-            publishModDialog: PublishModDialog
+            publishModDialog: PublishModDialog,
+            showEditModUserConfig: ShowEditModUserConfig
         );
-    }
-
-    private static bool PublishModDialog(PublishModDialogViewModel viewmodel)
-    {
-        var window = new PublishModDialog(viewmodel);
-        var result = window.ShowDialog();
-
-        return result.HasValue && result.Value;
     }
 
     private static IResourceFileSelector CreateResourceFileSelector(string directoryPath)
     {
         return new XamlFileSelector(directoryPath);
-    }
-
-    private static bool ShowModLoadSelectDialog(LoadModSelectDialogViewModel viewmodel)
-    {
-        var loadModSelectDialog = new LoadModSelectDialog(viewmodel);
-        loadModSelectDialog.Owner = Application.Current.MainWindow;
-        var result = loadModSelectDialog.ShowDialog();
-        return result.HasValue && result.Value;
-    }
-
-    private static bool EditModDialog(EditModDialogViewModel viewmodel, object? owner)
-    {
-        var createModDialog = new EditModDialog(viewmodel);
-        if (owner != null)
-            createModDialog.Owner = Window.GetWindow((DependencyObject) owner);
-
-        var result = createModDialog.ShowDialog();
-        return result.HasValue && result.Value;
-    }
-
-    private static bool ShowMissingCoreDependency(MissingCoreDependencyDialogViewModel viewmodel)
-    {
-        var window = new MissingCoreDependencyDialog(viewmodel);
-        var result = window.ShowDialog();
-
-        return result.HasValue && result.Value;
-    }
-
-    private static bool ConfigureModDialog(ConfigureModDialogViewModel viewmodel)
-    {
-        var window = new ConfigureModDialog(viewmodel);
-        var result = window.ShowDialog();
-
-        return result.HasValue && result.Value;
-    }
-
-    private static bool ShowNuGetFetchPackage(NugetFetchPackageDialogViewModel viewmodel)
-    {
-        var dialog = new NugetFetchPackageDialog(viewmodel);
-        var result = dialog.ShowDialog();
-
-        return result.HasValue && result.Value;
-    }
-
-    private static bool ShowModLoaderUpdate(ModLoaderUpdateDialogViewModel viewmodel)
-    {
-        var dialog = new ModLoaderUpdateDialog(viewmodel);
-        var result = dialog.ShowDialog();
-
-        return result.HasValue && result.Value;
     }
 
     private static bool DisplayMessage(string title, string message, Actions.DisplayMessageBoxParams parameters)
@@ -114,24 +57,8 @@ public static class LibraryBindings
         };
 
         window.WindowStartupLocation = (WindowStartupLocation)parameters.StartupLocation;
+
         var result = window.ShowDialog();
-
-        return result.HasValue && result.Value;
-    }
-
-    private static bool ShowModUpdate(ModUpdateDialogViewModel viewmodel)
-    {
-        var dialog = new ModUpdateDialog(viewmodel);
-        var result = dialog.ShowDialog();
-
-        return result.HasValue && result.Value;
-    }
-
-    private static bool ConfigureNuGetFeeds(ConfigureNuGetFeedsDialogViewModel viewmodel)
-    {
-        var dialog = new ConfigureNuGetFeedsDialog(viewmodel);
-        var result = dialog.ShowDialog();
-
         return result.HasValue && result.Value;
     }
 
@@ -139,15 +66,38 @@ public static class LibraryBindings
     {
         var wineDialog = new XamlResourceMessageBoxOkCancel(title, message, ok, cancel);
         wineDialog.MaxWidth = 680;
-        var result = wineDialog.ShowDialog();
-        return result.HasValue && result.Value;
+        return ShowDialogAndGetResult(wineDialog);
+    }
+    private static bool ShowModLoadSelectDialog(LoadModSelectDialogViewModel viewmodel)
+    {
+        var loadModSelectDialog = new LoadModSelectDialog(viewmodel);
+        loadModSelectDialog.Owner = Application.Current.MainWindow;
+        
+        return ShowDialogAndGetResult(loadModSelectDialog);
     }
 
-    private static bool DownloadModArchives(DownloadModArchiveViewModel viewmodel)
+    private static bool EditModDialog(EditModDialogViewModel viewmodel, object? owner)
     {
-        var dialog = new DownloadModArchiveDialog(viewmodel);
-        var result = dialog.ShowDialog();
+        var createModDialog = new EditModDialog(viewmodel);
+        if (owner != null)
+            createModDialog.Owner = Window.GetWindow((DependencyObject)owner);
+        
+        return ShowDialogAndGetResult(createModDialog);
+    }
 
+    private static bool ShowMissingCoreDependency(MissingCoreDependencyDialogViewModel viewmodel) => ShowDialogAndGetResult(new MissingCoreDependencyDialog(viewmodel));
+    private static bool ConfigureModDialog(ConfigureModDialogViewModel viewmodel) => ShowDialogAndGetResult(new ConfigureModDialog(viewmodel));
+    private static bool ShowNuGetFetchPackage(NugetFetchPackageDialogViewModel viewmodel) => ShowDialogAndGetResult(new NugetFetchPackageDialog(viewmodel));
+    private static bool ShowModLoaderUpdate(ModLoaderUpdateDialogViewModel viewmodel) => ShowDialogAndGetResult(new ModLoaderUpdateDialog(viewmodel));
+    private static bool ShowModUpdate(ModUpdateDialogViewModel viewmodel) => ShowDialogAndGetResult(new ModUpdateDialog(viewmodel));
+    private static bool ConfigureNuGetFeeds(ConfigureNuGetFeedsDialogViewModel viewmodel) => ShowDialogAndGetResult(new ConfigureNuGetFeedsDialog(viewmodel));
+    private static bool DownloadModArchives(DownloadModArchiveViewModel viewmodel) => ShowDialogAndGetResult(new DownloadModArchiveDialog(viewmodel));
+    private static bool ShowEditModUserConfig(EditModUserConfigDialogViewModel viewmodel) => ShowDialogAndGetResult(new EditModUserConfigDialog(viewmodel));
+    private static bool PublishModDialog(PublishModDialogViewModel viewmodel) => ShowDialogAndGetResult(new PublishModDialog(viewmodel));
+
+    private static bool ShowDialogAndGetResult(this Window window)
+    {
+        var result = window.ShowDialog();
         return result.HasValue && result.Value;
     }
 }

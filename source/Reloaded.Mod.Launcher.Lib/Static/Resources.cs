@@ -341,6 +341,7 @@ public static class Resources
     // Update 1.12.0: Context Menu for Application Mod Items
     public static IDictionaryResource<string> ModManagerContextPublish { get; set; }
     public static IDictionaryResource<string> ModManagerContextEditMod { get; set; }
+    public static IDictionaryResource<string> ModManagerContextEditModUser { get; set; }
     public static IDictionaryResource<string> ModManagerContextOpenFolder { get; set; }
     public static IDictionaryResource<string> ModManagerContextConfigure { get; set; }
 
@@ -416,4 +417,9 @@ public static class Resources
     public static IDictionaryResource<string> PublishModCompSettings { get; set; }
     public static IDictionaryResource<string> PublishModCompLevel { get; set; }
     public static IDictionaryResource<string> PublishModCompMethod { get; set; }
+
+    // Update 1.12.0: Edit Mod User Config
+    public static IDictionaryResource<string> TitleEditModUserConfig { get; set; }
+    public static IDictionaryResource<string> TitleEditModUserAllowPrereleases { get; set; }
+    public static IDictionaryResource<string> TitleEditModUserAllowPrereleasesTooltip { get; set; }
 }

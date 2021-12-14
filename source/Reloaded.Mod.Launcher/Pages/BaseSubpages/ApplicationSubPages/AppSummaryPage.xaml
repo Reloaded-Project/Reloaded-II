@@ -61,6 +61,7 @@
                         <MenuItem Header="{DynamicResource ModManagerContextPublish}" Command="{Binding PublishModCommand}" />
                         <MenuItem Header="{DynamicResource ModManagerContextEditMod}" Command="{Binding EditModCommand}" />
                         <MenuItem Header="{DynamicResource ModManagerContextOpenFolder}" Command="{Binding OpenModFolderCommand}" />
+                        <MenuItem Header="{DynamicResource ModManagerContextEditModUser}" Command="{Binding EditModUserConfigCommand}" />
                         <MenuItem Header="{DynamicResource ModManagerContextConfigure}" Command="{Binding ConfigureModCommand}" />
                     </ContextMenu>
                 </ListView.ContextMenu>
