@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Windows.Documents;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Launcher.Lib.Commands.Application;
 using Reloaded.Mod.Launcher.Lib.Misc;
@@ -72,12 +74,14 @@ public class ApplicationViewModel : ObservableObject, IDisposable
     private Timer _refreshProcessesWithLoaderTimer;
     private ModConfigService _modConfigService;
     private ApplicationInstanceTracker _instanceTracker;
+    private ModUserConfigService _modUserConfigService;
 
     /// <inheritdoc />
-    public ApplicationViewModel(PathTuple<ApplicationConfig> tuple, ModConfigService modConfigService, LoaderConfig loaderConfig)
+    public ApplicationViewModel(PathTuple<ApplicationConfig> tuple, ModConfigService modConfigService, ModUserConfigService modUserConfigService, LoaderConfig loaderConfig)
     {
         ApplicationTuple    = tuple;
         _modConfigService    = modConfigService;
+        _modUserConfigService = modUserConfigService;
         MakeShortcutCommand = new MakeShortcutCommand(tuple, Launcher.Lib.Lib.IconConverter);
 
         IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
@@ -169,9 +173,30 @@ public class ApplicationViewModel : ObservableObject, IDisposable
     private void GetModsForThisApp()
     {
         string appId = ApplicationTuple.Config.AppId;
-        var newMods  = _modConfigService.Items.Where(x => x.Config.SupportedAppId != null && x.Config.SupportedAppId.Contains(appId));
 
-        ModsForThisApp = new ObservableCollection<PathTuple<ModConfig>>(newMods);
-        OnGetModsForThisApp();
+        var newMods = new List<PathTuple<ModConfig>>();
+        foreach (var modItem in _modConfigService.Items)
+        {
+            // Check config
+            if (modItem.Config.IsUniversalMod || (modItem.Config.SupportedAppId != null && modItem.Config.SupportedAppId.Contains(appId)))
+                goto addMod;
+
+            // Check user config.
+            if (!_modUserConfigService.ItemsById.TryGetValue(modItem.Config.ModId, out var modUserConfig)) 
+                continue;
+
+            if (!modUserConfig.Config.IsUniversalMod) 
+                continue;
+            
+            addMod:
+            newMods.Add(modItem);
+        }
+
+        // Modify collection.
+        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+        {
+            Collections.ModifyObservableCollection(ModsForThisApp, newMods);
+            OnGetModsForThisApp();
+        });
     }
 }

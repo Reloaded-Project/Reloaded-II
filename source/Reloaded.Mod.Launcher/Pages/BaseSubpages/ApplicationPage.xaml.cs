@@ -25,7 +25,7 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
     public ApplicationPage()
     {
         InitializeComponent();
-        ViewModel = new ApplicationViewModel(IoC.Get<MainPageViewModel>().SelectedApplication!, IoC.Get<ModConfigService>(), IoC.Get<LoaderConfig>());
+        ViewModel = new ApplicationViewModel(IoC.Get<MainPageViewModel>().SelectedApplication!, IoC.Get<ModConfigService>(), IoC.Get<ModUserConfigService>(), IoC.Get<LoaderConfig>());
         this.AnimateOutStarted += Dispose;
     }
 
