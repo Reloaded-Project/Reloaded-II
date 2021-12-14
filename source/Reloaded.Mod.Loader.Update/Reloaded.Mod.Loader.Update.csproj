@@ -14,9 +14,10 @@
     <PackageReference Include="NuGet.Protocol" Version="5.7.0" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
-    <PackageReference Include="Sewer56.Update" Version="1.2.5" />
+    <PackageReference Include="Sewer56.Update" Version="1.2.6" />
     <PackageReference Include="Sewer56.Update.Extractors.SevenZipSharp" Version="1.1.0" GeneratePathProperty="true" />
-    <PackageReference Include="Sewer56.Update.Resolvers.GameBanana" Version="1.1.1" />
+    <PackageReference Include="Sewer56.Update.Packaging" Version="1.1.2" />
+    <PackageReference Include="Sewer56.Update.Resolvers.GameBanana" Version="1.1.2" />
     <PackageReference Include="Sewer56.Update.Resolvers.GitHub" Version="1.1.0" />
     <PackageReference Include="Sewer56.Update.Resolvers.NuGet" Version="1.1.0" />
   </ItemGroup>
