@@ -27,11 +27,6 @@ public class Paths
     public static readonly string LoaderConfigPath = Path.Combine(ConfigFolder, "ReloadedII.json"); // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
 
     /// <summary>
-    /// Location of the profile optimization folder, used to enable Multicore-JIT.
-    /// </summary>
-    public static readonly string ProfileOptimizationPath = Path.Combine(ConfigFolder, "ProfileOptimization");
-
-    /// <summary>
     /// Location of the logs folder, used to store loader logs.
     /// </summary>
     public static readonly string LogPath = Path.Combine(ConfigFolder, "Logs");
@@ -48,28 +43,34 @@ public class Paths
     public static string GetKernel32AddressDumperPath(string launcherPath) => Path.Combine(launcherPath, Kernel32AddressDumperRelativePath);
 
     /// <summary>
+    /// Gets the path of the AnyCPU Reloaded Loader Folder.
+    /// </summary>
+    /// <param name="launcherPath">Path to the launcher folder.</param>
+    public static string GetLoaderFolder(string launcherPath) => Path.Combine(launcherPath, $"Loader");
+
+    /// <summary>
     /// Gets the path of the 32-bit Reloaded Loader Folder.
     /// </summary>
     /// <param name="launcherPath">Path to the launcher folder.</param>
-    public static string GetLoaderFolder32(string launcherPath) => Path.Combine(launcherPath, $"Loader", "x86");
+    public static string GetLoaderFolder32(string launcherPath) => Path.Combine(GetLoaderFolder(launcherPath), "x86");
 
     /// <summary>
     /// Gets the path of the 64-bit Reloaded Loader Folder.
     /// </summary>
     /// <param name="launcherPath">Path to the launcher folder.</param>
-    public static string GetLoaderFolder64(string launcherPath) => Path.Combine(launcherPath, $"Loader", "x64");
+    public static string GetLoaderFolder64(string launcherPath) => Path.Combine(GetLoaderFolder(launcherPath), "x64");
 
     /// <summary>
     /// Gets the path of the 32-bit Reloaded Loader DLL.
     /// </summary>
     /// <param name="launcherPath">Path to the launcher folder.</param>
-    public static string GetLoaderPath32(string launcherPath) => Path.Combine(GetLoaderFolder32(launcherPath), "Reloaded.Mod.Loader.dll");
+    public static string GetLoaderPath32(string launcherPath) => Path.Combine(GetLoaderFolder(launcherPath), "Reloaded.Mod.Loader.dll");
 
     /// <summary>
     /// Gets the path of the 64-bit Reloaded Loader DLL.
     /// </summary>
     /// <param name="launcherPath">Path to the launcher folder.</param>
-    public static string GetLoaderPath64(string launcherPath) => Path.Combine(GetLoaderFolder64(launcherPath), "Reloaded.Mod.Loader.dll");
+    public static string GetLoaderPath64(string launcherPath) => Path.Combine(GetLoaderFolder(launcherPath), "Reloaded.Mod.Loader.dll");
 
     /// <summary>
     /// Gets the path of the 32-bit Reloaded Loader Bootstrapper DLL.

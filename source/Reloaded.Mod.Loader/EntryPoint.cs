@@ -48,8 +48,6 @@ public static class EntryPoint
     /// </summary>
     public static unsafe int Initialize(IntPtr argument, int argSize)
     {
-        EnableProfileOptimization();
-
         // Write port as a Memory Mapped File, to allow Mod Loader's Launcher to discover the mod port.
         // (And to stop bootstrapper from loading loader again).
         _process = Process.GetCurrentProcess();
@@ -192,19 +190,6 @@ public static class EntryPoint
         Logger?.LogWriteLine(errorMessage, Logger.ColorError);
         _loader?.LogWriter?.Flush();
         User32.MessageBox(0, errorMessage, "Oh Noes!", 0);
-    }
-
-    private static void EnableProfileOptimization()
-    {
-        // Start Profile Optimization
-        var profileRoot = Paths.ProfileOptimizationPath;
-        Directory.CreateDirectory(profileRoot);
-            
-        // Define the folder where to save the profile files
-        ProfileOptimization.SetProfileRoot(profileRoot);
-
-        // Start profiling and save it in Startup.profile
-        ProfileOptimization.StartProfile("Loader.profile");
     }
 }
 

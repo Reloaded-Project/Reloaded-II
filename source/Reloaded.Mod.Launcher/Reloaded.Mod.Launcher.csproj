@@ -15,6 +15,7 @@
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <RuntimeFrameworkVersion>5.0.1</RuntimeFrameworkVersion>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 	

@@ -58,7 +58,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Installer.Depe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Installer", "Reloaded.Mod.Installer\Reloaded.Mod.Installer.csproj", "{16DFA8F7-496D-4FF9-9A6E-032F7FD97B36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Launcher.Lib", "Reloaded.Mod.Launcher.Lib\Reloaded.Mod.Launcher.Lib.csproj", "{4D10ED29-B435-4B9C-A75B-A8961F6D3B31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Launcher.Lib", "Reloaded.Mod.Launcher.Lib\Reloaded.Mod.Launcher.Lib.csproj", "{4D10ED29-B435-4B9C-A75B-A8961F6D3B31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
