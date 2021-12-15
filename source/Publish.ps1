@@ -64,6 +64,8 @@ Remove-Item "$loaderOutputPath/win-x86" -Recurse -ErrorAction SilentlyContinue
 Remove-Item "$outputPath/win-x86" -Recurse -ErrorAction SilentlyContinue
 Remove-Item "$outputPath/win-x64" -Recurse -ErrorAction SilentlyContinue
 Remove-Item "$outputPath/ref" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "$outputPath/Theme/Halogen/Images/IconTemplate.7z" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "$outputPath/Theme/Default/R-II/Images/Templates.zip" -Recurse -ErrorAction SilentlyContinue
 
 # Remove non-windows native stuff
 $excludePatterns=@('win-x86*','win-x64*','win*')
@@ -86,7 +88,7 @@ foreach ($cleanupPath in $cleanupPaths) {
 
 # Make compressed directory
 Remove-Item "$publishDirectory" -Recurse -ErrorAction SilentlyContinue
-New-Item "$publishDirectory" -ItemType Directory
+New-Item "$publishDirectory" -ItemType Directory -ErrorAction SilentlyContinue
 
 # Compress result.
 Add-Type -A System.IO.Compression.FileSystem
