@@ -1,10 +1,17 @@
-# Single File Publish Currently Disabled because it's Broken with WPF.
-# Only after the following bugs are fixed:
-# - https://github.com/dotnet/wpf/issues/3516 was fixed but now there's a new problem
-$publishSingleFile = $false
+# .NET 6 Has Issues with Handles and Files Already in use when building
+# single file applications, we have to try work around it here.
+function New-TemporaryDirectory 
+{
+    $parent = [System.IO.Path]::GetTempPath()
+    [string] $name = [System.Guid]::NewGuid()
+	
+	$returnValue = Join-Path "$parent" "$name"
+	Write-Host "Location: $returnValue"
+	return "$returnValue"
+}
 
 # Build Locations
-$buildPath = "Publish-Build"
+$buildPath = New-TemporaryDirectory
 $outputPath = "$buildPath/Publish"
 $outputPath32 = "$buildPath/Publish/x86"
 $toolsPath  = "$buildPath/Tools/"
@@ -35,9 +42,9 @@ foreach ($cleanupPath in $cleanupPaths) {
 }
 
 # Build using Visual Studio & Dotnet Publish
-msbuild $bootstrapperPath /p:Configuration=Release /p:Platform=x64 /p:OutDir="../$loaderOutputPath"
+msbuild $bootstrapperPath /p:Configuration=Release /p:Platform=x64 /p:OutDir="$loaderOutputPath"
 dotnet build-server shutdown
-dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false /p:PublishSingleFile=true -o "$loaderOutputPath"
+dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false -o "$loaderOutputPath"
 
 # Build AnyCPU, and then copy 32-bit AppHost. 
 dotnet publish "$launcherProjectPath" -c Release --self-contained false -o "$outputPath"
@@ -78,13 +85,15 @@ foreach ($cleanupPath in $cleanupPaths) {
 }
 
 # Make compressed directory
-Remove-Item "$publishDirectory" -Recurse
+Remove-Item "$publishDirectory" -Recurse -ErrorAction SilentlyContinue
 New-Item "$publishDirectory" -ItemType Directory
 
 # Compress result.
 Add-Type -A System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory("$outputPath", "$publishDirectory" + "$releaseFileName")
 [IO.Compression.ZipFile]::CreateFromDirectory("$toolsPath", "$publishDirectory" + "$toolsReleaseFileName")
+Remove-Item "$buildPath" -Recurse
 
 # Restore Working Directory
 Pop-Location
+
