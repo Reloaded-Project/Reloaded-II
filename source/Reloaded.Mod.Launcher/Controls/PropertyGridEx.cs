@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using HandyControl.Controls;
+using HandyControl.Tools;
 
 namespace Reloaded.Mod.Launcher.Controls;
 
@@ -40,6 +41,9 @@ public class PropertyResolverEx : PropertyResolver
 
         if (type == typeof(float)) return new NumberPropertyEditor(float.MinValue, float.MaxValue);
         if (type == typeof(double)) return new NumberPropertyEditor(double.MinValue, double.MaxValue);
+
+        if (type == typeof(bool)) return new SwitchPropertyEditorEx();
+        if (type == typeof(DateTime)) return new DateTimePropertyEditor();
 
         if (type.IsSubclassOf(typeof(Enum))) return new EnumPropertyEditor();
 
@@ -113,4 +117,27 @@ public class NumberPropertyEditor : PropertyEditorBase
     };
 
     public override DependencyProperty GetDependencyProperty() => NumericUpDown.ValueProperty;
+}
+
+public class SwitchPropertyEditorEx : SwitchPropertyEditor
+{
+    public override FrameworkElement CreateElement(PropertyItem propertyItem)
+    {
+        var result = base.CreateElement(propertyItem);
+        result.ToolTip = propertyItem.GetTooltip();
+        return result;
+    }
+
+    public override DependencyProperty GetDependencyProperty() => ToggleButton.IsCheckedProperty;
+}
+
+public class DateTimePropertyEditor : PropertyEditorBase
+{
+    public override FrameworkElement CreateElement(PropertyItem propertyItem) => new DateTimePicker
+    {
+        IsEnabled = !propertyItem.IsReadOnly,
+        ToolTip = propertyItem.GetTooltip()
+    };
+
+    public override DependencyProperty GetDependencyProperty() => DateTimePicker.SelectedDateTimeProperty;
 }
