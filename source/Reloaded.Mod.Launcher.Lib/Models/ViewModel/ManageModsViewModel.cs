@@ -35,6 +35,9 @@ public class ManageModsViewModel : ObservableObject
     /// <summary/>
     public DeleteModCommand DeleteModCommand { get; set; } = null!;
 
+    /// <summary/>
+    public PublishModCommand PublishModCommand { get; set; } = null!;
+
     /* If false, events to reload mod list are not sent. */
     private ApplicationConfigService _appConfigService;
     private SetModImageCommand _setModImageCommand = null!;
@@ -101,5 +104,6 @@ public class ManageModsViewModel : ObservableObject
         EditModCommand = new EditModCommand(SelectedModTuple, null);
         DeleteModCommand = new DeleteModCommand(SelectedModTuple);
         _setModImageCommand = new SetModImageCommand(SelectedModTuple);
+        PublishModCommand = new PublishModCommand(SelectedModTuple);
     }
 }

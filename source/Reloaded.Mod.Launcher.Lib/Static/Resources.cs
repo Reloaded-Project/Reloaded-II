@@ -340,6 +340,7 @@ public static class Resources
 
     // Update 1.12.0: Context Menu for Application Mod Items
     public static IDictionaryResource<string> ModManagerContextPublish { get; set; }
+    public static IDictionaryResource<string> ModManagerContextEdit { get; set; }
     public static IDictionaryResource<string> ModManagerContextEditMod { get; set; }
     public static IDictionaryResource<string> ModManagerContextEditModUser { get; set; }
     public static IDictionaryResource<string> ModManagerContextOpenFolder { get; set; }

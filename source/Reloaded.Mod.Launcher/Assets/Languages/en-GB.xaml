@@ -304,6 +304,7 @@
 
     <!-- Update 1.12.0: Context Menu for Application Mod Items -->
     <sys:String x:Key="ModManagerContextPublish">Publish</sys:String>
+    <sys:String x:Key="ModManagerContextEdit">Edit</sys:String>
     <sys:String x:Key="ModManagerContextEditMod">Edit Mod</sys:String>
     <sys:String x:Key="ModManagerContextEditModUser">User Config</sys:String>
     <sys:String x:Key="ModManagerContextOpenFolder">Open Folder</sys:String>

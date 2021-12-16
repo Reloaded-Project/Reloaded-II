@@ -68,23 +68,40 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
                         <Button Grid.Column="0"
+                                Grid.Row="0"
                                 Margin="0"
                                 Style="{DynamicResource UnpaddedStretchedGridButton}"
                                 Content="{DynamicResource AddAppNewButton}" 
                                 PreviewMouseDown="Button_PreviewMouseDown"/>
 
                         <Button Grid.Column="1"
+                                Grid.Row="0"
                                 Margin="0"
                                 Style="{DynamicResource UnpaddedStretchedGridButton}"
                                 Content="{DynamicResource AddAppDeleteButton}" 
                                 Command="{Binding DeleteModCommand}"/>
-                    </Grid>
 
-                    <Button Style="{DynamicResource UnpaddedStretchedButton}"
-                            Content="{DynamicResource TitleEditModDialog}" 
-                            Margin="0"
-                            Command="{Binding EditModCommand}"/>
+                        <Button Grid.Row="1"
+                                Grid.Column="0"
+                                Style="{DynamicResource UnpaddedStretchedButton}"
+                                Content="{DynamicResource ModManagerContextEdit}" 
+                                Margin="0"
+                                Command="{Binding EditModCommand}"/>
+
+                        <Button Grid.Row="1"
+                                Grid.Column="1"
+                                Style="{DynamicResource UnpaddedStretchedButton}"
+                                Content="{DynamicResource ModManagerContextPublish}" 
+                                Margin="0"
+                                Command="{Binding PublishModCommand}"/>
+                    </Grid>
 
                     <!-- Mod Properties -->
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
