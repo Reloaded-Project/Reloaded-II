@@ -282,6 +282,20 @@ public class PublishModDialogViewModel : ObservableObject
         Actions.DisplayMessagebox.Invoke(Resources.PublishModRegexDialogTitle.Get(), string.Join('\n', ignoredFiles));
     }
 
+    /// <summary>
+    /// Sets the output folder for the build operation.
+    /// </summary>
+    /// <exception cref="NotImplementedException"></exception>
+    public void SetOutputFolder()
+    {
+        var dialog = new VistaFolderBrowserDialog();
+        dialog.Multiselect = false;
+        dialog.SelectedPath = OutputFolder;
+
+        if ((bool)dialog.ShowDialog()!)
+            OutputFolder = dialog.SelectedPath;
+    }
+
     private string GetModFolder() => Path.GetDirectoryName(_modTuple.Path)!;
     
     private string SelectConfigFile()

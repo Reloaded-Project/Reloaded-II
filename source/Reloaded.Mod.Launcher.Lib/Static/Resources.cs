@@ -418,6 +418,9 @@ public static class Resources
     public static IDictionaryResource<string> PublishModCompLevel { get; set; }
     public static IDictionaryResource<string> PublishModCompMethod { get; set; }
 
+    public static IDictionaryResource<string> PublishOutputFolder { get; set; }
+    public static IDictionaryResource<string> PublishSetOutputFolder { get; set; }
+
     // Update 1.12.0: Edit Mod User Config
     public static IDictionaryResource<string> TitleEditModUserConfig { get; set; }
     public static IDictionaryResource<string> TitleEditModUserAllowPrereleases { get; set; }

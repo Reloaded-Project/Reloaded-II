@@ -208,16 +208,32 @@
             </controls:PopupLabel>
 
             <!-- Progress -->
+            <TextBlock Text="{Binding OutputFolder}" Style="{DynamicResource DefaultTextBlock}"
+                       ToolTip="{DynamicResource PublishOutputFolder}" ToolTipService.InitialShowDelay="0" 
+                       Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                       HorizontalAlignment="Center" />
+
             <ProgressBar Height="32"
                          Value="{Binding BuildProgress, UpdateSourceTrigger=PropertyChanged}"
                          Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                          Maximum="100" />
 
-            <Button Content="{DynamicResource PublishModButtonText}" 
-                    Click="Publish_Click"
-                    Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
-                    Style="{DynamicResource DefaultButton}"
-                    IsEnabled="{Binding CanBuild, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                <Button Content="{DynamicResource PublishSetOutputFolder}" 
+                        Click="SetOutputFolder_Click"
+                        Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                        Style="{DynamicResource DefaultButton}"
+                        IsEnabled="{Binding CanBuild, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Content="{DynamicResource PublishModButtonText}" 
+                        Click="Publish_Click"
+                        Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                        Style="{DynamicResource DefaultButton}"
+                        IsEnabled="{Binding CanBuild, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </StackPanel>
+
 
         </StackPanel>
 
