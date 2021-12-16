@@ -35,7 +35,6 @@ namespace Reloaded.Mod.Loader.Tests.IO
             Assert.Equal(config.Bootstrapper32Path, newConfig.Bootstrapper32Path);
             Assert.Equal(config.Bootstrapper64Path, newConfig.Bootstrapper64Path);
             Assert.Equal(config.ApplicationConfigDirectory, newConfig.ApplicationConfigDirectory);
-            Assert.Equal(config.ModUserConfigDirectory, newConfig.ModUserConfigDirectory);
             Assert.Equal(config.PluginConfigDirectory, newConfig.PluginConfigDirectory);
             Assert.Equal(config.ModConfigDirectory, newConfig.ModConfigDirectory);
             Assert.Equal(config.LanguageFile, newConfig.LanguageFile);
