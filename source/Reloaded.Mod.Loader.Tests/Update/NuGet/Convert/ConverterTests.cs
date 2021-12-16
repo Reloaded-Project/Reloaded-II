@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Threading.Tasks;
 using Reloaded.Mod.Loader.Update.Converters.NuGet;
 using Reloaded.Mod.Loader.Update.Exceptions;
 using Xunit;
@@ -15,13 +16,13 @@ namespace Reloaded.Mod.Loader.Tests.Update.NuGet.Convert
         [Fact]
         public void TryConvertBad()
         {
-            Assert.Throws<BadArchiveException>(() => Converter.FromArchiveFile(TestArchiveFileBad, Environment.CurrentDirectory));
+            Assert.ThrowsAsync<BadArchiveException>(() => Converter.FromArchiveFileAsync(TestArchiveFileBad, Environment.CurrentDirectory));
         }
 
         [Fact]
-        public void TryConvert()
+        public async Task TryConvert()
         {
-            var converted = Converter.FromArchiveFile(TestArchiveFile, Environment.CurrentDirectory);
+            var converted = await Converter.FromArchiveFileAsync(TestArchiveFile, Environment.CurrentDirectory);
 
             Assert.True(File.Exists(converted));
             Assert.True(IsZipValid(converted));
@@ -31,11 +32,9 @@ namespace Reloaded.Mod.Loader.Tests.Update.NuGet.Convert
         {
             try
             {
-                using (var zipFile = ZipFile.OpenRead(path))
-                {
-                    var entries = zipFile.Entries;
-                    return true;
-                }
+                using var zipFile = ZipFile.OpenRead(path);
+                var entries = zipFile.Entries;
+                return true;
             }
             catch (InvalidDataException)
             {
