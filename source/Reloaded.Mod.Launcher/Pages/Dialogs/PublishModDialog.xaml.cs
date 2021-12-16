@@ -30,8 +30,8 @@ public partial class PublishModDialog : ReloadedWindow
     private async void Publish_Click(object sender, System.Windows.RoutedEventArgs e)
     {
         _cancellationTokenSource = new CancellationTokenSource();
-        await ViewModel.BuildAsync(_cancellationTokenSource.Token);
-        this.Close();
+        if (await ViewModel.BuildAsync(_cancellationTokenSource.Token))
+            this.Close();
     }
 
     private void AddVersion_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.AddNewVersionFolder();

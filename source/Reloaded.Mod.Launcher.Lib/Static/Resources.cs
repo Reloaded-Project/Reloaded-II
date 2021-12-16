@@ -421,6 +421,12 @@ public static class Resources
     public static IDictionaryResource<string> PublishOutputFolder { get; set; }
     public static IDictionaryResource<string> PublishSetOutputFolder { get; set; }
 
+    public static IDictionaryResource<string> PublishAutoDelta { get; set; }
+    public static IDictionaryResource<string> PublishAutoDeltaDescription { get; set; }
+
+    public static IDictionaryResource<string> PublishAutoDeltaWarningTitle { get; set; }
+    public static IDictionaryResource<string> PublishAutoDeltaWarningDescriptionFormat { get; set; }
+
     // Update 1.12.0: Edit Mod User Config
     public static IDictionaryResource<string> TitleEditModUserConfig { get; set; }
     public static IDictionaryResource<string> TitleEditModUserAllowPrereleases { get; set; }

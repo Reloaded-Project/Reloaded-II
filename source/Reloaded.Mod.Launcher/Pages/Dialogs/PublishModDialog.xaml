@@ -76,11 +76,18 @@
                         </StackPanel>
 
                         <TextBlock Text="{DynamicResource PublishModPreviousVersionsDescription}" 
-                               Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
-                               HorizontalAlignment="Center" 
-                               VerticalAlignment="Center"
-                               Style="{DynamicResource DefaultTextBlock}"
-                               TextWrapping="Wrap" />
+                                   Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource DefaultTextBlock}"
+                                   TextWrapping="Wrap" />
+
+                        <CheckBox Content="{DynamicResource PublishAutoDelta}"
+                                  IsChecked="{Binding AutomaticDelta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  ToolTip="{DynamicResource PublishAutoDeltaDescription}"
+                                  Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                  ToolTipService.InitialShowDelay="0"
+                                  HorizontalAlignment="Center" />
 
                     </StackPanel>
                 </controls:PopupLabel.HiddenContent>
