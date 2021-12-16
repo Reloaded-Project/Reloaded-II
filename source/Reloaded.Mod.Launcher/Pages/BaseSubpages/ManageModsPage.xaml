@@ -55,8 +55,9 @@
                                    Style="{DynamicResource HighQualityImage}">
                                 <Image.Source>
                                     <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding Path="SelectedModTuple" IsAsync="True"/>
-                                        <Binding Path="SelectedModTuple.Config.ModIcon" IsAsync="True"/>
+                                        <Binding Path="SelectedModTuple" />
+                                        <Binding Path="SelectedModTuple.Config.ModIcon" />
+                                        <Binding />
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
