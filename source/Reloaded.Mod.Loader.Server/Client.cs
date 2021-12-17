@@ -22,6 +22,7 @@ namespace Reloaded.Mod.Loader.Server
 
         private NetPeer Server => _simpleHost.NetManager.FirstPeer;
         private readonly SimpleHost<MessageType> _simpleHost;
+        private const int DefaultTimeout = 3000;
 
         public Client(int port)
         {
@@ -75,33 +76,33 @@ namespace Reloaded.Mod.Loader.Server
         }
 
         /* Server calls without responses. */
-        public Task<GetLoadedModsResponse> GetLoadedModsAsync(int timeout = 1000, CancellationToken token = default)
+        public Task<GetLoadedModsResponse> GetLoadedModsAsync(int timeout = DefaultTimeout, CancellationToken token = default)
         {
             return SendMessageWithResponseAsync<GetLoadedMods, GetLoadedModsResponse>(new GetLoadedMods(), timeout, token);
         }
 
-        public Task<Acknowledgement> LoadMod(string modId, int timeout = 1000, CancellationToken token = default)
+        public Task<Acknowledgement> LoadMod(string modId, int timeout = DefaultTimeout, CancellationToken token = default)
         {
             return SendMessageWithResponseAsync<LoadMod, Acknowledgement>(new LoadMod(modId), timeout, token);
         }
 
-        public Task<Acknowledgement> ResumeModAsync(string modId, int timeout = 1000, CancellationToken token = default)
+        public Task<Acknowledgement> ResumeModAsync(string modId, int timeout = DefaultTimeout, CancellationToken token = default)
         {
             return SendMessageWithResponseAsync<ResumeMod, Acknowledgement>(new ResumeMod(modId), timeout, token);
         }
 
-        public Task<Acknowledgement> SuspendModAsync(string modId, int timeout = 1000, CancellationToken token = default)
+        public Task<Acknowledgement> SuspendModAsync(string modId, int timeout = DefaultTimeout, CancellationToken token = default)
         {
             return SendMessageWithResponseAsync<SuspendMod, Acknowledgement>(new SuspendMod(modId), timeout, token);
         }
 
-        public Task<Acknowledgement> UnloadModAsync(string modId, int timeout = 1000, CancellationToken token = default)
+        public Task<Acknowledgement> UnloadModAsync(string modId, int timeout = DefaultTimeout, CancellationToken token = default)
         {
             return SendMessageWithResponseAsync<UnloadMod, Acknowledgement>(new UnloadMod(modId), timeout, token);
         }
 
         /* Send synchronously with timeout */
-        private async Task<TResponse> SendMessageWithResponseAsync<TStruct, TResponse>(TStruct message, int timeout = 1000, CancellationToken token = default) 
+        private async Task<TResponse> SendMessageWithResponseAsync<TStruct, TResponse>(TStruct message, int timeout = DefaultTimeout, CancellationToken token = default) 
             where TStruct : IMessage<MessageType>, new() 
             where TResponse : struct, IMessage<MessageType>
         {
