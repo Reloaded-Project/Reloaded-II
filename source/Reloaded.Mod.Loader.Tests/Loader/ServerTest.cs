@@ -37,23 +37,21 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         }
 
         [Fact]
-        public void LoadedModsCount()
+        public async Task LoadedModsCount()
         {
-            Task<GetLoadedModsResponse> response = _client.GetLoadedModsAsync();
-            response.Wait();
+            var  response = await _client.GetLoadedModsAsync();
 
             int loadedMods = _loader.Manager.GetLoadedMods().Length;
-            Assert.Equal(loadedMods, response.Result.Mods.Length);
+            Assert.Equal(loadedMods, response.Mods.Length);
         }
 
         [Fact]
-        public void AssertLoadedMods()
+        public async Task AssertLoadedMods()
         {
-            Task<GetLoadedModsResponse> response = _client.GetLoadedModsAsync();
-            response.Wait();
+            var response = await _client.GetLoadedModsAsync();
 
             ModInstance[]   localLoadedMods = _loader.Manager.GetLoadedMods();
-            ModInfo[]       remoteLoadedMods = response.Result.Mods;
+            ModInfo[]       remoteLoadedMods = response.Mods;
 
             bool Equals(ModInstance instance, ModInfo info)
             {
@@ -68,10 +66,9 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         }
 
         [Fact]
-        public void LoadMod()
-        {
-            var loadModTask = _client.LoadMod(_testData.TestModConfigC.ModId);
-            loadModTask.Wait();
+        public async Task LoadMod()
+        { 
+            await _client.LoadMod(_testData.TestModConfigC.ModId);
 
             // Should be loaded last.
             var loadedMods = _loader.Manager.GetLoadedMods();
@@ -83,25 +80,24 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         }
 
         [Fact]
-        public void LoadDuplicateMod()
+        public async Task LoadDuplicateMod()
         {
             bool testPassed = false;
             _client.OnReceiveException += response => { testPassed = true; };
 
-            Assert.Throws<AggregateException>(() =>
+            await Assert.ThrowsAsync<Exception>(async () =>
             {
-                var result = _client.LoadMod(_testData.TestModConfigA.ModId);
-                result.Wait();
+                // No Response
+                await _client.LoadMod(_testData.TestModConfigA.ModId);
             });
             
             Assert.True(testPassed);
         }
 
         [Fact]
-        public void UnloadMod()
+        public async Task UnloadMod()
         {
-            var unloadModTask = _client.UnloadModAsync(_testData.TestModConfigB.ModId);
-            unloadModTask.Wait();
+            await _client.UnloadModAsync(_testData.TestModConfigB.ModId);
 
             // Should be loaded last.
             var loadedMods        = _loader.Manager.GetLoadedMods();
@@ -111,10 +107,9 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         }
 
         [Fact]
-        public void SuspendMod()
+        public async Task SuspendMod()
         {
-            var suspendModTask = _client.SuspendModAsync(_testData.TestModConfigB.ModId);
-            suspendModTask.Wait();
+            await _client.SuspendModAsync(_testData.TestModConfigB.ModId);
 
             // Get instance for B
             var loadedMods = _loader.Manager.GetLoadedMods();
@@ -124,14 +119,13 @@ namespace Reloaded.Mod.Loader.Tests.Loader
         }
 
         [Fact]
-        public void SuspendAndResumeMod()
+        public async Task SuspendAndResumeMod()
         {
             // Suspend first.
-            SuspendMod();
+            await SuspendMod();
 
             // Now resume.
-            var resumeModTask = _client.ResumeModAsync(_testData.TestModConfigB.ModId);
-            resumeModTask.Wait();
+            await _client.ResumeModAsync(_testData.TestModConfigB.ModId);
 
             // Get instance for B
             var loadedMods      = _loader.Manager.GetLoadedMods();
