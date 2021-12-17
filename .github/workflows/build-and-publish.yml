@@ -11,7 +11,8 @@ on:
 
 env: 
   TOOLS_PATH: ./source/Publish/Tools.zip
-  PUBLISH_CHOCO_PATH: ./source/Publish/reloaded-ii-tools*.nupkg 
+  PUBLISH_CHOCO_PATH: ./source/Publish/Chocolatey
+  PUBLISH_INSTALLER_PATH: ./source/Publish/Installer/Setup.exe 
   PUBLISH_CHANGELOG_PATH: ./source/Publish/Changelog.md 
   PUBLISH_PACKAGES_PATH: ./source/Publish/Packages
   PUBLISH_RELEASE_PATH: ./source/Publish/Release.zip
@@ -65,7 +66,7 @@ jobs:
     - name: Create NuGet Package Artifacts
       run: |
         [System.IO.Directory]::CreateDirectory("$env:PUBLISH_PACKAGES_PATH")
-        $items = Get-ChildItem -Path "." -Recurse | Where-Object { $_.Name -match "Reloaded.*.nupkg" }
+        $items = Get-ChildItem -Path "." -Recurse | Where-Object { $_.Name -match "^Reloaded\..*\.nupkg" }
         foreach ($item in $items)
         {
           Write-Host "Moving $item -> $env:PUBLISH_PACKAGES_PATH"
@@ -90,16 +91,25 @@ jobs:
         # Artifact name
         name: Chocolatey Package
         # A file, directory or wildcard pattern that describes what to upload
-        path: ${{ env.PUBLISH_CHOCO_PATH }}
+        path: ${{ env.PUBLISH_CHOCO_PATH }}/*
         retention-days: 0
         
     - name: Upload Reloaded Artifact
       uses: actions/upload-artifact@v2.2.4
       with:
         # Artifact name
-        name: NuGet Packages
+        name: Loader Build
         # A file, directory or wildcard pattern that describes what to upload
         path: ${{ env.PUBLISH_RELEASE_PATH }}
+        retention-days: 0
+        
+    - name: Upload Installer Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        # Artifact name
+        name: Installer
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{ env.PUBLISH_INSTALLER_PATH }}
         retention-days: 0
          
     - name: Upload NuGet Artifacts
@@ -137,7 +147,9 @@ jobs:
         body_path: ${{ env.PUBLISH_CHANGELOG_PATH }}
         # Newline-delimited list of path globs for asset files to upload
         files: |
-          ${{ env.PUBLISH_PATH }}/**
+          ${{ env.PUBLISH_RELEASE_PATH }}
+          ${{ env.TOOLS_PATH }}
+          ${{ env.PUBLISH_INSTALLER_PATH }}
         
     - name: Upload to NuGet (on Tag)
       env: 

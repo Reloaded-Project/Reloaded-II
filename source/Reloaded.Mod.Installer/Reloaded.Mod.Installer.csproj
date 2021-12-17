@@ -6,7 +6,7 @@
     <UseWPF>true</UseWPF>
     <LangVersion>preview</LangVersion>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AssemblyName>Reloaded.Installer</AssemblyName>
+    <AssemblyName >Setup</AssemblyName>
     <Nullable>enable</Nullable>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
   </PropertyGroup>
