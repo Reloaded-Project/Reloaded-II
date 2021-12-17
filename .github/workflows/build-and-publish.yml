@@ -64,7 +64,7 @@ jobs:
     - name: Create NuGet Package Artifacts
       run: |
         [System.IO.Directory]::CreateDirectory("$env:PUBLISH_PACKAGES_PATH")
-        $items = Get-ChildItem -Path "." -Recurse | Where-Object { $_.Name -match "Sewer56.*.nupkg" }
+        $items = Get-ChildItem -Path "." -Recurse | Where-Object { $_.Name -match "Reloaded.*.nupkg" }
         foreach ($item in $items)
         {
           Write-Host "Moving $item -> $env:PUBLISH_PACKAGES_PATH"
