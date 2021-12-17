@@ -41,9 +41,8 @@ foreach ($cleanupPath in $cleanupPaths) {
     Get-ChildItem "$cleanupPath" -Include * -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
 }
 
-# Build using Visual Studio & Dotnet Publish
+# Build using Visual Studio
 msbuild $bootstrapperPath /p:Configuration=Release /p:Platform=x64 /p:OutDir="$loaderOutputPath"
-dotnet build-server shutdown
 dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false -o "$loaderOutputPath"
 
 # Build AnyCPU, and then copy 32-bit AppHost. 
@@ -54,7 +53,6 @@ dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained fal
 dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false -o "$loaderOutputPath"
 
 # Build Tools
-dotnet build-server shutdown
 dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
 
 # Copy 32-bit EXE and cleanup folders.

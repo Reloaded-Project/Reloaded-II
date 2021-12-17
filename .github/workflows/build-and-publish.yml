@@ -1,0 +1,142 @@
+name: Build and Publish
+
+on:
+  push:
+    branches: [ master ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+env: 
+  TOOLS_PATH: ./source/Publish/Tools.zip
+  PUBLISH_CHANGELOG_PATH: ./source/Publish/Changelog.md 
+  PUBLISH_PACKAGES_PATH: ./source/Publish/Packages
+  PUBLISH_RELEASE_PATH: ./source/Publish/Release.zip
+  PUBLISH_PATH: ./source/Publish
+  IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/') }}
+  RELEASE_TAG: ${{ github.ref_name }}
+
+jobs:
+  build:
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: pwsh
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        
+    - name: Print Environment Variables
+      run: |
+        echo "Changelog Path: $env:PUBLISH_CHANGELOG_PATH"
+        echo "Publish Path: $env:PUBLISH_PATH"
+        echo "Is Release?: $env:IS_RELEASE"
+        echo "Release Tag: $env:RELEASE_TAG"
+    
+    # Required for C#10 features.
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+        
+    - name: Clear MSVC Redundant Environment Variables
+      run: echo "Platform=" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf-8 -Append
+        
+    - name: Setup AutoChangelog
+      run: npm install -g auto-changelog
+    
+    - name: Get Dotnet Info
+      run: dotnet --info
+      
+    - name: Publish
+      run: .\source\Publish.ps1
+      
+    - name: Test
+      run: dotnet test -c Release ./source/Reloaded.Mod.Loader.Tests/Reloaded.Mod.Loader.Tests.csproj
+     
+    - name: Create NuGet Package Artifacts
+      run: |
+        [System.IO.Directory]::CreateDirectory("$env:PUBLISH_PACKAGES_PATH")
+        $items = Get-ChildItem -Path "." -Recurse | Where-Object { $_.Name -match "Sewer56.*.nupkg" }
+        foreach ($item in $items)
+        {
+          Write-Host "Moving $item -> $env:PUBLISH_PACKAGES_PATH"
+          Move-Item -Path "$item" -Destination "$env:PUBLISH_PACKAGES_PATH"
+        }
+      
+    - name: Create Changelog (on Tag)
+      run: |
+        [System.IO.Directory]::CreateDirectory("$env:PUBLISH_PATH")
+        if ($env:IS_RELEASE -eq 'true') 
+        {
+            auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --unreleased --starting-version "$env:RELEASE_TAG" --output "$env:PUBLISH_CHANGELOG_PATH"
+        }
+        else 
+        {
+            auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --unreleased --output "$env:PUBLISH_CHANGELOG_PATH"
+        }
+        
+    - name: Upload Reloaded Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        # Artifact name
+        name: NuGet Packages
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{ env.PUBLISH_RELEASE_PATH }}
+        retention-days: 0
+         
+    - name: Upload NuGet Artifacts
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        # Artifact name
+        name: NuGet Packages
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{ env.PUBLISH_PACKAGES_PATH }}/*
+        retention-days: 0
+        
+    - name: Upload Changelog Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        # Artifact name
+        name: Changelog
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{ env.PUBLISH_CHANGELOG_PATH }}
+        retention-days: 0
+    
+    - name: Upload Tools Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        # Artifact name
+        name: Tools
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{ env.TOOLS_PATH }}
+        retention-days: 0
+    
+    - name: Upload to GitHub Releases
+      uses: softprops/action-gh-release@v0.1.14
+      if: env.IS_RELEASE == 'true'
+      with:
+        # Path to load note-worthy description of changes in release from
+        body_path: ${{ env.PUBLISH_CHANGELOG_PATH }}
+        # Newline-delimited list of path globs for asset files to upload
+        files: |
+          ${{ env.PUBLISH_PATH }}/**
+        
+    - name: Upload to NuGet (on Tag)
+      env: 
+        NUGET_KEY: ${{ secrets.NUGET_KEY }}
+      if: env.IS_RELEASE == 'true'
+      run: |
+        $items = Get-ChildItem -Path "$env:PUBLISH_PACKAGES_PATH/*.nupkg"
+        Foreach ($item in $items)
+        {
+            Write-Host "Pushing $item"
+            dotnet nuget push "$item" -k "$env:NUGET_KEY" -s "https://api.nuget.org/v3/index.json" --skip-duplicate
+        }
