@@ -18,6 +18,8 @@ $toolsPath  = "$buildPath/Tools/"
 $loaderOutputPath = "$outputPath/Loader/"
 $loader32OutputPath = "$outputPath/Loader/x86"
 $loader64OutputPath = "$outputPath/Loader/x64"
+$chocoPath = "./Chocolatey"
+$chocoToolsPath = "$chocoPath/tools"
 
 # Project Paths
 $bootstrapperPath = "Reloaded.Mod.Loader.Bootstrapper/Reloaded.Mod.Bootstrapper.vcxproj"
@@ -30,16 +32,19 @@ $nugetConverterProjectPath = "Tools/NugetConverter/NugetConverter.csproj"
 $publishDirectory = "Publish"
 $releaseFileName = "/Release.zip"
 $toolsReleaseFileName = "/Tools.zip"
-$cleanupPaths = ("$buildPath", "$toolsPath", "$publishDirectory")
+$cleanupPaths = ("$buildPath", "$toolsPath", "$publishDirectory", "$chocoToolsPath")
 
 # Set Working Directory
 Split-Path $MyInvocation.MyCommand.Path | Push-Location
 [Environment]::CurrentDirectory = $PWD
+Write-Host "New Current Directory: $(Get-Location)"
 
-# Clean output directory
+# Clean output directories
 foreach ($cleanupPath in $cleanupPaths) {
     Get-ChildItem "$cleanupPath" -Include * -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
 }
+
+Get-ChildItem "$chocoPath" -Include *.nupkg -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
 
 # Build using Visual Studio
 msbuild $bootstrapperPath /p:Configuration=Release /p:Platform=x64 /p:OutDir="$loaderOutputPath"
@@ -84,7 +89,7 @@ foreach ($cleanupPath in $cleanupPaths) {
     Get-ChildItem "$cleanupPath" -Include *.ipdb -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
 }
 
-# Make compressed directory
+# Make directories for storing results.
 Remove-Item "$publishDirectory" -Recurse -ErrorAction SilentlyContinue
 New-Item "$publishDirectory" -ItemType Directory -ErrorAction SilentlyContinue
 
@@ -92,8 +97,20 @@ New-Item "$publishDirectory" -ItemType Directory -ErrorAction SilentlyContinue
 Add-Type -A System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory("$outputPath", "$publishDirectory" + "$releaseFileName")
 [IO.Compression.ZipFile]::CreateFromDirectory("$toolsPath", "$publishDirectory" + "$toolsReleaseFileName")
+
+Remove-Item "$chocoToolsPath" -Recurse -ErrorAction SilentlyContinue
+New-Item "$chocoToolsPath" -ItemType Directory -ErrorAction SilentlyContinue
+Copy-Item "$toolsPath/*" -Destination "$chocoToolsPath"
+choco pack ./Chocolatey/reloaded-ii-tools.nuspec --out "$publishDirectory"
+
+# Cleanup build items
 Remove-Item "$buildPath" -Recurse
+
+# Show Publish Items
+Write-Host "Publish Items"
+ls $publishDirectory
 
 # Restore Working Directory
 Pop-Location
+
 

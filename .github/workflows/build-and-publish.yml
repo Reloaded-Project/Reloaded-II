@@ -11,6 +11,7 @@ on:
 
 env: 
   TOOLS_PATH: ./source/Publish/Tools.zip
+  PUBLISH_CHOCO_PATH: ./source/Publish/reloaded-ii-tools*.nupkg 
   PUBLISH_CHANGELOG_PATH: ./source/Publish/Changelog.md 
   PUBLISH_PACKAGES_PATH: ./source/Publish/Packages
   PUBLISH_RELEASE_PATH: ./source/Publish/Release.zip
@@ -82,6 +83,15 @@ jobs:
         {
             auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --unreleased --output "$env:PUBLISH_CHANGELOG_PATH"
         }
+        
+    - name: Upload Chocolatey Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        # Artifact name
+        name: Chocolatey Package
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{ env.PUBLISH_CHOCO_PATH }}
+        retention-days: 0
         
     - name: Upload Reloaded Artifact
       uses: actions/upload-artifact@v2.2.4
