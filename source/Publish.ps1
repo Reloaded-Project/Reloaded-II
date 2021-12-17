@@ -1,10 +1,17 @@
-# Single File Publish Currently Disabled because it's Broken with WPF.
-# Only after the following bugs are fixed:
-# - https://github.com/dotnet/wpf/issues/3516 was fixed but now there's a new problem
-$publishSingleFile = $false
+# .NET 6 Has Issues with Handles and Files Already in use when building
+# single file applications, we have to try work around it here.
+function New-TemporaryDirectory 
+{
+    $parent = [System.IO.Path]::GetTempPath()
+    [string] $name = [System.Guid]::NewGuid()
+	
+	$returnValue = Join-Path "$parent" "$name"
+	Write-Host "Location: $returnValue"
+	return "$returnValue"
+}
 
 # Build Locations
-$buildPath = "Output"
+$buildPath = New-TemporaryDirectory
 $outputPath = "$buildPath/Publish"
 $outputPath32 = "$buildPath/Publish/x86"
 $toolsPath  = "$buildPath/Tools/"
@@ -31,64 +38,64 @@ Split-Path $MyInvocation.MyCommand.Path | Push-Location
 
 # Clean output directory
 foreach ($cleanupPath in $cleanupPaths) {
-    Get-ChildItem "$cleanupPath" -Include * -Recurse | Remove-Item -Force -Recurse
+    Get-ChildItem "$cleanupPath" -Include * -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
 }
 
 # Build using Visual Studio & Dotnet Publish
-dotnet restore	
+msbuild $bootstrapperPath /p:Configuration=Release /p:Platform=x64 /p:OutDir="$loaderOutputPath"
+dotnet build-server shutdown
+dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false -o "$loaderOutputPath"
 
-msbuild $bootstrapperPath /p:Configuration=Release /p:Platform=x64 /p:OutDir="../$loaderOutputPath"
-dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false /p:PublishSingleFile=true -o "$loaderOutputPath"
-
-if ($publishSingleFile) 
-{
-	# Build separate self contained 32, 64-bit exe.
-	dotnet publish "$launcherProjectPath" -c Release -r win-x64 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true /p:Configuration=SingleFile -o "$outputPath"
-	dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false /p:PublishReadyToRun=false /p:PublishSingleFile=true /p:Configuration=SingleFile -o "$outputPath32"
-}
-else 
-{
-	# Build AnyCPU, and then copy 32-bit exe. 
-	dotnet publish "$launcherProjectPath" -c Release --self-contained false -o "$outputPath"
-	dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false -o "$outputPath32"
-}
+# Build AnyCPU, and then copy 32-bit AppHost. 
+dotnet publish "$launcherProjectPath" -c Release --self-contained false -o "$outputPath"
+dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false -o "$outputPath32"
 
 # Build Loader
-dotnet publish "$loaderProjectPath" -c Release -r win-x64 --self-contained false -o "$loader64OutputPath" /p:PublishReadyToRun=true
-dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false -o "$loader32OutputPath" /p:PublishReadyToRun=true
+dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false -o "$loaderOutputPath"
 
 # Build Tools
+dotnet build-server shutdown
 dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
 
 # Copy 32-bit EXE and cleanup folders.
 Move-Item -Path "$outputPath32/Reloaded-II.exe" -Destination "$outputPath/Reloaded-II32.exe"
-Remove-Item "$outputPath32" -Recurse
-Remove-Item "$loaderOutputPath/win-x86" -Recurse
-Remove-Item "$outputPath/win-x86" -Recurse
-Remove-Item "$outputPath/win-x64" -Recurse
-Remove-Item "$outputPath/ref" -Recurse
+Remove-Item "$outputPath32" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "$loaderOutputPath/win-x86" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "$outputPath/win-x86" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "$outputPath/win-x64" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "$outputPath/ref" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "$outputPath/Theme/Halogen/Images/IconTemplate.7z" -Recurse -ErrorAction SilentlyContinue
+Remove-Item "$outputPath/Theme/Default/R-II/Images/Templates.zip" -Recurse -ErrorAction SilentlyContinue
+
+# Remove non-windows native stuff
+$excludePatterns=@('win-x86*','win-x64*','win*')
+$includePatterns=@('win-arm*')
+Get-ChildItem "$outputPath/runtimes" -Exclude $excludePatterns | Remove-Item -Force -Recurse
+Get-ChildItem "$outputPath/runtimes" -Include $includePatterns -Recurse | Remove-Item -Force -Recurse
 
 # Remove debug/compile leftovers.
-Get-ChildItem "$loader32OutputPath" -Include *.exe -Recurse | Remove-Item -Force -Recurse
-Get-ChildItem "$loader64OutputPath" -Include *.exe -Recurse | Remove-Item -Force -Recurse
+Get-ChildItem "$loader32OutputPath" -Include *.exe -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
+Get-ChildItem "$loader64OutputPath" -Include *.exe -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
 foreach ($cleanupPath in $cleanupPaths) {
-    Get-ChildItem "$cleanupPath" -Include *.config -Recurse | Remove-Item -Force -Recurse
-    Get-ChildItem "$cleanupPath" -Include *.pdb -Recurse | Remove-Item -Force -Recurse
-    Get-ChildItem "$cleanupPath" -Include *.xml -Recurse | Remove-Item -Force -Recurse
-    Get-ChildItem "$cleanupPath" -Include *.exp -Recurse | Remove-Item -Force -Recurse
-    Get-ChildItem "$cleanupPath" -Include *.lib -Recurse | Remove-Item -Force -Recurse
-    Get-ChildItem "$cleanupPath" -Include *.iobj -Recurse | Remove-Item -Force -Recurse
-    Get-ChildItem "$cleanupPath" -Include *.ipdb -Recurse | Remove-Item -Force -Recurse
+    Get-ChildItem "$cleanupPath" -Include *.config -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
+    Get-ChildItem "$cleanupPath" -Include *.pdb -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
+    Get-ChildItem "$cleanupPath" -Include *.xml -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
+    Get-ChildItem "$cleanupPath" -Include *.exp -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
+    Get-ChildItem "$cleanupPath" -Include *.lib -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
+    Get-ChildItem "$cleanupPath" -Include *.iobj -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
+    Get-ChildItem "$cleanupPath" -Include *.ipdb -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
 }
 
 # Make compressed directory
-Remove-Item "$publishDirectory" -Recurse
-New-Item "$publishDirectory" -ItemType Directory
+Remove-Item "$publishDirectory" -Recurse -ErrorAction SilentlyContinue
+New-Item "$publishDirectory" -ItemType Directory -ErrorAction SilentlyContinue
 
 # Compress result.
 Add-Type -A System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory("$outputPath", "$publishDirectory" + "$releaseFileName")
 [IO.Compression.ZipFile]::CreateFromDirectory("$toolsPath", "$publishDirectory" + "$toolsReleaseFileName")
+Remove-Item "$buildPath" -Recurse
 
 # Restore Working Directory
 Pop-Location
+

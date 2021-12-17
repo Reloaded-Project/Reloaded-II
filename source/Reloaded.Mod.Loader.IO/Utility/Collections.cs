@@ -1,36 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
-namespace Reloaded.Mod.Loader.IO.Utility
+namespace Reloaded.Mod.Loader.IO.Utility;
+
+public static class Collections
 {
-    public static class Collections
+    /// <summary>
+    /// Modifies a given <see cref="ObservableCollection{T}"/> to turn the collection of <paramref name="oldItems"/> to <paramref name="newItems"/>.
+    /// </summary>
+    public static void ModifyObservableCollection<TItemType>(ObservableCollection<TItemType> oldItems, IEnumerable<TItemType> newItems)
     {
-        /// <summary>
-        /// Modifies a given <see cref="ObservableCollection{T}"/> to turn the collection of <see cref="oldItems"/> to <see cref="newItems"/>.
-        /// </summary>
-        public static void ModifyObservableCollection<TItemType>(ObservableCollection<TItemType> oldItems, IEnumerable<TItemType> newItems)
-        {
-            // Hash all the items.
-            var newItemSet = newItems.ToHashSet();
-            var oldItemSet = oldItems.ToHashSet();
+        ModifyObservableCollection(oldItems, newItems, out _, out _);
+    }
 
-            // Make a copy of hashed items.
-            var newItemSetCopy = new HashSet<TItemType>(newItemSet);
-            var oldItemSetCopy = new HashSet<TItemType>(oldItemSet);
+    /// <summary>
+    /// Modifies a given <see cref="ObservableCollection{T}"/> to turn the collection of <paramref name="oldItems"/> to <paramref name="newItems"/>.
+    /// </summary>
+    public static void ModifyObservableCollection<TItemType>(ObservableCollection<TItemType> oldItems, IEnumerable<TItemType> newItems, out HashSet<TItemType> itemsAdded, out HashSet<TItemType> itemsRemoved)
+    {
+        // Hash all the items.
+        itemsAdded = newItems.ToHashSet();
+        itemsRemoved = oldItems.ToHashSet();
 
-            // Remove sets from each other.
-            newItemSet.ExceptWith(oldItemSetCopy);
-            oldItemSet.ExceptWith(newItemSetCopy);
+        // Make a copy of hashed items.
+        var itemsAddedCopy = new HashSet<TItemType>(itemsAdded);
+        var itemsRemovedCopy = new HashSet<TItemType>(itemsRemoved);
 
-            // Modify list.
-            foreach (var newMod in newItemSet)
-                oldItems.Add(newMod);
+        // Remove sets from each other.
+        itemsAdded.ExceptWith(itemsRemovedCopy); // Remove Old Items from New Items
+        itemsRemoved.ExceptWith(itemsAddedCopy); // Remove New Items from Old Items
 
-            foreach (var removedMod in oldItemSet)
-                oldItems.Remove(removedMod);
-        }
+        // Modify list.
+        foreach (var newItem in itemsAdded)
+            oldItems.Add(newItem);
+
+        foreach (var removedItem in itemsRemoved)
+            oldItems.Remove(removedItem);
     }
 }

@@ -12,6 +12,7 @@
     <Thickness x:Key="CommonItemVerticalMarginSmall">0,7.5</Thickness>
     <Thickness x:Key="CommonItemVerticalMarginSmaller">0,5</Thickness>
     <Thickness x:Key="CommonItemVerticalMarginSmallest">0,2.5</Thickness>
+    <Thickness x:Key="CommonItemVerticalMarginTop">0,10,0,0</Thickness>
 
     <Thickness x:Key="CommonItemHorizontalMargin">10,0</Thickness>
     <Thickness x:Key="CommonItemHorizontalMarginSmall">7.5,0</Thickness>

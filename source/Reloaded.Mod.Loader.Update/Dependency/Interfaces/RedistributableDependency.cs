@@ -1,39 +1,39 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NetCoreInstallChecker.Structs.Config.Enum;
+#pragma warning disable CS1591
 
-namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces
+namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces;
+
+public class RedistributableDependency : IDependency
 {
-    public class RedistributableDependency : IDependency
+    /// <inheritdoc />
+    public string Name { get; }
+
+    /// <inheritdoc />
+    public bool Available { get; }
+
+    /// <inheritdoc />
+    public Architecture Architecture { get; }
+
+    public RedistributableDependency(string name, bool available, Architecture architecture)
     {
-        /// <inheritdoc />
-        public string Name { get; }
+        Available = available;
+        Architecture = architecture;
+        Name = name;
+    }
 
-        /// <inheritdoc />
-        public bool Available { get; }
-
-        /// <inheritdoc />
-        public Architecture Architecture { get; }
-
-        public RedistributableDependency(string name, bool available, Architecture architecture)
+    /// <inheritdoc />
+    public Task<string[]> GetUrlsAsync()
+    {
+        switch (Architecture)
         {
-            Available = available;
-            Architecture = architecture;
-            Name = name;
-        }
-
-        /// <inheritdoc />
-        public Task<string[]> GetUrlsAsync()
-        {
-            switch (Architecture)
-            {
-                case Architecture.Amd64:
-                    return Task.FromResult(new []{ "https://aka.ms/vs/16/release/VC_redist.x64.exe" });
-                case Architecture.x86:
-                    return Task.FromResult(new [] { "https://aka.ms/vs/16/release/VC_redist.x86.exe" });
-                default:
-                    throw new NotSupportedException();
-            }
+            case Architecture.Amd64:
+                return Task.FromResult(new []{ "https://aka.ms/vs/16/release/VC_redist.x64.exe" });
+            case Architecture.x86:
+                return Task.FromResult(new [] { "https://aka.ms/vs/16/release/VC_redist.x86.exe" });
+            default:
+                throw new NotSupportedException();
         }
     }
 }

@@ -33,7 +33,8 @@
         <!-- Progress Bar -->
         <Grid Grid.Row="0" Margin="{DynamicResource CommonItemVerticalMarginSmaller}">
             <ProgressBar Height="{DynamicResource UpdateLoaderProgressbarHeight}"
-                         Value="{Binding Progress}" />
+                         Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
+                         Maximum="100" />
         </Grid>
 
         <!-- Current and New Version -->

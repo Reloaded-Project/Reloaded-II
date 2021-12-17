@@ -3,33 +3,32 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Reloaded.Mod.Launcher.Converters
+namespace Reloaded.Mod.Launcher.Converters;
+
+[ValueConversion(typeof(Process), typeof(string))]
+public class ProcessToNameStringConverter : IValueConverter
 {
-    [ValueConversion(typeof(Process), typeof(string))]
-    public class ProcessToNameStringConverter : IValueConverter
+    public string Prefix { get; set; }
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public string Prefix { get; set; }
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        if (value is Process process)
         {
-            if (value is Process process)
+            try
             {
-                try
-                {
-                    return $"{Prefix} Id: {process.Id}";
-                }
-                catch (Exception)
-                {
-                    return "ERROR";
-                }
+                return $"{Prefix} Id: {process.Id}";
             }
-
-            return "ERROR";
+            catch (Exception)
+            {
+                return "ERROR";
+            }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        return "ERROR";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

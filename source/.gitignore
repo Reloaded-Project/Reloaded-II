@@ -4,3 +4,5 @@
 # Chocolatey
 Chocolatey/tools/*.exe
 Chocolatey/tools/*.dll
+
+Publish-Build*

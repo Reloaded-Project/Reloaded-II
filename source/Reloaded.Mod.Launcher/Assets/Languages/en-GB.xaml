@@ -60,9 +60,8 @@
     <!-- Mod Manager: Set Dependencies -->
     <sys:String x:Key="TitleSetDependenciesDialog">Set Dependencies for Mod</sys:String>
 
-    <!-- Mod Manager: Create Mod Page -->
+    <!-- Mod Manager: Create Mod Page | Edit Mod Page since 1.12.0 -->
     <sys:String x:Key="TitleCreateModDialog">Create Mod</sys:String>
-
     <sys:String x:Key="CreateModDialogSave">Create Mod</sys:String>
     <sys:String x:Key="CreateModDialogId">Unique Id</sys:String>
     <sys:String x:Key="CreateModDialogName">Name</sys:String>
@@ -134,6 +133,7 @@
     <sys:String x:Key="LoadModSetDialogTitle">Select file to load list of mods from.</sys:String>
     <sys:String x:Key="SaveModSetDialogTitle">Select path to save list of mods to.</sys:String>
 
+    <!-- Obsolete as of 1.12.0 onwards -->
     <sys:String x:Key="LoadModSetIncompatibleTitle">Compatibility Alert</sys:String>
     <sys:String x:Key="LoadModSetIncompatibleMessage">You have mods enabled that are not marked compatible with your application:</sys:String>
     <sys:String x:Key="LoadModSetIncompatibleMessage2">Pressing OK will enable the mods for your application. Pressing Cancel will disable the mods.</sys:String>
@@ -301,5 +301,104 @@
     <sys:String x:Key="FirstLaunchExCompleteDescription1">Thanks for trying Reloaded II.</sys:String>
     <sys:String x:Key="FirstLaunchExCompleteDescription2">You might also find the following links useful:</sys:String>
     <sys:String x:Key="FirstLaunchExCompleteDescription3">You can also find these links in [Mod Loader Settings].</sys:String>
+
+    <!-- Update 1.12.0: Context Menu for Application Mod Items -->
+    <sys:String x:Key="ModManagerContextPublish">Publish</sys:String>
+    <sys:String x:Key="ModManagerContextEdit">Edit</sys:String>
+    <sys:String x:Key="ModManagerContextEditMod">Edit Mod</sys:String>
+    <sys:String x:Key="ModManagerContextEditModUser">User Config</sys:String>
+    <sys:String x:Key="ModManagerContextOpenFolder">Open Folder</sys:String>
+    <sys:String x:Key="ModManagerContextConfigure">Configure</sys:String>
+
+    <!-- Update 1.12.0: Edit Mod Dialog -->
+    <sys:String x:Key="TitleEditModDialog">Edit Mod</sys:String>
+
+    <!-- Update 1.12.0: Additional Errors -->
+    <sys:String x:Key="ErrorUnableDetermineVersion">Error: Unable to Determine Reloaded II Version</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUseTitle">Mod(s) In Use</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUse">You have applications currently running Reloaded.&#x0a;Updates will download however will not be applied until all applications are closed.</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Mod -->
+    <sys:String x:Key="CreateModDialogDescriptionShort">Description</sys:String>
+
+    <sys:String x:Key="EditModStepMain">Common Details</sys:String>
+    <sys:String x:Key="EditModStepDependencies">Mod Dependencies</sys:String>
+    <sys:String x:Key="EditModStepUpdates">Update Support</sys:String>
+    <sys:String x:Key="EditModStepComplete">Finishing Up</sys:String>
+
+    <sys:String x:Key="EditModDependenciesDescription" xml:space="preserve">If your mod requires another mod to be present, select it here.</sys:String>
+
+    <sys:String x:Key="EditModUniversalMod">Universal Mod</sys:String>
+    <sys:String x:Key="EditModUniversalModDescription">If enabled, the mod is visible by default in every application.</sys:String>
+
+    <sys:String x:Key="EditModLibrary">Library</sys:String>
+    <sys:String x:Key="EditModLibraryDescription">If enabled, the mod cannot be explicitly enabled by the user. Can only be enabled as a dependency.</sys:String>
+
+    <sys:String x:Key="EditModSave">Save</sys:String>
+    <sys:String x:Key="EditModAppsDescription">Select applications the mod should be available for.</sys:String>
+
+    <!-- Update 1.12.0: Extended Application Configuration -->
+    <sys:String x:Key="ConfigureModsRightClickAdvice">Right Click Mod for More Options</sys:String>
+
+    <!-- Update 1.12.0: Create Mod Dialog -->
+    <sys:String x:Key="CreateModDialogIdDesc1">Unique Mod Id</sys:String>
+    <sys:String x:Key="CreateModDialogIdDesc2">Please set a unique Mod Id in the format of "game.type.name". For example: `sonicheroes.skins.seasidehillmidnight`. Once the ID is set, it cannot be changed.</sys:String>
+
+    <!-- Update 1.12.0: Edit Application Ex -->
+    <sys:String x:Key="AddAppId">Application Id</sys:String>
+    <sys:String x:Key="AddAppUpdate">Update</sys:String>
+
+    <sys:String x:Key="AddAppWarningTitle" xml:space="preserve">Executable Name Warning</sys:String>
+    <sys:String x:Key="AddAppWarning" xml:space="preserve">The executable name of the application added is different from the original.&#x0a;If you are adding another application, you should add it as a new application.</sys:String>
+
+    <!-- Update 1.12.0: Extended Errors -->
+    <sys:String x:Key="ErrorInvalidSemanticVersionTitle">Invalid Version Number</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionDescription">The version number used by mod does not conform to the `Semantic Versioning` (SemVer) standard and cannot receive updates.&#x0a;Please update your mod's version number to use SemVer.&#x0a;Examples: `1.0.0`, `1.0`, `2.0-alpha`.</sys:String>
+
+    <!-- Update 1.12.0: Publish Mod Dialog -->
+    <sys:String x:Key="TitlePublishModDialog">Publish Mod</sys:String>
+    <sys:String x:Key="PublishModTarget">Publish Target</sys:String>
+    <sys:String x:Key="PublishModTargetTooltip" xml:space="preserve">Use default unless there's an option for the place(s) you're publishing to.&#x0a;Enables/Disables certain behaviours.</sys:String>
+
+    <sys:String x:Key="PublishModExcludeTitle">Exclude Files</sys:String>
+    <sys:String x:Key="PublishModIncludeTitle">Include Files</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsTitle">Previous Version(s)</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsDescription">Providing earlier version(s) of your mod allows for the use of delta compression, a way to enable smaller download sizes when upgrading from an earlier version to a later version of a mod.</sys:String>
+    <sys:String x:Key="PublishModButtonText">Publish</sys:String>
+
+    <sys:String x:Key="PublishSelectConfigTitle">Select a Mod Configuration (ModConfig.json).</sys:String>
+    <sys:String x:Key="PublishSelectConfigFileTypeName">Configuration</sys:String>
+
+    <sys:String x:Key="ErrorInvalidModConfigTitle">Invalid Mod Configuration</sys:String>
+    <sys:String x:Key="ErrorInvalidModConfigDescription">The provided file does not represent a valid mod configuration.</sys:String>
+
+    <sys:String x:Key="ErrorNewerModConfigVersionTitle">Invalid Mod Version</sys:String>
+    <sys:String x:Key="ErrorNewerModConfigVersionDescription">The provided mod version is newer or already equal to the version to be released.</sys:String>
+
+    <sys:String x:Key="ErrorPublishModIdMismatch">Invalid Mod Id</sys:String>
+    <sys:String x:Key="ErrorPublishModIdDescription">The provided mod id does not match the id of the mod to be published.</sys:String>
+
+    <sys:String x:Key="PublishModRegexSectionTitle">File Inclusions &amp; Exclusions</sys:String>
+    <sys:String x:Key="PublishModRegexTitle">Regular Expression</sys:String>
+    <sys:String x:Key="PublishModRegexTest">Test Regular Expressions</sys:String>
+    <sys:String x:Key="PublishModRegexDialogTitle">Excluded Files</sys:String>
+
+    <sys:String x:Key="PublishModCompSettings">Compression Settings</sys:String>
+    <sys:String x:Key="PublishModCompLevel">Compression Level</sys:String>
+    <sys:String x:Key="PublishModCompMethod">Compression Method</sys:String>
+
+    <sys:String x:Key="PublishOutputFolder">Output Folder</sys:String>
+    <sys:String x:Key="PublishSetOutputFolder">Set Output Folder</sys:String>
+
+    <sys:String x:Key="PublishAutoDelta">Automatic Delta</sys:String>
+    <sys:String x:Key="PublishAutoDeltaDescription" xml:space="preserve">Automatically creates a Delta package from the last version.&#x0a;Don't forget to set the output path to that of an existing release.</sys:String>
+
+    <sys:String x:Key="PublishAutoDeltaWarningTitle">Automatic Delta Warning</sys:String>
+    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat" xml:space="preserve">Release Metadata file not found in Output Folder. Consider renaming file if necessary.&#x0a;Expected Filename: {0}.</sys:String>
+
+    <!-- Update 1.12.0: Edit Mod User Config -->
+    <sys:String x:Key="TitleEditModUserConfig">Edit User Config</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleases">Allow Beta Versions</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleasesTooltip">Allows early versions of the mod to be downloaded.</sys:String>
 
 </ResourceDictionary>

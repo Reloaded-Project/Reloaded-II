@@ -56,6 +56,15 @@
                 VerticalContentAlignment="Top"
                 dd:DragDrop.IsDragSource="True"
                 dd:DragDrop.IsDropTarget="True">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{DynamicResource ModManagerContextPublish}" Command="{Binding PublishModCommand}" />
+                        <MenuItem Header="{DynamicResource ModManagerContextEditMod}" Command="{Binding EditModCommand}" />
+                        <MenuItem Header="{DynamicResource ModManagerContextOpenFolder}" Command="{Binding OpenModFolderCommand}" />
+                        <MenuItem Header="{DynamicResource ModManagerContextEditModUser}" Command="{Binding EditModUserConfigCommand}" />
+                        <MenuItem Header="{DynamicResource ModManagerContextConfigure}" Command="{Binding ConfigureModCommand}" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -115,8 +124,9 @@
                     <Image Style="{DynamicResource HighQualityImage}">
                         <Image.Source>
                             <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
-                                <Binding Path="SelectedMod.Tuple" IsAsync="True"/>
-                                <Binding Path="SelectedMod.Tuple.Config.ModIcon" IsAsync="True"/>
+                                <Binding Path="SelectedMod.Tuple" />
+                                <Binding Path="SelectedMod.Tuple.Config.ModIcon" />
+                                <Binding />
                             </MultiBinding>
                         </Image.Source>
                     </Image>
@@ -128,8 +138,11 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="{DynamicResource GridInterPanelMargin}"/>
-                    <RowDefinition Height='*'/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="{DynamicResource GridInterPanelMargin}"/>
+                    <RowDefinition Height='Auto'/>
                 </Grid.RowDefinitions>
+
 
                 <!-- Actions for current Mod -->
                 <Grid Grid.Row="0">
@@ -157,6 +170,12 @@
                            VerticalAlignment="Stretch"
                            Style="{DynamicResource TextblockWithColourChange}" 
                            TextWrapping="Wrap" />
+
+
+                <TextBlock Grid.Row="4"
+                           Text="{DynamicResource ConfigureModsRightClickAdvice}" 
+                           Style="{DynamicResource DefaultTextBlock}" 
+                           HorizontalAlignment="Center" />
             </Grid>
         </Grid>
     </Grid>

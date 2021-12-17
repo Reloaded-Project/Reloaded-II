@@ -45,6 +45,23 @@ namespace Reloaded.Mod.Loader.Server
         /* Utility functions. */
 
         /// <summary>
+        /// Returns true if the mod loader is loaded and present inside a specified process. Else returns false.
+        /// </summary>
+        /// <param name="process">The process to check for.</param>
+        public static bool IsModLoaderPresent(Process process)
+        {
+            try
+            {
+                Client.GetPort(process.Id);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Attempts to acquire the port to connect to a remote process with a specific id.
         /// </summary>
         /// <exception cref="FileNotFoundException"><see cref="MemoryMappedFile"/> was not created by the mod loader, in other words, mod loader is not loaded.</exception>

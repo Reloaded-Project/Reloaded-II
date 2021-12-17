@@ -7,6 +7,7 @@
         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
+        xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
         mc:Ignorable="d"
         Title="{DynamicResource ConfigureModDialogTitle}" 
         Height="600" 
@@ -28,13 +29,15 @@
                   DisplayMemberPath="ConfigName"
                   Margin="{DynamicResource CommonItemVerticalMargin}"/>
 
-        <controls:NoInheritanceContentControl Grid.Row="1"
-                                              Margin="{DynamicResource CommonItemVerticalMargin}">
-            <xctk:PropertyGrid PreparePropertyItem="PropertyGridMakeExpandable"
-                               BorderThickness="0"
-                               SelectedObject="{Binding CurrentConfigurable, UpdateSourceTrigger=PropertyChanged}">
-            </xctk:PropertyGrid>
-        </controls:NoInheritanceContentControl>
+        <controls:PropertyGridEx Grid.Row="1"
+                                 MinWidth="500" 
+                                 Width="Auto"
+                                 FlattenChildProperties="ParentNameAsCategory"
+                                 Background="Transparent"
+                                 SelectedObject="{Binding CurrentConfigurable}"
+                                 Margin="{DynamicResource CommonItemVerticalMargin}"
+                                 Style="{StaticResource PropertyGridBaseStyle}" 
+                                 DefaultSorting="Hierarchy" />
 
         <Button 
             Grid.Row="2"

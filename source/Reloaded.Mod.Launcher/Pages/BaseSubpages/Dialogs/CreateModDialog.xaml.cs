@@ -1,68 +1,48 @@
-﻿using System.Linq;
+﻿using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Models.ViewModel.Dialogs;
+using Reloaded.Mod.Launcher.Lib;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
+using Reloaded.Mod.Launcher.Lib.Static;
+using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.WPF.Theme.Default;
-using Reloaded.WPF.Utilities;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
-namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs
+namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
+
+/// <summary>
+/// Interaction logic for CreateModDialog.xaml
+/// </summary>
+public partial class CreateModDialog : ReloadedWindow
 {
-    /// <summary>
-    /// Interaction logic for CreateModDialog.xaml
-    /// </summary>
-    public partial class CreateModDialog : ReloadedWindow
+    public CreateModViewModel RealViewModel { get; set; }
+
+    public CreateModDialog(ModConfigService modConfigService)
     {
-        public CreateModViewModel RealViewModel  { get; set; }
-        public ModConfigService ModConfigService { get; set; }
-
-        private XamlResource<string> _xamlTitleCreateModNonUniqueId = new XamlResource<string>("TitleCreateModNonUniqueId");
-        private XamlResource<string> _xamlMessageCreateModNonUniqueId = new XamlResource<string>("MessageCreateModNonUniqueId");
-
-        public CreateModDialog(ModConfigService service)
-        {
-            InitializeComponent();
-            ModConfigService = service;
-            RealViewModel = new CreateModViewModel(ModConfigService, new DictionaryResourceManipulator(this.Contents.Resources));
-        }
-
-        private void ModIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton != MouseButtonState.Pressed) 
-                return;
-
-            this.RealViewModel.Image = RealViewModel.GetImage();
-        }
-
-        private void Save_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton != MouseButtonState.Pressed) 
-                return;
-
-            if (!IsUnique()) 
-                return;
-
-            RealViewModel.Save();
-            var window = Window.GetWindow((DependencyObject)sender);
-            window.Close();
-        }
-
-        /* Check if not duplicate. */
-        public bool IsUnique()
-        {
-            if (ModConfigService.Mods.Any(x => x.Config.ModId.Equals(RealViewModel.Config.ModId)))
-            {
-                var messageBoxDialog = new MessageBox(_xamlTitleCreateModNonUniqueId.Get(),
-                                                      _xamlMessageCreateModNonUniqueId.Get());
-                messageBoxDialog.Owner = this;
-                messageBoxDialog.ShowDialog();
-                return false;
-            }
-
-            return true;
-        }
-
-        private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => RealViewModel.RefreshModList();
+        InitializeComponent();
+        RealViewModel = new CreateModViewModel(modConfigService);
     }
+
+    public async Task Save()
+    {
+        var createdMod = await RealViewModel.CreateMod(ShowNonUniqueWindow);
+        if (createdMod == null)
+            return;
+
+        var modConfigService = IoC.Get<ModConfigService>();
+        var mod = await ActionWrappers.TryGetValueAsync(() => modConfigService.ItemsById[createdMod.Config.ModId], 5000, 32);
+        var createModDialog  = new EditModDialog(new EditModDialogViewModel(mod, IoC.Get<ApplicationConfigService>(), modConfigService));
+        createModDialog.Owner = Window.GetWindow(this);
+        createModDialog.ShowDialog();
+        this.Close();
+    }
+
+    private void ShowNonUniqueWindow()
+    {
+        var messageBoxDialog = new MessageBox(Lib.Static.Resources.TitleCreateModNonUniqueId.Get(), Lib.Static.Resources.MessageCreateModNonUniqueId.Get());
+        messageBoxDialog.Owner = this;
+        messageBoxDialog.ShowDialog();
+    }
+
+    private async void Save_Click(object sender, RoutedEventArgs e) => await Save();
 }

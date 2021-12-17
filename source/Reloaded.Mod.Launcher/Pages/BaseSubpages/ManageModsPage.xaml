@@ -6,7 +6,6 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
-             xmlns:manageModsPageCommands="clr-namespace:Reloaded.Mod.Launcher.Commands.ManageModsPage"
              xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
              xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
              mc:Ignorable="d"
@@ -17,19 +16,12 @@
 
         <Grid.Resources>
             <!-- Layout properties -->
-            <system:Double x:Key="DetailsImageSize">180</system:Double>
             <GridLength x:Key="LeftPanelWidth">250</GridLength>
 
-            <!-- Functionality -->
-            <manageModsPageCommands:DeleteModCommand x:Key="DeleteModCommand"/>
-            <manageModsPageCommands:OpenModFolderCommand x:Key="OpenModFolderCommand"/>
-            <manageModsPageCommands:ConvertToNugetCommand x:Key="ConvertToNugetCommand"/>
-            <manageModsPageCommands:ManageDependenciesCommand x:Key="ManageDependenciesCommand"/>
-
             <!-- Sort the mod list -->
-            <CollectionViewSource x:Key="SortedMods" Source="{Binding ModConfigService.Mods, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
+            <CollectionViewSource x:Key="SortedMods" Source="{Binding ModConfigService.Items, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                 <CollectionViewSource.SortDescriptions>
-                    <componentModel:SortDescription PropertyName="ModConfig.ModName"/>
+                    <componentModel:SortDescription PropertyName="Config.ModName"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
@@ -49,24 +41,28 @@
             </Grid.ColumnDefinitions>
 
             <!-- Left Side. -->
-            <ScrollViewer>
-                <StackPanel Margin="{DynamicResource PanelMargin}">
+            <ScrollViewer Margin="{DynamicResource PanelMargin}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
 
                     <!-- Application Image -->
-                    <Viewbox Width="{StaticResource DetailsImageSize}"
-                             Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                             Margin="{DynamicResource CommonItemVerticalMargin}">
-                        <Image ToolTip="{DynamicResource AddAppImageTooltip}"
-                               ToolTipService.InitialShowDelay="0"
-                               PreviewMouseDown="Image_PreviewMouseDown">
-                            <Image.Source>
-                                <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding Path="SelectedModTuple" IsAsync="True"/>
-                                    <Binding Path="SelectedModTuple.Config.ModIcon" IsAsync="True"/>
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                    </Viewbox>
+                    <Border x:Name="BannerImage" BorderBrush="{DynamicResource BorderColorBrush}" Background="Transparent" BorderThickness="1">
+                        <Viewbox>
+                            <Image ToolTip="{DynamicResource AddAppImageTooltip}"
+                                   ToolTipService.InitialShowDelay="0"
+                                   PreviewMouseDown="Image_PreviewMouseDown"
+                                   Width="512"
+                                   Height="512"
+                                   Style="{DynamicResource HighQualityImage}">
+                                <Image.Source>
+                                    <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding Path="SelectedModTuple" />
+                                        <Binding Path="SelectedModTuple.Config.ModIcon" />
+                                        <Binding />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Viewbox>
+                    </Border>
 
                     <!-- Add / Delete Mod -->
                     <Grid Margin="{DynamicResource CommonItemVerticalMargin}">
@@ -75,58 +71,61 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
                         <Button Grid.Column="0"
+                                Grid.Row="0"
+                                Margin="0"
                                 Style="{DynamicResource UnpaddedStretchedGridButton}"
                                 Content="{DynamicResource AddAppNewButton}" 
                                 PreviewMouseDown="Button_PreviewMouseDown"/>
 
                         <Button Grid.Column="1"
+                                Grid.Row="0"
+                                Margin="0"
                                 Style="{DynamicResource UnpaddedStretchedGridButton}"
                                 Content="{DynamicResource AddAppDeleteButton}" 
-                                Command="{DynamicResource DeleteModCommand}"/>
+                                Command="{Binding DeleteModCommand}"/>
+
+                        <Button Grid.Row="1"
+                                Grid.Column="0"
+                                Style="{DynamicResource UnpaddedStretchedButton}"
+                                Content="{DynamicResource ModManagerContextEdit}" 
+                                Margin="0"
+                                Command="{Binding EditModCommand}"/>
+
+                        <Button Grid.Row="1"
+                                Grid.Column="1"
+                                Style="{DynamicResource UnpaddedStretchedButton}"
+                                Content="{DynamicResource ModManagerContextPublish}" 
+                                Margin="0"
+                                Command="{Binding PublishModCommand}"/>
                     </Grid>
 
                     <!-- Mod Properties -->
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
-                         ToolTip="{DynamicResource CreateModDialogName}"/>
+                         ToolTip="{DynamicResource CreateModDialogName}"
+                         HorizontalAlignment="Stretch" />
 
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
-                         ToolTip="{DynamicResource CreateModDialogAuthor}"/>
+                         ToolTip="{DynamicResource CreateModDialogAuthor}"
+                         HorizontalAlignment="Stretch" />
 
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
-                         ToolTip="{DynamicResource CreateModDialogVersion}"/>
+                         ToolTip="{DynamicResource CreateModDialogVersion}"
+                         HorizontalAlignment="Stretch" />
 
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         Margin="{DynamicResource CommonItemVerticalMargin}" 
-                         ToolTip="{DynamicResource CreateModDialogDescription}"/>
-
-                    <!-- Open Mod Folder & Manage Dependencies -->
-                    <controls:PopupLabel ButtonText="{DynamicResource ModManagerExtraOptions}"
-                                         FontSize="{DynamicResource FontSizeSmall}"
-                                         HiddenVisibilityType="Collapsed"
-                                         IsOpen="False">
-                        <controls:PopupLabel.HiddenContent>
-                            <StackPanel>
-                                <Button Style="{DynamicResource UnpaddedStretchedButton}"
-                                        Content="{DynamicResource ModManagerOpenModDirectory}" 
-                                        Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                        Command="{StaticResource OpenModFolderCommand}"/>
-
-                                <Button Style="{DynamicResource UnpaddedStretchedButton}"
-                                        Content="{DynamicResource ModManagerConvertToNuget}" 
-                                        Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                        Command="{StaticResource ConvertToNugetCommand}"/>
-
-                                <Button Style="{DynamicResource UnpaddedStretchedButton}"
-                                        Content="{DynamicResource ModManagerManageDependencies}" 
-                                        Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                        Command="{StaticResource ManageDependenciesCommand}"/>
-                            </StackPanel>
-                        </controls:PopupLabel.HiddenContent>
-                    </controls:PopupLabel>
+                         Margin="{DynamicResource CommonItemVerticalMarginTop}" 
+                         ToolTip="{DynamicResource CreateModDialogDescription}"
+                         HorizontalAlignment="Stretch" />
 
                 </StackPanel>
             </ScrollViewer>

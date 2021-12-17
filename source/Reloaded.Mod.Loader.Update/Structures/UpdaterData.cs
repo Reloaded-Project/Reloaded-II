@@ -1,20 +1,27 @@
-﻿using Reloaded.Mod.Loader.Update.Utilities.Nuget;
+﻿using System.Collections.Generic;
+using Sewer56.Update.Structures;
 
-namespace Reloaded.Mod.Loader.Update.Structures
+namespace Reloaded.Mod.Loader.Update.Structures;
+
+/// <summary>
+/// Represents all of the data passed to the repository.
+/// </summary>
+public class UpdaterData
 {
     /// <summary>
-    /// Represents all of the data passed to the repository.
+    /// Contains the repository data.
     /// </summary>
-    public class UpdaterData
-    {
-        /// <summary>
-        /// Contains the repository data.
-        /// </summary>
-        public AggregateNugetRepository AggregateNugetRepository { get; set; }
+    public List<string> NuGetFeeds { get; set; }
 
-        public UpdaterData(AggregateNugetRepository aggregateNugetRepository)
-        {
-            AggregateNugetRepository = aggregateNugetRepository;
-        }
+    /// <summary>
+    /// Common settings for the package resolvers.
+    /// </summary>
+    public CommonPackageResolverSettings CommonPackageResolverSettings { get; set; }
+
+    /// <summary/>
+    public UpdaterData(List<string> nugetFeeds, CommonPackageResolverSettings commonPackageResolverSettings)
+    {
+        NuGetFeeds = nugetFeeds;
+        CommonPackageResolverSettings = commonPackageResolverSettings;
     }
 }

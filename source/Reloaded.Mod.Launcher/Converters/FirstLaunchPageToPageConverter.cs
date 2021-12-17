@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
-using Reloaded.Mod.Launcher.Pages.BaseSubpages;
+using Reloaded.Mod.Launcher.Lib;
+using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
 using Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
 using Reloaded.WPF.Theme.Default;
 
@@ -33,7 +30,7 @@ public class FirstLaunchPageToPageConverter : IValueConverter
                 return IoC.GetConstant<ModConfigPage>();
             default:
                 Debugger.Break();
-                return null;
+                return null!;
         }
     }
 

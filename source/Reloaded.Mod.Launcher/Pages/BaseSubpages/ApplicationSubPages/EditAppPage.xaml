@@ -6,7 +6,6 @@
              xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
-             xmlns:addAppPage1="clr-namespace:Reloaded.Mod.Launcher.Commands.EditAppPage"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
              xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
@@ -23,11 +22,11 @@
         </ScrollViewer.Resources>
 
         <Grid Margin="{DynamicResource PageMargin}"
-                  HorizontalAlignment="Center"
+                  HorizontalAlignment="Stretch"
                   VerticalAlignment="Center">
 
             <!-- Grid Contents -->
-            <WrapPanel Orientation="Vertical" Grid.Column="0">
+            <StackPanel Orientation="Vertical" Grid.Column="0">
 
                 <!-- Application Image -->
                 <Viewbox Width="{StaticResource DetailsImageWidth}" 
@@ -45,42 +44,61 @@
                     </Image>
                 </Viewbox>
 
+                <TextBlock Text="{Binding Application.Config.AppId}" 
+                           Style="{DynamicResource DefaultTextBlock}" 
+                           ToolTip="{DynamicResource AddAppId}"
+                           ToolTipService.InitialShowDelay="0"
+                           HorizontalAlignment="Center" />
 
                 <!-- Delete -->
-                <Button Grid.Column="1"
-                        Margin="{DynamicResource CommonItemVerticalMargin}"    
+                <Button Margin="{DynamicResource CommonItemVerticalMargin}"    
                         Content="{DynamicResource AddAppDeleteButton}"
                         Style="{DynamicResource UnpaddedStretchedGridButton}"
                         Width="{StaticResource DetailsColumnWidth}"
                         Command="{Binding DeleteApplicationCommand, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <!-- Name, Executable Location, Commandline Arguments. -->
+                <!--  Name, Executable Location, Commandline Arguments. -->
                 <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
-                        Tag="{DynamicResource AddAppName}" 
-                        ToolTip="{DynamicResource AddAppName}"
-                        Text="{Binding Application.Config.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Margin="{DynamicResource CommonItemVerticalMargin}" 
-                        Width="{StaticResource DetailsColumnWidth}"
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center"/>
+                         Tag="{DynamicResource AddAppName}" 
+                         ToolTip="{DynamicResource AddAppName}"
+                         ToolTipService.InitialShowDelay="0"
+                         Text="{Binding Application.Config.AppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="{DynamicResource CommonItemVerticalMargin}" 
+                         MinWidth="{StaticResource DetailsColumnWidth}"
+                         HorizontalAlignment="Stretch" 
+                         VerticalAlignment="Center"/>
 
-                <TextBox
+                <Grid MinWidth ="{StaticResource DetailsColumnWidth}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Grid.Column="0"
                         Text="{Binding Application.Config.AppLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Width="{StaticResource DetailsColumnWidth}"
                         Margin="{DynamicResource CommonItemVerticalMargin}"
                         Style="{DynamicResource TextboxWithPlaceholder}" 
                         Tag="{DynamicResource AddAppLocation}" 
                         ToolTip="{DynamicResource AddAppLocation}"
-                        HorizontalAlignment="Center" 
+                        ToolTipService.InitialShowDelay="0"
+                        HorizontalAlignment="Stretch" 
                         VerticalAlignment="Center"/>
 
+                    <Button  Margin="{DynamicResource CommonItemVerticalMargin}"    
+                             Content="{DynamicResource AddAppUpdate}"
+                             Grid.Column="2"
+                             Click="UpdateExecutablePath_Click"/>
+                </Grid>
+
                 <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
-                             Text="{Binding Application.Config.AppArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{Binding Application.Config.AppArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Tag="{DynamicResource AddAppArguments}" 
                         ToolTip="{DynamicResource AddAppArguments}"
+                        ToolTipService.InitialShowDelay="0"
                         Margin="{DynamicResource CommonItemVerticalMargin}" 
-                        Width="{StaticResource DetailsColumnWidth}"
-                        HorizontalAlignment="Center" 
+                        MinWidth="{StaticResource DetailsColumnWidth}"
+                        HorizontalAlignment="Stretch" 
                         VerticalAlignment="Center"/>
 
                 <!-- The text can be a tiny bit too long, no width cap here. -->
@@ -104,7 +122,7 @@
                         </StackPanel>
                     </controls:PopupLabel.HiddenContent>
                 </controls:PopupLabel>
-            </WrapPanel>
+            </StackPanel>
 
         </Grid>
     </ScrollViewer>

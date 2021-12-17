@@ -1,4 +1,1 @@
-﻿namespace Reloaded.Mod.Launcher.Utility
-{
-
-}
+﻿namespace Reloaded.Mod.Launcher.Utility;

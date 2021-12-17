@@ -2,29 +2,27 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Reloaded.Mod.Launcher.Converters
+namespace Reloaded.Mod.Launcher.Converters;
+
+public class FloatToThreeDecimalPlaces : IValueConverter
 {
-    public class FloatToThreeDecimalPlaces : IValueConverter
+    public static FloatToThreeDecimalPlaces Instance = new FloatToThreeDecimalPlaces();
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        public static FloatToThreeDecimalPlaces Instance = new FloatToThreeDecimalPlaces();
+        if (value is not float floatingPoint) 
+            return value.ToString()!;
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is float floatingPoint)
-            {
-                if (Math.Abs(floatingPoint) < 0.0001F)
-                    return "N/A";
+        if (Math.Abs(floatingPoint) < 0.0001F)
+            return "N/A";
 
-                value = floatingPoint.ToString("0.000");
-                return value;
-            }
+        value = floatingPoint.ToString("0.000");
+        return value;
 
-            return value.ToString();
-        }
+    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
     }
 }

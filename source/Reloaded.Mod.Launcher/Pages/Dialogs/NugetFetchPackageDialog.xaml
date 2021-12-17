@@ -15,9 +15,9 @@
     <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -52,7 +52,7 @@
         <!-- Text -->
         <TextBlock Text="{DynamicResource FetchNugetNotFoundMessage}" Grid.Row="2" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"
                    Style="{DynamicResource RIIDefaultTextBlock}"
-                   Visibility="{Binding ShowMissingPackages}"/>
+                   Visibility="{Binding ShowMissingPackages, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"/>
 
         <ListView 
             Grid.Row="3"
@@ -61,7 +61,7 @@
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Top"
             Margin="{DynamicResource CommonItemVerticalMargin}"
-            Visibility="{Binding ShowMissingPackages}">
+            Visibility="{Binding ShowMissingPackages, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding}"/>
@@ -72,7 +72,7 @@
         <!-- Fetch NuGet -->
         <TextBlock Text="{DynamicResource FetchNugetNotFoundAdvice}" Grid.Row="4" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap"
                    Style="{DynamicResource RIIDefaultTextBlock}"
-                   Visibility="{Binding ShowMissingPackages}"/>
+                   Visibility="{Binding ShowMissingPackages, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"/>
 
         <!-- Options -->
         <StackPanel Grid.Row="5"
@@ -80,7 +80,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Margin="{DynamicResource CommonItemVerticalMargin}">
-            <Button Content="{Binding DownloadModStatus, Converter={x:Static converters:DownloadModStatusToString.Instance}, FallbackValue='Download'}" 
+            <Button Content="{Binding DownloadPackageStatus, Converter={x:Static converters:DownloadModStatusToString.Instance}, FallbackValue='Download'}" 
                     IsEnabled="{Binding DownloadEnabled, UpdateSourceTrigger=PropertyChanged}"
                     Click="OK_Click"/>
         </StackPanel>
