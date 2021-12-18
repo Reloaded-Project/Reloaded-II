@@ -158,19 +158,22 @@ public class PublishModDialogViewModel : ObservableObject
         CanBuild = false;
         try
         {
-            await Publisher.PublishAsync(new PublishArgs()
+            await Task.Run(async () =>
             {
-                PublishTarget = PublishTarget,
-                OutputFolder = OutputFolder,
-                ModTuple = _modTuple,
-                IgnoreRegexes = IgnoreRegexes.ToList(),
-                IncludeRegexes = IncludeRegexes.ToList(),
-                Progress = new Progress<double>(d => BuildProgress = d * 100),
-                AutomaticDelta = AutomaticDelta,
-                CompressionLevel = CompressionLevel,
-                CompressionMethod = CompressionMethod,
-                OlderVersionFolders = OlderVersionFolders.ToList(),
-                PackageName = PackageName
+                await Publisher.PublishAsync(new PublishArgs()
+                {
+                    PublishTarget = PublishTarget,
+                    OutputFolder = OutputFolder,
+                    ModTuple = _modTuple,
+                    IgnoreRegexes = IgnoreRegexes.ToList(),
+                    IncludeRegexes = IncludeRegexes.ToList(),
+                    Progress = new Progress<double>(d => BuildProgress = d * 100),
+                    AutomaticDelta = AutomaticDelta,
+                    CompressionLevel = CompressionLevel,
+                    CompressionMethod = CompressionMethod,
+                    OlderVersionFolders = OlderVersionFolders.ToList(),
+                    PackageName = PackageName
+                });
             });
 
             ProcessExtensions.OpenFileWithExplorer(this.OutputFolder);
