@@ -20,7 +20,7 @@ Please look directly above the download button on both GameBanana and GitHub and
 
 ## How do I get started with using Reloaded?
 
-It's as easy as 1,2,3. [Take a look at the quick start guide!](https://github.com/Reloaded-Project/Reloaded-II/blob/master/Docs/QuickStart.md)
+It's as easy as 1,2,3. [Take a look at the quick start guide!](./QuickStart.md)
 
 ![](https://cdn.discordapp.com/attachments/745941458686705767/746941213982326865/AddAnApplication.gif)
 ![](https://cdn.discordapp.com/attachments/745941458686705767/746941230813806652/DownloadModAndUnhide.gif)
@@ -70,19 +70,19 @@ Getting started with making mods is very easy, you can in fact do it from inside
 
 ![](https://cdn.discordapp.com/attachments/745941458686705767/746942148816928828/unknown.png)
 
-[Follow this guide for an explanation of things](https://github.com/Reloaded-Project/Reloaded-II/blob/master/Docs/GettingStartedMods.md). 
+[Follow this guide for an explanation of things](./GettingStartedMods.md). 
 
 Most people starting out without programming knowledge will probably be interested in replacing the game's files with their own. In this case, consider using [the file redirector mod](https://github.com/Reloaded-Project/reloaded.universal.redirector#how-to-use)
 
 Set it as a dependency during mod creation (or after by expanding `Extra Options` inside `Manage Mods` menu), drop some files in your mods and off you go!
 
-[There is also a guide for publishing mods](https://github.com/Reloaded-Project/Reloaded-II/blob/master/Docs/UpdateSupport.md), which details how to e.g. get update support on GameBanana.
+[There is also a guide for publishing mods](./PublishingMods.md), which details how to e.g. get update support on GameBanana.
 
 But before you get going, reach out and consult the community! If they are already using Reloaded they may have some fancy mods, tools, or both!
 
 ### How do I get started with programming mods for Reloaded?
 
-As a programmer you should have an adequate level of self sufficiency. As such, please follow the following guide: [DeveloperModGuide.md](./DeveloperModGuide.md)
+As a programmer you should have an adequate level of self sufficiency. As such, please follow the following guide: [BuildingMods.md](./BuildingMods.md)
 
 ![](https://cdn.discordapp.com/attachments/745941458686705767/746946696797356072/NewProject.png)
 
