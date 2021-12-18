@@ -291,6 +291,9 @@ public static class Setup
         config.LoaderPath64 = loaderPath64;
         config.Bootstrapper32Path = bootstrapper32Path;
         config.Bootstrapper64Path = bootstrapper64Path;
+
+        // Update Environment Variables
+        Environment.SetEnvironmentVariable("RELOADEDIIMODS", config.ModConfigDirectory, EnvironmentVariableTarget.User);
     }
 
     /// <summary>
