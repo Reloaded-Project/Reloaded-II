@@ -69,6 +69,11 @@ public class PublishModDialogViewModel : ObservableObject
     public string? SelectedIgnoreRegex { get; set; } = null;
 
     /// <summary>
+    /// Name of the generated 7z file.
+    /// </summary>
+    public string? PackageName { get; set; } = null;
+
+    /// <summary>
     /// Regexes of files to make sure are not ignored.
     /// </summary>
     public ObservableCollection<string> IncludeRegexes { get; set; }
@@ -112,6 +117,7 @@ public class PublishModDialogViewModel : ObservableObject
     public PublishModDialogViewModel(PathTuple<ModConfig> modTuple)
     {
         _modTuple    = modTuple;
+        PackageName  = IOEx.ForceValidFilePath(_modTuple.Config.ModName.Replace(' ', '_'));
         OutputFolder = Path.Combine(Path.GetTempPath(), $"{IOEx.ForceValidFilePath(_modTuple.Config.ModId)}.Publish");
 
         // Set default Regexes.
@@ -163,7 +169,8 @@ public class PublishModDialogViewModel : ObservableObject
                 AutomaticDelta = AutomaticDelta,
                 CompressionLevel = CompressionLevel,
                 CompressionMethod = CompressionMethod,
-                OlderVersionFolders = OlderVersionFolders.ToList()
+                OlderVersionFolders = OlderVersionFolders.ToList(),
+                PackageName = PackageName
             });
 
             ProcessExtensions.OpenFileWithExplorer(this.OutputFolder);

@@ -396,6 +396,8 @@
     <sys:String x:Key="PublishAutoDeltaWarningTitle">Automatic Delta Warning</sys:String>
     <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat" xml:space="preserve">Release Metadata file not found in Output Folder. Consider renaming file if necessary.&#x0a;Expected Filename: {0}.</sys:String>
 
+    <sys:String x:Key="PublishFileNameTooltip">Name of the generated .7z package file</sys:String>
+
     <!-- Update 1.12.0: Edit Mod User Config -->
     <sys:String x:Key="TitleEditModUserConfig">Edit User Config</sys:String>
     <sys:String x:Key="TitleEditModUserAllowPrereleases">Allow Beta Versions</sys:String>

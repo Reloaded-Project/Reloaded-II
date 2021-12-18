@@ -216,6 +216,14 @@
             </controls:PopupLabel>
 
             <!-- Progress -->
+            <TextBox Text="{Binding PackageName, UpdateSourceTrigger=PropertyChanged}" 
+                     Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                     MinWidth="200"
+                     ToolTip="{DynamicResource PublishFileNameTooltip}" ToolTipService.InitialShowDelay="0" 
+                     HorizontalAlignment="Center" 
+                     VerticalAlignment="Center"
+                     Style="{DynamicResource DefaultTextBox}" />
+
             <TextBlock Text="{Binding OutputFolder}" Style="{DynamicResource DefaultTextBlock}"
                        ToolTip="{DynamicResource PublishOutputFolder}" ToolTipService.InitialShowDelay="0" 
                        Margin="{DynamicResource CommonItemVerticalMarginSmaller}"

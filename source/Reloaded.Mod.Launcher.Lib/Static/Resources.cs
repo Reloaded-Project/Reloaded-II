@@ -428,6 +428,8 @@ public static class Resources
     public static IDictionaryResource<string> PublishAutoDeltaWarningTitle { get; set; }
     public static IDictionaryResource<string> PublishAutoDeltaWarningDescriptionFormat { get; set; }
 
+    public static IDictionaryResource<string> PublishFileNameTooltip { get; set; }
+
     // Update 1.12.0: Edit Mod User Config
     public static IDictionaryResource<string> TitleEditModUserConfig { get; set; }
     public static IDictionaryResource<string> TitleEditModUserAllowPrereleases { get; set; }
