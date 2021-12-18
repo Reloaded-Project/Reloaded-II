@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Sewer56.Update.Extractors.SevenZipSharp" Version="1.1.0" GeneratePathProperty="true" />
+    <PackageReference Include="Sewer56.Update.Packaging" Version="1.2.0" />
+    <PackageReference Include="Sewer56.Update.Resolvers.NuGet" Version="1.1.0" />
+    <PackageReference Include="Sewer56.Update.Resolvers.GameBanana" Version="1.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
+  </ItemGroup>
+
+</Project>

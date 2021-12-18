@@ -2,8 +2,8 @@
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Update.Converters.NuGet;
 using Reloaded.Mod.Loader.Update.Exceptions;
+using Reloaded.Mod.Loader.Update.Packaging.Converters.NuGet;
 using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.Update.NuGet.Convert

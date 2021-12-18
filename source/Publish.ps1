@@ -28,6 +28,7 @@ $launcherProjectPath = "Reloaded.Mod.Launcher/Reloaded.Mod.Launcher.csproj"
 $loaderProjectPath = "Reloaded.Mod.Loader/Reloaded.Mod.Loader.csproj"
 $addressDumperProjectPath = "Reloaded.Mod.Launcher.Kernel32AddressDumper/Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj"
 $nugetConverterProjectPath = "Tools/NugetConverter/NugetConverter.csproj"
+$publisherProjectPath = "Tools/Reloaded.Publisher/Reloaded.Publisher.csproj"
 
 # Outputs
 $publishDirectory = "Publish"
@@ -62,6 +63,7 @@ dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false
 
 # Build Tools
 dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
+dotnet publish "$publisherProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
 
 # Build Installer
 dotnet publish "$installerProjectPath" -o "$installerPublishDirectory"

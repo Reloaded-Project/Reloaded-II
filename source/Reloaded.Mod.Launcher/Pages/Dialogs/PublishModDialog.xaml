@@ -9,6 +9,7 @@
                         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
                         xmlns:utilities="clr-namespace:Reloaded.WPF.Utilities;assembly=Reloaded.WPF"
                         xmlns:converter="clr-namespace:Reloaded.Mod.Launcher.Converters"
+                        xmlns:packages="clr-namespace:Reloaded.Mod.Loader.Update.Packaging;assembly=Reloaded.Mod.Loader.Update.Packaging"
                         xmlns:sevenZip="clr-namespace:SevenZip;assembly=SevenZipSharp"
                         mc:Ignorable="d"
                 Height="Auto" 
@@ -35,7 +36,7 @@
                       Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                       IsSynchronizedWithCurrentItem="True"
                       SelectedItem="{Binding PublishTarget, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                      ItemsSource="{utilities:EnumBindingSource EnumType=viewModel:PublishTarget}"
+                      ItemsSource="{utilities:EnumBindingSource EnumType=packages:Publisher+PublishTarget}"
                       ToolTip="{DynamicResource PublishModTargetTooltip}"
                       ToolTipService.InitialShowDelay="0"
                       Width="200" />

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Reloaded.Publisher": {
+      "commandName": "Project",
+      "commandLineArgs": "--outputfolder \"C:\\Users\\sewer\\Desktop\\Temp\\Update Tests\" --modfolder \"C:\\Users\\sewer\\Desktop\\Reloaded II\\Mods\\riders.utils.music\""
+    }
+  }
+}

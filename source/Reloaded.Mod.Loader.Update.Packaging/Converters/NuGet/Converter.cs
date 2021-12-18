@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Loader.IO.Config;
 using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Sewer56.Update.Packaging;
 using Sewer56.Update.Packaging.Interfaces;
 using Sewer56.Update.Packaging.Structures;
 using Sewer56.Update.Resolvers.NuGet;
 
-namespace Reloaded.Mod.Loader.Update.Converters.NuGet;
+namespace Reloaded.Mod.Loader.Update.Packaging.Converters.NuGet;
 
 /// <summary>
 /// Converts a packaged mod zip into a NuGet Package.
