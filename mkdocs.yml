@@ -32,9 +32,9 @@ pages:
         - Injection Methods: InjectionMethods.md
   - For Modders:
     - Getting Started: GettingStartedMods.md
-    - Publishing Mods: UpdateSupport.md
+    - Publishing Mods: PublishingMods.md
   - For Programmers:
-    - Building Mods: DeveloperModGuide.md
+    - Building Mods: BuildingMods.md
     - Inter Mod Communication: InterModCommunication.md
     - Miscellaneous:
         - Automation: Automation.md
