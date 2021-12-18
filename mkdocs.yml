@@ -50,3 +50,5 @@ pages:
     - Project Structure: ProjectStructure.md
     - High Level Architecture: Reloaded-II-Architecture.md
     - Translating Reloaded: LocalizingReloaded.md
+    - Miscellaneous:
+      - Reloaded vs Reloaded II: Reloaded-vs-Reloaded-II.md
