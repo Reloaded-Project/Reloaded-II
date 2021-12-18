@@ -1,6 +1,6 @@
 # Prerequisites
 
-- .NET Core 5.0 Preview 6 SDK (or newer).
+- .NET 6.0 SDK (or newer).
 - Visual Studio 2019+
 	- "Desktop development with C++" workload (Windows 10 SDK)
 	
@@ -24,9 +24,9 @@ git submodule update --init --recursive
 
 To distribute Reloaded, build it using the publish script `Publish.ps1`.
 
-1. Search for and open `Developer Command Prompt for VS 2019`
+1. Search for and open `Developer Command Prompt for VS 2019`.
 2. Change current directory to the `Source` directory.
 3. Open Powershell by typing in `powershell`.
-4. Execute `.\Publish.ps1`
+4. Execute `.\Publish.ps1`.
 
 The output should reside in the `Publish` folder.
