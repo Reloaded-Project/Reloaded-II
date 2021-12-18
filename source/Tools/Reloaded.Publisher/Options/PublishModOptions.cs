@@ -13,7 +13,10 @@ namespace Reloaded.Publisher.Options
 
         [Option(Required = true, HelpText = "Path of the folder containing a ModConfig.json")]
         public string ModFolder { get; set; } = null!;
-        
+
+        [Option(Required = true, HelpText = "Allows you to set a custom name for the resulting 7z files.")]
+        public string? PackageName { get; set; } = null;
+
         [Option(Required = false, HelpText = "Paths to older versions of the mod. Used for creating delta packages.")]
         public IEnumerable<string> OlderVersionFolders { get; set; } = Array.Empty<string>();
 

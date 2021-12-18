@@ -77,9 +77,10 @@ public static class Publisher
             });
         }
 
+        var fileName = string.IsNullOrEmpty(args.PackageName) ? args.ModTuple.Config.ModName.Replace(' ', '_') : args.PackageName;
         await builder.BuildAsync(new BuildArgs()
         {
-            FileName = args.ModTuple.Config.ModName.Replace(' ', '_'),
+            FileName = fileName,
             OutputFolder = args.OutputFolder,
             FileNameFilter = GameBananaUtilities.SanitizeFileName,
             PackageArchiver = archiver,
@@ -107,6 +108,11 @@ public static class Publisher
         /// The mod configuration for which to generate the config for.
         /// </summary>
         public PathTuple<ModConfig> ModTuple { get; set; } = null!;
+
+        /// <summary>
+        /// Allows you to set a custom name for the resulting 7z files.
+        /// </summary>
+        public string? PackageName { get; set; }
 
         /// <summary>
         /// Can be used to optionally report progress.
@@ -142,7 +148,6 @@ public static class Publisher
         /// The method with which the archive should be compressed by.
         /// </summary>
         public CompressionMethod CompressionMethod { get; set; } = CompressionMethod.Lzma2;
-
     }
 
     /// <summary>
