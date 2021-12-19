@@ -42,6 +42,7 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public string ModNativeDll32    { get; set; } = String.Empty;
     public string ModNativeDll64    { get; set; } = String.Empty;
     public bool   IsLibrary         { get; set; } = false;
+    public string ReleaseMetadataFileName { get; set; } = "Sewer56.Update.ReleaseMetadata.json";
 
     /// <summary>
     /// Data stored by plugins. Maps a unique string key to arbitrary data.

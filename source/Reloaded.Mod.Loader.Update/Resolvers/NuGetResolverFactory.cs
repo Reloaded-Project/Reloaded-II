@@ -71,11 +71,7 @@ public class NuGetResolverFactory : IResolverFactory
                     NugetRepository = new NugetRepository(url),
                     PackageId = mod.Config.ModId
                 },
-                new CommonPackageResolverSettings()
-                {
-                    AllowPrereleases = data.CommonPackageResolverSettings.AllowPrereleases,
-                    MetadataFileName = data.CommonPackageResolverSettings.MetadataFileName
-                }
+                data.CommonPackageResolverSettings
             ));
         }
 

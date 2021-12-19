@@ -15,26 +15,36 @@
 
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
-        <ItemsControl ItemsSource="{Binding Updates}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <CheckBox Content="{Binding Factory.FriendlyName}" IsChecked="{Binding IsEnabled}" 
-                                  Style="{DynamicResource DefaultCheckBox}"
-                                  HorizontalAlignment="Center" Margin="{DynamicResource CommonItemVerticalMargin}" />
+        <StackPanel>
 
-                        <controls:PropertyGridEx MinWidth="500" 
-                                         Width="Auto"
-                                         FlattenChildProperties="ParentNameAsCategory"
-                                         Background="Transparent"
-                                         SelectedObject="{Binding Configuration}"
-                                         Visibility="{Binding IsEnabled, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"
-                                         Margin="{DynamicResource CommonItemVerticalMargin}"
-                                         Style="{StaticResource PropertyGridBaseStyle}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            <ItemsControl ItemsSource="{Binding Updates}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <CheckBox Content="{Binding Factory.FriendlyName}" IsChecked="{Binding IsEnabled}" 
+                                      Style="{DynamicResource DefaultCheckBox}"
+                                      HorizontalAlignment="Center" Margin="{DynamicResource CommonItemVerticalMargin}" />
+
+                            <controls:PropertyGridEx MinWidth="500" 
+                                                     Width="Auto"
+                                                     FlattenChildProperties="ParentNameAsCategory"
+                                                     Background="Transparent"
+                                                     SelectedObject="{Binding Configuration}"
+                                                     Visibility="{Binding IsEnabled, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"
+                                                     Margin="{DynamicResource CommonItemVerticalMargin}"
+                                                     Style="{StaticResource PropertyGridBaseStyle}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBox 
+                MinWidth="300"
+                ToolTip="{DynamicResource EditModMetadataNameTooltip}"
+                ToolTipService.InitialShowDelay="0"
+                Text="{Binding Config.ReleaseMetadataFileName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                Style="{DynamicResource DefaultTextBox}"/>
+        </StackPanel>
 
     </Grid>
 </default:ReloadedPage>

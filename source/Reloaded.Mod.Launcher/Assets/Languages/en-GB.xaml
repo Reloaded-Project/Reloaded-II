@@ -337,6 +337,8 @@
     <sys:String x:Key="EditModSave">Save</sys:String>
     <sys:String x:Key="EditModAppsDescription">Select applications the mod should be available for.</sys:String>
 
+    <sys:String x:Key="EditModMetadataNameTooltip" xml:space="preserve">Name of the JSON Metadata file.&#x0a;Change this only if you are releasing multiple mods on the same page.</sys:String>
+
     <!-- Update 1.12.0: Extended Application Configuration -->
     <sys:String x:Key="ConfigureModsRightClickAdvice">Right Click Mod for More Options</sys:String>
 

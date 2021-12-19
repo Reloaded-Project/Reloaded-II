@@ -369,9 +369,12 @@ public static class Resources
     public static IDictionaryResource<string> EditModLibrary { get; set; }
     public static IDictionaryResource<string> EditModLibraryDescription { get; set; }
     public static IDictionaryResource<string> EditModSave { get; set; }
-    
+
+    public static IDictionaryResource<string> EditModAppsDescription { get; set; }
+    public static IDictionaryResource<string> EditModMetadataNameTooltip { get; set; }
+
     // Update 1.12.0: Extended Application Configuration
-    
+
     public static IDictionaryResource<string> ConfigureModsRightClickAdvice { get; set; }
 
     // Update 1.12.0: Create Mod Dialog 

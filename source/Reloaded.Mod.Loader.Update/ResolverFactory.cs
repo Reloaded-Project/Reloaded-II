@@ -44,6 +44,8 @@ public static class ResolverFactory
         if (userConfig.Config.AllowPrereleases.HasValue)
             data.CommonPackageResolverSettings.AllowPrereleases = userConfig.Config.AllowPrereleases.Value;
 
+        data.CommonPackageResolverSettings.MetadataFileName = mod.Config.ReleaseMetadataFileName;
+
         // Create resolvers.
         var resolvers = new List<IPackageResolver>();
         foreach (var factory in All)
