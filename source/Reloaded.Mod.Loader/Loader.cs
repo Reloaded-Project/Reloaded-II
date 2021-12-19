@@ -227,7 +227,7 @@ public class Loader : IDisposable
                 continue;
 
             var fullAppLocation = NormalizePath(application.AppLocation);
-            if (fullAppLocation == fullPath)
+            if (fullAppLocation.Equals(fullPath, StringComparison.OrdinalIgnoreCase))
                 return application;
         }
 
