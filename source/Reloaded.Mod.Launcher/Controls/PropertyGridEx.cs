@@ -1,11 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Markup;
+using System.Xml;
 using HandyControl.Controls;
 using HandyControl.Tools;
+using Reloaded.Mod.Launcher.Lib.Commands.General;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace Reloaded.Mod.Launcher.Controls;
 
@@ -45,11 +54,25 @@ public class PropertyResolverEx : PropertyResolver
         if (type == typeof(bool)) return new SwitchPropertyEditorEx();
         if (type == typeof(DateTime)) return new DateTimePropertyEditor();
 
+        if (type == typeof(ObservableCollection<string>))
+        {
+            return new StringCollectionEditor();
+        }
+
         if (type.IsSubclassOf(typeof(Enum))) return new EnumPropertyEditor();
 
         return base.CreateDefaultEditor(type);
     }
+
+    public override bool IsKnownEditorType(Type type)
+    {
+        if (type == typeof(ObservableCollection<string>))
+            return true;
+
+        return base.IsKnownEditorType(type);
+    }
 }
+
 
 /// <summary>
 /// Extensions helping working with property resolvers.
@@ -66,6 +89,62 @@ public static class PropertyResolverExtensions
         ToolTipService.SetInitialShowDelay(tooltip, 0);
         return tooltip;
     }
+}
+
+public class StringCollectionEditor : PropertyEditorBase
+{
+    public override FrameworkElement CreateElement(PropertyItem propertyItem)
+    {
+        var dataGrid = new System.Windows.Controls.DataGrid
+        {
+            ToolTip = propertyItem.GetTooltip(),
+            AutoGenerateColumns = false,
+            HeadersVisibility = DataGridHeadersVisibility.None
+        };
+
+        dataGrid.SetResourceReference(Control.StyleProperty, "DefaultDataGrid");
+        dataGrid.Columns.Add(new DataGridTextColumn()
+        {
+            Binding = new Binding(".")
+        });
+
+        dataGrid.ContextMenu = new ContextMenu()
+        {
+            Items =
+            {
+                new MenuItem()
+                {
+                    Header = "Add",
+                    Command = new RelayCommand(o =>
+                    {
+                        var list = (ObservableCollection<string>)dataGrid.ItemsSource;
+                        list.Add("New Item");
+                    })
+                },
+                new MenuItem()
+                {
+                    Header = "Remove",
+                    Command = new RelayCommand(o =>
+                    {
+                        var list = (ObservableCollection<string>)dataGrid.ItemsSource;
+                        list.Remove((string) dataGrid.SelectedItem);
+                    }, o =>
+                    {
+                        return dataGrid.SelectedItem != null;
+                    })
+                },
+            }
+        };
+
+        dataGrid.SelectionChanged += (sender, args) =>
+        {
+            CommandManager.InvalidateRequerySuggested();
+        };
+
+        return dataGrid;
+    }
+
+    public override DependencyProperty GetDependencyProperty() => System.Windows.Controls.ListBox.ItemsSourceProperty;
 }
 
 public class PlainTextPropertyEditor : PropertyEditorBase
