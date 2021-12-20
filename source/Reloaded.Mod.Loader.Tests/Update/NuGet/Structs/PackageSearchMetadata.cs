@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
@@ -8,6 +9,7 @@ using NuGet.Protocol.Core.Types;
 
 namespace Reloaded.Mod.Loader.Tests.Update.NuGet.Structs;
 
+[ExcludeFromCodeCoverage]
 public class CustomPackageSearchMetadata : IPackageSearchMetadata
 {
     public CustomPackageSearchMetadata(PackageIdentity identity)

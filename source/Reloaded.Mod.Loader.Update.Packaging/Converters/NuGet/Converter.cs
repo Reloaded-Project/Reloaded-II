@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.IO.Config;
+﻿using Reloaded.Mod.Loader.IO.Config;
 using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Packaging.Structures;
 using Sewer56.Update.Resolvers.NuGet;
+using System.IO;
+using System.Threading.Tasks;
+using Reloaded.Mod.Loader.IO.Structs;
 
 namespace Reloaded.Mod.Loader.Update.Packaging.Converters.NuGet;
 
@@ -41,35 +36,14 @@ public static class Converter
         if (!File.Exists(configFilePath))
             throw new FileNotFoundException($"Failed to convert folder to NuGet Package. Unable to find config at {configFilePath}");
 
-        var config = JsonSerializer.Deserialize<ModConfig>(await File.ReadAllTextAsync(configFilePath));
-        return await FromModDirectoryAsync(modDirectory, outputDirectory, config);
-    }
-
-    /// <summary>
-    /// Creates a NuGet package given the directory of a mod.
-    /// </summary>
-    /// <param name="modDirectory">Full path to the directory containing the mod.</param>
-    /// <param name="outputDirectory">The path to the folder where the NuGet package should be output.</param>
-    /// <param name="modConfig">The mod configuration for which to create the NuGet package.</param>
-    /// <returns>The path of the generated .nupkg file.</returns>
-    public static async Task<string> FromModDirectoryAsync(string modDirectory, string outputDirectory, IModConfig modConfig)
-    {
-        modDirectory = Path.GetFullPath(modDirectory);
-        var packageArchiver = new NuGetPackageArchiver(new NuGetPackageArchiverSettings()
+        var config = await IConfig<ModConfig>.FromPathAsync(configFilePath);
+        var result = await Publisher.PublishAsync(new Publisher.PublishArgs()
         {
-            Id = modConfig.ModId,
-            Description = modConfig.ModDescription,
-            Authors = new List<string>() { modConfig.ModAuthor },
+            PublishTarget = Publisher.PublishTarget.NuGet,
+            ModTuple = new PathTuple<ModConfig>(configFilePath, config),
+            OutputFolder = outputDirectory
         });
 
-        var extras = new CreateArchiveExtras()
-        {
-            Metadata = new PackageMetadata() { Version = modConfig.ModVersion }
-        };
-
-        string nupkgPath = Path.Combine(outputDirectory, $"{modConfig.ModId}.nupkg");
-        var allFiles  = Directory.GetFiles(modDirectory, "*.*", SearchOption.AllDirectories).Select(x => Paths.GetRelativePath(x, modDirectory)).ToList();
-        await packageArchiver.CreateArchiveAsync(allFiles, modDirectory, nupkgPath, extras);
-        return nupkgPath;
+        return Path.Combine(outputDirectory, result.Releases[0].FileName);
     }
 }

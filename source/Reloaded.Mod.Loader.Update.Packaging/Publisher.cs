@@ -26,7 +26,7 @@ public static class Publisher
     /// Asynchronously publishes a package.
     /// </summary>
     /// <returns>Task which completes alongside the creation of the package.</returns>
-    public static async Task PublishAsync(PublishArgs args)
+    public static async Task<ReleaseMetadata> PublishAsync(PublishArgs args)
     {
         // Validation
         var ignoreRegexesList  = args.IgnoreRegexes;
@@ -78,7 +78,7 @@ public static class Publisher
         }
 
         var fileName = string.IsNullOrEmpty(args.PackageName) ? args.ModTuple.Config.ModName.Replace(' ', '_') : args.PackageName;
-        await builder.BuildAsync(new BuildArgs()
+        return await builder.BuildAsync(new BuildArgs()
         {
             FileName = fileName,
             OutputFolder = args.OutputFolder,

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Update.Exceptions;
 using Reloaded.Mod.Loader.Update.Packaging.Converters.NuGet;
 using Xunit;
 
@@ -14,9 +14,9 @@ public class ConverterTests
     private static string TestArchiveFileBad = "HeroesControllerPostProcessBad.zip"; // Has folder in root.
 
     [Fact]
-    public void TryConvertBad()
+    public async Task TryConvertBad()
     {
-        Assert.ThrowsAsync<BadArchiveException>(() => Converter.FromArchiveFileAsync(TestArchiveFileBad, Environment.CurrentDirectory));
+        await Assert.ThrowsAsync<FileNotFoundException>(async () => await Converter.FromArchiveFileAsync(TestArchiveFileBad, Environment.CurrentDirectory));
     }
 
     [Fact]
@@ -30,16 +30,7 @@ public class ConverterTests
 
     private static bool IsZipValid(string path)
     {
-        try
-        {
-            using var zipFile = ZipFile.OpenRead(path);
-            var entries = zipFile.Entries;
-            return true;
-        }
-        catch (InvalidDataException)
-        {
-            return false;
-        }
+        using var zipFile = ZipFile.OpenRead(path);
+        return zipFile.Entries.FirstOrDefault(x => x.Name.Contains("ModConfig.json")) != null;
     }
-
 }
