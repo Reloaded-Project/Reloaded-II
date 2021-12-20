@@ -20,9 +20,6 @@ public class AggregateNugetRepository
     /// <summary/>
     public AggregateNugetRepository(INugetRepository[] sources) => Sources = sources.ToList();
 
-    /// <summary/>
-    public AggregateNugetRepository(string[] sources) => Sources = sources.Select(x => (INugetRepository)NugetRepository.FromSourceUrl(x)).ToList();
-
     /// <summary>For Serialization.</summary>
     // ReSharper disable once UnusedMember.Global
     public AggregateNugetRepository() { }
@@ -41,7 +38,7 @@ public class AggregateNugetRepository
         var aggregateRepo = new INugetRepository[feeds.Count];
         for (var x = 0; x < feeds.Count; x++)
         {
-            var repository = NugetRepository.FromSourceUrl(feeds[x].URL);
+            var repository = NugetRepository.FromSourceUrl(feeds[x].URL, feeds[x].Name);
             aggregateRepo[x] = repository;
         }
 

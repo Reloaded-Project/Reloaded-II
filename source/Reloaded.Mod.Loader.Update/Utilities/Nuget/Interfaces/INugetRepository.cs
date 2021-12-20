@@ -17,6 +17,11 @@ public interface INugetRepository
     public string SourceUrl { get; }
 
     /// <summary>
+    /// A friendly name for the repository.
+    /// </summary>
+    public string FriendlyName { get; }
+
+    /// <summary>
     /// Searches for packages using a specific term.
     /// </summary>
     /// <param name="searchString">The search text to look for.</param>

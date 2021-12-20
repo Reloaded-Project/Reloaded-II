@@ -18,20 +18,6 @@ public class Nuget
     /// <summary>
     /// Extracts the content files of the NuGet package to a specified directory.
     /// </summary>
-    /// <param name="packagePath">Full path to the NuGet package.</param>
-    /// <param name="targetDirectory">The directory to extract the package content to.</param>
-    /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-    public static void ExtractPackage(string packagePath, string targetDirectory, CancellationToken token = default)
-    {
-        using (var packageStream = File.OpenRead(Path.GetFullPath(packagePath)))
-        {
-            ExtractPackage(packageStream, targetDirectory, token);
-        }
-    }
-
-    /// <summary>
-    /// Extracts the content files of the NuGet package to a specified directory.
-    /// </summary>
     /// <param name="downloadResourceResult">Result of the download operation.</param>
     /// <param name="targetDirectory">The directory to extract the package content to.</param>
     /// <param name="token">A cancellation token to allow cancellation of the task.</param>

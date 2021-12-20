@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Reloaded.Mod.Loader.Update.Packaging\Reloaded.Mod.Loader.Update.Packaging.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Sources\NuGet\" />
+  </ItemGroup>
+
 </Project>
