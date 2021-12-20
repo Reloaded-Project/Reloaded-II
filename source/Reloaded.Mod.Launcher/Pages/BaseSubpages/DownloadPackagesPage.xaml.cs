@@ -16,7 +16,7 @@ public partial class DownloadPackagesPage : ReloadedIIPage
     {
         InitializeComponent();
 
-        ViewModel = IoC.GetConstant<DownloadPackagesViewModel>();
+        ViewModel = IoC.Get<DownloadPackagesViewModel>();
         this.AnimateInStarted += TryGetSearchResults;
     }
 

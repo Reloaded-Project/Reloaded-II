@@ -25,7 +25,7 @@ public class ApplicationPageToPageConverter : IValueConverter
             case Page.Application:
                 return IoC.Get<ApplicationPage>();
             case Page.DownloadMods:
-                return IoC.GetConstant<DownloadPackagesPage>();
+                return IoC.Get<DownloadPackagesPage>();
             default:
                 Debugger.Break();
                 return null!;
