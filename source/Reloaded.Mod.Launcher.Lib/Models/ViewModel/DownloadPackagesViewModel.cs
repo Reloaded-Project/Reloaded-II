@@ -75,7 +75,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     public async Task GetSearchResults()
     {
         _tokenSource?.Cancel();
-        _tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        _tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
         var searchTuples = await _nugetRepository.Search(SearchQuery, false, 50, _tokenSource.Token);
         if (!_tokenSource.Token.IsCancellationRequested)
@@ -103,10 +103,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         DownloadModCommand.Dispose();
     }
 
-    private async void RefreshOnSourceChange()
-    {
-        await GetSearchResults();
-    }
+    private async void RefreshOnSourceChange() => await GetSearchResults();
 }
 
 /// <summary>
