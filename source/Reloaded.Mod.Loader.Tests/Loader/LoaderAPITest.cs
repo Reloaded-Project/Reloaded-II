@@ -4,82 +4,81 @@ using Reloaded.Mod.Loader.Tests.SETUP;
 using TestInterfaces;
 using Xunit;
 
-namespace Reloaded.Mod.Loader.Tests.Loader
+namespace Reloaded.Mod.Loader.Tests.Loader;
+
+public class LoaderAPITest : IDisposable
 {
-    public class LoaderAPITest : IDisposable
+    private static Random _random = new Random();
+    private Mod.Loader.Loader _loader;
+    private TestData _testData;
+
+    public LoaderAPITest()
     {
-        private static Random _random = new Random();
-        private Mod.Loader.Loader _loader;
-        private TestData _testData;
+        _testData = new TestData();
 
-        public LoaderAPITest()
-        {
-            _testData = new TestData();
+        _loader = new Mod.Loader.Loader(true);
+        _loader.LoadForCurrentProcess();
+    }
 
-            _loader = new Mod.Loader.Loader(true);
-            _loader.LoadForCurrentProcess();
-        }
+    public void Dispose()
+    {
+        _testData?.Dispose();
+        _loader?.Dispose();
+    }
 
-        public void Dispose()
-        {
-            _testData?.Dispose();
-            _loader?.Dispose();
-        }
+    [Fact]
+    public void ModifyController()
+    {
+        // This also tests object sharing between load contexts.
+        var testModBInstance = _loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId);
+        var testModAInstance = _loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigA.ModId);
 
-        [Fact]
-        public void ModifyController()
-        {
-            // This also tests object sharing between load contexts.
-            var testModBInstance = _loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId);
-            var testModAInstance = _loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigA.ModId);
+        var testModB = (ITestModB)testModBInstance.Mod;
+        var testModA = (ITestModA)testModAInstance.Mod;
 
-            var testModB = (ITestModB)testModBInstance.Mod;
-            var testModA = (ITestModA)testModAInstance.Mod;
+        // Ask Mod B to modify controller from Mod A
+        int random = _random.Next(0, int.MaxValue); // Note: Value in controller is initialized negative.
+        testModB.ModifyControllerValueFromTestModA(random);
 
-            // Ask Mod B to modify controller from Mod A
-            int random = _random.Next(0, int.MaxValue); // Note: Value in controller is initialized negative.
-            testModB.ModifyControllerValueFromTestModA(random);
+        int newValue = testModA.GetControllerValue();
+        Assert.Equal(random, newValue);
+    }
 
-            int newValue = testModA.GetControllerValue();
-            Assert.Equal(random, newValue);
-        }
+    [Fact]
+    public void RemoveController()
+    {
+        _loader.Manager.LoaderApi.RemoveController<IController>();
+        Assert.Null(_loader.Manager.LoaderApi.GetController<IController>());
+    }
 
-        [Fact]
-        public void RemoveController()
-        {
-            _loader.Manager.LoaderApi.RemoveController<IController>();
-            Assert.Null(_loader.Manager.LoaderApi.GetController<IController>());
-        }
+    [Fact]
+    public void AutoDisposeController()
+    {
+        _loader.UnloadMod(_testData.TestModConfigA.ModId);
+        Assert.Null(_loader.Manager.LoaderApi.GetController<IController>());
+    }
 
-        [Fact]
-        public void AutoDisposeController()
-        {
-            _loader.UnloadMod(_testData.TestModConfigA.ModId);
-            Assert.Null(_loader.Manager.LoaderApi.GetController<IController>());
-        }
+    [Fact]
+    public void UsePlugin()
+    {
+        var testModB = (ITestModB)_loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId).Mod;
+        int random = _random.Next(0, int.MaxValue / 2);
 
-        [Fact]
-        public void UsePlugin()
-        {
-            var testModB = (ITestModB)_loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId).Mod;
-            int random = _random.Next(0, int.MaxValue / 2);
+        int expected = random * 2;
+        int actual = testModB.UsePluginFromTestModA(random);
+        Assert.Equal(expected, actual);
+    }
 
-            int expected = random * 2;
-            int actual = testModB.UsePluginFromTestModA(random);
-            Assert.Equal(expected, actual);
-        }
+    [Fact]
+    public void AutoDisposePlugin()
+    {
+        // Get Mod B
+        var testModB = (ITestModB)_loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId).Mod;
 
-        [Fact]
-        public void AutoDisposePlugin()
-        {
-            // Get Mod B
-            var testModB = (ITestModB)_loader.Manager.GetLoadedMods().First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId).Mod;
+        // Unload Mod A
+        _loader.UnloadMod(_testData.TestModConfigA.ModId);
 
-            // Unload Mod A
-            _loader.UnloadMod(_testData.TestModConfigA.ModId);
-
-            // Weak reference in TestModB (Plugin from TestModA) should be invalid now.
-            Assert.Throws<NullReferenceException>(() => testModB.UsePluginFromTestModA(0));
-        }
+        // Weak reference in TestModB (Plugin from TestModA) should be invalid now.
+        Assert.Throws<NullReferenceException>(() => testModB.UsePluginFromTestModA(0));
     }
 }
