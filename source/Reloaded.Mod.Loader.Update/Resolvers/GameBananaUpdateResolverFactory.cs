@@ -29,14 +29,14 @@ public class GameBananaUpdateResolverFactory : IResolverFactory
     }
 
     /// <inheritdoc/>
-    public IPackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
+    public IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
     {
         if (!this.TryGetConfiguration<GameBananaConfig>(mod, out var gbConfig))
             return null;
 
         return new GameBananaUpdateResolver(new GameBananaResolverConfiguration()
         {
-            ItemId = (int) gbConfig.ItemId,
+            ItemId = (int) gbConfig!.ItemId,
             ModType = gbConfig.ItemType
         }, data.CommonPackageResolverSettings);
     }
@@ -64,7 +64,7 @@ public class GameBananaUpdateResolverFactory : IResolverFactory
 
     private static string GetModDirectory(PathTuple<ModConfig> mod)
     {
-        return Path.GetDirectoryName(mod.Path);
+        return Path.GetDirectoryName(mod.Path)!;
     }
 
     /// <summary>

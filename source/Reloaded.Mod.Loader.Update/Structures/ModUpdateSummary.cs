@@ -15,7 +15,7 @@ public class ModUpdateSummary
     /// List of all pairs of resolvers, managers and update check results.
     /// </summary>
     public List<ManagerModResultPair> ManagerModResultPairs { get; private set; }
-    private List<ModUpdate> _updates;
+    private List<ModUpdate> _updates = null!;
 
     /* Create summary. */
 
@@ -49,9 +49,9 @@ public class ModUpdateSummary
             var oldVersion = resultPairs.ModTuple.Config.ModVersion;
             var newVersion = resultPairs.Result.LastVersion;
             var resolver   = ((IPackageResolverDownloadSize)resultPairs.Manager.Resolver);
-            var updateSize = Task.Run(() => resolver.GetDownloadFileSizeAsync(resultPairs.Result.LastVersion, resultPairs.ModTuple.GetVerificationInfo())).Result;
+            var updateSize = Task.Run(async () => await resolver.GetDownloadFileSizeAsync(newVersion!, resultPairs.ModTuple.GetVerificationInfo())).Result;
 
-            _updates.Add(new ModUpdate(modId, NuGetVersion.Parse(oldVersion), newVersion, updateSize));
+            _updates.Add(new ModUpdate(modId, NuGetVersion.Parse(oldVersion), newVersion!, updateSize));
         }
 
         return _updates.ToArray();

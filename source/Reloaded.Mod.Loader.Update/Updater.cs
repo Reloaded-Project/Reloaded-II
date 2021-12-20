@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NuGet.Versioning;
-using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.Update;
 using Sewer56.Update.Extractors.SevenZipSharp;
@@ -23,7 +21,7 @@ public class Updater
 {
     private ModConfigService _modConfigService;
     private ModUserConfigService _modUserConfigService;
-    private List<ManagerModResultPair> _resolversWithUpdates;
+    private List<ManagerModResultPair>? _resolversWithUpdates;
     private UpdaterData _data;
 
     /* Instantiation */

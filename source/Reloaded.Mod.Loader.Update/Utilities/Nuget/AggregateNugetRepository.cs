@@ -86,43 +86,26 @@ public class AggregateNugetRepository
     }
 
     /// <summary>
-    /// Retrieves the source and list of versions for the source with the highest version of the package.
-    /// </summary>
-    /// <param name="includeUnlisted">Include unlisted packages.</param>
-    /// <param name="packageId">The unique ID of the package.</param>
-    /// <param name="includePrerelease">Include pre-release packages.</param>
-    /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-    /// <returns>Source with the latest version of the package and list of versions.</returns>
-    public async Task<NugetTuple<IPackageSearchMetadata>> GetLatestPackageDetails(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
-    {
-        var allPackageDetails = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
-        return GetNewestPackage(allPackageDetails);
-    }
-
-    /// <summary>
     /// Retrieves the details of an individual package from the source with the latest version of the package.
     /// </summary>
     /// <param name="values">List of tuples of all sources and their packages where packages are ordered oldest to newest.</param>
     /// <returns>Source with the latest version of the package and list of versions.</returns>
-    public NugetTuple<IPackageSearchMetadata> GetNewestPackage(List<NugetTuple<IEnumerable<IPackageSearchMetadata>>> values)
+    public NugetTuple<IPackageSearchMetadata>? GetNewestPackage(List<NugetTuple<IEnumerable<IPackageSearchMetadata>>> values)
     {
-        NugetTuple<IPackageSearchMetadata> newestTuple = null;
+        NugetTuple<IPackageSearchMetadata>? newestTuple = null;
 
         foreach (var value in values)
         {
-            if (value.Repository == null || value.Generic == null)
-                continue;
-
             // Has Versions
             var lastVersionMetadata = Nuget.GetNewestVersion(value.Generic);
             if (lastVersionMetadata == null)
                 continue;
 
             var version = lastVersionMetadata.Identity.Version;
-            if (newestTuple != null && version <= newestTuple.Generic.Identity.Version) 
+            if (newestTuple != null && version <= newestTuple.Generic!.Identity.Version) 
                 continue;
 
-            newestTuple   = new NugetTuple<IPackageSearchMetadata>(value.Repository, lastVersionMetadata);
+            newestTuple = new NugetTuple<IPackageSearchMetadata>(value.Repository, lastVersionMetadata);
         }
 
         return newestTuple;
@@ -138,7 +121,11 @@ public class AggregateNugetRepository
     public async Task<AggregateFindDependenciesResult> FindDependencies(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
     {
         var packages = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
-        return await FindDependencies(GetNewestPackage(packages).Generic, includePrerelease, includeUnlisted, token);
+        var newest = GetNewestPackage(packages);
+        if (newest == null)
+            return new AggregateFindDependenciesResult(new HashSet<NugetTuple<IPackageSearchMetadata>>(), new HashSet<string>() { packageId });
+        
+        return await FindDependencies(newest!.Generic, includePrerelease, includeUnlisted, token);
     }
 
     /// <summary>
@@ -176,14 +163,14 @@ public class AggregateNugetRepository
             foreach (var package in dependencySet.Packages)
             {
                 var metadata = (await GetPackageDetails(package.Id, includePrerelease, includeUnlisted, token));
-                if (metadata.Any(x => x.Generic.Any()))
+                if (metadata.Any(x => x.Generic!.Any()))
                 {
                     var latest = GetNewestPackage(metadata);
-                    if (dependenciesAccumulator.Contains(latest))
+                    if (dependenciesAccumulator.Contains(latest!))
                         continue;
 
-                    dependenciesAccumulator.Add(latest);
-                    await FindDependenciesRecursiveAsync(latest.Generic, includePrerelease, includeUnlisted, dependenciesAccumulator, packagesNotFoundAccumulator, token);
+                    dependenciesAccumulator.Add(latest!);
+                    await FindDependenciesRecursiveAsync(latest!.Generic!, includePrerelease, includeUnlisted, dependenciesAccumulator, packagesNotFoundAccumulator, token);
                 }
                 else
                 {

@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,5 +12,5 @@ public interface IDownloadablePackageProvider
     /// <summary>
     /// Searches for packages matching a given term.
     /// </summary>
-    public Task<ObservableCollection<IDownloadablePackage>> SearchAsync(string text, CancellationToken token = default);
+    public Task<List<IDownloadablePackage>> SearchAsync(string text, CancellationToken token = default);
 }

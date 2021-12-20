@@ -11,12 +11,12 @@ public struct AggregateFindDependenciesResult
     /// <summary>
     /// All found dependencies for the current package.
     /// </summary>
-    public HashSet<NugetTuple<IPackageSearchMetadata>> Dependencies { get; private set; }
+    public HashSet<NugetTuple<IPackageSearchMetadata>> Dependencies { get; }
 
     /// <summary>
     /// Mod IDs of packages not found.
     /// </summary>
-    public HashSet<string> PackagesNotFound { get; private set; }
+    public HashSet<string> PackagesNotFound { get; }
 
     /// <summary/>
     public AggregateFindDependenciesResult(HashSet<NugetTuple<IPackageSearchMetadata>> dependencies, HashSet<string> packagesNotFound)

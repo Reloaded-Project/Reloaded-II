@@ -22,17 +22,17 @@ public class NugetRepository : INugetRepository
     public string SourceUrl { get; private set; }
 
     /// <inheritdoc />
-    public string FriendlyName { get; set; }
+    public string FriendlyName { get; set; } = null!;
 
     private static NullLogger _nullLogger = new NullLogger();
     private static SourceCacheContext _sourceCacheContext = new SourceCacheContext();
 
-    private PackageSource       _packageSource;
-    private SourceRepository    _sourceRepository;
+    private PackageSource       _packageSource = null!;
+    private SourceRepository    _sourceRepository = null!;
 
-    private AsyncLazy<DownloadResource>        _downloadResource;
-    private AsyncLazy<PackageMetadataResource> _packageMetadataResource;
-    private AsyncLazy<PackageSearchResource>   _packageSearchResource;
+    private AsyncLazy<DownloadResource>        _downloadResource = null!;
+    private AsyncLazy<PackageMetadataResource> _packageMetadataResource = null!;
+    private AsyncLazy<PackageSearchResource>   _packageSearchResource = null!;
 
     private NugetRepository(string sourceUrl) => SourceUrl = sourceUrl;
 
@@ -105,7 +105,7 @@ public class NugetRepository : INugetRepository
             var metadataResource = await _packageMetadataResource;
             return await metadataResource.GetMetadataAsync(packageId, includePrerelease, includeUnlisted, _sourceCacheContext, _nullLogger, token);
         }
-        catch (Exception) { return new IPackageSearchMetadata[0]; }
+        catch (Exception) { return Array.Empty<IPackageSearchMetadata>(); }
     }
 
     /// <inheritdoc />
@@ -123,10 +123,12 @@ public class NugetRepository : INugetRepository
     }
 
     /// <inheritdoc />
-    public async Task<FindDependenciesResult> FindDependencies(IPackageSearchMetadata packageSearchMetadata, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
+    public async Task<FindDependenciesResult> FindDependencies(IPackageSearchMetadata? packageSearchMetadata, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
     {
         var result = new FindDependenciesResult(new HashSet<IPackageSearchMetadata>(), new HashSet<string>());
-            
+        if (packageSearchMetadata == null)
+            return result;
+
         try
         {
             await FindDependenciesRecursiveAsync(packageSearchMetadata, includePrerelease, includeUnlisted, result.Dependencies, result.PackagesNotFound, token);
@@ -161,7 +163,7 @@ public class NugetRepository : INugetRepository
                 var metadata = (await GetPackageDetails(package.Id, includePrerelease, includeUnlisted, token)).ToArray();
                 if (metadata.Any())
                 {
-                    var lastVersion = Nuget.GetNewestVersion(metadata);
+                    var lastVersion = Nuget.GetNewestVersion(metadata)!;
                     if (dependenciesAccumulator.Contains(lastVersion))
                         continue;
 

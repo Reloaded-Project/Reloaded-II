@@ -4,10 +4,12 @@
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>preview</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="DeepCloner" Version="0.10.3" />
+    <PackageReference Include="Markdig" Version="0.18.0" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.0" />
     <PackageReference Include="NuGet.Packaging" Version="5.7.0" />
     <PackageReference Include="NuGet.Packaging.Core" Version="5.7.0" />

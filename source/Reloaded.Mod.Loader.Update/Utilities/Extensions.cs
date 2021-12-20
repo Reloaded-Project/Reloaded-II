@@ -18,7 +18,7 @@ public static class Extensions
     {
         return new ReleaseMetadataVerificationInfo()
         {
-            FolderPath = Path.GetDirectoryName(modConfig.Path)
+            FolderPath = Path.GetDirectoryName(modConfig.Path)!
         };
     }
 }

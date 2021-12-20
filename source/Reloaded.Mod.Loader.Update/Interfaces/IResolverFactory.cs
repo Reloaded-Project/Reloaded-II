@@ -34,8 +34,8 @@ public interface IResolverFactory
     /// <param name="mod">The mod to check.</param>
     /// <param name="data">Various configurations and general data provided to all the updaters.</param>
     /// <param name="userConfig">User specific configuration for the given mod.</param>
-    /// <returns>A valid resolver if the mod can update through it, else false.</returns>
-    IPackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data);
+    /// <returns>A valid resolver if the mod can update through it, else null.</returns>
+    IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data);
 
     /// <summary>
     /// Gets the configuration for the resolver, or a default if one is not assigned.
@@ -60,7 +60,7 @@ public static class ResolverFactoryExtensions
     /// <param name="mod">The mod config to get configuration from.</param>
     /// <param name="configuration">The returned configuration.</param>
     /// <returns>Whether the configuration was found or not.</returns>
-    public static bool TryGetConfiguration<T>(this IResolverFactory factory, PathTuple<ModConfig> mod, out T configuration)
+    public static bool TryGetConfiguration<T>(this IResolverFactory factory, PathTuple<ModConfig> mod, out T? configuration)
     {
         return mod.Config.PluginData.TryGetValue<T>(factory.ResolverId, out configuration);
     }

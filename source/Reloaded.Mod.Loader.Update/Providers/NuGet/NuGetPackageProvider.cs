@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Reloaded.Mod.Loader.Update.Interfaces;
@@ -20,10 +20,10 @@ public class NuGetPackageProvider : IDownloadablePackageProvider
     }
 
     /// <inheritdoc />
-    public async Task<ObservableCollection<IDownloadablePackage>> SearchAsync(string text, CancellationToken token = default)
+    public async Task<List<IDownloadablePackage>> SearchAsync(string text, CancellationToken token = default)
     {
         var searchTuples = await _repository.Search(text, false, 50, token);
-        var result = new ObservableCollection<IDownloadablePackage>();
+        var result = new List<IDownloadablePackage>();
 
         foreach (var tuple in searchTuples)
         {

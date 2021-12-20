@@ -55,9 +55,9 @@ public class Nuget
     /// Retrieves the newest version of a given package.
     /// </summary>
     /// <param name="metadata">List of all package metadata.</param>
-    public static IPackageSearchMetadata GetNewestVersion(IEnumerable<IPackageSearchMetadata> metadata)
+    public static IPackageSearchMetadata? GetNewestVersion(IEnumerable<IPackageSearchMetadata> metadata)
     {
-        IPackageSearchMetadata highest = null;
+        IPackageSearchMetadata? highest = null;
 
         foreach (var meta in metadata)
         {
@@ -73,7 +73,7 @@ public class Nuget
         // Create directory if doesn't exist.
         var directory = Path.GetDirectoryName(targetPath);
         if (! Directory.Exists(directory))
-            Directory.CreateDirectory(directory);
+            Directory.CreateDirectory(directory!);
 
         // Decompress.
         using var targetStream = File.OpenWrite(targetPath);

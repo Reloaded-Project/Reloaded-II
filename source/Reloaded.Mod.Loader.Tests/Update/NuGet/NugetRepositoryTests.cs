@@ -7,9 +7,9 @@ namespace Reloaded.Mod.Loader.Tests.Update.NuGet;
 public class NugetRepositoryTests
 {
     public const string TestNugetFeed              = "http://packages.sewer56.moe:5000/v3/index.json";
-    private const string TestPackageName            = "sonicheroes.skins.midnighthill";
-    private const string DependencyId               = "reloaded.universal.redirector";
-    private const string TransitiveDependencyId     = "reloaded.sharedlib.hooks";
+    public const string TestPackageName            = "sonicheroes.skins.midnighthill";
+    public const string DependencyId               = "reloaded.universal.redirector";
+    public const string TransitiveDependencyId     = "reloaded.sharedlib.hooks";
 
     private NugetRepository _nugetRepository;
 

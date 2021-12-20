@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.IO;
-using Reloaded.Mod.Interfaces.Utilities;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
@@ -30,14 +29,14 @@ public class GitHubReleasesResolverFactory : IResolverFactory
     }
 
     /// <inheritdoc/>
-    public IPackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
+    public IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
     {
         if (!this.TryGetConfiguration<GitHubConfig>(mod, out var githubConfig))
             return null;
 
         return new GitHubReleaseResolver(new GitHubResolverConfiguration()
         {
-            RepositoryName = githubConfig.RepositoryName,
+            RepositoryName = githubConfig!.RepositoryName,
             UserName = githubConfig.UserName,
             LegacyFallbackPattern = githubConfig.AssetFileName
         }, data.CommonPackageResolverSettings);
@@ -79,7 +78,7 @@ public class GitHubReleasesResolverFactory : IResolverFactory
 
     private static string GetModDirectory(PathTuple<ModConfig> mod)
     {
-        return Path.GetDirectoryName(mod.Path);
+        return Path.GetDirectoryName(mod.Path)!;
     }
 
     /// <summary>
@@ -105,7 +104,7 @@ public class GitHubReleasesResolverFactory : IResolverFactory
         [Category(DefaultCategory)]
         [Description("The user name associated with the repository to fetch files from.\n" +
                      "e.g. TGEnigma for https://github.com/TGEnigma/p4gpc.modloader")]
-        public string UserName       { get; set; }
+        public string UserName       { get; set; } = "";
 
         /// <summary>
         /// The name of the repository to fetch files from.
@@ -113,7 +112,7 @@ public class GitHubReleasesResolverFactory : IResolverFactory
         [Category(DefaultCategory)]
         [Description("The name of the repository to fetch files from.\n" +
                      "e.g. p4gpc.modloader for https://github.com/TGEnigma/p4gpc.modloader")]
-        public string RepositoryName { get; set; }
+        public string RepositoryName { get; set; } = "";
 
         /// <summary>
         /// [Legacy] Fallback file name pattern if no metadata file is found.

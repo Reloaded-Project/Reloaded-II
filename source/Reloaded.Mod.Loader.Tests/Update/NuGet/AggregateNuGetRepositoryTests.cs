@@ -17,16 +17,16 @@ namespace Reloaded.Mod.Loader.Tests.Update.NuGet;
 public class AggregateNuGetRepositoryTests
 {
     // Dependency in another source (Redirector) & Hooks. (Hooks is Transitive from Redirector) 
-    private static readonly PackageIdentity Skin = new("sonicheroes.skins.midnighthill", NuGetVersion.Parse("1.0.0"));
+    public static readonly PackageIdentity Skin = new("sonicheroes.skins.midnighthill", NuGetVersion.Parse("1.0.0"));
 
     // Dependency in same source (Hooks)
-    private static readonly PackageIdentity Redirector = new("reloaded.universal.redirector", NuGetVersion.Parse("2.0.0"));
+    public static readonly PackageIdentity Redirector = new("reloaded.universal.redirector", NuGetVersion.Parse("2.0.0"));
 
     // Missing Dependency + In Another Source (Hooks)
-    private static readonly PackageIdentity Missing = new("riders.tweakbox", NuGetVersion.Parse("4.0.0"));
+    public static readonly PackageIdentity Missing = new("riders.tweakbox", NuGetVersion.Parse("4.0.0"));
 
     // No Dependencies
-    private static readonly PackageIdentity Hooks = new("reloaded.sharedlib.hooks", NuGetVersion.Parse("1.3.0"));
+    public static readonly PackageIdentity Hooks = new("reloaded.sharedlib.hooks", NuGetVersion.Parse("1.3.0"));
 
     private const string MissingDependencyName = "fake.mod";
 

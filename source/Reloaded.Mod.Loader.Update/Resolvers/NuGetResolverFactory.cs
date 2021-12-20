@@ -12,7 +12,6 @@ using Sewer56.Update.Misc;
 using Sewer56.Update.Resolvers;
 using Sewer56.Update.Resolvers.NuGet;
 using Sewer56.Update.Resolvers.NuGet.Utilities;
-using Sewer56.Update.Structures;
 
 namespace Reloaded.Mod.Loader.Update.Resolvers;
 
@@ -31,7 +30,7 @@ public class NuGetResolverFactory : IResolverFactory
     public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig)
     {
         var modDirectory   = Path.GetDirectoryName(mod.Path);
-        var nuspecFilePath = Path.Combine(modDirectory, $"{IOEx.ForceValidFilePath(mod.Config.ModId)}.nuspec");
+        var nuspecFilePath = Path.Combine(modDirectory!, $"{IOEx.ForceValidFilePath(mod.Config.ModId)}.nuspec");
         if (File.Exists(nuspecFilePath))
         {
             this.SetConfiguration(mod, new NuGetConfig()
@@ -46,7 +45,7 @@ public class NuGetResolverFactory : IResolverFactory
     }
 
     /// <inheritdoc/>
-    public IPackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
+    public IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
     {
         var resolvers = new List<IPackageResolver>();
         var urls = new HashSet<string>();
@@ -54,7 +53,7 @@ public class NuGetResolverFactory : IResolverFactory
         // Get all URLs
         if (this.TryGetConfiguration<NuGetConfig>(mod, out var nugetConfig))
         {
-            foreach (var url in nugetConfig.DefaultRepositoryUrls)
+            foreach (var url in nugetConfig!.DefaultRepositoryUrls)
                 urls.Add(url);
         }
 
@@ -100,7 +99,7 @@ public class NuGetResolverFactory : IResolverFactory
         [DisplayName("Update from Any Repository")]
         [Category(DefaultCategory)]
         [Description("Allows for this mod to be updated from any NuGet repository.")]
-        public bool AllowUpdateFromAnyRepository { get; set; } = false;
+        public bool AllowUpdateFromAnyRepository { get; set; }
 
         /// <summary/>
         [Category(DefaultCategory)]
