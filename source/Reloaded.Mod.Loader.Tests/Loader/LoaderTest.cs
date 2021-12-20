@@ -11,18 +11,18 @@ namespace Reloaded.Mod.Loader.Tests.Loader;
 public class LoaderTest : IDisposable
 {
     private Mod.Loader.Loader _loader;
-    private TestData _testData;
+    private TestEnvironmoent _testEnvironmoent;
 
     public LoaderTest()
     {
-        _testData = new TestData();
-        _loader = new Mod.Loader.Loader(true);
+        _testEnvironmoent = new TestEnvironmoent();
+        _loader   = new Mod.Loader.Loader(true);
         _loader.LoadForCurrentProcess();
     }
 
     public void Dispose()
     {
-        _testData?.Dispose();
+        _testEnvironmoent?.Dispose();
         _loader?.Dispose();
     }
 
@@ -41,8 +41,8 @@ public class LoaderTest : IDisposable
                 if (sayHello == null)
                     Assert.True(false, "Failed to cast Test Mod.");
 
-                bool isKnownConfig = sayHello.MyId == _testData.TestModConfigA.ModId ||
-                                     sayHello.MyId == _testData.TestModConfigB.ModId;
+                bool isKnownConfig = sayHello.MyId == _testEnvironmoent.TestModConfigA.ModId ||
+                                     sayHello.MyId == _testEnvironmoent.TestModConfigB.ModId;
 
                 // TestMod C is unloaded, do not check for it.
                 Assert.True(isKnownConfig);
@@ -55,8 +55,8 @@ public class LoaderTest : IDisposable
     {
         // A & B can suspend/unload.
         var loadedMods = _loader.Manager.GetLoadedMods();
-        var modConfigA = loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigA.ModId);
-        var modConfigB = loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId);
+        var modConfigA = loadedMods.First(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigA.ModId);
+        var modConfigB = loadedMods.First(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigB.ModId);
 
         Assert.True(modConfigA.CanSuspend);
         Assert.True(modConfigB.CanSuspend);
@@ -64,7 +64,7 @@ public class LoaderTest : IDisposable
         Assert.True(modConfigB.CanUnload);
 
         // D cannot.
-        var modConfigD = loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigD.ModId);
+        var modConfigD = loadedMods.First(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigD.ModId);
         Assert.False(modConfigD.CanSuspend);
         Assert.True(modConfigD.CanUnload);
     }
@@ -82,8 +82,8 @@ public class LoaderTest : IDisposable
     {
         var loadedMods = _loader.Manager.GetLoadedMods();
 
-        var testModA = (ITestHelper) loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigA.ModId).Mod;
-        var testModB = (ITestHelper) loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigB.ModId).Mod;
+        var testModA = (ITestHelper) loadedMods.First(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigA.ModId).Mod;
+        var testModB = (ITestHelper) loadedMods.First(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigB.ModId).Mod;
 
         Assert.True(testModB.LoadTime > testModA.LoadTime);
     }
@@ -91,11 +91,11 @@ public class LoaderTest : IDisposable
     [Fact]
     public void LoadNewMod()
     {
-        _loader.LoadMod(_testData.TestModConfigC.ModId);
+        _loader.LoadMod(_testEnvironmoent.TestModConfigC.ModId);
         var loadedMods = _loader.Manager.GetLoadedMods();
 
         // Should be loaded last.
-        var testModC = loadedMods.FirstOrDefault(x => x.ModConfig.ModId == _testData.TestModConfigC.ModId);
+        var testModC = loadedMods.FirstOrDefault(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigC.ModId);
         Assert.NotNull(testModC);
             
         // Check state consistency
@@ -106,18 +106,17 @@ public class LoaderTest : IDisposable
     public void LoadNewModWithDependencies()
     {
         // TestModE depends on TestModC
-        _loader.LoadMod(_testData.TestModConfigE.ModId);
+        _loader.LoadMod(_testEnvironmoent.TestModConfigE.ModId);
         var loadedMods = _loader.Manager.GetLoadedMods();
 
         // Check that both Mod E and Mod C loaded.
-        Assert.True(_loader.Manager.IsModLoaded(_testData.TestModConfigC.ModId));
-        Assert.True(_loader.Manager.IsModLoaded(_testData.TestModConfigE.ModId));
+        Assert.True(_loader.Manager.IsModLoaded(_testEnvironmoent.TestModConfigC.ModId));
+        Assert.True(_loader.Manager.IsModLoaded(_testEnvironmoent.TestModConfigE.ModId));
 
         // Check state consistency
-        Assert.Equal(ModState.Running, loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigE.ModId).State);
-        Assert.Equal(ModState.Running, loadedMods.First(x => x.ModConfig.ModId == _testData.TestModConfigC.ModId).State);
+        Assert.Equal(ModState.Running, loadedMods.First(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigE.ModId).State);
+        Assert.Equal(ModState.Running, loadedMods.First(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigC.ModId).State);
     }
-
 
     [Fact]
     public void UnloadModWithDependencies()
@@ -125,11 +124,11 @@ public class LoaderTest : IDisposable
         // Now load and unload TestModE
         // TestModE depends on TestModC
         // TestModC should stay loaded.
-        _loader.LoadMod(_testData.TestModConfigE.ModId);
-        _loader.UnloadMod(_testData.TestModConfigE.ModId);
+        _loader.LoadMod(_testEnvironmoent.TestModConfigE.ModId);
+        _loader.UnloadMod(_testEnvironmoent.TestModConfigE.ModId);
 
         // Test Mod C should still be loaded.
-        Assert.True(_loader.Manager.IsModLoaded(_testData.TestModConfigC.ModId));
+        Assert.True(_loader.Manager.IsModLoaded(_testEnvironmoent.TestModConfigC.ModId));
     }
 
     [Fact]
@@ -180,6 +179,6 @@ public class LoaderTest : IDisposable
     [Fact]
     public void LoadDuplicate()
     {
-        Assert.Throws<ReloadedException>(() => _loader.LoadMod(_testData.TestModConfigB.ModId));
+        Assert.Throws<ReloadedException>(() => _loader.LoadMod(_testEnvironmoent.TestModConfigB.ModId));
     }
 }

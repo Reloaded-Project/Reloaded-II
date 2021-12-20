@@ -9,40 +9,40 @@ namespace Reloaded.Mod.Loader.Tests.IO.Config;
 public class ModConfigTest : IDisposable
 {
     /* Setup Loader Config */
-    public TestData TestData { get; set; } = new TestData();
+    public TestEnvironmoent TestEnvironmoent { get; set; } = new TestEnvironmoent();
 
-    public void Dispose() => TestData?.Dispose();
+    public void Dispose() => TestEnvironmoent?.Dispose();
 
     [Fact]
     public void GetNestedMissingDependencies()
     {
-        var dependencies = ModConfig.GetDependencies(TestData.TestModConfigC);
+        var dependencies = ModConfig.GetDependencies(TestEnvironmoent.TestModConfigC);
 
-        foreach (var missingDependency in TestData.NonexistingDependencies)
+        foreach (var missingDependency in TestEnvironmoent.NonexistingDependencies)
             Assert.Contains(missingDependency, dependencies.MissingConfigurations);
     }
 
     [Fact]
     public void GetNestedDependencies()
     {
-        var dependencies = ModConfig.GetDependencies(TestData.TestModConfigC);
+        var dependencies = ModConfig.GetDependencies(TestEnvironmoent.TestModConfigC);
 
-        Assert.Contains(TestData.TestModConfigA, dependencies.Configurations);
-        Assert.Contains(TestData.TestModConfigB, dependencies.Configurations);
+        Assert.Contains(TestEnvironmoent.TestModConfigA, dependencies.Configurations);
+        Assert.Contains(TestEnvironmoent.TestModConfigB, dependencies.Configurations);
     }
 
     [Fact]
     public void SortMods()
     {
-        var dependencies  = ModConfig.GetDependencies(TestData.TestModConfigC);
+        var dependencies  = ModConfig.GetDependencies(TestEnvironmoent.TestModConfigC);
         var allMods       = new List<ModConfig>();
 
-        allMods.Add(TestData.TestModConfigC);
+        allMods.Add(TestEnvironmoent.TestModConfigC);
         allMods.AddRange(dependencies.Configurations);
         allMods = ModConfig.SortMods(allMods);
 
-        Assert.Equal(TestData.TestModConfigA, allMods[0]);
-        Assert.Equal(TestData.TestModConfigB, allMods[1]);
-        Assert.Equal(TestData.TestModConfigC, allMods[2]);
+        Assert.Equal(TestEnvironmoent.TestModConfigA, allMods[0]);
+        Assert.Equal(TestEnvironmoent.TestModConfigB, allMods[1]);
+        Assert.Equal(TestEnvironmoent.TestModConfigC, allMods[2]);
     }
 }

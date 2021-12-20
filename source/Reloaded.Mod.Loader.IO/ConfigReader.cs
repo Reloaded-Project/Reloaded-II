@@ -49,22 +49,6 @@ public static class ConfigReader<TConfigType> where TConfigType : IConfig<TConfi
     /* Excluding because path and WriteConfiguration are tested. */
 
     /// <summary>
-    /// Writes all file path and configurations tuples returned from <see cref="ReadConfigurations"/> back to disk.
-    /// </summary>
-    /// <param name="configurations">List of file path and config class tuples to write to disk.</param>
-    /// <param name="token">Cancels the task if necessary.</param>
-    public static void WriteConfigurations(PathTuple<TConfigType>[] configurations, CancellationToken token = default)
-    {
-        foreach (var configuration in configurations)
-        {
-            if (!token.IsCancellationRequested)
-                return;
-
-            WriteConfiguration(configuration.Path, configuration.Config);
-        }
-    }
-
-    /// <summary>
     /// Loads a given mod configurations from an absolute file path.
     /// </summary>
     /// <param name="path">The absolute file path of the config file.</param>

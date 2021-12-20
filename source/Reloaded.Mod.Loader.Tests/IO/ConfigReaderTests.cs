@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.IO;
 
-public class ConfigLoaderTest : IDisposable
+public class ConfigReaderTests : IDisposable
 {
     /* Name of the test configuration file and the default test configuration. */
     private const string ModConfigFileName = ModConfig.ConfigFileName;
@@ -17,7 +17,7 @@ public class ConfigLoaderTest : IDisposable
     private ApplicationConfig _testAppConfig;
 
     /* Before Tests */
-    public ConfigLoaderTest()
+    public ConfigReaderTests()
     {
         Dispose();
 
@@ -36,7 +36,7 @@ public class ConfigLoaderTest : IDisposable
     }
 
     [Fact]
-    public void ReadWriteDirectory()
+    public void WriteFile_ReadWithMaxDepth()
     {
         string MakeDirectory(string directory)
         {
@@ -90,7 +90,7 @@ public class ConfigLoaderTest : IDisposable
     /// Simple test that checks JSON Serialization/Deserialization.
     /// </summary>
     [Fact]
-    public void ReadWriteFile()
+    public void WriteFile_ReadWithAnyDepth()
     {
         /* Write first. */
         ConfigReader<ModConfig>.WriteConfiguration(ModConfigFileName, _testModConfig);

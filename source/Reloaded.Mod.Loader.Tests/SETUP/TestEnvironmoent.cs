@@ -9,7 +9,7 @@ using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader.Tests.SETUP;
 
-public class TestData : IDisposable
+public class TestEnvironmoent : IDisposable
 {
     /// <summary>
     /// Represents the ID of the executing test application.
@@ -55,7 +55,7 @@ public class TestData : IDisposable
     public ModConfig        TestModConfigE => ModConfigurations.First(x => x.ModId == "TestModE"); // This config is a no DLL mod.
     public ApplicationConfig ThisApplication;
 
-    public TestData()
+    public TestEnvironmoent()
     {
         // Backup config and override on filesystem with new.
         OriginalConfig = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath);

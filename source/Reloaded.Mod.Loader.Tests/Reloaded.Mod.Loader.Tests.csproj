@@ -5,13 +5,6 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IsPackable>false</IsPackable>
     <LangVersion>preview</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\Output\Tests\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\Output\Tests\</OutputPath>
   </PropertyGroup>
 
@@ -22,8 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="HeroesControllerPostProcess.zip" />
-    <None Remove="HeroesControllerPostProcessBad.zip" />
     <None Remove="xunit.runner.json" />
   </ItemGroup>
 
@@ -32,6 +23,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="HeroesControllerPostProcessBad.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HeroesControllerPostProcessOld.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="xunit.runner.json">

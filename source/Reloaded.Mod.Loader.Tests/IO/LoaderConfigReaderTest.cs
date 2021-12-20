@@ -10,11 +10,11 @@ namespace Reloaded.Mod.Loader.Tests.IO;
 public class LoaderConfigReaderTest : IDisposable
 {
     /* Initialize/Dispose to protect existing config. */
-    private TestData _testData = new TestData();
+    private TestEnvironmoent _testEnvironmoent = new TestEnvironmoent();
 
     public void Dispose()
     {
-        _testData.Dispose();
+        _testEnvironmoent.Dispose();
     }
 
     /* Simple Read/Write and Serialization Test */
@@ -22,7 +22,7 @@ public class LoaderConfigReaderTest : IDisposable
     public void ReadWriteConfig()
     {
         // Make new config first and backup old.
-        var config = TestData.MakeTestConfig();
+        var config = TestEnvironmoent.MakeTestConfig();
 
         // Write and read back the config.
         IConfig<LoaderConfig>.ToPath(config, Paths.LoaderConfigPath);
