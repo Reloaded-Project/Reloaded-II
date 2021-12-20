@@ -12,5 +12,5 @@ public interface IDownloadablePackageProvider
     /// <summary>
     /// Searches for packages matching a given term.
     /// </summary>
-    public Task<ObservableCollection<IDownloadablePackage>> SearchAsync(string text, CancellationToken token);
+    public Task<ObservableCollection<IDownloadablePackage>> SearchAsync(string text, CancellationToken token = default);
 }

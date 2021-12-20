@@ -20,7 +20,7 @@ public class NuGetPackageProvider : IDownloadablePackageProvider
     }
 
     /// <inheritdoc />
-    public async Task<ObservableCollection<IDownloadablePackage>> SearchAsync(string text, CancellationToken token)
+    public async Task<ObservableCollection<IDownloadablePackage>> SearchAsync(string text, CancellationToken token = default)
     {
         var searchTuples = await _repository.Search(text, false, 50, token);
         var result = new ObservableCollection<IDownloadablePackage>();

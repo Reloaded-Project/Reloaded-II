@@ -9,9 +9,12 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
+using Sewer56.DeltaPatchGenerator.Lib.Utility;
+using Sewer56.Update.Misc;
 using Sewer56.Update.Packaging.Structures;
 using Sewer56.Update.Resolvers.NuGet;
 using Sewer56.Update.Structures;
+using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
 
 namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 
@@ -20,6 +23,8 @@ namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 /// </summary>
 public class NuGetDownloadablePackage : IDownloadablePackage
 {
+    private static NuGetPackageExtractor _extractor = new();
+
     /// <inheritdoc />
     public string Id => _package.Identity.Id;
 
@@ -51,12 +56,22 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public async Task<string> DownloadAsync(string packageFolder, IProgress<double>? progress, CancellationToken token = default)
     {
+        using var temporaryDirectory = new TemporaryFolderAllocation();
+        var progressSlicer = new ProgressSlicer(progress);
+        var downloadSlice  = progressSlicer.Slice(0.9);
+        var extractSlice   = progressSlicer.Slice(0.1);
+
         var repository       = new Sewer56.Update.Resolvers.NuGet.Utilities.NugetRepository(_repository.SourceUrl);
         var resolverSettings = new NuGetUpdateResolverSettings(_package.Identity.Id, repository);
         var resolver         = new NuGetUpdateResolver(resolverSettings, new CommonPackageResolverSettings() { });
-        var filePath         = Path.Combine(packageFolder, _package.Identity.Id);
-        await resolver.DownloadPackageAsync(_package.Identity.Version, filePath, new ReleaseMetadataVerificationInfo() { FolderPath = filePath }, progress, token);
-        return filePath;
+        
+        var tempDownloadPath = Path.Combine(temporaryDirectory.FolderPath, IOEx.ForceValidFilePath(_package.Identity.Id));
+        var outputFolder     = Path.Combine(packageFolder, _package.Identity.Id);
+
+        await resolver.DownloadPackageAsync(_package.Identity.Version, tempDownloadPath, new ReleaseMetadataVerificationInfo() { FolderPath = outputFolder }, downloadSlice, token);
+        await _extractor.ExtractPackageAsync(tempDownloadPath, outputFolder, extractSlice, token);
+
+        return outputFolder;
     }
 
     /// <inheritdoc />
