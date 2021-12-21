@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using Environment = Reloaded.Mod.Shared.Environment;
@@ -52,6 +54,11 @@ public class TestEnvironmoent : IDisposable
     /// </summary>
     public LoaderConfig     TestConfig { get; set; }
 
+    /// <summary>
+    /// Service for generating user configs.
+    /// </summary>
+    public ModUserConfigService UserConfigService { get; set; }
+
     /* Known configurations */
     public ApplicationConfig TestAppConfigA => AppConfigurations.First(x => x.AppId == "TestAppA");
 
@@ -94,6 +101,9 @@ public class TestEnvironmoent : IDisposable
             // Populate nonexisting dependencies.
             NonexistingDependencies.Add(TestModB.Program.NonexistingDependencyName);
             NonexistingDependencies.Add(TestModC.Program.NonexistingDependencyName);
+
+            // Create user configs if necessary.
+            UserConfigService = new ModUserConfigService(TestConfig, new ModConfigService(TestConfig));
         }
         catch (Exception)
         {
@@ -114,6 +124,7 @@ public class TestEnvironmoent : IDisposable
         config.ApplicationConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ApplicationConfigDirectory, "Apps");
         config.ModConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ModConfigDirectory, "Mods");
         config.PluginConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.PluginConfigDirectory, "Plugins");
+        config.ModUserConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ModUserConfigDirectory, "UserConfigs");
         config.EnabledPlugins = EmptyArray<string>.Instance;
         return config;
     }

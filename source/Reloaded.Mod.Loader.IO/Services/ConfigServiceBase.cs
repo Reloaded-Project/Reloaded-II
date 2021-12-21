@@ -58,6 +58,7 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
     /// <param name="context">Context to which background events should be synchronized.</param>
     public void Initialize(string configDirectory, string itemFileName, Func<List<PathTuple<TConfigType>>> getAllConfigs, SynchronizationContext context = null)
     {
+        bool executeImmediately = context == null;
         _context = context ?? _context;
 
         ConfigDirectory = configDirectory;
@@ -68,7 +69,7 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
         _createFileWatcher      = Create(ConfigDirectory, OnCreateFile, null, FileSystemWatcherEvents.Created, true, "*.json");
         _deleteFileWatcher      = Create(ConfigDirectory, OnDeleteFile, null, FileSystemWatcherEvents.Deleted);
         _deleteDirectoryWatcher = Create(ConfigDirectory, OnDeleteDirectory, null, FileSystemWatcherEvents.Deleted, false, "*.*");
-        GetItems();
+        GetItems(executeImmediately);
     }
 
     /// <summary>
@@ -83,7 +84,7 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
     /// <summary>
     /// Populates the mod list governed by <see cref="Items"/>.
     /// </summary>
-    private void GetItems(CancellationToken cancellationToken = default)
+    private void GetItems(bool executeImmediately, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -99,10 +100,17 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
                 Items.Add(item);
             }
 
-            _context.Post(() =>
+            if (executeImmediately)
             {
                 Collections.ModifyObservableCollection(Items, itemTuples);
-            });
+            }
+            else
+            {
+                _context.Post(() =>
+                {
+                    Collections.ModifyObservableCollection(Items, itemTuples);
+                });
+            }
         }
         catch (Exception)
         {

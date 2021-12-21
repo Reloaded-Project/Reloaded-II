@@ -238,7 +238,7 @@ public static class Setup
 
         var modConfigService = new ModConfigService(config, synchronizationContext);
         IoC.Kernel.Rebind<ModConfigService>().ToConstant(modConfigService);
-        IoC.Kernel.Rebind<ModUserConfigService>().ToConstant(new ModUserConfigService(config, synchronizationContext, modConfigService));
+        IoC.Kernel.Rebind<ModUserConfigService>().ToConstant(new ModUserConfigService(config, modConfigService, synchronizationContext));
     }
 
     /// <summary>
