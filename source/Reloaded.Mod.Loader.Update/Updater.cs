@@ -47,7 +47,6 @@ public class Updater
         if (_resolversWithUpdates != null) 
             return new ModUpdateSummary(_resolversWithUpdates);
             
-        // TODO: Work from Here!
         var resolverManagerPairs = new List<ManagerModResultPair>();
         var resolverTuples       = GetResolvers();
         var extractor            = new SevenZipSharpExtractor();
