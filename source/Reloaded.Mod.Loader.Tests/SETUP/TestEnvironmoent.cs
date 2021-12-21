@@ -55,7 +55,12 @@ public class TestEnvironmoent : IDisposable
     public LoaderConfig     TestConfig { get; set; }
 
     /// <summary>
-    /// Service for generating user configs.
+    /// Service for reading mod configs.
+    /// </summary>
+    public ModConfigService ModConfigService { get; set; }
+
+    /// <summary>
+    /// Service for reading user configs.
     /// </summary>
     public ModUserConfigService UserConfigService { get; set; }
 
@@ -103,7 +108,8 @@ public class TestEnvironmoent : IDisposable
             NonexistingDependencies.Add(TestModC.Program.NonexistingDependencyName);
 
             // Create user configs if necessary.
-            UserConfigService = new ModUserConfigService(TestConfig, new ModConfigService(TestConfig));
+            ModConfigService = new ModConfigService(TestConfig);
+            UserConfigService = new ModUserConfigService(TestConfig, ModConfigService);
         }
         catch (Exception)
         {

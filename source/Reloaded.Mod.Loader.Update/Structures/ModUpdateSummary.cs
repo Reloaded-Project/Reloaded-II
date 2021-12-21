@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using NuGet.Versioning;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Utilities;
 using Sewer56.Update.Interfaces.Extensions;
 
@@ -15,14 +16,21 @@ public class ModUpdateSummary
     /// List of all pairs of resolvers, managers and update check results.
     /// </summary>
     public List<ManagerModResultPair> ManagerModResultPairs { get; private set; }
-    private List<ModUpdate> _updates = null!;
+
+    /// <summary>
+    /// List of mods which failed to check updates for.
+    /// </summary>
+    public List<ModConfig> FaultedMods { get; private set; }
+
+    private ModUpdate[]? _updates = null!;
 
     /* Create summary. */
 
     /// <summary/>
-    public ModUpdateSummary(List<ManagerModResultPair> managerModResultPairs)
+    public ModUpdateSummary(List<ManagerModResultPair> managerModResultPairs, List<ModConfig> faultedMods)
     {
         ManagerModResultPairs = managerModResultPairs;
+        FaultedMods = faultedMods;
     }
 
     /// <summary>
@@ -40,20 +48,20 @@ public class ModUpdateSummary
     public ModUpdate[] GetUpdateInfo()
     {
         if (_updates != null) 
-            return _updates.ToArray();
+            return _updates;
 
-        _updates = new List<ModUpdate>();
-        foreach (var resultPairs in ManagerModResultPairs)
+        _updates = new ModUpdate[ManagerModResultPairs.Count];
+        for (var x = 0; x < ManagerModResultPairs.Count; x++)
         {
+            var resultPairs = ManagerModResultPairs[x];
             var modId = resultPairs.ModTuple.Config.ModId;
             var oldVersion = resultPairs.ModTuple.Config.ModVersion;
             var newVersion = resultPairs.Result.LastVersion;
-            var resolver   = ((IPackageResolverDownloadSize)resultPairs.Manager.Resolver);
+            var resolver = ((IPackageResolverDownloadSize)resultPairs.Manager.Resolver);
             var updateSize = Task.Run(async () => await resolver.GetDownloadFileSizeAsync(newVersion!, resultPairs.ModTuple.GetVerificationInfo())).Result;
-
-            _updates.Add(new ModUpdate(modId, NuGetVersion.Parse(oldVersion), newVersion!, updateSize));
+            _updates[x] = new ModUpdate(modId, NuGetVersion.Parse(oldVersion), newVersion!, updateSize);
         }
 
-        return _updates.ToArray();
+        return _updates;
     }
 }

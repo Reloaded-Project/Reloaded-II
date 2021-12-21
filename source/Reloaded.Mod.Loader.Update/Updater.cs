@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NuGet.Versioning;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.Update;
@@ -21,7 +22,8 @@ public class Updater
 {
     private ModConfigService _modConfigService;
     private ModUserConfigService _modUserConfigService;
-    private List<ManagerModResultPair>? _resolversWithUpdates;
+
+    private ModUpdateSummary? _cachedResult;
     private UpdaterData _data;
 
     /* Instantiation */
@@ -44,29 +46,37 @@ public class Updater
     /// </summary>
     public async Task<ModUpdateSummary> GetUpdateDetails()
     {
-        if (_resolversWithUpdates != null) 
-            return new ModUpdateSummary(_resolversWithUpdates);
-            
+        if (_cachedResult != null)
+            return _cachedResult;
+
+        var faultedModSets       = new List<ModConfig>();
         var resolverManagerPairs = new List<ManagerModResultPair>();
         var resolverTuples       = GetResolvers();
         var extractor            = new SevenZipSharpExtractor();
 
         foreach (var resolverTuple in resolverTuples)
         {
-            var modTuple = resolverTuple.ModTuple;
-            var filePath = modTuple.Config.GetDllPath(modTuple.Path);
-            var baseDirectory = Path.GetDirectoryName(modTuple.Path);
+            try
+            {
+                var modTuple = resolverTuple.ModTuple;
+                var filePath = modTuple.Config.GetDllPath(modTuple.Path);
+                var baseDirectory = Path.GetDirectoryName(modTuple.Path);
 
-            var metadata     = new ItemMetadata(NuGetVersion.Parse(modTuple.Config.ModVersion), filePath, baseDirectory);
-            var manager      = await UpdateManager<Empty>.CreateAsync(metadata, resolverTuple.Resolver, extractor);
-            var updateResult = await manager.CheckForUpdatesAsync();
+                var metadata = new ItemMetadata(NuGetVersion.Parse(modTuple.Config.ModVersion), filePath, baseDirectory);
+                var manager = await UpdateManager<Empty>.CreateAsync(metadata, resolverTuple.Resolver, extractor);
+                var updateResult = await manager.CheckForUpdatesAsync();
 
-            if (updateResult.CanUpdate)
-                resolverManagerPairs.Add(new ManagerModResultPair(manager, updateResult, modTuple));
+                if (updateResult.CanUpdate)
+                    resolverManagerPairs.Add(new ManagerModResultPair(manager, updateResult, modTuple));
+            }
+            catch (Exception)
+            {
+                faultedModSets.Add(resolverTuple.ModTuple.Config);
+            }
         }
 
-        _resolversWithUpdates = resolverManagerPairs;
-        return new ModUpdateSummary(_resolversWithUpdates);
+        _cachedResult = new ModUpdateSummary(resolverManagerPairs, faultedModSets);
+        return _cachedResult;
     }
 
     /// <summary>

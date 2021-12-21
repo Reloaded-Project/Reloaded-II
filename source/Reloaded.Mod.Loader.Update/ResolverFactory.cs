@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using Force.DeepCloner;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -18,7 +19,7 @@ public static class ResolverFactory
     /// <summary>
     /// List of all supported factories in preference order.
     /// </summary>
-    public static IResolverFactory[] All { get; } =
+    public static IResolverFactory[] All { get; private set; } =
     {
         // Listed in order of preference.
         new NuGetResolverFactory(),
@@ -56,5 +57,14 @@ public static class ResolverFactory
         }
 
         return resolvers.Count > 0 ? new AggregatePackageResolver(resolvers) : null;
+    }
+
+    /// <summary>
+    /// TEST USE ONLY.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public static void SetResolverFactories(IResolverFactory[] factories)
+    {
+        All = factories;
     }
 }
