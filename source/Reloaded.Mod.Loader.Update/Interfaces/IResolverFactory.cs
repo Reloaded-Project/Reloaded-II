@@ -26,7 +26,7 @@ public interface IResolverFactory
     /// </summary>
     /// <param name="mod">The mod to check.</param>
     /// <param name="userConfig">User specific configuration for the given mod.</param>
-    void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig);
+    void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig);
 
     /// <summary>
     /// Returns true if this mod is compatible to be updated. 
@@ -35,7 +35,7 @@ public interface IResolverFactory
     /// <param name="data">Various configurations and general data provided to all the updaters.</param>
     /// <param name="userConfig">User specific configuration for the given mod.</param>
     /// <returns>A valid resolver if the mod can update through it, else null.</returns>
-    IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data);
+    IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig, UpdaterData data);
 
     /// <summary>
     /// Gets the configuration for the resolver, or a default if one is not assigned.

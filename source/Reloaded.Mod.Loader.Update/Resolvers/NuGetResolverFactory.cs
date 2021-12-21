@@ -27,7 +27,7 @@ public class NuGetResolverFactory : IResolverFactory
     public string FriendlyName { get; } = "NuGet Repository";
 
     /// <inheritdoc/>
-    public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig)
+    public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig)
     {
         var modDirectory   = Path.GetDirectoryName(mod.Path);
         var nuspecFilePath = Path.Combine(modDirectory!, $"{IOEx.ForceValidFilePath(mod.Config.ModId)}.nuspec");
@@ -45,7 +45,7 @@ public class NuGetResolverFactory : IResolverFactory
     }
 
     /// <inheritdoc/>
-    public IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
+    public IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig, UpdaterData data)
     {
         var resolvers = new List<IPackageResolver>();
         var urls = new HashSet<string>();
@@ -66,7 +66,7 @@ public class NuGetResolverFactory : IResolverFactory
             resolvers.Add(new NuGetUpdateResolver(
                 new NuGetUpdateResolverSettings()
                 {
-                    AllowUnlisted = false,
+                    AllowUnlisted = true,
                     NugetRepository = new NugetRepository(url),
                     PackageId = mod.Config.ModId
                 },

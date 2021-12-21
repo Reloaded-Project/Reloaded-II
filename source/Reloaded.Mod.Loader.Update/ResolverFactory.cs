@@ -33,7 +33,7 @@ public static class ResolverFactory
     /// <param name="userConfig">Contains user configuration for this mod in question.</param>
     /// <param name="data">All data passed to the updater.</param>
     /// <returns>A resolver that can handle the mod, else null.</returns>
-    public static AggregatePackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
+    public static AggregatePackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig, UpdaterData data)
     {
         // Migrate first
         foreach (var factory in All)
@@ -41,7 +41,7 @@ public static class ResolverFactory
 
         // Clone data preferences.
         data = data.DeepClone();
-        if (userConfig.Config.AllowPrereleases.HasValue)
+        if (userConfig?.Config.AllowPrereleases != null)
             data.CommonPackageResolverSettings.AllowPrereleases = userConfig.Config.AllowPrereleases.Value;
 
         data.CommonPackageResolverSettings.MetadataFileName = mod.Config.ReleaseMetadataFileName;

@@ -22,14 +22,14 @@ public class GitHubReleasesResolverFactory : IResolverFactory
     public string FriendlyName { get; } = "GitHub Releases";
 
     /// <inheritdoc/>
-    public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig)
+    public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig)
     {
         MigrateFromLegacyModConfig(mod);
         MigrateFromLegacyUserConfig(mod, userConfig);
     }
 
     /// <inheritdoc/>
-    public IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
+    public IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig, UpdaterData data)
     {
         if (!this.TryGetConfiguration<GitHubConfig>(mod, out var githubConfig))
             return null;
@@ -63,11 +63,11 @@ public class GitHubReleasesResolverFactory : IResolverFactory
         }
     }
 
-    private void MigrateFromLegacyUserConfig(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig)
+    private void MigrateFromLegacyUserConfig(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig)
     {
         // Performs migration from legacy separate file config to integrated config.
         var gitHubConfigPath = GitHubUserConfig.GetFilePath(GetModDirectory(mod));
-        if (File.Exists(gitHubConfigPath))
+        if (File.Exists(gitHubConfigPath) && userConfig != null)
         {
             var githubConfig = IConfig<GitHubUserConfig>.FromPath(gitHubConfigPath);
             userConfig.Config.AllowPrereleases = githubConfig.EnablePrereleases;

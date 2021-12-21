@@ -23,13 +23,13 @@ public class GameBananaUpdateResolverFactory : IResolverFactory
     public string FriendlyName { get; } = "GameBanana";
 
     /// <inheritdoc/>
-    public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig)
+    public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig)
     {
         MigrateFromLegacyModConfig(mod);
     }
 
     /// <inheritdoc/>
-    public IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
+    public IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig, UpdaterData data)
     {
         if (!this.TryGetConfiguration<GameBananaConfig>(mod, out var gbConfig))
             return null;
