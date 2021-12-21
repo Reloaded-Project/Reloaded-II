@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using Indieteur.SAMAPI;
@@ -7,6 +8,7 @@ using Reloaded.Mod.Loader.Logging;
 
 namespace Reloaded.Mod.Loader.Utilities.Steam;
 
+[ExcludeFromCodeCoverage(Justification = "Requires Steam API. Not Testable.")]
 public class SteamHook
 {
     /* Constants */
