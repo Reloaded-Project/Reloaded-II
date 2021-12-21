@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using Environment = Reloaded.Mod.Shared.Environment;
 
@@ -32,6 +33,11 @@ public class TestEnvironmoent : IDisposable
     public ModConfig[]      ModConfigurations { get; set; }
 
     /// <summary>
+    /// List of all mod configurations in the test data.
+    /// </summary>
+    public PathTuple<ModConfig>[] ModConfigurationTuples { get; set; }
+
+    /// <summary>
     /// List of all application configurations in the test data.
     /// </summary>
     public ApplicationConfig[]      AppConfigurations { get; set; }
@@ -48,11 +54,19 @@ public class TestEnvironmoent : IDisposable
 
     /* Known configurations */
     public ApplicationConfig TestAppConfigA => AppConfigurations.First(x => x.AppId == "TestAppA");
+
     public ModConfig        TestModConfigA => ModConfigurations.First(x => x.ModId == "TestModA"); 
     public ModConfig        TestModConfigB => ModConfigurations.First(x => x.ModId == "TestModB");
     public ModConfig        TestModConfigC => ModConfigurations.First(x => x.ModId == "TestModC");
     public ModConfig        TestModConfigD => ModConfigurations.First(x => x.ModId == "TestModD"); // This config is a no DLL mod.
     public ModConfig        TestModConfigE => ModConfigurations.First(x => x.ModId == "TestModE"); // This config is a no DLL mod.
+
+    public PathTuple<ModConfig> TestModConfigATuple => ModConfigurationTuples.First(x => x.Config.ModId == "TestModA");
+    public PathTuple<ModConfig> TestModConfigBTuple => ModConfigurationTuples.First(x => x.Config.ModId == "TestModB");
+    public PathTuple<ModConfig> TestModConfigCTuple => ModConfigurationTuples.First(x => x.Config.ModId == "TestModC");
+    public PathTuple<ModConfig> TestModConfigDTuple => ModConfigurationTuples.First(x => x.Config.ModId == "TestModD"); // This config is a no DLL mod.
+    public PathTuple<ModConfig> TestModConfigETuple => ModConfigurationTuples.First(x => x.Config.ModId == "TestModE"); // This config is a no DLL mod.
+
     public ApplicationConfig ThisApplication;
 
     public TestEnvironmoent()
@@ -65,7 +79,8 @@ public class TestEnvironmoent : IDisposable
         try
         {
             // Populate configurations.
-            ModConfigurations = ModConfig.GetAllMods().Select(x => x.Config).ToArray();
+            ModConfigurationTuples = ModConfig.GetAllMods().ToArray();
+            ModConfigurations = ModConfigurationTuples.Select(x => x.Config).ToArray();
             AppConfigurations = ApplicationConfig.GetAllApplications().Select(x => x.Config).ToArray();
 
             ThisApplication = new ApplicationConfig(IdOfThisApp,
