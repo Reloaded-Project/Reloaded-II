@@ -54,4 +54,13 @@
     <ProjectReference Include="..\Testing\Mods\TestModE\TestModE.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="HelloWorld32.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="HelloWorld64.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
