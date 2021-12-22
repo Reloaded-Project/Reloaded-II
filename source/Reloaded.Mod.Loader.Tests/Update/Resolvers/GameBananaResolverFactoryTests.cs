@@ -62,7 +62,7 @@ public class GameBananaResolverFactoryTests : IDisposable
         var mod = _testEnvironmoent.TestModConfigATuple;
 
         // Act
-        var resolverFactory = new NuGetResolverFactory();
+        var resolverFactory = new NuGetUpdateResolverFactory();
         var resolver = resolverFactory.GetResolver(mod, null, new UpdaterData(new List<string>(), new CommonPackageResolverSettings()));
 
         // Assert

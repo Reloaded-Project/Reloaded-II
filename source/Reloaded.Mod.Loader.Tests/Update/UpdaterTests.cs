@@ -28,7 +28,7 @@ public class UpdaterTests : IDisposable
     private TestEnvironmoent _testEnvironmoent;
     private TemporaryFolderAllocation _packageFolder;
     private TemporarySetNewUpdaterResolvers _temporaryResolvers;
-    private LocalPackageResolverFactory _factory;
+    private LocalPackageUpdateResolverFactory _factory;
 
     private UpdaterData _updaterData = new(new List<string>(), new CommonPackageResolverSettings());
     private List<string> _foldersToDelete = new List<string>();
@@ -37,9 +37,9 @@ public class UpdaterTests : IDisposable
     {
         _testEnvironmoent = new TestEnvironmoent();
         _packageFolder = new TemporaryFolderAllocation();
-        _factory = new LocalPackageResolverFactory(_packageFolder.FolderPath);
+        _factory = new LocalPackageUpdateResolverFactory(_packageFolder.FolderPath);
 
-        _temporaryResolvers = new TemporarySetNewUpdaterResolvers(new IResolverFactory[] { _factory });
+        _temporaryResolvers = new TemporarySetNewUpdaterResolvers(new IUpdateResolverFactory[] { _factory });
 
         // Create Packages
         using var newPackageFolder = new TemporaryFolderAllocation();
@@ -115,9 +115,9 @@ public class UpdaterTests : IDisposable
 [ExcludeFromCodeCoverage]
 public class TemporarySetNewUpdaterResolvers : IDisposable
 {
-    public IResolverFactory[] OriginalFactories { get; private set; }
+    public IUpdateResolverFactory[] OriginalFactories { get; private set; }
 
-    public TemporarySetNewUpdaterResolvers(IResolverFactory[] originalFactories)
+    public TemporarySetNewUpdaterResolvers(IUpdateResolverFactory[] originalFactories)
     {
         OriginalFactories = PackageResolverFactory.All;
         PackageResolverFactory.SetResolverFactories(originalFactories);
@@ -131,13 +131,13 @@ public class TemporarySetNewUpdaterResolvers : IDisposable
 
 
 [ExcludeFromCodeCoverage]
-public class LocalPackageResolverFactory : IResolverFactory
+public class LocalPackageUpdateResolverFactory : IUpdateResolverFactory
 {
     public string ResolverId { get; } = "LocalPackageResolver";
     public string FriendlyName { get; } = "LocalPackageResolver";
     public string Directory { get; }
 
-    public LocalPackageResolverFactory(string directory) => Directory = directory;
+    public LocalPackageUpdateResolverFactory(string directory) => Directory = directory;
 
     public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig) { }
 

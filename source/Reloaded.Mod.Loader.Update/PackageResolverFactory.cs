@@ -19,11 +19,11 @@ public static class PackageResolverFactory
     /// <summary>
     /// List of all supported factories in preference order.
     /// </summary>
-    public static IResolverFactory[] All { get; private set; } =
+    public static IUpdateResolverFactory[] All { get; private set; } =
     {
         // Listed in order of preference.
-        new NuGetResolverFactory(),
-        new GitHubReleasesResolverFactory(),
+        new NuGetUpdateResolverFactory(),
+        new GitHubReleasesUpdateResolverFactory(),
         new GameBananaUpdateResolverFactory()
     };
 
@@ -63,7 +63,7 @@ public static class PackageResolverFactory
     /// TEST USE ONLY.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static void SetResolverFactories(IResolverFactory[] factories)
+    public static void SetResolverFactories(IUpdateResolverFactory[] factories)
     {
         All = factories;
     }

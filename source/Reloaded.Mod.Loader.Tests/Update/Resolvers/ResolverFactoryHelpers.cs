@@ -7,10 +7,10 @@ namespace Reloaded.Mod.Loader.Tests.Update.Resolvers;
 
 public class RemoveConfiguration<T> : IDisposable
 {
-    public IResolverFactory Factory;
+    public IUpdateResolverFactory Factory;
     public PathTuple<ModConfig> Config;
 
-    public RemoveConfiguration(PathTuple<ModConfig> config, IResolverFactory factory)
+    public RemoveConfiguration(PathTuple<ModConfig> config, IUpdateResolverFactory factory)
     {
         Config = config;
         Factory = factory;

@@ -13,7 +13,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers;
 /// <summary>
 /// Allows for updating of packages sourced from GitHub releases.
 /// </summary>
-public class GitHubReleasesResolverFactory : IResolverFactory
+public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
 {
     /// <inheritdoc />
     public string ResolverId { get; } = "GitHubRelease";

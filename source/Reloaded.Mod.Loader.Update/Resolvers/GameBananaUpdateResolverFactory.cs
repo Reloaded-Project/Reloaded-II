@@ -14,7 +14,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers;
 /// <summary>
 /// Allows for updating of packages sourced from GameBanana.
 /// </summary>
-public class GameBananaUpdateResolverFactory : IResolverFactory
+public class GameBananaUpdateResolverFactory : IUpdateResolverFactory
 {
     /// <inheritdoc />
     public string ResolverId { get; } = "GameBanana";

@@ -18,7 +18,7 @@ namespace Reloaded.Mod.Loader.Update.Resolvers;
 /// <summary>
 /// Allows for updating packages sourced from NuGet repositories.
 /// </summary>
-public class NuGetResolverFactory : IResolverFactory
+public class NuGetUpdateResolverFactory : IUpdateResolverFactory
 {
     /// <inheritdoc />
     public string ResolverId { get; } = "NuGet";

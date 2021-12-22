@@ -32,9 +32,9 @@ public class NuGetResolverFactoryTests : IDisposable
         File.Create(nuspecFilePath).Dispose();
 
         // Act
-        var factory = new NuGetResolverFactory();
+        var factory = new NuGetUpdateResolverFactory();
         factory.Migrate(mod, null);
-        using var disposalHelper = new RemoveConfiguration<NuGetResolverFactory.NuGetConfig>(mod, factory);
+        using var disposalHelper = new RemoveConfiguration<NuGetUpdateResolverFactory.NuGetConfig>(mod, factory);
 
         // Assert
         Assert.False(File.Exists(nuspecFilePath));
@@ -48,7 +48,7 @@ public class NuGetResolverFactoryTests : IDisposable
         var mod = _testEnvironmoent.TestModConfigATuple;
         
         // Act
-        var resolverFactory  = new NuGetResolverFactory();
+        var resolverFactory  = new NuGetUpdateResolverFactory();
         var resolvers = (AggregatePackageResolver) resolverFactory.GetResolver(mod, null, new UpdaterData(new List<string>() { "Sample NuGet Feed" }, new CommonPackageResolverSettings()));
 
         // Assert
@@ -62,13 +62,13 @@ public class NuGetResolverFactoryTests : IDisposable
         var mod = _testEnvironmoent.TestModConfigATuple;
 
         // Act
-        var resolverFactory = new NuGetResolverFactory();
-        resolverFactory.SetConfiguration(mod, new NuGetResolverFactory.NuGetConfig()
+        var resolverFactory = new NuGetUpdateResolverFactory();
+        resolverFactory.SetConfiguration(mod, new NuGetUpdateResolverFactory.NuGetConfig()
         {
             DefaultRepositoryUrls = new ObservableCollection<string>() { "Sample Repository" }
         });
 
-        using var disposalHelper = new RemoveConfiguration<NuGetResolverFactory.NuGetConfig>(mod, resolverFactory);
+        using var disposalHelper = new RemoveConfiguration<NuGetUpdateResolverFactory.NuGetConfig>(mod, resolverFactory);
 
         var resolver = (AggregatePackageResolver)resolverFactory.GetResolver(mod, null, new UpdaterData(new List<string>(), new CommonPackageResolverSettings()));
 
@@ -84,13 +84,13 @@ public class NuGetResolverFactoryTests : IDisposable
         var mod = _testEnvironmoent.TestModConfigATuple;
 
         // Act
-        var resolverFactory = new NuGetResolverFactory();
-        resolverFactory.SetConfiguration(mod, new NuGetResolverFactory.NuGetConfig()
+        var resolverFactory = new NuGetUpdateResolverFactory();
+        resolverFactory.SetConfiguration(mod, new NuGetUpdateResolverFactory.NuGetConfig()
         {
             DefaultRepositoryUrls = new ObservableCollection<string>() { "Sample Repository" }
         });
 
-        using var disposalHelper = new RemoveConfiguration<NuGetResolverFactory.NuGetConfig>(mod, resolverFactory);
+        using var disposalHelper = new RemoveConfiguration<NuGetUpdateResolverFactory.NuGetConfig>(mod, resolverFactory);
 
         var resolver = (AggregatePackageResolver)resolverFactory.GetResolver(mod, null, new UpdaterData(new List<string>() { "Sample Repository" }, new CommonPackageResolverSettings()));
 
@@ -105,7 +105,7 @@ public class NuGetResolverFactoryTests : IDisposable
         var mod = _testEnvironmoent.TestModConfigATuple;
 
         // Act
-        var resolverFactory = new NuGetResolverFactory();
+        var resolverFactory = new NuGetUpdateResolverFactory();
         var resolver = resolverFactory.GetResolver(mod, null, new UpdaterData(new List<string>() {  }, new CommonPackageResolverSettings()));
 
         // Assert

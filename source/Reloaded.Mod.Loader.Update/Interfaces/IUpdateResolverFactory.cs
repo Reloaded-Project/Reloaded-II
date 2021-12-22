@@ -9,7 +9,7 @@ namespace Reloaded.Mod.Loader.Update.Interfaces;
 /// <summary>
 /// An interface that can be used to optionally return a resolver instance.
 /// </summary>
-public interface IResolverFactory
+public interface IUpdateResolverFactory
 {
     /// <summary>
     /// Returns the unique ID of the resolver.
@@ -60,7 +60,7 @@ public static class ResolverFactoryExtensions
     /// <param name="mod">The mod config to get configuration from.</param>
     /// <param name="configuration">The returned configuration.</param>
     /// <returns>Whether the configuration was found or not.</returns>
-    public static bool TryGetConfiguration<T>(this IResolverFactory factory, PathTuple<ModConfig> mod, out T? configuration)
+    public static bool TryGetConfiguration<T>(this IUpdateResolverFactory factory, PathTuple<ModConfig> mod, out T? configuration)
     {
         return mod.Config.PluginData.TryGetValue<T>(factory.ResolverId, out configuration);
     }
@@ -73,7 +73,7 @@ public static class ResolverFactoryExtensions
     /// <param name="mod">The mod config to assign the configuration to.</param>
     /// <param name="value">The configuration value to set.</param>
     /// <returns>Whether the configuration was found or not.</returns>
-    public static void SetConfiguration<T>(this IResolverFactory factory, PathTuple<ModConfig> mod, T value)
+    public static void SetConfiguration<T>(this IUpdateResolverFactory factory, PathTuple<ModConfig> mod, T value)
     {
         mod.Config.PluginData[factory.ResolverId] = value;
     }
@@ -85,7 +85,7 @@ public static class ResolverFactoryExtensions
     /// <param name="factory">The factory from which the configuration is sourced from.</param>
     /// <param name="mod">The mod config to assign the configuration to.</param>
     /// <returns>Whether the configuration was found or not.</returns>
-    public static void RemoveConfiguration<T>(this IResolverFactory factory, PathTuple<ModConfig> mod)
+    public static void RemoveConfiguration<T>(this IUpdateResolverFactory factory, PathTuple<ModConfig> mod)
     {
         mod.Config.PluginData.Remove(factory.ResolverId);
     }

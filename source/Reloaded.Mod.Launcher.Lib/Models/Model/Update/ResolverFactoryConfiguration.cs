@@ -24,7 +24,7 @@ public class ResolverFactoryConfiguration : ObservableObject
     /// <summary>
     /// The factory responsible for handling the configuration.
     /// </summary>
-    public IResolverFactory Factory { get; set; } = null!;
+    public IUpdateResolverFactory Factory { get; set; } = null!;
 
     private ResolverFactoryConfiguration() { }
 
@@ -34,7 +34,7 @@ public class ResolverFactoryConfiguration : ObservableObject
     /// <param name="factory">The factory used to get and set the configuration.</param>
     /// <param name="mod">The mod to assign the configuration to.</param>
     /// <returns>The configuration.</returns>
-    public static ResolverFactoryConfiguration? TryCreate(IResolverFactory factory, PathTuple<ModConfig> mod)
+    public static ResolverFactoryConfiguration? TryCreate(IUpdateResolverFactory factory, PathTuple<ModConfig> mod)
     {
         var isEnabled = factory.TryGetConfigurationOrDefault(mod, out var configuration);
         if (configuration == null)
