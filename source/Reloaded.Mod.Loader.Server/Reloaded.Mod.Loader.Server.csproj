@@ -21,6 +21,7 @@
   <ItemGroup>
     <PackageReference Include="Reloaded.Messaging" Version="1.3.0" />
     <PackageReference Include="Reloaded.Messaging.Serializer.MessagePack" Version="1.1.0" />
+    <PackageReference Include="Reloaded.Messaging.Serializer.ReloadedMemory" Version="1.1.0" />
   </ItemGroup>
 	
   <ItemGroup>
