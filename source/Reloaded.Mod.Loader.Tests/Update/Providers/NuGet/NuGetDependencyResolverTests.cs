@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Reloaded.Mod.Loader.Tests.Update.NuGet;
 using Reloaded.Mod.Loader.Update.Providers.NuGet;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
@@ -13,14 +9,14 @@ namespace Reloaded.Mod.Loader.Tests.Update.Providers.NuGet;
 /// <summary>
 /// Tests for the NuGet package resolver.
 /// </summary>
-public class NuGetResolverTests
+public class NuGetDependencyResolverTests
 {
     [Fact]
     public async Task ResolveAsync_WithExistingPackage_ReturnsPackages()
     {
         // Arrange
         var repository = NugetRepository.FromSourceUrl(NugetRepositoryTests.TestNugetFeed);
-        var provider   = new NuGetPackageResolver(new AggregateNugetRepository(new[] { repository }));
+        var provider   = new NuGetDependencyResolver(new AggregateNugetRepository(new[] { repository }));
 
         // Act
         var result = await provider.ResolveAsync(NugetRepositoryTests.TestPackageName);
@@ -35,7 +31,7 @@ public class NuGetResolverTests
     {
         // Arrange
         var repository = NugetRepository.FromSourceUrl(NugetRepositoryTests.TestNugetFeed);
-        var provider = new NuGetPackageResolver(new AggregateNugetRepository(new[] { repository }));
+        var provider = new NuGetDependencyResolver(new AggregateNugetRepository(new[] { repository }));
 
         // Act
         var result = await provider.ResolveAsync("this.package.does.not.exist");

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Interfaces;
@@ -11,12 +9,12 @@ namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 /// <summary>
 /// Resolver for NuGet packages.
 /// </summary>
-public class NuGetPackageResolver : IModDependencyPackageProvider
+public class NuGetDependencyResolver : IDependencyResolver
 {
     private readonly AggregateNugetRepository _repository;
 
     /// <summary/>
-    public NuGetPackageResolver(AggregateNugetRepository repository)
+    public NuGetDependencyResolver(AggregateNugetRepository repository)
     {
         _repository = repository;
     }

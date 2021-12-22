@@ -8,7 +8,7 @@ namespace Reloaded.Mod.Loader.Update.Interfaces;
 /// <summary>
 /// Provider that uses specified source to look for package dependencies.
 /// </summary>
-public interface IModDependencyPackageProvider
+public interface IDependencyResolver
 {
     /// <summary>
     /// Tries to find results for a given package.
