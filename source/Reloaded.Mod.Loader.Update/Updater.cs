@@ -108,7 +108,7 @@ public class Updater
         foreach (var mod in _modConfigService.Items.ToArray())
         {
             _modUserConfigService.ItemsById.TryGetValue(mod.Config.ModId, out var userConfig);
-            var resolver = ResolverFactory.GetResolver(mod, userConfig, _data);
+            var resolver = PackageResolverFactory.GetResolver(mod, userConfig, _data);
             if (resolver != null)
                 modResolverPairs.Add(new ResolverModPair(resolver, mod));
         }

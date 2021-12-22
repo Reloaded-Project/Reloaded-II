@@ -119,13 +119,13 @@ public class TemporarySetNewUpdaterResolvers : IDisposable
 
     public TemporarySetNewUpdaterResolvers(IResolverFactory[] originalFactories)
     {
-        OriginalFactories = ResolverFactory.All;
-        ResolverFactory.SetResolverFactories(originalFactories);
+        OriginalFactories = PackageResolverFactory.All;
+        PackageResolverFactory.SetResolverFactories(originalFactories);
     }
 
     public void Dispose()
     {
-        ResolverFactory.SetResolverFactories(OriginalFactories);
+        PackageResolverFactory.SetResolverFactories(OriginalFactories);
     }
 }
 

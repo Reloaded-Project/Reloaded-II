@@ -100,7 +100,7 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
         }
 
         // Build Update Configurations
-        foreach (var resolver in ResolverFactory.All)
+        foreach (var resolver in PackageResolverFactory.All)
         {
             var result = ResolverFactoryConfiguration.TryCreate(resolver, ConfigTuple);
             if (result != null)

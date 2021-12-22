@@ -12,9 +12,9 @@ using Sewer56.Update.Resolvers;
 namespace Reloaded.Mod.Loader.Update;
 
 /// <summary>
-/// Factory which returns the first appropriate resolver for a specific mod.
+/// Builds an <see cref="AggregatePackageResolver"/> using all configured individual resolver factories.
 /// </summary>
-public static class ResolverFactory
+public static class PackageResolverFactory
 {    
     /// <summary>
     /// List of all supported factories in preference order.
