@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.Update.Providers.NuGet;
 
-public class NuGetProviderTests
+public class NuGetPackageProviderTests
 {
     [Fact]
     public async Task SearchAsync_WithNoString_ReturnsResults()
