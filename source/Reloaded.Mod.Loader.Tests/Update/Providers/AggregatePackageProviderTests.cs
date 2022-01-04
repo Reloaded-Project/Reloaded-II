@@ -15,7 +15,7 @@ public class AggregatePackageProviderTests
     {
         // Arrange
         var mockA = new Mock<IDownloadablePackageProvider>();
-        mockA.Setup(x => x.SearchAsync("", default)).ReturnsAsync(() => new List<IDownloadablePackage>()
+        mockA.Setup(x => x.SearchAsync("", 0, 50, default)).ReturnsAsync(() => new List<IDownloadablePackage>()
         {
             new DummyDownloadablePackage()
             {
@@ -28,7 +28,7 @@ public class AggregatePackageProviderTests
         });
 
         var mockB = new Mock<IDownloadablePackageProvider>();
-        mockB.Setup(x => x.SearchAsync("", default)).ReturnsAsync(() => new List<IDownloadablePackage>()
+        mockB.Setup(x => x.SearchAsync("", 0, 50, default)).ReturnsAsync(() => new List<IDownloadablePackage>()
         {
             new DummyDownloadablePackage()
             {
@@ -43,7 +43,7 @@ public class AggregatePackageProviderTests
             mockB.Object
         });
 
-        var result = await resolver.SearchAsync("", default);
+        var result = await resolver.SearchAsync("", 0, 50, default);
 
         // Assert
         Assert.Equal(3, result.Count);

@@ -26,9 +26,10 @@ public interface INugetRepository
     /// </summary>
     /// <param name="searchString">The search text to look for.</param>
     /// <param name="includePrereleases">True if to include prerelease packages, else false.</param>
+    /// <param name="skip">Number of search results to skip.</param>
     /// <param name="results">The max number of results to return.</param>
     /// <param name="token">A cancellation token to allow cancellation of the task.</param>
-    Task<IEnumerable<IPackageSearchMetadata>> Search(string searchString, bool includePrereleases, int results = 50, CancellationToken token = default);
+    Task<IEnumerable<IPackageSearchMetadata>> Search(string searchString, bool includePrereleases, int skip = 0, int results = 50, CancellationToken token = default);
 
     /// <summary>
     /// Downloads the latest version of a specified NuGet package.

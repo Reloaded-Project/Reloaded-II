@@ -20,6 +20,7 @@ using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Providers;
 using Reloaded.Mod.Loader.Update.Providers.NuGet;
+using Reloaded.Mod.Loader.Update.Utilities;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 
@@ -60,10 +61,21 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// </summary>
     public ConfigureNuGetSourcesCommand ConfigureNuGetSourcesCommand { get; set; }
 
+    /// <summary>
+    /// True if the user can go to last page, else false.
+    /// </summary>
+    public bool CanGoToLastPage { get; set; } = false;
+
+    /// <summary>
+    /// True if the user can go to next page, else false.
+    /// </summary>
+    public bool CanGoToNextPage { get; set; } = true;
+
     private AggregateNugetRepository _nugetRepository;
     private CancellationTokenSource? _tokenSource;
 
     private IDownloadablePackageProvider _packageProvider;
+    private PaginationHelper _paginationHelper = PaginationHelper.Default;
 
     /* Construction - Deconstruction */
 
@@ -72,6 +84,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     {
         _nugetRepository = nugetRepository;
         _packageProvider = new AggregatePackageProvider(new IDownloadablePackageProvider[] { new NuGetPackageProvider(nugetRepository) });
+        _paginationHelper.ItemsPerPage = 10;
 #pragma warning disable CS4014
         GetSearchResults();
 #pragma warning restore CS4014
@@ -80,6 +93,9 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         ConfigureNuGetSourcesCommand = new ConfigureNuGetSourcesCommand(RefreshOnSourceChange);
         PropertyChanged += OnAnyPropChanged;
         UpdateCommands();
+
+        // React to search results and pagination stuff.
+        SearchResult.CollectionChanged += SetCanGoToNextPageOnSearchResultsChanged;
     }
 
     /// <summary>
@@ -92,14 +108,37 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         _tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 
         // TODO: Limit number of returned items. (Pagination)
-        var searchTuples = await _packageProvider.SearchAsync(SearchQuery, _tokenSource.Token);
+        var searchTuples = await _packageProvider.SearchAsync(SearchQuery, _paginationHelper.Skip, _paginationHelper.Take, _tokenSource.Token);
         Collections.ModifyObservableCollection(SearchResult, searchTuples);
+    }
+
+    /// <summary>
+    /// Moves the search forward 1 page.
+    /// </summary>
+    /// <returns></returns>
+    public async Task GoToNextPage()
+    {
+        _paginationHelper.NextPage();
+        CanGoToLastPage = _paginationHelper.Page > 0;
+        await GetSearchResults();
+    }
+
+    /// <summary>
+    /// Moves the search back 1 page.
+    /// </summary>
+    public async Task GoToLastPage()
+    {
+        _paginationHelper.PreviousPage();
+        CanGoToLastPage = _paginationHelper.Page > 0;
+        await GetSearchResults();
     }
 
     private void OnAnyPropChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SearchQuery))
         {
+            _paginationHelper.Reset();
+            CanGoToLastPage = false;
 #pragma warning disable 4014
             GetSearchResults(); // Fire and forget.
 #pragma warning restore 4014
@@ -108,6 +147,11 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         {
             UpdateCommands();
         }
+    }
+
+    private void SetCanGoToNextPageOnSearchResultsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        CanGoToNextPage = SearchResult.Count >= _paginationHelper.ItemsPerPage;
     }
 
     /// <inheritdoc />

@@ -441,4 +441,7 @@ public static class Resources
     public static IDictionaryResource<string> PackageDownloaderDownloadCompleteTitle { get; set; }
     public static IDictionaryResource<string> PackageDownloaderDownloadCompleteDescription { get; set; }
     public static IDictionaryResource<string> PackageDownloaderDownloadingDependencies { get; set; }
+
+    // Update 1.12.0: Extended Download Mods Menu
+    public static IDictionaryResource<string> DownloadPackagesSource { get; set; }
 }

@@ -50,15 +50,16 @@ public class AggregateNugetRepository
     /// </summary>
     /// <param name="searchString">The term to search packages using.</param>
     /// <param name="includePrereleases">True if to include prerelease packages, else false.</param>
+    /// <param name="skip">Number of items to skip.</param>
     /// <param name="results">The max number of results to return from each source.</param>
     /// <param name="token">A cancellation token to allow cancellation of the task.</param>
     /// <returns>Tuples of the originating source and the search result.</returns>
-    public async Task<List<NugetTuple<IEnumerable<IPackageSearchMetadata>>>> Search(string searchString, bool includePrereleases, int results = 50, CancellationToken token = default)
+    public async Task<List<NugetTuple<IEnumerable<IPackageSearchMetadata>>>> Search(string searchString, bool includePrereleases, int skip = 0, int results = 50, CancellationToken token = default)
     {
         var result = new List<NugetTuple<IEnumerable<IPackageSearchMetadata>>>();
         foreach (var source in Sources)
         {
-            var res = await source.Search(searchString, includePrereleases, results, token);
+            var res = await source.Search(searchString, includePrereleases, skip, results, token);
             result.Add(new NugetTuple<IEnumerable<IPackageSearchMetadata>>(source, res));
         }
             

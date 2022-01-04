@@ -409,4 +409,7 @@
     <sys:String x:Key="PackageDownloaderDownloadCompleteDescription" xml:space="preserve">Download Finished.&#x0a;This window will automatically close in a few seconds.</sys:String>
     <sys:String x:Key="PackageDownloaderDownloadingDependencies">Downloading Dependencies</sys:String>
 
+    <!-- Update 1.12.0: Extended Download Mods Menu -->
+    <sys:String x:Key="DownloadPackagesSource">Source</sys:String>
+
 </ResourceDictionary>

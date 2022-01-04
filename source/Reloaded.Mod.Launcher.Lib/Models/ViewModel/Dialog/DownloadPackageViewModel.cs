@@ -7,6 +7,7 @@ using NuGet.Packaging;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Interfaces;
+using Reloaded.Mod.Loader.Update.Utilities;
 using Sewer56.Update.Misc;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;

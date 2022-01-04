@@ -24,11 +24,36 @@
         </Grid.RowDefinitions>
 
         <!-- Search -->
-        <TextBox Grid.Row="0"
-                 Style="{DynamicResource TextboxWithPlaceholder}" 
-                 Tag="{DynamicResource ModManagerSearchMods}"
-                 Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 Margin="{DynamicResource CommonItemVerticalMargin}"/>
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{DynamicResource CommonItemVerticalMarginSmall}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox 
+                Grid.Column="0"
+                Style="{DynamicResource TextboxWithPlaceholder}" 
+                Tag="{DynamicResource ModManagerSearchMods}"
+                Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Margin="{DynamicResource CommonItemHorizontalMarginSmaller}"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+
+            <Button Content="{DynamicResource FirstLaunchExAddModExtractPrev}" 
+                    Style="{DynamicResource DefaultButton}" 
+                    Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+                    Grid.Column="1"
+                    Click="Last_Click"
+                    Visibility="{Binding CanGoToLastPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"/>
+
+            <Button Content="{DynamicResource FirstLaunchExAddModExtractNext}" 
+                    Style="{DynamicResource DefaultButton}" 
+                    Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+                    Grid.Column="2"
+                    Click="Next_Click"
+                    Visibility="{Binding CanGoToNextPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"/>
+
+        </Grid>
 
         <!-- List -->
         <DataGrid
@@ -54,6 +79,7 @@
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors, NotifyOnTargetUpdated=True}" Width="Auto"  IsReadOnly="True" />
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version, NotifyOnTargetUpdated=True}" Width="Auto" IsReadOnly="True"/>
+                <DataGridTextColumn Header="{DynamicResource DownloadPackagesSource}" Binding="{Binding Source, NotifyOnTargetUpdated=True}" Width="Auto" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -61,16 +87,16 @@
         <TextBlock Grid.Row="2" 
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   Margin="{DynamicResource CommonItemVerticalMargin}" 
+                   Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
                    Text="{Binding SelectedResult.Description, UpdateSourceTrigger=PropertyChanged}"
                    Style="{DynamicResource RIIDefaultTextBlock}"
                    TextWrapping="Wrap"/>
 
         <!-- Actions -->
-        <StackPanel Grid.Row="3"
+        <StackPanel Grid.Row="4"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal" 
-                    Margin="{DynamicResource CommonItemVerticalMargin}">
+                    Margin="{DynamicResource CommonItemVerticalMarginSmall}">
             <Button Content="{DynamicResource ConfigNuGetFeedsButton}"
                     Margin="{DynamicResource CommonItemHorizontalMargin}" 
                     Command="{Binding ConfigureNuGetSourcesCommand}"/>

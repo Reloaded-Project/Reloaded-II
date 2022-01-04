@@ -20,9 +20,9 @@ public class NuGetPackageProvider : IDownloadablePackageProvider
     }
 
     /// <inheritdoc />
-    public async Task<List<IDownloadablePackage>> SearchAsync(string text, CancellationToken token = default)
+    public async Task<List<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default)
     {
-        var searchTuples = await _repository.Search(text, false, 50, token);
+        var searchTuples = await _repository.Search(text, false, skip, take, token);
         var result = new List<IDownloadablePackage>();
 
         foreach (var tuple in searchTuples)

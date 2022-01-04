@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using Reloaded.Mod.Launcher.Lib;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 using Reloaded.Mod.Launcher.Lib.Static;
@@ -31,4 +32,7 @@ public partial class DownloadPackagesPage : ReloadedIIPage
             Errors.HandleException(ex, "Failed to search for mods to download.");
         }
     }
+
+    private async void Last_Click(object sender, RoutedEventArgs e) => await ViewModel.GoToLastPage();
+    private async void Next_Click(object sender, RoutedEventArgs e) => await ViewModel.GoToNextPage();
 }

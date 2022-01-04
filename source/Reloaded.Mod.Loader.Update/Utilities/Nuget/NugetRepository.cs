@@ -53,12 +53,12 @@ public class NugetRepository : INugetRepository
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<IPackageSearchMetadata>> Search(string searchString, bool includePrereleases, int results = 50, CancellationToken token = default)
+    public async Task<IEnumerable<IPackageSearchMetadata>> Search(string searchString, bool includePrereleases, int skip = 0, int results = 50, CancellationToken token = default)
     {
         try
         {
             var searchResource = await _packageSearchResource;
-            return await searchResource.SearchAsync(searchString, new SearchFilter(includePrereleases), 0, results, _nullLogger, token);
+            return await searchResource.SearchAsync(searchString, new SearchFilter(includePrereleases), skip, results, _nullLogger, token);
         }
         catch (Exception) { return Array.Empty<IPackageSearchMetadata>(); }
     }
