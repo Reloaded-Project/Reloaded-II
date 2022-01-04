@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Reloaded.Mod.Loader.IO.Config;
@@ -33,4 +34,37 @@ public class ModDependencyResolveResult
     /// List of all dependencies that were not found.
     /// </summary>
     public HashSet<string> NotFoundDependencies { get; } = new HashSet<string>();
+
+    /// <summary>
+    /// Combines the results of multiple resolve operations.
+    /// </summary>
+    /// <param name="results">Results of multiple operations.</param>
+    /// <returns>The result of combining multiple resolve operations.</returns>
+    public static ModDependencyResolveResult Combine(IEnumerable<ModDependencyResolveResult> results)
+    {
+        var returnValue = new ModDependencyResolveResult();
+        var idToNewestVersion = new Dictionary<string, IDownloadablePackage>();
+
+        foreach (var result in results)
+        {
+            foreach (var found in result.FoundDependencies)
+            {
+                if (idToNewestVersion.TryGetValue(found.Id, out var existing))
+                {
+                    if (existing.Version < found.Version)
+                        idToNewestVersion[found.Id] = found;
+
+                    continue;
+                }
+                
+                idToNewestVersion[found.Id] = found;
+            }
+
+            foreach (var notFound in result.NotFoundDependencies)
+                returnValue.NotFoundDependencies.Add(notFound);
+        }
+
+        returnValue.FoundDependencies.AddRange(idToNewestVersion.Values);
+        return returnValue;
+    }
 }

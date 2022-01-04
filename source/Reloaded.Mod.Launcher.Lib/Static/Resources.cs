@@ -353,6 +353,9 @@ public static class Resources
     public static IDictionaryResource<string> ErrorUnableDetermineVersion { get; set; }
     public static IDictionaryResource<string> ErrorUpdateModInUseTitle { get; set; }
     public static IDictionaryResource<string> ErrorUpdateModInUse { get; set; }
+    public static IDictionaryResource<string> ErrorMissingDependency { get; set; }
+    public static IDictionaryResource<string> ErrorInvalidSemanticVersionTitle { get; set; }
+    public static IDictionaryResource<string> ErrorInvalidSemanticVersionDescription { get; set; }
 
     // Update 1.12.0: Extended Edit Mod
     public static IDictionaryResource<string> CreateModDialogDescriptionShort { get; set; }
@@ -386,11 +389,7 @@ public static class Resources
     public static IDictionaryResource<string> AddAppUpdate { get; set; }
     public static IDictionaryResource<string> AddAppWarningTitle { get; set; }
     public static IDictionaryResource<string> AddAppWarning { get; set; }
-
-    // Update 1.12.0 Extended Errors
-    public static IDictionaryResource<string> ErrorInvalidSemanticVersionTitle { get; set; }
-    public static IDictionaryResource<string> ErrorInvalidSemanticVersionDescription { get; set; }
-
+    
     // Update 1.12.0: Publish Mod Dialog
     public static IDictionaryResource<string> PublishModTitle { get; set; }
     public static IDictionaryResource<string> PublishModTarget { get; set; }
@@ -437,4 +436,9 @@ public static class Resources
     public static IDictionaryResource<string> TitleEditModUserConfig { get; set; }
     public static IDictionaryResource<string> TitleEditModUserAllowPrereleases { get; set; }
     public static IDictionaryResource<string> TitleEditModUserAllowPrereleasesTooltip { get; set; }
+
+    // Update 1.12.0: Fast Package Download Experience
+    public static IDictionaryResource<string> PackageDownloaderDownloadCompleteTitle { get; set; }
+    public static IDictionaryResource<string> PackageDownloaderDownloadCompleteDescription { get; set; }
+    public static IDictionaryResource<string> PackageDownloaderDownloadingDependencies { get; set; }
 }

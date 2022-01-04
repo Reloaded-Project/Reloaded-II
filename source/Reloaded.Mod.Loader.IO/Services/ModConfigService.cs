@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -29,6 +30,39 @@ public class ModConfigService : ConfigServiceBase<ModConfig>
         Initialize(config.ModConfigDirectory, ModConfig.ConfigFileName, GetAllConfigs, context);
         SetItemsById();
     }
+
+    /// <summary>
+    /// Runs a full dependency check to check for mods with missing dependencies.
+    /// </summary>
+    public DependencyResolutionResult GetMissingDependencies()
+    {
+        // Get list of all mods.
+        var allMods = Items.ToArray();
+        var allModIds = new HashSet<string>(allMods.Length);
+        foreach (var mod in allMods)
+            allModIds.Add(mod.Config.ModId);
+
+        var resolutionResult = new DependencyResolutionResult();
+        foreach (var item in allMods)
+        {
+            var dependencyItem = new DependencyResolutionItem();
+            dependencyItem.Mod = item.Config;
+
+            // Get missing dependencies.
+            foreach (var dependency in item.Config.ModDependencies)
+            {
+                if (!allModIds.Contains(dependency))
+                    dependencyItem.Dependencies.Add(dependency);
+            }
+            
+            // Add if any missing dependencies.
+            if (dependencyItem.Dependencies.Count > 0)
+                resolutionResult.Items.Add(dependencyItem);
+        }
+
+        return resolutionResult;
+    }
+
     private void SetItemsById()
     {
         foreach (var item in Items)
@@ -40,4 +74,29 @@ public class ModConfigService : ConfigServiceBase<ModConfig>
     private void OnAddItemHandler(PathTuple<ModConfig> obj) => ItemsById[obj.Config.ModId] = obj;
 
     private List<PathTuple<ModConfig>> GetAllConfigs() => ModConfig.GetAllMods(base.ConfigDirectory);
+}
+
+/// <summary>
+/// The result of an individual dependency resolution operation.
+/// </summary>
+public struct DependencyResolutionResult
+{
+    /// <summary>
+    /// True if all dependencies are available.
+    /// </summary>
+    public bool AllAvailable => Items.Count <= 0;
+
+    /// <summary>
+    /// List of missing dependencies.
+    /// </summary>
+    public List<DependencyResolutionItem> Items { get; set; } = new();
+}
+
+/// <summary>
+/// An individual item returned by the dependency resolver.
+/// </summary>
+public struct DependencyResolutionItem
+{
+    public ModConfig Mod; 
+    public List<string> Dependencies = new List<string>();
 }

@@ -34,13 +34,12 @@
         <DataGrid
             Grid.Row="1"
             HorizontalAlignment="Stretch"
-            ItemsSource="{Binding DownloadModEntries, UpdateSourceTrigger=PropertyChanged}"
-            SelectedValue="{Binding DownloadPackageEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            ItemsSource="{Binding SearchResult, UpdateSourceTrigger=PropertyChanged}"
+            SelectedValue="{Binding SelectedResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             misc:FixDataGridColumnWidths.Value="true"
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Top"
             
-            ColumnWidth="*" 
             CanUserResizeColumns="False"
             CanUserResizeRows="False"
             CanUserAddRows="False"
@@ -52,10 +51,9 @@
             AutoGenerateColumns="False"
             Margin="{DynamicResource CommonItemVerticalMargin}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name}" Width="Auto" IsReadOnly="True" />
-                <DataGridTextColumn Header="{DynamicResource CreateModDialogDescription}" Binding="{Binding Description, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
-                <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors}" Width="Auto" IsReadOnly="True" />
-                <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version}" Width="Auto" IsReadOnly="True"/>
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors, NotifyOnTargetUpdated=True}" Width="Auto"  IsReadOnly="True" />
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version, NotifyOnTargetUpdated=True}" Width="Auto" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -64,7 +62,7 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Margin="{DynamicResource CommonItemVerticalMargin}" 
-                   Text="{Binding DownloadPackageEntry.Description, UpdateSourceTrigger=PropertyChanged}"
+                   Text="{Binding SelectedResult.Description, UpdateSourceTrigger=PropertyChanged}"
                    Style="{DynamicResource RIIDefaultTextBlock}"
                    TextWrapping="Wrap"/>
 

@@ -1,4 +1,4 @@
-﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.DownloadModArchiveDialog"
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.DownloadPackageDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,16 +12,23 @@
         Title="{DynamicResource DownloadModArchiveTitle}"
         Style="{DynamicResource ReloadedWindow}">
     <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
-        
+
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <TextBlock HorizontalAlignment="Center" 
+                   Grid.Row="0" 
+                   Text="{Binding Text}" 
+                   Visibility="{Binding Text, Converter={x:Static converters:StringToVisibilityConverter.Instance}}"
+                   Style="{DynamicResource DefaultTextBlock}" />
+
         <Grid Margin="{DynamicResource PanelMargin}"
-              Grid.Row="0">
+              Grid.Row="1">
             <DataGrid 
-                ItemsSource="{Binding Mods, UpdateSourceTrigger=PropertyChanged}"
+                ItemsSource="{Binding Packages, UpdateSourceTrigger=PropertyChanged}"
                 VerticalContentAlignment="Top"
             
                 CanUserResizeColumns="False"
@@ -35,13 +42,15 @@
                 AutoGenerateColumns="False">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="{DynamicResource DownloadModArchiveName}" Binding="{Binding FileName}" Width="*" IsReadOnly="True" />
-                    <DataGridTextColumn Header="{DynamicResource UpdateModSize}" Binding="{Binding FileSize, Converter={x:Static converters:FloatToThreeDecimalPlaces.Instance}}" Width="Auto" IsReadOnly="True" />
+                    <DataGridTextColumn Header="{DynamicResource DownloadModArchiveName}" Binding="{Binding Name}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="{DynamicResource UpdateModSize}" 
+                                        Binding="{Binding FileSize, IsAsync=True, Converter={x:Static converters:BytesLongToMegaBytesStringConverter.Instance}, NotifyOnTargetUpdated=True}" 
+                                        Width="Auto" IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
 
-        <Grid Margin="{DynamicResource PanelMargin}" Grid.Row="1">
+        <Grid Margin="{DynamicResource PanelMargin}" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"   />
                 <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}" />
@@ -53,7 +62,9 @@
                          Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}" 
                          Maximum="100" />
 
-            <Button Grid.Column="2" Content="{DynamicResource UpdateModDownload}" 
+            <Button Grid.Column="2" 
+                    Name="Button"
+                    Content="{DynamicResource UpdateModDownload}" 
                     Click="Download_Click"/>
         </Grid>
     </Grid>

@@ -134,11 +134,12 @@ public static class Setup
     /// <returns></returns>
     public static async Task CheckForMissingModDependenciesAsync()
     {
-        if (Update.CheckMissingDependencies(out var missingDependencies))
+        var deps = Update.CheckMissingDependencies();
+        if (!deps.AllAvailable)
         {
             try
             {
-                await Update.DownloadNuGetPackagesAsync(missingDependencies, false, false);
+                await Update.ResolveMissingPackagesAsync(deps);
             }
             catch (Exception)
             {

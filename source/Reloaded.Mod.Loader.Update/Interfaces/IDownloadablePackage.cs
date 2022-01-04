@@ -42,6 +42,11 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     public NuGetVersion Version { get; }
 
     /// <summary>
+    /// File size in bytes of the item to be downloaded.
+    /// </summary>
+    public long FileSize { get; }
+
+    /// <summary>
     /// Downloads the package in question asynchronously.
     /// </summary>
     /// <param name="packageFolder">The folder containing all the packages.</param>

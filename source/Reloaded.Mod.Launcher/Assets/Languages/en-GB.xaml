@@ -183,7 +183,7 @@
     <sys:String x:Key="NoUpdateDialogTitle">Hooray!</sys:String>
     <sys:String x:Key="NoUpdateDialogMessage">Nothing to do here. All mods in check!</sys:String>
 
-    <!-- Fetch Nuget Dialog -->
+    <!-- Fetch Nuget Dialog | Obsolete since 1.12.0 but some strings still used. -->
     <sys:String x:Key="FetchNugetTitle">Download Packages</sys:String>
     <sys:String x:Key="FetchNugetMessage">The following packages will be installed:</sys:String>
     <sys:String x:Key="FetchNugetNotFoundMessage">The following packages have not been found:</sys:String>
@@ -317,6 +317,9 @@
     <sys:String x:Key="ErrorUnableDetermineVersion">Error: Unable to Determine Reloaded II Version</sys:String>
     <sys:String x:Key="ErrorUpdateModInUseTitle">Mod(s) In Use</sys:String>
     <sys:String x:Key="ErrorUpdateModInUse">You have applications currently running Reloaded.&#x0a;Updates will download however will not be applied until all applications are closed.</sys:String>
+    <sys:String x:Key="ErrorMissingDependency">Missing Dependencies</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionTitle">Invalid Version Number</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionDescription">The version number used by mod does not conform to the `Semantic Versioning` (SemVer) standard and cannot receive updates.&#x0a;Please update your mod's version number to use SemVer.&#x0a;Examples: `1.0.0`, `1.0`, `2.0-alpha`.</sys:String>
 
     <!-- Update 1.12.0: Extended Edit Mod -->
     <sys:String x:Key="CreateModDialogDescriptionShort">Description</sys:String>
@@ -352,10 +355,6 @@
 
     <sys:String x:Key="AddAppWarningTitle" xml:space="preserve">Executable Name Warning</sys:String>
     <sys:String x:Key="AddAppWarning" xml:space="preserve">The executable name of the application added is different from the original.&#x0a;If you are adding another application, you should add it as a new application.</sys:String>
-
-    <!-- Update 1.12.0: Extended Errors -->
-    <sys:String x:Key="ErrorInvalidSemanticVersionTitle">Invalid Version Number</sys:String>
-    <sys:String x:Key="ErrorInvalidSemanticVersionDescription">The version number used by mod does not conform to the `Semantic Versioning` (SemVer) standard and cannot receive updates.&#x0a;Please update your mod's version number to use SemVer.&#x0a;Examples: `1.0.0`, `1.0`, `2.0-alpha`.</sys:String>
 
     <!-- Update 1.12.0: Publish Mod Dialog -->
     <sys:String x:Key="TitlePublishModDialog">Publish Mod</sys:String>
@@ -404,5 +403,10 @@
     <sys:String x:Key="TitleEditModUserConfig">Edit User Config</sys:String>
     <sys:String x:Key="TitleEditModUserAllowPrereleases">Allow Beta Versions</sys:String>
     <sys:String x:Key="TitleEditModUserAllowPrereleasesTooltip">Allows early versions of the mod to be downloaded.</sys:String>
+
+    <!-- Update 1.12.0: Fast Package Download Experience -->
+    <sys:String x:Key="PackageDownloaderDownloadCompleteTitle">Download Complete</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadCompleteDescription" xml:space="preserve">Download Finished.&#x0a;This window will automatically close in a few seconds.</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadingDependencies">Downloading Dependencies</sys:String>
 
 </ResourceDictionary>

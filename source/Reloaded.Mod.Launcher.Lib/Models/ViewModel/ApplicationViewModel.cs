@@ -139,9 +139,10 @@ public class ApplicationViewModel : ObservableObject, IDisposable
             await ApplicationTuple.SaveAsync();
                 
             // Check for mod updates/dependencies.
-            if (Update.CheckMissingDependencies(out var missingDependencies))
+            var deps = Update.CheckMissingDependencies();
+            if (!deps.AllAvailable)
             {
-                try { await Update.DownloadNuGetPackagesAsync(missingDependencies, false, false); }
+                try { await Update.ResolveMissingPackagesAsync(deps); }
                 catch (Exception) { }
             }
 
