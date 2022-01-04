@@ -1,8 +1,9 @@
-﻿using Reloaded.Mod.Interfaces.Internal;
+﻿using System.Collections.Generic;
+using Reloaded.Mod.Interfaces.Internal;
 
 namespace Reloaded.Mod.Interfaces
 {
-    public interface IApplicationConfig : IApplicationConfigV1
+    public interface IApplicationConfig : IApplicationConfigV2
     {
 
     }

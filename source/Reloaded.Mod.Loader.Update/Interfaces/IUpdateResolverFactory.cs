@@ -29,7 +29,7 @@ public interface IUpdateResolverFactory
     void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig);
 
     /// <summary>
-    /// Returns true if this mod is compatible to be updated. 
+    /// Returns an update resolver for the given modification. Otherwise returns null if this resolver cannot be used with the mod.
     /// </summary>
     /// <param name="mod">The mod to check.</param>
     /// <param name="data">Various configurations and general data provided to all the updaters.</param>

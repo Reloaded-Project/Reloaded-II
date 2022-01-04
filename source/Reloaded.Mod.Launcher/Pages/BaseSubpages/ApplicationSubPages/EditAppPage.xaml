@@ -101,6 +101,35 @@
                         HorizontalAlignment="Stretch" 
                         VerticalAlignment="Center"/>
 
+                <!-- Package Resolver Options. -->
+                <controls:PopupLabel ButtonText="{DynamicResource AddAppModSources}"
+                                     FontSize="{DynamicResource FontSizeSmall}"
+                                     HiddenVisibilityType="Collapsed"
+                                     IsOpen="False">
+                    <controls:PopupLabel.HiddenContent>
+                        <ItemsControl ItemsSource="{Binding PackageProviders}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <CheckBox Content="{Binding Factory.FriendlyName}" IsChecked="{Binding IsEnabled}" 
+                                                  Style="{DynamicResource DefaultCheckBox}"
+                                                  HorizontalAlignment="Center" Margin="{DynamicResource CommonItemVerticalMargin}" />
+
+                                        <controls:PropertyGridEx MinWidth="500" 
+                                                                 Width="Auto"
+                                                                 FlattenChildProperties="ParentNameAsCategory"
+                                                                 Background="Transparent"
+                                                                 SelectedObject="{Binding Configuration}"
+                                                                 Visibility="{Binding IsEnabled, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"
+                                                                 Margin="{DynamicResource CommonItemVerticalMargin}"
+                                                                 Style="{StaticResource PropertyGridBaseStyle}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </controls:PopupLabel.HiddenContent>
+                </controls:PopupLabel>
+
                 <!-- The text can be a tiny bit too long, no width cap here. -->
                 <controls:PopupLabel ButtonText="{DynamicResource AddAppAdvancedOptions}"
                                          FontSize="{DynamicResource FontSizeSmall}"

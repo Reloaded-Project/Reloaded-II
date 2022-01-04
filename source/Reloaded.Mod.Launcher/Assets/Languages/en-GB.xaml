@@ -412,4 +412,7 @@
     <!-- Update 1.12.0: Extended Download Mods Menu -->
     <sys:String x:Key="DownloadPackagesSource">Source</sys:String>
 
+    <!-- Update 1.12.0: Extended Edit Application -->
+    <sys:String x:Key="AddAppModSources">Mod Download Sources</sys:String>
+
 </ResourceDictionary>

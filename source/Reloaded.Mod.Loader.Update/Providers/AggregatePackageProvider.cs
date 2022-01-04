@@ -11,12 +11,18 @@ namespace Reloaded.Mod.Loader.Update.Providers;
 /// </summary>
 public class AggregatePackageProvider : IDownloadablePackageProvider
 {
+    /// <summary>
+    /// Friendly name for this package provider.
+    /// </summary>
+    public string FriendlyName { get; set; }
+
     private IDownloadablePackageProvider[] _providers;
 
     /// <summary/>
-    public AggregatePackageProvider(IDownloadablePackageProvider[] providers)
+    public AggregatePackageProvider(IDownloadablePackageProvider[] providers, string friendlyName = "No Name")
     {
         _providers = providers;
+        FriendlyName = friendlyName;
     }
 
     /// <inheritdoc />

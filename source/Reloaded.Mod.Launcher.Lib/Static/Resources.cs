@@ -444,4 +444,7 @@ public static class Resources
 
     // Update 1.12.0: Extended Download Mods Menu
     public static IDictionaryResource<string> DownloadPackagesSource { get; set; }
+
+    // Update 1.12.0: Extended Edit Application
+    public static IDictionaryResource<string> AddAppModSources { get; set; }
 }
