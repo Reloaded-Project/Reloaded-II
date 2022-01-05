@@ -53,7 +53,7 @@ public class WebDownloadablePackage : IDownloadablePackage
     /// </summary>
     /// <param name="url">URL that can be used to download the package.</param>
     /// <param name="guessNameAndSize">Guesses the file name and size of the downloadable item.</param>
-    public WebDownloadablePackage(Uri url, bool guessNameAndSize = true)
+    public WebDownloadablePackage(Uri url, bool guessNameAndSize)
     {
         _url = url;
 #pragma warning disable CS4014
@@ -86,7 +86,7 @@ public class WebDownloadablePackage : IDownloadablePackage
         await archiveExtractor.ExtractPackageAsync(tempFilePath, tempExtractDirectory.FolderPath, extractProgress, token);
 
         /* Get name of package. */
-        var configs = ConfigReader<ModConfig>.ReadConfigurations(tempExtractDirectory.FolderPath, ModConfig.ConfigFileName, default, int.MaxValue);
+        var configs = ConfigReader<ModConfig>.ReadConfigurations(tempExtractDirectory.FolderPath, ModConfig.ConfigFileName, token, int.MaxValue, 0);
         var returnResult = "";
 
         foreach (var config in configs)

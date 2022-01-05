@@ -42,17 +42,14 @@ public class GameBananaPackageProviderTests
     {
         // Arrange
         var provider = new GameBananaPackageProvider(7486);
-
-        // Act
-        var packages = await provider.SearchAsync("Update Lib. Test");
-
+        
         // Act
         using var outputDirectory = new TemporaryFolderAllocation();
-        var package = (await provider.SearchAsync("Hooks")).First();
+        var package = (await provider.SearchAsync("Update Lib. Test")).First();
         var downloadedPackagePath = await package.DownloadAsync(outputDirectory.FolderPath, null);
 
         // Assert
-        Assert.True(Directory.Exists(downloadedPackagePath));
+        Assert.True(Directory.Exists(downloadedPackagePath), "This test currently fails because GameBanana cannot distinguish between Delta and Normal packages.");
         Assert.True(File.Exists(Path.Combine(downloadedPackagePath, ModConfig.ConfigFileName)));
     }
 }

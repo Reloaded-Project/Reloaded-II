@@ -22,6 +22,9 @@ public class GameBananaMod
     [JsonPropertyName("_sName")]
     public string? Name { get; set; }
 
+    [JsonPropertyName("_sText")]
+    public string? Description { get; set; }
+
     [JsonPropertyName("_aFiles")]
     public List<GameBananaModFile>? Files { get; set; }
 
@@ -44,7 +47,7 @@ public class GameBananaMod
     {
         try
         {
-            // Todo: Page is 1 indexed.
+            // Note: Page is 1 indexed.
             using var client = new WebClient();
             string urlString = "";
 
@@ -55,7 +58,7 @@ public class GameBananaMod
                 urlString = $"https://gamebanana.com/apiv7/Mod/ByName?" +
                             $"_nPerpage={take}&" +
                             $"_nPage={page}&" +
-                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations&" +
+                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText&" +
                             $"_sName={searchText}&" +
                             $"_idGameRow={gameId}";
             }
@@ -64,7 +67,7 @@ public class GameBananaMod
                 urlString = $"https://gamebanana.com/apiv7/Mod/ByGame?" +
                             $"_nPerpage={take}&" +
                             $"_nPage={page}&" +
-                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations&" +
+                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText&" +
                             $"_aGameRowIds[]={gameId}";
             }
 
@@ -151,6 +154,11 @@ public class GameBananaManagerIntegration
     /// Returns true if the download URL is a Reloaded URL.
     /// </summary>
     public bool? IsReloadedDownloadUrl() => DownloadUrl?.StartsWith(ReloadedProtocol, StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Returns the download URL with the reloaded specifier stripped out.
+    /// </summary>
+    public string GetReloadedDownloadUrl() => DownloadUrl!.Substring(ReloadedProtocol.Length + 1);
 }
 
 /// <summary>
