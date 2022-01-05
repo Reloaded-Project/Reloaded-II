@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using Reloaded.WPF.MVVM;
@@ -39,6 +40,7 @@ public class FixDataGridColumnWidths : AttachedPropertyBase<FixDataGridColumnWid
             column.Width = oldWidth;
         }
 
-        grid.UpdateLayout();
+        try { grid.UpdateLayout(); }
+        catch (Exception) { }
     }
 }
