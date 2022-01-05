@@ -35,7 +35,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         // TODO: Potential bug if no manager integrated mods are returned but there are still more items to take.
         // We ignore it for now but it's best revisited in the future.
 
-        int page       = skip / take;
+        int page       = (skip / take) + 1;
         var gbApiItems = await GameBananaMod.GetByNameAsync(text, GameId, page, take);
         var results    = new List<IDownloadablePackage>();
 
