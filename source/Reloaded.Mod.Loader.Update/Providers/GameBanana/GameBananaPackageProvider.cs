@@ -63,6 +63,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
             };
 
             // Check manager integrations.
+            int counter = 0;
             foreach (var integratedFile in result.ManagerIntegrations)
             {
                 var fileId       = integratedFile.Key;
@@ -77,12 +78,22 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
 
                     var url       = new Uri(integration.GetReloadedDownloadUrl());
                     var textDesc  = HtmlUtilities.ConvertToPlainText(result.Description);
-                    var fileName  = !string.IsNullOrEmpty(file.Description) ? file.Description : file.FileName;
+                    var downloadFileName = !string.IsNullOrEmpty(file.Description) ? file.Description : file.FileName;
+                    var fileName = "";
+                    if (counter > 0)
+                    {
+                        fileName = $"{result.Name!} [{counter++}]";
+                    } 
+                    else
+                    {
+                        fileName = $"{result.Name!}";
+                        counter++;
+                    }
 
                     results.Add(new WebDownloadablePackage(url, false)
                     {
-                        Name = $"{result.Name!}: {fileName}",
-                        Description = textDesc,
+                        Name = fileName,
+                        Description = $"[{downloadFileName}] {textDesc}",
                         Authors = author,
                         FileSize = file.FileSize.GetValueOrDefault(),
                         Source = "GameBanana"
