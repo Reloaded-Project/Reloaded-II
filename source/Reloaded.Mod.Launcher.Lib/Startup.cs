@@ -90,7 +90,7 @@ public static class Startup
         if (downloadUrl.StartsWith($"{Constants.ReloadedProtocol}:", StringComparison.InvariantCultureIgnoreCase))
             downloadUrl = downloadUrl.Substring(Constants.ReloadedProtocol.Length + 1);
 
-        var package = new WebDownloadablePackage(new Uri(downloadUrl));
+        var package = new WebDownloadablePackage(new Uri(downloadUrl), true);
         var viewModel = new DownloadPackageViewModel(package, IoC.Get<LoaderConfig>());
         viewModel.StartDownloadAsync();
 

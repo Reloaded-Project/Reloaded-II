@@ -17,6 +17,7 @@ using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Utility;
+using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Providers;
 using Reloaded.Mod.Loader.Update.Providers.NuGet;
@@ -39,7 +40,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// <summary>
     /// List of potential packages to download.
     /// </summary>
-    public ObservableCollection<IDownloadablePackage> SearchResult  { get; set; }
+    public ObservableCollection<IDownloadablePackage> SearchResult  { get; set; } = new();
 
     /// <summary>
     /// The currently selected package.
@@ -71,31 +72,52 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// </summary>
     public bool CanGoToNextPage { get; set; } = true;
 
-    private AggregateNugetRepository _nugetRepository;
+    /// <summary>
+    /// List of all available package providers.
+    /// </summary>
+    public ObservableCollection<AggregatePackageProvider> PackageProviders { get; set; } = new();
+
+    /// <summary>
+    /// The currently used package provider.
+    /// </summary>
+    public AggregatePackageProvider CurrentPackageProvider { get; set; }
+
     private CancellationTokenSource? _tokenSource;
 
-    private IDownloadablePackageProvider _packageProvider;
     private PaginationHelper _paginationHelper = PaginationHelper.Default;
 
     /* Construction - Deconstruction */
 
     /// <inheritdoc />
-    public DownloadPackagesViewModel(AggregateNugetRepository nugetRepository)
+    public DownloadPackagesViewModel(AggregateNugetRepository nugetRepository, ApplicationConfigService appConfigService)
     {
-        _nugetRepository = nugetRepository;
-        _packageProvider = new AggregatePackageProvider(new IDownloadablePackageProvider[] { new NuGetPackageProvider(nugetRepository) });
-        _paginationHelper.ItemsPerPage = 10;
-#pragma warning disable CS4014
-        GetSearchResults();
-#pragma warning restore CS4014
+        // Get package provider for individual games.
+        foreach (var appConfig in appConfigService.Items.ToArray())
+        {
+            var provider = PackageProviderFactory.GetProvider(appConfig);
+            if (provider != null)
+                PackageProviders.Add(provider);
+        }
 
-        SearchResult = new ObservableCollection<IDownloadablePackage>();
+        // Get package provider for all packages.
+        PackageProviders.Add(new AggregatePackageProvider(new IDownloadablePackageProvider[] { new NuGetPackageProvider(nugetRepository) }, "NuGet"));
+        var allPackageProvider = new AggregatePackageProvider(PackageProviders.Select(x => (IDownloadablePackageProvider)x).ToArray(), Resources.DownloadPackagesAll.Get());
+        PackageProviders.Add(allPackageProvider);
+        CurrentPackageProvider = allPackageProvider;
+
+        // Setup other viewmodel elements.
         ConfigureNuGetSourcesCommand = new ConfigureNuGetSourcesCommand(RefreshOnSourceChange);
         PropertyChanged += OnAnyPropChanged;
         UpdateCommands();
 
         // React to search results and pagination stuff.
         SearchResult.CollectionChanged += SetCanGoToNextPageOnSearchResultsChanged;
+
+        // Perform Initial Search.
+        _paginationHelper.ItemsPerPage = 10;
+#pragma warning disable CS4014
+        GetSearchResults();
+#pragma warning restore CS4014
     }
 
     /// <summary>
@@ -106,9 +128,8 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     {
         _tokenSource?.Cancel();
         _tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-
-        // TODO: Limit number of returned items. (Pagination)
-        var searchTuples = await _packageProvider.SearchAsync(SearchQuery, _paginationHelper.Skip, _paginationHelper.Take, _tokenSource.Token);
+        
+        var searchTuples = await CurrentPackageProvider.SearchAsync(SearchQuery, _paginationHelper.Skip, _paginationHelper.Take, _tokenSource.Token);
         Collections.ModifyObservableCollection(SearchResult, searchTuples);
     }
 
@@ -137,16 +158,25 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     {
         if (e.PropertyName == nameof(SearchQuery))
         {
-            _paginationHelper.Reset();
-            CanGoToLastPage = false;
-#pragma warning disable 4014
-            GetSearchResults(); // Fire and forget.
-#pragma warning restore 4014
+            ResetSearch();
+        }
+        else if (e.PropertyName == nameof(CurrentPackageProvider))
+        {
+            ResetSearch();
         }
         else if (e.PropertyName == nameof(SelectedResult))
         {
             UpdateCommands();
         }
+    }
+
+    private void ResetSearch()
+    {
+        _paginationHelper.Reset();
+        CanGoToLastPage = false;
+#pragma warning disable 4014
+        GetSearchResults(); // Fire and forget.
+#pragma warning restore 4014
     }
 
     private void SetCanGoToNextPageOnSearchResultsChanged(object? sender, NotifyCollectionChangedEventArgs e)

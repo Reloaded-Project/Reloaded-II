@@ -38,7 +38,7 @@ public static class PackageProviderFactory
                 providers.Add(provider);
         }
 
-        return providers.Count > 0 ? new AggregatePackageProvider(providers.ToArray()) : null;
+        return providers.Count > 0 ? new AggregatePackageProvider(providers.ToArray(), application.Config.AppName) : null;
     }
 
     /// <summary>

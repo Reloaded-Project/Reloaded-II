@@ -77,20 +77,22 @@
             Margin="{DynamicResource CommonItemVerticalMargin}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
-                <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors, NotifyOnTargetUpdated=True}" Width="Auto"  IsReadOnly="True" />
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors, NotifyOnTargetUpdated=True}" Width="Auto" MaxWidth="150" IsReadOnly="True" />
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version, NotifyOnTargetUpdated=True}" Width="Auto" IsReadOnly="True"/>
                 <DataGridTextColumn Header="{DynamicResource DownloadPackagesSource}" Binding="{Binding Source, NotifyOnTargetUpdated=True}" Width="Auto" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- Full Description -->
-        <TextBlock Grid.Row="2" 
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
-                   Text="{Binding SelectedResult.Description, UpdateSourceTrigger=PropertyChanged}"
-                   Style="{DynamicResource RIIDefaultTextBlock}"
-                   TextWrapping="Wrap"/>
+        <ScrollViewer Grid.Row="2" MaxHeight="180">
+            <TextBlock 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
+                Text="{Binding SelectedResult.Description, UpdateSourceTrigger=PropertyChanged}"
+                Style="{DynamicResource RIIDefaultTextBlock}"
+                TextWrapping="Wrap"/>
+        </ScrollViewer>
 
         <!-- Actions -->
         <StackPanel Grid.Row="4"

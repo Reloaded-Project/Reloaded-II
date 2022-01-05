@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="DeepCloner" Version="0.10.3" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.39" />
     <PackageReference Include="Markdig" Version="0.18.0" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.0" />
     <PackageReference Include="NuGet.Packaging" Version="5.7.0" />

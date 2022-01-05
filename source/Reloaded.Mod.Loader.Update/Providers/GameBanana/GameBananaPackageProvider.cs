@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Providers.GameBanana.Structures;
 using Reloaded.Mod.Loader.Update.Providers.Web;
+using Reloaded.Mod.Loader.Update.Utilities;
 
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
@@ -72,10 +76,13 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                         continue;
 
                     var url       = new Uri(integration.GetReloadedDownloadUrl());
+                    var textDesc  = HtmlUtilities.ConvertToPlainText(result.Description);
+                    var fileName  = !string.IsNullOrEmpty(file.Description) ? file.Description : file.FileName;
+
                     results.Add(new WebDownloadablePackage(url, false)
                     {
-                        Name = $"{result.Name!}: {file.FileName}",
-                        Description = $"{result.Description}"!,
+                        Name = $"{result.Name!}: {fileName}",
+                        Description = textDesc,
                         Authors = author,
                         FileSize = file.FileSize.GetValueOrDefault(),
                         Source = "GameBanana"
