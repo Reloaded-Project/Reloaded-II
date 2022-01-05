@@ -39,7 +39,7 @@ public class WebDownloadablePackage : IDownloadablePackage
     public string Source { get; set; } = "Web URL";
 
     /// <inheritdoc />
-    public NuGetVersion Version { get; } = NuGetVersion.Parse("0.0.0");
+    public NuGetVersion Version { get; set; } = NuGetVersion.Parse("0.0.0");
 
     /// <summary>
     /// Size of the file to be downloaded.
@@ -52,11 +52,13 @@ public class WebDownloadablePackage : IDownloadablePackage
     /// Creates a downloadable package given a web URL.
     /// </summary>
     /// <param name="url">URL that can be used to download the package.</param>
-    public WebDownloadablePackage(Uri url)
+    /// <param name="guessNameAndSize">Guesses the file name and size of the downloadable item.</param>
+    public WebDownloadablePackage(Uri url, bool guessNameAndSize = true)
     {
         _url = url;
 #pragma warning disable CS4014
-        GetNameAndSize(url); // Fire and forget.
+        if (guessNameAndSize)
+            GetNameAndSize(url); // Fire and forget.
 #pragma warning restore CS4014
     }
 
