@@ -93,8 +93,8 @@
             Margin="{DynamicResource CommonItemVerticalMargin}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
-                <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors, NotifyOnTargetUpdated=True}" Width="Auto" MaxWidth="150" IsReadOnly="True" />
-                <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version, NotifyOnTargetUpdated=True}" Width="Auto" IsReadOnly="True"/>
+                <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors, NotifyOnTargetUpdated=True}" Width="Auto" MaxWidth="250" IsReadOnly="True" />
+                <!-- <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version, NotifyOnTargetUpdated=True}" Width="Auto" IsReadOnly="True"/> -->
                 <DataGridTextColumn Header="{DynamicResource DownloadPackagesSource}" Binding="{Binding Source, NotifyOnTargetUpdated=True}" Width="Auto" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
