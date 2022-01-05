@@ -26,13 +26,29 @@
         <!-- Search -->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{DynamicResource CommonItemVerticalMarginSmall}">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            
+
+            <ComboBox Grid.Column="0"
+                      Margin="{DynamicResource CommonItemHorizontalMarginSmaller}"
+                      IsSynchronizedWithCurrentItem="True"
+                      SelectedItem="{Binding CurrentPackageProvider, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                      ItemsSource="{Binding PackageProviders, UpdateSourceTrigger=PropertyChanged}"
+                      MaxHeight="{Binding ActualHeight, ElementName=TextBox}"
+                      Width="150" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding FriendlyName}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
             <TextBox 
-                Grid.Column="0"
+                x:Name="TextBox"
+                Grid.Column="1"
                 Style="{DynamicResource TextboxWithPlaceholder}" 
                 Tag="{DynamicResource ModManagerSearchMods}"
                 Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -42,14 +58,14 @@
             <Button Content="{DynamicResource FirstLaunchExAddModExtractPrev}" 
                     Style="{DynamicResource DefaultButton}" 
                     Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Click="Last_Click"
                     Visibility="{Binding CanGoToLastPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"/>
 
             <Button Content="{DynamicResource FirstLaunchExAddModExtractNext}" 
                     Style="{DynamicResource DefaultButton}" 
                     Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
-                    Grid.Column="2"
+                    Grid.Column="3"
                     Click="Next_Click"
                     Visibility="{Binding CanGoToNextPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"/>
 
