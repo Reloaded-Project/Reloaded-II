@@ -86,7 +86,8 @@ public static class Publisher
         var extraData = new ReleaseMetadataExtraData()
         {
             ModId   = args.ModTuple.Config.ModId,
-            ModName = args.ModTuple.Config.ModName
+            ModName = args.ModTuple.Config.ModName,
+            ModDescription = args.ModTuple.Config.ModDescription,
         };
 
         var metadata = await builder.BuildAsync(new BuildArgs()

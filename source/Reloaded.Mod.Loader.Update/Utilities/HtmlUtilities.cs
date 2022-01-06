@@ -15,8 +15,11 @@ public static class HtmlUtilities
     /// </summary>
     /// <param name="html">The HTML.</param>
     /// <returns></returns>
-    public static string ConvertToPlainText(string html)
+    public static string ConvertToPlainText(string? html)
     {
+        if (string.IsNullOrEmpty(html))
+            return "";
+
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
 

@@ -20,6 +20,12 @@ public class ReleaseMetadataExtraData
     public string? ModName { get; set; }
 
     /// <summary>
+    /// Description of the mod contained within.
+    /// Copy of <see cref="ModConfig.ModDescription"/>.
+    /// </summary>
+    public string? ModDescription { get; set; }
+
+    /// <summary>
     /// Reserved for future use.
     /// </summary>
     public string? Changelog { get; set; }
