@@ -5,7 +5,7 @@ using System.IO;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Tests.SETUP;
 using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Resolvers;
+using Reloaded.Mod.Loader.Update.Providers.NuGet;
 using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.Update.Misc;
 using Sewer56.Update.Resolvers;

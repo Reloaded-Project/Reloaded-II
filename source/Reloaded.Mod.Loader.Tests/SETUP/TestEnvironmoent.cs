@@ -86,6 +86,10 @@ public class TestEnvironmoent : IDisposable
         // Backup config and override on filesystem with new.
         OriginalConfig = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath);
         TestConfig = MakeTestConfig();
+
+        if (OriginalConfig != TestConfig)
+            IConfig<LoaderConfig>.ToPath(OriginalConfig, $"{Paths.LoaderConfigPath}.bak");
+        
         IConfig<LoaderConfig>.ToPath(TestConfig, Paths.LoaderConfigPath);
 
         try

@@ -17,6 +17,7 @@ using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Dependency;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 
@@ -302,6 +303,7 @@ public static class Setup
     /// </summary>
     private static async Task CheckForUpdatesAsync()
     {
+        await DependencyMetadataWriterFactory.ExecuteAllAsync(IoC.Get<ModConfigService>());
         await Task.Run(Update.CheckForModUpdatesAsync);
         await Update.CheckForLoaderUpdatesAsync();
         await CheckForMissingModDependenciesAsync();

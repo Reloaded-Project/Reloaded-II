@@ -81,11 +81,10 @@ public static class ResolverFactoryExtensions
     /// <summary>
     /// Removes a configuration from the mod.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="factory">The factory from which the configuration is sourced from.</param>
     /// <param name="mod">The mod config to assign the configuration to.</param>
     /// <returns>Whether the configuration was found or not.</returns>
-    public static void RemoveConfiguration<T>(this IUpdateResolverFactory factory, PathTuple<ModConfig> mod)
+    public static void RemoveConfiguration(this IUpdateResolverFactory factory, PathTuple<ModConfig> mod)
     {
         mod.Config.PluginData.Remove(factory.ResolverId);
     }

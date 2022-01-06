@@ -8,7 +8,7 @@ using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.Update.Interfaces;
 using Sewer56.Update.Resolvers.GitHub;
 
-namespace Reloaded.Mod.Loader.Update.Resolvers;
+namespace Reloaded.Mod.Loader.Update.Providers.GitHub;
 
 /// <summary>
 /// Allows for updating of packages sourced from GitHub releases.

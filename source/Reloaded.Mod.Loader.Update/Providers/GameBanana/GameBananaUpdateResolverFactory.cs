@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.IO;
-using Reloaded.Mod.Interfaces.Utilities;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
@@ -9,7 +8,7 @@ using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.Update.Interfaces;
 using Sewer56.Update.Resolvers.GameBanana;
 
-namespace Reloaded.Mod.Loader.Update.Resolvers;
+namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
 /// <summary>
 /// Allows for updating of packages sourced from GameBanana.
@@ -70,6 +69,7 @@ public class GameBananaUpdateResolverFactory : IUpdateResolverFactory
     /// <summary>
     /// Stores a configuration describing how to update mod using GameBanana.
     /// </summary>
+    [Equals(DoNotAddEqualityOperators = true)]
     public class GameBananaConfig : IConfig<GameBananaConfig>
     {
         private const string DefaultCategory = "GameBanana Settings";

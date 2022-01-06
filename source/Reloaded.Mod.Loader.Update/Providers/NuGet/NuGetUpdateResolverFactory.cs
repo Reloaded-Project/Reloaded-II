@@ -13,7 +13,7 @@ using Sewer56.Update.Resolvers;
 using Sewer56.Update.Resolvers.NuGet;
 using Sewer56.Update.Resolvers.NuGet.Utilities;
 
-namespace Reloaded.Mod.Loader.Update.Resolvers;
+namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 
 /// <summary>
 /// Allows for updating packages sourced from NuGet repositories.

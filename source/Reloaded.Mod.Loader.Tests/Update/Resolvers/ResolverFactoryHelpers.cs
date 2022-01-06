@@ -18,7 +18,7 @@ public class RemoveConfiguration<T> : IDisposable
 
     public void Dispose()
     {
-        Factory.RemoveConfiguration<T>(Config);
+        Factory.RemoveConfiguration(Config);
         Config.Save();
     }
 }
