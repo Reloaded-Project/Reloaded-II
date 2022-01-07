@@ -97,6 +97,6 @@ public struct DependencyResolutionResult
 /// </summary>
 public struct DependencyResolutionItem
 {
-    public ModConfig Mod; 
+    public ModConfig Mod = null; 
     public List<string> Dependencies = new List<string>();
 }

@@ -86,14 +86,23 @@ public class WebDownloadablePackage : IDownloadablePackage
         await archiveExtractor.ExtractPackageAsync(tempFilePath, tempExtractDirectory.FolderPath, extractProgress, token);
 
         /* Get name of package. */
-        var configs = ConfigReader<ModConfig>.ReadConfigurations(tempExtractDirectory.FolderPath, ModConfig.ConfigFileName, token, int.MaxValue, 0);
+        return CopyPackagesFromExtractFolderToTargetDir(packageFolder, tempExtractDirectory.FolderPath, token);
+    }
+
+    /// <summary>
+    /// Finds all mods in <paramref name="tempExtractDir"/> and copies them to appropriate subfolders in <paramref name="packageFolder"/>.
+    /// </summary>
+    /// <returns>Path to last folder copied.</returns>
+    public static string CopyPackagesFromExtractFolderToTargetDir(string packageFolder, string tempExtractDir, CancellationToken token)
+    {
+        var configs = ConfigReader<ModConfig>.ReadConfigurations(tempExtractDir, ModConfig.ConfigFileName, token, int.MaxValue, 0);
         var returnResult = "";
 
         foreach (var config in configs)
         {
             string configId = config.Config.ModId;
             string configDirectory = Path.GetDirectoryName(config.Path)!;
-            returnResult = Path.Combine(packageFolder, IOEx.ForceValidFilePath(configId));
+            returnResult = Path.Combine(packageFolder, IO.Utility.IOEx.ForceValidFilePath(configId));
             IOEx.MoveDirectory(configDirectory, returnResult);
         }
 

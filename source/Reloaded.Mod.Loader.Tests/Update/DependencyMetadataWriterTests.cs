@@ -72,7 +72,7 @@ public class DependencyMetadataWriterTests : IDisposable
         var gameBanana = new GameBananaDependencyMetadataWriter();
         gameBanana.Update(clonedOriginal.Config, new[] { clonedDependency.Config, clonedDependency2.Config });
 
-        Assert.True(clonedOriginal.Config.PluginData.TryGetValue(GameBananaDependencyMetadataWriter.PluginId, out GameBananaDependencyMetadataWriter.GameBananaResolverMetadata metadata));
+        Assert.True(clonedOriginal.Config.PluginData.TryGetValue(GameBananaDependencyMetadataWriter.PluginId, out GameBananaResolverMetadata metadata));
         Assert.Equal(2, metadata.IdToConfigMap.Count);
 
         // Act & Assert: Item Removal

@@ -110,7 +110,7 @@ public static class Actions
         /// <summary>
         /// Time after which the message box is automatically closed
         /// </summary>
-        public TimeSpan Timeout;
+        public TimeSpan Timeout = TimeSpan.Zero;
     }
 
     /// <summary>

@@ -5,6 +5,7 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Sewer56.Update.Misc;
+using Sewer56.Update.Packaging.Structures;
 
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
@@ -32,7 +33,13 @@ public class GameBananaDependencyMetadataWriter : IDependencyMetadataWriter
         foreach (var dependency in dependencies)
         {
             if (dependency.PluginData.TryGetValue(ResolverId, out GameBananaUpdateResolverFactory.GameBananaConfig config))
-                newMetadata.IdToConfigMap[dependency.ModId] = config;
+            {
+                newMetadata.IdToConfigMap[dependency.ModId] = new GameBananaResolverItem()
+                {
+                    Config = config,
+                    ReleaseMetadataName = dependency.ReleaseMetadataFileName
+                };
+            }
         }
         
         var hasExisting = mod.PluginData.TryGetValue(PluginId, out GameBananaResolverMetadata metadata);
@@ -62,16 +69,30 @@ public class GameBananaDependencyMetadataWriter : IDependencyMetadataWriter
 
         return false;
     }
+}
+
+/// <summary>
+/// Stores a configuration describing how to update mod using GameBanana.
+/// </summary>
+[Equals(DoNotAddEqualityOperators = true)]
+public class GameBananaResolverMetadata : IConfig<GameBananaResolverMetadata>
+{
+    /// <summary>
+    /// Maps a list of individual ids to configurations.
+    /// </summary>
+    public Dictionary<string, GameBananaResolverItem> IdToConfigMap { get; private set; } = new(StringComparer.OrdinalIgnoreCase);
+}
+
+/// <summary/>
+public struct GameBananaResolverItem
+{
+    /// <summary>
+    /// The configuration associated with this item.
+    /// </summary>
+    public GameBananaUpdateResolverFactory.GameBananaConfig Config = new GameBananaUpdateResolverFactory.GameBananaConfig();
 
     /// <summary>
-    /// Stores a configuration describing how to update mod using GameBanana.
+    /// Name of the release metadata file.
     /// </summary>
-    [Equals(DoNotAddEqualityOperators = true)]
-    public class GameBananaResolverMetadata : IConfig<GameBananaResolverMetadata>
-    {
-        /// <summary>
-        /// Maps a list of individual ids to configurations.
-        /// </summary>
-        public Dictionary<string, GameBananaUpdateResolverFactory.GameBananaConfig> IdToConfigMap { get; private set; } = new (StringComparer.OrdinalIgnoreCase);
-    }
+    public string ReleaseMetadataName = Singleton<ReleaseMetadata>.Instance.GetDefaultFileName();
 }
