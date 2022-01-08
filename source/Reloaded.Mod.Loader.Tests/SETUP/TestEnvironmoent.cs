@@ -87,7 +87,7 @@ public class TestEnvironmoent : IDisposable
         OriginalConfig = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath);
         TestConfig = MakeTestConfig();
 
-        if (OriginalConfig != TestConfig)
+        if (OriginalConfig.ApplicationConfigDirectory != TestConfig.ApplicationConfigDirectory)
             IConfig<LoaderConfig>.ToPath(OriginalConfig, $"{Paths.LoaderConfigPath}.bak");
         
         IConfig<LoaderConfig>.ToPath(TestConfig, Paths.LoaderConfigPath);
