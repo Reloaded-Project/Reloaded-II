@@ -39,7 +39,7 @@ public class Program
     private static void Hash(HashOptions obj)
     {
         using var fileStream = new FileStream(obj.Source, FileMode.Open);
-        Console.WriteLine(xxHash64.ComputeHash(fileStream));
+        Console.WriteLine(Hashing.ToString(xxHash64.ComputeHash(fileStream)));
     }
 
     private static void BuildIndex(BuildIndexOptions buildIndex) => Index.Build(buildIndex.Source, buildIndex.Destination);

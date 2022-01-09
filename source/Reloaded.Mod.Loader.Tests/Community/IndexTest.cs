@@ -67,7 +67,7 @@ public class IndexTest
 
         // Act
         var appId = indexCopy.IdToApps.First().Key;
-        var item = indexCopy.FindApplication("", appId);
+        var item = indexCopy.FindApplication("", appId, out _);
         var application = await indexApi.GetApplicationAsync(item[0]);
 
         // Assert
@@ -93,7 +93,7 @@ public class IndexTest
 
         // Act
         var hash = indexCopy.HashToAppDictionary.First().Key;
-        var item = indexCopy.FindApplication(hash, "");
+        var item = indexCopy.FindApplication(hash, "", out _);
         var application = await indexApi.GetApplicationAsync(item[0]);
 
         // Assert

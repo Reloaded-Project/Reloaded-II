@@ -448,4 +448,20 @@ public static class Resources
 
     // Update 1.12.0: Extended Edit Application
     public static IDictionaryResource<string> AddAppModSources { get; set; }
+
+    // Update 1.12.0: Community App Repository
+    public static IDictionaryResource<string> AddAppRepoBadExecutable { get; set; }
+    public static IDictionaryResource<string> AddAppRepoBadHashTitle { get; set; }
+    public static IDictionaryResource<string> AddAppRepoWarningTitle { get; set; }
+
+    public static IDictionaryResource<string> AddAppRepoBadHashDesc1 { get; set; }
+    public static IDictionaryResource<string> AddAppRepoBadHashDesc2 { get; set; }
+
+    public static IDictionaryResource<string> AddAppRepoWarningDesc1 { get; set; }
+    public static IDictionaryResource<string> AddAppRepoWarningDesc2 { get; set; }
+
+    public static IDictionaryResource<string> AddAppRepoSelectGameDialogTitle { get; set; }
+    public static IDictionaryResource<string> AddAppRepoSelectGameDialogDesc1 { get; set; }
+    public static IDictionaryResource<string> AddAppRepoSelectGameDialogDesc2 { get; set; }
+    public static IDictionaryResource<string> AddAppRepoSelectGameDialogOtherGame { get; set; }
 }

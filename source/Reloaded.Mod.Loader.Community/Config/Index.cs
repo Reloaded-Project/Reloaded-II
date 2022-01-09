@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -14,12 +15,12 @@ public class Index
     /// <summary>
     /// Maps a list of individual IDs to matching application profiles.
     /// </summary>
-    public Dictionary<string, List<IndexAppEntry>> IdToApps { get; set; } = new Dictionary<string, List<IndexAppEntry>>();
+    public Dictionary<string, List<IndexAppEntry>> IdToApps { get; set; } = new Dictionary<string, List<IndexAppEntry>>(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Maps a list of hashes to matching games.
     /// </summary>
-    public Dictionary<string, List<IndexAppEntry>> HashToAppDictionary { get; set; } = new Dictionary<string, List<IndexAppEntry>>();
+    public Dictionary<string, List<IndexAppEntry>> HashToAppDictionary { get; set; } = new Dictionary<string, List<IndexAppEntry>>(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Builds a game index given a source folder and outputs it to a given directory.
@@ -72,11 +73,16 @@ public class Index
     /// </summary>
     /// <param name="hash">Hash of the application to find.</param>
     /// <param name="id">Id of the application to find.</param>
+    /// <param name="hashMatches">True if the hash matches, else false.</param>
     /// <returns>List of results.</returns>
-    public List<IndexAppEntry> FindApplication(string hash, string id)
+    public List<IndexAppEntry> FindApplication(string hash, string id, out bool hashMatches)
     {
-        if (HashToAppDictionary.TryGetValue(hash, out var applications)) 
+        hashMatches = false;
+        if (HashToAppDictionary.TryGetValue(hash, out var applications))
+        {
+            hashMatches = true;
             return applications;
+        }
 
         if (IdToApps.TryGetValue(id, out var files))
             return files;

@@ -2,6 +2,7 @@
 using System.Threading;
 using Reloaded.Mod.Launcher.Lib.Interop;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
+using Reloaded.Mod.Loader.Community.Config;
 
 #pragma warning disable CS1591
 
@@ -83,6 +84,21 @@ public static class Actions
     public static ShowFetchPackageDialogDelegate ShowFetchPackageDialog { get; set; } = null!;
 
     /// <summary>
+    /// Shows a dialog that can be used to select the added game.
+    /// </summary>
+    public static ShowSelectAddedGameDialogDelegate ShowSelectAddedGameDialog { get; set; } = null!;
+
+    /// <summary>
+    /// Shows a dialog that shows information to the user regarding an application hash mismatch.
+    /// </summary>
+    public static ShowAddAppHashMismatchDialogDelegate ShowAddAppHashMismatchDialog { get; set; } = null!;
+
+    /// <summary>
+    /// Shows a dialog that displays information about warnings regarding to the application.
+    /// </summary>
+    public static ShowApplicationWarningDialogDelegate ShowApplicationWarningDialog { get; set; } = null!;
+
+    /// <summary>
     /// Delegate used to display a message to user's screen.
     /// </summary>
     /// <param name="title">Title of the error.</param>
@@ -111,6 +127,11 @@ public static class Actions
         /// Time after which the message box is automatically closed
         /// </summary>
         public TimeSpan Timeout = TimeSpan.Zero;
+
+        /// <summary>
+        /// Maximum width for the message box.
+        /// </summary>
+        public int Width { get; set; } = default;
     }
 
     /// <summary>
@@ -216,4 +237,22 @@ public static class Actions
     /// </summary>
     /// <param name="viewModel">The ViewModel used for downloading the individual package.</param>
     public delegate bool ShowFetchPackageDialogDelegate(DownloadPackageViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that can be used to select the added game.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for selecting the individual game.</param>
+    public delegate IndexAppEntry? ShowSelectAddedGameDialogDelegate(SelectAddedGameDialogViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that displays information about the mismatched application hash.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for selecting the individual game.</param>
+    public delegate bool ShowAddAppHashMismatchDialogDelegate(AddAppHashMismatchDialogViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that displays information about warnings regarding to the application.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for showing warnings about the application.</param>
+    public delegate bool ShowApplicationWarningDialogDelegate(AddApplicationWarningDialogViewModel viewModel);
 }

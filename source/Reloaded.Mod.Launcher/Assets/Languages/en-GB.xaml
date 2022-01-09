@@ -416,4 +416,21 @@
     <!-- Update 1.12.0: Extended Edit Application -->
     <sys:String x:Key="AddAppModSources">Mod Download Sources</sys:String>
 
+    <!-- Update 1.12.0: Extended Edit Application -->
+    <sys:String x:Key="AddAppRepoBadExecutable">Wrong Executable</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashTitle">Mismatching Hash</sys:String>
+    <sys:String x:Key="AddAppRepoWarningTitle">Warning</sys:String>
+
+    <sys:String x:Key="AddAppRepoBadHashDesc1">The main executable (EXE) of the application is modified or of a different version than expected.</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashDesc2">Please be aware that not all mods may behave as expected. Consider following the guidance (if any) presented in the message above.</sys:String>
+
+    <sys:String x:Key="AddAppRepoWarningDesc1">Quick scan of the game directory has produced the following warnings:</sys:String>
+    <sys:String x:Key="AddAppRepoWarningDesc2">Please be aware that not all mods may behave as expected. Consider following the guidance (if any) presented in the warnings above.</sys:String>
+
+    <sys:String x:Key="AddAppRepoSelectGameDialogTitle">Select Game</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc1">Please select your desired game from the following list and press OK.</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc2">If your game is not on the list, please select 'Other Game'.</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogOtherGame">Other Game</sys:String>
+
+
 </ResourceDictionary>
