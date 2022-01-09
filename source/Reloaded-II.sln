@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.31911.260
@@ -66,7 +66,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.Update.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.Community", "Reloaded.Mod.Loader.Community\Reloaded.Mod.Loader.Community.csproj", "{C529F382-25A3-4C1F-A877-0ED4E53EFF20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Community.Tool", "Reloaded.Community.Tool\Reloaded.Community.Tool.csproj", "{16976E7C-4826-40E5-9E17-2C4266394FD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Community.Tool", "Tools\Reloaded.Community.Tool\Reloaded.Community.Tool.csproj", "{16976E7C-4826-40E5-9E17-2C4266394FD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

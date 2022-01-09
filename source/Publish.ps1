@@ -28,7 +28,7 @@ $launcherProjectPath = "Reloaded.Mod.Launcher/Reloaded.Mod.Launcher.csproj"
 $loaderProjectPath = "Reloaded.Mod.Loader/Reloaded.Mod.Loader.csproj"
 $addressDumperProjectPath = "Reloaded.Mod.Launcher.Kernel32AddressDumper/Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj"
 
-$communityProjectPath = "Reloaded.Mod.Loader.Community/Reloaded.Mod.Loader.Community.csproj"
+$communityProjectPath = "Tools/Reloaded.Community.Tool/Reloaded.Community.Tool.csproj"
 $nugetConverterProjectPath = "Tools/NugetConverter/NugetConverter.csproj"
 $publisherProjectPath = "Tools/Reloaded.Publisher/Reloaded.Publisher.csproj"
 
