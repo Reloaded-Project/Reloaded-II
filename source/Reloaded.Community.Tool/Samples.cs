@@ -10,7 +10,7 @@ public static class Samples
         AppId = "application.id",
         AppName = "Application Name",
         AppStatus = Status.Ok,
-        Description = "Application Description",
+        BadStatusDescription = "Application Description",
         GameBananaId = 1337,
         Hash = "XXHASH64 of EXE Goes Here",
         Warnings = new List<WarningItem>() 

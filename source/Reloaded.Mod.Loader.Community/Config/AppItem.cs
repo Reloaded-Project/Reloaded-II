@@ -16,6 +16,11 @@ public class AppItem
     public string? Hash { get; set; }
 
     /// <summary>
+    /// Description for when game matches by ID but not by hash.
+    /// </summary>
+    public string? BadHashDescription { get; set; }
+
+    /// <summary>
     /// ID of the application.
     /// </summary>
     public string? AppId { get; set; }
@@ -26,14 +31,14 @@ public class AppItem
     public Status AppStatus { get; set; }
 
     /// <summary>
+    /// Compatibility note or description.
+    /// </summary>
+    public string? BadStatusDescription { get; set; }
+
+    /// <summary>
     /// Name of the application in question.
     /// </summary>
     public string? AppName { get; set; }
-
-    /// <summary>
-    /// Compatibility note or description.
-    /// </summary>
-    public string? Description { get; set; }
 
     /// <summary>
     /// Game Id for GameBanana. Accept if non-zero.

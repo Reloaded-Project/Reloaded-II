@@ -125,7 +125,7 @@ public class IndexTest
         return new Faker<AppItem>()
                 .RuleFor(x => x.AppName, x => x.Internet.UserName())
                 .RuleFor(x => x.AppId, x => x.System.FileName())
-                .RuleFor(x => x.Description, x => x.Random.Words(10))
+                .RuleFor(x => x.BadStatusDescription, x => x.Random.Words(10))
                 .RuleFor(x => x.Hash, x => x.Random.Hash(16))
                 .RuleFor(x => x.GameBananaId, x => x.Random.Number(0, 10000))
                 .RuleFor(x => x.AppStatus, x => x.PickRandom<Status>());
