@@ -21,7 +21,7 @@ public static class Routes
     /// <summary>
     /// Link to the index containing the mappings
     /// </summary>
-    public const string Index = $"Index{FileExtension}";
+    public const string Index = $"Index{FileExtension}{CompressionExtension}";
 
     /// <summary>
     /// Link to the index containing the individual application configs.
