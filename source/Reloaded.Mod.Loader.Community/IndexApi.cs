@@ -26,7 +26,7 @@ public class IndexApi
     ///     URL of the website/host storing the files.
     ///     If local path, should end on forward slash.
     /// </param>
-    public IndexApi(string indexUrl)
+    public IndexApi(string indexUrl = "https://reloaded-project.github.io/Reloaded.Community/")
     {
         IndexUrl = new Uri(indexUrl);
     }
