@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Reloaded.Mod.Loader.Community\Reloaded.Mod.Loader.Community.csproj" />
-    <ProjectReference Include="..\..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
+    <ProjectReference Include="..\..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text.Json;
 using CommandLine;
 using CommandLine.Text;
+using Reloaded.Mod.Interfaces.Utilities;
 using Reloaded.Mod.Loader.Community.Config;
 using Reloaded.Mod.Loader.Community.Utility;
 using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana;
+using Reloaded.Mod.Loader.IO.Structs;
 using Standart.Hash.xxHash;
 using Index = Reloaded.Mod.Loader.Community.Config.Index;
 
@@ -69,14 +70,14 @@ public class Program
                 Console.WriteLine("Copy Text Below, Save as .json file.\n" +
                                   "====================================");
 
-                new GameBananaPackageProviderFactory().TryGetConfigurationOrDefault(appById, out var gbConfig);
+                var config = TryGetGameBananaUpdateConfig(appById);
                 SerializeAndPrint(new AppItem()
                 {
                     AppId = appById.Config.AppId,
                     AppName = appById.Config.AppName,
                     AppStatus = Status.Ok,
                     Hash = Hashing.ToString(xxHash64.ComputeHash(File.ReadAllBytes(appById.Config.AppLocation))),
-                    GameBananaId = ((GameBananaPackageProviderFactory.GameBananaProviderConfig) gbConfig).GameId
+                    GameBananaId = config.GameId
                 });
             }
         }
@@ -125,5 +126,24 @@ public class Program
         }, example => example, true);
 
         Console.WriteLine(helpText);
+    }
+
+    private static GameBananaProviderConfig TryGetGameBananaUpdateConfig(PathTuple<ApplicationConfig> appById)
+    {
+        try
+        {
+            appById.Config.PluginData.TryGetValue("GBPackageProvider", out GameBananaProviderConfig config);
+            config ??= new GameBananaProviderConfig();
+            return config;
+        }
+        catch (Exception)
+        {
+            return new GameBananaProviderConfig();
+        }
+    }
+
+    private class GameBananaProviderConfig : IConfig<GameBananaProviderConfig>
+    {
+        public int GameId { get; set; } = 0;
     }
 }
