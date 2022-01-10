@@ -151,11 +151,11 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
             return;
 
         OpenModFolderCommand = new OpenModFolderCommand(SelectedMod.Tuple);
-        ConfigureModCommand = new ConfigureModCommand(SelectedMod.Tuple);
         EditModCommand = new EditModCommand(SelectedMod.Tuple, null);
         PublishModCommand = new PublishModCommand(SelectedMod.Tuple);
 
         var userConfig = _userConfigService.ItemsById.GetValueOrDefault(SelectedMod.Tuple.Config.ModId);
         EditModUserConfigCommand = new EditModUserConfigCommand(userConfig);
+        ConfigureModCommand = new ConfigureModCommand(SelectedMod.Tuple, userConfig);
     }
 }

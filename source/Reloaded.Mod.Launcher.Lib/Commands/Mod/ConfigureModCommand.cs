@@ -22,11 +22,13 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
 {
     private static Type[] _sharedTypes = { typeof(IConfigurator) };
     private readonly PathTuple<ModConfig>? _modTuple;
+    private readonly PathTuple<ModUserConfig>? _modUserConfigTuple;
 
     /// <inheritdoc />
-    public ConfigureModCommand(PathTuple<ModConfig>? modTuple)
+    public ConfigureModCommand(PathTuple<ModConfig>? modTuple, PathTuple<ModUserConfig>? userConfig)
     {
         _modTuple = modTuple;
+        _modUserConfigTuple = userConfig;
     }
         
     /* ICommand */
@@ -77,14 +79,21 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         var types = assembly.GetTypes();
         var entryPoint = types.FirstOrDefault(t => typeof(IConfigurator).IsAssignableFrom(t) && !t.IsAbstract);
 
-        if (entryPoint != null)
-        {
-            configurator = (IConfigurator)Activator.CreateInstance(entryPoint)!;
-            configurator.SetModDirectory(Path.GetFullPath(Path.GetDirectoryName(_modTuple.Path)!));
-            return true;
-        }
+        if (entryPoint == null) 
+            return false;
 
-        return false;
+        configurator = (IConfigurator)Activator.CreateInstance(entryPoint)!;
+        var modDirectory = Path.GetFullPath(Path.GetDirectoryName(_modTuple.Path)!);
+        configurator.SetModDirectory(modDirectory);
+
+        if (configurator is IConfiguratorV2 versionTwo && _modUserConfigTuple != null)
+        {
+            var configDirectory = Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!);
+            versionTwo.Migrate(modDirectory, configDirectory);
+            versionTwo.SetConfigDirectory(configDirectory);
+        }
+            
+        return true;
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
