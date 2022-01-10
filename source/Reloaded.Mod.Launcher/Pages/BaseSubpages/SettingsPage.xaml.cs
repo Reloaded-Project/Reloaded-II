@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Reloaded.Mod.Launcher.Lib;
 using Reloaded.Mod.Launcher.Lib.Commands.General;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 using Reloaded.Mod.Launcher.Lib.Utility;
+using Reloaded.Mod.Launcher.Pages.Dialogs;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 
@@ -36,4 +38,11 @@ public partial class SettingsPage : ReloadedIIPage
 
     private void LogFiles_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => ViewModel.OpenLogFileLocation();
     private void ConfigFile_PreviewMouseDown(object sender, MouseButtonEventArgs e) => ViewModel.OpenConfigFile();
+
+    private void Tutorial_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        var firstLaunchWindow = new FirstLaunch();
+        firstLaunchWindow.Owner = Window.GetWindow(this);
+        firstLaunchWindow.ShowDialog();
+    }
 }

@@ -11,7 +11,7 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     mc:Ignorable="d"
     d:DesignHeight="600" 
-    d:DesignWidth="756"
+    d:DesignWidth="900"
     Title="{DynamicResource TitleLoaderSettings}">
     <ScrollViewer>
         <Grid Margin="{DynamicResource PageMargin}" DataContext="{Binding ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
@@ -29,184 +29,152 @@
                 <system:Double x:Key="ButtonWidth">250</system:Double>  
             </Grid.Resources>
 
-            <DockPanel LastChildFill="False">
-                <StackPanel Margin="{DynamicResource PanelMargin}" DockPanel.Dock="Top">
-
-                    <!-- Banner and Build Date -->
-                    <Image x:Name="Banner"
+            <StackPanel VerticalAlignment="Center" Margin="{DynamicResource PanelMargin}" >
+                <!-- Banner and Build Date -->
+                <Image x:Name="Banner"
                        Style="{DynamicResource HighQualityImage}"
                        MaxWidth="600"
                        Source="{DynamicResource ReloadedNoBrackets}"
                        StretchDirection="Both"
                        Margin="{DynamicResource BannerMargin}"/>
 
-                    <TextBlock DockPanel.Dock="Bottom"
-                               HorizontalAlignment="Center"
-                               Style="{DynamicResource BuildTextBlock}"
-                               Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
+                <TextBlock DockPanel.Dock="Bottom"
+                           HorizontalAlignment="Center"
+                           Style="{DynamicResource BuildTextBlock}"
+                           Text="{Binding Path=Copyright, UpdateSourceTrigger=PropertyChanged, FallbackValue='Sewer56 ~ 2019 | 2019-06-14T10:59:22'}"/>
 
 
-                    <TextBlock DockPanel.Dock="Bottom"
+                <TextBlock DockPanel.Dock="Bottom"
                            HorizontalAlignment="Center"
                            Style="{DynamicResource TextblockWithColourChange}"
                            Text="{Binding Path=RuntimeVersion, UpdateSourceTrigger=PropertyChanged, FallbackValue='.NET Core X.XX'}"/>
-                </StackPanel>
 
-                <StackPanel DockPanel.Dock="Bottom">
-
-                    <!-- Docs / User Guide -->
-                    <StackPanel Orientation="Horizontal" Margin="{DynamicResource CommonItemVerticalMargin}" HorizontalAlignment="Center">
+                <!-- Docs / User Guide -->
+                <StackPanel Orientation="Horizontal" Margin="{DynamicResource CommonItemVerticalMargin}" HorizontalAlignment="Center">
 
 
-                        <Image Source="{DynamicResource IconInfo}"
+                    <Image Source="{DynamicResource IconInfo}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource FirstLaunchLineUserguide}"
                                PreviewMouseDown="Documents_PreviewMouseDown" />
 
-                        <Image Source="{DynamicResource IconDiscord}"
+                    <Image Source="{DynamicResource IconDiscord}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource LoaderSettingsDiscord}"
                                PreviewMouseDown="Discord_PreviewMouseDown" />
 
-                        <Image Source="{DynamicResource IconTwitter}"
+                    <Image Source="{DynamicResource IconTwitter}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource LoaderSettingsTwitter}"
                                PreviewMouseDown="Twitter_PreviewMouseDown" />
 
-                        <Image Source="{DynamicResource IconSponsor}"
+                    <Image Source="{DynamicResource IconSponsor}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource LoaderSettingsDonate}"
                                PreviewMouseDown="Donate_PreviewMouseDown" />
 
-                    </StackPanel>
+                </StackPanel>
 
-                    <!-- Toggle Show Console -->
-                    <controls:PopupLabel ButtonText="{DynamicResource LoaderSettingsConfigPopup}" FontSize="{DynamicResource FontSizeLarger}"
+                <!-- Tutorial -->
+                <Button Style="{DynamicResource DefaultButton}" 
+                            Click="Tutorial_Click" 
+                            Content="{DynamicResource TitleFirstLaunchEx}"/>
+
+                <!-- Toggle Show Console -->
+                <controls:PopupLabel ButtonText="{DynamicResource LoaderSettingsConfigPopup}" FontSize="{DynamicResource FontSizeLarger}"
                                          Margin="{DynamicResource CommonItemVerticalMargin}" HiddenVisibilityType="Collapsed" IsOpen="False"
                                          Style="{DynamicResource PopupLabelWithColourChange}">
-                        <controls:PopupLabel.HiddenContent>
-                            <Grid HorizontalAlignment="Center">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="{StaticResource SettingsGridWidth}"/>
-                                    <ColumnDefinition Width="{StaticResource SettingsGridWidth}"/>
-                                </Grid.ColumnDefinitions>
+                    <controls:PopupLabel.HiddenContent>
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{StaticResource SettingsGridWidth}"/>
+                                <ColumnDefinition Width="{StaticResource SettingsGridWidth}"/>
+                            </Grid.ColumnDefinitions>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                                <!-- Language -->
-                                <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+
+                            <!-- Language -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                                            Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                            Text="{DynamicResource LoaderSettingsConfigLanguage}" 
                                            Style="{DynamicResource TextblockWithColourChange}" />
 
-                                <ComboBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                            <ComboBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
                                           Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                           IsSynchronizedWithCurrentItem="True"
                                           SelectedItem="{Binding LanguageSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                           ItemsSource="{Binding LanguageSelector.Files, UpdateSourceTrigger=PropertyChanged}"
                                           MaxWidth="{StaticResource ComboBoxWidth}" Width="{StaticResource ComboBoxWidth}" 
                                           SelectionChanged="LanguageChanged">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
-                                <!-- Theme -->
-                                <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                            <!-- Theme -->
+                            <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"
                                            Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                            Text="{DynamicResource LoaderSettingsConfigTheme}" 
                                            Style="{DynamicResource TextblockWithColourChange}"/>
 
-                                <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                            <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
                                           Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                           IsSynchronizedWithCurrentItem="True"
                                           SelectedItem="{Binding ThemeSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                           ItemsSource="{Binding ThemeSelector.Files, UpdateSourceTrigger=PropertyChanged}"
                                           MaxWidth="{StaticResource ComboBoxWidth}" Width="{StaticResource ComboBoxWidth}" 
                                           SelectionChanged="ThemeChanged">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={x:Static converters:FilePathToFileConverter.Instance}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
 
-                                <!-- Show Console -->
-                                <CheckBox Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
+                            <!-- Show Console -->
+                            <CheckBox Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
                                           Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                           IsChecked="{Binding LoaderConfig.ShowConsole}"
                                           Content="{DynamicResource LoaderSettingsShowConsole}"
                                           Style="{DynamicResource DefaultCheckBox}" />
 
-                                <!-- Open Log Files -->
-                                <Button Grid.Row="3" Grid.ColumnSpan="2"
+                            <!-- Open Log Files -->
+                            <Button Grid.Row="3" Grid.ColumnSpan="2"
                                         Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                         Style="{DynamicResource UnpaddedStretchedGridButton}"
                                         Content="{DynamicResource LoaderSettingsConfigLog}" 
                                         Width="{StaticResource ButtonWidth}"
                                         PreviewMouseDown="LogFiles_PreviewMouseDown"/>
 
-                                <!-- Open Config File -->
-                                <Button Grid.Row="4" Grid.ColumnSpan="2"
+                            <!-- Open Config File -->
+                            <Button Grid.Row="4" Grid.ColumnSpan="2"
                                         Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                         Style="{DynamicResource UnpaddedStretchedGridButton}"
                                         Content="{DynamicResource LoaderSettingsConfigFile}" 
                                         Width="{StaticResource ButtonWidth}"
                                         PreviewMouseDown="ConfigFile_PreviewMouseDown"/>
 
-                            </Grid>
-                        </controls:PopupLabel.HiddenContent>
-                    </controls:PopupLabel>
+                        </Grid>
+                    </controls:PopupLabel.HiddenContent>
+                </controls:PopupLabel>
 
-                    <!-- Bottom Row: Statistics and Warning -->
-                    <Grid DockPanel.Dock="Bottom">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0"
-                               HorizontalAlignment="Left"
+                <!-- Bottom Row: Statistics and Warning -->
+                <TextBlock Text="{DynamicResource LoaderSettingsWarning}"
+                               HorizontalAlignment="Center"
                                TextWrapping="Wrap"
                                FontSize="{DynamicResource FontSizeLarge}"
-                               Text="{DynamicResource LoaderSettingsWarning}"
                                Style="{DynamicResource RIIDefaultTextBlock}"/>
 
-                        <!-- Statistics -->
-                        <StackPanel Grid.Column="2">
-                            <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock HorizontalAlignment="Right"
-                                       Style="{DynamicResource StatisticsTextblock}"
-                                       Text="{DynamicResource LoaderSettingsAppsInstalled}"/>
-                                <TextBlock HorizontalAlignment="Right"
-                                       Style="{DynamicResource StatisticsTextvalue}"
-                                       Text="{Binding Path=TotalApplicationsInstalled, UpdateSourceTrigger=PropertyChanged, FallbackValue=0}">
-                                </TextBlock>
-                            </StackPanel>
-
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBlock HorizontalAlignment="Right"
-                                       Style="{DynamicResource StatisticsTextblock}"
-                                       Text="{DynamicResource LoaderSettingsModsInstalled}"/>
-                                <TextBlock HorizontalAlignment="Right"
-                                       Style="{DynamicResource StatisticsTextvalue}"
-                                       Text="{Binding Path=TotalModsInstalled, UpdateSourceTrigger=PropertyChanged, FallbackValue=0}">
-                                </TextBlock>
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
-            </DockPanel>
+            </StackPanel>
         </Grid>
     </ScrollViewer>
 </pages:ReloadedIIPage>
