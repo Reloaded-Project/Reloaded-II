@@ -7,13 +7,14 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default.xaml" />
-                <ResourceDictionary Source="Assets/Languages/en-GB.xaml"/>
-
                 <!-- HandyControl -->
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDefault.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
                 <hc:Theme Name="HandyTheme" Skin="Dark"/>
+
+                <!-- Reloaded-->
+                <ResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default.xaml" />
+                <ResourceDictionary Source="Assets/Languages/en-GB.xaml"/>
 
                 <!-- HandyControl Compat XAML -->
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/ThirdParty/HandyControl.xaml"/>
