@@ -32,10 +32,10 @@ pages:
         - Injection Methods: InjectionMethods.md
   - For Modders:
     - Getting Started: GettingStartedMods.md
-    - Publishing Mods: UpdateSupport.md
+    - Publishing Mods: PublishingMods.md
   - For Programmers:
-    - Building Mods: DeveloperModGuide.md
-    - Inter Mod Communication: InterModCommunication.md
+    - Building Mods: BuildingMods.md
+    - Dependency Injection: DependencyInjection.md
     - Miscellaneous:
         - Automation: Automation.md
         - API Overview: APIOverview.md
