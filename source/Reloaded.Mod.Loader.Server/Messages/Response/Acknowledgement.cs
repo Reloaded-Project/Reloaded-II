@@ -1,12 +1,13 @@
 ﻿using Reloaded.Messaging.Interfaces;
 using Reloaded.Messaging.Serializer.MessagePack;
+using Reloaded.Messaging.Serializer.ReloadedMemory;
 
 namespace Reloaded.Mod.Loader.Server.Messages.Response;
 
 public struct Acknowledgement : IMessage<MessageType>
 {
     public MessageType GetMessageType() => MessageType.Acknowledgement;
-    public ISerializer GetSerializer() => new MsgPackSerializer(true);
+    public ISerializer GetSerializer() => new ReloadedMemorySerializer(true);
     public ICompressor GetCompressor() => null;
 
     /// <summary>

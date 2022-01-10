@@ -1,0 +1,42 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.ShowApplicationWarningDialog"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
+                xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+                mc:Ignorable="d"
+                Height="Auto" 
+                Width="700"
+                SizeToContent="Height"
+                WindowStartupLocation="CenterOwner"
+                Title="{DynamicResource AddAppRepoSelectGameDialogTitle}"
+                Style="{DynamicResource ReloadedWindow}">
+    <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
+        <StackPanel>
+            <TextBlock Text="{DynamicResource AddAppRepoWarningDesc1}" 
+                       Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                       Style="{DynamicResource RIIDefaultTextBlock}"
+                       TextWrapping="Wrap"/>
+
+            <ListView Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                      HorizontalAlignment="Stretch"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ItemsSource="{Binding Warnings, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <TextBlock Text="{DynamicResource AddAppRepoWarningDesc2}" 
+                       Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                       Style="{DynamicResource RIIDefaultTextBlock}"
+                       TextWrapping="Wrap"/>
+
+            <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource GridButton}" PreviewMouseDown="OK_PreviewMouseDown"/>
+
+        </StackPanel>
+    </Grid>
+</default:ReloadedWindow>

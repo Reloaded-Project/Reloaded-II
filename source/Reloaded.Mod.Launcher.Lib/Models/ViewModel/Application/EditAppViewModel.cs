@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -7,11 +8,14 @@ using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Launcher.Lib.Commands.Application;
 using Reloaded.Mod.Launcher.Lib.Commands.Templates;
 using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
+using Reloaded.Mod.Launcher.Lib.Models.Model.Update;
 using Reloaded.Mod.Launcher.Lib.Static;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
+using Reloaded.Mod.Loader.Update;
+using Reloaded.Mod.Loader.Update.Interfaces;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 
@@ -51,6 +55,11 @@ public class EditAppViewModel : ObservableObject
     /// If false, saving is ignored.
     /// </summary>
     public bool AllowSaving { get; set; } = true;
+    
+    /// <summary>
+    /// List of all configurable providers configurations.
+    /// </summary>
+    public ObservableCollection<ProviderFactoryConfiguration> PackageProviders { get; set; } = new ObservableCollection<ProviderFactoryConfiguration>();
 
     private PathTuple<ApplicationConfig>? _lastApplication;
 
@@ -61,6 +70,15 @@ public class EditAppViewModel : ObservableObject
         AppConfigService = appConfigService;
         DeleteApplicationCommand = new CallbackCommand(new DeleteApplicationCommand(Application), AfterDeleteApplication);
         PropertyChanged += OnApplicationChanged;
+
+        // Build Package Provider Configurations
+        foreach (var provider in PackageProviderFactory.All)
+        {
+            var result = ProviderFactoryConfiguration.TryCreate(provider, Application);
+            if (result != null)
+                PackageProviders.Add(result);
+        }
+
         RefreshCommands();
     }
 
@@ -86,6 +104,15 @@ public class EditAppViewModel : ObservableObject
     {
         try
         {
+            // Save Plugins
+            foreach (var provider in PackageProviders)
+            {
+                if (provider.IsEnabled)
+                    provider.Factory.SetConfiguration(Application, provider.Configuration);
+                else
+                    Application.Config.PluginData.Remove(provider.Factory.ResolverId);
+            }
+
             if (AllowSaving)
                 await Application.SaveAsync();
         }

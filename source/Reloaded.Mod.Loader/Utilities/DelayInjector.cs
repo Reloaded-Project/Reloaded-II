@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text.Json;
 using Reloaded.Hooks;
@@ -15,6 +16,7 @@ namespace Reloaded.Mod.Loader.Utilities;
 /// Mass hooks Windows APIs to inject a callback which will be used to run a function once.
 /// Then all hooks are undone.
 /// </summary>
+[ExcludeFromCodeCoverage(Justification = "Difficult to test in unit tests. Mostly covered by tests in Reloaded.Hooks. This is tested on executables using Steam DRM.")]
 public unsafe class DelayInjector
 {
     private List<DllEntry> _dlls;

@@ -9,6 +9,7 @@ using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 using Reloaded.Mod.Launcher.Lib.Static;
 using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.Update.Providers.Web;
 
 namespace Reloaded.Mod.Launcher.Lib;
 
@@ -89,7 +90,17 @@ public static class Startup
         if (downloadUrl.StartsWith($"{Constants.ReloadedProtocol}:", StringComparison.InvariantCultureIgnoreCase))
             downloadUrl = downloadUrl.Substring(Constants.ReloadedProtocol.Length + 1);
 
-        Actions.DownloadModArchives(new DownloadModArchiveViewModel(new[] { new Uri(downloadUrl) }));
+        var package = new WebDownloadablePackage(new Uri(downloadUrl), true);
+        var viewModel = new DownloadPackageViewModel(package, IoC.Get<LoaderConfig>());
+        viewModel.StartDownloadAsync();
+
+        Actions.ShowFetchPackageDialog(viewModel);
+        Actions.DisplayMessagebox(Resources.PackageDownloaderDownloadCompleteTitle.Get(), Resources.PackageDownloaderDownloadCompleteDescription.Get(), new Actions.DisplayMessageBoxParams()
+        {
+            Type = Actions.MessageBoxType.Ok,
+            StartupLocation = Actions.WindowStartupLocation.CenterScreen,
+            Timeout = TimeSpan.FromSeconds(8)
+        });
     }
 
     private static void StartGame(string applicationToLaunch, string arguments)

@@ -45,7 +45,7 @@ public static class ActionWrappers
     {
         Actions.SynchronizationContext.Post(_ => action(), null);
     }
-
+    
     /// <summary>
     /// Executes an action on the UI thread asynchronously, allowing for
     /// collections that run on it to be manipulated.
@@ -60,10 +60,10 @@ public static class ActionWrappers
             try { result = function(); }
             catch (Exception? ex) { exception = ex; }
         }, null);
-
+        
         // Wait until result is acquired.
         while (result == null && exception == null)
-            await Task.Yield();
+            await Task.Delay(16);
 
         // Throw exception if task faulted.
         if (exception != null)

@@ -1,46 +1,36 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Update.Exceptions;
 using Reloaded.Mod.Loader.Update.Packaging.Converters.NuGet;
 using Xunit;
 
-namespace Reloaded.Mod.Loader.Tests.Update.NuGet.Convert
+namespace Reloaded.Mod.Loader.Tests.Update.NuGet.Convert;
+
+public class ConverterTests
 {
-    public class ConverterTests
+    private static string TestArchiveFile = "HeroesControllerPostProcess.zip";
+    private static string TestArchiveFileBad = "HeroesControllerPostProcessBad.zip"; // Has folder in root.
+
+    [Fact]
+    public async Task TryConvertBad()
     {
-        private static string TestArchiveFile = "HeroesControllerPostProcess.zip";
-        private static string TestArchiveFileBad = "HeroesControllerPostProcessBad.zip"; // Has folder in root.
+        await Assert.ThrowsAsync<FileNotFoundException>(async () => await Converter.FromArchiveFileAsync(TestArchiveFileBad, Environment.CurrentDirectory));
+    }
 
-        [Fact]
-        public void TryConvertBad()
-        {
-            Assert.ThrowsAsync<BadArchiveException>(() => Converter.FromArchiveFileAsync(TestArchiveFileBad, Environment.CurrentDirectory));
-        }
+    [Fact]
+    public async Task TryConvert()
+    {
+        var converted = await Converter.FromArchiveFileAsync(TestArchiveFile, Environment.CurrentDirectory);
 
-        [Fact]
-        public async Task TryConvert()
-        {
-            var converted = await Converter.FromArchiveFileAsync(TestArchiveFile, Environment.CurrentDirectory);
+        Assert.True(File.Exists(converted));
+        Assert.True(IsZipValid(converted));
+    }
 
-            Assert.True(File.Exists(converted));
-            Assert.True(IsZipValid(converted));
-        }
-
-        private static bool IsZipValid(string path)
-        {
-            try
-            {
-                using var zipFile = ZipFile.OpenRead(path);
-                var entries = zipFile.Entries;
-                return true;
-            }
-            catch (InvalidDataException)
-            {
-                return false;
-            }
-        }
-
+    private static bool IsZipValid(string path)
+    {
+        using var zipFile = ZipFile.OpenRead(path);
+        return zipFile.Entries.FirstOrDefault(x => x.Name.Contains("ModConfig.json")) != null;
     }
 }

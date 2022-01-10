@@ -55,14 +55,13 @@
     <PackageReference Include="Markdig.Wpf" Version="0.4.0" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
     <PackageReference Include="Ninject" Version="3.3.4" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.9">
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
     <PackageReference Include="Reloaded.WPF" Version="3.0.6" />
     <PackageReference Include="Reloaded.WPF.Animations" Version="1.2.3" />
     <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.4" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>

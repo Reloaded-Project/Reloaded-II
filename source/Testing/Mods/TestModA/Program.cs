@@ -7,7 +7,7 @@ namespace TestModA
 {
     public class Program : IModV2, ITestHelper, ITestModA, IExports
     {
-        public string MyId { get; set; } = "TestModA";
+        public string MyId { get; } = "TestModA";
         public DateTime LoadTime { get; set; }
         public bool ResumeExecuted { get; set; }
         public bool SuspendExecuted { get; set; }

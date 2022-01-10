@@ -1,15 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 using Reloaded.Mod.Launcher.Lib.Static;
+using Reloaded.Mod.Launcher.Lib.Utility;
+using Reloaded.Mod.Loader.Community;
+using Reloaded.Mod.Loader.Community.Config;
+using Reloaded.Mod.Loader.Community.Utility;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
+using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.Update.Interfaces;
+using Reloaded.Mod.Loader.Update.Providers.GameBanana;
+using Sewer56.Update.Misc;
+using Standart.Hash.xxHash;
 
 namespace Reloaded.Mod.Launcher.Lib.Commands.Application;
 
@@ -36,7 +48,7 @@ public class AddApplicationCommand : ICommand
 
     /// <summary/>
     /// <param name="parameter">Optional parameter. See <see cref="AddApplicationCommandParams"/>.</param>
-    public void Execute(object? parameter)
+    public async void Execute(object? parameter)
     {
         var commandParam = parameter as AddApplicationCommandParams;
         var param = commandParam ?? new AddApplicationCommandParams();
@@ -66,6 +78,40 @@ public class AddApplicationCommand : ICommand
         string applicationDirectory = Path.Combine(applicationConfigDirectory, config.AppId);
         string applicationConfigFile = Path.Combine(applicationDirectory, ApplicationConfig.ConfigFileName);
 
+        // Work with the index.
+        try
+        {
+            await using var fileStream = new FileStream(config.AppLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 524288);
+            var indexApi     = new IndexApi();
+            var pathTuple    = new PathTuple<ApplicationConfig>(applicationConfigFile, config);
+            var index        = await indexApi.GetIndexAsync();
+            var hash         = Hashing.ToString(await xxHash64.ComputeHashAsync(fileStream));
+            var applications = index.FindApplication(hash, config.AppId, out bool hashMatches);
+
+            await await ActionWrappers.ExecuteWithApplicationDispatcherAsync(async () =>
+            {
+                if (applications.Count == 1 && hashMatches)
+                {
+                    await ApplyIndexEntryAsync(indexApi, applications[0], config, pathTuple, hash);
+                }
+                else if (applications.Count >= 1)
+                {
+                    // Select application.
+                    var viewModel = new SelectAddedGameDialogViewModel(applications);
+                    var result = Actions.ShowSelectAddedGameDialog(viewModel);
+                    if (result == null)
+                        return;
+
+                    await ApplyIndexEntryAsync(indexApi, applications[0], config, pathTuple, hash);
+                }
+            });
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
         // Write file to disk.
         Directory.CreateDirectory(applicationDirectory);
         IConfig<ApplicationConfig>.ToPath(config, applicationConfigFile);
@@ -76,6 +122,34 @@ public class AddApplicationCommand : ICommand
 
         // Set return value
         param.ResultCreatedApplication = true;
+    }
+
+    private static async Task ApplyIndexEntryAsync(IndexApi indexApi, IndexAppEntry applications, ApplicationConfig config, PathTuple<ApplicationConfig> pathTuple, string hash)
+    {
+        var application = await indexApi.GetApplicationAsync(applications);
+        var hashMatches = hash.Equals(application.Hash, StringComparison.OrdinalIgnoreCase);
+        if (application.AppStatus == Status.WrongExecutable && hashMatches)
+            Actions.DisplayMessagebox(Resources.AddAppRepoBadExecutable.Get(), application.BadStatusDescription!);
+
+        config.AppName = application.AppName;
+        // Apply GB Configurations
+        Singleton<GameBananaPackageProviderFactory>.Instance.SetConfiguration(pathTuple,
+            new GameBananaPackageProviderFactory.GameBananaProviderConfig()
+            {
+                GameId = (int)application.GameBananaId
+            });
+
+        if (!hashMatches)
+        {
+            var viewModel = new AddAppHashMismatchDialogViewModel(application.BadHashDescription!);
+            Actions.ShowAddAppHashMismatchDialog(viewModel);
+        }
+
+        if (application.TryGetError(Path.GetDirectoryName(config.AppLocation)!, out var errors))
+        {
+            var viewModel = new AddApplicationWarningDialogViewModel(errors);
+            Actions.ShowApplicationWarningDialog(viewModel);
+        }
     }
 
     private void ApplicationsChanged(object? sender, NotifyCollectionChangedEventArgs e)

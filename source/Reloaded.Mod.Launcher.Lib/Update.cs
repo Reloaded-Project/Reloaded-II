@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using NuGet.Protocol.Core.Types;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 using Reloaded.Mod.Launcher.Lib.Static;
+using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.Update;
+using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
@@ -133,119 +135,88 @@ public static class Update
     }
 
     /// <summary>
-    /// Downloads mods in an asynchronous fashion provided a list of Mod IDs to download.
+    /// Resolves a list of missing packages.
     /// </summary>
-    /// <param name="modIds">IDs of all of the mods to download.</param>
-    /// <param name="includePrerelease">Include pre-release packages.</param>
-    /// <param name="includeUnlisted">Include unlisted packages.</param>
+    /// <param name="result">The result of the dependency resolution operation.</param>
     /// <param name="token">Used to cancel the operation.</param>
-    public static async Task DownloadNuGetPackagesAsync(IEnumerable<string> modIds, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
+    public static async Task ResolveMissingPackagesAsync(DependencyResolutionResult result, CancellationToken token = default)
     {
         if (!HasInternetConnection)
             return;
+        
+        ModDependencyResolveResult resolveResult = null!;
 
-        var aggregateRepository = IoC.Get<AggregateNugetRepository>();
-        var packages            = new List<NugetTuple<IPackageSearchMetadata>>();
-        var missingPackages     = new List<string>();
-
-        /* Get details of every mod. */
-        foreach (var modId in modIds)
+        do
         {
-            var packageDetails = await aggregateRepository.GetPackageDetails(modId, includePrerelease, includeUnlisted, token);
-            var newest = aggregateRepository.GetNewestPackage(packageDetails);
-            if (newest != null)
-                packages.Add(newest);
-            else
-                missingPackages.Add(modId);
-        }
+            // Get Dependencies
+            var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
+            var results = new List<Task<ModDependencyResolveResult>>();
+            foreach (var dependencyItem in result.Items)
+            {
+                foreach (var dependency in dependencyItem.Dependencies)
+                {
+                    results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod, token));
+                }
+            }
 
-        await DownloadNuGetPackagesAsync(packages, missingPackages, includePrerelease, includeUnlisted, token);
+            await Task.WhenAll(results);
+
+            // Merge Results
+            resolveResult = ModDependencyResolveResult.Combine(results.Select(x => x.Result));
+            DownloadPackages(resolveResult, token);
+        } 
+        while (resolveResult.FoundDependencies.Count > 0);
+
+        if (resolveResult.NotFoundDependencies.Count > 0)
+        {
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+            {
+                Actions.DisplayMessagebox(Resources.ErrorMissingDependency.Get(),
+                    $"{Resources.FetchNugetNotFoundMessage.Get()}\n\n" +
+                    $"{string.Join('\n', resolveResult.NotFoundDependencies)}\n\n" +
+                    $"{Resources.FetchNugetNotFoundAdvice.Get()}",
+                    new Actions.DisplayMessageBoxParams()
+                    {
+                        Type = Actions.MessageBoxType.Ok,
+                        StartupLocation = Actions.WindowStartupLocation.CenterScreen
+                    });
+            });
+        }
     }
 
-
     /// <summary>
-    /// Downloads mods in an asynchronous fashion provided a list of known and missing packages.
+    /// Shows the dialog for downloading dependencies given a result of dependency resolution.
     /// </summary>
-    /// <param name="package">Existing known package.</param>
-    /// <param name="missingPackages">List of packages known to be missing.</param>
-    /// <param name="includePrerelease">Include pre-release packages.</param>
-    /// <param name="includeUnlisted">Include unlisted packages.</param>
+    /// <param name="resolveResult">Result of resolving for missing packages.</param>
     /// <param name="token">Used to cancel the operation.</param>
-    public static async Task DownloadNuGetPackagesAsync(NugetTuple<IPackageSearchMetadata> package, List<string> missingPackages, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
+    public static void DownloadPackages(ModDependencyResolveResult resolveResult, CancellationToken token = default)
     {
         if (!HasInternetConnection)
             return;
 
-        await DownloadNuGetPackagesAsync(new List<NugetTuple<IPackageSearchMetadata>>() { package }, missingPackages, includePrerelease, includeUnlisted, token);
-    }
-
-    /// <summary>
-    /// Downloads mods in an asynchronous fashion provided a list of known and missing packages.
-    /// </summary>
-    /// <param name="packages">List of existing known packages.</param>
-    /// <param name="missingPackages">List of packages known to be missing.</param>
-    /// <param name="includePrerelease">Include pre-release packages.</param>
-    /// <param name="includeUnlisted">Include unlisted packages.</param>
-    /// <param name="token">Used to cancel the operation.</param>
-    public static async Task DownloadNuGetPackagesAsync(List<NugetTuple<IPackageSearchMetadata>> packages, List<string> missingPackages, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
-    {
-        if (!HasInternetConnection)
+        if (resolveResult.FoundDependencies.Count <= 0)
             return;
 
-        /* Get dependencies of every mod. */
-        foreach (var package in packages.ToArray())
-        {
-            var repository = package.Repository;
-            var searchResult = await repository.FindDependencies(package.Generic, includePrerelease, includeUnlisted, token);
+        var viewModel  = new DownloadPackageViewModel(resolveResult.FoundDependencies, IoC.Get<LoaderConfig>());
+        viewModel.Text = Resources.PackageDownloaderDownloadingDependencies.Get();
 
-            packages.AddRange(searchResult.Dependencies.Select(x => new NugetTuple<IPackageSearchMetadata>(package.Repository, x)));
-            missingPackages.AddRange(searchResult.PackagesNotFound);
-        }
-
-        /* Remove already existing packages. */
-        var allMods = IoC.Get<ModConfigService>().Items.ToArray();
-        HashSet<string> allModIds = new HashSet<string>(allMods.Length);
-        foreach (var mod in allMods)
-            allModIds.Add(mod.Config.ModId);
-
-        // Remove mods we already have.
-        packages = packages.Where(x => !allModIds.Contains(x.Generic.Identity.Id)).ToList();
-        missingPackages = missingPackages.Where(x => !allModIds.Contains(x)).ToList();
-
+#pragma warning disable CS4014
+        viewModel.StartDownloadAsync(); // Fire and forget.
+#pragma warning restore CS4014
         Actions.SynchronizationContext.Send(state =>
         {
-            Actions.ShowNugetFetchPackageDialog.Invoke(new NugetFetchPackageDialogViewModel(packages, missingPackages));
+            Actions.ShowFetchPackageDialog.Invoke(viewModel);
         }, null);
     }
 
     /// <summary>
-    /// Verifies if all mods have all of their required dependencies and
-    /// returns a list of missing dependencies by ModId.
+    /// Checks for all missing dependencies.
     /// </summary>
     /// <returns>True if there ar missing dependencies, else false.</returns>
-    public static bool CheckMissingDependencies(out List<string> missingDependencies)
+    public static DependencyResolutionResult CheckMissingDependencies()
     {
         var modConfigService = IoC.Get<ModConfigService>();
-
-        // Get all mods and build list of IDs
-        var allMods = modConfigService.Items.ToArray();
-        HashSet<string> allModIds = new HashSet<string>(allMods.Length);
-        foreach (var mod in allMods)
-            allModIds.Add(mod.Config.ModId);
-
-        // Build list of missing dependencies.
-        var missingDeps = new HashSet<string>(allModIds.Count);
-        foreach (var mod in allMods)
-        {
-            foreach (var dependency in mod.Config.ModDependencies)
-            {
-                if (! allModIds.Contains(dependency))
-                    missingDeps.Add(dependency);
-            }
-        }
-
-        missingDependencies = missingDeps.ToList();
-        return missingDependencies.Count > 0;
+        return modConfigService.GetMissingDependencies();
     }
 
     /// <summary>

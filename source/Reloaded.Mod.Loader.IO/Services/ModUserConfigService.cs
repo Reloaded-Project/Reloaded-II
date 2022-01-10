@@ -26,7 +26,7 @@ public class ModUserConfigService : ConfigServiceBase<ModUserConfig>
     /// <param name="config">Mod loader config.</param>
     /// <param name="context">Context to which background events should be synchronized.</param>
     /// <param name="modConfigService">Allows to receive notifications on mods being deleted/created.</param>
-    public ModUserConfigService(LoaderConfig config, SynchronizationContext context, ModConfigService modConfigService)
+    public ModUserConfigService(LoaderConfig config, ModConfigService modConfigService, SynchronizationContext context = null)
     {
         this.OnAddItem    += OnAddItemHandler;
         this.OnRemoveItem += OnRemoveItemHandler;
@@ -57,16 +57,20 @@ public class ModUserConfigService : ConfigServiceBase<ModUserConfig>
 
     private void CreateConfigsForModsWithoutAny(SynchronizationContext context)
     {
-        context.Post(() =>
+        void Execute()
         {
             foreach (var mod in _modConfigService.Items)
             {
-                if (ItemsById.ContainsKey(mod.Config.ModId) || File.Exists(ModUserConfig.GetUserConfigPathForMod(mod.Config.ModId)))
-                    continue;
+                if (ItemsById.ContainsKey(mod.Config.ModId) || File.Exists(ModUserConfig.GetUserConfigPathForMod(mod.Config.ModId))) continue;
 
                 CreateUserConfigOnNewConfigCreated(mod);
             }
-        });
+        }
+
+        if (context == null)
+            Execute();
+        else
+            context.Post(Execute);
     }
 
     private List<PathTuple<ModUserConfig>> GetAllConfigs() => ModUserConfig.GetAllUserConfigs(base.ConfigDirectory);

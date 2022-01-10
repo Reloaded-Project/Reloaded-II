@@ -7,7 +7,7 @@ namespace TestModC
 {
     public class Program : IModV1, ITestHelper, IExports
     {
-        public string MyId { get; set; } = "TestModC";
+        public string MyId { get; } = "TestModC";
         public DateTime LoadTime { get; set; }
         public bool ResumeExecuted { get; set; }
         public bool SuspendExecuted { get; set; }
@@ -22,20 +22,11 @@ namespace TestModC
         }
 
         /* Suspend/Unload */
-        public void Suspend()
-        {
-            SuspendExecuted = true;
-        }
+        public void Suspend() => SuspendExecuted = true;
 
-        public void Resume()
-        {
-            ResumeExecuted = true;
-        }
+        public void Resume() => ResumeExecuted = true;
 
-        public void Unload()
-        {
-            
-        }
+        public void Unload() { }
 
         public bool CanUnload() => true;
         public bool CanSuspend() => true;

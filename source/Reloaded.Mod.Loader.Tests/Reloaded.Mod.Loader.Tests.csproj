@@ -4,19 +4,17 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IsPackable>false</IsPackable>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\Output\Tests\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>preview</LangVersion>
     <OutputPath>..\Output\Tests\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="HeroesControllerPostProcess.zip" />
-    <None Remove="HeroesControllerPostProcessBad.zip" />
+    <Compile Remove="Server\**" />
+    <EmbeddedResource Remove="Server\**" />
+    <None Remove="Server\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="xunit.runner.json" />
   </ItemGroup>
 
@@ -27,12 +25,16 @@
     <Content Include="HeroesControllerPostProcessBad.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="HeroesControllerPostProcessOld.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="xunit.runner.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="34.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="Moq" Version="4.14.5" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -43,6 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Reloaded.Mod.Loader.Community\Reloaded.Mod.Loader.Community.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader\Reloaded.Mod.Loader.csproj" />
@@ -54,7 +57,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Server\" />
+    <None Update="HelloWorld32.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="HelloWorld64.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Update\Utilities\" />
   </ItemGroup>
 
 </Project>

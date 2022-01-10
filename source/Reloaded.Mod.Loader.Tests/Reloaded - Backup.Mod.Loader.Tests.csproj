@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <IsPackable>false</IsPackable>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\Output\Tests\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\Output\Tests\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Server\**" />
+    <EmbeddedResource Remove="Server\**" />
+    <None Remove="Server\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="HeroesControllerPostProcess.zip" />
+    <None Remove="HeroesControllerPostProcessBad.zip" />
+    <None Remove="xunit.runner.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="HeroesControllerPostProcess.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="HeroesControllerPostProcessBad.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xunit.runner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Moq" Version="4.14.5" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
+    <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
+    <ProjectReference Include="..\Reloaded.Mod.Loader\Reloaded.Mod.Loader.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModA\TestModA.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModB\TestModB.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModC\TestModC.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModD\TestModD.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModE\TestModE.csproj" />
+  </ItemGroup>
+
+</Project>

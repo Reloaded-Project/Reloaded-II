@@ -116,6 +116,29 @@ public static class IOEx
     }
 
     /// <summary>
+    /// Waits for write access to be available for a file.
+    /// </summary>
+    /// <param name="source">The path to the file.</param>
+    /// <param name="destination">Where the file should be moved to.</param>
+    /// <param name="token">The token.</param>
+    public static void MoveFile(string source, string destination, CancellationToken token = default)
+    {
+        while (true)
+        {
+            try
+            {
+                if (token.IsCancellationRequested)
+                    return;
+
+                File.Move(source, destination, true);
+                return;
+            }
+            catch (Exception) { /* Ignored */ }
+            Thread.Sleep(1);
+        }
+    }
+
+    /// <summary>
     /// Checks whether a file with a specific path can be opened.
     /// </summary>
     public static bool CheckFileAccess(string filePath, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite)

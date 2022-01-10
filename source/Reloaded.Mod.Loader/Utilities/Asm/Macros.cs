@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reloaded.Mod.Loader.Utilities.Asm;
 
+[ExcludeFromCodeCoverage(Justification = "No Code")]
 public static class Macros
 {
     public static bool Is64Bit = Environment.Is64BitProcess;

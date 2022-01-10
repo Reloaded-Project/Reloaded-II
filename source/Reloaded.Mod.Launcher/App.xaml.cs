@@ -32,11 +32,15 @@ public partial class App : Application
         SetupResources();
 
         // Common Commandline Argument Handler
+        var originalMode = Application.Current.ShutdownMode;
+        Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         if (Lib.Startup.HandleCommandLineArgs())
         {
             Application.Current.Shutdown(0);
             return;
         }
+
+        Application.Current.ShutdownMode = originalMode;
     }
 
     private void SetupResources()

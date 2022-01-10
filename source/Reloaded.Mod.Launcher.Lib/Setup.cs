@@ -17,6 +17,7 @@ using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Dependency;
 using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 
@@ -134,11 +135,12 @@ public static class Setup
     /// <returns></returns>
     public static async Task CheckForMissingModDependenciesAsync()
     {
-        if (Update.CheckMissingDependencies(out var missingDependencies))
+        var deps = Update.CheckMissingDependencies();
+        if (!deps.AllAvailable)
         {
             try
             {
-                await Update.DownloadNuGetPackagesAsync(missingDependencies, false, false);
+                await Update.ResolveMissingPackagesAsync(deps);
             }
             catch (Exception)
             {
@@ -238,7 +240,7 @@ public static class Setup
 
         var modConfigService = new ModConfigService(config, synchronizationContext);
         IoC.Kernel.Rebind<ModConfigService>().ToConstant(modConfigService);
-        IoC.Kernel.Rebind<ModUserConfigService>().ToConstant(new ModUserConfigService(config, synchronizationContext, modConfigService));
+        IoC.Kernel.Rebind<ModUserConfigService>().ToConstant(new ModUserConfigService(config, modConfigService, synchronizationContext));
     }
 
     /// <summary>
@@ -301,6 +303,7 @@ public static class Setup
     /// </summary>
     private static async Task CheckForUpdatesAsync()
     {
+        await DependencyMetadataWriterFactory.ExecuteAllAsync(IoC.Get<ModConfigService>());
         await Task.Run(Update.CheckForModUpdatesAsync);
         await Update.CheckForLoaderUpdatesAsync();
         await CheckForMissingModDependenciesAsync();

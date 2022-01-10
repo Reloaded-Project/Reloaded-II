@@ -29,20 +29,20 @@ public class CheckForUpdatesAndDependenciesCommand : WithCanExecuteChanged, ICom
         RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
         var updates      = await Task.Run(Update.CheckForModUpdatesAsync);
-        var dependencies = Update.CheckMissingDependencies(out var missingDependencies);
+        var dependencies = Update.CheckMissingDependencies();
 
-        if ((!updates) && (!dependencies))
+        if ((!updates) && (!dependencies.AllAvailable))
         {
             Actions.DisplayMessagebox?.Invoke(Resources.NoUpdateDialogTitle.Get(), Resources.NoUpdateDialogMessage.Get(), new Actions.DisplayMessageBoxParams()
             {
                 StartupLocation = Actions.WindowStartupLocation.CenterScreen
             });
         }
-        else if (dependencies)
+        else if (dependencies.AllAvailable)
         {
             try
             {
-                await Update.DownloadNuGetPackagesAsync(missingDependencies, false, false);
+                await Update.ResolveMissingPackagesAsync(dependencies);
             }
             catch (Exception)
             {

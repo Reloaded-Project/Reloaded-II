@@ -28,6 +28,13 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     public bool   AutoInject            { get; set; } = false;
     public string[] EnabledMods         { get; set; }
 
+    // V2
+
+    /// <summary>
+    /// Data stored by plugins. Maps a unique string key to arbitrary data.
+    /// </summary>
+    public Dictionary<string, object> PluginData { get; set; } = new Dictionary<string, object>();
+
     /*
        --------------
        Create/Destroy

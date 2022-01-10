@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Threading;
 using Reloaded.Mod.Interfaces;

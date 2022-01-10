@@ -1,0 +1,44 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.AddAppHashMismatchDialog"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
+                xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+                mc:Ignorable="d"
+                Height="Auto" 
+                Width="500"
+                SizeToContent="Height"
+                WindowStartupLocation="CenterOwner"
+                Title="{DynamicResource AddAppRepoBadHashTitle}"
+                Style="{DynamicResource ReloadedWindow}">
+    <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
+        <StackPanel>
+            <TextBlock Text="{DynamicResource AddAppRepoBadHashDesc1}" 
+                       Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                       Style="{DynamicResource RIIDefaultTextBlock}"
+                       TextWrapping="Wrap"/>
+
+            <Separator/>
+
+            <TextBlock Text="{Binding BadHashDescription}" 
+                       Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                       Style="{DynamicResource RIIDefaultTextBlock}"
+                       TextWrapping="Wrap"/>
+
+            <Separator/>
+
+            <TextBlock Text="{DynamicResource AddAppRepoBadHashDesc2}" 
+                       Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                       Style="{DynamicResource RIIDefaultTextBlock}"
+                       TextWrapping="Wrap"/>
+
+            <Button Content="{DynamicResource MessageBoxButtonOK}" 
+                    Style="{DynamicResource GridButton}" 
+                    Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                    HorizontalAlignment="Center"
+                    PreviewMouseDown="OK_PreviewMouseDown"/>
+
+        </StackPanel>
+    </Grid>
+</default:ReloadedWindow>

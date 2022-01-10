@@ -39,12 +39,10 @@ public static class Lib
     /// <param name="displayMessageBox">Delegate used to display a message box to the screen.</param>
     /// <param name="provider">Provider for the resources contained within.</param>
     /// <param name="context">The synchronization context to run library components by default on.</param>
-    /// <param name="downloadModArchives">Shows a dialog for downloading mod archives.</param>
     /// <param name="displayResourceMessageBoxOkCancel">Displays a message box with 'ok' and 'cancel', strings fetched from resources.</param>
     /// <param name="showModLoadSelectDialog">Shows a dialog to load a mod into a Reloaded process.</param>
     /// <param name="showModLoaderUpdate">Shows the dialog to perform a mod loader update.</param>
     /// <param name="showModUpdate">Shows the dialog to perform a mod update.</param>
-    /// <param name="showNuGetFetchPackage">Shows the dialog to fetch NuGet packages.</param>
     /// <param name="configureNuGetFeeds">Allows the user to configure all NuGet feeds.</param>
     /// <param name="configureModDialog">Allows the user to configure an individual managed mod.</param>
     /// <param name="showMissingCoreDependency">Provides a dialog that allows the user to show all missing .NET Core dependencies.</param>
@@ -52,37 +50,42 @@ public static class Lib
     /// <param name="languageSelector">Allows you to select a language for the application.</param>
     /// <param name="publishModDialog">Shows a dialog that can be used to publish an individual mod.</param>
     /// <param name="showEditModUserConfig">Shows a dialog to edit an individual user configuration.</param>
+    /// <param name="showFetchPackageDialog">Shows a dialog that can be used to download an individual package.</param>
+    /// <param name="showSelectAddedGameDialog">Shows a dialog that can be used to select the added game.</param>
+    /// <param name="showAddAppMismatchDialog">Shows a dialog that shows information to the user regarding an application hash mismatch.</param>
     public static void Init(IDictionaryResourceProvider provider, SynchronizationContext context, IIconConverter iconConverter, 
         IResourceFileSelector? languageSelector, IResourceFileSelector? themeSelector,
         Actions.CreateResourceFileSelectorDelegate createResourceFileSelector,
         Actions.DisplayMessageboxDelegate displayMessageBox, 
-        Actions.DownloadModArchivesDelegate downloadModArchives,
         Actions.DisplayResourceMessageBoxOkCancelDelegate displayResourceMessageBoxOkCancel,
         Actions.ShowModLoadSelectDialogDelegate showModLoadSelectDialog,
-        Actions.ShowModLoaderUpdateDialogDelegate showModLoaderUpdate, Actions.ShowModUpdateDialogDelegate showModUpdate, 
-        Actions.ShowNugetFetchPackageDialogDelegate showNuGetFetchPackage, Actions.ConfigureNuGetFeedsDialogDelegate configureNuGetFeeds,
+        Actions.ShowModLoaderUpdateDialogDelegate showModLoaderUpdate, Actions.ShowModUpdateDialogDelegate showModUpdate, Actions.ConfigureNuGetFeedsDialogDelegate configureNuGetFeeds,
         Actions.ConfigureModDialogDelegate configureModDialog, Actions.ShowMissingCoreDependencyDialogDelegate showMissingCoreDependency,
         Actions.EditModDialogDelegate editModDialog, Actions.PublishModDialogDelegate publishModDialog,
-        Actions.ShowEditModUserConfigDialogDelegate showEditModUserConfig)
+        Actions.ShowEditModUserConfigDialogDelegate showEditModUserConfig, Actions.ShowFetchPackageDialogDelegate showFetchPackageDialog,
+        Actions.ShowSelectAddedGameDialogDelegate showSelectAddedGameDialog, Actions.ShowAddAppHashMismatchDialogDelegate showAddAppMismatchDialog,
+        Actions.ShowApplicationWarningDialogDelegate showApplicationWarningDialog)
     {
         Resources.Init(provider);
         IconConverter = iconConverter;
         LanguageSelector = languageSelector;
         ThemeSelector = themeSelector;
         Actions.ShowModLoadSelectDialog = showModLoadSelectDialog;
-        Actions.DownloadModArchives = downloadModArchives;
         Actions.DisplayResourceMessageBoxOkCancel = displayResourceMessageBoxOkCancel;
         Actions.CreateResourceFileSelector = createResourceFileSelector;
         Actions.DisplayMessagebox = displayMessageBox;
         Actions.SynchronizationContext = context;
         Actions.ShowModLoaderUpdateDialog = showModLoaderUpdate;
         Actions.ShowModUpdateDialog = showModUpdate;
-        Actions.ShowNugetFetchPackageDialog = showNuGetFetchPackage;
         Actions.ConfigureNuGetFeeds = configureNuGetFeeds;
         Actions.ConfigureModDialog = configureModDialog;
         Actions.ShowMissingCoreDependencyDialog = showMissingCoreDependency;
         Actions.EditModDialog = editModDialog;
         Actions.PublishModDialog = publishModDialog;
         Actions.ShowEditModUserConfig = showEditModUserConfig;
+        Actions.ShowFetchPackageDialog = showFetchPackageDialog;
+        Actions.ShowSelectAddedGameDialog = showSelectAddedGameDialog;
+        Actions.ShowAddAppHashMismatchDialog = showAddAppMismatchDialog;
+        Actions.ShowApplicationWarningDialog = showApplicationWarningDialog;
     }
 }

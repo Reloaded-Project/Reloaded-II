@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -11,6 +12,7 @@ namespace Reloaded.Mod.Loader.Logging;
 /// <summary>
 /// Prints the Reloaded banner to the given console.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class ReloadedBannerLogger
 {
     public static void PrintBanner(IConsoleProxy proxy, ILogger logger)

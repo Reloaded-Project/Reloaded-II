@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Launcher.Interop;
 using Reloaded.Mod.Launcher.Lib.Interop;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 using Reloaded.Mod.Launcher.Lib.Static;
+using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs;
 using Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
 using Reloaded.Mod.Launcher.Utility;
+using Reloaded.Mod.Loader.Community.Config;
 using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher;
@@ -27,18 +30,20 @@ public static class LibraryBindings
             languageSelector: languageSelector,
             themeSelector: themeSelector,
             showModLoadSelectDialog: ShowModLoadSelectDialog, 
-            downloadModArchives: DownloadModArchives, 
             displayResourceMessageBoxOkCancel: DisplayResourceMessageBoxOkCancel, 
             createResourceFileSelector: CreateResourceFileSelector, 
             showModLoaderUpdate: ShowModLoaderUpdate, 
             showModUpdate: ShowModUpdate,
-            showNuGetFetchPackage: ShowNuGetFetchPackage,
             configureNuGetFeeds: ConfigureNuGetFeeds,
             configureModDialog: ConfigureModDialog,
             showMissingCoreDependency: ShowMissingCoreDependency,
             editModDialog: EditModDialog,
             publishModDialog: PublishModDialog,
-            showEditModUserConfig: ShowEditModUserConfig
+            showEditModUserConfig: ShowEditModUserConfig,
+            showFetchPackageDialog: ShowFetchPackageDialog,
+            showSelectAddedGameDialog: ShowSelectAddedGameDialog,
+            showAddAppMismatchDialog: ShowAddAppMismatchDialog,
+            showApplicationWarningDialog: ShowApplicationWarningDialog
         );
     }
 
@@ -57,6 +62,24 @@ public static class LibraryBindings
         };
 
         window.WindowStartupLocation = (WindowStartupLocation)parameters.StartupLocation;
+        if (parameters.Width != default)
+        {
+            window.SizeToContent = SizeToContent.Height;
+            window.Width = parameters.Width;
+        }
+
+        if (parameters.Timeout != default)
+        {
+            // Close window after timeout if open.
+            Task.Delay(parameters.Timeout).ContinueWith(o =>
+            {
+                ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+                {
+                    if (Application.Current.Windows.Cast<Window>().Any(x => x == window))
+                        window.Close();
+                });
+            });
+        }
 
         var result = window.ShowDialog();
         return result.HasValue && result.Value;
@@ -87,13 +110,20 @@ public static class LibraryBindings
 
     private static bool ShowMissingCoreDependency(MissingCoreDependencyDialogViewModel viewmodel) => ShowDialogAndGetResult(new MissingCoreDependencyDialog(viewmodel));
     private static bool ConfigureModDialog(ConfigureModDialogViewModel viewmodel) => ShowDialogAndGetResult(new ConfigureModDialog(viewmodel));
-    private static bool ShowNuGetFetchPackage(NugetFetchPackageDialogViewModel viewmodel) => ShowDialogAndGetResult(new NugetFetchPackageDialog(viewmodel));
     private static bool ShowModLoaderUpdate(ModLoaderUpdateDialogViewModel viewmodel) => ShowDialogAndGetResult(new ModLoaderUpdateDialog(viewmodel));
     private static bool ShowModUpdate(ModUpdateDialogViewModel viewmodel) => ShowDialogAndGetResult(new ModUpdateDialog(viewmodel));
     private static bool ConfigureNuGetFeeds(ConfigureNuGetFeedsDialogViewModel viewmodel) => ShowDialogAndGetResult(new ConfigureNuGetFeedsDialog(viewmodel));
-    private static bool DownloadModArchives(DownloadModArchiveViewModel viewmodel) => ShowDialogAndGetResult(new DownloadModArchiveDialog(viewmodel));
     private static bool ShowEditModUserConfig(EditModUserConfigDialogViewModel viewmodel) => ShowDialogAndGetResult(new EditModUserConfigDialog(viewmodel));
     private static bool PublishModDialog(PublishModDialogViewModel viewmodel) => ShowDialogAndGetResult(new PublishModDialog(viewmodel));
+    private static bool ShowFetchPackageDialog(DownloadPackageViewModel viewmodel) => ShowDialogAndGetResult(new DownloadPackageDialog(viewmodel));
+    private static bool ShowAddAppMismatchDialog(AddAppHashMismatchDialogViewModel viewmodel) => ShowDialogAndGetResult(new AddAppHashMismatchDialog(viewmodel));
+    private static bool ShowApplicationWarningDialog(AddApplicationWarningDialogViewModel viewmodel) => ShowDialogAndGetResult(new ShowApplicationWarningDialog(viewmodel));
+
+    private static IndexAppEntry? ShowSelectAddedGameDialog(SelectAddedGameDialogViewModel viewmodel)
+    {
+        var result = ShowDialogAndGetResult(new SelectAddedGameDialog(viewmodel));
+        return result ? viewmodel.SelectedEntry : null;
+    }
 
     private static bool ShowDialogAndGetResult(this Window window)
     {

@@ -1,6 +1,8 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Reloaded.Mod.Launcher.Lib.Interop;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
+using Reloaded.Mod.Loader.Community.Config;
 
 #pragma warning disable CS1591
 
@@ -25,11 +27,6 @@ public static class Actions
     /// Shows a dialog allowing for the mod loader to be updated.
     /// </summary>
     public static ShowModLoaderUpdateDialogDelegate ShowModLoaderUpdateDialog { get; set; } = null!;
-
-    /// <summary>
-    /// Shows a dialog allowing the user to download packages from NuGet sources.
-    /// </summary>
-    public static ShowNugetFetchPackageDialogDelegate ShowNugetFetchPackageDialog { get; set; } = null!;
 
     /// <summary>
     /// Shows a dialog allowing for the mods to be updated.
@@ -67,11 +64,6 @@ public static class Actions
     public static DisplayResourceMessageBoxOkCancelDelegate DisplayResourceMessageBoxOkCancel { get; set; } = null!;
 
     /// <summary>
-    /// Delegate that can be used to download one or more mod archives.
-    /// </summary>
-    public static DownloadModArchivesDelegate DownloadModArchives { get; set; } = null!;
-    
-    /// <summary>
     /// Shows a dialog that can be used to load a mod into a Reloaded process.
     /// </summary>
     public static ShowModLoadSelectDialogDelegate ShowModLoadSelectDialog { get; set; } = null!;
@@ -85,6 +77,26 @@ public static class Actions
     /// Shows a dialog allowing the user to edit their individual user config.
     /// </summary>
     public static ShowEditModUserConfigDialogDelegate ShowEditModUserConfig { get; set; } = null!;
+
+    /// <summary>
+    /// Shows a dialog that can be used to download an individual package.
+    /// </summary>
+    public static ShowFetchPackageDialogDelegate ShowFetchPackageDialog { get; set; } = null!;
+
+    /// <summary>
+    /// Shows a dialog that can be used to select the added game.
+    /// </summary>
+    public static ShowSelectAddedGameDialogDelegate ShowSelectAddedGameDialog { get; set; } = null!;
+
+    /// <summary>
+    /// Shows a dialog that shows information to the user regarding an application hash mismatch.
+    /// </summary>
+    public static ShowAddAppHashMismatchDialogDelegate ShowAddAppHashMismatchDialog { get; set; } = null!;
+
+    /// <summary>
+    /// Shows a dialog that displays information about warnings regarding to the application.
+    /// </summary>
+    public static ShowApplicationWarningDialogDelegate ShowApplicationWarningDialog { get; set; } = null!;
 
     /// <summary>
     /// Delegate used to display a message to user's screen.
@@ -110,6 +122,16 @@ public static class Actions
     {
         public WindowStartupLocation StartupLocation = WindowStartupLocation.Manual;
         public MessageBoxType Type = MessageBoxType.Ok;
+
+        /// <summary>
+        /// Time after which the message box is automatically closed
+        /// </summary>
+        public TimeSpan Timeout = TimeSpan.Zero;
+
+        /// <summary>
+        /// Maximum width for the message box.
+        /// </summary>
+        public int Width { get; set; } = default;
     }
 
     /// <summary>
@@ -162,12 +184,6 @@ public static class Actions
     public delegate bool ShowModUpdateDialogDelegate(ModUpdateDialogViewModel viewModel);
 
     /// <summary>
-    /// Shows a dialog that confirms the downloading of NuGet packages before starting the operation.
-    /// </summary>
-    /// <param name="viewModel">The view model of the individual dialog to fetch NuGet packages.</param>
-    public delegate bool ShowNugetFetchPackageDialogDelegate(NugetFetchPackageDialogViewModel viewModel);
-
-    /// <summary>
     /// Shows a dialog that allows the user to configure the NuGet feeds for this application.
     /// </summary>
     /// <param name="viewModel">The view model of the individual dialog to configure NuGet feeds.</param>
@@ -193,12 +209,6 @@ public static class Actions
     public delegate bool EditModDialogDelegate(EditModDialogViewModel viewModel, object? ownerWindow);
 
     /// <summary>
-    /// Shows a dialog that can be used to download a set of mods.
-    /// </summary>
-    /// <param name="viewModel">The view model for the edit mod menu.</param>
-    public delegate bool DownloadModArchivesDelegate(DownloadModArchiveViewModel viewModel);
-
-    /// <summary>
     /// Creates a resource file selector.
     /// </summary>
     /// <param name="directoryPath">The directory for which to make a resource file selector.</param>
@@ -221,4 +231,28 @@ public static class Actions
     /// </summary>
     /// <param name="viewModel">The ViewModel used for editing the user config of an individual mod.</param>
     public delegate bool ShowEditModUserConfigDialogDelegate(EditModUserConfigDialogViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that can be used to download an individual package.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for downloading the individual package.</param>
+    public delegate bool ShowFetchPackageDialogDelegate(DownloadPackageViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that can be used to select the added game.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for selecting the individual game.</param>
+    public delegate IndexAppEntry? ShowSelectAddedGameDialogDelegate(SelectAddedGameDialogViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that displays information about the mismatched application hash.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for selecting the individual game.</param>
+    public delegate bool ShowAddAppHashMismatchDialogDelegate(AddAppHashMismatchDialogViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that displays information about warnings regarding to the application.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for showing warnings about the application.</param>
+    public delegate bool ShowApplicationWarningDialogDelegate(AddApplicationWarningDialogViewModel viewModel);
 }
