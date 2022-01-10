@@ -30,7 +30,7 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         _modTuple = modTuple;
         _modUserConfigTuple = userConfig;
     }
-        
+
     /* ICommand */
 
     // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.
@@ -49,8 +49,8 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
     {
         if (_modTuple != null)
         {
-            var result = TryGetConfigurator(out _, out _); 
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+            var result = TryGetConfiguratorDisposing();
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, false);
             return result;
         }
 
@@ -59,12 +59,23 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
 
     // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private bool TryGetConfigurator(out IConfigurator configurator, out PluginLoader loader)
+    private bool TryGetConfiguratorDisposing()
+    {
+        var result = TryGetConfigurator(out var configurator, out var loader);
+        loader?.Dispose();
+        configurator = null;
+        loader = null;
+        return result;
+    }
+
+    // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private bool TryGetConfigurator(out IConfigurator? configurator, out PluginLoader? loader)
     {
         var config = _modTuple!.Config;
         string dllPath = config.GetManagedDllPath(_modTuple.Path);
-        configurator = null!;
-        loader = null!;
+        configurator = null;
+        loader = null;
 
         if (!File.Exists(dllPath))
             return false;
@@ -78,7 +89,7 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         var assembly = loader.LoadDefaultAssembly();
         var types = assembly.GetTypes();
         var entryPoint = types.FirstOrDefault(t => typeof(IConfigurator).IsAssignableFrom(t) && !t.IsAbstract);
-
+        
         if (entryPoint == null) 
             return false;
 
@@ -105,7 +116,7 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         if (!TryGetConfigurator(out var configurator, out _)) 
             return;
 
-        if (configurator.TryRunCustomConfiguration()) 
+        if (configurator!.TryRunCustomConfiguration()) 
             return;
 
         Actions.ConfigureModDialog.Invoke(new ConfigureModDialogViewModel(configurator.GetConfigurations()));
