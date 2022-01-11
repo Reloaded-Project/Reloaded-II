@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using Force.DeepCloner;
 using Reloaded.Mod.Launcher.Lib.Commands.Mod;
+using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -42,13 +44,16 @@ public class ManageModsViewModel : ObservableObject
     private ApplicationConfigService _appConfigService;
     private SetModImageCommand _setModImageCommand = null!;
 
+    private ModConfig _configCopy = null!;
+    
     /// <inheritdoc />
     public ManageModsViewModel(ApplicationConfigService appConfigService, ModConfigService modConfigService)
     {
         ModConfigService = modConfigService;
         _appConfigService = appConfigService;
 
-        SelectedModTuple = ModConfigService.Items.FirstOrDefault()!;
+        SelectedModTuple   = ModConfigService.Items.FirstOrDefault()!;
+        CloneCurrentItem();
         this.PropertyChanged += OnSelectedModChanged;
         UpdateCommands();
     }
@@ -60,7 +65,7 @@ public class ManageModsViewModel : ObservableObject
     public void SetNewMod(PathTuple<ModConfig>? oldModTuple, PathTuple<ModConfig>? newModTuple)
     {
         // Save old collection.
-        if (oldModTuple != null && ModConfigService.Items.Contains(oldModTuple))
+        if (oldModTuple != null && !oldModTuple.Config.Equals(_configCopy) && ModConfigService.ItemsById.ContainsKey(oldModTuple.Config.ModId))
             SaveMod(oldModTuple);
 
         // Make new collection.
@@ -70,6 +75,7 @@ public class ManageModsViewModel : ObservableObject
         var supportedAppIds = newModTuple.Config.SupportedAppId;
         var tuples = _appConfigService.Items.Select(x => new BooleanGenericTuple<ApplicationConfig>(supportedAppIds.Contains(x.Config.AppId), x.Config));
         EnabledAppIds = new ObservableCollection<BooleanGenericTuple<ApplicationConfig>>(tuples);
+        CloneCurrentItem();
     }
 
     /// <summary>
@@ -105,5 +111,11 @@ public class ManageModsViewModel : ObservableObject
         DeleteModCommand = new DeleteModCommand(SelectedModTuple);
         _setModImageCommand = new SetModImageCommand(SelectedModTuple);
         PublishModCommand = new PublishModCommand(SelectedModTuple);
+    }
+
+    private void CloneCurrentItem()
+    {
+        if (SelectedModTuple != null)
+            _configCopy = SelectedModTuple.Config.ShallowClone();
     }
 }
