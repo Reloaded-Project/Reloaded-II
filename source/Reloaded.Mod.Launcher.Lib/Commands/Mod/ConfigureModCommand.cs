@@ -50,7 +50,7 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         if (_modTuple != null)
         {
             var result = TryGetConfiguratorDisposing();
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, false);
+            GC.Collect(0, GCCollectionMode.Forced, false);
             return result;
         }
 
