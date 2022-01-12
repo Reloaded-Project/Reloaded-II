@@ -54,6 +54,7 @@
                 ToolTip="{DynamicResource ConfigureModsListItemTooltip}"
                 VerticalAlignment="Stretch"
                 VerticalContentAlignment="Top"
+                VirtualizingStackPanel.VirtualizationMode="Recycling"
                 dd:DragDrop.IsDragSource="True"
                 dd:DragDrop.IsDropTarget="True">
                 <ListView.ContextMenu>

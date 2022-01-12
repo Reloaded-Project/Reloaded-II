@@ -455,30 +455,24 @@
                 <ControlTemplate TargetType="{x:Type CheckBox}">
 
                     <!-- No background -->
-                    <Grid Background="Transparent">
+                    <DockPanel Background="Transparent">
 
-                        <!-- Separate checkbox from text. -->
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{TemplateBinding Height,
-                                                                      Converter={x:Static converter:DoubleToGridLengthConverter.Instance}}" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <!-- TODO: Ask StackOverflow | If I make this a Border again, why not render. -->
                         <!-- Checkbox-->
-                        <Rectangle Grid.Column="0"
-                                   x:Name="CheckboxRectangle" 
-                                   Fill="Transparent"
-                                   Stroke="{TemplateBinding Background}" 
-                                   StrokeThickness="2"/>
+                        <Border Grid.Column="0"
+                                x:Name="CheckboxRectangle" 
+                                Background="Transparent"
+                                BorderBrush="{TemplateBinding Background}" 
+                                Width="{TemplateBinding Height}"
+                                BorderThickness="2">
 
-                        <TextBlock x:Name="Tick" 
-                                   Grid.Column="0"
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"
-                                   FontSize="{DynamicResource CheckboxFontSize}"
-                                   Foreground="{TemplateBinding Background}"
-                                   Text="{DynamicResource CheckboxDisabledSymbol}"/>
+                            <TextBlock x:Name="Tick" 
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"
+                                       FontSize="{DynamicResource CheckboxFontSize}"
+                                       Foreground="{TemplateBinding Background}"
+                                       Text="{DynamicResource CheckboxDisabledSymbol}"/>
+                        </Border>
 
                         <!-- Text -->
                         <ContentPresenter Grid.Column="1"
@@ -487,7 +481,8 @@
                                           Visibility="Visible"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"/>
-                    </Grid>
+
+                    </DockPanel>
 
                     <ControlTemplate.Triggers>
                         <!-- Change Text -->
@@ -497,7 +492,7 @@
 
                         <Trigger Property="IsChecked" Value="{x:Null}">
                             <Setter TargetName="Tick" Property="Text" Value="{x:Static sys:String.Empty}"/>
-                            <Setter TargetName="CheckboxRectangle" Property="Fill" Value="{DynamicResource AccentColorBrush}"/>
+                            <Setter TargetName="CheckboxRectangle" Property="Background" Value="{DynamicResource AccentColorBrush}"/>
                         </Trigger>
 
                         <!-- Leave no margin if no content exists. 
