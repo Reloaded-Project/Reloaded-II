@@ -125,7 +125,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                 try
                 {
                     // Get metadata & filter potentially invalid file.
-                    var releaseMetadata = Singleton<ReleaseMetadata>.Instance.ReadFromData(metadata);
+                    var releaseMetadata = await Singleton<ReleaseMetadata>.Instance.ReadFromDataAsync(metadata);
                     if (releaseMetadata.ExtraData == null || releaseMetadata.Releases.Count <= 0)
                         continue;
 

@@ -147,7 +147,7 @@ public class PublishModDialogViewModel : ObservableObject
     public async Task<bool> BuildAsync(CancellationToken cancellationToken = default)
     {
         // Check if Auto Delta can be performed.
-        if (AutomaticDelta && !Singleton<ReleaseMetadata>.Instance.CanReadFromDirectory(OutputFolder))
+        if (AutomaticDelta && !Singleton<ReleaseMetadata>.Instance.CanReadFromDirectory(OutputFolder, null, out _, out _))
         {
             var description = string.Format(Resources.PublishAutoDeltaWarningDescriptionFormat.Get(), Singleton<ReleaseMetadata>.Instance.GetDefaultFileName());
             Actions.DisplayMessagebox(Resources.PublishAutoDeltaWarningTitle.Get(), description);
