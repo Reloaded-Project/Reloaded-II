@@ -48,7 +48,8 @@ internal class Program
             CompressionLevel = options.CompressionLevel,
             CompressionMethod = options.CompressionMethod,
             Progress = progressBar.AsProgress<double>(),
-            PackageName = options.PackageName
+            PackageName = options.PackageName,
+            PublishTarget = options.PublishTarget
         });
     }
 
