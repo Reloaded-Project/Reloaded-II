@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Sewer56.Update.Extractors.SevenZipSharp" Version="1.1.0" GeneratePathProperty="true" />
-    <PackageReference Include="Sewer56.Update.Packaging" Version="2.0.0" />
+    <PackageReference Include="Sewer56.Update.Packaging" Version="2.1.0" />
     <PackageReference Include="Sewer56.Update.Resolvers.NuGet" Version="1.1.0" />
     <PackageReference Include="Sewer56.Update.Resolvers.GameBanana" Version="1.2.0" />
   </ItemGroup>
