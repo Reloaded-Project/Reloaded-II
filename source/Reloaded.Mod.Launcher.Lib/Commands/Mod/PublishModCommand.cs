@@ -5,6 +5,7 @@ using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 using Reloaded.Mod.Launcher.Lib.Static;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.Update;
 
 namespace Reloaded.Mod.Launcher.Lib.Commands.Mod;
 
@@ -34,6 +35,9 @@ public class PublishModCommand : WithCanExecuteChanged, ICommand
             Actions.DisplayMessagebox(Resources.ErrorInvalidModConfigTitle.Get(), Resources.ErrorInvalidModConfigDescription.Get());
             return;
         }
+
+        if (!PackageResolverFactory.HasAnyConfiguredResolver(_modTuple))
+            Actions.DisplayMessagebox(Resources.PublishModWarningTitle.Get(), Resources.PublishModWarningDescription.Get());
 
         Actions.PublishModDialog(new PublishModDialogViewModel(_modTuple!));
     }

@@ -236,6 +236,11 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
+                <Button Content="{DynamicResource PublishModTutorial}" 
+                        Click="PublishTutorial_Click"
+                        Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                        Style="{DynamicResource DefaultButton}"/>
+
                 <Button Content="{DynamicResource PublishSetOutputFolder}" 
                         Click="SetOutputFolder_Click"
                         Margin="{DynamicResource CommonItemVerticalMarginSmaller}"

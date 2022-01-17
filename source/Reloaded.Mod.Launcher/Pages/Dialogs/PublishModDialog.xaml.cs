@@ -49,4 +49,6 @@ public partial class PublishModDialog : ReloadedWindow
     private void TestRegex_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.ShowExcludedFiles();
 
     private void SetOutputFolder_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.SetOutputFolder();
+
+    private void PublishTutorial_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.ShowPublishTutorial();
 }

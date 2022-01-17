@@ -62,6 +62,22 @@ public static class PackageResolverFactory
     }
 
     /// <summary>
+    /// Returns true if any resolver is configured to save updates for this mod.
+    /// </summary>
+    /// <param name="mod">The mod to be served updates for.</param>
+    /// <returns>Resolver configuration.</returns>
+    public static bool HasAnyConfiguredResolver(PathTuple<ModConfig> mod)
+    {
+        foreach (var factory in All)
+        {
+            if (factory.TryGetConfigurationOrDefault(mod, out _))
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// TEST USE ONLY.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]

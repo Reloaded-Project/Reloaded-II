@@ -285,6 +285,11 @@ public class PublishModDialogViewModel : ObservableObject
             OutputFolder = dialog.SelectedPath;
     }
 
+    /// <summary>
+    /// Directs user to the page showing them how to publish mods.
+    /// </summary>
+    public void ShowPublishTutorial() => ProcessExtensions.OpenFileWithDefaultProgram("https://reloaded-project.github.io/Reloaded-II/PublishingMods/#enabling-update-support");
+
     private string GetModFolder() => Path.GetDirectoryName(_modTuple.Path)!;
     
     private string SelectConfigFile()

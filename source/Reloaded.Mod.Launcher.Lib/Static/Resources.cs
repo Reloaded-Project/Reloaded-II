@@ -432,6 +432,10 @@ public static class Resources
 
     public static IDictionaryResource<string> PublishFileNameTooltip { get; set; }
 
+    public static IDictionaryResource<string> PublishModTutorial { get; set; }
+    public static IDictionaryResource<string> PublishModWarningTitle { get; set; }
+    public static IDictionaryResource<string> PublishModWarningDescription { get; set; }
+
     // Update 1.12.0: Edit Mod User Config
     public static IDictionaryResource<string> TitleEditModUserConfig { get; set; }
     public static IDictionaryResource<string> TitleEditModUserAllowPrereleases { get; set; }
