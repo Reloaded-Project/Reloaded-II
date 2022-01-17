@@ -15,13 +15,23 @@ Consider hovering over the individual configuration fields for help on what each
 Reloaded mod versions use *[Semantic Versioning 2.0](https://semver.org)* for delivering updates.  
 Pre-releases are also supported, but must be explicitly enabled by the user (`Edit User Config` -> `Allow Beta Versions`).  
 
+### GameBanana
+
+First, upload your mod as a private submission to GameBanana. 
+![](./Images/GameBananaPrivate.png).
+
+Then copy the item ID from the URL of your mod page: 
+![](./Images/GameBananaUrl.png)
+
+Insert the number from the URL into the `ItemID` field in the mod configuration, and you are done.  
+When publishing the mod, please select the `GameBanana` publish target.  
+
 ### NuGet 
 
 NuGet is the primary source for downloading mods and searching for missing mod dependencies.
 Users can directly download mods via the `Download Mods` menu.
 
 With NuGet, you simply create a NuGet package using Reloaded and upload it to a server, done.  
-No support from Delta packages however :/.  
 
 The easiest way to upload a package is to install the [.NET SDK](https://dotnet.microsoft.com/download/dotnet/thank-you/sdk-5.0.101-windows-x64-installer) and use the `dotnet` commandline utility. 
 
@@ -31,29 +41,16 @@ Example:
 dotnet nuget push -s http://packages.sewer56.moe:5000/v3/index.json -k API-KEY package.nupkg
 ```
 
-[Upload instructions for the official Reloaded package server](http://packages.sewer56.moe:5000/upload).
+[Upload instructions for the official Reloaded package server](http://packages.sewer56.moe:5000/upload).  
+When publishing the mod, please select the `NuGet` publish target.  
 
 ### GitHub Releases
 
-When creating a GitHub releases release, you should only include the current version and (optionally) a delta patch from the previous update.  
-This is because GitHub Releases uses the release tag for indicating versions of your mod releases:  
+For GitHub Releases, tags are used to denote the current version of your mod:  
 
 ![](./Images/GitHubTag.png)
 
 If the GitHub tag version is higher than the local one, there is an update.  
-
-It should also be noted that GitHub has some very strict limits (60 requests per IP per hour!!) for unauthenticated users.  
-This shouldn't be much of a problem however, as Reloaded caches all requests made to GitHub and GitHub does not count cached requests against the rate limit.  
-
-### GameBanana
-
-First, upload your mod as a private submission to GameBanana. 
-![](./Images/GameBananaPrivate.png).
-
-Then copy the item ID from the URL of your mod page: 
-![](./Images/GameBananaUrl.png)
-
-Insert the number from the URL into the `ItemID` field in the mod configuration, and you are done.
 
 ## Creating Releases: GUI
 
