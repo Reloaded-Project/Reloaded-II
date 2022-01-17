@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Launcher.Lib.Commands.Application;
@@ -10,6 +11,7 @@ using Reloaded.Mod.Launcher.Lib.Commands.Templates;
 using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
 using Reloaded.Mod.Launcher.Lib.Models.Model.Update;
 using Reloaded.Mod.Launcher.Lib.Static;
+using Reloaded.Mod.Loader.Community.Config;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -145,6 +147,19 @@ public class EditAppViewModel : ObservableObject
         Application.Config.AppLocation = result;
     }
 
+    /// <summary>
+    /// Allows the user to pick a repository configuration and then test it.
+    /// </summary>
+    public void TestRepoConfiguration()
+    {
+        var result = SelectJsonFile();
+        if (string.IsNullOrEmpty(result))
+            return;
+
+        var item = JsonSerializer.Deserialize<AppItem>(File.ReadAllText(result));
+        QueryCommunityIndexCommand.ApplyIndexEntry(item, Application);
+    }
+
     private void RefreshCommands()
     {
         if (_lastApplication != null)
@@ -167,6 +182,20 @@ public class EditAppViewModel : ObservableObject
         var dialog = new VistaOpenFileDialog();
         dialog.Title = Resources.AddAppExecutableTitle.Get();
         dialog.Filter = $"{Resources.AddAppExecutableFilter.Get()} (*.exe)|*.exe";
+        dialog.FileName = Application.Config.AppLocation;
+
+        if ((bool)dialog.ShowDialog()!)
+            return dialog.FileName;
+
+        return "";
+    }
+
+
+    private string SelectJsonFile()
+    {
+        var dialog = new VistaOpenFileDialog();
+        dialog.Title = Resources.AddAppRepoTestJsonSelectTitle.Get();
+        dialog.Filter = $"{Resources.AddAppRepoTestJsonSelectFilter.Get()} (*.json)|*.json";
         dialog.FileName = Application.Config.AppLocation;
 
         if ((bool)dialog.ShowDialog()!)

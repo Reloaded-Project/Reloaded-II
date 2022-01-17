@@ -148,6 +148,13 @@
                                     Content="{DynamicResource AddAppAutoInject}"
                                     ToolTip="{DynamicResource AddAppAutoInjectMessage}"
                                     ToolTipService.InitialShowDelay = "0"/>
+
+                            <Button Margin="{DynamicResource CommonItemVerticalMargin}"
+                                    Content="{DynamicResource AddAppRepoTestButton}"
+                                    ToolTip="{DynamicResource AddAppRepoTestButtonTooltip}"
+                                    ToolTipService.InitialShowDelay = "0"
+                                    Click="TestRepoConfiguration_Click"/>
+
                         </StackPanel>
                     </controls:PopupLabel.HiddenContent>
                 </controls:PopupLabel>

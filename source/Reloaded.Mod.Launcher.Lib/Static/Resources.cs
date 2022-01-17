@@ -468,4 +468,10 @@ public static class Resources
     public static IDictionaryResource<string> AddAppRepoSelectGameDialogDesc1 { get; set; }
     public static IDictionaryResource<string> AddAppRepoSelectGameDialogDesc2 { get; set; }
     public static IDictionaryResource<string> AddAppRepoSelectGameDialogOtherGame { get; set; }
+
+    public static IDictionaryResource<string> AddAppRepoTestButton { get; set; }
+    public static IDictionaryResource<string> AddAppRepoTestButtonTooltip { get; set; }
+
+    public static IDictionaryResource<string> AddAppRepoTestJsonSelectTitle { get; set; }
+    public static IDictionaryResource<string> AddAppRepoTestJsonSelectFilter { get; set; }
 }

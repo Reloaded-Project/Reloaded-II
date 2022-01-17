@@ -436,5 +436,10 @@
     <sys:String x:Key="AddAppRepoSelectGameDialogDesc2">If your game is not on the list, please select 'Other Game'.</sys:String>
     <sys:String x:Key="AddAppRepoSelectGameDialogOtherGame">Other Game</sys:String>
 
+    <sys:String x:Key="AddAppRepoTestButton">Test Community Configuration</sys:String>
+    <sys:String x:Key="AddAppRepoTestButtonTooltip" xml:space="preserve">Allows you to test the application configuration before submitting it to the Reloaded Community Index.</sys:String>
+
+    <sys:String x:Key="AddAppRepoTestJsonSelectTitle">Select JSON File</sys:String>
+    <sys:String x:Key="AddAppRepoTestJsonSelectFilter">Community Configuration</sys:String>
 
 </ResourceDictionary>
