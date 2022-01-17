@@ -62,10 +62,7 @@ In order to create a release for a mod, right click the mod and hit `Publish` in
 
 ![](./Images/Publish-GUI-2.png)  
 
-### Updating Existing Releases
-
-To add packages (new versions) to an existing release of the mod, simply set the output folder to the folder of a previous release.  
-Use the `Set Output Folder` button to do so.
+After hitting `Publish`, simply upload the generated `.7z` files and `.json` file to your preferred upload location.  
 
 ### Delta Updates
 
@@ -80,6 +77,11 @@ To create a delta update, simply open the `Delta Update` tab and check `Automati
 Then set the output folder of your mod to the folder where you have created your previous releases. 
 
 Alternatively, you can manually add a previous version of the mod under the `Delta Update` tab.
+
+### Updating Existing Releases
+
+To add packages (new versions) to an existing release of a mod, simply set the output folder to the folder of a previous release.  
+Use the `Set Output Folder` button to do so.  
 
 ## Creating Releases: CLI
 
@@ -97,7 +99,6 @@ Use those tools from the terminal / command line 😇.
 
 - `NuGetConverter.exe`: Automatically creates a NuGet package given a mod folder or a mod zip.  
 - `Reloaded.Publisher.exe`: Publishes a release for a mod. Identical features to GUI's `Publish Mod` menu.  
-
 
 ## Supported Update Sources
 
