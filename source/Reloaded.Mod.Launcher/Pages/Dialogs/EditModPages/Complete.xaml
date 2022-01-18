@@ -61,10 +61,10 @@
             </ListView>
 
 
-            <CheckBox IsChecked="{Binding Config.IsUniversalMod}" Content="{DynamicResource EditModUniversalMod}" ToolTip="{DynamicResource EditModUniversalModDescription}" 
+            <CheckBox IsChecked="{Binding Config.IsUniversalMod}" HorizontalAlignment="Left" Content="{DynamicResource EditModUniversalMod}" ToolTip="{DynamicResource EditModUniversalModDescription}" 
                       Margin="{DynamicResource CommonItemVerticalMarginSmaller}" />
 
-            <CheckBox IsChecked="{Binding Config.IsLibrary}" Content="{DynamicResource EditModLibrary}" ToolTip="{DynamicResource EditModLibraryDescription}" 
+            <CheckBox IsChecked="{Binding Config.IsLibrary}" HorizontalAlignment="Left" Content="{DynamicResource EditModLibrary}" ToolTip="{DynamicResource EditModLibraryDescription}" 
                       Margin="{DynamicResource CommonItemVerticalMarginSmaller}" />
 
         </StackPanel>
