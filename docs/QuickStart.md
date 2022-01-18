@@ -1,25 +1,42 @@
 # Quick Start
 
 ## Add an Application
-To add an application such as a game, simply click the plus button on the top of the sidebar `Add an Application`. Inside the menu, click new and select an application to make a profile for:
+First step to getting started with Reloaded is to add an Application you'll be modifying.  
+This can be found on the bottom left corner of the launcher, with the `+` button.  
 
-![Add An Application](./Images/AddAnApplication.gif)
+![Add An Application 1](./Images/AddAnApplication_0.png)
 
-Make sure to add the game and not the game's launcher.
+![Add An Application 2](./Images/AddAnApplication_1.png)
 
-## Download Mods and Unhide
-To add mods to Reloaded, simply copy/extract them to the `Mods` directory where you have launched the application from. 
+Make sure to add the App and not the app's launcher.
 
-![Download Mod and Unhide](./Images/DownloadModAndUnhide.gif)
+## Extract Mods
+To install mods, simply extract a downloaded `zip` or `7z` file to the `Mods` folder.  
 
-If the mod download doesn't contain a directory in the zip/7z/rar file, create a new folder yourself.
+![Install Mod](./Images/InstallMod.gif)  
 
-## Enable Mod and Launch Application
-From there, simply enter the `Application Menu`, enable the mod and launch the application. 
+If there is no single folder inside the downloaded mod, create one yourself.  
 
-![Enable Mod And Launch game](./Images/EnableModAndLaunchGame.gif)
+## Configure Mods
 
-### Note
+Some mods might support additional configuration, allowing you to tweak things.  
+
+![Configure Mod](./Images/ConfigureMod.gif)  
+
+If the "Configure Mod" is red when the mod is highlighted, the mod can be configured.
+
+## Enable Mods
+
+To enable mods, simply press the square checkbox.
+
+![Enable Mod](./Images/EnableMod.gif)  
+
+A mod is enabled if the checkbox is red, disabled if it is grey.  
+Once you are done, press `Launch Application`.  
+
+----------
+***Note***
+
 Reloaded uses `.exe` name to determine which mods should automatically be assigned to an application.
 
 If a mod does not show in the application, click the 3 gear button (`Manage Mods`).
