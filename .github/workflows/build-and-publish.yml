@@ -60,6 +60,12 @@ jobs:
     - name: Publish
       run: .\source\Publish.ps1
       
+    - name: Inject Version (on Tag)
+      if: env.IS_RELEASE == 'true'
+      run: |
+        echo "$env:RELEASE_TAG" > "version.txt"
+        Compress-Archive -update "version.txt" "$env:PUBLISH_RELEASE_PATH" 
+      
     - name: Test
       run: dotnet test -c Release ./source/Reloaded.Mod.Loader.Tests/Reloaded.Mod.Loader.Tests.csproj
      
