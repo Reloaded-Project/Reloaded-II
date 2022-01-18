@@ -97,14 +97,6 @@ Use those tools from the terminal / command line 😇.
 - `NuGetConverter.exe`: Automatically creates a NuGet package given a mod folder or a mod zip.  
 - `Reloaded.Publisher.exe`: Publishes a release for a mod. Identical features to GUI's `Publish Mod` menu.  
 
-## Supported Update Sources
-
-When the mod loader checks for updates, it will use the first source it finds from the list below (in the order used in this document).
-
-This is to speed up the time it takes to check for updates, as asking every source for every mod could otherwise take significant amount of time.
-
-### NuGet
-
 ## Adding Support (for Programmers)
 
 Support for mod updates is provided using the [Update](https://github.com/Sewer56/Update) library by yours truly.  
