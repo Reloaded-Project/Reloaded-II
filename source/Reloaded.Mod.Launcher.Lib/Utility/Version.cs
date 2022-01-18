@@ -34,8 +34,12 @@ public static class Version
         if (_version != null)
             return _version;
 
-        if (File.Exists(Constants.VersionFilePath))
-            return SetAndReturnVersion(NuGetVersion.Parse(File.ReadAllText(Constants.VersionFilePath)));
+        try
+        {
+            if (File.Exists(Constants.VersionFilePath))
+                return SetAndReturnVersion(NuGetVersion.Parse(File.ReadAllText(Constants.VersionFilePath)));
+        }
+        catch { /* Ignore */ }
 
         return SetAndReturnVersion(new NuGetVersion(Assembly.GetEntryAssembly()!.GetName().Version));
     }
