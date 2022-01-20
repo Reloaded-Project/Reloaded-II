@@ -121,7 +121,7 @@ public class AggregateNuGetRepositoryTests
         var missingDeps = _aggregateRepository.FindDependencies(Missing.Id, false, false).Result;
 
         // No Dependencies
-        Assert.Empty(noDeps.Dependencies);
+        Assert.Single(noDeps.Dependencies);
         Assert.Empty(noDeps.PackagesNotFound);
 
         // Same Source
