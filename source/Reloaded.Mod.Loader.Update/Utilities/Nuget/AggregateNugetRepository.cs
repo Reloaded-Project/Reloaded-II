@@ -119,6 +119,7 @@ public class AggregateNugetRepository
     /// <param name="includeUnlisted">Include unlisted packages.</param>
     /// <param name="includePrerelease">Include pre-release packages.</param>
     /// <param name="token">A cancellation token to allow cancellation of the task.</param>
+    /// <returns>List of all dependencies, including the source package itself.</returns>
     public async Task<AggregateFindDependenciesResult> FindDependencies(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
     {
         var packages = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
@@ -126,7 +127,9 @@ public class AggregateNugetRepository
         if (newest == null)
             return new AggregateFindDependenciesResult(new HashSet<NugetTuple<IPackageSearchMetadata>>(), new HashSet<string>() { packageId });
         
-        return await FindDependencies(newest!.Generic, includePrerelease, includeUnlisted, token);
+        var result = await FindDependencies(newest!.Generic, includePrerelease, includeUnlisted, token);
+        result.Dependencies.Add(newest);
+        return result;
     }
 
     /// <summary>
@@ -136,6 +139,7 @@ public class AggregateNugetRepository
     /// <param name="includeUnlisted">Include unlisted packages.</param>
     /// <param name="includePrerelease">Include pre-release packages.</param>
     /// <param name="token">A cancellation token to allow cancellation of the task.</param>
+    /// <returns>List of all dependencies.</returns>
     public async Task<AggregateFindDependenciesResult> FindDependencies(IPackageSearchMetadata packageSearchMetadata, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
     {
         var result = new AggregateFindDependenciesResult(new HashSet<NugetTuple<IPackageSearchMetadata>>(), new HashSet<string>()); 
