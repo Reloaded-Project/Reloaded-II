@@ -50,14 +50,18 @@ public static class Update
 
         try
         {
+            var releaseVersion = Version.GetReleaseVersion()!;
             var resolver = new GitHubReleaseResolver(new GitHubResolverConfiguration()
             {
                 LegacyFallbackPattern = Constants.GitRepositoryReleaseName,
                 RepositoryName = Constants.GitRepositoryName,
                 UserName = Constants.GitRepositoryAccount
+            }, new CommonPackageResolverSettings()
+            {
+                AllowPrereleases = releaseVersion.IsPrerelease
             });
 
-            var metadata = new ItemMetadata(Version.GetReleaseVersion()!, Constants.ApplicationPath, null);
+            var metadata = new ItemMetadata(releaseVersion, Constants.ApplicationPath, null);
             manager  = await UpdateManager<Empty>.CreateAsync(metadata, resolver, new SevenZipSharpExtractor());
 
             // Check for new version and, if available, perform full update and restart
