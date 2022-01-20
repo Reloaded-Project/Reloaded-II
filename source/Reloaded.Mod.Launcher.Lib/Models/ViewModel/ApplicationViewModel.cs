@@ -142,7 +142,7 @@ public class ApplicationViewModel : ObservableObject, IDisposable
             var deps = Update.CheckMissingDependencies();
             if (!deps.AllAvailable)
             {
-                try { await Update.ResolveMissingPackagesAsync(deps); }
+                try { await Update.ResolveMissingPackagesAsync(); }
                 catch (Exception) { }
             }
 

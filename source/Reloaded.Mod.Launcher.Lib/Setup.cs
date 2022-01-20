@@ -140,7 +140,7 @@ public static class Setup
         {
             try
             {
-                await Update.ResolveMissingPackagesAsync(deps);
+                await Update.ResolveMissingPackagesAsync();
             }
             catch (Exception)
             {

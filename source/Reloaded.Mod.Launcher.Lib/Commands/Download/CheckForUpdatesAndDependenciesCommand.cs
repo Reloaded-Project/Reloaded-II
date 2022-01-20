@@ -42,7 +42,7 @@ public class CheckForUpdatesAndDependenciesCommand : WithCanExecuteChanged, ICom
         {
             try
             {
-                await Update.ResolveMissingPackagesAsync(dependencies);
+                await Update.ResolveMissingPackagesAsync();
             }
             catch (Exception)
             {

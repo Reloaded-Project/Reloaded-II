@@ -137,9 +137,8 @@ public static class Update
     /// <summary>
     /// Resolves a list of missing packages.
     /// </summary>
-    /// <param name="result">The result of the dependency resolution operation.</param>
     /// <param name="token">Used to cancel the operation.</param>
-    public static async Task ResolveMissingPackagesAsync(DependencyResolutionResult result, CancellationToken token = default)
+    public static async Task ResolveMissingPackagesAsync(CancellationToken token = default)
     {
         if (!HasInternetConnection)
             return;
@@ -148,10 +147,13 @@ public static class Update
 
         do
         {
+            // Get missing dependencies for this update loop.
+            var missingDeps = CheckMissingDependencies();
+
             // Get Dependencies
             var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
             var results = new List<Task<ModDependencyResolveResult>>();
-            foreach (var dependencyItem in result.Items)
+            foreach (var dependencyItem in missingDeps.Items)
             {
                 foreach (var dependency in dependencyItem.Dependencies)
                 {
