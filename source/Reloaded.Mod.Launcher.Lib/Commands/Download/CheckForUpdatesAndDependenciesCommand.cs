@@ -31,14 +31,14 @@ public class CheckForUpdatesAndDependenciesCommand : WithCanExecuteChanged, ICom
         var updates      = await Task.Run(Update.CheckForModUpdatesAsync);
         var dependencies = Update.CheckMissingDependencies();
 
-        if ((!updates) && (!dependencies.AllAvailable))
+        if ((!updates) && (dependencies.AllAvailable))
         {
             Actions.DisplayMessagebox?.Invoke(Resources.NoUpdateDialogTitle.Get(), Resources.NoUpdateDialogMessage.Get(), new Actions.DisplayMessageBoxParams()
             {
                 StartupLocation = Actions.WindowStartupLocation.CenterScreen
             });
         }
-        else if (dependencies.AllAvailable)
+        else if (!dependencies.AllAvailable)
         {
             try
             {
