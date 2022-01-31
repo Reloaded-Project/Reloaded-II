@@ -49,9 +49,16 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
     {
         if (_modTuple != null)
         {
-            var result = TryGetConfiguratorDisposing();
-            GC.Collect(0, GCCollectionMode.Forced, false);
-            return result;
+            try
+            {
+                var result = TryGetConfiguratorDisposing();
+                GC.Collect(0, GCCollectionMode.Forced, false);
+                return result;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         return false;
