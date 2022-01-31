@@ -90,6 +90,8 @@ public struct DependencyResolutionResult
     /// List of missing dependencies.
     /// </summary>
     public List<DependencyResolutionItem> Items { get; set; } = new();
+
+    public DependencyResolutionResult() { }
 }
 
 /// <summary>
@@ -99,4 +101,6 @@ public struct DependencyResolutionItem
 {
     public ModConfig Mod = null; 
     public List<string> Dependencies = new List<string>();
+
+    public DependencyResolutionItem() { }
 }

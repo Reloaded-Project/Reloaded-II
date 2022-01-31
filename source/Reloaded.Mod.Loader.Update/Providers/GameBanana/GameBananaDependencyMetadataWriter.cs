@@ -95,4 +95,7 @@ public struct GameBananaResolverItem
     /// Name of the release metadata file.
     /// </summary>
     public string ReleaseMetadataName = Singleton<ReleaseMetadata>.Instance.GetDefaultFileName();
+
+    /// <summary/>
+    public GameBananaResolverItem() { }
 }

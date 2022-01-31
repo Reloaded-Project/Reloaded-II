@@ -132,6 +132,8 @@ public static class Actions
         /// Maximum width for the message box.
         /// </summary>
         public int Width { get; set; } = default;
+
+        public DisplayMessageBoxParams() { }
     }
 
     /// <summary>
