@@ -22,7 +22,7 @@ public class GameBananaDependencyResolver : IDependencyResolver
             return new ModDependencyResolveResult() { NotFoundDependencies = { packageId }};
 
         // If no dependency data is available, return none.
-        if (!modConfig.PluginData.TryGetValue(GameBananaDependencyMetadataWriter.PluginId, out GameBananaResolverMetadata metadata))
+        if (!modConfig.PluginData.TryGetValue(GameBananaDependencyMetadataWriter.PluginId, out DependencyResolverMetadata<GameBananaUpdateResolverFactory.GameBananaConfig> metadata))
             return new ModDependencyResolveResult() { NotFoundDependencies = { packageId } };
 
         // Try to get configuration for update.

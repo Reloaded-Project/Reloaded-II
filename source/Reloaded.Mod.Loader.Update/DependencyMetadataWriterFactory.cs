@@ -4,6 +4,7 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Providers.GameBanana;
+using Reloaded.Mod.Loader.Update.Providers.GitHub;
 
 namespace Reloaded.Mod.Loader.Update;
 
@@ -18,7 +19,8 @@ public static class DependencyMetadataWriterFactory
     public static IDependencyMetadataWriter[] All { get; private set; } =
     {
         // Listed in order of preference.
-        new GameBananaDependencyMetadataWriter()
+        new GameBananaDependencyMetadataWriter(),
+        new GitHubReleasesDependencyMetadataWriter()
     };
 
     /// <summary>

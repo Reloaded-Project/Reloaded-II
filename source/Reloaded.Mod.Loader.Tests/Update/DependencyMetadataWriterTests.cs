@@ -5,7 +5,9 @@ using Reloaded.Mod.Interfaces.Utilities;
 using Reloaded.Mod.Loader.Tests.SETUP;
 using Reloaded.Mod.Loader.Update;
 using Reloaded.Mod.Loader.Update.Interfaces;
+using Reloaded.Mod.Loader.Update.Providers;
 using Reloaded.Mod.Loader.Update.Providers.GameBanana;
+using Reloaded.Mod.Loader.Update.Providers.GitHub;
 using Sewer56.Update.Misc;
 using Xunit;
 
@@ -40,7 +42,24 @@ public class DependencyMetadataWriterTests : IDisposable
     }
 
     [Fact]
-    public void GameBanana_WithValidDependency_ImportsDependencyFromAnotherMod()
+    public void WithValidDependency_ImportsDependencyFromAnotherMod_UsingGitHub()
+    {
+        // Arrange 
+        var config = new GitHubReleasesUpdateResolverFactory.GitHubConfig() { RepositoryName = "Sewer56", UserName = "Update.Test.Repo" };
+        var clonedDependency = _testEnvironmoent.TestModConfigBTuple.DeepClone();
+        Singleton<GitHubReleasesUpdateResolverFactory>.Instance.SetConfiguration(clonedDependency, config);
+        var clonedOriginal = _testEnvironmoent.TestModConfigATuple.DeepClone();
+
+        // Act
+        var gitHub = new GitHubReleasesDependencyMetadataWriter();
+        gitHub.Update(clonedOriginal.Config, new[] { clonedDependency.Config });
+
+        // Assert
+        Assert.True(clonedOriginal.Config.PluginData.ContainsKey(GitHubReleasesDependencyMetadataWriter.PluginId));
+    }
+
+    [Fact]
+    public void WithValidDependency_ImportsDependencyFromAnotherMod_UsingGameBanana()
     {
         // Arrange 
         var config           = new GameBananaUpdateResolverFactory.GameBananaConfig() { ItemId = 6969 };
@@ -57,7 +76,7 @@ public class DependencyMetadataWriterTests : IDisposable
     }
 
     [Fact]
-    public void GameBanana_WithRemovedDependency_RemovesDependency()
+    public void WithRemovedDependency_RemovesDependency_UsingGameBanana()
     {
         // Arrange 
         var config = new GameBananaUpdateResolverFactory.GameBananaConfig() { ItemId = 6969 };
@@ -72,7 +91,7 @@ public class DependencyMetadataWriterTests : IDisposable
         var gameBanana = new GameBananaDependencyMetadataWriter();
         gameBanana.Update(clonedOriginal.Config, new[] { clonedDependency.Config, clonedDependency2.Config });
 
-        Assert.True(clonedOriginal.Config.PluginData.TryGetValue(GameBananaDependencyMetadataWriter.PluginId, out GameBananaResolverMetadata metadata));
+        Assert.True(clonedOriginal.Config.PluginData.TryGetValue(GameBananaDependencyMetadataWriter.PluginId, out DependencyResolverMetadata<GameBananaUpdateResolverFactory.GameBananaConfig> metadata));
         Assert.Equal(2, metadata.IdToConfigMap.Count);
 
         // Act & Assert: Item Removal
@@ -84,7 +103,7 @@ public class DependencyMetadataWriterTests : IDisposable
     }
 
     [Fact]
-    public void GameBanana_WithNoDependencies_RemovesPluginData()
+    public void WithNoDependencies_RemovesPluginData_UsingGameBanana()
     {
         // Arrange 
         var config = new GameBananaUpdateResolverFactory.GameBananaConfig() { ItemId = 6969 };
@@ -104,7 +123,7 @@ public class DependencyMetadataWriterTests : IDisposable
     }
 
     [Fact]
-    public void GameBanana_WithChangedDependency_ReturnsTrue()
+    public void WithChangedDependency_ReturnsTrue_UsingGameBanana()
     {
         // Arrange 
         var configOld = new GameBananaUpdateResolverFactory.GameBananaConfig() { ItemId = 6969 };
