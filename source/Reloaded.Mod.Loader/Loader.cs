@@ -52,9 +52,7 @@ public class Loader : IDisposable
         }
         else
         {
-            if (Console.IsEnabled)
-                LogWriter = new LogWriter(Logger, Paths.LogPath);
-
+            LogWriter = new LogWriter(Logger, Paths.LogPath);
             Manager = new PluginManager(this);
         }
     }
