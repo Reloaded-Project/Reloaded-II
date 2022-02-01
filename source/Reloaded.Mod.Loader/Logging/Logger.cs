@@ -23,7 +23,7 @@ public class Logger : ILogger
 
     private BlockingCollection<LogMessage> _messages = new BlockingCollection<LogMessage>();
     private Thread _loggingThread;
-    private bool _isShuttingDown = false;
+    private CancellationTokenSource _cancellationToken = new CancellationTokenSource();
 
     public Logger()
     {
@@ -37,7 +37,7 @@ public class Logger : ILogger
     /// </summary>
     public void Shutdown()
     {
-        _isShuttingDown = true;
+        _cancellationToken.Cancel();
         while (_loggingThread.IsAlive)
             Thread.Sleep(1);
     }
@@ -62,13 +62,13 @@ public class Logger : ILogger
     public void WriteLineAsync(string message) => WriteLineAsync(message, TextColor);
     public void WriteLineAsync(string message, Color color)
     {
-        if (!_isShuttingDown)
+        if (!_cancellationToken.IsCancellationRequested)
             _messages.Add(new LogMessage(LogMessageType.WriteLine, message, color));
     }
 
     public void WriteAsync(string message, Color color)
     {
-        if (!_isShuttingDown)
+        if (!_cancellationToken.IsCancellationRequested)
             _messages.Add(new LogMessage(LogMessageType.Write, message, color));
     }
 
@@ -104,24 +104,31 @@ public class Logger : ILogger
     // Business Logic
     private void ProcessQueue()
     {
-        while (true)
+        try
         {
-            var message = _messages.Take();
-
-            switch (message.Type)
+            while (true)
             {
-                default:
-                case LogMessageType.WriteLine:
-                    WriteLine(message.Message, message.Color);
-                    break;
-                case LogMessageType.Write:
-                    Write(message.Message, message.Color);
-                    break;
-            }
+                var message = _messages.Take(_cancellationToken.Token);
 
-            // Exit thread if console is shutting down and we're done here.
-            if (_messages.Count == 0 && _isShuttingDown)
-                return;
+                switch (message.Type)
+                {
+                    default:
+                    case LogMessageType.WriteLine:
+                        WriteLine(message.Message, message.Color);
+                        break;
+                    case LogMessageType.Write:
+                        Write(message.Message, message.Color);
+                        break;
+                }
+
+                // Exit thread if console is shutting down and we're done here.
+                if (_messages.Count == 0 && _cancellationToken.IsCancellationRequested)
+                    return;
+            }
+        }
+        catch (OperationCanceledException e)
+        {
+            // Process is terminating.
         }
     }
 }
