@@ -54,7 +54,7 @@ public static class Setup
             UpdateDefaultConfig(); // Fire and forget.
 #pragma warning restore 4014
             CheckForMissingDependencies();
-
+                
             updateText(Resources.SplashPreparingResources.Get());
             await Task.Run(SetupServices);
             SetupViewModels();
@@ -297,7 +297,7 @@ public static class Setup
         config.Bootstrapper64Path = bootstrapper64Path;
 
         // Update Environment Variables
-        Environment.SetEnvironmentVariable("RELOADEDIIMODS", config.ModConfigDirectory, EnvironmentVariableTarget.User);
+        Task.Run(() => Environment.SetEnvironmentVariable("RELOADEDIIMODS", config.ModConfigDirectory, EnvironmentVariableTarget.User));
     }
 
     /// <summary>
