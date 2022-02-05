@@ -4,11 +4,13 @@ using Force.DeepCloner;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Interfaces;
+using Reloaded.Mod.Loader.Update.Providers;
 using Reloaded.Mod.Loader.Update.Providers.GameBanana;
 using Reloaded.Mod.Loader.Update.Providers.GitHub;
 using Reloaded.Mod.Loader.Update.Providers.NuGet;
 using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.Update.Interfaces;
+using Sewer56.Update.Packaging.Interfaces;
 using Sewer56.Update.Resolvers;
 
 namespace Reloaded.Mod.Loader.Update;
@@ -36,7 +38,7 @@ public static class PackageResolverFactory
     /// <param name="userConfig">Contains user configuration for this mod in question.</param>
     /// <param name="data">All data passed to the updater.</param>
     /// <returns>A resolver that can handle the mod, else null.</returns>
-    public static AggregatePackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig, UpdaterData data)
+    public static AggregatePackageResolverEx? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig, UpdaterData data)
     {
         // Migrate first
         foreach (var factory in All)
@@ -50,15 +52,19 @@ public static class PackageResolverFactory
         data.CommonPackageResolverSettings.MetadataFileName = mod.Config.ReleaseMetadataFileName;
 
         // Create resolvers.
-        var resolvers = new List<IPackageResolver>();
+        var resolvers  = new List<IPackageResolver>();
+        var extractors = new Dictionary<IPackageResolver, IPackageExtractor>();
         foreach (var factory in All)
         {
             var resolver = factory.GetResolver(mod, userConfig, data);
             if (resolver != null)
+            {
                 resolvers.Add(resolver);
+                extractors[resolver] = factory.Extractor;
+            }
         }
 
-        return resolvers.Count > 0 ? new AggregatePackageResolver(resolvers) : null;
+        return resolvers.Count > 0 ? new AggregatePackageResolverEx(resolvers, extractors) : null;
     }
 
     /// <summary>

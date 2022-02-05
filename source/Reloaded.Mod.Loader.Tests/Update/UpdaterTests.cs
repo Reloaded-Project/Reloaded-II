@@ -12,8 +12,10 @@ using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Packaging;
 using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.DeltaPatchGenerator.Lib.Utility;
+using Sewer56.Update.Extractors.SevenZipSharp;
 using Sewer56.Update.Interfaces;
 using Sewer56.Update.Packaging.Extractors;
+using Sewer56.Update.Packaging.Interfaces;
 using Sewer56.Update.Resolvers;
 using Sewer56.Update.Structures;
 using Xunit;
@@ -133,6 +135,12 @@ public class TemporarySetNewUpdaterResolvers : IDisposable
 [ExcludeFromCodeCoverage]
 public class LocalPackageUpdateResolverFactory : IUpdateResolverFactory
 {
+
+    private static IPackageExtractor _extractor = new SevenZipSharpExtractor();
+
+    /// <inheritdoc />
+    public IPackageExtractor Extractor { get; } = _extractor;
+
     public string ResolverId { get; } = "LocalPackageResolver";
     public string FriendlyName { get; } = "LocalPackageResolver";
     public string Directory { get; }

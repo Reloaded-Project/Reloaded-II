@@ -1,5 +1,6 @@
 ﻿using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
+using Reloaded.Mod.Loader.Update.Providers;
 using Sewer56.Update.Resolvers;
 
 namespace Reloaded.Mod.Loader.Update.Structures;
@@ -12,7 +13,7 @@ public class ResolverModPair
     /// <summary>
     /// The package resolver.
     /// </summary>
-    public AggregatePackageResolver Resolver { get; set; }
+    public AggregatePackageResolverEx Resolver { get; set; }
 
     /// <summary>
     /// The individual mod bound to the resolver.
@@ -20,7 +21,7 @@ public class ResolverModPair
     public PathTuple<ModConfig> ModTuple { get; set; }
 
     /// <summary/>
-    public ResolverModPair(AggregatePackageResolver resolver, PathTuple<ModConfig> modTuple)
+    public ResolverModPair(AggregatePackageResolverEx resolver, PathTuple<ModConfig> modTuple)
     {
         Resolver = resolver;
         ModTuple = modTuple;

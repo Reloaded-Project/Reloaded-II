@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using NuGet.Versioning;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
+using Reloaded.Mod.Loader.Update.Providers;
 using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.Update;
+using Sewer56.Update.Extensions;
 using Sewer56.Update.Extractors.SevenZipSharp;
 using Sewer56.Update.Misc;
 using Sewer56.Update.Packaging.Structures;
@@ -52,7 +54,7 @@ public class Updater
         var faultedModSets       = new List<ModConfig>();
         var resolverManagerPairs = new List<ManagerModResultPair>();
         var resolverTuples       = GetResolvers();
-        var extractor            = new SevenZipSharpExtractor();
+        var extractor            = new ProxyPackageExtractor(new SevenZipSharpExtractor());
 
         foreach (var resolverTuple in resolverTuples)
         {
@@ -63,7 +65,7 @@ public class Updater
                 var baseDirectory = Path.GetDirectoryName(modTuple.Path);
 
                 var metadata = new ItemMetadata(NuGetVersion.Parse(modTuple.Config.ModVersion), filePath, baseDirectory);
-                var manager = await UpdateManager<Empty>.CreateAsync(metadata, resolverTuple.Resolver, extractor);
+                var manager      = await UpdateManager<Empty>.CreateAsync(metadata, resolverTuple.Resolver, extractor);
                 var updateResult = await manager.CheckForUpdatesAsync();
 
                 if (updateResult.CanUpdate)
@@ -95,10 +97,16 @@ public class Updater
             var slice   = progressMixer.Slice(singleItemProgress);
             var pair    = summary.ManagerModResultPairs[x];
             var manager = pair.Manager;
-            var version = pair.Result.LastVersion;
+            var version  = pair.Result.LastVersion;
+            var resolver = pair.Manager.Resolver;
+            var extractor = pair.Manager.Extractor;
 
-            await manager.PrepareUpdateAsync(version, slice);
-            await manager.StartUpdateAsync(version, new OutOfProcessOptions(), new UpdateOptions() { CleanupAfterUpdate = true });
+            // Set package extractor via proxy.
+            if (resolver is AggregatePackageResolverEx resolverEx && extractor is ProxyPackageExtractor proxyExtractor)
+                proxyExtractor.Extractor = await resolverEx.GetExtractorAsync(version!);
+
+            await manager.PrepareUpdateAsync(version!, slice);
+            await manager.StartUpdateAsync(version!, new OutOfProcessOptions(), new UpdateOptions() { CleanupAfterUpdate = true });
         }
     }
 

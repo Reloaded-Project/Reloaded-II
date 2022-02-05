@@ -3,6 +3,7 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.Update.Interfaces;
+using Sewer56.Update.Packaging.Interfaces;
 
 namespace Reloaded.Mod.Loader.Update.Interfaces;
 
@@ -11,6 +12,11 @@ namespace Reloaded.Mod.Loader.Update.Interfaces;
 /// </summary>
 public interface IUpdateResolverFactory
 {
+    /// <summary>
+    /// The extractor to use with this resolver.
+    /// </summary>
+    IPackageExtractor Extractor { get; }
+
     /// <summary>
     /// Returns the unique ID of the resolver.
     /// </summary>

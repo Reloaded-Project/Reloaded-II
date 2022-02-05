@@ -9,6 +9,7 @@ using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.Update.Interfaces;
 using Sewer56.Update.Misc;
+using Sewer56.Update.Packaging.Interfaces;
 using Sewer56.Update.Resolvers;
 using Sewer56.Update.Resolvers.NuGet;
 using Sewer56.Update.Resolvers.NuGet.Utilities;
@@ -20,6 +21,11 @@ namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 /// </summary>
 public class NuGetUpdateResolverFactory : IUpdateResolverFactory
 {
+    private static IPackageExtractor _extractor = new NuGetPackageExtractor();
+
+    /// <inheritdoc />
+    public IPackageExtractor Extractor { get; } = _extractor;
+
     /// <inheritdoc />
     public string ResolverId { get; } = "NuGet";
 

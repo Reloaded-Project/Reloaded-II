@@ -5,7 +5,9 @@ using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Structures;
+using Sewer56.Update.Extractors.SevenZipSharp;
 using Sewer56.Update.Interfaces;
+using Sewer56.Update.Packaging.Interfaces;
 using Sewer56.Update.Resolvers.GitHub;
 
 namespace Reloaded.Mod.Loader.Update.Providers.GitHub;
@@ -15,6 +17,11 @@ namespace Reloaded.Mod.Loader.Update.Providers.GitHub;
 /// </summary>
 public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
 {
+    private static IPackageExtractor _extractor = new SevenZipSharpExtractor();
+
+    /// <inheritdoc />
+    public IPackageExtractor Extractor { get; } = _extractor;
+
     /// <inheritdoc />
     public string ResolverId { get; } = "GitHubRelease";
 
