@@ -167,9 +167,16 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
 
     private static string? GetDownloadUrlForFileName(string fileName, List<GameBananaModFile> files, out GameBananaModFile? file)
     {
-        var expectedFileName = GameBananaUtilities.GetFileNameStart(fileName);
-        file = files.FirstOrDefault(x => x.FileName!.StartsWith(expectedFileName, StringComparison.OrdinalIgnoreCase));
-        return file?.DownloadUrl;
+        var expectedFileNames = GameBananaUtilities.GetFileNameStarts(fileName);
+        file = default;
+        foreach (var expectedFileName in expectedFileNames)
+        {
+            file = files.FirstOrDefault(x => x.FileName!.StartsWith(expectedFileName, StringComparison.OrdinalIgnoreCase));
+            if (file != null)
+                return file.DownloadUrl;
+        }
+
+        return null;
     }
 
     private static bool TryGetExtraData(ReleaseMetadata releaseMetadata, out ReleaseMetadataExtraData? extraData)
