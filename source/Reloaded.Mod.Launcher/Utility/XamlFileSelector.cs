@@ -71,7 +71,6 @@ public class XamlFileSelector : ResourceDictionary, IResourceFileSelector
 
             As this in practice occurs over a theme or language switch, it should be largely unnoticeable to the end user.
         */
-        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
         NewFileSet?.Invoke();
     }
 

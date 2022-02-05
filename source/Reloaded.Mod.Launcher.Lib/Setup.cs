@@ -50,12 +50,14 @@ public static class Setup
             RegisterReloadedProtocol();
 
             updateText(Resources.SplashCreatingDefaultConfig.Get());
-            await UpdateDefaultConfig();
+#pragma warning disable 4014
+            UpdateDefaultConfig(); // Fire and forget.
+#pragma warning restore 4014
             CheckForMissingDependencies();
 
             updateText(Resources.SplashPreparingResources.Get());
             await Task.Run(SetupServices);
-            await Task.Run(SetupViewModels);
+            SetupViewModels();
 
             updateText(Resources.SplashCheckingForUpdates.Get());
 #pragma warning disable 4014
