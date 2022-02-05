@@ -2,128 +2,145 @@
 
 This page details various different tasks you can automate to make mod development easier.
 
-## Appveyor
+## CI/CD
 
-You can use AppVeyor to automate building every version of your mods, and more. For those familiar, or even a bit familiar, here is a template for `appveyor.yml` that builds all versions and automatically publishes tags to GitHub Releases.
+Below is a sample template for doing CI/CD using GitHub Actions:  
 
 ```yaml
-version: CI-{build}
-image: Visual Studio 2019
-init:
-- ps: |-
-    & choco upgrade chocolatey -y
-    & choco install reloaded-ii-tools --version=1.0.0 -y
-    if ($env:APPVEYOR_REPO_TAG -eq "true")
-    {
-        Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
-    }
-build_script:
-- ps: |- 
-    & ./Publish.ps1
+name: Build and Publish
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env: 
+  PUBLISH_GITHUB_PATH: ./Publish/ToUpload/Generic
+  PUBLISH_NUGET_PATH: ./Publish/ToUpload/NuGet
+  PUBLISH_CHANGELOG_PATH: ./Publish/Changelog.md
+  PUBLISH_PATH: ./Publish
+  
+  IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/') }}
+  RELEASE_TAG: ${{ github.ref_name }}
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
     
-    # Create NuGet Packages
-    $publishDirectory = "./Publish"
-    $allZips = Get-ChildItem $publishDirectory -Filter *.zip
-    foreach ($publishFile in $allZips) 
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET Core SDK (5.0)
+      uses: actions/setup-dotnet@v1.8.2
+      with:
+        dotnet-version: 5.0.x
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        
+    - name: Setup AutoChangelog
+      run: npm install -g auto-changelog
+
+    - name: Build
+      run: ./Publish.ps1
+      
+    - name: Create Changelog
+      run: |
+        [System.IO.Directory]::CreateDirectory("$env:PUBLISH_PATH")
+        if ($env:IS_RELEASE -eq 'true') {
+            auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --unreleased --starting-version "$env:RELEASE_TAG" --output "$env:PUBLISH_CHANGELOG_PATH"
+        }
+        else {
+            auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --unreleased --output "$env:PUBLISH_CHANGELOG_PATH"
+        }
+         
+    - name: Upload GitHub Release Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        # Artifact name
+        name: GitHub Release
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{ env.PUBLISH_GITHUB_PATH }}/*
+        
+    - name: Upload NuGet Release Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        # Artifact name
+        name: NuGet Release
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{ env.PUBLISH_NUGET_PATH }}/*
+        
+    - name: Upload Changelog Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        # Artifact name
+        name: Changelog
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{ env.PUBLISH_CHANGELOG_PATH }}
+        retention-days: 0
+    
+    - name: Upload to GitHub Releases
+      uses: softprops/action-gh-release@v0.1.14
+      if: env.IS_RELEASE == 'true'
+      with:
+        # Path to load note-worthy description of changes in release from
+        body_path: ${{ env.PUBLISH_CHANGELOG_PATH }}
+        # Newline-delimited list of path globs for asset files to upload
+        files: |
+          ${{ env.PUBLISH_GITHUB_PATH }}/*
+
+
+```
+
+Feel free to modify any parts of this template.  
+Note: You may need to change branch name from `main` to `master` for older repos.  
+
+### Pushing NuGet Packages
+
+You can push packages to a NuGet repository using the following step:  
+
+```yaml
+- name: Push to Official NuGet Repository (on Tag)
+  env: 
+    NUGET_KEY: ${{ secrets.RELOADED_NUGET_KEY }}
+  if: env.IS_RELEASE == 'true'
+  run: |
+    $items = Get-ChildItem -Path "$env:PUBLISH_NUGET_PATH/*.nupkg"
+    Foreach ($item in $items)
     {
-        $nupkgName = [System.IO.Path]::ChangeExtension($publishFile.FullName, ".nupkg")
-        $fullZipPath = $publishFile.FullName
-        NuGetConverter.exe "$fullZipPath" "$nupkgName"
-    }
-artifacts:
-- path: ./Publish/*.zip
-  name: Compiled Mod(s)
-- path: ./Publish/*.nupkg
-  name: Compiled NuGet Packages
-deploy:
-- provider: GitHub
-  auth_token:
-    secure: 8Lqo9jP/L0PP7rNCr/FOdV8fc13U3U4kmDY5n9RMajb70SnIjujZz9J4tSGb9rAk
-  force_update: false
-  on:
-    APPVEYOR_REPO_TAG: true
-```
-
-Replace `secure: 8Lqo9jP/L0PP7rNCr/FOdV8fc13U3U4kmDY5n9RMajb70SnIjujZz9J4tSGb9rAk` with your own GitHub token. Refer to [Appveyor Deployment: GitHub](https://www.appveyor.com/docs/deployment/github/) for more info.
-
-Please remember to **encrypt** your token! You should be using [this tool](https://ci.appveyor.com/tools/encrypt) to do so.
-
-### Upload to Official Package Repository on Build
-
-Add to your `deploy:` section.
-
-```yaml
-- provider: NuGet
-  server: http://167.71.128.50:5000/
-  api_key:
-    secure: /Ayzh3D/4Otzg80B1jc/6ltVaugqU8TP4fn/b4KA0as=
-  skip_symbols: true
-  on:
-    APPVEYOR_REPO_TAG: true
-```
-
-### Auto Build Changelog for Tag
-
-Using the [auto-changelog]((https://github.com/CookPete/auto-changelog)) library by [Pete Cook](https://github.com/CookPete).
-
-Add to after build script as such:
-```yaml
-after_build:
-- ps: |-
-    # Build the Changelog
-    if ($env:APPVEYOR_REPO_TAG -eq "true")
-    {
-        $env:CHANGELOG_PATH = "CHANGELOG.MD"
-        & npm install -g auto-changelog
-        & auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --starting-version $env:APPVEYOR_REPO_TAG_NAME -o $env:CHANGELOG_PATH 
-        $env:CHANGELOG_TEXT = Get-Content -Path $env:CHANGELOG_PATH -Raw
-		$env:CHANGELOG_TEXT = $env:CHANGELOG_TEXT -replace "\n", "`\n"
+        Write-Host "Pushing $item"
+        dotnet nuget push "$item" -k "$env:NUGET_KEY" -s "http://packages.sewer56.moe:5000/v3/index.json" --skip-duplicate
     }
 ```
 
-Add to release description, for example:
-```yaml
-deploy:
-- provider: GitHub
-  description: $(CHANGELOG_TEXT)
-  # Rest of fields here.
+Make sure to add your NuGet API key as a [https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository](Secret). In this snippet the secret is named `RELOADED_NUGET_KEY`.
+
+The source `http://packages.sewer56.moe:5000/v3/index.json` in this snippet points to the official Reloaded II NuGet repository.
+
+### Creating Delta Updates
+
+Please see [Publishing Mods: Publish Script](PublishingMods.md#creating-releases-publish-script).
+
+Example(s):  
+```powershell
+# Publish using GitHub Releases as the delta source.
+./Publish.ps1 -MakeDelta true -UseGitHubDelta true -GitHubUserName Sewer56 -GitHubRepoName Reloaded.SharedLib.Hooks.ReloadedII -GitHubFallbackPattern reloaded.sharedlib.hooks.zip
 ```
-
-![](./Images/AutoDocumentation.png)
-
-## Auto-Building Packages
-
-### 1. Install NuGetPackageConverter
-
-There also exists a standalone NuGet Package Converter; you can get it from [Chocolatey](https://chocolatey.org/install) (recommended) or from Github Releases.
-
-If you are using AppVeyor, Chocolatey is already preinstalled. If you are using Github Actions, consider trying [Chocolatey Action](https://github.com/marketplace/actions/chocolatey-action).
-
-Once chocolatey is installed, simply install the [Reloaded Tools](chocolatey.org/packages/reloaded-ii-tools): 
-```
-choco install reloaded-ii-tools -y
-```
-
-### 2. Build and Pack The Mod 
-
-Build the mod using the [included script from the mod template](./PublishingMods.md#creating-releases-cli); output goes in the `Publish` folder.
-
-Then simply pack all of the output using one of the tools installed earlier.
 
 ```powershell
-# Build the Mod
-./Publish.ps1
-
-# Package all zips in Publish Folder
-$publishDirectory = "./Publish"
-$allZips = Get-ChildItem $publishDirectory -Filter *.zip
-
-foreach ($publishFile in $allZips) 
-{
-	$nupkgName = [System.IO.Path]::ChangeExtension($publishFile.FullName, ".nupkg")
-	$fullZipPath = $publishFile.FullName
-	NuGetConverter.exe "$fullZipPath" "$nupkgName"
-}
+# Publish using NuGet as the delta source.
+./Publish.ps1 -MakeDelta true -UseNuGetDelta true -NuGetPackageId reloaded.sharedlib.hooks -NuGetFeedUrl http://packages.sewer56.moe:5000/v3/index.json
 ```
 
-You can now add the package to your artifacts/output/etc.
+This goes in place of the `Build` step.
