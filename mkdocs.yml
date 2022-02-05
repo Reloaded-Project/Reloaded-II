@@ -22,7 +22,7 @@ theme:
     accent: red
     scheme: slate
     
-pages:
+nav:
   - Home: index.md
   - For Users:
     - Quick Start: QuickStart.md
