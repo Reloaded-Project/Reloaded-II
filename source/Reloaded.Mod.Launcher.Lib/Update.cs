@@ -110,7 +110,7 @@ public static class Update
             var resolverSettings = new CommonPackageResolverSettings() { AllowPrereleases = loaderConfig.ForceModPrereleases };
             var updaterData      = new UpdaterData(nugetFeeds, resolverSettings);
             var updater          = new Updater(modConfigService, modUserConfigService, updaterData);
-            var updateDetails    = await updater.GetUpdateDetails();
+            var updateDetails    = await updater.GetUpdateDetailsAsync();
 
             if (updateDetails.HasUpdates())
             {

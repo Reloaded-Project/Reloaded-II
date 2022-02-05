@@ -87,7 +87,7 @@ public class UpdaterTests : IDisposable
     public async Task GetUpdateDetails_ReturnsAvailableUpdate()
     {
         var updater = new Updater(_testEnvironmoent.ModConfigService, _testEnvironmoent.UserConfigService, _updaterData);
-        var details = await updater.GetUpdateDetails();
+        var details = await updater.GetUpdateDetailsAsync();
         Assert.Single(details.ManagerModResultPairs);
     }
 
@@ -95,7 +95,7 @@ public class UpdaterTests : IDisposable
     public async Task GetUpdateDetails_CanGetUpdateInfo()
     {
         var updater = new Updater(_testEnvironmoent.ModConfigService, _testEnvironmoent.UserConfigService, _updaterData);
-        var details = await updater.GetUpdateDetails();
+        var details = await updater.GetUpdateDetailsAsync();
         Assert.NotNull(details.GetUpdateInfo());
     }
 
@@ -103,7 +103,7 @@ public class UpdaterTests : IDisposable
     public async Task GetUpdateDetails_CanUpdate()
     {
         var updater = new Updater(_testEnvironmoent.ModConfigService, _testEnvironmoent.UserConfigService, _updaterData);
-        var details = await updater.GetUpdateDetails();
+        var details = await updater.GetUpdateDetailsAsync();
         var oldConfig  = details.ManagerModResultPairs[0].ModTuple;
         var oldVersion = oldConfig.Config.ModVersion;
 

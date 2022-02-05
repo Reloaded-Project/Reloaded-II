@@ -15,19 +15,19 @@ public class ModUpdateSummary
     /// <summary>
     /// List of all pairs of resolvers, managers and update check results.
     /// </summary>
-    public List<ManagerModResultPair> ManagerModResultPairs { get; private set; }
+    public IList<ManagerModResultPair> ManagerModResultPairs { get; private set; }
 
     /// <summary>
     /// List of mods which failed to check updates for.
     /// </summary>
-    public List<ModConfig> FaultedMods { get; private set; }
+    public IList<ModConfig> FaultedMods { get; private set; }
 
     private ModUpdate[]? _updates = null!;
 
     /* Create summary. */
 
     /// <summary/>
-    public ModUpdateSummary(List<ManagerModResultPair> managerModResultPairs, List<ModConfig> faultedMods)
+    public ModUpdateSummary(IList<ManagerModResultPair> managerModResultPairs, IList<ModConfig> faultedMods)
     {
         ManagerModResultPairs = managerModResultPairs;
         FaultedMods = faultedMods;

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Versioning;
 using Reloaded.Mod.Loader.IO.Config;
@@ -46,45 +48,60 @@ public class Updater
     /// <summary>
     /// Retrieves a summary of all updates to be performed.
     /// </summary>
-    public async Task<ModUpdateSummary> GetUpdateDetails()
+    public async Task<ModUpdateSummary> GetUpdateDetailsAsync()
     {
         if (_cachedResult != null)
             return _cachedResult;
 
-        var faultedModSets       = new List<ModConfig>();
-        var resolverManagerPairs = new List<ManagerModResultPair>();
+        var faultedModSets       = new BlockingCollection<ModConfig>(_modConfigService.Items.Count);
+        var resolverManagerPairs = new BlockingCollection<ManagerModResultPair>(_modConfigService.Items.Count);
         var resolverTuples       = GetResolvers();
         var extractor            = new ProxyPackageExtractor(new SevenZipSharpExtractor());
+        using var concurrencySemaphore = new SemaphoreSlim(32);
+        var allTasks = new List<Task>();
 
+        //var taskFunctions = ;
         foreach (var resolverTuple in resolverTuples)
         {
-            try
+            await concurrencySemaphore.WaitAsync();
+            var task = CheckForResolverTupleUpdate(resolverTuple, extractor, resolverManagerPairs, faultedModSets).ContinueWith(task1 =>
             {
-                var modTuple = resolverTuple.ModTuple;
-                var filePath = modTuple.Config.GetDllPath(modTuple.Path);
-                var baseDirectory = Path.GetDirectoryName(modTuple.Path);
+                concurrencySemaphore.Release();
+            });
 
-                var metadata = new ItemMetadata(NuGetVersion.Parse(modTuple.Config.ModVersion), filePath, baseDirectory);
-                var manager      = await UpdateManager<Empty>.CreateAsync(metadata, resolverTuple.Resolver, extractor);
-                var updateResult = await manager.CheckForUpdatesAsync();
-
-                if (updateResult.CanUpdate)
-                    resolverManagerPairs.Add(new ManagerModResultPair(manager, updateResult, modTuple));
-            }
-            catch (Exception)
-            {
-                faultedModSets.Add(resolverTuple.ModTuple.Config);
-            }
+            allTasks.Add(task);
         }
 
-        _cachedResult = new ModUpdateSummary(resolverManagerPairs, faultedModSets);
+        await Task.WhenAll(allTasks);
+        _cachedResult = new ModUpdateSummary(resolverManagerPairs.ToList(), faultedModSets.ToList());
         return _cachedResult;
+    }
+
+    private static async Task CheckForResolverTupleUpdate(ResolverModPair resolverTuple, ProxyPackageExtractor extractor, BlockingCollection<ManagerModResultPair> toUpdateSet, BlockingCollection<ModConfig> faultedUpdateSets)
+    {
+        try
+        {
+            var modTuple = resolverTuple.ModTuple;
+            var filePath = modTuple.Config.GetDllPath(modTuple.Path);
+            var baseDirectory = Path.GetDirectoryName(modTuple.Path);
+
+            var metadata = new ItemMetadata(NuGetVersion.Parse(modTuple.Config.ModVersion), filePath, baseDirectory);
+            var manager = await UpdateManager<Empty>.CreateAsync(metadata, resolverTuple.Resolver, extractor);
+            var updateResult = await manager.CheckForUpdatesAsync();
+
+            if (updateResult.CanUpdate)
+                toUpdateSet.Add(new ManagerModResultPair(manager, updateResult, modTuple));
+        }
+        catch (Exception)
+        {
+            faultedUpdateSets.Add(resolverTuple.ModTuple.Config);
+        }
     }
 
     /// <summary>
     /// Updates all of the mods.
     /// </summary>
-    /// <param name="summary">Summary of updates returned from <see cref="GetUpdateDetails"/></param>
+    /// <param name="summary">Summary of updates returned from <see cref="GetUpdateDetailsAsync"/></param>
     /// <param name="progressHandler">Event to receive information about the overall download and extract progress of all mods combined.</param>
     public async Task Update(ModUpdateSummary summary, IProgress<double> progressHandler = null)
     {
