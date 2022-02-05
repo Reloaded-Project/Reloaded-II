@@ -26,7 +26,7 @@ namespace Reloaded.Mod.Loader.Update.Packaging;
 /// </summary>
 public static class Publisher
 {
-    private const string GamebananaDeltaIdentifier = ".nobanana";
+    private const string GamebananaDeltaIdentifier = ".disable_gb1click";
 
     /// <summary>
     /// Asynchronously publishes a package.
@@ -105,17 +105,20 @@ public static class Publisher
         }, args.Progress);
 
         // Add GameBanana integration marker on deltas.
-        using var temporaryDirectory = new TemporaryFolderAllocation();
-        var bananaIdentifierPath = Path.Combine(temporaryDirectory.FolderPath, GamebananaDeltaIdentifier);
-        await File.Create(bananaIdentifierPath).DisposeAsync();
-
-        foreach (var release in metadata.Releases)
+        if (args.PublishTarget == PublishTarget.GameBanana)
         {
-            if (release.ReleaseType != PackageType.Delta) 
-                continue;
+            using var temporaryDirectory = new TemporaryFolderAllocation();
+            var bananaIdentifierPath = Path.Combine(temporaryDirectory.FolderPath, GamebananaDeltaIdentifier);
+            await File.Create(bananaIdentifierPath).DisposeAsync();
 
-            var releaseFilePath = Path.Combine(args.OutputFolder, release.FileName);
-            AddNoBananaAsync(releaseFilePath, bananaIdentifierPath);
+            foreach (var release in metadata.Releases)
+            {
+                if (release.ReleaseType != PackageType.Delta)
+                    continue;
+
+                var releaseFilePath = Path.Combine(args.OutputFolder, release.FileName);
+                AddNoBananaAsync(releaseFilePath, bananaIdentifierPath);
+            }
         }
 
         return metadata;
