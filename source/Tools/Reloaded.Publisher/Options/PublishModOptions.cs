@@ -47,5 +47,8 @@ namespace Reloaded.Publisher.Options
 
         [Option(Required = false, HelpText = "The method with which the archive should be compressed by.", Default = CompressionMethod.Lzma2)]
         public CompressionMethod CompressionMethod { get; set; } = CompressionMethod.Lzma2;
+
+        [Option(Required = false, HelpText = "File path to the file containing the changelog for the package, in Markdown format.")]
+        public string? ChangelogPath { get; set; } = null;
     }
 }

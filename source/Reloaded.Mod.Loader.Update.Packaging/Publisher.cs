@@ -92,6 +92,9 @@ public static class Publisher
             ModDescription = args.ModTuple.Config.ModDescription,
         };
 
+        if (!string.IsNullOrEmpty(args.ChangelogPath))
+            extraData.Changelog = await File.ReadAllTextAsync(args.ChangelogPath);
+
         var metadata = await builder.BuildAsync(new BuildArgs()
         {
             FileName = fileName,
@@ -202,6 +205,11 @@ public static class Publisher
         /// The method with which the archive should be compressed by.
         /// </summary>
         public CompressionMethod CompressionMethod { get; set; } = CompressionMethod.Lzma2;
+
+        /// <summary>
+        /// Path to the changelog to use for this release.
+        /// </summary>
+        public string? ChangelogPath { get; set; } = null;
     }
 
     /// <summary>
