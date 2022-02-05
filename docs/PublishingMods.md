@@ -80,10 +80,25 @@ Alternatively, you can manually add a previous version of the mod under the `Del
 To add packages (new versions) to an existing release of a mod, simply set the output folder to the folder of a previous release.  
 Use the `Set Output Folder` button to do so.  
 
+## Creating Releases: Publish Script
+
+Newer versions of the Visual Studio `Reloaded Mod Template` feature a built-in publish script (`Publish.ps1`) that can be used to create releases.  
+
+To run it, open a Powershell prompt and execute the script as such:  
+```powershell
+.\Publish.ps1
+```
+
+Once the script completes, ready to upload packages will be output to the `Publish/ToUpload`.  
+
+For extended help with the script and examples, consider running:  
+```powershell
+Get-Help .\Publish.ps1 -Detailed
+```
+
 ## Creating Releases: CLI
 
-Reloaded also comes with a set of tools that can be used to create releases independent of the launcher.  
-These might be useful to use in conjunction with CI/CD or other similar use cases.  
+If you need to create releases in some more unusual environments, or simply wish to roll your own build script, Reloaded comes with a set of tools that can be used to create releases independent of the launcher.  
 
 You can get them from either of the 2 sources:  
 
