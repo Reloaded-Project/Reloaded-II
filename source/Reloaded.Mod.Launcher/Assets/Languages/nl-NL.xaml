@@ -37,9 +37,9 @@
     <sys:String x:Key="AddAppArguments">Commandline Argumenten</sys:String>
 
     <sys:String x:Key="AddAppAdvancedOptions">Geavanceerde Hulpmiddelen &amp; Opties</sys:String>
-    <sys:String x:Key="AddAppCreateShortcut">Creër Snelkoppeling</sys:String>
+    <sys:String x:Key="AddAppCreateShortcut">Creëer Snelkoppeling</sys:String>
     <sys:String x:Key="AddAppAutoInject">Auto-Inject</sys:String>
-    <sys:String x:Key="AddAppAutoInjectMessage" xml:space="preserve">Note: Auto-inject wordt aangeboden, maar wordt niet aangeraden omdat er geen zekerheid is dat de mods uitgevoerd worden voordat de applicatie begint.&#x0a;Gebruik liever de reguliere "Start Applicatie" van Reloaded of de "DLL Lader" methode beschreven in de GitHub documentatie.&#x0a;Gelieve niet bugs reports versturen voor mods die niet werken met het gebruik van Auto-inject mode.</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage" xml:space="preserve">Tip: Auto-inject wordt aangeboden, maar wordt niet aangeraden omdat er geen zekerheid is dat de worden mods uitgevoerd voordat de applicatie begint.&#x0a;Gebruik liever de reguliere "Start Applicatie" van Reloaded of de "DLL Lader" methode beschreven in de GitHub documentatie.&#x0a;Gelieve niet bugs reports versturen voor mods die niet werken met het gebruik van Auto-inject mode.</sys:String>
 
     <sys:String x:Key="AddAppExecutableTitle">Selecteer een Applicatie om configuratie voor aan te maken.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">Applicatie Uitvoer Bestand</sys:String>
@@ -54,15 +54,15 @@
     <sys:String x:Key="ModManagerOpenModDirectory">Open Mod Folder</sys:String>
     <sys:String x:Key="ModManagerConvertToNuget">Converteer naar NuGet formaat</sys:String>
     <sys:String x:Key="ModManagerManageDependencies">Beheer Afhankelijkheden</sys:String>
-    <sys:String x:Key="ModManagerSelectMod">Selecteer de mod om de details ervoor te veranderen.</sys:String>
+    <sys:String x:Key="ModManagerSelectMod">Selecteer de mod om details ervoor te veranderen.</sys:String>
     <sys:String x:Key="ModManagerSelectApp">Selecteer de applicaties die compatible met deze mod zijn.</sys:String>
 
     <!-- Mod Manager: Set Dependencies -->
     <sys:String x:Key="TitleSetDependenciesDialog">Selecteer Afhankelijkheden voor de Mod</sys:String>
 
     <!-- Mod Manager: Create Mod Page | Edit Mod Page since 1.12.0 -->
-    <sys:String x:Key="TitleCreateModDialog">Creër Mod</sys:String>
-    <sys:String x:Key="CreateModDialogSave">Creër Mod</sys:String>
+    <sys:String x:Key="TitleCreateModDialog">Creëer Mod</sys:String>
+    <sys:String x:Key="CreateModDialogSave">Creëer Mod</sys:String>
     <sys:String x:Key="CreateModDialogId">Unieke Id</sys:String>
     <sys:String x:Key="CreateModDialogName">Naam</sys:String>
     <sys:String x:Key="CreateModDialogAuthor">Auteur</sys:String>
@@ -71,14 +71,14 @@
     <sys:String x:Key="CreateModDialogDependencies">Mod Afhankelijkheden</sys:String>
 
     <sys:String x:Key="CreateModDialogImageSelectorTitle">Selecteer een aangepaste logo voor de mod.</sys:String>
-    <sys:String x:Key="CreateModDialogImageSelectorFilter">Image</sys:String>
+    <sys:String x:Key="CreateModDialogImageSelectorFilter">Plaatje</sys:String>
 
     <sys:String x:Key="TitleCreateModNonUniqueId">Geen Unieke ID</sys:String>
     <sys:String x:Key="MessageCreateModNonUniqueId" xml:space="preserve">De ModId voor de mod die je hebt aangemaakt is niet uniek.&#x0a;Maak alstublieft de ModId uniek.</sys:String>
 
     <!-- Mod Loader Settings -->
     <sys:String x:Key="LoaderSettingsCleanup">Configuraties Opruimen</sys:String>
-    <sys:String x:Key="LoaderSettingsCleanupWarning" xml:space="preserve">Deze functie voert wat huishouden uit op verschillende configuraties (App, Mod etc.).&#x0a;Huishouding functies bevat dingens zoals het verwijderen van niet bestaande mods uit een mods lijst met afhankelijkheden.&#x0a;Pas op dat als je afhankelijkheden mist, ondersteunde applicaties enz. dan worden ze verwijderd van de configuratie bestanden.</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupWarning" xml:space="preserve">Deze functie ruimt verschillende configuraties een beetje op (App, Mod enz.).&#x0a;Opruim functies doen dingen zoals het verwijderen van niet bestaande mods uit een mods lijst met afhankelijkheden.&#x0a;Pas op dat als je afhankelijkheden mist, ondersteunde applicaties mist, enz. dan worden ze verwijderd in de configuratie bestanden.</sys:String>
     <sys:String x:Key="LoaderSettingsCleanupComplete">Opruimen Voltooid</sys:String>
 
     <sys:String x:Key="LoaderSettingsAppsInstalled">Applicatie Geïnstalleerd:</sys:String>
@@ -110,11 +110,11 @@
     <sys:String x:Key="MessageBoxButtonCancel">Annuleren</sys:String>
 
     <!-- Non-Reloaded Process -->
-    <sys:String x:Key="TitleNonReloadedProcess">Niet Reloaded Process</sys:String>
-    <sys:String x:Key="NonReloadedProcessMessageOne">Reloaded beheerd niet dit specifieke process.</sys:String>
-    <sys:String x:Key="NonReloadedProcessMessageTwo">Je kunt Reloaded laden door de knop beneden intedrukken.</sys:String>
+    <sys:String x:Key="TitleNonReloadedProcess">Geen Reloaded Process</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageOne">Reloaded beheert niet dit specifieke process.</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageTwo">Je kunt Reloaded laden door de knop beneden in te drukken.</sys:String>
     <sys:String x:Key="NonReloadedProcessInject">Injecteer</sys:String>
-    <sys:String x:Key="NonReloadedProcessInjectWarning" xml:space="preserve">Notitie: Het zou kunnen dat niet alle mods juist werken als ze geladen worden, terwijl de applicatie nog steeds aan staat, en niet is afgesloten. Gelieve geen bug reports versturen voor mods die niet werken met deze functie.</sys:String>
+    <sys:String x:Key="NonReloadedProcessInjectWarning" xml:space="preserve">Tip: Het zou kunnen dat niet alle mods juist werken als ze geladen worden, terwijl de applicatie nog steeds aan staat, en niet is afgesloten. Gelieve geen bug reports versturen voor mods die niet werken met deze functie.</sys:String>
 
     <!-- Reloaded Process -->
     <sys:String x:Key="TitleReloadedProcess">Reloaded Process</sys:String>
@@ -130,12 +130,12 @@
 
     <sys:String x:Key="LoadModSet">Laad Mod Verzameling</sys:String>
     <sys:String x:Key="SaveModSet">Sla Mod Verzameling Op</sys:String>
-    <sys:String x:Key="LoadModSetDialogTitle">Selecteer bestand om een lijst van mods ervan te laden.</sys:String>
+    <sys:String x:Key="LoadModSetDialogTitle">Selecteer bestand om een lijst van mods eruit te laden.</sys:String>
     <sys:String x:Key="SaveModSetDialogTitle">Selecteer het pad om de lijst van mods daar op te slaan.</sys:String>
 
     <!-- Obsolete as of 1.12.0 onwards -->
-    <sys:String x:Key="LoadModSetIncompatibleTitle">Compatibileits Waarschuwing</sys:String>
-    <sys:String x:Key="LoadModSetIncompatibleMessage">Je hebt mods geactiveerd die staan aangegeven dat ze niet compatible zijn met jouw applicatie:</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleTitle">Compatibiliteits Waarschuwing</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage">Je hebt mods geactiveerd die staan aangegeven dat ze niet ondersteund worden voor jouw applicatie:</sys:String>
     <sys:String x:Key="LoadModSetIncompatibleMessage2">Door OK in te drukken activeer je mods for jouw applicatie. Het indrukken van Annuleren zal deze mods uitschakelen.</sys:String>
 
     <!-- Reloaded Process -->
@@ -144,7 +144,7 @@
     <sys:String x:Key="ReloadedProcessUnload">Uitladen</sys:String>
     <sys:String x:Key="ReloadedProcessRefresh">Verversen</sys:String>
     <sys:String x:Key="ReloadedProcessLoadMod">Laad Mod</sys:String>
-    <sys:String x:Key="ReloadedProcessNotice">Notitie: Dit menu is vooral bedoeld om gebruikt te worden door ontwikkelaars.</sys:String>
+    <sys:String x:Key="ReloadedProcessNotice">Tip: Dit menu is vooral bedoeld om gebruikt te worden door ontwikkelaars.</sys:String>
 
     <!-- Update Mod Dialog -->
     <sys:String x:Key="UpdateModTitle">Mod Updates Beschikbaar</sys:String>
@@ -164,7 +164,7 @@
     <sys:String x:Key="UpdateLoaderNewVersion">Nieuwe Versie</sys:String>
 
     <sys:String x:Key="UpdateLoaderChangelogUnavailable">Geen Changelog Beschikbaar</sys:String>
-    <sys:String x:Key="UpdateLoaderChangelog">Bekijk de Changelog op GitHub</sys:String>
+    <sys:String x:Key="UpdateLoaderChangelog">Bekijk de veranderingen op GitHub</sys:String>
     <sys:String x:Key="UpdateLoaderUpdate">Update</sys:String>
 
     <sys:String x:Key="UpdateLoaderRunningTitle">Applicaties Staan Aan</sys:String>
@@ -191,7 +191,7 @@
 
     <!-- Startup Failure -->
     <sys:String x:Key="FailedToLaunchTitle">Oh nee!</sys:String>
-    <sys:String x:Key="FailedToLaunchMessage">Er onstond een error tijdens het laden van Reloaded-II.</sys:String>
+    <sys:String x:Key="FailedToLaunchMessage">Er ontstond een error tijdens het laden van Reloaded-II.</sys:String>
 
     <!-- Download Mod Archive -->
     <sys:String x:Key="DownloadModArchiveTitle">Download Mod Archief</sys:String>
@@ -220,7 +220,7 @@
     <!-- Asi Loader -->
     <sys:String x:Key="AsiLoaderInstall">ASI Loader Opstellen</sys:String>
     <sys:String x:Key="AsiLoaderDialogTitle">ASI Loader Opgesteld</sys:String>
-    <sys:String x:Key="AsiLoaderDialogDescription" xml:space="preserve">ThirteenAG's Ultimate ASI Loader (3e partij DLL lader) kan als je dat wilt gebruikt worden voor Reloaded.&#x0a;om het automatisch op te starten zonder een launcher of snelkoppeling. Wil je deze lader gebruiken?</sys:String>
+    <sys:String x:Key="AsiLoaderDialogDescription" xml:space="preserve">ThirteenAG's Ultimate ASI Loader (3e partij DLL lader) kan als je dat wilt gebruikt worden voor Reloaded.&#x0a;Om het automatisch op te starten zonder een launcher of snelkoppeling. Wil je deze lader gebruiken?</sys:String>
     <sys:String x:Key="AsiLoaderDialogLoaderDeployed">ASI Loader Succesvol geïmplementeerd op: </sys:String>
     <sys:String x:Key="AsiLoaderDialogBootstrapperDeployed">Reloaded Bootstrapper geïmplementeerd op: </sys:String>
     <sys:String x:Key="ErrorAsiNotSupported" xml:space="preserve">Geen compatible DLL naam gevonden om aan Ultimate ASI Loader toe te voegen.</sys:String> <!-- Unused at the moment, may be used in the future. -->
@@ -228,7 +228,7 @@
     <!-- Missing Dependencies Dialog -->
     <sys:String x:Key="MissingDependenciesTitle">Missende Vereisten</sys:String>
     <sys:String x:Key="MissingDependenciesText">Het ziet ernaar uit dat bepaalde vereisten, die nodig zijn om Reloaded te laten werken, missen voor jouw systeem. De launcher heeft de volgende vereisten niet kunnen vinden:</sys:String>
-    <sys:String x:Key="MissingDependenciesText2">Gelieve de vereisten hierboven downloaden en het scherm sluiten.</sys:String>
+    <sys:String x:Key="MissingDependenciesText2">Gelieve de vereisten vermeldt hierboven, downloaden en het scherm sluiten.</sys:String>
 
     <!-- Categories: Main Menu Screen -->
     <sys:String x:Key="AppCategoryMain">Hoofdscherm</sys:String>
@@ -347,7 +347,7 @@
 
     <!-- Update 1.12.0: Create Mod Dialog -->
     <sys:String x:Key="CreateModDialogIdDesc1">Unieke Mod Id</sys:String>
-    <sys:String x:Key="CreateModDialogIdDesc2">Maak alstublieft een unieke Mod Id met het formaat van "game.type.naam". Bijvoorbeeld: `sonicheroes.skins.seasidehillmidnight`. Zodra de ID aangemaakt is, daarna kan je het niet veranderen.</sys:String>
+    <sys:String x:Key="CreateModDialogIdDesc2">Maak alstublieft een unieke Mod Id met het formaat van "game.type.naam". Bijvoorbeeld: `sonicheroes.skins.seasidehillmidnight`. Zodra de ID aangemaakt is, dan kan je het  daarna niet veranderen.</sys:String>
 
     <!-- Update 1.12.0: Edit Application Ex -->
     <sys:String x:Key="AddAppId">Applicatie Id</sys:String>
@@ -362,7 +362,7 @@
     <sys:String x:Key="PublishModTargetTooltip" xml:space="preserve">Gebruikt standaarden tenzij er een andere optie is voor de plek(ken) waar je naartoe publiceert.&#x0a;Zet bepaalde gedrag uit en aan.</sys:String>
 
     <sys:String x:Key="PublishModExcludeTitle">Sluit Bestanden Uit</sys:String>
-    <sys:String x:Key="PublishModIncludeTitle">Omvat Bestanden</sys:String>
+    <sys:String x:Key="PublishModIncludeTitle">Voeg Bestanden Toe</sys:String>
     <sys:String x:Key="PublishModPreviousVersionsTitle">Vorige Versie(s)</sys:String>
     <sys:String x:Key="PublishModPreviousVersionsDescription">Het aanleveren van eerdere versies van uw mod, maakt gebruik van delta compressie mogelijk, dit maakt het mogelijk om kleinere download grootte mogelijk te maken, van een eerdere naar een latere versie van de mod.</sys:String>
     <sys:String x:Key="PublishModButtonText">Publiceer</sys:String>
