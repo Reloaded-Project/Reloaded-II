@@ -106,7 +106,7 @@ choco install reloaded-ii-tools -y
 
 ### 2. Build and Pack The Mod 
 
-Build the mod using the [included script from the mod template](./DeveloperModGuide.md#4-publishing); output goes in the `Publish` folder.
+Build the mod using the [included script from the mod template](./PublishingMods.md#creating-releases-cli); output goes in the `Publish` folder.
 
 Then simply pack all of the output using one of the tools installed earlier.
 

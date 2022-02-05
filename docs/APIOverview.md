@@ -30,7 +30,7 @@ Reloaded-II provides two mechanisms for what it considers "Inter Mod Communicati
 
 **Controllers** allow you to directly interact with other loaded mods. Individual mods can submit shared instances of interfaces to the mod loader, which can then be obtained by other mods. *Controllers share state.*
 
-Complete documentation on Mod to Mod communication can be found within the [Inter Mod Communication](./InterModCommunication.md) documentation.
+Complete documentation on Mod to Mod communication can be found within the [Inter Mod Communication](./DependencyInjection.md) documentation.
 
 ## API Upgrades & Versioning
 

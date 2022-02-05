@@ -28,11 +28,11 @@ Made from the ground up **proudly** using the C# programming language.
 
 ## Reloaded: For Modders
 - [Getting Started: Modifications](./GettingStartedMods.md)
-- [Publishing Your Mods](./UpdateSupport.md)
+- [Publishing Your Mods](./PublishingMods.md)
 
 ## Reloaded: For Programmers 
-- [Getting Started: Building Mods](./DeveloperModGuide.md)
-- [Inter Mod Communication](./InterModCommunication.md)
+- [Getting Started: Building Mods](./BuildingMods.md)
+- [Inter Mod Communication](./DependencyInjection.md)
 
 **Miscellaneous**
 
