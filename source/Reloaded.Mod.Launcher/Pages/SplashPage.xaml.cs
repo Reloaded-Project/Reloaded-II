@@ -76,6 +76,6 @@ public partial class SplashPage : ReloadedIIPage
     /// </summary>
     private void UpdateText(string newText)
     {
-        ActionWrappers.ExecuteWithApplicationDispatcher(() => { _splashViewModel.Text = newText; });
+        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() => { _splashViewModel.Text = newText; });
     }
 }
