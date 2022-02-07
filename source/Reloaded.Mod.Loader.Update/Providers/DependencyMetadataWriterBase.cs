@@ -89,7 +89,7 @@ public struct DependencyResolverItem<TConfig> where TConfig : new()
     /// <summary>
     /// The configuration associated with this item.
     /// </summary>
-    public TConfig Config = new();
+    public TConfig Config { get; set; } = new();
 
     /// <summary>
     /// Name of the release metadata file.
