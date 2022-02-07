@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Versioning;
 using Ookii.Dialogs.Wpf;
+using Reloaded.Mod.Launcher.Lib.Misc;
 using Reloaded.Mod.Launcher.Lib.Static;
 using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Loader.IO.Config;
@@ -51,22 +52,22 @@ public class PublishModDialogViewModel : ObservableObject
     /// <summary>
     /// Paths to older versions of the same mods.
     /// </summary>
-    public ObservableCollection<string> OlderVersionFolders { get; set; } = new ObservableCollection<string>();
+    public ObservableCollection<StringWrapper> OlderVersionFolders { get; set; } = new ObservableCollection<StringWrapper>();
 
     /// <summary>
     /// The currently selected <see cref="OlderVersionFolders"/> item.
     /// </summary>
-    public string? SelectedOlderVersionFolder { get; set; } = null;
+    public StringWrapper? SelectedOlderVersionFolder { get; set; } = null;
 
     /// <summary>
     /// Regexes of files to make sure are ignored.
     /// </summary>
-    public ObservableCollection<string> IgnoreRegexes { get; set; }
+    public ObservableCollection<StringWrapper> IgnoreRegexes { get; set; }
 
     /// <summary>
     /// The currently selected <see cref="IgnoreRegexes"/> item.
     /// </summary>
-    public string? SelectedIgnoreRegex { get; set; } = null;
+    public StringWrapper? SelectedIgnoreRegex { get; set; } = null;
 
     /// <summary>
     /// Name of the generated 7z file.
@@ -76,12 +77,12 @@ public class PublishModDialogViewModel : ObservableObject
     /// <summary>
     /// Regexes of files to make sure are not ignored.
     /// </summary>
-    public ObservableCollection<string> IncludeRegexes { get; set; }
+    public ObservableCollection<StringWrapper> IncludeRegexes { get; set; }
 
     /// <summary>
     /// The currently selected <see cref="IncludeRegexes"/> item.
     /// </summary>
-    public string? SelectedIncludeRegex { get; set; } = null;
+    public StringWrapper? SelectedIncludeRegex { get; set; } = null;
 
     /// <summary>
     /// The progress of the build operation.
@@ -121,13 +122,13 @@ public class PublishModDialogViewModel : ObservableObject
         OutputFolder = Path.Combine(Path.GetTempPath(), $"{IOEx.ForceValidFilePath(_modTuple.Config.ModId)}.Publish");
 
         // Set default Regexes.
-        IgnoreRegexes = new ObservableCollection<string>()
+        IgnoreRegexes = new ObservableCollection<StringWrapper>()
         {
             @".*\.json", // Config files
             $"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}"
         };
 
-        IncludeRegexes = new ObservableCollection<string>()
+        IncludeRegexes = new ObservableCollection<StringWrapper>()
         {
             Regex.Escape(ModConfig.ConfigFileName),
             @"\.deps\.json",
@@ -164,13 +165,13 @@ public class PublishModDialogViewModel : ObservableObject
                     PublishTarget = PublishTarget,
                     OutputFolder = OutputFolder,
                     ModTuple = _modTuple,
-                    IgnoreRegexes = IgnoreRegexes.ToList(),
-                    IncludeRegexes = IncludeRegexes.ToList(),
+                    IgnoreRegexes = IgnoreRegexes.Select(x => x.Value).ToList(),
+                    IncludeRegexes = IncludeRegexes.Select(x => x.Value).ToList(),
                     Progress = new Progress<double>(d => BuildProgress = d * 100),
                     AutomaticDelta = AutomaticDelta,
                     CompressionLevel = CompressionLevel,
                     CompressionMethod = CompressionMethod,
-                    OlderVersionFolders = OlderVersionFolders.ToList(),
+                    OlderVersionFolders = OlderVersionFolders.Select(x => x.Value).ToList(),
                     PackageName = PackageName,
                     MetadataFileName = _modTuple.Config.ReleaseMetadataFileName
                 });
@@ -304,7 +305,7 @@ public class PublishModDialogViewModel : ObservableObject
         return "";
     }
 
-    private void RemoveSelectedOrLastItem(string? item, ObservableCollection<string> allItems)
+    private void RemoveSelectedOrLastItem(StringWrapper item, ObservableCollection<StringWrapper> allItems)
     {
         if (item != null)
             allItems.Remove(item);

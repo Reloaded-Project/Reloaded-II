@@ -58,7 +58,7 @@
                               ToolTip="{DynamicResource ModManagerSelectMod}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding .}" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                                    <TextBlock Text="{Binding Path=Value, Mode=TwoWay}" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
@@ -110,7 +110,7 @@
                         <DataGrid Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                   HorizontalAlignment="Center" 
                                   VerticalAlignment="Center" 
-                                  ItemsSource="{Binding IgnoreRegexes}"
+                                  ItemsSource="{Binding IgnoreRegexes, Mode=TwoWay}"
                                   SelectedItem="{Binding SelectedIgnoreRegex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                   IsSynchronizedWithCurrentItem="True"
                                   AutoGenerateColumns="False"
@@ -121,7 +121,7 @@
                                   CanUserDeleteRows="False"
                                   attachedProperties:FixDataGridAutoGeneratingColumnStyle.Value="True">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="{DynamicResource PublishModRegexTitle}" Binding="{Binding .}"/>
+                                <DataGridTextColumn Header="{DynamicResource PublishModRegexTitle}" Binding="{Binding Path=Value, Mode=TwoWay}" />
                             </DataGrid.Columns>
                         </DataGrid>
 
@@ -140,7 +140,7 @@
                         <DataGrid Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                   HorizontalAlignment="Center" 
                                   VerticalAlignment="Center" 
-                                  ItemsSource="{Binding IncludeRegexes}"
+                                  ItemsSource="{Binding IncludeRegexes, Mode=TwoWay}"
                                   SelectedItem="{Binding SelectedIncludeRegex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                   IsSynchronizedWithCurrentItem="True"
                                   AutoGenerateColumns="False" 
@@ -151,7 +151,7 @@
                                   CanUserDeleteRows="False"
                                   attachedProperties:FixDataGridAutoGeneratingColumnStyle.Value="True">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="{DynamicResource PublishModRegexTitle}" Binding="{Binding .}"/>
+                                <DataGridTextColumn Header="{DynamicResource PublishModRegexTitle}" Binding="{Binding Path=Value, Mode=TwoWay}"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
