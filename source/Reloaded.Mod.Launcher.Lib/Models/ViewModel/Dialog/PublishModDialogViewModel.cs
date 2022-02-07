@@ -171,7 +171,8 @@ public class PublishModDialogViewModel : ObservableObject
                     CompressionLevel = CompressionLevel,
                     CompressionMethod = CompressionMethod,
                     OlderVersionFolders = OlderVersionFolders.ToList(),
-                    PackageName = PackageName
+                    PackageName = PackageName,
+                    MetadataFileName = _modTuple.Config.ReleaseMetadataFileName
                 });
             });
 
