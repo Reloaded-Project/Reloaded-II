@@ -51,7 +51,7 @@ internal class Program
             PackageName = options.PackageName,
             PublishTarget = options.PublishTarget,
             ChangelogPath = options.ChangelogPath,
-            MetadataFileName = options.MetadataFileName
+            MetadataFileName = config.ReleaseMetadataFileName
         });
     }
 
