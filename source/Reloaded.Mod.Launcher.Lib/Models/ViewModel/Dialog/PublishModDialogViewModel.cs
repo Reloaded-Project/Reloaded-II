@@ -124,13 +124,12 @@ public class PublishModDialogViewModel : ObservableObject
         IgnoreRegexes = new ObservableCollection<string>()
         {
             @".*\.json", // Config files
-            Singleton<PackageMetadata>.Instance.GetDefaultFileName().Replace(".", @"\."),
-            $@"{_modTuple.Config.ModId}.nuspec".Replace(".", @"\.")
+            $"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}"
         };
 
         IncludeRegexes = new ObservableCollection<string>()
         {
-            @"ModConfig\.json", // Mod config file.
+            Regex.Escape(ModConfig.ConfigFileName),
             @"\.deps\.json",
             @"\.runtimeconfig\.json",
         };

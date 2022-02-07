@@ -27,7 +27,6 @@ namespace Reloaded.Publisher.Options
         [Option(Required = false, HelpText = "Regexes of files to make sure are ignored.", Default = new []
         {
             @".*\.json", // Config files
-            @"Sewer56\.Update\.Metadata\.json",
             @".*\.nuspec"
         })]
         public IEnumerable<string> IgnoreRegexes { get; set; } = Array.Empty<string>();

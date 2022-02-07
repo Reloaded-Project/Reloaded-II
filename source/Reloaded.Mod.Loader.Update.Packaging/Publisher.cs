@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
@@ -38,6 +39,7 @@ public static class Publisher
         // Validation
         var ignoreRegexesList  = args.IgnoreRegexes;
         var includeRegexesList = args.IncludeRegexes;
+        ignoreRegexesList.Add(Regex.Escape(args.MetadataFileName));
 
         // Arrange
         var builder = new ReleaseBuilder<Empty>();
