@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CommandLine;
 using SevenZip;
+using Sewer56.Update.Packaging.Structures;
 
 namespace Reloaded.Publisher.Options
 {
@@ -50,5 +51,8 @@ namespace Reloaded.Publisher.Options
 
         [Option(Required = false, HelpText = "File path to the file containing the changelog for the package, in Markdown format.")]
         public string? ChangelogPath { get; set; } = null;
+
+        [Option(Required = false, HelpText = "Sets the file name for the release metadata file. Useful when publishing multiple mods.", Default = ReleaseMetadata.DefaultFileName)]
+        public string MetadataFileName { get; set; } = ReleaseMetadata.DefaultFileName;
     }
 }

@@ -50,7 +50,8 @@ internal class Program
             Progress = progressBar.AsProgress<double>(),
             PackageName = options.PackageName,
             PublishTarget = options.PublishTarget,
-            ChangelogPath = options.ChangelogPath
+            ChangelogPath = options.ChangelogPath,
+            MetadataFileName = options.MetadataFileName
         });
     }
 
