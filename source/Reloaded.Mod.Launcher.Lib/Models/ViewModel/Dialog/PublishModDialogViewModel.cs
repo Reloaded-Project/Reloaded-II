@@ -17,6 +17,7 @@ using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Packaging;
+using Reloaded.Mod.Loader.Update.Utilities;
 using SevenZip;
 using Sewer56.DeltaPatchGenerator.Lib.Utility;
 using Sewer56.Update.Extractors.SevenZipSharp;

@@ -7,6 +7,7 @@ using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Structures;
+using Reloaded.Mod.Loader.Update.Utilities;
 using Sewer56.Update.Interfaces;
 using Sewer56.Update.Misc;
 using Sewer56.Update.Packaging.Interfaces;
@@ -42,7 +43,7 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
             this.SetConfiguration(mod, new NuGetConfig()
             {
                 AllowUpdateFromAnyRepository = true,
-                DefaultRepositoryUrls = new ObservableCollection<string>() { Singleton<LoaderConfig>.Instance.NuGetFeeds[0].URL }
+                DefaultRepositoryUrls = new ObservableCollection<StringWrapper>() { Singleton<LoaderConfig>.Instance.NuGetFeeds[0].URL }
             });
 
             mod.Save();
@@ -111,6 +112,6 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
         [Category(DefaultCategory)]
         [Description("URL to the NuGet repositories to use to check for updates for this mod.\n" +
                      "Right click to add and remove items.")]
-        public ObservableCollection<string> DefaultRepositoryUrls { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<StringWrapper> DefaultRepositoryUrls { get; set; } = new ObservableCollection<StringWrapper>();
     }
 }

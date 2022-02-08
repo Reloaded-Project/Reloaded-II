@@ -14,6 +14,7 @@ using System.Xml;
 using HandyControl.Controls;
 using HandyControl.Tools;
 using Reloaded.Mod.Launcher.Lib.Commands.General;
+using Reloaded.Mod.Loader.Update.Utilities;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace Reloaded.Mod.Launcher.Controls;
@@ -54,9 +55,9 @@ public class PropertyResolverEx : PropertyResolver
         if (type == typeof(bool)) return new SwitchPropertyEditorEx();
         if (type == typeof(DateTime)) return new DateTimePropertyEditor();
 
-        if (type == typeof(ObservableCollection<string>))
+        if (type == typeof(ObservableCollection<StringWrapper>))
         {
-            return new StringCollectionEditor();
+            return new StringWrapperEditor();
         }
 
         if (type.IsSubclassOf(typeof(Enum))) return new EnumPropertyEditor();
@@ -66,7 +67,7 @@ public class PropertyResolverEx : PropertyResolver
 
     public override bool IsKnownEditorType(Type type)
     {
-        if (type == typeof(ObservableCollection<string>))
+        if (type == typeof(ObservableCollection<StringWrapper>))
             return true;
 
         return base.IsKnownEditorType(type);
@@ -91,7 +92,7 @@ public static class PropertyResolverExtensions
     }
 }
 
-public class StringCollectionEditor : PropertyEditorBase
+public class StringWrapperEditor : PropertyEditorBase
 {
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
     {
@@ -99,13 +100,14 @@ public class StringCollectionEditor : PropertyEditorBase
         {
             ToolTip = propertyItem.GetTooltip(),
             AutoGenerateColumns = false,
-            HeadersVisibility = DataGridHeadersVisibility.None
+            HeadersVisibility = DataGridHeadersVisibility.None,
+            CanUserAddRows = false,
         };
 
         dataGrid.SetResourceReference(Control.StyleProperty, "DefaultDataGrid");
         dataGrid.Columns.Add(new DataGridTextColumn()
         {
-            Binding = new Binding(".")
+            Binding = new Binding(nameof(StringWrapper.Value)) { Mode = BindingMode.TwoWay }
         });
 
         dataGrid.ContextMenu = new ContextMenu()
@@ -117,7 +119,7 @@ public class StringCollectionEditor : PropertyEditorBase
                     Header = "Add",
                     Command = new RelayCommand(o =>
                     {
-                        var list = (ObservableCollection<string>)dataGrid.ItemsSource;
+                        var list = (ObservableCollection<StringWrapper>)dataGrid.ItemsSource;
                         list.Add("New Item");
                     })
                 },
@@ -126,8 +128,9 @@ public class StringCollectionEditor : PropertyEditorBase
                     Header = "Remove",
                     Command = new RelayCommand(o =>
                     {
-                        var list = (ObservableCollection<string>)dataGrid.ItemsSource;
-                        list.Remove((string) dataGrid.SelectedItem);
+                        var list = (ObservableCollection<StringWrapper>)dataGrid.ItemsSource;
+                        if (dataGrid.SelectedItem is StringWrapper wrapper)
+                            list.Remove(wrapper);
                     }, o =>
                     {
                         return dataGrid.SelectedItem != null;
@@ -144,7 +147,7 @@ public class StringCollectionEditor : PropertyEditorBase
         return dataGrid;
     }
 
-    public override DependencyProperty GetDependencyProperty() => System.Windows.Controls.ListBox.ItemsSourceProperty;
+    public override DependencyProperty GetDependencyProperty() => System.Windows.Controls.DataGrid.ItemsSourceProperty;
 }
 
 public class PlainTextPropertyEditor : PropertyEditorBase

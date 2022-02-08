@@ -7,6 +7,7 @@ using Reloaded.Mod.Loader.Tests.SETUP;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Providers.NuGet;
 using Reloaded.Mod.Loader.Update.Structures;
+using Reloaded.Mod.Loader.Update.Utilities;
 using Sewer56.Update.Misc;
 using Sewer56.Update.Resolvers;
 using Sewer56.Update.Structures;
@@ -65,7 +66,7 @@ public class NuGetResolverFactoryTests : IDisposable
         var resolverFactory = new NuGetUpdateResolverFactory();
         resolverFactory.SetConfiguration(mod, new NuGetUpdateResolverFactory.NuGetConfig()
         {
-            DefaultRepositoryUrls = new ObservableCollection<string>() { "Sample Repository" }
+            DefaultRepositoryUrls = new ObservableCollection<StringWrapper>() { "Sample Repository" }
         });
 
         using var disposalHelper = new RemoveConfiguration<NuGetUpdateResolverFactory.NuGetConfig>(mod, resolverFactory);
@@ -87,7 +88,7 @@ public class NuGetResolverFactoryTests : IDisposable
         var resolverFactory = new NuGetUpdateResolverFactory();
         resolverFactory.SetConfiguration(mod, new NuGetUpdateResolverFactory.NuGetConfig()
         {
-            DefaultRepositoryUrls = new ObservableCollection<string>() { "Sample Repository" }
+            DefaultRepositoryUrls = new ObservableCollection<StringWrapper>() { "Sample Repository" }
         });
 
         using var disposalHelper = new RemoveConfiguration<NuGetUpdateResolverFactory.NuGetConfig>(mod, resolverFactory);
