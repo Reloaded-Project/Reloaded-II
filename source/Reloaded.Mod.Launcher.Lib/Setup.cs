@@ -56,13 +56,11 @@ public static class Setup
             CheckForMissingDependencies();
                 
             updateText(Resources.SplashPreparingResources.Get());
-            await Task.Run(SetupServices);
+            await Task.Run(SetupServices).ContinueWith(async task =>
+            {
+                await CheckForUpdatesAsync(); // Fire and forget, we don't want to delay startup time.
+            });
             SetupViewModels();
-
-            updateText(Resources.SplashCheckingForUpdates.Get());
-#pragma warning disable 4014
-            CheckForUpdatesAsync(); // Fire and forget, we don't want to delay startup time.
-#pragma warning restore 4014
 
             updateText(Resources.SplashRunningSanityChecks.Get());
             DoSanityTests();
