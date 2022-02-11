@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NuGet.Versioning;
 using Reloaded.Mod.Loader.IO.Config;
@@ -58,7 +59,14 @@ public class ModUpdateSummary
             var oldVersion = resultPairs.ModTuple.Config.ModVersion;
             var newVersion = resultPairs.Result.LastVersion;
             var resolver = ((IPackageResolverDownloadSize)resultPairs.Manager.Resolver);
-            var updateSize = Task.Run(async () => await resolver.GetDownloadFileSizeAsync(newVersion!, resultPairs.ModTuple.GetVerificationInfo())).Result;
+            var updateSize = (long)0;
+
+            try
+            {
+                updateSize = Task.Run(async () => await resolver.GetDownloadFileSizeAsync(newVersion!, resultPairs.ModTuple.GetVerificationInfo())).Result;
+            }
+            catch (Exception) { /* */ }
+
             _updates[x] = new ModUpdate(modId, NuGetVersion.Parse(oldVersion), newVersion!, updateSize);
         }
 
