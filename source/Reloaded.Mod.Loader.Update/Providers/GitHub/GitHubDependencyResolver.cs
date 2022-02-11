@@ -36,7 +36,7 @@ public class GitHubDependencyResolver : IDependencyResolver
             UserName = gitConfig.Config.UserName,
             RepositoryName = gitConfig.Config.RepositoryName,
             LegacyFallbackPattern = gitConfig.Config.AssetFileName,
-            
+            InheritVersionFromTag = gitConfig.Config.UseReleaseTag
         }, new CommonPackageResolverSettings() { MetadataFileName = gitConfig.ReleaseMetadataName });
 
         await ((IPackageResolver)resolver).InitializeAsync();

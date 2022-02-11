@@ -45,7 +45,8 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
         {
             RepositoryName = githubConfig!.RepositoryName,
             UserName = githubConfig.UserName,
-            LegacyFallbackPattern = githubConfig.AssetFileName
+            LegacyFallbackPattern = githubConfig.AssetFileName,
+            InheritVersionFromTag = githubConfig.UseReleaseTag
         }, data.CommonPackageResolverSettings);
     }
     
@@ -120,6 +121,14 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
         [Description("The name of the repository to fetch files from.\n" +
                      "e.g. p4gpc.modloader for https://github.com/TGEnigma/p4gpc.modloader")]
         public string RepositoryName { get; set; } = "";
+
+        /// <summary>
+        /// Whether to use Release Tag or not.
+        /// </summary>
+        [Category(DefaultCategory)]
+        [Description("Uses the release tag to denote version of the package.\n" +
+                     "If false, gets version from Release Metadata file.")]
+        public bool UseReleaseTag { get; set; } = true;
 
         /// <summary>
         /// [Legacy] Fallback file name pattern if no metadata file is found.
