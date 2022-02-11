@@ -53,8 +53,9 @@ public class Updater
         if (_cachedResult != null)
             return _cachedResult;
 
-        var faultedModSets       = new BlockingCollection<ModConfig>(_modConfigService.Items.Count);
-        var resolverManagerPairs = new BlockingCollection<ManagerModResultPair>(_modConfigService.Items.Count);
+        var modCount = Math.Max(1, _modConfigService.Items.Count);
+        var faultedModSets       = new BlockingCollection<ModConfig>(modCount);
+        var resolverManagerPairs = new BlockingCollection<ManagerModResultPair>(modCount);
         var resolverTuples       = GetResolvers();
         var extractor            = new ProxyPackageExtractor(new SevenZipSharpExtractor());
         using var concurrencySemaphore = new SemaphoreSlim(32);
