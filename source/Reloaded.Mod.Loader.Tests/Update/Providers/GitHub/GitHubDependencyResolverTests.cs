@@ -56,9 +56,12 @@ public class GitHubDependencyResolverTests : IDisposable
         {
             RepositoryName = "reloaded.universal.redirector",
             UserName = "Reloaded-Project",
-            AssetFileName = "reloaded.universal.monitor.zip"
+            AssetFileName = "reloaded.universal.monitor.zip",
+            UseReleaseTag = false
         };
+
         var clonedDependency = _testEnvironmoent.TestModConfigBTuple.DeepClone();
+        clonedDependency.Config.ReleaseMetadataFileName = "Reloaded.Universal.Redirector.ReleaseMetadata.json";
         Singleton<GitHubReleasesUpdateResolverFactory>.Instance.SetConfiguration(clonedDependency, config);
         var clonedOriginal = _testEnvironmoent.TestModConfigATuple.DeepClone();
 
