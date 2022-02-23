@@ -77,7 +77,7 @@ public class ModUserConfigService : ConfigServiceBase<ModUserConfig>
 
     private void CreateUserConfigOnNewConfigCreated(PathTuple<ModConfig> tuple)
     {
-        var filePath = ModUserConfig.GetUserConfigPathForMod(tuple.Config.ModId);
+        var filePath = ModUserConfig.GetUserConfigPathForMod(tuple.Config.ModId, ConfigDirectory);
         if (!File.Exists(filePath))
             IConfig<ModUserConfig>.ToPath(new ModUserConfig() { ModId = tuple.Config.ModId }, filePath);
     }
