@@ -31,7 +31,7 @@ public class QueryCommunityIndexCommand : ICommand
     }
 
     /// <inheritdoc />
-    public bool CanExecute(object? parameter) => File.Exists(_application.Config.AppLocation);
+    public bool CanExecute(object? parameter) => File.Exists(ApplicationConfig.GetAbsoluteAppLocation(_application));
 
     /// <inheritdoc />
     public async void Execute(object? parameter) => await ExecuteAsync();
@@ -43,7 +43,7 @@ public class QueryCommunityIndexCommand : ICommand
     public async Task ExecuteAsync()
     {
         var config = _application.Config;
-        await using var fileStream = new FileStream(config.AppLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 524288);
+        await using var fileStream = new FileStream(ApplicationConfig.GetAbsoluteAppLocation(_application), FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 524288);
         var indexApi  = new IndexApi();
         var index = await indexApi.GetIndexAsync();
         var hash = Hashing.ToString(await xxHash64.ComputeHashAsync(fileStream));
@@ -75,7 +75,7 @@ public class QueryCommunityIndexCommand : ICommand
     /// <param name="pathTuple">The mod to apply the config to.</param>
     public static void ApplyIndexEntry(AppItem indexApp, PathTuple<ApplicationConfig> pathTuple)
     {
-        using var fileStream = new FileStream(pathTuple.Config.AppLocation, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 524288);
+        using var fileStream = new FileStream(ApplicationConfig.GetAbsoluteAppLocation(pathTuple), FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 524288);
         var hash = Hashing.ToString(xxHash64.ComputeHash(fileStream));
         ApplyIndexEntry(indexApp, pathTuple, hash);
     }
@@ -106,7 +106,8 @@ public class QueryCommunityIndexCommand : ICommand
             Actions.ShowAddAppHashMismatchDialog(viewModel);
         }
 
-        if (indexApp.TryGetError(Path.GetDirectoryName(pathTuple.Config.AppLocation)!, out var errors))
+        var appLocation = ApplicationConfig.GetAbsoluteAppLocation(pathTuple);
+        if (indexApp.TryGetError(Path.GetDirectoryName(appLocation)!, out var errors))
         {
             var viewModel = new AddApplicationWarningDialogViewModel(errors);
             Actions.ShowApplicationWarningDialog(viewModel);

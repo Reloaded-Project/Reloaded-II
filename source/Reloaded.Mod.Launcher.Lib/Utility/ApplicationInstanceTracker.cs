@@ -83,7 +83,7 @@ public class ApplicationInstanceTracker : IDisposable
     public static bool GetAllProcesses(out IEnumerable<Process> processes)
     {
         var applications        = ApplicationConfig.GetAllApplications();
-        var trackers            = applications.Select(x => new ApplicationInstanceTracker(x.Config.AppLocation));
+        var trackers            = applications.Select(x => new ApplicationInstanceTracker(ApplicationConfig.GetAbsoluteAppLocation(x)));
         processes               = trackers.SelectMany(x => x.GetProcesses().ReloadedProcesses);
 
         return processes.Any();

@@ -34,7 +34,7 @@ public class MakeShortcutCommand : WithCanExecuteChanged, ICommand
     public bool CanExecute(object? parameter)
     {
         if (_config != null)
-            return File.Exists(_config.Config.AppLocation);
+            return File.Exists(ApplicationConfig.GetAbsoluteAppLocation(_config));
 
         return false;
     }
@@ -45,9 +45,10 @@ public class MakeShortcutCommand : WithCanExecuteChanged, ICommand
         var loaderConfig = IoC.Get<LoaderConfig>();
         var shell        = (IShellLink) new ShellLink();
 
+        var appLocation = ApplicationConfig.GetAbsoluteAppLocation(_config);
         shell.SetDescription($"Launch {_config?.Config.AppName} via Reloaded II");
         shell.SetPath($"\"{loaderConfig.LauncherPath}\"");
-        shell.SetArguments($"{Constants.ParameterLaunch} \"{_config?.Config.AppLocation}\"");
+        shell.SetArguments($"{Constants.ParameterLaunch} \"{appLocation}\"");
         shell.SetWorkingDirectory(Path.GetDirectoryName(loaderConfig.LauncherPath)!);
 
         if (_config != null)
@@ -64,7 +65,7 @@ public class MakeShortcutCommand : WithCanExecuteChanged, ICommand
             }
             else
             {
-                shell.SetIconLocation(_config.Config.AppLocation, 0);
+                shell.SetIconLocation(appLocation, 0);
             }
         }
 

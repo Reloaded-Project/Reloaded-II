@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Reloaded.Mod.Launcher.Lib.Utility.Interfaces;
+using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Services;
 
 namespace Reloaded.Mod.Launcher.Lib.Utility;
@@ -30,7 +31,7 @@ public class AutoInjector
         try
         {
             string fullPath = newProcess.GetExecutablePath();
-            var config = _configService.Items.FirstOrDefault(x => string.Equals(x.Config.AppLocation, fullPath, StringComparison.OrdinalIgnoreCase));
+            var config = _configService.Items.FirstOrDefault(x => string.Equals(ApplicationConfig.GetAbsoluteAppLocation(x), fullPath, StringComparison.OrdinalIgnoreCase));
             if (config != null && config.Config.AutoInject)
             {
                 var appInjector = new ApplicationInjector(newProcess);

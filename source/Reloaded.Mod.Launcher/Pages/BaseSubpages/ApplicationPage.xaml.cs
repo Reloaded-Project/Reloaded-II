@@ -98,8 +98,8 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
         ViewModel.EnforceModCompatibility();
         await Setup.CheckForMissingModDependenciesAsync();
 
-        var appConfig = ViewModel.ApplicationTuple.Config;
-        var launcher  = ApplicationLauncher.FromApplicationConfig(appConfig);
+        var appTuple = ViewModel.ApplicationTuple;
+        var launcher  = ApplicationLauncher.FromApplicationConfig(appTuple);
 
         if (!Environment.IsWine || (Environment.IsWine && CompatibilityDialogs.WineShowLaunchDialog()))
             launcher.Start();

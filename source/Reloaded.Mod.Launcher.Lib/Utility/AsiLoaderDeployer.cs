@@ -42,10 +42,11 @@ public class AsiLoaderDeployer
     /// </summary>
     public bool CanDeploy()
     {
-        if (!File.Exists(Application.Config.AppLocation))
+        var appLocation = ApplicationConfig.GetAbsoluteAppLocation(Application);
+        if (!File.Exists(appLocation))
             return false;
 
-        using var peParser = new BasicPeParser(Application.Config.AppLocation);
+        using var peParser = new BasicPeParser(appLocation);
 
         try
         {
@@ -67,8 +68,9 @@ public class AsiLoaderDeployer
         if (alreadyHasAsiPlugins) 
             return;
 
-        using var peParser = new BasicPeParser(Application.Config.AppLocation);
-        var appDirectory = Path.GetDirectoryName(Application.Config.AppLocation);
+        var appLocation = ApplicationConfig.GetAbsoluteAppLocation(Application);
+        using var peParser = new BasicPeParser(appLocation);
+        var appDirectory = Path.GetDirectoryName(appLocation);
         var dllName      = GetFirstSupportedDllFile(peParser);
         asiLoaderPath    = Path.Combine(appDirectory!, dllName!);
         ExtractAsiLoader(asiLoaderPath, !peParser.Is32BitHeader);
@@ -91,7 +93,7 @@ public class AsiLoaderDeployer
     /// </summary>
     public string GetBootstrapperDllPath()
     {
-        return Is64Bit(Application.Config.AppLocation)
+        return Is64Bit(ApplicationConfig.GetAbsoluteAppLocation(Application))
             ? IoC.Get<LoaderConfig>().Bootstrapper64Path
             : IoC.Get<LoaderConfig>().Bootstrapper32Path;
     }
@@ -102,7 +104,7 @@ public class AsiLoaderDeployer
     /// </summary>
     private bool AreAnyAsiPluginsInstalled(out string? modPath)
     {
-        var appDirectory = Path.GetDirectoryName(Application.Config.AppLocation);
+        var appDirectory = Path.GetDirectoryName(ApplicationConfig.GetAbsoluteAppLocation(Application));
         foreach (var directory in AsiCommonDirectories)
         {
             var directoryPath = Path.Combine(appDirectory!, directory);
@@ -136,7 +138,7 @@ public class AsiLoaderDeployer
             return installPath!;
         }
 
-        var appDirectory    = Path.GetDirectoryName(Application.Config.AppLocation);
+        var appDirectory    = Path.GetDirectoryName(ApplicationConfig.GetAbsoluteAppLocation(Application));
         var pluginDirectory = Path.Combine(appDirectory!, AsiCommonDirectories[0]);
         return pluginDirectory;
     }

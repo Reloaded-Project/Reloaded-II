@@ -182,7 +182,7 @@ public class EditAppViewModel : ObservableObject
         var dialog = new VistaOpenFileDialog();
         dialog.Title = Resources.AddAppExecutableTitle.Get();
         dialog.Filter = $"{Resources.AddAppExecutableFilter.Get()} (*.exe)|*.exe";
-        dialog.FileName = Application.Config.AppLocation;
+        dialog.FileName = ApplicationConfig.GetAbsoluteAppLocation(Application);
 
         if ((bool)dialog.ShowDialog()!)
             return dialog.FileName;
@@ -196,7 +196,6 @@ public class EditAppViewModel : ObservableObject
         var dialog = new VistaOpenFileDialog();
         dialog.Title = Resources.AddAppRepoTestJsonSelectTitle.Get();
         dialog.Filter = $"{Resources.AddAppRepoTestJsonSelectFilter.Get()} (*.json)|*.json";
-        dialog.FileName = Application.Config.AppLocation;
 
         if ((bool)dialog.ShowDialog()!)
             return dialog.FileName;

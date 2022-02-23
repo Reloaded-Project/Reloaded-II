@@ -14,6 +14,7 @@
 
         /// <summary>
         /// The location of the main executable of the application.
+        /// This can be either specified relative to the folder in which the config is contained in or as an absolute path.
         /// </summary>
         string AppLocation { get; set; }
 

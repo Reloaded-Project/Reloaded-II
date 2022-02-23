@@ -85,7 +85,7 @@ public class ApplicationViewModel : ObservableObject, IDisposable
         MakeShortcutCommand = new MakeShortcutCommand(tuple, Launcher.Lib.Lib.IconConverter);
 
         IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
-        _instanceTracker = new ApplicationInstanceTracker(tuple.Config.AppLocation);
+        _instanceTracker = new ApplicationInstanceTracker(ApplicationConfig.GetAbsoluteAppLocation(tuple));
         _modConfigService.Items.CollectionChanged += OnGetModifications;
         _instanceTracker.OnProcessesChanged += OnProcessesChanged;
 

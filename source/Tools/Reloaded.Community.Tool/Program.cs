@@ -76,7 +76,7 @@ public class Program
                     AppId = appById.Config.AppId,
                     AppName = appById.Config.AppName,
                     AppStatus = Status.Ok,
-                    Hash = Hashing.ToString(xxHash64.ComputeHash(File.ReadAllBytes(appById.Config.AppLocation))),
+                    Hash = Hashing.ToString(xxHash64.ComputeHash(File.ReadAllBytes(ApplicationConfig.GetAbsoluteAppLocation(appById)))),
                     GameBananaId = config.GameId
                 });
             }

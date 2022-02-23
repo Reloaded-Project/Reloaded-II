@@ -219,12 +219,12 @@ public class Loader : IDisposable
         foreach (var configuration in configurations)
         {
             var application = configuration.Config;
-            var appLocation = application.AppLocation;
+            var appLocation = ApplicationConfig.GetAbsoluteAppLocation(configuration);
                 
             if (string.IsNullOrEmpty(appLocation))
                 continue;
 
-            var fullAppLocation = NormalizePath(application.AppLocation);
+            var fullAppLocation = NormalizePath(appLocation);
             if (fullAppLocation.Equals(fullPath, StringComparison.OrdinalIgnoreCase))
                 return application;
         }

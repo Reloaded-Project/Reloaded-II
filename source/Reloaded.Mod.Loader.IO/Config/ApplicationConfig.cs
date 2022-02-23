@@ -163,6 +163,34 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
         return totalModList;
     }
 
+    /// <summary>
+    /// Converts the relative or absolute application location to a full path.
+    /// </summary>
+    /// <returns>The full path to the app location.</returns>
+    public static string GetAbsoluteAppLocation(PathTuple<ApplicationConfig> config)
+    {
+        var location = config.Config.AppLocation;
+        var basePath = Path.GetDirectoryName(config.Path)!;
+        string finalPath;
+
+        // Specific for windows paths starting on \ - they need the drive added to them.
+        // I constructed this piece like this for possible Mono support.
+        if (!Path.IsPathRooted(location) || "\\".Equals(Path.GetPathRoot(location)))
+        {
+            if (location.StartsWith(Path.DirectorySeparatorChar))
+                finalPath = Path.Combine(Path.GetPathRoot(basePath)!, location.TrimStart(Path.DirectorySeparatorChar));
+            else
+                finalPath = Path.Combine(basePath, location);
+        }
+        else
+        {
+            finalPath = location;
+        }
+
+        // Resolves any internal "..\" to get the true full path.
+        return Path.GetFullPath(finalPath);
+    }
+
     /*
         ---------
         Overrides

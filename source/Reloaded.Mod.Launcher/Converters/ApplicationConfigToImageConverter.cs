@@ -48,10 +48,11 @@ public class ApplicationPathTupleToImageConverter : IMultiValueConverter
         }
 
         // Otherwise extract new icon from executable.
-        if (File.Exists(applicationConfig.Config.AppLocation))
+        var appLocation = ApplicationConfig.GetAbsoluteAppLocation(applicationConfig);
+        if (File.Exists(appLocation))
         {
             // Else make new from icon.
-            using Icon ico = Icon.ExtractAssociatedIcon(applicationConfig.Config.AppLocation);
+            using Icon ico = Icon.ExtractAssociatedIcon(appLocation);
                 
             // Extract to config set location.
             BitmapSource bitmapImage = Imaging.CreateBitmapSourceFromHIcon(ico.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());

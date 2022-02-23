@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Reloaded.Mod.Launcher.Lib.Static;
 using Reloaded.Mod.Loader.IO.Config;
+using Reloaded.Mod.Loader.IO.Structs;
 
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
@@ -39,9 +40,9 @@ public class ApplicationLauncher
     /// <summary>
     /// Creates an <see cref="ApplicationLauncher"/> from an application config.
     /// </summary>
-    public static ApplicationLauncher FromApplicationConfig(ApplicationConfig config)
+    public static ApplicationLauncher FromApplicationConfig(PathTuple<ApplicationConfig> config)
     {
-        return FromLocationAndArguments($"{config.AppLocation}", $"{config.AppArguments}");
+        return FromLocationAndArguments($"{ApplicationConfig.GetAbsoluteAppLocation(config)}", $"{config.Config.AppArguments}");
     }
 
     /// <summary>
