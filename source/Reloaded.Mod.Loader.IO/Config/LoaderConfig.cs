@@ -260,10 +260,15 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
         if (_launcherFolder != null)
             return _launcherFolder;
 
+        // Get launcher path.
+        var launcherPath = LauncherPath;
+        if (string.IsNullOrEmpty(LauncherPath))
+            launcherPath = Paths.CurrentProgramFolder;
+
         // Workaround for when non-launcher folder is used.
         // e.g. When using loader.
         var launcherFolder = NormalizePath(Paths.CurrentProgramFolder);
-        var launcherFolderFallback = NormalizePath(Path.GetDirectoryName(LauncherPath));
+        var launcherFolderFallback = NormalizePath(Path.GetDirectoryName(launcherPath));
         if (!launcherFolder.Equals(launcherFolderFallback, StringComparison.OrdinalIgnoreCase))
             launcherFolder = launcherFolderFallback;
 
