@@ -63,7 +63,7 @@ public class AddApplicationCommand : ICommand
 
         // Get paths.
         var loaderConfig = IoC.Get<LoaderConfig>();
-        string applicationConfigDirectory = loaderConfig.ApplicationConfigDirectory;
+        string applicationConfigDirectory = loaderConfig.GetApplicationConfigDirectory();
         string applicationDirectory = Path.Combine(applicationConfigDirectory, config.AppId);
         string applicationConfigFile = Path.Combine(applicationDirectory, ApplicationConfig.ConfigFileName);
 

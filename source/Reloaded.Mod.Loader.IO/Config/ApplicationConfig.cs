@@ -102,7 +102,7 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     public static List<PathTuple<ApplicationConfig>> GetAllApplications(string appDirectory = null, CancellationToken token = default)
     {
         if (appDirectory == null)
-            appDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).ApplicationConfigDirectory;
+            appDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).GetApplicationConfigDirectory();
 
         return ConfigReader<ApplicationConfig>.ReadConfigurations(appDirectory, ConfigFileName, token, 2);
     }

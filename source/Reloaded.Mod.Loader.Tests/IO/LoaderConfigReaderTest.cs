@@ -34,9 +34,9 @@ public class LoaderConfigReaderTest : IDisposable
         Assert.Equal(config.LauncherPath, newConfig.LauncherPath);
         Assert.Equal(config.Bootstrapper32Path, newConfig.Bootstrapper32Path);
         Assert.Equal(config.Bootstrapper64Path, newConfig.Bootstrapper64Path);
-        Assert.Equal(config.ApplicationConfigDirectory, newConfig.ApplicationConfigDirectory);
-        Assert.Equal(config.PluginConfigDirectory, newConfig.PluginConfigDirectory);
-        Assert.Equal(config.ModConfigDirectory, newConfig.ModConfigDirectory);
+        Assert.Equal(config.GetApplicationConfigDirectory(), newConfig.GetApplicationConfigDirectory());
+        Assert.Equal(config.GetPluginConfigDirectory(), newConfig.GetPluginConfigDirectory());
+        Assert.Equal(config.GetModConfigDirectory(), newConfig.GetModConfigDirectory());
         Assert.Equal(config.LanguageFile, newConfig.LanguageFile);
         Assert.Equal(config.ThemeFile, newConfig.ThemeFile);
     }
@@ -58,8 +58,8 @@ public class LoaderConfigReaderTest : IDisposable
         var newConfig = IConfig<LoaderConfig>.FromPath(Paths.LoaderConfigPath);
 
         // Restore old config and assert.
-        Assert.True(Directory.Exists(newConfig.ApplicationConfigDirectory));
-        Assert.True(Directory.Exists(newConfig.ModConfigDirectory));
-        Assert.True(Directory.Exists(newConfig.PluginConfigDirectory));
+        Assert.True(Directory.Exists(newConfig.GetApplicationConfigDirectory()));
+        Assert.True(Directory.Exists(newConfig.GetModConfigDirectory()));
+        Assert.True(Directory.Exists(newConfig.GetPluginConfigDirectory()));
     }
 }

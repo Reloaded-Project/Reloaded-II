@@ -17,6 +17,7 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     private const string DefaultPluginConfigDirectory       = "Plugins";
     private const string DefaultLanguageFile                = "en-GB.xaml";
     private const string DefaultThemeFile                   = "Default.xaml";
+    private const string PortableModeFile                   = "portable.txt";
 
     private static readonly NugetFeed[] DefaultFeeds        = new NugetFeed[]
     {
@@ -55,22 +56,26 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     /// <summary>
     /// The directory which houses all Reloaded Application information (e.g. Games etc.)
     /// </summary>
-    public string ApplicationConfigDirectory { get; set; } = Empty;
+    [JsonInclude]
+    public string ApplicationConfigDirectory { private get; set; } = Empty;
 
     /// <summary>
     /// Contains the directory which houses all Reloaded mods.
     /// </summary>
-    public string ModUserConfigDirectory { get; set; } = Empty;
+    [JsonInclude]
+    public string ModUserConfigDirectory { private get; set; } = Empty;
 
     /// <summary>
     /// Contains the directory which houses all Reloaded plugins.
     /// </summary>
-    public string PluginConfigDirectory { get; set; } = Empty;
+    [JsonInclude]
+    public string PluginConfigDirectory { private get; set; } = Empty;
 
     /// <summary>
     /// Contains the directory which houses all Reloaded mods.
     /// </summary>
-    public string ModConfigDirectory { get; set; } = Empty;
+    [JsonInclude]
+    public string ModConfigDirectory { private get; set; } = Empty;
 
     /// <summary>
     /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
@@ -140,6 +145,15 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     /// </summary>
     public int ProcessRefreshInterval { get; set; } = 200;
 
+    /// <summary>
+    /// True if the loader is in `Portable Mode`.
+    /// In Portable mode, the locations of <see cref="ApplicationConfigDirectory"/>, <see cref="ModConfigDirectory"/>, <see cref="ModUserConfigDirectory"/> and <see cref="PluginConfigDirectory"/>
+    /// are ignored and replaced with default, `Apps`, `Mods` and `Plugins` folders.
+    /// </summary>
+    [JsonIgnore]
+    public bool UsePortableMode { get; set; }
+
+    private string? _launcherFolder;
 
     /* Some mods are universal :wink: */
 
@@ -155,6 +169,14 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
         RerouteDefaultFeed();
     }
 
+    public string GetModUserConfigDirectory() => UsePortableMode ? GetDirectoryRelativeToLauncherFolder(DefaultModUserConfigDirectory) : ModUserConfigDirectory;
+
+    public string GetPluginConfigDirectory() => UsePortableMode ? GetDirectoryRelativeToLauncherFolder(DefaultPluginConfigDirectory) : PluginConfigDirectory;
+
+    public string GetApplicationConfigDirectory() => UsePortableMode ? GetDirectoryRelativeToLauncherFolder(DefaultApplicationConfigDirectory) : ApplicationConfigDirectory;
+
+    public string GetModConfigDirectory() => UsePortableMode ? GetDirectoryRelativeToLauncherFolder(DefaultModConfigDirectory) : ModConfigDirectory;
+
     private void RerouteDefaultFeed()
     {
         foreach (var feed in NuGetFeeds)
@@ -169,10 +191,20 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     {
         try
         {
-            ApplicationConfigDirectory  = IfNotExistsMakeDefaultDirectory(ApplicationConfigDirectory, DefaultApplicationConfigDirectory);
-            ModUserConfigDirectory      = IfNotExistsMakeDefaultDirectory(ModUserConfigDirectory, DefaultModUserConfigDirectory);
-            ModConfigDirectory          = IfNotExistsMakeDefaultDirectory(ModConfigDirectory, DefaultModConfigDirectory);
-            PluginConfigDirectory       = IfNotExistsMakeDefaultDirectory(PluginConfigDirectory, DefaultPluginConfigDirectory);
+            UsePortableMode = IsInPortableMode();
+            if (UsePortableMode)
+            {
+                // Create default directories (if needed).
+                Directory.CreateDirectory(GetApplicationConfigDirectory());
+                Directory.CreateDirectory(GetModConfigDirectory());
+                Directory.CreateDirectory(GetModUserConfigDirectory());
+                Directory.CreateDirectory(GetPluginConfigDirectory());
+            }
+
+            ApplicationConfigDirectory  = SetDefaultDirectory(ApplicationConfigDirectory, DefaultApplicationConfigDirectory);
+            ModUserConfigDirectory      = SetDefaultDirectory(ModUserConfigDirectory, DefaultModUserConfigDirectory);
+            ModConfigDirectory          = SetDefaultDirectory(ModConfigDirectory, DefaultModConfigDirectory);
+            PluginConfigDirectory       = SetDefaultDirectory(PluginConfigDirectory, DefaultPluginConfigDirectory);
         }
         catch (Exception)
         {
@@ -187,22 +219,60 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     }
 
     // Sets default directory if does not exist.
-    private static string IfNotExistsMakeDefaultDirectory(string directoryPath, string defaultDirectory)
+    private string SetDefaultDirectory(string directoryPath, string defaultDirectory)
     {
         if (!Directory.Exists(directoryPath))
-            return CreateDirectoryRelativeToProgram(defaultDirectory);
+            return CreateDirectoryRelativeToLauncherFolder(defaultDirectory);
 
         return directoryPath;
+    }
+
+    /// <summary>
+    /// Gets a directory relative to the path of the program.
+    /// </summary>
+    private string GetDirectoryRelativeToLauncherFolder(string directoryPath)
+    {
+        return Path.GetFullPath(Path.Combine(GetLauncherFolder(), directoryPath));
     }
 
     /// <summary>
     /// Creates a directory relative to the current assembly directory.
     /// Returns the full path of the supplied directory parameter.
     /// </summary>
-    private static string CreateDirectoryRelativeToProgram(string directoryPath)
+    private string CreateDirectoryRelativeToLauncherFolder(string directoryPath)
     {
-        string fullDirectoryPath = Path.GetFullPath(Path.Combine(Paths.CurrentProgramFolder, directoryPath));
+        string fullDirectoryPath = GetDirectoryRelativeToLauncherFolder(directoryPath);
         Directory.CreateDirectory(fullDirectoryPath);
         return fullDirectoryPath;
+    }
+
+    /// <summary>
+    /// Returns true if portable mode (always use launcher folder) is enabled.
+    /// </summary>
+    private bool IsInPortableMode()
+    {
+        var currentFolderPath = Path.GetFullPath(Path.Combine(GetLauncherFolder(), PortableModeFile));
+        return File.Exists(currentFolderPath);
+    }
+
+    private string GetLauncherFolder()
+    {
+        if (_launcherFolder != null)
+            return _launcherFolder;
+
+        // Workaround for when non-launcher folder is used.
+        // e.g. When using loader.
+        var launcherFolder = NormalizePath(Paths.CurrentProgramFolder);
+        var launcherFolderFallback = NormalizePath(Path.GetDirectoryName(LauncherPath));
+        if (!launcherFolder.Equals(launcherFolderFallback, StringComparison.OrdinalIgnoreCase))
+            launcherFolder = launcherFolderFallback;
+
+        _launcherFolder = launcherFolder;
+        return launcherFolder;
+
+        static string NormalizePath(string path)
+        {
+            return Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        }
     }
 }

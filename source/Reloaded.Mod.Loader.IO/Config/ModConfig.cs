@@ -256,7 +256,7 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public static List<PathTuple<ModConfig>> GetAllMods(string modDirectory = null, CancellationToken token = default)
     {
         if (modDirectory == null)
-            modDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).ModConfigDirectory;
+            modDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).GetModConfigDirectory();
 
         return ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, 2, 2);
     }

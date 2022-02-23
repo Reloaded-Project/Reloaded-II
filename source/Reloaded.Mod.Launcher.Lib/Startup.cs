@@ -67,7 +67,7 @@ public static class Startup
         arguments ??= "";
         applicationToLaunch = Path.GetFullPath(applicationToLaunch);
         
-        var application = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().ApplicationConfigDirectory).FirstOrDefault(x => ApplicationConfig.GetAbsoluteAppLocation(x) == applicationToLaunch);
+        var application = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().GetApplicationConfigDirectory()).FirstOrDefault(x => ApplicationConfig.GetAbsoluteAppLocation(x) == applicationToLaunch);
         if (application != null)
             arguments = $"{arguments} {application.Config.AppArguments}";
 

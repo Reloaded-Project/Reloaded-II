@@ -36,7 +36,7 @@ public class CreateModViewModel : ObservableObject
             return null;
 
         var config = new ModConfig() { ModId = ModId };
-        var modDirectory = Path.Combine(IoC.Get<LoaderConfig>().ModConfigDirectory, IOEx.ForceValidFilePath(ModId));
+        var modDirectory = Path.Combine(IoC.Get<LoaderConfig>().GetModConfigDirectory(), IOEx.ForceValidFilePath(ModId));
         var filePath = Path.Combine(modDirectory, ModConfig.ConfigFileName);
         await IConfig<ModConfig>.ToPathAsync(config, filePath);
         return new PathTuple<ModConfig>(filePath, config);

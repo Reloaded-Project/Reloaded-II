@@ -295,7 +295,7 @@ public static class Setup
         config.Bootstrapper64Path = bootstrapper64Path;
 
         // Update Environment Variables
-        Task.Run(() => Environment.SetEnvironmentVariable("RELOADEDIIMODS", config.ModConfigDirectory, EnvironmentVariableTarget.User));
+        Task.Run(() => Environment.SetEnvironmentVariable("RELOADEDIIMODS", config.GetModConfigDirectory(), EnvironmentVariableTarget.User));
     }
 
     /// <summary>

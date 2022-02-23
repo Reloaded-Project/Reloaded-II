@@ -17,7 +17,7 @@ public class ApplicationConfigService : ConfigServiceBase<ApplicationConfig>
     /// <param name="context">Context to which background events should be synchronized.</param>
     public ApplicationConfigService(LoaderConfig config, SynchronizationContext context = null)
     {
-        Initialize(config.ApplicationConfigDirectory, ApplicationConfig.ConfigFileName, GetAllConfigs, context);
+        Initialize(config.GetApplicationConfigDirectory(), ApplicationConfig.ConfigFileName, GetAllConfigs, context);
     }
 
     private List<PathTuple<ApplicationConfig>> GetAllConfigs() => ApplicationConfig.GetAllApplications(base.ConfigDirectory);

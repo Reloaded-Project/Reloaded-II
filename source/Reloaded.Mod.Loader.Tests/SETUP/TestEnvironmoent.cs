@@ -87,7 +87,7 @@ public class TestEnvironmoent : IDisposable
         OriginalConfig = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath);
         TestConfig = MakeTestConfig();
 
-        if (OriginalConfig.ApplicationConfigDirectory != TestConfig.ApplicationConfigDirectory)
+        if (OriginalConfig.GetApplicationConfigDirectory() != TestConfig.GetApplicationConfigDirectory())
             IConfig<LoaderConfig>.ToPath(OriginalConfig, $"{Paths.LoaderConfigPath}.bak");
         
         IConfig<LoaderConfig>.ToPath(TestConfig, Paths.LoaderConfigPath);
@@ -104,7 +104,7 @@ public class TestEnvironmoent : IDisposable
                 Environment.CurrentProcessLocation.Value,
                 new[] { TestModConfigA.ModId, TestModConfigB.ModId, TestModConfigD.ModId });
 
-            ConfigurationPathOfThisApp = Path.Combine(TestConfig.ApplicationConfigDirectory, IdOfThisApp, ApplicationConfig.ConfigFileName);
+            ConfigurationPathOfThisApp = Path.Combine(TestConfig.GetApplicationConfigDirectory(), IdOfThisApp, ApplicationConfig.ConfigFileName);
             IConfig<ApplicationConfig>.ToPath(ThisApplication, ConfigurationPathOfThisApp);
 
             // Populate nonexisting dependencies.
@@ -131,10 +131,10 @@ public class TestEnvironmoent : IDisposable
     public static LoaderConfig MakeTestConfig()
     {
         var config = new LoaderConfig();
-        config.ApplicationConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ApplicationConfigDirectory, "Apps");
-        config.ModConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ModConfigDirectory, "Mods");
-        config.PluginConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.PluginConfigDirectory, "Plugins");
-        config.ModUserConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.ModUserConfigDirectory, "UserConfigs");
+        config.ApplicationConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.GetApplicationConfigDirectory(), "Apps");
+        config.ModConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.GetModConfigDirectory(), "Mods");
+        config.PluginConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.GetPluginConfigDirectory(), "Plugins");
+        config.ModUserConfigDirectory = IfNotExistsMakeDefaultDirectoryAndReturnFullPath(config.GetModUserConfigDirectory(), "UserConfigs");
         config.EnabledPlugins = EmptyArray<string>.Instance;
         return config;
     }

@@ -31,7 +31,7 @@ public class ModUserConfigService : ConfigServiceBase<ModUserConfig>
         this.OnAddItem    += OnAddItemHandler;
         this.OnRemoveItem += OnRemoveItemHandler;
 
-        Initialize(config.ModUserConfigDirectory, ModUserConfig.ConfigFileName, GetAllConfigs, context);
+        Initialize(config.GetModUserConfigDirectory(), ModUserConfig.ConfigFileName, GetAllConfigs, context);
         SetItemsById();
 
         _modConfigService = modConfigService;

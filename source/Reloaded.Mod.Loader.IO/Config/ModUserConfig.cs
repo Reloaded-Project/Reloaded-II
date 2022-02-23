@@ -37,7 +37,7 @@ public class ModUserConfig : ObservableObject, IConfig<ModUserConfig>, IModUserC
     public static List<PathTuple<ModUserConfig>> GetAllUserConfigs(string configDirectory = null, CancellationToken token = default)
     {
         if (configDirectory == null)
-            configDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).ApplicationConfigDirectory;
+            configDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).GetApplicationConfigDirectory();
 
         return ConfigReader<ModUserConfig>.ReadConfigurations(configDirectory, ConfigFileName, token, 2);
     }
@@ -50,7 +50,7 @@ public class ModUserConfig : ObservableObject, IConfig<ModUserConfig>, IModUserC
     public static string GetUserConfigFolderForMod(string modId, string configDirectory = null)
     {
         if (configDirectory == null)
-            configDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).ModUserConfigDirectory;
+            configDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).GetModUserConfigDirectory();
             
         return Path.Combine(configDirectory, IOEx.ForceValidFilePath(modId));
     }

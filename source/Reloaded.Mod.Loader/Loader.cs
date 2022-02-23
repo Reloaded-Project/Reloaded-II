@@ -127,7 +127,7 @@ public class Loader : IDisposable
         Application   = applicationConfig;
 
         // Get all mods and their paths.
-        var allModsForApplication  = ApplicationConfig.GetAllMods(Application, out var allMods, LoaderConfig.ModConfigDirectory);
+        var allModsForApplication  = ApplicationConfig.GetAllMods(Application, out var allMods, LoaderConfig.GetModConfigDirectory());
 
         // Get list of mods to load and load them.
         var modsToLoad = allModsForApplication.Where(x => x.Enabled).Select(x => x.Generic.Config);
@@ -145,7 +145,7 @@ public class Loader : IDisposable
     public PathTuple<ModConfig> FindMod(string modId, out List<PathTuple<ModConfig>> allMods)
     {
         // Get mod with ID
-        allMods = ModConfig.GetAllMods(LoaderConfig.ModConfigDirectory);
+        allMods = ModConfig.GetAllMods(LoaderConfig.GetModConfigDirectory());
         var mod = allMods.FirstOrDefault(x => x.Config.ModId == modId);
 
         if (mod != null)
@@ -164,14 +164,14 @@ public class Loader : IDisposable
     {
         // Cache configuration paths for all mods.
         if (allMods == null)
-            allMods = ModConfig.GetAllMods(LoaderConfig.ModConfigDirectory);
+            allMods = ModConfig.GetAllMods(LoaderConfig.GetModConfigDirectory());
 
         var configToPathDictionary = new Dictionary<ModConfig, string>();
         foreach (var mod in allMods)
             configToPathDictionary[mod.Config] = mod.Path;
 
         // Get dependencies, sort and load in order.
-        var dependenciesToLoad  = GetDependenciesForMods(modsToLoad, allMods.Select(x => x.Config), LoaderConfig.ModConfigDirectory);
+        var dependenciesToLoad  = GetDependenciesForMods(modsToLoad, allMods.Select(x => x.Config), LoaderConfig.GetModConfigDirectory());
         var allUniqueModsToLoad = modsToLoad.Concat(dependenciesToLoad).Distinct();
         var allSortedModsToLoad = ModConfig.SortMods(allUniqueModsToLoad);
 
@@ -193,7 +193,7 @@ public class Loader : IDisposable
     private HashSet<ModConfig> GetDependenciesForMods(IEnumerable<ModConfig> mods, IEnumerable<ModConfig> allMods, string modDirectory)
     {
         if (allMods == null)
-            allMods = ModConfig.GetAllMods(LoaderConfig.ModConfigDirectory).Select(x => x.Config);
+            allMods = ModConfig.GetAllMods(LoaderConfig.GetModConfigDirectory()).Select(x => x.Config);
 
         var dependencies = ModConfig.GetDependencies(mods, allMods, modDirectory);
         if (dependencies.MissingConfigurations.Count > 0 && !IsTesting)
@@ -213,7 +213,7 @@ public class Loader : IDisposable
     /// </summary>
     private IApplicationConfig FindThisApplication()
     {
-        var configurations = ApplicationConfig.GetAllApplications(LoaderConfig.ApplicationConfigDirectory);
+        var configurations = ApplicationConfig.GetAllApplications(LoaderConfig.GetApplicationConfigDirectory());
         var fullPath       = NormalizePath(Environment.CurrentProcessLocation.Value);
 
         foreach (var configuration in configurations)

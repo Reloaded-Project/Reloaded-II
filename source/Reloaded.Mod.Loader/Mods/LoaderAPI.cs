@@ -142,7 +142,7 @@ public class LoaderAPI : IModLoader
     /* IModLoader V3 */
     public string GetModConfigDirectory(string modId)
     {
-        var directory = ModUserConfig.GetUserConfigFolderForMod(modId, _loader.LoaderConfig.ModUserConfigDirectory);
+        var directory = ModUserConfig.GetUserConfigFolderForMod(modId, _loader.LoaderConfig.GetModUserConfigDirectory());
         if (!Directory.Exists(directory))
             Directory.CreateDirectory(directory);
 

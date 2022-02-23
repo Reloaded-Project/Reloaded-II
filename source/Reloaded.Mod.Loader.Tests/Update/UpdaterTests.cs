@@ -50,7 +50,7 @@ public class UpdaterTests : IDisposable
         Task.Run(() => extractor.ExtractPackageAsync(TestArchiveFile, newPackageFolder.FolderPath)).GetAwaiter().GetResult();
         Task.Run(() => extractor.ExtractPackageAsync(TestArchiveFileOld, oldPackageFolder.FolderPath)).GetAwaiter().GetResult();
 
-        var targetModDirectory = Path.Combine(_testEnvironmoent.TestConfig.ModConfigDirectory, "OldPackage");
+        var targetModDirectory = Path.Combine(_testEnvironmoent.TestConfig.GetModConfigDirectory(), "OldPackage");
         IOEx.CopyDirectory(oldPackageFolder.FolderPath, targetModDirectory);
         _foldersToDelete.Add(targetModDirectory);
 

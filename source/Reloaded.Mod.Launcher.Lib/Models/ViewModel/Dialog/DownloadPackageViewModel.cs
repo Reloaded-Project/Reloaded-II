@@ -49,14 +49,14 @@ public class DownloadPackageViewModel : ObservableObject
     public DownloadPackageViewModel(IDownloadablePackage package, LoaderConfig config)
     {
         Packages.Add(package);
-        _modsFolder = config.ModConfigDirectory;
+        _modsFolder = config.GetModConfigDirectory();
     }
 
     /// <inheritdoc />
     public DownloadPackageViewModel(IEnumerable<IDownloadablePackage> packages, LoaderConfig config)
     {
         Packages.AddRange(packages);
-        _modsFolder = config.ModConfigDirectory;
+        _modsFolder = config.GetModConfigDirectory();
     }
 
     /// <summary>
