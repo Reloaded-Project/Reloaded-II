@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -263,7 +264,7 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
         // Get launcher path.
         var launcherPath = LauncherPath;
         if (string.IsNullOrEmpty(LauncherPath))
-            launcherPath = Paths.CurrentProgramFolder;
+            launcherPath = Path.Combine(Paths.CurrentProgramFolder, "Dummy.txt");
 
         // Workaround for when non-launcher folder is used.
         // e.g. When using loader.
