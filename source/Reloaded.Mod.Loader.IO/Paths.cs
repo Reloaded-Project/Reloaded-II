@@ -12,6 +12,12 @@ public class Paths
     private const string Kernel32AddressDumperRelativePath = "Loader/Kernel32AddressDumper.exe";
 
     /// <summary>
+    /// Set to true if the currently executing application is the Reloaded launcher.
+    /// Affects portable mode behaviour. This has to be manually set by the user.
+    /// </summary>
+    public static bool IsReloadedLauncher = false;
+
+    /// <summary>
     /// Gets the folder containing this library; and most likely the currently executing program.
     /// </summary>
     public static string CurrentProgramFolder { get; } = Path.GetDirectoryName(typeof(Paths).Assembly.Location);

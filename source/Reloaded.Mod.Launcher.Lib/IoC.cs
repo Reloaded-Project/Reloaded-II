@@ -26,6 +26,7 @@ public static class IoC
         LoaderConfig config;
         try
         {
+            Paths.IsReloadedLauncher = true;
             config = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath);
         }
         catch (Exception ex)

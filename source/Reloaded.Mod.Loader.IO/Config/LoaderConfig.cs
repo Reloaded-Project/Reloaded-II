@@ -261,6 +261,10 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
         if (_launcherFolder != null)
             return _launcherFolder;
 
+        // Use override if launcher flag is true.
+        if (Paths.IsReloadedLauncher)
+            return NormalizePath(Paths.CurrentProgramFolder);
+
         // Get launcher path.
         var launcherPath = LauncherPath;
         if (string.IsNullOrEmpty(LauncherPath))
