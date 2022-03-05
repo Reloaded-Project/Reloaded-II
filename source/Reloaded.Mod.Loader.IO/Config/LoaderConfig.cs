@@ -213,6 +213,43 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
         }
     }
 
+    /// <summary>
+    /// Updates the paths referenced in this config file.
+    /// </summary>
+    /// <param name="launcherDirectory">The directory in which the launcher is contained.</param>
+    /// <param name="dllNotFoundText">Error text to display when a DLL is not found.</param>
+    /// <exception cref="DllNotFoundException">A required DLL is not found.</exception>
+    public void UpdatePaths(string launcherDirectory, string dllNotFoundText = "")
+    {
+        if (String.IsNullOrEmpty(launcherDirectory))
+            throw new DllNotFoundException("The provided launcher directory is null or empty. This is a bug. Report this to the developer.");
+
+        // Loader configuration.
+        var loaderPath32 = Paths.GetLoaderPath32(launcherDirectory);
+        if (!File.Exists(loaderPath32))
+            throw new DllNotFoundException($"(x86) {Path.GetFileName(loaderPath32)} {dllNotFoundText}");
+
+        var loaderPath64 = Paths.GetLoaderPath64(launcherDirectory);
+        if (!File.Exists(loaderPath64))
+            throw new DllNotFoundException($"(x64) {Path.GetFileName(loaderPath64)} {dllNotFoundText}");
+
+        // Bootstrappers.
+        var bootstrapper32Path = Paths.GetBootstrapperPath32(launcherDirectory);
+        if (!File.Exists(bootstrapper32Path))
+            throw new DllNotFoundException($"{Path.GetFileName(bootstrapper32Path)} {dllNotFoundText}");
+
+        var bootstrapper64Path = Paths.GetBootstrapperPath64(launcherDirectory);
+        if (!File.Exists(bootstrapper64Path))
+            throw new DllNotFoundException($"{Path.GetFileName(bootstrapper64Path)} {dllNotFoundText}");
+
+        // Set to config.
+        LauncherPath = Process.GetCurrentProcess().MainModule!.FileName;
+        LoaderPath32 = loaderPath32;
+        LoaderPath64 = loaderPath64;
+        Bootstrapper32Path = bootstrapper32Path;
+        Bootstrapper64Path = bootstrapper64Path;
+    }
+
     // Removes empty NuGet feeds.*
     private void CleanEmptyFeeds()
     {

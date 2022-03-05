@@ -269,31 +269,8 @@ public static class Setup
         if (String.IsNullOrEmpty(launcherDirectory))
             throw new DllNotFoundException("The provided launcher directory is null or empty. This is a bug. Report this to the developer.");
 
-        // Loader configuration.
-        var loaderPath32 = Paths.GetLoaderPath32(launcherDirectory);
-        if (! File.Exists(loaderPath32))
-            throw new DllNotFoundException($"(x86) {Path.GetFileName(loaderPath32)} {Resources.ErrorLoaderNotFound.Get()}");
-
-        var loaderPath64 = Paths.GetLoaderPath64(launcherDirectory);
-        if (!File.Exists(loaderPath64))
-            throw new DllNotFoundException($"(x64) {Path.GetFileName(loaderPath64)} {Resources.ErrorLoaderNotFound.Get()}");
-
-        // Bootstrappers.
-        var bootstrapper32Path = Paths.GetBootstrapperPath32(launcherDirectory);
-        if (!File.Exists(bootstrapper32Path))
-            throw new DllNotFoundException($"{Path.GetFileName(bootstrapper32Path)} {Resources.ErrorLoaderNotFound.Get()}");
-
-        var bootstrapper64Path = Paths.GetBootstrapperPath64(launcherDirectory);
-        if (!File.Exists(bootstrapper64Path))
-            throw new DllNotFoundException($"{Path.GetFileName(bootstrapper64Path)} {Resources.ErrorLoaderNotFound.Get()}");
-
-        // Set to config.
-        config.LauncherPath = Process.GetCurrentProcess().MainModule!.FileName;
-        config.LoaderPath32 = loaderPath32;
-        config.LoaderPath64 = loaderPath64;
-        config.Bootstrapper32Path = bootstrapper32Path;
-        config.Bootstrapper64Path = bootstrapper64Path;
-
+        config.UpdatePaths(launcherDirectory, Resources.ErrorLoaderNotFound.Get());
+        
         // Update Environment Variables
         Task.Run(() => Environment.SetEnvironmentVariable("RELOADEDIIMODS", config.GetModConfigDirectory(), EnvironmentVariableTarget.User));
     }

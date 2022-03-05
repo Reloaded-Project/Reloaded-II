@@ -8,6 +8,7 @@ using Reloaded.Mod.Launcher.Lib.Misc;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 using Reloaded.Mod.Launcher.Lib.Static;
 using Reloaded.Mod.Launcher.Lib.Utility;
+using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Providers.Web;
 
@@ -63,11 +64,15 @@ public static class Startup
     private static void LaunchApplicationAndExit(string applicationToLaunch)
     {
         // Acquire arguments
+        var loaderConfig = IoC.Get<LoaderConfig>();
+        loaderConfig.UpdatePaths(Paths.CurrentProgramFolder, Resources.ErrorLoaderNotFound.Get());
+        IConfig<LoaderConfig>.ToPath(loaderConfig, Paths.LoaderConfigPath);
+
         _commandLineArguments.TryGetValue(Constants.ParameterArguments, out var arguments);
         arguments ??= "";
         applicationToLaunch = Path.GetFullPath(applicationToLaunch);
         
-        var application = ApplicationConfig.GetAllApplications(IoC.Get<LoaderConfig>().GetApplicationConfigDirectory()).FirstOrDefault(x => ApplicationConfig.GetAbsoluteAppLocation(x) == applicationToLaunch);
+        var application = ApplicationConfig.GetAllApplications(loaderConfig.GetApplicationConfigDirectory()).FirstOrDefault(x => ApplicationConfig.GetAbsoluteAppLocation(x) == applicationToLaunch);
         if (application != null)
             arguments = $"{arguments} {application.Config.AppArguments}";
 
