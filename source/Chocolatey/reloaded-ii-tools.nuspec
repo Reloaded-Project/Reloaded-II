@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>reloaded-ii-tools</id>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <packageSourceUrl>https://github.com/Reloaded-Project/Reloaded-II</packageSourceUrl>
     <owners>Sewer56</owners>
 	
@@ -37,6 +37,52 @@ Example: NuGetConverter.exe Mod.zip Mod.nupkg\
 Example: NuGetConverter.exe reloaded.test.mod reloaded.test.mod.nupkg\
 Example: NuGetConverter.exe reloaded.test.mod ./packages/reloaded.test.mod.nupkg
 ```
+
+## Reloaded.Publisher
+Simple program that generates update files and releases without requiring the use of the full launcher.  
+Intended for usage in CI/CD scenarios, where updates need to be automatically generated without the use of a GUI.  
+
+```
+Reloaded.Publisher
+Created by Sewer56, licensed under GNU LGPL V3
+
+  --outputfolder           Required. Folder where to output the created
+                           packages. Specify a folder containing an existing
+                           release will update it.
+
+  --modfolder              Required. Path of the folder containing a
+                           ModConfig.json
+
+  --packagename            Required. Allows you to set a custom name for the
+                           resulting 7z files.
+
+  --olderversionfolders    Paths to older versions of the mod. Used for creating
+                           delta packages.
+
+  --automaticdelta         (Default: false) Automatically creates a delta
+                           package when building updating an existing release.
+
+  --ignoreregexes          (Default: .*\.json Sewer56\.Update\.Metadata\.json
+                           .*\.nuspec) Regexes of files to make sure are
+                           ignored.
+
+  --includeregexes         (Default: ModConfig\.json \.deps\.json
+                           \.runtimeconfig\.json) Regexes of files to make sure
+                           are included.
+
+  --publishtarget          (Default: Default) Target for Publishing. Do not
+                           change unless instructed. Valid values: Default,
+                           NuGet, GameBanana
+
+  --compressionlevel       (Default: Ultra) The amount by which the mod should
+                           be compressed. Valid values: None, Fast, Low, Normal,
+                           High, Ultra
+
+  --compressionmethod      (Default: Lzma2) The method with which the archive
+                           should be compressed by. Valid values: Copy, Deflate,
+                           Deflate64, BZip2, Lzma, Lzma2, Ppmd, Default
+```
+
 	</description>
 	
     <dependencies>
