@@ -90,6 +90,8 @@ public static class Publisher
                 Authors = new List<string>() { args.ModTuple.Config.ModAuthor },
                 OnPreBuild = packageBuilder =>
                 {
+                    packageBuilder.Title = args.ModTuple.Config.ModName;
+
                     var mods = args.ModTuple.Config.ModDependencies.Select(x => new PackageDependency(x, VersionRange.All));
                     packageBuilder.DependencyGroups.Add(new PackageDependencyGroup(NuGetFramework.AnyFramework, mods));
                 } 
