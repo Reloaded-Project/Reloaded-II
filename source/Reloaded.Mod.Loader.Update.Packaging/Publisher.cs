@@ -5,6 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using NuGet.Frameworks;
+using NuGet.Packaging;
+using NuGet.Packaging.Core;
+using NuGet.Versioning;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.Update.Packaging.Extra;
@@ -13,13 +17,13 @@ using Sewer56.DeltaPatchGenerator.Lib.Utility;
 using Sewer56.Update.Extractors.SevenZipSharp;
 using Sewer56.Update.Misc;
 using Sewer56.Update.Packaging;
-using Sewer56.Update.Packaging.Enums;
 using Sewer56.Update.Packaging.Interfaces;
 using Sewer56.Update.Packaging.IO;
 using Sewer56.Update.Packaging.Structures;
 using Sewer56.Update.Packaging.Structures.ReleaseBuilder;
 using Sewer56.Update.Resolvers.GameBanana;
 using Sewer56.Update.Resolvers.NuGet;
+using PackageType = Sewer56.Update.Packaging.Enums.PackageType;
 
 namespace Reloaded.Mod.Loader.Update.Packaging;
 
@@ -84,6 +88,11 @@ public static class Publisher
                 Id = args.ModTuple.Config.ModId,
                 Description = args.ModTuple.Config.ModDescription,
                 Authors = new List<string>() { args.ModTuple.Config.ModAuthor },
+                OnPreBuild = packageBuilder =>
+                {
+                    var mods = args.ModTuple.Config.ModDependencies.Select(x => new PackageDependency(x, VersionRange.All));
+                    packageBuilder.DependencyGroups.Add(new PackageDependencyGroup(NuGetFramework.AnyFramework, mods));
+                } 
             });
         }
 
