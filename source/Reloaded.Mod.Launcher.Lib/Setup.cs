@@ -281,8 +281,8 @@ public static class Setup
     private static async Task CheckForUpdatesAsync()
     {
         await DependencyMetadataWriterFactory.ExecuteAllAsync(IoC.Get<ModConfigService>());
-        await Task.Run(Update.CheckForModUpdatesAsync);
         await Update.CheckForLoaderUpdatesAsync();
+        await Task.Run(Update.CheckForModUpdatesAsync);
         await CheckForMissingModDependenciesAsync();
     }
 
