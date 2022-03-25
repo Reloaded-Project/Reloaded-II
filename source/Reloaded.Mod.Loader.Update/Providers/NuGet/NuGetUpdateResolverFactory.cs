@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -23,6 +24,11 @@ namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 /// </summary>
 public class NuGetUpdateResolverFactory : IUpdateResolverFactory
 {
+    /// <summary>
+    /// Temporary. For migration to new system.
+    /// </summary>
+    public static readonly DateTime Now = DateTime.UtcNow;
+
     private static IPackageExtractor _extractor = new NuGetPackageExtractor();
 
     /// <inheritdoc />
@@ -63,10 +69,21 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
         {
             foreach (var url in nugetConfig!.DefaultRepositoryUrls)
                 urls.Add(url);
-        }
 
-        foreach (var url in data.NuGetFeeds)
-            urls.Add(url);
+            if (nugetConfig.AllowUpdateFromAnyRepository)
+                foreach (var url in data.NuGetFeeds)
+                    urls.Add(url);
+        }
+        else
+        {
+            // TODO: Remove after some time to complete migration.
+            // Only allow update from any source until 4/20.
+            if (Now < new DateTime(2022, 04, 20))
+            {
+                foreach (var url in data.NuGetFeeds)
+                    urls.Add(url);
+            }
+        }
 
         // Add all resolvers
         foreach (var url in urls)
