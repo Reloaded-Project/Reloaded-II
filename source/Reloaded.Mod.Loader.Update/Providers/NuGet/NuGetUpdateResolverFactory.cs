@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
@@ -43,7 +44,7 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
             this.SetConfiguration(mod, new NuGetConfig()
             {
                 AllowUpdateFromAnyRepository = true,
-                DefaultRepositoryUrls = new ObservableCollection<StringWrapper>() { Singleton<LoaderConfig>.Instance.NuGetFeeds[0].URL }
+                DefaultRepositoryUrls = new ObservableCollection<StringWrapper>(Singleton<LoaderConfig>.Instance.NuGetFeeds.Select(x => (StringWrapper) (x.URL)))
             });
 
             mod.Save();
