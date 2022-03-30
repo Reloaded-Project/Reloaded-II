@@ -57,7 +57,6 @@ public class Updater
         var faultedModSets       = new BlockingCollection<ModConfig>(modCount);
         var resolverManagerPairs = new BlockingCollection<ManagerModResultPair>(modCount);
         var resolverTuples       = GetResolvers();
-        var extractor            = new ProxyPackageExtractor(new SevenZipSharpExtractor());
         using var concurrencySemaphore = new SemaphoreSlim(32);
         var allTasks = new List<Task>();
 
@@ -65,7 +64,7 @@ public class Updater
         foreach (var resolverTuple in resolverTuples)
         {
             await concurrencySemaphore.WaitAsync();
-            var task = CheckForResolverTupleUpdate(resolverTuple, extractor, resolverManagerPairs, faultedModSets).ContinueWith(task1 =>
+            var task = CheckForResolverTupleUpdate(resolverTuple, resolverManagerPairs, faultedModSets).ContinueWith(task1 =>
             {
                 concurrencySemaphore.Release();
             });
@@ -78,7 +77,7 @@ public class Updater
         return _cachedResult;
     }
 
-    private static async Task CheckForResolverTupleUpdate(ResolverModPair resolverTuple, ProxyPackageExtractor extractor, BlockingCollection<ManagerModResultPair> toUpdateSet, BlockingCollection<ModConfig> faultedUpdateSets)
+    private static async Task CheckForResolverTupleUpdate(ResolverModPair resolverTuple, BlockingCollection<ManagerModResultPair> toUpdateSet, BlockingCollection<ModConfig> faultedUpdateSets)
     {
         try
         {
@@ -87,7 +86,7 @@ public class Updater
             var baseDirectory = Path.GetDirectoryName(modTuple.Path);
 
             var metadata = new ItemMetadata(NuGetVersion.Parse(modTuple.Config.ModVersion), filePath, baseDirectory);
-            var manager = await UpdateManager<Empty>.CreateAsync(metadata, resolverTuple.Resolver, extractor);
+            var manager = await UpdateManager<Empty>.CreateAsync(metadata, resolverTuple.Resolver, resolverTuple.Resolver.Extractor);
             var updateResult = await manager.CheckForUpdatesAsync();
 
             if (updateResult.CanUpdate)
@@ -116,13 +115,7 @@ public class Updater
             var pair    = summary.ManagerModResultPairs[x];
             var manager = pair.Manager;
             var version  = pair.Result.LastVersion;
-            var resolver = pair.Manager.Resolver;
-            var extractor = pair.Manager.Extractor;
-
-            // Set package extractor via proxy.
-            if (resolver is AggregatePackageResolverEx resolverEx && extractor is ProxyPackageExtractor proxyExtractor)
-                proxyExtractor.Extractor = await resolverEx.GetExtractorAsync(version!);
-
+            
             await manager.PrepareUpdateAsync(version!, slice);
             await manager.StartUpdateAsync(version!, new OutOfProcessOptions(), new UpdateOptions() { CleanupAfterUpdate = true });
         }
