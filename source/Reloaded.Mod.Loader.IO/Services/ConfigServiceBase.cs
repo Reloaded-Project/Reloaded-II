@@ -97,7 +97,6 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
             {
                 ItemsByPath[item.Path] = item;
                 ItemsByFolder[Path.GetDirectoryName(item.Path)] = item;
-                Items.Add(item);
             }
 
             if (executeImmediately)
