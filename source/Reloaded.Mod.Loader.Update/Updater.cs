@@ -118,6 +118,7 @@ public class Updater
             
             await manager.PrepareUpdateAsync(version!, slice);
             await manager.StartUpdateAsync(version!, new OutOfProcessOptions(), new UpdateOptions() { CleanupAfterUpdate = true });
+            manager.Dispose();
         }
     }
 
