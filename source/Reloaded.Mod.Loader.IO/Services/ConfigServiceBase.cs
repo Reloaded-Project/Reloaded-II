@@ -42,6 +42,7 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
 
     /* Mod Monitoring */
     private FileSystemWatcher _renameWatcher;
+    private FileSystemWatcher _changedWatcher;
     private FileSystemWatcher _createFolderWatcher;
     private FileSystemWatcher _createFileWatcher;
     private FileSystemWatcher _deleteFileWatcher;
@@ -67,6 +68,7 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
         _renameWatcher          = Create(ConfigDirectory, null, OnRename, FileSystemWatcherEvents.Renamed, true, "*.json");
         _createFolderWatcher    = Create(ConfigDirectory, OnCreateFolder, null, FileSystemWatcherEvents.Created, false, "*.*");
         _createFileWatcher      = Create(ConfigDirectory, OnCreateFile, null, FileSystemWatcherEvents.Created, true, "*.json");
+        _changedWatcher         = Create(ConfigDirectory, OnUpdateFile, null, FileSystemWatcherEvents.Changed, true, "*.json");
         _deleteFileWatcher      = Create(ConfigDirectory, OnDeleteFile, null, FileSystemWatcherEvents.Deleted);
         _deleteDirectoryWatcher = Create(ConfigDirectory, OnDeleteDirectory, null, FileSystemWatcherEvents.Deleted, false, "*.*");
         GetItems(executeImmediately);
@@ -166,6 +168,16 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
 
     private void CreateFileHandler(string fullPath)
     {
+        if (IsFileInItemFolder(fullPath) && IsFileConfigFile(fullPath))
+        {
+            var config = IConfig<TConfigType>.FromPath(fullPath);
+            _context.Post(() => AddItem(new PathTuple<TConfigType>(fullPath, config)));
+        }
+    }
+
+    private void OnUpdateFile(object sender, FileSystemEventArgs e)
+    {
+        var fullPath = e.FullPath;
         if (IsFileInItemFolder(fullPath) && IsFileConfigFile(fullPath))
         {
             var config = IConfig<TConfigType>.FromPath(fullPath);
