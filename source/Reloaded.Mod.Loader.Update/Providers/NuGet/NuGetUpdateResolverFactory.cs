@@ -25,9 +25,14 @@ namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 public class NuGetUpdateResolverFactory : IUpdateResolverFactory
 {
     /// <summary>
-    /// Temporary. For migration to new system.
+    /// Today's date and time.
     /// </summary>
     public static readonly DateTime Now = DateTime.UtcNow;
+
+    /// <summary>
+    /// Date of migration to new security policy disallowing NuGet packages from unknown sources by default.
+    /// </summary>
+    public static readonly DateTime MigrationDate = new DateTime(2022, 05, 01);
 
     private static IPackageExtractor _extractor = new NuGetPackageExtractor();
 
@@ -76,9 +81,9 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
         }
         else
         {
-            // TODO: Remove after some time to complete migration.
-            // Only allow update from any source until 5/10.
-            if (Now < new DateTime(2022, 05, 01))
+            // Allow package to be updated before cutoff date for new security policy,
+            // or if package is older than the cutoff date.
+            if (Now < MigrationDate || GetApproximateDateForMod(mod) < MigrationDate)
             {
                 foreach (var url in data.NuGetFeeds)
                     urls.Add(url);
@@ -111,6 +116,30 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
         var result = this.TryGetConfiguration<NuGetConfig>(mod, out var config);
         configuration = config ?? new NuGetConfig();
         return result;
+    }
+
+    private DateTime GetApproximateDateForMod(PathTuple<ModConfig> mod)
+    {
+        try
+        {
+            // Check date on the DLL
+            if (mod.Config.HasDllPath())
+            {
+                var dllPath = mod.Config.GetDllPath(mod.Path);
+                if (!File.Exists(dllPath))
+                    goto checkIcon;
+
+                return File.GetLastWriteTimeUtc(dllPath);
+            }
+
+            // Otherwise fallback to icon, if possible.
+            checkIcon:
+            return !mod.Config.TryGetIconPath(mod.Path, out var iconPath) ? DateTime.UtcNow : File.GetLastWriteTimeUtc(iconPath);
+        }
+        catch (Exception)
+        {
+            return DateTime.UtcNow;
+        }
     }
 
     /// <summary>
