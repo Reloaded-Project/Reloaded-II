@@ -77,8 +77,8 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
         else
         {
             // TODO: Remove after some time to complete migration.
-            // Only allow update from any source until 4/20.
-            if (Now < new DateTime(2022, 04, 20))
+            // Only allow update from any source until 5/10.
+            if (Now < new DateTime(2022, 05, 01))
             {
                 foreach (var url in data.NuGetFeeds)
                     urls.Add(url);
