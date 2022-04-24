@@ -27,8 +27,15 @@ public interface IProcessWatcher
     {
         if (_watcher == null)
         {
-            // On Wine (and modified Windows OS) WMI might not work.
-            try { _watcher = Lib.IsElevated ? (IProcessWatcher)new WmiProcessWatcher() : ProcessWatcher.Instance; }
+            try
+            {
+                // On Wine (and modified Windows OS) WMI might not work.
+                // Reportedly Proton might try using WMI anyway, so we fallback just in case.
+                if (Shared.Environment.IsWine)
+                    _watcher = ProcessWatcher.Instance;
+                else
+                    _watcher = Lib.IsElevated ? new WmiProcessWatcher() : ProcessWatcher.Instance;
+            }
             catch (Exception) { _watcher = ProcessWatcher.Instance; }
         }
 
