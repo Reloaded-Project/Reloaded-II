@@ -31,7 +31,7 @@ public class LogWriter : IDisposable
     public LogWriter(Logger logger, string outputDir)
     {
         var executableName    = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
-        var universalDateTime = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss");
+        var universalDateTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH.mm.ss");
         Directory.CreateDirectory(outputDir);
 
         _logItems = new List<string>(MaxBufferLength + 1);
