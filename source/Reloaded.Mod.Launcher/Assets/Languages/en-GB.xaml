@@ -263,7 +263,7 @@
     <sys:String x:Key="LoaderSettingsConfigFile">Open Config File</sys:String>
 
     <!-- Update 1.8.0: Extra Error(s) -->
-    <sys:String x:Key="ErrorFailedToObtainPort" xml:space="preserve">Failed to obtain port for the Reloaded instance running inside the process.&#x0a;The application has either crashed, Reloaded failed to load or Reloaded has not initialized within the timeout limit.</sys:String>
+    <sys:String x:Key="ErrorFailedToObtainPort" xml:space="preserve">The application has either crashed, Reloaded failed to load or Reloaded has not initialized within the timeout limit.&#x0a;&#x0a;The following operations might help:&#x0a;- Close this error, wait a few seconds, and try again.&#x0a;- Close other copies of the application if they are already running. (Use Task Manager)&#x0a;- Reboot your machine.&#x0a;&#x0a;This is a warning, if your application works as expected you can ignore this message.&#x0a;&#x0a;Actual error:&#x0a;Failed to obtain port for the Reloaded instance running inside the process.</sys:String>
 
     <!-- Update 1.10.0: Reloaded Bootstrapper Update -->
     <sys:String x:Key="BootstrapperUpdateTitle" xml:space="preserve">Bootstrapper Updated</sys:String>
