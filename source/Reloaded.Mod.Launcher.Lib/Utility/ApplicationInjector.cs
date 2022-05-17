@@ -48,7 +48,7 @@ public class ApplicationInjector
 
             return false;
         }
-
+        
         try
         {
             ActionWrappers.TryGetValueWhile(() =>
@@ -65,9 +65,12 @@ public class ApplicationInjector
             }, WhileCondition, _modLoaderSetupTimeout, _modLoaderSetupSleepTime);
         }
         catch (Exception e)
-        {                
-            Errors.HandleException(new Exception(Resources.ErrorFailedToObtainPort.Get(), e));
-        }
+        {
+            ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
+            {
+                Errors.HandleException(new Exception(Resources.ErrorFailedToObtainPort.Get(), e));
+            });
+        };
     }
 
     private string GetBootstrapperPath(Process process)
