@@ -38,7 +38,26 @@ public class LogWriter : IDisposable
         _logger  = logger;
         _logger.OnPrintMessage += OnPrintMessage;
 
-        FlushPath   = Path.Combine(outputDir, $"{universalDateTime} ~ {executableName}.txt");
+        // Add integer to file path in case there is another instance of same process launched at the same time.
+        string GetLogFilePath()
+        {
+            for (int x = 0; x < short.MaxValue; x++)
+            {
+                var filePath = x == 0 ? 
+                    Path.Combine(outputDir, $"{universalDateTime} ~ {executableName}.txt") :
+                    Path.Combine(outputDir, $"{universalDateTime} ~ {executableName} [{x}].txt");
+                
+                if (!File.Exists(filePath))
+                    return filePath;
+            }
+
+            return default;
+        }
+
+        FlushPath = GetLogFilePath();
+        if (FlushPath == null) 
+            return;
+
         _textStream = File.CreateText(FlushPath);
         _textStream.AutoFlush = false;
         _autoFlushThread = new Timer(AutoFlush, null, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(250));
@@ -60,9 +79,9 @@ public class LogWriter : IDisposable
             return;
 
         foreach (var item in _logItems)
-            _textStream.WriteLine(item);
+            _textStream?.WriteLine(item);
 
-        _textStream.Flush();
+        _textStream?.Flush();
         _logItems.Clear();
     }
 
