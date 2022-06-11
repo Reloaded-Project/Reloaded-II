@@ -27,6 +27,7 @@ $installerProjectPath = "./Reloaded.Mod.Installer/Reloaded.Mod.Installer.csproj"
 $launcherProjectPath = "Reloaded.Mod.Launcher/Reloaded.Mod.Launcher.csproj"
 $loaderProjectPath = "Reloaded.Mod.Loader/Reloaded.Mod.Loader.csproj"
 $addressDumperProjectPath = "Reloaded.Mod.Launcher.Kernel32AddressDumper/Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj"
+$templateProjectPath = "Reloaded.Mod.Template/Reloaded.Mod.Template.Nupkg.csproj"
 
 $communityProjectPath = "Tools/Reloaded.Community.Tool/Reloaded.Community.Tool.csproj"
 $nugetConverterProjectPath = "Tools/NugetConverter/NugetConverter.csproj"
@@ -36,6 +37,7 @@ $publisherProjectPath = "Tools/Reloaded.Publisher/Reloaded.Publisher.csproj"
 $publishDirectory = "Publish"
 $chocoPublishDirectory = "$publishDirectory/Chocolatey"
 $installerPublishDirectory = "$publishDirectory/Installer"
+$templatePublishDirectory = "$publishDirectory/ModTemplate"
 $releaseFileName = "/Release.zip"
 $toolsReleaseFileName = "/Tools.zip"
 $cleanupPaths = ("$buildPath", "$toolsPath", "$publishDirectory", "$chocoToolsPath")
@@ -70,6 +72,9 @@ dotnet publish "$communityProjectPath" -c Release -r win-x64 --self-contained fa
 
 # Build Installer
 dotnet publish "$installerProjectPath" -o "$installerPublishDirectory"
+
+# Build Templates
+dotnet pack "$templateProjectPath" -o "$templatePublishDirectory"
 
 # Copy 32-bit EXE and cleanup folders.
 Move-Item -Path "$outputPath32/Reloaded-II.exe" -Destination "$outputPath/Reloaded-II32.exe"
