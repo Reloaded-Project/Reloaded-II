@@ -67,7 +67,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.Communi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Community.Tool", "Tools\Reloaded.Community.Tool\Reloaded.Community.Tool.csproj", "{16976E7C-4826-40E5-9E17-2C4266394FD5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Template.Nupkg", "Reloaded.Mod.Template\Reloaded.Mod.Template.Nupkg.csproj", "{4914B6D0-C38B-4633-BA1F-4CF8143FE7F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Template.NuGet", "Reloaded.Mod.Template\Reloaded.Mod.Template.NuGet.csproj", "{4914B6D0-C38B-4633-BA1F-4CF8143FE7F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{5E60B8D6-820D-4CD6-A0FE-DC2DA574499F}"
 EndProject

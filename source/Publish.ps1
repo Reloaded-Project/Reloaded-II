@@ -27,7 +27,7 @@ $installerProjectPath = "./Reloaded.Mod.Installer/Reloaded.Mod.Installer.csproj"
 $launcherProjectPath = "Reloaded.Mod.Launcher/Reloaded.Mod.Launcher.csproj"
 $loaderProjectPath = "Reloaded.Mod.Loader/Reloaded.Mod.Loader.csproj"
 $addressDumperProjectPath = "Reloaded.Mod.Launcher.Kernel32AddressDumper/Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj"
-$templateProjectPath = "Reloaded.Mod.Template/Reloaded.Mod.Template.Nupkg.csproj"
+$templateProjectPath = "Reloaded.Mod.Template/Reloaded.Mod.Template.NuGet.csproj"
 
 $communityProjectPath = "Tools/Reloaded.Community.Tool/Reloaded.Community.Tool.csproj"
 $nugetConverterProjectPath = "Tools/NugetConverter/NugetConverter.csproj"
