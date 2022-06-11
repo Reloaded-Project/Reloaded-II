@@ -1,0 +1,64 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Sewer56",
+    "classifications": [
+        "Common",
+        "Library",
+        "Games"
+    ],
+    "name": "Reloaded II Mod Template",
+    "description": "Template for a Reloaded-II modification.",
+    "sourceName": "Reloaded.Mod.Template",
+    "defaultName": "My Reloaded-II Mod",
+    "identity": "Reloaded.Mod.Template",
+    "shortName": "reloaded",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "preferNameDirectory": true,
+    "symbols": {
+        "ModName": {
+            "type": "parameter",
+            "displayName": "Mod Name",
+            "description": "Name of the mod as seen in the launcher.",
+            "datatype": "text",
+            "replaces": "ModNameValue",
+            "defaultValue": "My Cool Reloaded Mod"
+        },
+        "ModDescription": {
+            "type": "parameter",
+            "displayName": "Mod Description",
+            "description": "Description of the mod as seen in the launcher.",
+            "datatype": "text",
+            "replaces": "ModDescriptionValue",
+            "defaultValue": "Description"
+        },
+        "ModAuthor": {
+            "type": "parameter",
+            "displayName": "Mod Author",
+            "description": "Author of the mod as seen in the launcher.",
+            "datatype": "text",
+            "replaces": "ModAuthorValue",
+            "defaultValue": "Me"
+        },
+        "AddGitHubActions": {
+            "type": "parameter",
+            "displayName": "Add GitHub Actions",
+            "dataType": "bool",
+            "defaultValue": "true"
+        }
+    },
+    "sources": [
+        {
+            "modifiers": [
+                {
+                    "condition": "(!AddGitHubActions)",
+                    "exclude": [
+                        ".github/workflows/reloaded.yml"
+                    ]
+                }
+            ]
+        }
+    ]
+}

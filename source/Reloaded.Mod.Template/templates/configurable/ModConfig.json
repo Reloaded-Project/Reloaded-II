@@ -1,0 +1,20 @@
+{
+  "ModId": "Reloaded.Mod.Template",
+  "ModName": "ModNameValue",
+  "ModAuthor": "ModAuthorValue",
+  "ModVersion": "1.0.0",
+  "ModDescription": "ModDescriptionValue",
+  "ModDll": "Reloaded.Mod.Template.dll",
+  "ModIcon": "Preview.png",
+  "ModR2RManagedDll32": "",
+  "ModR2RManagedDll64": "",
+  "ModNativeDll32": "",
+  "ModNativeDll64": "",
+  "IsLibrary": false,
+  "ReleaseMetadataFileName": "Sewer56.Update.ReleaseMetadata.json",
+  "PluginData": {},
+  "IsUniversalMod": false,
+  "ModDependencies": ["reloaded.sharedlib.hooks"],
+  "OptionalDependencies": [],
+  "SupportedAppId": []
+}
