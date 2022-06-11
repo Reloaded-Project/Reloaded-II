@@ -27,7 +27,7 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
     /// <summary>
     /// Today's date and time.
     /// </summary>
-    public static readonly DateTime Now = DateTime.UtcNow;
+    public static DateTime Now { get; private set; } = DateTime.UtcNow;
 
     /// <summary>
     /// Date of migration to new security policy disallowing NuGet packages from unknown sources by default.
@@ -161,4 +161,10 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
                      "Right click to add and remove items.")]
         public ObservableCollection<StringWrapper> DefaultRepositoryUrls { get; set; } = new ObservableCollection<StringWrapper>();
     }
+
+    /// <summary>
+    /// [Test use only. Sets the new time to use as 'now' in the program]
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public static void SetNowTime(DateTime newNowTime) => Now = newNowTime;
 }

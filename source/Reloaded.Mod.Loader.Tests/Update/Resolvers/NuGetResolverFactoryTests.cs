@@ -43,13 +43,14 @@ public class NuGetResolverFactoryTests : IDisposable
     }
 
     [Fact]
-    public void GetResolver_RespectsMainConfigUrls()
+    public void GetResolver_UsesMainConfigUrls_BeforeSecurityPolicyMigrationDate()
     {
         // Arrange
         var mod = _testEnvironmoent.TestModConfigATuple;
         
         // Act
         var resolverFactory  = new NuGetUpdateResolverFactory();
+        NuGetUpdateResolverFactory.SetNowTime(NuGetUpdateResolverFactory.MigrationDate.AddMinutes(-1));
         var resolvers = (AggregatePackageResolver) resolverFactory.GetResolver(mod, null, new UpdaterData(new List<string>() { "Sample NuGet Feed" }, new CommonPackageResolverSettings()));
 
         // Assert
