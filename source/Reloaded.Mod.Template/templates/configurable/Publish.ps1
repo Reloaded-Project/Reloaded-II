@@ -158,18 +158,18 @@ param (
     ## => User: Delta Config
     # Pick one and configure settings below.
     $MetadataFileName = "Sewer56.Update.ReleaseMetadata.json",
-    $UseGitHubDelta = $True,
+    $UseGitHubDelta = $False, # GitHub Releases
     $UseGameBananaDelta = $False,
     $UseNuGetDelta = $False,
 
-    $GitHubUserName = "Sewer56",
-    $GitHubRepoName = "Reloaded.SharedLib.Hooks.ReloadedII",
-    $GitHubFallbackPattern = "reloaded.sharedlib.hooks.zip", # For migrating from legacy.
+    $GitHubUserName = "", # Name of the GitHub user where the mod is contained
+    $GitHubRepoName = "", # Name of the GitHub repo where the mod is contained
+    $GitHubFallbackPattern = "", # For migrating from legacy build script.
     $GitHubInheritVersionFromTag = $True, # Uses version determined from release tag as opposed to metadata file in latest release.
 
     $GameBananaItemId = 333681, # From mod page URL.
 
-    $NuGetPackageId = "reloaded.sharedlib.hooks",
+    $NuGetPackageId = "Reloaded.Mod.Template",
     $NuGetFeedUrl = "http://packages.sewer56.moe:5000/v3/index.json",
     $NuGetAllowUnlisted = $False,
 
