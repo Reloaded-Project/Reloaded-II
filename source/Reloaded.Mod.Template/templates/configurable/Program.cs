@@ -54,6 +54,9 @@ public class Program : IMod
         Debugger.Launch();
 #endif
 
+        // For more information about this template, please see
+        // https://reloaded-project.github.io/Reloaded-II/ModTemplate/
+
         _modLoader = (IModLoader) loaderApi;
         _modConfig = (IModConfig) modConfig;
         _logger = (ILogger)_modLoader.GetLogger();
@@ -66,10 +69,8 @@ public class Program : IMod
         _configuration = configurator.GetConfiguration<Config>(0);
         _configuration.ConfigurationUpdated += OnConfigurationUpdated;
 
-        /*
-            Your mod code starts below.
-            Visit https://github.com/Reloaded-Project for additional optional libraries.
-        */
+        // Please put your mod code in the class below,
+        // use this class for only interfacing with mod loader.
         _mod = new Mod(_hooks, _logger);
     }
 
