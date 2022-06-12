@@ -107,10 +107,10 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
             }
             else
             {
-                _context.Post(() =>
+                _context.Send((x) =>
                 {
                     Collections.ModifyObservableCollection(Items, itemTuples);
-                });
+                }, null);
             }
         }
         catch (Exception)
