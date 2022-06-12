@@ -11,7 +11,7 @@
   "ModNativeDll32": "",
   "ModNativeDll64": "",
   "IsLibrary": false,
-  "ReleaseMetadataFileName": "Sewer56.Update.ReleaseMetadata.json",
+  "ReleaseMetadataFileName": "Reloaded.Mod.Template.ReleaseMetadata.json",
   "PluginData": {},
   "IsUniversalMod": false,
   "ModDependencies": [ "reloaded.sharedlib.hooks" ],

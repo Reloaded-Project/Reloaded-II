@@ -35,7 +35,12 @@ public class CreateModViewModel : ObservableObject
         if (!IsUnique(showNonUniqueWindow))
             return null;
 
-        var config = new ModConfig() { ModId = ModId };
+        var config = new ModConfig()
+        {
+            ModId = ModId,
+            ReleaseMetadataFileName = $"{ModId}.ReleaseMetadata.json"
+        };
+
         var modDirectory = Path.Combine(IoC.Get<LoaderConfig>().GetModConfigDirectory(), IOEx.ForceValidFilePath(ModId));
         var filePath = Path.Combine(modDirectory, ModConfig.ConfigFileName);
         await IConfig<ModConfig>.ToPathAsync(config, filePath);
