@@ -26,6 +26,7 @@ plugins:
         'Automation.md': 'ModTemplate.md'
         'BuildingMods.md': 'DevelopmentEnvironmentSetup.md'
         'PublishingMods.md': 'EnablingUpdateSupport.md'
+        'InterModCommunication.md': 'DependencyInjection.md'
 
 theme:
   name: material
