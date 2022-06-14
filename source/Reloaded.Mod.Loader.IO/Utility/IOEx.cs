@@ -116,7 +116,7 @@ public static class IOEx
     }
 
     /// <summary>
-    /// Waits for write access to be available for a file.
+    /// Moves a file, waiting infinitely until write access is available.
     /// </summary>
     /// <param name="source">The path to the file.</param>
     /// <param name="destination">Where the file should be moved to.</param>
@@ -125,16 +125,49 @@ public static class IOEx
     {
         while (true)
         {
-            try
-            {
-                if (token.IsCancellationRequested)
-                    return;
+            if (TryMoveFile(source, destination, token))
+                break;
 
-                File.Move(source, destination, true);
-                return;
-            }
-            catch (Exception) { /* Ignored */ }
             Thread.Sleep(1);
+        }
+    }
+
+    /// <summary>
+    /// Moves a file, waiting infinitely until write access is available.
+    /// </summary>
+    /// <param name="source">The path to the file.</param>
+    /// <param name="destination">Where the file should be moved to.</param>
+    /// <param name="token">The token.</param>
+    public static async Task MoveFileAsync(string source, string destination, CancellationToken token = default)
+    {
+        while (true)
+        {
+            if (TryMoveFile(source, destination, token))
+                break;
+
+            await Task.Delay(1, token);
+        }
+    }
+
+    /// <summary>
+    /// Tries to move a file, returns true if success, else false.
+    /// </summary>
+    /// <param name="source">The path to the file.</param>
+    /// <param name="destination">Where the file should be moved to.</param>
+    /// <param name="token">The token.</param>
+    public static bool TryMoveFile(string source, string destination, CancellationToken token = default)
+    {
+        try
+        {
+            if (token.IsCancellationRequested)
+                return true;
+
+            File.Move(source, destination, true);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
         }
     }
 

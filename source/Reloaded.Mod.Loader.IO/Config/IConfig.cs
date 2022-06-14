@@ -111,7 +111,7 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
         await using (var stream = await IOEx.OpenFileAsync(tempPath, FileMode.Create, FileAccess.Write, token))
             await JsonSerializer.SerializeAsync(stream, config, _options, token);
 
-        IOEx.MoveFile(tempPath, fullPath, token);
+        await IOEx.MoveFileAsync(tempPath, fullPath, token);
     }
 
     private static void CreateDirectoryIfNotExist(string directory)
