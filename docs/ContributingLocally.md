@@ -1,4 +1,4 @@
-# Contributing to the Index: Locally
+# Contributing to the Wiki: Locally
 
 ## Tutorial
 You should learn the basics of `git`, an easy way is to give [GitHub Desktop (Tutorial)](https://www.youtube.com/watch?v=77W2JSL7-r8) a go.  
@@ -35,7 +35,7 @@ It's only 15 minutes 😀.
 
 ## Website Live Preview
 
-If you are working on the Index locally, you can generate a live preview the full website.
+If you are working on the wiki locally, you can generate a live preview the full website.
 Here's a quick guide of how you could do it from your `command prompt` (cmd).
 
 1. Install Python 3
@@ -54,10 +54,10 @@ Here's a quick guide of how you could do it from your `command prompt` (cmd).
     pip install mkdocs-redirects
     ```
 
-3. Open a command prompt in the Index folder and run the site locally.
+3. Open a command prompt in the folder containing `mkdocs.yml`. and run the site locally.
     ```bash
-    # Move to Index folder.
-    cd <Replace this with full path to your Index folder>
+    # Move to project folder.
+    cd <Replace this with full path to folder containing `mkdocs.yml`>
     mkdocs serve
     ```
 

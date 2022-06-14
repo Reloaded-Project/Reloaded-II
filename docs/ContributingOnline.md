@@ -1,4 +1,4 @@
-# Contributing to the Index: Online
+# Contributing to the Wiki: Online
 
 *(If you want to work purely in your web browser, recommended for small changes only)*
 
