@@ -10,22 +10,17 @@
 </div>
 
 ## Introduction
-**[Reloaded II]** is a Universal DLL Injection based Mod Loader and Management System.
+**[Reloaded II]** is a universal DLL injection based Mod Loader and Mod Management Framework.  
 
 <div align="center">
 	<img src="./docs/Images/Header.png" width="550" align="center" />
 	<br/><br/>
 </div>
 
-Designed mostly for hacking games, it is a completely free and open source public rewrite of **[Reloaded]**, my original first fully fledged mod loader.
+It's a fully free and open source swiss army knife for modding native games.  
+Made from the ground up **proudly** using the C# programming language.  
 
-Made from the ground up **proudly** using the C# programming language.
-
-## Getting Started
-- [Quick Start](./docs/QuickStart.md)
-- [FAQ: Frequently Asked Questions](./docs/FAQ.md)
-
-For more information, please visit [the documentation](https://reloaded-project.github.io/Reloaded-II/), it's cool.
+For more information, please visit [the Reloaded-II website.](https://reloaded-project.github.io/Reloaded-II/)
 
 ## Contributions
 

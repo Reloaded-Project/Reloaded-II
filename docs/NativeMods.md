@@ -1,6 +1,6 @@
 # About Native Mods
 
-Intended for communities who want to try out using Reloaded or transitioning to the mod loader or have a niche reason to use C/C++, Reloaded II has limited support for native C/C++ modifications compiled as DLLs. As standard, this is implemented through the use of DLL Exports.
+Intended for communities who want to try out using Reloaded, transitioning to the mod loader or have a niche reason to use C/C++. Reloaded II has limited support for native C/C++ modifications compiled as DLLs. As standard, this is implemented through the use of DLL Exports.
 
 Native mods lack access to components such as the mod loader API but can use some limited mod loader functionality, such as *Resume* and *Suspend* provided the right exports are available. 
 
@@ -26,7 +26,7 @@ Reloaded tries to start mods by using the following entry points in order:
 - Init
 
 If none of these entry points is found, the mod will not be loaded.
-The exported methods should have no parameters and return void.
+The exported methods should have no parameters and return `void`.
 
 **Suspend, Resume, Unload:**
 

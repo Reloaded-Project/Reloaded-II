@@ -6,7 +6,7 @@ Focusing mainly on techniques which may not be immediately obvious, the main goa
 
 ## Speed-Focused Optimizations
 
-#### Lazy Loading
+### Lazy Loading
 
 Lazy loading is simply the process of deferring initialization of an object/thing until the point at which it is needed.
 
@@ -14,7 +14,7 @@ Sometimes in your `Start()` entry point, you might not need to necessarily need 
 
 For example, if you need to make a connection to a server which will be used later in execution (say you are interacting with a chatroom in a mod etc.), the initial startup of the mod does not have to be halted until this connection is made. You can make the connection in the background and any code depending on the connection can wait for the connection task to finish.
 
-##### Lazy Loading Example
+#### Lazy Loading Example
 
 Consider a case where you have a code that requires an object, and the object is not required to be used in the `Start()` method itself.
 
@@ -39,7 +39,7 @@ This is a very simplified example.
 
 The framework built-in class `Lazy<T>` is very useful. Consider reading this useful resource: https://docs.microsoft.com/en-us/dotnet/framework/performance/lazy-initialization
 
-##### Asynchronous Loading
+#### Asynchronous Loading
 
 Another great way to not stall mod startup is to perform setup/initialization tasks asynchronously, the *Task Parallel Library* (TPL) is great for doing this.
 
@@ -57,7 +57,7 @@ _connectToServerTask = Task.Run(() => { /* Code to Connect to a Server */ });
 _connectToServerTask.Wait(); // Will stall execution until task completes.
 ```
 
-##### Danger: Race Conditions
+#### Danger: Race Conditions
 
 The important thing to note about lazy loading however is the possibility of race conditions for shared resources (such as native memory). Mainly, please **do not create function hooks/detours asynchronously**. 
 
@@ -69,16 +69,11 @@ In other words, only one of the mods' hooks works.
 
 #### Publish as ReadyToRun
 
----
-**Note:** *This optimization is available as part of the mod template and used when you run the included `Publish.ps1` script.*
-
----
-
 .NET Core 3+ has a new type of officially supported file format for publishing applications known as *ReadyToRun* (abbreviated as R2R).
 
 The main advantage of R2R is that it boasts **significant** improvement to startup times by shipping native code alongside IL code to essentially create hybrid assemblies.
 
-For more details, see [Ready to Run Guide](./ReadyToRun.md).
+For more details, see [Mod Template: Ready To Run](./ModTemplate.md).
 
 #### Use Shared Libraries
 
@@ -87,17 +82,14 @@ See [Shared Libraries](https://github.com/Sewer56/Reloaded.SharedLib.Hooks#table
 ## Space-Focused Optimizations
 
 #### Update Target Framework
-The individual Reloaded Mod Templates target .NET Standard 2.0 (at the time of writing) by default. This however does not mean you have to necessarily target `netstandard2.0`.
-
-You are free however to target newer versions of .NET Standard or even .NET Core directly, as long as the version of Standard/Core is supported by the version of Core the loader was built with.
+For older mods, it's possible to save storage space by updating the target framework of your mod to match the latest framework version used by Reloaded. 
 
 To do so, simply edit your project's `.csproj` file:
 
 ```xml
-<TargetFramework>netcoreapp3.0</TargetFramework>
+<TargetFramework>net5.0</TargetFramework>
 ```
 
-*The target DLL is now built for NET Core 3.*
+*The target DLL is now built for .NET 5.*
 
-Often for complex mods, targeting .NET Core directly results in smaller build sizes, as many of the APIs such as `System.Text.Json` are directly available in Core, rather than fetched from NuGet and added to the output of your mod.
-
+Updating your target framework might lead to some DLLs being excluded from your build output (such as `System.Text.Json`), since they will be directly available in the newer runtime.  

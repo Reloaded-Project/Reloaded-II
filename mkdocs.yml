@@ -12,8 +12,20 @@ extra:
       link: https://twitter.com/TheSewer56
 
 markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.details
   - pymdownx.highlight
   - pymdownx.superfences
+  - pymdownx.tasklist
+
+plugins:
+  - search
+  - redirects:
+      redirect_maps:
+        'Automation.md': 'ModTemplate.md'
+        'BuildingMods.md': 'DevelopmentEnvironmentSetup.md'
+        'PublishingMods.md': 'EnablingUpdateSupport.md'
 
 theme:
   name: material
@@ -32,18 +44,30 @@ nav:
         - Injection Methods: InjectionMethods.md
         - Misc & Experimental Features: ExperimentalFeatures.md
   - For Modders:
-    - Getting Started: GettingStartedMods.md
-    - Publishing Mods: PublishingMods.md
+    - Getting Started: 
+        - 1. Creating Your Mod: CreatingMods.md
+        - 2. Adding Functionality: AddingModFunctionality.md
+    - Releasing Mods:
+        - 1. Enabling Update Support: EnablingUpdateSupport.md
+        - 2. Creating a Release: CreatingRelease.md
   - For Programmers:
-    - Building Mods: BuildingMods.md
+    - Getting Started: 
+        - 1. Setting Up Development Environment: DevelopmentEnvironmentSetup.md
+        - 2. Creating a New Project: ProjectSetup.md
+    - Cheat Sheet: 
+      - 1. Memory Manipulation: CheatSheet/MemoryManipulation.md
+      - 2. Calling & Hooking Game Functions: CheatSheet/CallingHookingGameFunctions.md
+      - 3. Signature Scanning: CheatSheet/SignatureScanning.md
+      - 4. Reloaded API: CheatSheet/ReloadedIIApi.md
+    - Mod Template Features: ModTemplate.md
     - Dependency Injection: DependencyInjection.md
+    - Writing Native Mods: NativeMods.md
     - Miscellaneous:
-        - Automation: Automation.md
+        - Adding Mod Update Support: AddingUpdateSupport.md
         - API Overview: APIOverview.md
         - Optimizing Mods: OptimizingMods.md
         - Shared Libraries: https://github.com/Sewer56/Reloaded.SharedLib.Hooks
         - Writing Mods for Actively Developed Games/Apps: https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications
-        - Writing Native Mods: NativeMods.md
         - Troubleshooting: Troubleshooting.md
   - For Contributors:
     - Building Reloaded: BuildingReloaded.md
@@ -52,3 +76,6 @@ nav:
     - Translating Reloaded: LocalizingReloaded.md
     - Miscellaneous:
       - Reloaded vs Reloaded II: Reloaded-vs-Reloaded-II.md
+  - Wiki: 
+    - Contributing Locally: ContributingLocally.md
+    - Contributing Online: ContributingOnline.md

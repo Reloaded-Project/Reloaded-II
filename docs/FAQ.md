@@ -9,7 +9,7 @@ The official downloads for Reloaded-II are on:
 
 Anything else is unofficial.
 
-GitHub is always kept up to date while Gamebanana is sometimes updated slightly less periodically. Regardless of what you download, the launcher will always offer to update itself to the latest up to date version.
+GitHub is always kept up to date while GameBanana is sometimes updated slightly less periodically. Regardless of what you download, the launcher will always offer to update itself to the latest up to date version.
 
 ## Reloaded doesn't boot, what should I do?
 
@@ -28,17 +28,6 @@ It's as easy as 1,2,3. [Take a look at the quick start guide!](./QuickStart.md)
 
 ## How do I report issues with Reloaded?
 Please use the following link: [https://github.com/Reloaded-Project/Reloaded-II/issues](https://github.com/Reloaded-Project/Reloaded-II/issues)
-
-## Can I use Reloaded with Steam games?
-
-You might notice that for many Steam games, trying to launch them in Reloaded typically yields in the Steam launcher showing up and re-launching the game without mods.
-
-There exists a mod to stop this behaviour [reloaded.universal.steamhook](https://github.com/Reloaded-Project/reloaded.universal.steamhook) which should work with most games; while keeping Steam functionality of most games still intact.
-
-Alternatively if this does not work, try using ASI Loader (see below).
-
-**This does NOT circumvent or interact with DRM**
-(PS. In the 0.0001% everything else fails, use Auto Inject as **last** resort)
 
 ## Can I use Reloaded with Steam Overlay/Controller Support?
 
@@ -70,19 +59,13 @@ Getting started with making mods is very easy, you can in fact do it from inside
 
 ![](https://cdn.discordapp.com/attachments/745941458686705767/746942148816928828/unknown.png)
 
-[Follow this guide for an explanation of things](./GettingStartedMods.md). 
+[Follow this guide for an explanation of things](./CreatingMods.md). 
 
-Most people starting out without programming knowledge will probably be interested in replacing the game's files with their own. In this case, consider using [the file redirector mod](https://github.com/Reloaded-Project/reloaded.universal.redirector#how-to-use)
-
-Set it as a dependency during mod creation (or after by expanding `Extra Options` inside `Manage Mods` menu), drop some files in your mods and off you go!
-
-[There is also a guide for publishing mods](./PublishingMods.md), which details how to e.g. get update support on GameBanana.
-
-But before you get going, reach out and consult the community! If they are already using Reloaded they may have some fancy mods, tools, or both!
+Before you get going, reach out and consult the community for your application! If they are already using Reloaded, they may have some fancy mods, tools, or both!
 
 ### How do I get started with programming mods for Reloaded?
 
-As a programmer you should have an adequate level of self sufficiency. As such, please follow the following guide: [BuildingMods.md](./BuildingMods.md)
+As a programmer you should have an adequate level of self sufficiency. As such, please follow the following guide: [Building Mods](./DevelopmentEnvironmentSetup.md)
 
 ![](https://cdn.discordapp.com/attachments/745941458686705767/746946696797356072/NewProject.png)
 

@@ -12,11 +12,11 @@ That said, the use of the `Reloaded.Mod.Interfaces` is compulsory, as it provide
 
 ### Mod to Loader Communication
 
-Mod to loader communication is used to provide various miniature mod loader services such as but not limited to:
-- Querying the mod loader version.
-- Writing to the console.
-- Inter Mod Communication (IMC)
-- Receiving events on mod load, unload etc.
+Mod to loader communication is used to provide various miniature mod loader services such as but not limited to:  
+- Querying the mod loader version.  
+- Writing to the console.  
+- Inter Mod Communication (IMC).  
+- Receiving events on mod load, unload etc.  
 
 The communication between the mod and the mod loader is handled by the `IModLoader` interface. `IModLoader` interface is immediately available to you in the entry point of your mods, as the `IModLoader` interface is provided as a parameter of the `Start` method of the `IMod` interface.
 
