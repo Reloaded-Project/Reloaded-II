@@ -39,7 +39,7 @@ There are two `FunctionAttribute(s)`, namely `X86.FunctionAttribute` and `X64.Fu
 
 !!! info
 
-    In the real world, compilers will often optimise function calls to optimise for performance.  This will often lead to the function using non-standard conventions, such e.g. accepting parameters via registers where normally the stack should be used.  
+    In the real world, compilers will often optimise function calls to optimise for performance.  This will often lead to the function using non-standard conventions, such as accepting parameters via registers where normally the stack should be used.  
 
     This is more common in x86 (32-bit) games rather than x64 games.  
 
