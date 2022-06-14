@@ -34,6 +34,8 @@ theme:
     primary: red
     accent: red
     scheme: slate
+  features:
+    - navigation.instant
     
 nav:
   - Home: index.md
