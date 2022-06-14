@@ -318,8 +318,8 @@ Reloaded is natively a Windows application, however active effort is undertaken 
 | ------------------- | ------------------------------------ |
 | Windows             | ✅ Native                            |
 | Linux               | ✅ Wine (+ Proton)                   |
-| OSX                 | ✅ Wine (+ Proton)                   |
-| Other               | ❓ Unknown.                          |
+| OSX                 | ⚠️ Wine (Reportedly works)           |
+| Other               | ❓ Unknown.                           |
 
 | Architecture   | Natively Supported    |
 | -------------- | --------------------- |
