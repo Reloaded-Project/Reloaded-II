@@ -40,7 +40,7 @@ Pointer arithmetic is also possible with structs in C#.
 ```csharp
 public struct Point
 {
-    public float X; // 0x4C4C4C4C, or some other identifier
+    public float X;
     public float Y;
 }
 
