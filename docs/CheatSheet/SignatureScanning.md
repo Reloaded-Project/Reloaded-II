@@ -112,11 +112,17 @@ unsafe byte* CallInstructionToAbsoluteAddress(byte* instructionAddress, int inst
 If the signature scan result says `sig to containing function`, add the number in brackets to your result. 
 
 ### Tool: MakeSig For Ghidra
-[You can find MakeSig here](https://github.com/YaLTeR/ghidra_scripts). To install simply drop `makesig.py` into your `ghidra_scripts` directory. If you do not know where this directory is, you can check in `Window -> Script Manager` (or using the Script Manager button in the toolbar) then `Right Click -> Script Directories`. The default directory is `~/ghidra_scripts` although in this window you can add another directory where scripts will be searched for.
+[You can find MakeSig here](https://github.com/YaLTeR/ghidra_scripts).  
 
-With the script installed you can then use it from the `Script Manager` window by searching for `makesig` and double clicking it. You can also assign a keyboard shortcut to run the script by `Right Click -> Assign Key Binding`. After running it once you can also rerun it with `Ctrl + Shift + R` or using the rerun button at the end of the toolbar.
+To install simply drop `makesig.py` into your `ghidra_scripts` directory.  
 
-When running the script you can either create a signature for the start of the function or the currently selected instruction, either way the found signature such as `E8 ?? ?? ?? ?? 8B 45 ?? 89 47` will be printed to the console.
+If you do not know where this directory is, you can check in `Window -> Script Manager` (or using the Script Manager button in the toolbar) then `Right Click -> Script Directories`.  
+
+The default directory is `~/ghidra_scripts` although in this window you can add another directory where scripts will be searched for.  
+
+With the script installed you can then use it from the `Script Manager` window by searching for `makesig` and double clicking it. You can also assign a keyboard shortcut to run the script by `Right Click -> Assign Key Binding`. After running it once you can also rerun it with `Ctrl + Shift + R` or using the rerun button at the end of the toolbar.  
+
+When running the script you can either create a signature for the start of the function or the currently selected instruction, the found signature such as `E8 ?? ?? ?? ?? 8B 45 ?? 89 47` will be printed to the console.
 
 ## Searching for Signatures
 
