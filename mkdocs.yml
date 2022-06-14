@@ -26,6 +26,7 @@ plugins:
         'Automation.md': 'ModTemplate.md'
         'BuildingMods.md': 'DevelopmentEnvironmentSetup.md'
         'PublishingMods.md': 'EnablingUpdateSupport.md'
+        'InterModCommunication.md': 'DependencyInjection.md'
 
 theme:
   name: material
@@ -33,6 +34,8 @@ theme:
     primary: red
     accent: red
     scheme: slate
+  features:
+    - navigation.instant
     
 nav:
   - Home: index.md
