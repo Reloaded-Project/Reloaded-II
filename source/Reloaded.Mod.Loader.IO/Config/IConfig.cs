@@ -87,7 +87,7 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
         CreateDirectoryIfNotExist(Path.GetDirectoryName(fullPath));
 
         string jsonFile  = JsonSerializer.Serialize(config, _options);
-        var tempPath     = $"{fullPath}.tmp";
+        var tempPath     = $"{fullPath}.{Path.GetRandomFileName()}";
         
         using (var stream = IOEx.OpenFile(tempPath, FileMode.Create, FileAccess.Write))
         using (var textWriter = new StreamWriter(stream, Encoding.UTF8))
@@ -106,7 +106,7 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
     {
         string fullPath = Path.GetFullPath(filePath);
         CreateDirectoryIfNotExist(Path.GetDirectoryName(fullPath));
-        var tempPath = $"{fullPath}.tmp";
+        var tempPath = $"{fullPath}.{Path.GetRandomFileName()}";
 
         await using (var stream = await IOEx.OpenFileAsync(tempPath, FileMode.Create, FileAccess.Write, token))
             await JsonSerializer.SerializeAsync(stream, config, _options, token);
