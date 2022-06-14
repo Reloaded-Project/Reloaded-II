@@ -1,0 +1,92 @@
+/*
+  Emoji
+*/
+
+:root {
+  --pillar-font-size: 1.1rem;
+}
+
+.pillarcard .twemoji {
+  display: inline-flex;
+  fill: currentColor;
+  font-size: var(--pillar-font-size);
+}
+
+.pillarcard .pillartitle {
+  font-size: var(--pillar-font-size);
+}
+
+.pillartitle {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.pillarcard .pillarseparator {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+/* 
+  Pillarcard:
+    Provides cards display support.  
+*/
+
+.pillarwrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+ 
+.pillarwrapper > div {
+
+  padding: 10px 10px 10px 10px;
+  height: auto;
+  overflow: hidden;
+  transition: ease-in-out 200ms;
+  box-shadow: 0px 5px 5px rgba(255, 255, 255, 0.08);
+  border-collapse: collapse;
+
+  /* Horizontal Stacking */
+  flex-grow: 1;
+  flex-basis: 300px; /* min width */
+
+  /* Border Style */
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+
+  /* Add some spacing to our pillars */
+  margin: 5px;
+  cursor: default; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
+}
+ 
+.pillarwrapper > div:hover {
+  box-shadow: 0px 5px 10px rgba(30, 30, 30, 0.85);
+}
+ 
+.pillarcard {
+  padding-bottom:0px;
+  opacity: 0.9;
+
+  /* Border */
+  border: rgba(255, 255, 255, 0.705);
+}   
+
+.pillarcard:hover {
+  opacity: 1.0;
+
+  /* Border */
+  border: #EF5552;
+  border-style: solid;
+  border-width: 1px;
+}   
+
+.pillarcard img {
+  opacity: 0.8;
+  transition: ease-in-out 200ms;  
+}
+
+.pillarcard:hover img {
+  opacity: 1.0;
+}

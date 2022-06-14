@@ -18,6 +18,17 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.tasklist
+  - def_list
+  - meta
+  - md_in_html
+  - attr_list
+  - footnotes
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+extra_css:
+  - Custom/Stylesheets/extra.css
 
 plugins:
   - search
