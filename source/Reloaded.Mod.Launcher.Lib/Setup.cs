@@ -56,10 +56,10 @@ public static class Setup
             CheckForMissingDependencies();
                 
             updateText(Resources.SplashPreparingResources.Get());
-            await Task.Run(SetupServices).ContinueWith(async task =>
-            {
-                await CheckForUpdatesAsync(); // Fire and forget, we don't want to delay startup time.
-            });
+            Actions.SynchronizationContext.Send(state => SetupServices(), null);
+#pragma warning disable CS4014
+            Task.Run(CheckForUpdatesAsync);  // Fire and forget, we don't want to delay startup time.
+#pragma warning restore CS4014
             SetupViewModels();
 
             updateText(Resources.SplashRunningSanityChecks.Get());
@@ -154,52 +154,49 @@ public static class Setup
     /// </summary>
     private static void DoSanityTests()
     {
-        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+        // Needs to be ran after SetupViewModelsAsync
+        var apps = IoC.GetConstant<ApplicationConfigService>().Items;
+        var mods = IoC.GetConstant<ModConfigService>().Items;
+        var updatedBootstrappers = new List<string>();
+
+        foreach (var app in apps)
         {
-            // Needs to be ran after SetupViewModelsAsync
-            var apps = IoC.GetConstant<ApplicationConfigService>().Items;
-            var mods = IoC.GetConstant<ModConfigService>().Items;
-            var updatedBootstrappers = new List<string>();
+            // Incompatible Mods
+            EnforceModCompatibility(app, mods);
 
-            foreach (var app in apps)
+            // Bootstrapper Update
+            try
             {
-                // Incompatible Mods
-                EnforceModCompatibility(app, mods);
+                var deployer = new AsiLoaderDeployer(app);
+                var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
+                if (!File.Exists(bootstrapperInstallPath))
+                    continue;
 
-                // Bootstrapper Update
+                var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
                 try
                 {
-                    var deployer = new AsiLoaderDeployer(app);
-                    var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
-                    if (!File.Exists(bootstrapperInstallPath))
+                    if (!updater.NeedsUpdate())
                         continue;
-
-                    var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
-                    try
-                    {
-                        if (!updater.NeedsUpdate())
-                            continue;
-                    }
-                    catch (Exception) { /* ignored */ }
-
-                    var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
-                    try
-                    {
-                        File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
-                        updatedBootstrappers.Add(app.Config.AppName);
-                    }
-                    catch (Exception) { /* ignored */  }
                 }
                 catch (Exception) { /* ignored */ }
+
+                var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
+                try
+                {
+                    File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
+                    updatedBootstrappers.Add(app.Config.AppName);
+                }
+                catch (Exception) { /* ignored */  }
             }
+            catch (Exception) { /* ignored */ }
+        }
 
-            if (updatedBootstrappers.Count <= 0) 
-                return;
+        if (updatedBootstrappers.Count <= 0)
+            return;
 
-            var title = Resources.BootstrapperUpdateTitle.Get();
-            var description = string.Format(Resources.BootstrapperUpdateDescription.Get(), String.Join('\n', updatedBootstrappers));
-            Actions.DisplayMessagebox.Invoke(title, description);
-        });
+        var title = Resources.BootstrapperUpdateTitle.Get();
+        var description = string.Format(Resources.BootstrapperUpdateDescription.Get(), String.Join('\n', updatedBootstrappers));
+        Actions.DisplayMessagebox.Invoke(title, description);
     }
 
     private static void RegisterReloadedProtocol()
@@ -223,7 +220,7 @@ public static class Setup
     {
         var config = IoC.Get<LoaderConfig>();
         SetLoaderPaths(config, Paths.CurrentProgramFolder);
-        await IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath);
+        await IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath).ConfigureAwait(false);
     }
 
     /// <summary>
