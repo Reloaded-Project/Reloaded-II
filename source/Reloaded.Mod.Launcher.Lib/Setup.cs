@@ -47,6 +47,7 @@ public static class Setup
 
             // Allow for debugging before crashing.
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            var setupServicesTask = Task.Run(() => Actions.SynchronizationContext.Send(state => SetupServices(), null));
             RegisterReloadedProtocol();
 
             updateText(Resources.SplashCreatingDefaultConfig.Get());
@@ -56,10 +57,10 @@ public static class Setup
             CheckForMissingDependencies();
                 
             updateText(Resources.SplashPreparingResources.Get());
-            Actions.SynchronizationContext.Send(state => SetupServices(), null);
 #pragma warning disable CS4014
             Task.Run(CheckForUpdatesAsync);  // Fire and forget, we don't want to delay startup time.
 #pragma warning restore CS4014
+            await setupServicesTask; // required for viewmodels & sanity tests.
             SetupViewModels();
 
             updateText(Resources.SplashRunningSanityChecks.Get());
