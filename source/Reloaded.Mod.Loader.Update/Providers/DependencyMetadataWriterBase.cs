@@ -80,11 +80,12 @@ public class DependencyResolverMetadata<TConfig> : IConfig<DependencyResolverMet
     /// <summary>
     /// Maps a list of individual ids to configurations.
     /// </summary>
-    public Dictionary<string, DependencyResolverItem<TConfig>> IdToConfigMap { get; private set; } = new(StringComparer.OrdinalIgnoreCase);
+    public Dictionary<string, DependencyResolverItem<TConfig>> IdToConfigMap { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 }
 
 /// <summary/>
-public struct DependencyResolverItem<TConfig> where TConfig : new()
+[Equals(DoNotAddEqualityOperators = true)]
+public class DependencyResolverItem<TConfig> where TConfig : new()
 {
     /// <summary>
     /// The configuration associated with this item.
@@ -94,7 +95,7 @@ public struct DependencyResolverItem<TConfig> where TConfig : new()
     /// <summary>
     /// Name of the release metadata file.
     /// </summary>
-    public string ReleaseMetadataName = Singleton<ReleaseMetadata>.Instance.GetDefaultFileName();
+    public string ReleaseMetadataName { get; set; } = Singleton<ReleaseMetadata>.Instance.GetDefaultFileName();
 
     /// <summary/>
     public DependencyResolverItem() { }

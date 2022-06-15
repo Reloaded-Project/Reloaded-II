@@ -92,6 +92,7 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
     /// <summary>
     /// Stores a configuration describing how to update mod using GitHub.
     /// </summary>
+    [Equals(DoNotAddEqualityOperators = true)]
     public class GitHubConfig : IConfig<GitHubConfig>
     {
         private const string DefaultCategory = "GitHub Settings";
