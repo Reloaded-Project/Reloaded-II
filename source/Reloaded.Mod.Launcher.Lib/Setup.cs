@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using Microsoft.Win32;
 using Reloaded.Mod.Launcher.Lib.Misc;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
@@ -47,7 +49,7 @@ public static class Setup
 
             // Allow for debugging before crashing.
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
-            var setupServicesTask = Task.Run(() => Actions.SynchronizationContext.Send(state => SetupServices(), null));
+            var setupServicesTask = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, SetupServices);
             RegisterReloadedProtocol();
 
             updateText(Resources.SplashCreatingDefaultConfig.Get());
