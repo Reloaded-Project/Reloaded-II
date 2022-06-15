@@ -232,8 +232,7 @@ public static class Setup
     private static void SetupServices()
     {
         var config = IoC.Get<LoaderConfig>();
-        SynchronizationContext? synchronizationContext = null;
-        ActionWrappers.ExecuteWithApplicationDispatcher(() => synchronizationContext = SynchronizationContext.Current);
+        var synchronizationContext = Actions.SynchronizationContext;
 
         IoC.Kernel.Rebind<IProcessWatcher>().ToConstant(IProcessWatcher.Get());
         IoC.Kernel.Rebind<ApplicationConfigService>().ToConstant(new ApplicationConfigService(config, synchronizationContext));
