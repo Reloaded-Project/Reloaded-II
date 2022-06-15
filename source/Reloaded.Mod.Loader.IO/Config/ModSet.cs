@@ -1,4 +1,6 @@
-﻿using Reloaded.Mod.Interfaces;
+﻿using System.Text.Json.Serialization.Metadata;
+using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Loader.IO.Config.Contexts;
 using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Loader.IO.Config;
@@ -30,5 +32,12 @@ public class ModSet : ObservableObject, IConfig<ModSet>
     public void SanitizeConfig()
     {
         EnabledMods ??= EmptyArray<string>.Instance;
+    }
+
+    // Reflection-less JSON
+    public static JsonTypeInfo<ModSet> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = true;
+        return ModSetContext.Default.ModSet;
     }
 }

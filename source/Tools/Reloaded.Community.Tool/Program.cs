@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using CommandLine;
 using CommandLine.Text;
+using Reloaded.Community.Tool.Serialization;
 using Reloaded.Mod.Interfaces.Utilities;
 using Reloaded.Mod.Loader.Community.Config;
 using Reloaded.Mod.Loader.Community.Utility;
@@ -140,10 +141,5 @@ public class Program
         {
             return new GameBananaProviderConfig();
         }
-    }
-
-    private class GameBananaProviderConfig : IConfig<GameBananaProviderConfig>
-    {
-        public int GameId { get; set; } = 0;
     }
 }

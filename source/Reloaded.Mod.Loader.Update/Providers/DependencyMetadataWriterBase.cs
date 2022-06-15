@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using Reloaded.Mod.Interfaces.Utilities;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Update.Interfaces;
+using Reloaded.Mod.Loader.Update.Providers.GameBanana;
 using Sewer56.Update.Misc;
 using Sewer56.Update.Packaging.Structures;
 
@@ -81,6 +84,14 @@ public class DependencyResolverMetadata<TConfig> : IConfig<DependencyResolverMet
     /// Maps a list of individual ids to configurations.
     /// </summary>
     public Dictionary<string, DependencyResolverItem<TConfig>> IdToConfigMap { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+
+    // Reflection-less JSON
+    /// <inheritdoc />
+    public static JsonTypeInfo<DependencyResolverMetadata<TConfig>> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = false;
+        return null!;
+    }
 }
 
 /// <summary/>

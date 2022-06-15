@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
+using Reloaded.Mod.Loader.IO.Config.Contexts;
 using Reloaded.Mod.Loader.IO.Config.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using static System.String;
@@ -58,25 +60,25 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     /// The directory which houses all Reloaded Application information (e.g. Games etc.)
     /// </summary>
     [JsonInclude]
-    public string ApplicationConfigDirectory { private get; set; } = Empty;
+    public string ApplicationConfigDirectory { internal get; set; } = Empty;
 
     /// <summary>
     /// Contains the directory which houses all Reloaded mods.
     /// </summary>
     [JsonInclude]
-    public string ModUserConfigDirectory { private get; set; } = Empty;
+    public string ModUserConfigDirectory { internal get; set; } = Empty;
 
     /// <summary>
     /// Contains the directory which houses all Reloaded plugins.
     /// </summary>
     [JsonInclude]
-    public string PluginConfigDirectory { private get; set; } = Empty;
+    public string PluginConfigDirectory { internal get; set; } = Empty;
 
     /// <summary>
     /// Contains the directory which houses all Reloaded mods.
     /// </summary>
     [JsonInclude]
-    public string ModConfigDirectory { private get; set; } = Empty;
+    public string ModConfigDirectory { internal get; set; } = Empty;
 
     /// <summary>
     /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
@@ -321,5 +323,12 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
         {
             return Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         }
+    }
+
+    // Reflection-less JSON
+    public static JsonTypeInfo<LoaderConfig> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = false;
+        return LoaderConfigContext.Default.LoaderConfig;
     }
 }

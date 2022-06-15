@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel;
 using System.IO;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Utility;
 using Reloaded.Mod.Loader.Update.Interfaces;
+using Reloaded.Mod.Loader.Update.Providers.NuGet;
 using Reloaded.Mod.Loader.Update.Structures;
 using Sewer56.Update.Extractors.SevenZipSharp;
 using Sewer56.Update.Interfaces;
@@ -102,5 +105,17 @@ public class GameBananaUpdateResolverFactory : IUpdateResolverFactory
                      "e.g. 150115 if your mod URL is https://gamebanana.com/mods/150115.\n" +
                      "To get the URL to your mod page, you might need to upload your mod first as private.")]
         public long ItemId { get; set; }
+
+        // Reflection-less JSON
+        /// <inheritdoc />
+        public static JsonTypeInfo<GameBananaConfig> GetJsonTypeInfo(out bool supportsSerialize)
+        {
+            supportsSerialize = true;
+            return GameBananaConfigContext.Default.GameBananaConfig;
+        }
     }
 }
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(GameBananaUpdateResolverFactory.GameBananaConfig))]
+internal partial class GameBananaConfigContext : JsonSerializerContext { }

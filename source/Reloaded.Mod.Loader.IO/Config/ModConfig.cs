@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading;
 using PropertyChanged;
 using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Loader.IO.Config.Contexts;
 using Reloaded.Mod.Loader.IO.Structs;
 using Reloaded.Mod.Loader.IO.Structs.Dependencies;
 using Reloaded.Mod.Loader.IO.Structs.Sorting;
@@ -429,6 +431,13 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
         ModDependencies ??= EmptyArray<string>.Instance;
         OptionalDependencies ??= EmptyArray<string>.Instance;
         SupportedAppId ??= EmptyArray<string>.Instance;
+    }
+
+    // Reflection-less JSON
+    public static JsonTypeInfo<ModConfig> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = false;   
+        return ModConfigContext.Default.ModConfig;
     }
 
     /*
