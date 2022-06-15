@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-	  <Version>2.1.4</Version>
+	  <Version>2.2.0</Version>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <LangVersion>preview</LangVersion>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -23,6 +23,9 @@
     <PackageReference Include="Equals.Fody" Version="4.0.1">
 	  <PrivateAssets>all</PrivateAssets>
 	</PackageReference>
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.2.1-beta">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.9">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

@@ -3,8 +3,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Reloaded.Mod.Loader.IO.Utility.Windows;
 
 namespace Reloaded.Mod.Loader.IO.Utility;
 
@@ -194,22 +196,37 @@ public static class IOEx
 
         // Wait for all threads to terminate.
         var files = new List<string>();
-        if (directories.Count > 0) 
-        {
-            var localLockObject = new object();
-            var partitioner = Partitioner.Create(0, directories.Count);
-            Parallel.ForEach(partitioner, (tuple, state) =>
-            {
-                var localFiles = new List<string>();
-                for (int x = tuple.Item1; x < tuple.Item2; x++)
-                    localFiles.AddRange(Directory.GetFiles(directories[x], fileName, SearchOption.TopDirectoryOnly));
+        if (directories.Count <= 0) 
+            return files;
 
-                lock (localLockObject)
-                    files.AddRange(localFiles);
-            });
-        }
-            
+        foreach (var dir in directories)
+            files.AddRange(Directory.GetFiles(dir, fileName, SearchOption.TopDirectoryOnly));
+
         return files;
+    }
+
+    /// <summary>
+    /// Gets all files in a given directory, accelerated for Windows platform.
+    /// </summary>
+    /// <param name="path">The path to get files from.</param>
+    /// <param name="fileName">Pattern to search.</param>
+    public static string[] GetFilesInDirectory(string path, string fileName)
+    {
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return Directory.GetFiles(path, fileName, SearchOption.TopDirectoryOnly);
+
+#pragma warning disable CA1416 // Validate platform compatibility
+        if (!WindowsDirectorySearcher.TryGetDirectoryContents(path, out var fileInformations, out var directories))
+            return Directory.GetFiles(path, fileName, SearchOption.TopDirectoryOnly);
+
+        var files = new List<string>(fileInformations.Count);
+        foreach (var fileInformation in fileInformations)
+        {
+            if (Path.GetFileName(fileInformation.FullPath).Equals(fileName, StringComparison.OrdinalIgnoreCase))
+                files.Add(fileInformation.FullPath);
+        }
+#pragma warning restore CA1416
+        return files.ToArray();
     }
 
     /// <summary>

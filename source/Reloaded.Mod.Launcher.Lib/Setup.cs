@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using Microsoft.Win32;
 using Reloaded.Mod.Launcher.Lib.Misc;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
@@ -47,6 +49,7 @@ public static class Setup
 
             // Allow for debugging before crashing.
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+            var setupServicesTask = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, SetupServices);
             RegisterReloadedProtocol();
 
             updateText(Resources.SplashCreatingDefaultConfig.Get());
@@ -56,10 +59,10 @@ public static class Setup
             CheckForMissingDependencies();
                 
             updateText(Resources.SplashPreparingResources.Get());
-            await Task.Run(SetupServices).ContinueWith(async task =>
-            {
-                await CheckForUpdatesAsync(); // Fire and forget, we don't want to delay startup time.
-            });
+#pragma warning disable CS4014
+            Task.Run(CheckForUpdatesAsync);  // Fire and forget, we don't want to delay startup time.
+#pragma warning restore CS4014
+            await setupServicesTask; // required for viewmodels & sanity tests.
             SetupViewModels();
 
             updateText(Resources.SplashRunningSanityChecks.Get());
@@ -154,52 +157,49 @@ public static class Setup
     /// </summary>
     private static void DoSanityTests()
     {
-        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+        // Needs to be ran after SetupViewModelsAsync
+        var apps = IoC.GetConstant<ApplicationConfigService>().Items;
+        var mods = IoC.GetConstant<ModConfigService>().Items;
+        var updatedBootstrappers = new List<string>();
+
+        foreach (var app in apps)
         {
-            // Needs to be ran after SetupViewModelsAsync
-            var apps = IoC.GetConstant<ApplicationConfigService>().Items;
-            var mods = IoC.GetConstant<ModConfigService>().Items;
-            var updatedBootstrappers = new List<string>();
+            // Incompatible Mods
+            EnforceModCompatibility(app, mods);
 
-            foreach (var app in apps)
+            // Bootstrapper Update
+            try
             {
-                // Incompatible Mods
-                EnforceModCompatibility(app, mods);
+                var deployer = new AsiLoaderDeployer(app);
+                var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
+                if (!File.Exists(bootstrapperInstallPath))
+                    continue;
 
-                // Bootstrapper Update
+                var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
                 try
                 {
-                    var deployer = new AsiLoaderDeployer(app);
-                    var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
-                    if (!File.Exists(bootstrapperInstallPath))
+                    if (!updater.NeedsUpdate())
                         continue;
-
-                    var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
-                    try
-                    {
-                        if (!updater.NeedsUpdate())
-                            continue;
-                    }
-                    catch (Exception) { /* ignored */ }
-
-                    var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
-                    try
-                    {
-                        File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
-                        updatedBootstrappers.Add(app.Config.AppName);
-                    }
-                    catch (Exception) { /* ignored */  }
                 }
                 catch (Exception) { /* ignored */ }
+
+                var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
+                try
+                {
+                    File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
+                    updatedBootstrappers.Add(app.Config.AppName);
+                }
+                catch (Exception) { /* ignored */  }
             }
+            catch (Exception) { /* ignored */ }
+        }
 
-            if (updatedBootstrappers.Count <= 0) 
-                return;
+        if (updatedBootstrappers.Count <= 0)
+            return;
 
-            var title = Resources.BootstrapperUpdateTitle.Get();
-            var description = string.Format(Resources.BootstrapperUpdateDescription.Get(), String.Join('\n', updatedBootstrappers));
-            Actions.DisplayMessagebox.Invoke(title, description);
-        });
+        var title = Resources.BootstrapperUpdateTitle.Get();
+        var description = string.Format(Resources.BootstrapperUpdateDescription.Get(), String.Join('\n', updatedBootstrappers));
+        Actions.DisplayMessagebox.Invoke(title, description);
     }
 
     private static void RegisterReloadedProtocol()
@@ -223,7 +223,7 @@ public static class Setup
     {
         var config = IoC.Get<LoaderConfig>();
         SetLoaderPaths(config, Paths.CurrentProgramFolder);
-        await IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath);
+        await IConfig<LoaderConfig>.ToPathAsync(config, Paths.LoaderConfigPath).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -232,8 +232,7 @@ public static class Setup
     private static void SetupServices()
     {
         var config = IoC.Get<LoaderConfig>();
-        SynchronizationContext? synchronizationContext = null;
-        ActionWrappers.ExecuteWithApplicationDispatcher(() => synchronizationContext = SynchronizationContext.Current);
+        var synchronizationContext = Actions.SynchronizationContext;
 
         IoC.Kernel.Rebind<IProcessWatcher>().ToConstant(IProcessWatcher.Get());
         IoC.Kernel.Rebind<ApplicationConfigService>().ToConstant(new ApplicationConfigService(config, synchronizationContext));
