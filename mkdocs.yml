@@ -37,7 +37,8 @@ plugins:
         'Automation.md': 'ModTemplate.md'
         'BuildingMods.md': 'DevelopmentEnvironmentSetup.md'
         'PublishingMods.md': 'EnablingUpdateSupport.md'
-        'InterModCommunication.md': 'DependencyInjection.md'
+        'InterModCommunication.md': 'DependencyInjection_HowItWork.md'
+        'DependencyInjection.md': 'DependencyInjection_HowItWork.md'
 
 theme:
   name: material
@@ -73,8 +74,14 @@ nav:
       - 2. Calling & Hooking Game Functions: CheatSheet/CallingHookingGameFunctions.md
       - 3. Signature Scanning: CheatSheet/SignatureScanning.md
       - 4. Reloaded API: CheatSheet/ReloadedIIApi.md
+    - Dependency Injection: 
+      - 1. How Does it Work?: DependencyInjection_HowItWork.md
+      - 2. How to Consume Dependencies: DependencyInjection_Consumer.md
+      - 3. How to Publish Dependencies: DependencyInjection_Publisher.md
+      - Extra:
+        - Extra Features: DependencyInjection_ExtraFeatures.md
+        - How does it Really Work: DependencyInjection_HowItReallyWork.md
     - Mod Template Features: ModTemplate.md
-    - Dependency Injection: DependencyInjection.md
     - Writing Native Mods: NativeMods.md
     - Miscellaneous:
         - Adding Mod Update Support: AddingUpdateSupport.md

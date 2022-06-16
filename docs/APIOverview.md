@@ -1,6 +1,6 @@
 # API Overview
 
-In Reloaded II, in-process communication between mods and the loader as well as [Inter Mod Communication (IMC)](./DependencyInjection.md) is performed mainly through the use of extensible interfaces that can be found in the `Reloaded.Mod.Interfaces` namespace.
+In Reloaded II, in-process communication between mods and the loader as well as [Inter Mod Communication (IMC)](./DependencyInjection_HowItWork.md) is performed mainly through the use of extensible interfaces that can be found in the `Reloaded.Mod.Interfaces` namespace.
 
 `Reloaded.Mod.Interfaces` is contained and distributed as a tiny interface only library that contains various interfaces such as `IModLoader` or `IMod`. It is included by default in Reloaded mod projects and also available as a NuGet package. 
 
@@ -30,7 +30,7 @@ Reloaded-II provides two mechanisms for what it considers "Inter Mod Communicati
 
 **Controllers** allow you to directly interact with other loaded mods. Individual mods can submit shared instances of interfaces to the mod loader, which can then be obtained by other mods. *Controllers share state.*
 
-Complete documentation on Mod to Mod communication can be found within the [Inter Mod Communication](./DependencyInjection.md) documentation.
+Complete documentation on Mod to Mod communication can be found within the [Inter Mod Communication](./DependencyInjection_HowItWork.md) documentation.
 
 ## API Upgrades & Versioning
 
