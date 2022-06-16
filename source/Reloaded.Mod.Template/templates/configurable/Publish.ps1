@@ -193,6 +193,7 @@ $reloadedToolsPath = "./Publish/Tools/Reloaded-Tools"    # Used to check if tool
 $updateToolsPath   = "./Publish/Tools/Update-Tools"      # Used to check if update tools are installed.
 $reloadedToolPath = "$reloadedToolsPath/Reloaded.Publisher.exe"  # Path to Reloaded publishing tool.
 $updateToolPath   = "$updateToolsPath/Sewer56.Update.Tool.dll" # Path to Update tool.
+$changelogFullPath = [System.IO.Path]::GetFullPath($ChangelogPath)
 
 ## => Script <= ##
 # Set Working Directory
@@ -299,7 +300,7 @@ function Get-Common-Publish-Args {
 	
 	$arguments = "--modfolder `"$publishBuildDirectory`" --packagename `"$PackageName`""
 	if ($ChangelogPath) {
-        $arguments += " --changelogpath `"$ChangelogPath`""
+        $arguments += " --changelogpath `"$changelogFullPath`""
 	}
 	
 	if ($AllowDeltas -and $MakeDelta) {
