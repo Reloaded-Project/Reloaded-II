@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
@@ -7,8 +7,20 @@
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <OutputPath>$(RELOADEDIIMODS)\Reloaded.Mod.Template</OutputPath>
+    <OutputPath>$(RELOADEDIIMODS)/Reloaded.Mod.Template</OutputPath>
+
+    <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
+    <!-- Trimming is enabled when you publish the mod. Test it using `dotnet publish <PROJECT_PATH> -c Release -o "./bin/Release"` -->
+    <RobustILLink>false</RobustILLink>
   </PropertyGroup>
+
+  <ItemGroup>
+    <RobustLinkRoots Include="Reloaded.Mod.Template" />
+    <!-- Add assemblies to be trimmed  -->
+    <!-- <RobustLinkAssemblies Include="Reloaded.Memory" /> -->
+  </ItemGroup>
+
+  <Import Project="Robust.Trimming.targets" />
 
   <ItemGroup>
     <None Remove="ModConfig.json" />
