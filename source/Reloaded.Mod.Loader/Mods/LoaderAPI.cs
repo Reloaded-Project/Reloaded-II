@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 using Reloaded.Mod.Loader.IO.Config;
@@ -15,7 +16,7 @@ public class LoaderAPI : IModLoader
 {
     /* Controller to mod mapping for GetController<T>, MakeInterfaces<T> */
     private readonly ConcurrentDictionary<Type, ModGenericTuple<object>> _controllerModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
-    private readonly ConcurrentDictionary<Type, ModGenericTuple<object>> _interfaceModMapping = new ConcurrentDictionary<Type, ModGenericTuple<object>>();
+    private readonly ConcurrentDictionary<Type, List<ModGenericTuple<object>>> _interfaceModMapping = new ConcurrentDictionary<Type, List<ModGenericTuple<object>>>();
     private readonly Loader _loader;
 
     public LoaderAPI(Loader loader)
@@ -28,26 +29,36 @@ public class LoaderAPI : IModLoader
     private void AutoDisposeController(IModV1 modToRemove, IModConfigV1 modConfigToRemove)
     {
         // Note: Assumes no copying takes place.
+        AutoDisposeController_NoInline(modToRemove);
+        GC.Collect();
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private void AutoDisposeController_NoInline(IModV1 modToRemove)
+    {
         foreach (var mapping in _controllerModMapping.ToArray())
         {
             var mod = mapping.Value.Mod;
             if (mod.Equals(modToRemove))
-            {
                 _controllerModMapping.Remove(mapping.Key, out _);
-            }
         }
     }
 
     private void AutoDisposePlugin(IModV1 modToRemove, IModConfigV1 modConfigToRemove)
     {
         // Note: Assumes no copying takes place.
-        foreach (var mapping in _interfaceModMapping.ToArray())
+        AutoDisposePlugin_NoInline(modToRemove);
+        GC.Collect();
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private void AutoDisposePlugin_NoInline(IModV1 modToRemove)
+    {
+        foreach (var modMapping in _interfaceModMapping.ToArray())
+        foreach (var mapping in modMapping.Value.ToArray())
         {
-            var mod = mapping.Value.Mod;
-            if (mod.Equals(modToRemove))
-            {
-                _interfaceModMapping.Remove(mapping.Key, out _);
-            }
+            if (mapping.Mod.Equals(modToRemove))
+                modMapping.Value.Remove(mapping);
         }
     }
 
@@ -100,7 +111,13 @@ public class LoaderAPI : IModLoader
                 interfaces.Add(new WeakReference<T>(instance));
 
                 // Store strong reference in mod loader only.
-                _interfaceModMapping[typeof(T)] = new ModGenericTuple<object>(mod.Mod, instance);
+                if (!_interfaceModMapping.TryGetValue(typeof(T), out var list))
+                {
+                    list = new List<ModGenericTuple<object>>();
+                    _interfaceModMapping[typeof(T)] = list;
+                }
+
+                list.Add(new ModGenericTuple<object>(mod.Mod, instance));
             }
         }
 
