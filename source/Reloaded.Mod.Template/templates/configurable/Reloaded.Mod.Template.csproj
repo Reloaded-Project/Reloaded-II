@@ -9,16 +9,15 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <OutputPath>$(RELOADEDIIMODS)/Reloaded.Mod.Template</OutputPath>
 
-    <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
-    <!-- Trimming is enabled when you publish the mod. Test it using 
-         `dotnet publish <PROJECT_PATH> -c Release -o "$env:RELOADEDIIMODS/Reloaded.Mod.Template" /p:OutputPath="./bin/Release"` 
-         in PowerShell. -->
+    <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License
+         If you set this to true, trimming will be enabled when you publish the mod.
+         Test trimming with: `BuildLinked.ps1` in PowerShell. -->
     <RobustILLink>false</RobustILLink>
   </PropertyGroup>
 
   <ItemGroup>
     <RobustLinkRoots Include="Reloaded.Mod.Template" />
-    <!-- Add assemblies to be trimmed  -->
+    <!-- Add assemblies to be trimmed. You might need to add their dependencies too!  -->
     <!-- <RobustLinkAssemblies Include="Reloaded.Memory" /> -->
   </ItemGroup>
 
@@ -28,6 +27,8 @@
     <None Remove="ModConfig.json" />
     <None Remove="Preview.png" />
     <None Remove="Publish.ps1" />
+    <None Remove="BuildLinked.ps1" />
+    <None Remove="Robust.Trimming.targets" />
   </ItemGroup>
 
   <ItemGroup>
