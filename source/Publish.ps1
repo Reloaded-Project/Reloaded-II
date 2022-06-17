@@ -63,7 +63,7 @@ dotnet publish "$launcherProjectPath" -c Release --self-contained false -o "$out
 dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false -o "$outputPath32"
 
 # Build Loader
-dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false -o "$loaderOutputPath"
+dotnet publish "$loaderProjectPath" -c Release -r win-any --self-contained false -o "$loaderOutputPath"
 
 # Build Tools
 dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
