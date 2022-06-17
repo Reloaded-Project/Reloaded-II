@@ -1,3 +1,0 @@
-﻿FindFirstFile
-FindClose
-WIN32_FIND_DATAW
