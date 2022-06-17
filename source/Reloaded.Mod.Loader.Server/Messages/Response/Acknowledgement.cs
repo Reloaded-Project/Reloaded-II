@@ -1,5 +1,4 @@
 ﻿using Reloaded.Messaging.Interfaces;
-using Reloaded.Messaging.Serializer.MessagePack;
 using Reloaded.Messaging.Serializer.ReloadedMemory;
 
 namespace Reloaded.Mod.Loader.Server.Messages.Response;
