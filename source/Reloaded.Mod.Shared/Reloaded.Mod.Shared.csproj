@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
+    <PackageReference Include="Reloaded.Memory" Version="6.1.1" />
   </ItemGroup>
 
 </Project>
