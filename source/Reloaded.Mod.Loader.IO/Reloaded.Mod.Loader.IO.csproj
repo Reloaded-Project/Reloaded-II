@@ -29,7 +29,7 @@
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.9">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Reloaded.Memory" Version="3.0.1" />
+    <PackageReference Include="Reloaded.Memory" Version="6.1.1" />
   </ItemGroup>
 
   <ItemGroup>
