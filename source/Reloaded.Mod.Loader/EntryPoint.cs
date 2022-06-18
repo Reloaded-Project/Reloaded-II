@@ -186,6 +186,14 @@ public static class EntryPoint
     {
         // This method is singled out to avoid loading System.Windows.Forms at startup; because it is lazy loaded.
         var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA log is available at: {_loader?.LogWriter?.FlushPath}";
+
+        Exception innerException = ex.InnerException;
+        while (innerException != null)
+        {
+            errorMessage += $"\nInner Exception: {innerException.Message} | {innerException.StackTrace}";
+            innerException = innerException.InnerException;
+        }
+
         _loader?.Console?.WaitForConsoleInit();
         Logger?.LogWriteLine(errorMessage, Logger.ColorError);
         _loader?.LogWriter?.Flush();
