@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
 	  <LangVersion>preview</LangVersion>
@@ -14,7 +14,45 @@
 	  <Version>1.17.15</Version>
     <OutputPath>..\\Output\\Launcher\\Loader</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
+
+    <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
+    <!-- If you set this to true, trimming will be enabled when you publish the Mod Loader. -->
+    <RobustILLink>true</RobustILLink>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 
+          Test with dotnet publish Reloaded.Mod.Loader.csproj -p:PublishTrimmed=true -p:TrimmerDefaultAction=link -c Release -r win-x64 &#45;&#45;self-contained 
+          DO NOT TEST WITH ROBUST LINK. WILL NOT SHOW ALL WARNINGS.
+    -->
+    <!-- If it produces trim warnings, add it here. -->
+    <RobustLinkRoots Include="Reloaded.Mod.Loader" />
+    <RobustLinkRoots Include="Reloaded.Hooks" />
+    <RobustLinkRoots Include="Reloaded.Mod.Loader.Server" />
+    <RobustLinkRoots Include="Reloaded.Mod.Loader.IO" />
+    <RobustLinkRoots Include="McMaster.NETCore.Plugins" />
+
+    <!-- Add assemblies to be trimmed. You might need to add their dependencies too!  -->
+    <RobustLinkAssemblies Include="Reloaded.Mod.Loader.Server" />
+    <RobustLinkAssemblies Include="Reloaded.Memory" />
+    <RobustLinkAssemblies Include="Iced" />
+    <RobustLinkAssemblies Include="SharpDisasm" />
+    <RobustLinkAssemblies Include="Reloaded.Messaging" />
+    <RobustLinkAssemblies Include="Reloaded.Messaging.Interfaces" />
+    <RobustLinkAssemblies Include="Reloaded.Memory.Buffers" />
+    <RobustLinkAssemblies Include="Indieteur.SAMAPI" />
+    <RobustLinkAssemblies Include="Indieteur.VDFAPI" />
+    <RobustLinkAssemblies Include="Colorful.Console" />
+    <RobustLinkAssemblies Include="Microsoft.DotNet.PlatformAbstractions" />
+    <RobustLinkAssemblies Include="Microsoft.Extensions.DependencyModel" />
+    <RobustLinkAssemblies Include="Reloaded.Assembler" />
+    <RobustLinkAssemblies Include="Reloaded.Mod.Shared" />
+    <RobustLinkAssemblies Include="Reloaded.Hooks.Definitions" /> 
+
+      <!-- DO NOT ADD Reloaded.Mod.Interfaces or stuff we share with other mods!! -->
+  </ItemGroup>
+
+  <Import Project="../Robust.Trimming.targets" />
 
   <!-- USE NLS Instead of ICU. Saves around 25MB address space on x86 processes. -->
   <ItemGroup>
@@ -30,8 +68,8 @@
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.4" />
-    <PackageReference Include="Reloaded.Hooks" Version="3.5.3" />
-    <PackageReference Include="Reloaded.Memory" Version="4.1.1" />
+    <PackageReference Include="Reloaded.Hooks" Version="3.5.6" />
+    <PackageReference Include="Reloaded.Memory" Version="6.1.3" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup>

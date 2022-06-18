@@ -1,0 +1,122 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <!--
+      Taken from https://github.com/space-wizards/RobustToolbox under the MIT License
+      
+      Stuff for using ILLink trimming without self-contained deployments.
+      This is not something officially supported by the .NET SDK currently, but we can simply run ILLink ourselves.
+  -->
+
+  <!--
+      A lot of stuff taken from Microsoft.NET.ILLink.targets in the SDK files.
+  -->
+
+  <ItemDefinitionGroup>
+    <RobustLinkRoots>
+      <Visible>false</Visible>
+    </RobustLinkRoots>
+    <RobustLinkAssemblies>
+      <Visible>false</Visible>
+    </RobustLinkAssemblies>
+  </ItemDefinitionGroup>
+
+  <Target Name="RobustILLink"
+          BeforeTargets="ILLink"
+          Condition="'$(PublishTrimmed)' != 'true' And
+                       '$(RobustILLink)' == 'true'"
+          DependsOnTargets="_ComputeAssembliesToPostprocessOnPublish">
+
+    <ComputeManagedAssemblies Assemblies="@(ResolvedFileToPublish)">
+      <Output TaskParameter="ManagedAssemblies" ItemName="_ResolvedFileToPublishFiltered" />
+    </ComputeManagedAssemblies>
+
+    <JoinItems Left="@(_ResolvedFileToPublishFiltered)" LeftKey="FileName" LeftMetadata="*"
+               Right="@(RobustLinkRoots)"
+               ItemSpecToUse="Left">
+      <Output TaskParameter="JoinResult" ItemName="_RobustLinkRootsJoined" />
+    </JoinItems>
+
+    <JoinItems Left="@(_ResolvedFileToPublishFiltered)" LeftKey="FileName" LeftMetadata="*"
+               Right="@(RobustLinkAssemblies)"
+               ItemSpecToUse="Left">
+      <Output TaskParameter="JoinResult" ItemName="_RobustLinkAssembliesJoined" />
+    </JoinItems>
+
+    <PropertyGroup>
+      <TrimMode Condition=" '$(TrimMode)' == '' ">link</TrimMode>
+      <TrimmerDefaultAction Condition=" '$(TrimmerDefaultAction)' == '' ">copy</TrimmerDefaultAction>
+      <_ExtraTrimmerArgs>--skip-unresolved true $(_ExtraTrimmerArgs)</_ExtraTrimmerArgs>
+      <ILLinkTreatWarningsAsErrors Condition=" '$(ILLinkTreatWarningsAsErrors)' == '' ">$(TreatWarningsAsErrors)</ILLinkTreatWarningsAsErrors>
+      <TrimmerSingleWarn Condition=" '$(TrimmerSingleWarn)' == '' ">true</TrimmerSingleWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <RobustAssemblyToLink Include="@(_RobustLinkRootsJoined)">
+        <TrimMode>Copy</TrimMode>
+      </RobustAssemblyToLink>
+      <RobustAssemblyToLink Include="@(_RobustLinkAssembliesJoined)">
+        <TrimMode>Link</TrimMode>
+      </RobustAssemblyToLink>
+    </ItemGroup>
+
+    <ItemGroup>
+      <!-- The linker implicitly picks up PDBs next to input assemblies. We will filter these out of the publish set. -->
+      <__PDBToLink Include="@(ResolvedFileToPublish)" Exclude="@(RobustAssemblyToLink->'%(RelativeDir)%(Filename).pdb')" />
+      <_PDBToLink Include="@(ResolvedFileToPublish)" Exclude="@(__PDBToLink)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_LinkedResolvedFileToPublishCandidate Include="@(RobustAssemblyToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)')" />
+      <_LinkedResolvedFileToPublishCandidate Include="@(_PDBToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)')" />
+    </ItemGroup>
+
+    <!--<Message Text="@(ResolvedFileToPublish)" Importance="high" />-->
+
+    <ItemGroup>
+    </ItemGroup>
+
+    <Delete Files="@(_LinkedResolvedFileToPublishCandidate)" />
+    <ILLink AssemblyPaths="@(RobustAssemblyToLink)"
+            ReferenceAssemblyPaths="@(ReferencePath)"
+            RootAssemblyNames="@(RobustLinkRoots)"
+            TrimMode="Skip"
+            DefaultAction="$(TrimmerDefaultAction)"
+            RemoveSymbols="false"
+            FeatureSettings="@(_TrimmerFeatureSettings)"
+            CustomData="@(_TrimmerCustomData)"
+
+            BeforeFieldInit="$(_TrimmerBeforeFieldInit)"
+            OverrideRemoval="$(_TrimmerOverrideRemoval)"
+            UnreachableBodies="$(_TrimmerUnreachableBodies)"
+            UnusedInterfaces="$(_TrimmerUnusedInterfaces)"
+            IPConstProp="$(_TrimmerIPConstProp)"
+            Sealer="$(_TrimmerSealer)"
+
+            Warn="$(ILLinkWarningLevel)"
+            NoWarn="$(NoWarn)"
+            TreatWarningsAsErrors="$(ILLinkTreatWarningsAsErrors)"
+            WarningsAsErrors="$(WarningsAsErrors)"
+            WarningsNotAsErrors="$(WarningsNotAsErrors)"
+            SingleWarn="$(TrimmerSingleWarn)"
+
+            CustomSteps="@(_TrimmerCustomSteps)"
+            RootDescriptorFiles="@(TrimmerRootDescriptor)"
+            OutputDirectory="$(IntermediateLinkDir)"
+            DumpDependencies="$(_TrimmerDumpDependencies)"
+            ExtraArgs="$(_ExtraTrimmerArgs)"
+            ToolExe="$(_DotNetHostFileName)"
+            ToolPath="$(_DotNetHostDirectory)"
+            ContinueOnError="ErrorAndContinue">
+      <Output TaskParameter="ExitCode" PropertyName="_ILLinkExitCode" />
+    </ILLink>
+
+    <Touch Files="$(_LinkSemaphore)" AlwaysCreate="true" Condition=" '$(_ILLinkExitCode)' == '0' " />
+
+    <ItemGroup>
+      <_LinkedResolvedFileToPublish Include="@(_LinkedResolvedFileToPublishCandidate)" Condition="Exists('%(Identity)')" />
+      <ResolvedFileToPublish Remove="@(RobustAssemblyToLink)" />
+      <ResolvedFileToPublish Remove="@(_PDBToLink)" />
+      <ResolvedFileToPublish Include="@(_LinkedResolvedFileToPublish)" />
+    </ItemGroup>
+  </Target>
+
+</Project>
