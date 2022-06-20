@@ -24,18 +24,31 @@ public static class FileSystemWatcherFactory
         watcher.EnableRaisingEvents = true;
         watcher.IncludeSubdirectories = enableSubdirectories;
         watcher.Filter = filter;
+        watcher.NotifyFilter = 0;
 
         if (events.HasFlag(FileSystemWatcherEvents.Deleted))
+        {
             watcher.Deleted += action;
+            watcher.NotifyFilter |= NotifyFilters.DirectoryName | NotifyFilters.FileName;
+        }
 
         if (events.HasFlag(FileSystemWatcherEvents.Changed))
+        {
             watcher.Changed += action;
+            watcher.NotifyFilter |= NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastWrite;
+        }
 
         if (events.HasFlag(FileSystemWatcherEvents.Created))
+        {
             watcher.Created += action;
+            watcher.NotifyFilter |= NotifyFilters.DirectoryName | NotifyFilters.FileName;
+        }
 
         if (events.HasFlag(FileSystemWatcherEvents.Renamed))
+        {
             watcher.Renamed += renamedEventHandler;
+            watcher.NotifyFilter |= NotifyFilters.DirectoryName | NotifyFilters.FileName;
+        }
 
         return watcher;
     }
