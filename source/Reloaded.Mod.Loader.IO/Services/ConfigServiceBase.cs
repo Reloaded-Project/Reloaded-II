@@ -57,7 +57,8 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
     /// <param name="itemFileName">File name of an individual item.</param>
     /// <param name="getAllConfigs">A function that retrieves all configurations.</param>
     /// <param name="context">Context to which background events should be synchronized.</param>
-    public void Initialize(string configDirectory, string itemFileName, Func<List<PathTuple<TConfigType>>> getAllConfigs, SynchronizationContext context = null)
+    /// <param name="useBigBuffers">True to use large <see cref="FileSystemWatcher"/> buffers.</param>
+    public void Initialize(string configDirectory, string itemFileName, Func<List<PathTuple<TConfigType>>> getAllConfigs, SynchronizationContext context = null, bool useBigBuffers = false)
     {
         bool executeImmediately = context == null;
         _context = context ?? _context;
@@ -65,12 +66,12 @@ public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig
         ConfigDirectory = configDirectory;
         ItemFileName    = itemFileName;
         _getAllConfigs  = getAllConfigs;
-        _renameWatcher          = Create(ConfigDirectory, null, OnRename, FileSystemWatcherEvents.Renamed, true, "*.json");
-        _createFolderWatcher    = Create(ConfigDirectory, OnCreateFolder, null, FileSystemWatcherEvents.Created, false, "*.*");
-        _createFileWatcher      = Create(ConfigDirectory, OnCreateFile, null, FileSystemWatcherEvents.Created, true, "*.json");
-        _changedWatcher         = Create(ConfigDirectory, OnUpdateFile, null, FileSystemWatcherEvents.Changed, true, "*.json");
-        _deleteFileWatcher      = Create(ConfigDirectory, OnDeleteFile, null, FileSystemWatcherEvents.Deleted);
-        _deleteDirectoryWatcher = Create(ConfigDirectory, OnDeleteDirectory, null, FileSystemWatcherEvents.Deleted, false, "*.*");
+        _renameWatcher          = Create(ConfigDirectory, null, OnRename, FileSystemWatcherEvents.Renamed, true, "*.json", useBigBuffers);
+        _createFolderWatcher    = Create(ConfigDirectory, OnCreateFolder, null, FileSystemWatcherEvents.Created, false, "*.*", useBigBuffers);
+        _createFileWatcher      = Create(ConfigDirectory, OnCreateFile, null, FileSystemWatcherEvents.Created, true, "*.json", useBigBuffers);
+        _changedWatcher         = Create(ConfigDirectory, OnUpdateFile, null, FileSystemWatcherEvents.Changed, true, "*.json", useBigBuffers);
+        _deleteFileWatcher      = Create(ConfigDirectory, OnDeleteFile, null, FileSystemWatcherEvents.Deleted, useBigBuffers);
+        _deleteDirectoryWatcher = Create(ConfigDirectory, OnDeleteDirectory, null, FileSystemWatcherEvents.Deleted, false, "*.*", useBigBuffers);
         GetItems(executeImmediately);
     }
 

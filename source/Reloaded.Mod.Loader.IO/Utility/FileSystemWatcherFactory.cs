@@ -18,13 +18,17 @@ public static class FileSystemWatcherFactory
     /// <param name="events">The events which trigger the launching of given action.</param>
     /// <param name="enableSubdirectories">Decides whether subdirectories in a given path should be monitored.</param>
     /// <param name="filter">The filter used to determine which files are being watched for.</param>
-    public static FileSystemWatcher Create(string configDirectory, FileSystemEventHandler action, RenamedEventHandler renamedEventHandler, FileSystemWatcherEvents events, bool enableSubdirectories = true, string filter = "*.json")
+    /// <param name="useBigBuffers">If true, uses a big internal buffer for receiving changes.</param>
+    public static FileSystemWatcher Create(string configDirectory, FileSystemEventHandler action, RenamedEventHandler renamedEventHandler, FileSystemWatcherEvents events, bool enableSubdirectories = true, string filter = "*.json", bool useBigBuffers = true)
     {
         var watcher = new FileSystemWatcher(configDirectory);
         watcher.EnableRaisingEvents = true;
         watcher.IncludeSubdirectories = enableSubdirectories;
         watcher.Filter = filter;
         watcher.NotifyFilter = 0;
+
+        if (useBigBuffers)
+            watcher.InternalBufferSize = 65536;
 
         if (events.HasFlag(FileSystemWatcherEvents.Deleted))
         {
