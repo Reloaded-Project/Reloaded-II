@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -15,6 +16,7 @@ using Reloaded.Mod.Loader.Logging;
 using Reloaded.Mod.Loader.Mods.Structs;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Utilities;
+using Console = System.Console;
 
 namespace Reloaded.Mod.Loader.Mods;
 
@@ -284,10 +286,18 @@ public class PluginManager : IDisposable
 
     private void StartMod(ModInstance instance)
     {
-        LoaderApi.ModLoading(instance.Mod, instance.ModConfig);
-        instance.Start(LoaderApi);
-        _modifications[instance.ModConfig.ModId] = instance;
-        LoaderApi.ModLoaded(instance.Mod, instance.ModConfig);
+        try
+        {
+            LoaderApi.ModLoading(instance.Mod, instance.ModConfig);
+            instance.Start(LoaderApi);
+            _modifications[instance.ModConfig.ModId] = instance;
+            LoaderApi.ModLoaded(instance.Mod, instance.ModConfig);
+        }
+        catch (Exception)
+        {
+            Logger.WriteLine($"Error while starting mod: {instance.ModConfig.ModId}", Logger.ColorRed);
+            throw;
+        }
     }
 
     /* Setup for mod loading */
