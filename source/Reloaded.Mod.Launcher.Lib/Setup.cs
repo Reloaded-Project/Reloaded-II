@@ -159,7 +159,7 @@ public static class Setup
     {
         // Needs to be ran after SetupViewModelsAsync
         var apps = IoC.GetConstant<ApplicationConfigService>().Items;
-        var mods = IoC.GetConstant<ModConfigService>().Items;
+        var mods = IoC.GetConstant<ModConfigService>().Items.ToArray();
         var updatedBootstrappers = new List<string>();
 
         foreach (var app in apps)
