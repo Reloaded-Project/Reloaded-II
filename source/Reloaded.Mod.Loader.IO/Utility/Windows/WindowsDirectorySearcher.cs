@@ -77,7 +77,7 @@ public static class WindowsDirectorySearcher
         do
         {
             // Get each file name subsequently.
-            var fileName = findData.GetFileName();
+            var fileName = Marshal.PtrToStringUni((IntPtr)(&findData.cFileName));
             if (fileName == "." || fileName == "..")
                 continue;
 
@@ -190,22 +190,11 @@ public static class WindowsDirectorySearcher
 }
 
 /// <summary>
-/// Extensions to the automatically Source Generator imported WinAPI classes.
-/// </summary>
-public static class FindDataExtensions
-{
-    internal static unsafe string GetFileName(this WindowsDirectorySearcher.Win32FindData value)
-    {
-        return Marshal.PtrToStringUni((IntPtr)(&value.cFileName));
-    }
-}
-
-/// <summary>
 /// Extensions to the internal COM FILETIME class.
 /// </summary>
 public static class FileTimeExtensions
 {
-    public static DateTime ToDateTime(this WindowsDirectorySearcher.FileTime time)
+    public static DateTime ToDateTime(this in WindowsDirectorySearcher.FileTime time)
     {
         ulong high = (ulong)time.dwHighDateTime;
         ulong low = (ulong)time.dwLowDateTime;
