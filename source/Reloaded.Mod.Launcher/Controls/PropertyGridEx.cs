@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -19,7 +22,26 @@ namespace Reloaded.Mod.Launcher.Controls;
 /// </summary>
 public class PropertyGridEx : PropertyGrid
 {
-    public override PropertyResolver PropertyResolver { get; } = new PropertyResolverEx();
+    /// <summary>
+    /// Property for current highlighted object.
+    /// </summary>
+    public static readonly DependencyProperty HoveredItemProperty = DependencyProperty.Register("HoveredItem", typeof(PropertyItem), typeof(PropertyGridEx), new PropertyMetadata());
+
+    public override PropertyResolver PropertyResolver { get; }
+
+    /// <summary>
+    /// Sets the currently highlighted propertygrid object.
+    /// </summary>
+    public PropertyItem HoveredItem
+    {
+        get => (PropertyItem)GetValue(HoveredItemProperty);
+        set => SetValue(HoveredItemProperty, value);
+    }
+
+    public PropertyGridEx()
+    {
+        PropertyResolver = new PropertyResolverEx(this);
+    }
 }
 
 /// <summary>
@@ -27,35 +49,42 @@ public class PropertyGridEx : PropertyGrid
 /// </summary>
 public class PropertyResolverEx : PropertyResolver
 {
+    public PropertyGridEx PropertyGrid { get; set; }
+
+    public PropertyResolverEx(PropertyGridEx grid)
+    {
+        PropertyGrid = grid;
+    }
+
     public override PropertyEditorBase CreateDefaultEditor(Type type)
     {
-        if (type == typeof(string)) return new PlainTextPropertyEditor();
+        if (type == typeof(string)) return new PlainTextPropertyEditor(this);
         
         // Numbers
-        if (type == typeof(sbyte)) return new NumberPropertyEditor(sbyte.MinValue, sbyte.MaxValue);
-        if (type == typeof(byte))  return new NumberPropertyEditor(byte.MinValue, byte.MaxValue);
+        if (type == typeof(sbyte)) return new NumberPropertyEditor(sbyte.MinValue, sbyte.MaxValue, this);
+        if (type == typeof(byte))  return new NumberPropertyEditor(byte.MinValue, byte.MaxValue, this);
 
-        if (type == typeof(short)) return new NumberPropertyEditor(short.MinValue, short.MaxValue);
-        if (type == typeof(ushort)) return new NumberPropertyEditor(ushort.MinValue, ushort.MaxValue);
+        if (type == typeof(short)) return new NumberPropertyEditor(short.MinValue, short.MaxValue, this);
+        if (type == typeof(ushort)) return new NumberPropertyEditor(ushort.MinValue, ushort.MaxValue, this);
 
-        if (type == typeof(int)) return new NumberPropertyEditor(int.MinValue, int.MaxValue);
-        if (type == typeof(uint)) return new NumberPropertyEditor(uint.MinValue, uint.MaxValue);
+        if (type == typeof(int)) return new NumberPropertyEditor(int.MinValue, int.MaxValue, this);
+        if (type == typeof(uint)) return new NumberPropertyEditor(uint.MinValue, uint.MaxValue, this);
 
-        if (type == typeof(long)) return new NumberPropertyEditor(long.MinValue, long.MaxValue);
-        if (type == typeof(ulong)) return new NumberPropertyEditor(ulong.MinValue, ulong.MaxValue);
+        if (type == typeof(long)) return new NumberPropertyEditor(long.MinValue, long.MaxValue, this);
+        if (type == typeof(ulong)) return new NumberPropertyEditor(ulong.MinValue, ulong.MaxValue, this);
 
-        if (type == typeof(float)) return new NumberPropertyEditor(float.MinValue, float.MaxValue);
-        if (type == typeof(double)) return new NumberPropertyEditor(double.MinValue, double.MaxValue);
+        if (type == typeof(float)) return new NumberPropertyEditor(float.MinValue, float.MaxValue, this);
+        if (type == typeof(double)) return new NumberPropertyEditor(double.MinValue, double.MaxValue, this);
 
-        if (type == typeof(bool)) return new SwitchPropertyEditorEx();
-        if (type == typeof(DateTime)) return new DateTimePropertyEditor();
+        if (type == typeof(bool)) return new SwitchPropertyEditorEx(this);
+        if (type == typeof(DateTime)) return new DateTimePropertyEditor(this);
 
         if (type == typeof(ObservableCollection<StringWrapper>))
         {
-            return new StringWrapperEditor();
+            return new StringWrapperEditor(this);
         }
 
-        if (type.IsSubclassOf(typeof(Enum))) return new EnumPropertyEditor();
+        if (type.IsSubclassOf(typeof(Enum))) return new EnumPropertyEditor(this);
 
         return base.CreateDefaultEditor(type);
     }
@@ -75,15 +104,15 @@ public class PropertyResolverEx : PropertyResolver
 /// </summary>
 public static class PropertyResolverExtensions 
 {
-    public static void AttachTooltipAdder(this PropertyItem propertyItem)
+    public static void AttachTooltipAdder(this PropertyItem propertyItem, PropertyResolverEx resolverEx)
     {
         if (string.IsNullOrEmpty(propertyItem.Description))
             return;
 
-        propertyItem.Loaded += PropertyItemLoaded;
+        propertyItem.Loaded += (sender, args) => { PropertyItemLoaded(sender, args, resolverEx); };
     }
 
-    private static void PropertyItemLoaded(object? sender, EventArgs e)
+    private static void PropertyItemLoaded(object? sender, EventArgs e, PropertyResolverEx resolverEx)
     {
         var propertyItem = (PropertyItem)sender!;
         var textbox = FindChild<TextBox>(propertyItem, "");
@@ -95,7 +124,7 @@ public static class PropertyResolverExtensions
         ToolTipService.SetInitialShowDelay(tooltip, 0);
         ToolTipService.SetBetweenShowDelay(tooltip, 0);
         propertyItem.ToolTip = tooltip;
-        propertyItem.MouseEnter += PropertyItemOnMouseEnter;
+        propertyItem.MouseEnter += (o, args) => { PropertyItemOnMouseEnter(o, args, resolverEx); };
         propertyItem.MouseLeave += PropertyItemOnMouseLeave;
 
         // Set grid colour to transparent so it's hit testable and can pick up mouse events
@@ -104,9 +133,10 @@ public static class PropertyResolverExtensions
             groupbox.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
     }
 
-    private static void PropertyItemOnMouseEnter(object sender, MouseEventArgs e)
+    private static void PropertyItemOnMouseEnter(object sender, MouseEventArgs e, PropertyResolverEx resolverEx)
     {
         var propertyItem = (PropertyItem)sender;
+        resolverEx.PropertyGrid.HoveredItem = propertyItem;
         if (propertyItem.ToolTip is ToolTip tooltip)
             tooltip.IsOpen = true;
     }
@@ -175,9 +205,13 @@ public static class PropertyResolverExtensions
 
 public class StringWrapperEditor : PropertyEditorBase
 {
+    public PropertyResolverEx Owner { get; internal set; }
+
+    public StringWrapperEditor(PropertyResolverEx propertyResolverEx) => Owner = propertyResolverEx;
+
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
     {
-        propertyItem.AttachTooltipAdder();
+        propertyItem.AttachTooltipAdder(Owner);
         var dataGrid = new DataGrid
         {
             AutoGenerateColumns = false,
@@ -233,9 +267,13 @@ public class StringWrapperEditor : PropertyEditorBase
 
 public class PlainTextPropertyEditor : PropertyEditorBase
 {
+    public PropertyResolverEx Owner { get; internal set; }
+
+    public PlainTextPropertyEditor(PropertyResolverEx propertyResolverEx) => Owner = propertyResolverEx;
+
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
     {
-        propertyItem.AttachTooltipAdder();
+        propertyItem.AttachTooltipAdder(Owner);
         return new TextBox
         {
             IsReadOnly = propertyItem.IsReadOnly,
@@ -247,9 +285,13 @@ public class PlainTextPropertyEditor : PropertyEditorBase
 
 public class EnumPropertyEditor : PropertyEditorBase
 {
+    public PropertyResolverEx Owner { get; internal set; }
+
+    public EnumPropertyEditor(PropertyResolverEx propertyResolverEx) => Owner = propertyResolverEx;
+
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
     {
-        propertyItem.AttachTooltipAdder();
+        propertyItem.AttachTooltipAdder(Owner);
         return new System.Windows.Controls.ComboBox
         {
             IsEnabled = !propertyItem.IsReadOnly,
@@ -262,12 +304,15 @@ public class EnumPropertyEditor : PropertyEditorBase
 
 public class NumberPropertyEditor : PropertyEditorBase
 {
+    public PropertyResolverEx Owner { get; internal set; }
+
     public NumberPropertyEditor() { }
 
-    public NumberPropertyEditor(double minimum, double maximum)
+    public NumberPropertyEditor(double minimum, double maximum, PropertyResolverEx propertyResolverEx)
     {
         Minimum = minimum;
         Maximum = maximum;
+        Owner = propertyResolverEx;
     }
 
     public double Minimum { get; set; }
@@ -276,7 +321,7 @@ public class NumberPropertyEditor : PropertyEditorBase
 
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
     {
-        propertyItem.AttachTooltipAdder();
+        propertyItem.AttachTooltipAdder(Owner);
         return new NumericUpDown
         {
             IsReadOnly = propertyItem.IsReadOnly,
@@ -290,10 +335,14 @@ public class NumberPropertyEditor : PropertyEditorBase
 
 public class SwitchPropertyEditorEx : SwitchPropertyEditor
 {
+    public PropertyResolverEx Owner { get; internal set; }
+
+    public SwitchPropertyEditorEx(PropertyResolverEx propertyResolverEx) => Owner = propertyResolverEx;
+
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
     {
         var result = base.CreateElement(propertyItem);
-        propertyItem.AttachTooltipAdder();
+        propertyItem.AttachTooltipAdder(Owner);
         return result;
     }
 
@@ -302,9 +351,12 @@ public class SwitchPropertyEditorEx : SwitchPropertyEditor
 
 public class DateTimePropertyEditor : PropertyEditorBase
 {
+    public PropertyResolverEx Owner { get; internal set; }
+    public DateTimePropertyEditor(PropertyResolverEx propertyResolverEx) => Owner = propertyResolverEx;
+
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
     {
-        propertyItem.AttachTooltipAdder();
+        propertyItem.AttachTooltipAdder(Owner);
         return new DateTimePicker
         {
             IsEnabled = !propertyItem.IsReadOnly
