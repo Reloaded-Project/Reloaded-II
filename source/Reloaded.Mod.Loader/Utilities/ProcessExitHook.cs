@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using Reloaded.Hooks;
 using Reloaded.Hooks.Definitions;
+using Reloaded.Hooks.Definitions.Helpers;
 using Reloaded.Mod.Loader.Utilities.Native;
 
 namespace Reloaded.Mod.Loader.Utilities;
@@ -25,7 +26,7 @@ public class ProcessExitHook
         var kernel32 = Kernel32.GetModuleHandle("kernel32.dll");
         var address = Kernel32.GetProcAddress(kernel32, "ExitProcess");
         if (address != IntPtr.Zero)
-            _exitProcessHook = new Hook<ExitProcess>(ExitProcessImpl, (long)address).Activate();
+            _exitProcessHook = new Hook<ExitProcess>(ExitProcessImpl, address.ToUnsigned()).Activate();
     }
 
     private void ExitProcessImpl(uint uexitcode)
