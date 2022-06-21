@@ -17,7 +17,6 @@
     </PackageReference>
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
     <PackageReference Include="System.Management" Version="6.0.0" />
-    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +25,7 @@
     <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
+    <ProjectReference Include="..\Submodules\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj" />
   </ItemGroup>
 
   <ItemGroup>
