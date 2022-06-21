@@ -368,12 +368,19 @@ public class PluginManager : IDisposable
         if (exportsEntryPoint != null)
         {
             var pluginExports = (IExports) Activator.CreateInstance(exportsEntryPoint);
-            var exportedTypes = pluginExports.GetTypes();
-            var assemblies    = LoadTypesIntoSharedContext(exportedTypes);
-            exports           = new Type[exportedTypes.Length];
+            var typesList = new List<Type>();
+            typesList.AddRange(pluginExports.GetTypes());
+            typesList.AddRange(pluginExports.GetTypesEx(new ExportsContext()
+            {
+                ApplicationConfig = LoaderApi.GetAppConfig()
+            }));
+            
+            var assemblies    = LoadTypesIntoSharedContext(typesList);
+            exports           = new Type[typesList.Count];
 
-            // Find exports in assemblies that were just loaded into the default ALC.
-            // If we don't do this; the assemblies will stay loaded in the other ALC because we are still holding a reference to them.
+            // Find exports in assemblies that were just loaded into the shared context.
+            // If we use the ones from the other mods' ALCs, the other ALC will stay loaded
+            // because we are still holding a reference to the exports.
             var assemblyToTypes = new Dictionary<Assembly, Type[]>();
             foreach (var asm in assemblies)
             {
@@ -383,7 +390,7 @@ public class PluginManager : IDisposable
 
             for (int x = 0; x < assemblies.Length; x++)
             {
-                var target        = exportedTypes[x];
+                var target        = typesList[x];
                 var assemblyTypes = assemblyToTypes[assemblies[x]];
                 exports[x]        = assemblyTypes.First(y => y.FullName == target.FullName);
             }
