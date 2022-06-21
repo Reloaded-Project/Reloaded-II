@@ -20,7 +20,7 @@ namespace Reloaded.Mod.Launcher.Lib.Commands.Mod;
 /// </summary>
 public class ConfigureModCommand : WithCanExecuteChanged, ICommand
 {
-    private static Type[] _sharedTypes = { typeof(IConfigurator) };
+    private static Type[] _sharedTypes = { typeof(IConfiguratorV1) };
     private readonly PathTuple<ModConfig>? _modTuple;
     private readonly PathTuple<ModUserConfig>? _modUserConfigTuple;
 
@@ -75,7 +75,7 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
 
     // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private bool TryGetConfigurator(out IConfigurator? configurator, out PluginLoader? loader)
+    private bool TryGetConfigurator(out IConfiguratorV1? configurator, out PluginLoader? loader)
     {
         var config = _modTuple!.Config;
         string dllPath = config.GetManagedDllPath(_modTuple.Path);
@@ -93,12 +93,12 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
 
         var assembly = loader.LoadDefaultAssembly();
         var types = assembly.GetTypes();
-        var entryPoint = types.FirstOrDefault(t => typeof(IConfigurator).IsAssignableFrom(t) && !t.IsAbstract);
+        var entryPoint = types.FirstOrDefault(t => typeof(IConfiguratorV1).IsAssignableFrom(t) && !t.IsAbstract);
         
         if (entryPoint == null) 
             return false;
 
-        configurator = (IConfigurator)Activator.CreateInstance(entryPoint)!;
+        configurator = (IConfiguratorV1)Activator.CreateInstance(entryPoint)!;
         var modDirectory = Path.GetFullPath(Path.GetDirectoryName(_modTuple.Path)!);
         configurator.SetModDirectory(modDirectory);
 

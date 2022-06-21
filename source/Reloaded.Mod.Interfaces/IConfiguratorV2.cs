@@ -4,7 +4,7 @@
     /// Version 2 of the configurator.
     /// With support for migration from Version 1 and 
     /// </summary>
-    public interface IConfiguratorV2 : IConfigurator
+    public interface IConfiguratorV2 : IConfiguratorV1
     {
         /// <summary>
         /// Migrates the config files location from an older to a newer directory.
