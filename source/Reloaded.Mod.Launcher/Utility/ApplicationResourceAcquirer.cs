@@ -14,7 +14,7 @@ public static class ApplicationResourceAcquirer
     /// <typeparam name="TType">Type of value to return.</typeparam>
     /// <param name="key">The key of the resource.</param>
     /// <returns>The specific type or if an error occured, the default value for type.</returns>
-    public static TType GetTypeOrDefault<TType>(string key)
+    public static TType? GetTypeOrDefault<TType>(string key)
     {
         try
         {

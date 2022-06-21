@@ -253,7 +253,7 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
             ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 var viewModel = new DownloadPackageViewModel(_package!, IoC.Get<LoaderConfig>());
-                viewModel.StartDownloadAsync(); // Fire and forget.
+                _ = viewModel.StartDownloadAsync(); // Fire and forget.
                 Actions.ShowFetchPackageDialog(viewModel);
             });
             

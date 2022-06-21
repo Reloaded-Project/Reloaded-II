@@ -11,16 +11,16 @@ namespace Reloaded.Mod.Loader.Tests.Update.Mocks;
 [ExcludeFromCodeCoverage]
 public class DummyDownloadablePackage : IDownloadablePackage
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-    public string Id { get; set; }
-    public string Name { get; set; }
-    public string Authors { get; set; }
-    public string Description { get; set; }
-    public string Source { get; set; }
-    public NuGetVersion Version { get; set; }
+    public event PropertyChangedEventHandler PropertyChanged = (sender, args) => {};
+    public string Id { get; set; } = "";
+    public string Name { get; set; } = "";
+    public string Authors { get; set; } = "";
+    public string Description { get; set; } = "";
+    public string Source { get; set; } = "";
+    public NuGetVersion Version { get; set; } = new NuGetVersion("1.0.0");
     public long FileSize { get; } = 0;
 
-    public Task<string> DownloadAsync(string packageFolder, IProgress<double>? progress, CancellationToken token = default)
+    public Task<string> DownloadAsync(string packageFolder, IProgress<double> progress, CancellationToken token = default)
     {
         throw new NotImplementedException();
     }

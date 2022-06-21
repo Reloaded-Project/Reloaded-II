@@ -147,16 +147,16 @@ public class LocalPackageUpdateResolverFactory : IUpdateResolverFactory
 
     public LocalPackageUpdateResolverFactory(string directory) => Directory = directory;
 
-    public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig) { }
+    public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig) { }
 
-    public IPackageResolver? GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig, UpdaterData data)
+    public IPackageResolver GetResolver(PathTuple<ModConfig> mod, PathTuple<ModUserConfig> userConfig, UpdaterData data)
     {
         return new LocalPackageResolver(Directory);
     }
 
     public bool TryGetConfigurationOrDefault(PathTuple<ModConfig> mod, out object configuration)
     {
-        configuration = default;
+        configuration = default!;
         return false;
     }
 }

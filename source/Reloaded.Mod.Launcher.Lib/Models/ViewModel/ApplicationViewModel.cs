@@ -158,7 +158,12 @@ public class ApplicationViewModel : ObservableObject, IDisposable
 
     // == Events ==
     private void RefreshTimerCallback(object? state) => UpdateReloadedProcesses();
-    private void OnProcessesChanged(Process[] processes) => UpdateReloadedProcesses();
+    private void OnProcessesChanged(Process[]? processes)
+    {
+        if (processes != null)
+            UpdateReloadedProcesses();
+    }
+
     private void OnGetModifications(object? sender, NotifyCollectionChangedEventArgs e) => GetModsForThisApp();
 
     private void UpdateReloadedProcesses()

@@ -21,7 +21,7 @@ public partial class ConfigureNuGetFeedsDialog : ReloadedWindow, IDisposable
     /// <inheritdoc />
     public void Dispose() => RealViewModel?.Dispose();
 
-    private void SaveOnClose(object sender, EventArgs e)
+    private void SaveOnClose(object? sender, EventArgs e)
     {
         RealViewModel.Save();
         Dispose();

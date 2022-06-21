@@ -47,21 +47,19 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
     [MethodImpl(MethodImplOptions.NoInlining)]
     public bool CanExecute(object? parameter)
     {
-        if (_modTuple != null)
-        {
-            try
-            {
-                var result = TryGetConfiguratorDisposing();
-                GC.Collect(0, GCCollectionMode.Forced, false);
-                return result;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
+        if (_modTuple == null) 
+            return false;
 
-        return false;
+        try
+        {
+            var result = TryGetConfiguratorDisposing();
+            GC.Collect(0, GCCollectionMode.Forced, false);
+            return result;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.

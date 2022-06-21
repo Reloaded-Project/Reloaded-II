@@ -12,13 +12,13 @@ namespace Reloaded.Mod.Launcher.Controls;
 /// </summary>
 public partial class PopupLabel : UserControl
 {
-    private XamlResource<double> _xamlEntrySlideAnimationDuration;
-    private XamlResource<double> _xamlEntryFadeAnimationDuration;
-    private XamlResource<double> _xamlEntryFadeOpacityStart;
+    private XamlResource<double> _xamlEntrySlideAnimationDuration = null!;
+    private XamlResource<double> _xamlEntryFadeAnimationDuration = null!;
+    private XamlResource<double> _xamlEntryFadeOpacityStart = null!;
 
-    private XamlResource<double> _xamlExitSlideAnimationDuration;
-    private XamlResource<double> _xamlExitFadeAnimationDuration;
-    private XamlResource<double> _xamlExitFadeOpacityEnd;
+    private XamlResource<double> _xamlExitSlideAnimationDuration = null!;
+    private XamlResource<double> _xamlExitFadeAnimationDuration = null!;
+    private XamlResource<double> _xamlExitFadeOpacityEnd = null!;
 
     public static readonly DependencyProperty ButtonTextProperty = DependencyProperty.Register(nameof(ButtonText), typeof(String), typeof(PopupLabel), new PropertyMetadata("Close Me!"));
     public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(PopupLabel), new PropertyMetadata(DefaultIsOpen, IsOpenChangedCallback));
@@ -74,7 +74,7 @@ public partial class PopupLabel : UserControl
     /// <summary>
     /// Executed when the <see cref="IsOpen"/> property changes.
     /// </summary>
-    public EventHandler<DependencyPropertyChangedEventArgs> IsOpenChanged { get; set; }
+    public EventHandler<DependencyPropertyChangedEventArgs>? IsOpenChanged { get; set; }
 
     public PopupLabel()
     {

@@ -25,7 +25,7 @@ public class ApplicationPathTupleToImageConverter : IMultiValueConverter
         if (value[0] is PathTuple<ApplicationConfig> config)
             return GetImageForAppConfig(config);
 
-        return null;
+        return null!;
     }
 
     /// <inheritdoc />
@@ -52,13 +52,14 @@ public class ApplicationPathTupleToImageConverter : IMultiValueConverter
         if (File.Exists(appLocation))
         {
             // Else make new from icon.
-            using Icon ico = Icon.ExtractAssociatedIcon(appLocation);
-                
-            // Extract to config set location.
-            BitmapSource bitmapImage = Imaging.CreateBitmapSourceFromHIcon(ico.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            bitmapImage.Freeze();
-
-            return bitmapImage;
+            using Icon? ico = Icon.ExtractAssociatedIcon(appLocation);
+            if (ico != null)
+            {
+                // Extract to config set location.
+                BitmapSource bitmapImage = Imaging.CreateBitmapSourceFromHIcon(ico.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                bitmapImage.Freeze();
+                return bitmapImage;
+            }
         }
 
         var image = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.RelativeOrAbsolute));

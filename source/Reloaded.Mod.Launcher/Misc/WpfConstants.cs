@@ -11,7 +11,7 @@ public static class WpfConstants
         get
         {
             var placeholder = ApplicationResourceAcquirer.GetTypeOrDefault<ImageSource>("ModPlaceholder");
-            return new Uri(((BitmapFrame)placeholder).Decoder.ToString(), UriKind.Absolute);
+            return new Uri(((BitmapFrame)placeholder!).Decoder.ToString(), UriKind.Absolute);
         }
     }
 }

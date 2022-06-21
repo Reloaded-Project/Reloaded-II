@@ -48,7 +48,7 @@ public class IndexTest
 
         // Assert
         var indexCopy = await indexApi.GetIndexAsync();
-        Assert.Equal(numItems, indexCopy.IdToApps.Count);
+        Assert.Single(indexCopy.IdToApps);
     }
 
     [Fact]

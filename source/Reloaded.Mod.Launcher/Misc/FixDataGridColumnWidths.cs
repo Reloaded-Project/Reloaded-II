@@ -25,7 +25,7 @@ public class FixDataGridColumnWidths : AttachedPropertyBase<FixDataGridColumnWid
     private void DisableFix(DataGrid grid) => grid.TargetUpdated -= OnTargetUpdated;
     private void EnableFix(DataGrid grid)  => grid.TargetUpdated += OnTargetUpdated;
 
-    private void OnTargetUpdated(object sender, DataTransferEventArgs e)
+    private void OnTargetUpdated(object? sender, DataTransferEventArgs e)
     {
         if (!(sender is DataGrid grid)) 
             return;

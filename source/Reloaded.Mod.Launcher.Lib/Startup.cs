@@ -98,7 +98,7 @@ public static class Startup
 
         var package = new WebDownloadablePackage(new Uri(downloadUrl), true);
         var viewModel = new DownloadPackageViewModel(package, IoC.Get<LoaderConfig>());
-        viewModel.StartDownloadAsync();
+        _ = viewModel.StartDownloadAsync();
 
         Actions.ShowFetchPackageDialog(viewModel);
         Actions.DisplayMessagebox(Resources.PackageDownloaderDownloadCompleteTitle.Get(), Resources.PackageDownloaderDownloadCompleteDescription.Get(), new Actions.DisplayMessageBoxParams()

@@ -53,6 +53,7 @@ public static class Lib
     /// <param name="showFetchPackageDialog">Shows a dialog that can be used to download an individual package.</param>
     /// <param name="showSelectAddedGameDialog">Shows a dialog that can be used to select the added game.</param>
     /// <param name="showAddAppMismatchDialog">Shows a dialog that shows information to the user regarding an application hash mismatch.</param>
+    /// <param name="showApplicationWarningDialog">Shows a dialog that displays warnings about a recently added application.</param>
     public static void Init(IDictionaryResourceProvider provider, SynchronizationContext context, IIconConverter iconConverter, 
         IResourceFileSelector? languageSelector, IResourceFileSelector? themeSelector,
         Actions.CreateResourceFileSelectorDelegate createResourceFileSelector,

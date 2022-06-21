@@ -205,7 +205,7 @@ public class PublishModDialogViewModel : ObservableObject
         // Try parse.
         ModConfig config;
         try { config = IConfig<ModConfig>.FromPath(configFilePath); }
-        catch (Exception e)
+        catch (Exception)
         {
             Actions.DisplayMessagebox(Resources.ErrorInvalidSemanticVersionTitle.Get(), Resources.ErrorInvalidSemanticVersionDescription.Get());
             return;
@@ -306,7 +306,7 @@ public class PublishModDialogViewModel : ObservableObject
         return "";
     }
 
-    private void RemoveSelectedOrLastItem(StringWrapper item, ObservableCollection<StringWrapper> allItems)
+    private void RemoveSelectedOrLastItem(StringWrapper? item, ObservableCollection<StringWrapper> allItems)
     {
         if (item != null)
             allItems.Remove(item);

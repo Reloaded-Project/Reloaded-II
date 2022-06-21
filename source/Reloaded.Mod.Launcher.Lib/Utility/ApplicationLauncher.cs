@@ -93,7 +93,7 @@ public class ApplicationLauncher
         public static extern uint ResumeThread(IntPtr hThread);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool CreateProcessW([MarshalAs(UnmanagedType.LPWStr)] string lpApplicationName, [MarshalAs(UnmanagedType.LPWStr)] string lpCommandLine,
+        public static extern bool CreateProcessW([MarshalAs(UnmanagedType.LPWStr)] string? lpApplicationName, [MarshalAs(UnmanagedType.LPWStr)] string lpCommandLine,
             ref SECURITY_ATTRIBUTES lpProcessAttributes, ref SECURITY_ATTRIBUTES lpThreadAttributes, bool bInheritHandles, ProcessCreationFlags dwCreationFlags, IntPtr lpEnvironment,
             [MarshalAs(UnmanagedType.LPWStr)] string lpCurrentDirectory,
             ref STARTUPINFO lpStartupInfo, ref PROCESS_INFORMATION lpProcessInformation);

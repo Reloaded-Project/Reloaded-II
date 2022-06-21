@@ -157,7 +157,7 @@ public class EditAppViewModel : ObservableObject
             return;
 
         var item = JsonSerializer.Deserialize<AppItem>(File.ReadAllText(result));
-        QueryCommunityIndexCommand.ApplyIndexEntry(item, Application);
+        QueryCommunityIndexCommand.ApplyIndexEntry(item!, Application);
     }
 
     private void RefreshCommands()

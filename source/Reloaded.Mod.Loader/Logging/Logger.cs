@@ -126,7 +126,7 @@ public class Logger : ILogger
                     return;
             }
         }
-        catch (OperationCanceledException e)
+        catch (OperationCanceledException)
         {
             // Process is terminating.
         }

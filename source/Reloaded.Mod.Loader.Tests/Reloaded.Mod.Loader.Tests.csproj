@@ -6,6 +6,7 @@
     <IsPackable>false</IsPackable>
     <LangVersion>preview</LangVersion>
     <OutputPath>..\Output\Tests\</OutputPath>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

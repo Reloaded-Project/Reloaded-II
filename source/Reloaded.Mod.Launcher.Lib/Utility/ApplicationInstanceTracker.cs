@@ -113,7 +113,7 @@ public class ApplicationInstanceTracker : IDisposable
     }
 
     /* Active maintenance of list based off of process add/remove events. */
-    private void RaiseOnProcessesChanged() => OnProcessesChanged(_processes.ToArray());
+    private void RaiseOnProcessesChanged() => OnProcessesChanged(_processes?.ToArray());
 
     private void RemoveProcess(int processId)
     {
@@ -149,7 +149,7 @@ public class ApplicationInstanceTracker : IDisposable
 /// <summary>
 /// Executed when the list of running processes on the system changes.
 /// </summary>
-public delegate void ProcessesChanged(Process[] newProcesses);
+public delegate void ProcessesChanged(Process[]? newProcesses);
 
 /// <summary>
 /// Stores a list of Reloaded and non-Reloaded processes.

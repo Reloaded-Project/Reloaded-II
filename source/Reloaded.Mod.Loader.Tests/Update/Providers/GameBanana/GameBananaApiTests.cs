@@ -42,9 +42,9 @@ public class GameBananaApiTests
         var result = await GameBananaMod.GetByNameAsync("Update Lib. Test", 7486, 0, 10);
 
         // Assert
-        var integration = result[0].ManagerIntegrations.First();
+        var integration = result![0].ManagerIntegrations!.First();
 
-        Assert.True(result[0].ManagerIntegrations.Count > 0);
-        Assert.True(integration.Value[0].IsReloadedDownloadUrl().Value);
+        Assert.True(result![0].ManagerIntegrations!.Count > 0);
+        Assert.True(integration!.Value[0]!.IsReloadedDownloadUrl()!.Value);
     }
 }

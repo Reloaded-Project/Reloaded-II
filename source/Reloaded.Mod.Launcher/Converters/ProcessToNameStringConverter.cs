@@ -8,7 +8,7 @@ namespace Reloaded.Mod.Launcher.Converters;
 [ValueConversion(typeof(Process), typeof(string))]
 public class ProcessToNameStringConverter : IValueConverter
 {
-    public string Prefix { get; set; }
+    public string Prefix { get; set; } = "[UNK]";
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
