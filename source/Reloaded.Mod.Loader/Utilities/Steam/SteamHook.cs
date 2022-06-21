@@ -86,8 +86,8 @@ public class SteamHook
     private bool RestartAppIfNecessaryImpl(uint appid)
     {
         // Write the Steam AppID to a local file if not dropped by the other method.
-        _restartAppIfNecessaryHook.OriginalFunction(appid);
         SteamAppId.WriteToDirectory(_applicationFolder, (int)appid);
+        _restartAppIfNecessaryHook.OriginalFunction(appid);
 
         return false;
     }
