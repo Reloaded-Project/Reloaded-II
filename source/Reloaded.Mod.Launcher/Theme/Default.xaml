@@ -9,7 +9,6 @@
                 <!-- Note to themers: Do not remove the two default dictionaries here.
                                       If you want to override stuff, add another ResourceDictionary BELOW such that existing values will be overwritten.
                 -->
-                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Root.xaml"/>
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/Root.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>

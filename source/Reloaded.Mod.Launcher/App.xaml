@@ -13,8 +13,12 @@
                 <hc:Theme Name="HandyTheme" Skin="Dark"/>
 
                 <!-- Reloaded-->
-                <ResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default.xaml" />
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Root.xaml"/>
                 <ResourceDictionary Source="Assets/Languages/en-GB.xaml"/>
+
+                <!-- Backwards Compatibility for Older Themes -->
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/Settings.xaml"/>
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/Window_Settings.xaml"/>
 
                 <!-- HandyControl Compat XAML -->
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/ThirdParty/HandyControl.xaml"/>

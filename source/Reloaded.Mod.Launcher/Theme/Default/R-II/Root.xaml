@@ -10,6 +10,9 @@
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/Settings.xaml"/>
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/Window_Settings.xaml"/>
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/Images.xaml"/>
+
+                <!-- Redefine base library styles with some of our changes -->
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
