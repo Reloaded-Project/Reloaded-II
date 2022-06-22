@@ -120,8 +120,10 @@ public static class PropertyResolverExtensions
             textbox.ToolTip = null;
 
         var tooltip = new ToolTip();
+        tooltip.DataContext = propertyItem;
         tooltip.Content = propertyItem.Description;
         tooltip.PlacementTarget = propertyItem;
+        tooltip.SetResourceReference(FrameworkElement.StyleProperty, "PropertyGridTooltip");
         ToolTipService.SetInitialShowDelay(tooltip, 0);
         ToolTipService.SetBetweenShowDelay(tooltip, 0);
         propertyItem.ToolTip = tooltip;

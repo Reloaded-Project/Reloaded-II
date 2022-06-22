@@ -216,4 +216,23 @@
         </Setter>
     </Style>
 
+    <!-- Tooltip for Properties -->
+    <Style x:Key="PropertyGridTooltip" TargetType="{x:Type ToolTip}" BasedOn="{StaticResource DefaultToolTip}">
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}" CornerRadius="{DynamicResource TooltipCornerRadius}">
+                        <!-- Bindings Map to HandyControl.Controls.PropertyItem s-->
+                        <StackPanel Margin="{TemplateBinding Padding}">
+                            <TextBlock Text="{Binding DisplayName}" FontSize="{DynamicResource FontSizeLarge}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Description}" FontSize="{DynamicResource FontSizeSmaller}" />
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
 </ResourceDictionary>
