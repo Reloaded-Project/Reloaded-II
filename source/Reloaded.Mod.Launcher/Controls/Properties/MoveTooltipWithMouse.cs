@@ -49,15 +49,12 @@ public class MoveTooltipWithMouse : WPF.MVVM.AttachedPropertyBase<MoveTooltipWit
         if (tooltip.PlacementTarget is FrameworkElement element)
         {
             // We have to be VERY CAREFUL here.
-            // If the Attached Property is declared as part of a style, then
-            // the instance of MoveTooltipWithMouse will be shared with all instances.  
+            // When using events, the publisher keeps a reference to the subscriber,
+            // keeping them alive.
 
-            // In this case, the MoveTooltipWithMouse will effectively last the lifetime of the process.  
-            // Subscribing to `element.MouseMove` injects a reference to MoveTooltipWithMouse into the 
-            // element, meaning it will never get garbage collected!!  
-
-            // Therefore, to avoid memory leak, we need to unsubscribe as the tooltip is unloaded.  
-
+            // And because controls can generate tooltips on demand, 
+            // we must unsubscribe the tooltip from the control for controls
+            // that are unlikely to unload.
             void OnElementMouseMove(object sender, MouseEventArgs args) => OnMouseMove(sender, tooltip, args);
             void OnTooltipUnloaded(object o, RoutedEventArgs args)
             {
@@ -72,7 +69,9 @@ public class MoveTooltipWithMouse : WPF.MVVM.AttachedPropertyBase<MoveTooltipWit
             InitTooltip(element, tooltip);
         }
 
-        tooltip.Loaded -= InitMouseTrack;
+        // No need to unsubscribe from Loaded.
+        // MoveTooltipWithMouse is either permanent (if part of a style)
+        // or has same roughly same lifetime as tooltip (if explicitly added).
     }
 
     private void InitTooltip(FrameworkElement element, ToolTip tooltip)
