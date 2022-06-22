@@ -113,16 +113,22 @@
                         <!-- Make Shortcut -->
                         <TextBlock Style="{DynamicResource SidebarTextblock}" 
                                    Text="{DynamicResource AddAppCreateShortcut}"
+                                   ToolTipService.InitialShowDelay="0"
+                                   ToolTip="{DynamicResource ApplicationTooltipCreateShortcutDescription}"
                                    PreviewMouseDown="MakeShortcut_PreviewMouseDown"/>
 
                         <!-- Load Mod Collection -->
                         <TextBlock Style="{DynamicResource SidebarTextblock}" 
                                    Text="{DynamicResource LoadModSet}"
+                                   ToolTipService.InitialShowDelay="0"
+                                   ToolTip="{DynamicResource ApplicationTooltipLoadModSet}"
                                    PreviewMouseDown="LoadModSet_PreviewMouseDown"/>
 
                         <!-- Save Mod Collection -->
                         <TextBlock Style="{DynamicResource SidebarTextblock}" 
                                    Text="{DynamicResource SaveModSet}"
+                                   ToolTipService.InitialShowDelay="0"
+                                   ToolTip="{DynamicResource ApplicationTooltipSaveModSet}"
                                    PreviewMouseDown="SaveModSet_PreviewMouseDown"/>
                     </StackPanel>
 
@@ -145,6 +151,8 @@
                                         <TextBlock Style="{DynamicResource TextblockWithColourChange}" HorizontalAlignment="Center" 
                                                    FontSize="{DynamicResource FontSizeSmaller}"
                                                    Text="{Binding ., Converter={StaticResource ReloadedPrcConverter}}"
+                                                   ToolTipService.InitialShowDelay="0"
+                                                   ToolTip="{DynamicResource ApplicationTooltipProcessRldDescription}"
                                                    PreviewMouseDown="ReloadedMod_PreviewMouseDown"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -159,7 +167,9 @@
                                     <DataTemplate>
                                         <TextBlock Style="{DynamicResource TextblockWithColourChange}" HorizontalAlignment="Center" 
                                                    FontSize="{DynamicResource FontSizeSmaller}"
-                                                   Text="{Binding ., Converter={StaticResource NonReloadedPrcConverter}}" 
+                                                   Text="{Binding ., Converter={StaticResource NonReloadedPrcConverter}}"
+                                                   ToolTipService.InitialShowDelay="0"
+                                                   ToolTip="{DynamicResource ApplicationTooltipProcessSysDescription}"
                                                    PreviewMouseDown="NonReloadedMod_PreviewMouseDown"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>

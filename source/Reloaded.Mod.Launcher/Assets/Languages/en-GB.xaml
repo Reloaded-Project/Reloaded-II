@@ -442,4 +442,11 @@
     <sys:String x:Key="AddAppRepoTestJsonSelectTitle">Select JSON File</sys:String>
     <sys:String x:Key="AddAppRepoTestJsonSelectFilter">Community Configuration</sys:String>
 
+    <!-- Update 1.18.0: Application Menu Tooltips -->
+    <sys:String x:Key="ApplicationTooltipCreateShortcutDescription">Saves a shortcut that can be used to launch the app modded without Reloaded Launcher.</sys:String>
+    <sys:String x:Key="ApplicationTooltipLoadModSet">Loads a list of enabled mods.</sys:String>
+    <sys:String x:Key="ApplicationTooltipSaveModSet">Saves the current list of enabled mods.</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessSysDescription">You can use me to load Reloaded into this program.</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessRldDescription">You can use me to manage currently loaded mods.</sys:String>
+
 </ResourceDictionary>
