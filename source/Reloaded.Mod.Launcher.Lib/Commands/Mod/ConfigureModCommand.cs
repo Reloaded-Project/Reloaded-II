@@ -89,6 +89,7 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         {
             config.DefaultContext = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly())!;
             config.IsLazyLoaded = true;
+            config.LoadInMemory = true;
         });
 
         var assembly = loader.LoadDefaultAssembly();
