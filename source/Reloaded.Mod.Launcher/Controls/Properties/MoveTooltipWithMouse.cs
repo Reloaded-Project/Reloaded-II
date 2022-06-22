@@ -81,7 +81,7 @@ public class MoveTooltipWithMouse : WPF.MVVM.AttachedPropertyBase<MoveTooltipWit
             return;
         
         if (element.IsMouseOver)
-            SetMousePosition(tooltip, Mouse.GetPosition(element));
+            SetMousePosition(tooltip, element, Mouse.GetPosition(element));
     }
 
     private void OnMouseMove(object sender, ToolTip tooltip, MouseEventArgs e)
@@ -92,13 +92,13 @@ public class MoveTooltipWithMouse : WPF.MVVM.AttachedPropertyBase<MoveTooltipWit
         if (!(bool)tooltip.GetValue(IsEnabledProperty)) 
             return;
         
-        SetMousePosition(tooltip, e.GetPosition(element));
+        SetMousePosition(tooltip, element, e.GetPosition(element));
     }
 
-    private static void SetMousePosition(ToolTip tooltip, Point currentPos)
+    private static void SetMousePosition(ToolTip tooltip, FrameworkElement parent, Point currentPos)
     {
         tooltip.Placement = PlacementMode.Relative;
-        tooltip.HorizontalOffset = currentPos.X + OffsetX + (int)tooltip.GetValue(OffsetXProperty);
-        tooltip.VerticalOffset = currentPos.Y + (int)tooltip.GetValue(OffsetYProperty);
+        tooltip.HorizontalOffset = currentPos.X + OffsetX + (int)tooltip.GetValue(OffsetXProperty) + (int)parent.GetValue(OffsetXProperty);
+        tooltip.VerticalOffset = currentPos.Y + (int)tooltip.GetValue(OffsetYProperty) + (int)parent.GetValue(OffsetYProperty);
     }
 }

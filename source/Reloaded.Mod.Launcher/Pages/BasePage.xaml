@@ -8,16 +8,18 @@
              xmlns:launcher="clr-namespace:Reloaded.Mod.Launcher"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
+             xmlns:properties="clr-namespace:Reloaded.Mod.Launcher.Controls.Properties"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800"
              Title="{DynamicResource TitleMainPage}">
 
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
         <Grid.Resources>
-            <Style TargetType="{x:Type controls:CircleButton}">
+            <Style TargetType="{x:Type controls:CircleButton}" BasedOn="{StaticResource CircleButtonControlStyle}">
                 <Setter Property="Margin" Value="{DynamicResource SidebarElementMargin}"/>
                 <Setter Property="Width"  Value="Auto"/>
                 <Setter Property="Height" Value="Auto"/>
+                <Setter Property="properties:MoveTooltipWithMouse.OffsetY" Value="-15"/>
             </Style>
 
             <!-- Sort the mod list -->

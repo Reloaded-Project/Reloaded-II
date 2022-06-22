@@ -58,9 +58,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="6.1.3" />
-    <PackageReference Include="Reloaded.WPF" Version="3.0.6" />
-    <PackageReference Include="Reloaded.WPF.Animations" Version="1.2.3" />
-    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.6" />
+    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.7" />
   </ItemGroup>
 
   <ItemGroup>

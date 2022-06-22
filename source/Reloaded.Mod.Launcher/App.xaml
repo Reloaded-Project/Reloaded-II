@@ -13,7 +13,8 @@
                 <hc:Theme Name="HandyTheme" Skin="Dark"/>
 
                 <!-- Reloaded-->
-                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Root.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Reloaded.WPF;component/Resources.xaml"/>
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/R-II/Root.xaml"/>
                 <ResourceDictionary Source="Assets/Languages/en-GB.xaml"/>
 
                 <!-- Backwards Compatibility for Older Themes -->
