@@ -369,6 +369,7 @@
     </Style>
 
     <!-- Dark Style Tooltips -->
+    <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
     <Style x:Key="DefaultToolTip"  TargetType="{x:Type ToolTip}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="Template">
             <Setter.Value>

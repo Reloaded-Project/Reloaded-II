@@ -13,6 +13,7 @@
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 
+
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Animations xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Default Styles xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
 
@@ -24,6 +25,7 @@
     </Style>
 
     <!-- Dark Style Tooltips -->
+    <PopupAnimation x:Key="{x:Static SystemParameters.ToolTipPopupAnimationKey}">None</PopupAnimation>
     <Style x:Key="DefaultToolTip"  TargetType="{x:Type ToolTip}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="FontSize" Value="{DynamicResource FontSizeTooltip}" />
         <Setter Property="FontFamily" Value="{DynamicResource FontBold}"/>
@@ -42,20 +44,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-
-        <Style.Triggers>
-            <Trigger Property="IsOpen" Value="True">
-                <Trigger.EnterActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                             Duration="0:0:1" From="3" To="0"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.EnterActions>
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Default Styles xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
