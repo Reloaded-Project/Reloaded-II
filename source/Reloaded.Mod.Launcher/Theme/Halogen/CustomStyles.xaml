@@ -7,9 +7,12 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Colours.xaml"/>
+                <!-- Reimporting from Original Theme -->
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Fonts.xaml"/>
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Settings.xaml"/>
+
+                <!-- Using our own Colours Instead -->
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Halogen/Colours.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>

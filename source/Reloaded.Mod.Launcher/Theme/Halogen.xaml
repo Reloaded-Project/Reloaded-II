@@ -30,6 +30,9 @@
         <!-- Redefine the Launcher Images -->
         <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Halogen/Images.xaml"/>
 
+        <!-- Redefine the Reloaded-II Control Styles -->
+        <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Halogen/CustomStyles.xaml"/>
+
         <!-- 
             Note: You can technically import just Controls.xaml, since that imports Styles which imports Colours.
                   However, we are importing all files in case of future internal changes.
