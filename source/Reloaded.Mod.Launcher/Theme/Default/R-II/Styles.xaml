@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF">
+                    xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
+                    xmlns:properties="clr-namespace:Reloaded.Mod.Launcher.Controls.Properties;assembly=Reloaded-II">
 
     <!-- For IntelliSense: Uncomment only when editing. -->
     <ResourceDictionary.MergedDictionaries>
@@ -30,6 +31,7 @@
         <Setter Property="FontSize" Value="{DynamicResource FontSizeTooltip}" />
         <Setter Property="FontFamily" Value="{DynamicResource FontBold}"/>
         <Setter Property="Background" Value="{StaticResource TooltipBackgroundColorBrush}"/>
+        <Setter Property="properties:MoveTooltipWithMouse.Value" Value="True"/>
 
         <Setter Property="Template">
             <Setter.Value>

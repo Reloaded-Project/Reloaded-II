@@ -121,6 +121,7 @@ public static class PropertyResolverExtensions
 
         var tooltip = new ToolTip();
         tooltip.Content = propertyItem.Description;
+        tooltip.PlacementTarget = propertyItem;
         ToolTipService.SetInitialShowDelay(tooltip, 0);
         ToolTipService.SetBetweenShowDelay(tooltip, 0);
         propertyItem.ToolTip = tooltip;
