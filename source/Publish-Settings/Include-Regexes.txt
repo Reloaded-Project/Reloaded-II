@@ -1,0 +1,13 @@
+^Theme[\\\/]Default*
+^Theme[\\\/]Halogen*
+^Theme[\\\/]Default\.xaml
+^Theme[\\\/]Halogen\.xaml
+^Theme[\\\/]NoCorners\.xaml
+^Assets[\\\/]Languages[\\\/]en-GB\.xaml
+^Assets[\\\/]Languages[\\\/]es-ES\.xaml
+^Assets[\\\/]Languages[\\\/]nl-NL\.xaml
+^Assets[\\\/]Languages[\\\/]pirate\.xaml
+^Assets[\\\/]Languages[\\\/]pt-PT\.xaml
+^Assets[\\\/]Languages[\\\/]ru-RU\.xaml
+^Assets[\\\/]Languages[\\\/]uwu\.xaml
+^version\.txt

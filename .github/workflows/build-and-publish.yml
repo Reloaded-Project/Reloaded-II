@@ -2,7 +2,8 @@ name: Build and Publish
 
 on:
   push:
-    branches: [ master ]
+    branches: 
+      - '*'
     tags:
       - '*'
   pull_request:
@@ -15,7 +16,8 @@ env:
   PUBLISH_INSTALLER_PATH: ./source/Publish/Installer/Setup.exe 
   PUBLISH_CHANGELOG_PATH: ./source/Publish/Changelog.md 
   PUBLISH_PACKAGES_PATH: ./source/Publish/Packages
-  PUBLISH_RELEASE_PATH: ./source/Publish/Release.zip
+  PUBLISH_RELEASE_FOLDER: ./source/Publish/Release
+  PUBLISH_RELEASE_PATH: ./source/Publish/Release/Release.zip
   PUBLISH_PATH: ./source/Publish
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/') }}
   RELEASE_TAG: ${{ github.ref_name }}
@@ -59,7 +61,15 @@ jobs:
       run: dotnet --info
       
     - name: Publish
-      run: .\source\Publish.ps1
+      run: |
+        if ($env:IS_RELEASE -eq 'true') 
+        {
+            .\source\Publish.ps1 -Version "$env:RELEASE_TAG"
+        }
+        else 
+        {
+            .\source\Publish.ps1 -Version "1.0.0-$(git rev-parse --short "$env:GITHUB_SHA")"
+        }
       
     - name: Inject Version (on Tag)
       if: env.IS_RELEASE == 'true'
@@ -154,7 +164,7 @@ jobs:
         body_path: ${{ env.PUBLISH_CHANGELOG_PATH }}
         # Newline-delimited list of path globs for asset files to upload
         files: |
-          ${{ env.PUBLISH_RELEASE_PATH }}
+          ${{ env.PUBLISH_RELEASE_FOLDER }}/*
           ${{ env.TOOLS_PATH }}
           ${{ env.PUBLISH_INSTALLER_PATH }}
         

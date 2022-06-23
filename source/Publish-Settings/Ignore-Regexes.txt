@@ -1,0 +1,7 @@
+Sewer56\.Update\.Metadata\.json
+^Apps
+^Mods
+^Plugins
+^User
+^Theme
+^Assets[\\\/]Languages

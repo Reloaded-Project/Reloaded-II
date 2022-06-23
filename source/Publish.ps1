@@ -1,3 +1,9 @@
+[cmdletbinding()]
+param (
+    ## => User Config <= ## 
+    $Version = "1.0.0"
+)
+
 # .NET 6 Has Issues with Handles and Files Already in use when building
 # single file applications, we have to try work around it here.
 function New-TemporaryDirectory 
@@ -38,7 +44,7 @@ $publishDirectory = "Publish"
 $chocoPublishDirectory = "$publishDirectory/Chocolatey"
 $installerPublishDirectory = "$publishDirectory/Installer"
 $templatePublishDirectory = "$publishDirectory/ModTemplate"
-$releaseFileName = "/Release.zip"
+$releaseFolder = "/Release"
 $toolsReleaseFileName = "/Tools.zip"
 $cleanupPaths = ("$buildPath", "$toolsPath", "$publishDirectory", "$chocoToolsPath")
 
@@ -110,8 +116,11 @@ New-Item "$chocoPublishDirectory" -ItemType Directory -ErrorAction SilentlyConti
 
 # Compress result.
 Add-Type -A System.IO.Compression.FileSystem
-[IO.Compression.ZipFile]::CreateFromDirectory("$outputPath", "$publishDirectory" + "$releaseFileName")
 [IO.Compression.ZipFile]::CreateFromDirectory("$toolsPath", "$publishDirectory" + "$toolsReleaseFileName")
+
+# Publish Mod
+[IO.Compression.ZipFile]::CreateFromDirectory("$outputPath", "$publishDirectory/$releaseFolder")
+./Publish.Reloaded.Release.ps1 -Version "$Version" -CurrentVersionPath "$outputPath" -ReleasePath "$publishDirectory/$releaseFolder"
 
 Remove-Item "$chocoToolsPath" -Recurse -ErrorAction SilentlyContinue
 New-Item "$chocoToolsPath" -ItemType Directory -ErrorAction SilentlyContinue
@@ -127,5 +136,3 @@ Get-ChildItem -Path $publishDirectory -Recurse -Force -ErrorAction SilentlyConti
 
 # Restore Working Directory
 Pop-Location
-
-
