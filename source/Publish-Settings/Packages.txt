@@ -1,0 +1,2 @@
+./Publish/Packages/current-version-package
+./Publish/Packages/delta-package-path

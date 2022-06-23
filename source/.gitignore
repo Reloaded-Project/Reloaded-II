@@ -6,3 +6,4 @@ Chocolatey/tools/*.exe
 Chocolatey/tools/*.dll
 
 Publish-Build*
+Sewer56.Update.Tool*
