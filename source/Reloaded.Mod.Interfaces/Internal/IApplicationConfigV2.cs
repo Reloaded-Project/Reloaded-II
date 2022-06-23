@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace Reloaded.Mod.Interfaces.Internal
+namespace Reloaded.Mod.Interfaces.Internal;
+
+public interface IApplicationConfigV2 : IApplicationConfigV1
 {
-    public interface IApplicationConfigV2 : IApplicationConfigV1
-    {
-        /// <summary>
-        /// Data stored by plugins. Maps a unique string key to arbitrary data.
-        /// </summary>
-        public Dictionary<string, object> PluginData { get; set; }
-    }
+    /// <summary>
+    /// Data stored by plugins. Maps a unique string key to arbitrary data.
+    /// </summary>
+    public Dictionary<string, object> PluginData { get; set; }
 }

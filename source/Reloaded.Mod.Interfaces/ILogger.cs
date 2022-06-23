@@ -1,10 +1,9 @@
 ﻿using Reloaded.Mod.Interfaces.Internal;
 
-namespace Reloaded.Mod.Interfaces
+namespace Reloaded.Mod.Interfaces;
+
+public interface ILogger : ILoggerV4
 {
-    public interface ILogger : ILoggerV4
-    {
 
 
-    }
 }

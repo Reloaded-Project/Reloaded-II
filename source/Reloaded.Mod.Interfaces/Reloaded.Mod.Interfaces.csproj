@@ -18,6 +18,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Platforms>AnyCPU</Platforms>
     <NoWarn>1701;1702;1591</NoWarn>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
