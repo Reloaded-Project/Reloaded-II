@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF">
+                    xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
+                    xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters;assembly=Reloaded-II">
 
 
     <!-- Import Reloaded.WPF Theme at runtime. -->
@@ -227,6 +228,10 @@
                         <StackPanel Margin="{TemplateBinding Padding}">
                             <TextBlock Text="{Binding DisplayName}" FontSize="{DynamicResource FontSizeLarge}" FontWeight="Bold"/>
                             <TextBlock Text="{Binding Description}" FontSize="{DynamicResource FontSizeSmaller}" />
+                            <TextBlock Visibility="{Binding DefaultValue, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}">
+                                <Run Text="Default Value: "/>
+                                <Run Text="{Binding DefaultValue}"/>
+                            </TextBlock>
                         </StackPanel>
                     </Border>
                 </ControlTemplate>

@@ -449,4 +449,8 @@
     <sys:String x:Key="ApplicationTooltipProcessSysDescription">You can use me to load Reloaded into this program.</sys:String>
     <sys:String x:Key="ApplicationTooltipProcessRldDescription">You can use me to manage currently loaded mods.</sys:String>
 
+    <!-- Update 1.19.0: Configure Mod Menu Reset -->
+    <sys:String x:Key="ConfigureModDialogReset">Reset</sys:String>
+    <sys:String x:Key="ConfigureModDialogResetDescription" xml:space="preserve">Resets the configuration values to their defaults.&#x0a;[Note: Requires mod support, contact author if doesn't work]</sys:String>
+
 </ResourceDictionary>

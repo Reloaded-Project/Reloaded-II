@@ -1,9 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Reflection.Emit;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -27,6 +25,18 @@ public class PropertyGridEx : PropertyGrid
     /// </summary>
     public static readonly DependencyProperty HoveredItemProperty = DependencyProperty.Register("HoveredItem", typeof(PropertyItem), typeof(PropertyGridEx), new PropertyMetadata());
 
+    private List<PropertyItem> _properties = new List<PropertyItem>();
+    private List<PropertyDescriptor> _propertyDescriptors = new List<PropertyDescriptor>();
+
+    protected override PropertyItem CreatePropertyItem(PropertyDescriptor propertyDescriptor, object component, string category,
+        int hierarchyLevel)
+    {
+        var item = base.CreatePropertyItem(propertyDescriptor, component, category, hierarchyLevel);
+        _properties.Add(item);
+        _propertyDescriptors.Add(propertyDescriptor);
+        return item;
+    }
+
     public override PropertyResolver PropertyResolver { get; }
 
     /// <summary>
@@ -41,6 +51,20 @@ public class PropertyGridEx : PropertyGrid
     public PropertyGridEx()
     {
         PropertyResolver = new PropertyResolverEx(this);
+    }
+
+    /// <summary>
+    /// Resets the values of all properties to 0.
+    /// </summary>
+    public void ResetValues()
+    {
+        // Try to create new instance and reset it.
+        for (var x = 0; x < _properties.Count; x++)
+        {
+            var property = _properties[x];
+            if (property.DefaultValue != null)
+                _propertyDescriptors[x].SetValue(property.Value, property.DefaultValue);
+        }
     }
 }
 
@@ -308,8 +332,6 @@ public class EnumPropertyEditor : PropertyEditorBase
 public class NumberPropertyEditor : PropertyEditorBase
 {
     public PropertyResolverEx Owner { get; internal set; }
-
-    public NumberPropertyEditor() { }
 
     public NumberPropertyEditor(double minimum, double maximum, PropertyResolverEx propertyResolverEx)
     {

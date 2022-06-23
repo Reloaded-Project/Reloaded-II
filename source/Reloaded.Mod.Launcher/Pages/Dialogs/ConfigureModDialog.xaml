@@ -37,13 +37,31 @@
                                  SelectedObject="{Binding CurrentConfigurable}"
                                  Margin="{DynamicResource CommonItemVerticalMargin}"
                                  Style="{StaticResource PropertyGridBaseStyle}" 
-                                 DefaultSorting="Hierarchy" />
+                                 DefaultSorting="Hierarchy"
+                                 x:Name="PropertyGridEx" />
 
-        <Button 
-            Grid.Row="2"
-            Content="{DynamicResource ConfigureModDialogSave}"
-            Style="{DynamicResource DefaultButton}"
-            HorizontalAlignment="Stretch"
-            Click="Save_Click"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button 
+                Grid.Column="0"
+                Content="{DynamicResource ConfigureModDialogReset}"
+                Style="{DynamicResource DefaultButton}"
+                ToolTip="{DynamicResource ConfigureModDialogResetDescription}"
+                ToolTipService.InitialShowDelay="0"
+                HorizontalAlignment="Stretch"
+                Click="Reset_Click"/>
+
+            <Button 
+                Grid.Column="2"
+                Content="{DynamicResource ConfigureModDialogSave}"
+                Style="{DynamicResource DefaultButton}"
+                HorizontalAlignment="Stretch"
+                Click="Save_Click"/>
+        </Grid>
     </Grid>
 </default:ReloadedWindow>
