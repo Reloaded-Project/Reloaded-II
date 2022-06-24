@@ -53,7 +53,6 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         try
         {
             var result = TryGetConfiguratorDisposing();
-            GC.Collect(0, GCCollectionMode.Forced, false);
             return result;
         }
         catch (Exception)
