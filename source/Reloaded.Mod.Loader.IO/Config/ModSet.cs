@@ -3,6 +3,7 @@ using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Loader.IO.Config;
 
+[Equals(DoNotAddEqualityOperators = true)]
 public class ModSet : ObservableObject, IConfig<ModSet>
 {
     /* Class Members */
