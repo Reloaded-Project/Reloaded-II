@@ -41,7 +41,6 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
 
     public void Dispose()
     {
-        ActionWrappers.ExecuteWithApplicationDispatcher(() => _modsViewSource.Filter -= ModsViewSourceOnFilter);
         AnimateOutFinished -= Dispose;
         ViewModel?.Dispose();
         GC.SuppressFinalize(this);

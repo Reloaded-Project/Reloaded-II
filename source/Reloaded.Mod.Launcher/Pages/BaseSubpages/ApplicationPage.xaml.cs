@@ -37,7 +37,7 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
     public void Dispose()
     {
         this.AnimateOutStarted -= Dispose;
-        ActionWrappers.ExecuteWithApplicationDispatcher(() => PageHost.CurrentPage?.AnimateOut());
+        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() => PageHost.CurrentPage?.AnimateOut());
         ViewModel?.Dispose();
         GC.SuppressFinalize(this);
     }
