@@ -31,11 +31,6 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     public ModEntry? SelectedMod { get; set; }
 
     /// <summary>
-    /// Index of the currently selected mod.
-    /// </summary>
-    public int SelectedModIndex { get; set; } = -1;
-
-    /// <summary>
     /// Stores the currently selected application.
     /// </summary>
     public PathTuple<ApplicationConfig> ApplicationTuple { get; set; }

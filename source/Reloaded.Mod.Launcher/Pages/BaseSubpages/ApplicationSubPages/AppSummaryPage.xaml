@@ -52,7 +52,6 @@
                 HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={StaticResource FilteredMods}}"
                 SelectedItem="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedIndex="{Binding SelectedModIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ToolTip="{DynamicResource ConfigureModsListItemTooltip}"
                 ToolTipService.InitialShowDelay="250"
                 VerticalAlignment="Stretch"
