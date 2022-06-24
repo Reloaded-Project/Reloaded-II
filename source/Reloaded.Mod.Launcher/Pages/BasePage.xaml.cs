@@ -23,27 +23,27 @@ public partial class BasePage : ReloadedIIPage
     }
 
     /* Preconfigured Buttons */
-    private void AddApp_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void AddApp_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.AddApplicationCommand.Execute(null);
     }
 
-    private void ManageMods_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void ManageMods_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.Page = Page.ManageMods;
     }
 
-    private void LoaderSettings_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void LoaderSettings_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.Page = Page.SettingsPage;
     }
 
-    private void DownloadMods_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void DownloadMods_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.Page = Page.DownloadMods;
     }
 
-    private void Application_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void Application_Click(object sender, RoutedEventArgs e)
     {
         // Prepare for parameter transfer.
         if (sender is not FrameworkElement element) 

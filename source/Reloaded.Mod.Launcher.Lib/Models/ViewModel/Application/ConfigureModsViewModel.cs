@@ -30,6 +30,11 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     public ModEntry? SelectedMod { get; set; }
 
     /// <summary>
+    /// Index of the currently selected mod.
+    /// </summary>
+    public int SelectedModIndex { get; set; } = -1;
+
+    /// <summary>
     /// Stores the currently selected application.
     /// </summary>
     public PathTuple<ApplicationConfig> ApplicationTuple { get; set; }
@@ -89,7 +94,10 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     private void BuildModList()
     {
         AllMods = new ObservableCollection<ModEntry>(GetInitialModSet(_applicationViewModel, ApplicationTuple));
-        AllMods.CollectionChanged += async (_, _) => await SaveApplication(); // Save on reorder.
+        AllMods.CollectionChanged += async (_, _) =>
+        {
+            await SaveApplication(); // Save on reorder.
+        }; 
     }
 
     /// <summary>

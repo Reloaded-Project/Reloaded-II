@@ -300,6 +300,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource FontLight}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSizeRegular}" />
         <Setter Property="Foreground" Value="{StaticResource TextColorBrush}"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
     </Style>
 
     <!-- Text Blocks -->
@@ -697,7 +698,6 @@
         <Setter Property="Foreground" Value="{StaticResource BorderColorBrush}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeRegular}"/>
         <Setter Property="properties:ShowComboboxArrow.Value" Value="True" />
 
@@ -719,7 +719,7 @@
                                           IsHitTestVisible="False"
                                           HorizontalAlignment="Center" 
                                           VerticalAlignment="Center"
-                                          Focusable="True"
+                                          Focusable="False"
                                           Content="{TemplateBinding SelectionBoxItem}" 
                                           ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                           ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
@@ -870,6 +870,7 @@
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
                     <Setter Property="Background" Value="{StaticResource BackgroundColorBrush}"/>
                     <Setter Property="Padding" Value="{DynamicResource DataGridCellPadding}"/>
+                    <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
 
                     <Setter Property="Template">
                         <Setter.Value>
@@ -989,6 +990,7 @@
             <Setter.Value>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Padding" Value="{DynamicResource ListViewItemPadding}"/>
+                    <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
 
                     <Setter Property="Template">
                         <Setter.Value>
@@ -1066,6 +1068,7 @@
             <Setter.Value>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Padding" Value="{DynamicResource ListViewItemPadding}"/>
+                    <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
 
                     <Setter Property="Template">
                         <Setter.Value>

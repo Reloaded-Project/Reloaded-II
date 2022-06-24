@@ -130,18 +130,21 @@ public static class PropertyResolverExtensions
 {
     public static void AttachTooltipAdder(this PropertyItem propertyItem, PropertyResolverEx resolverEx)
     {
-        if (string.IsNullOrEmpty(propertyItem.Description))
-            return;
-
-        propertyItem.Loaded += (sender, args) => { PropertyItemLoaded(sender, args, resolverEx); };
+        propertyItem.Loaded += (sender, args) => { PropertyItemLoaded(sender, args, resolverEx, !string.IsNullOrEmpty(propertyItem.Description)); };
     }
 
-    private static void PropertyItemLoaded(object? sender, EventArgs e, PropertyResolverEx resolverEx)
+    private static void PropertyItemLoaded(object? sender, EventArgs e, PropertyResolverEx resolverEx, bool hasDescription)
     {
         var propertyItem = (PropertyItem)sender!;
         var textbox = FindChild<TextBox>(propertyItem, "");
         if (textbox != null)
+        {
             textbox.ToolTip = null;
+            textbox.Focusable = false;
+        }
+
+        if (!hasDescription)
+            return;
 
         var tooltip = new ToolTip();
         tooltip.DataContext = propertyItem;
@@ -367,6 +370,7 @@ public class SwitchPropertyEditorEx : SwitchPropertyEditor
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
     {
         var result = base.CreateElement(propertyItem);
+        result.SetResourceReference(FrameworkElement.FocusVisualStyleProperty, "ReloadedFocusVisual");
         propertyItem.AttachTooltipAdder(Owner);
         return result;
     }

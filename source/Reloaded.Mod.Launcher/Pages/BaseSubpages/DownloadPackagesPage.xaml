@@ -81,6 +81,9 @@
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Top"
             
+            SelectionMode="Single"
+            SelectionUnit="FullRow"
+            
             CanUserResizeColumns="False"
             CanUserResizeRows="False"
             CanUserAddRows="False"
@@ -90,6 +93,7 @@
 
             IsReadOnly="True"
             AutoGenerateColumns="False"
+
             Margin="{DynamicResource CommonItemVerticalMargin}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />

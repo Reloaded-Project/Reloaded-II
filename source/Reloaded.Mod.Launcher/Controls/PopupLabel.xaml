@@ -21,7 +21,7 @@
                     FontWeight="{Binding Path=FontWeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"
                     d:DataContext="{x:Static designTimeModels:PopupLabelDesignTimeModel.Instance}"
                     DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                    PreviewMouseDown="Button_PreviewMouseDown">
+                    Click="OnClick">
             </Button>
 
             <ContentPresenter x:Name="HiddenContentContainer"
