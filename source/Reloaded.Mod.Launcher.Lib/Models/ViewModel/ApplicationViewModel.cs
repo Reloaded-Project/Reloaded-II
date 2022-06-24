@@ -69,12 +69,13 @@ public class ApplicationViewModel : ObservableObject, IDisposable
     /// <summary>
     /// Command allowing you to create a shortcut.
     /// </summary>
-    public MakeShortcutCommand MakeShortcutCommand { get; set; }
+    public MakeShortcutCommand MakeShortcutCommand { get; set; } = null!;
 
-    private Timer _refreshProcessesWithLoaderTimer;
+    private Timer _refreshProcessesWithLoaderTimer = null!;
     private ModConfigService _modConfigService;
     private ApplicationInstanceTracker _instanceTracker;
     private ModUserConfigService _modUserConfigService;
+    private CancellationTokenSource _initialiseTokenSrc = new CancellationTokenSource();
 
     /// <inheritdoc />
     public ApplicationViewModel(PathTuple<ApplicationConfig> tuple, ModConfigService modConfigService, ModUserConfigService modUserConfigService, LoaderConfig loaderConfig)
@@ -82,10 +83,12 @@ public class ApplicationViewModel : ObservableObject, IDisposable
         ApplicationTuple    = tuple;
         _modConfigService    = modConfigService;
         _modUserConfigService = modUserConfigService;
-        MakeShortcutCommand = new MakeShortcutCommand(tuple, Launcher.Lib.Lib.IconConverter);
 
-        IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
-        _instanceTracker = new ApplicationInstanceTracker(ApplicationConfig.GetAbsoluteAppLocation(tuple));
+        _instanceTracker = new ApplicationInstanceTracker(ApplicationConfig.GetAbsoluteAppLocation(tuple), _initialiseTokenSrc.Token);
+        if (_initialiseTokenSrc.IsCancellationRequested)
+            return;
+
+        MakeShortcutCommand = new MakeShortcutCommand(tuple, Launcher.Lib.Lib.IconConverter);
         _modConfigService.Items.CollectionChanged += OnGetModifications;
         _instanceTracker.OnProcessesChanged += OnProcessesChanged;
 
@@ -93,6 +96,7 @@ public class ApplicationViewModel : ObservableObject, IDisposable
         GetModsForThisApp();
         _refreshProcessesWithLoaderTimer = new Timer(RefreshTimerCallback, null, 500, loaderConfig.ProcessRefreshInterval);
         Page = ApplicationSubPage.ApplicationSummary;
+        IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
     }
 
     /// <inheritdoc />
@@ -104,6 +108,7 @@ public class ApplicationViewModel : ObservableObject, IDisposable
     /// <inheritdoc />
     public void Dispose()
     {
+        _initialiseTokenSrc.Cancel();
         _modConfigService.Items.CollectionChanged -= OnGetModifications;
         _instanceTracker.OnProcessesChanged -= OnProcessesChanged;
 
@@ -168,9 +173,12 @@ public class ApplicationViewModel : ObservableObject, IDisposable
 
     private void UpdateReloadedProcesses()
     {
-        var result = _instanceTracker.GetProcesses();
-        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+        var result = _instanceTracker.GetProcesses(_initialiseTokenSrc.Token);
+        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
         {
+            if (_initialiseTokenSrc.IsCancellationRequested)
+                return;
+
             Collections.ModifyObservableCollection(ProcessesWithReloaded, result.ReloadedProcesses);
             Collections.ModifyObservableCollection(ProcessesWithoutReloaded, result.NonReloadedProcesses);
         });
@@ -199,8 +207,11 @@ public class ApplicationViewModel : ObservableObject, IDisposable
         }
 
         // Modify collection.
-        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
         {
+            if (_initialiseTokenSrc.IsCancellationRequested)    
+                return;
+
             Collections.ModifyObservableCollection(ModsForThisApp, newMods);
             OnGetModsForThisApp();
         });

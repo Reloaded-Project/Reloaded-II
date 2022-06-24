@@ -94,8 +94,8 @@ public class ApplicationInstanceTracker : IDisposable
     /// <summary>
     /// Returns a collection of all Reloaded and non-Reloaded processes on the local machine.
     /// </summary>
-    /// <returns></returns>
-    public ProcessCollection GetProcesses()
+    /// <returns>List, incomplete if cancellation requested.</returns>
+    public ProcessCollection GetProcesses(CancellationToken token = default)
     {
         if (_processes == null)
             return default;
@@ -103,6 +103,10 @@ public class ApplicationInstanceTracker : IDisposable
         var processCollection = ProcessCollection.GetEmpty(_processes.Count);
         foreach (var process in _processes.ToArray())
         {
+            // Return if cancellation requested.
+            if (token.IsCancellationRequested)
+                return processCollection;
+
             if (Client.IsModLoaderPresent(process))
                 processCollection.ReloadedProcesses.Add(process);
             else
