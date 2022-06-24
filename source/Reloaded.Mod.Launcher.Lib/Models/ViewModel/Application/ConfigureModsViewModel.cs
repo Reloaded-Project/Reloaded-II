@@ -53,6 +53,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// <summary/>
     public OpenUserConfigFolderCommand OpenUserConfigFolderCommand { get; set; } = null!;
 
+    private ModEntry? _cachedModEntry;
     private ApplicationViewModel _applicationViewModel;
     private readonly ModUserConfigService _userConfigService;
     private CancellationTokenSource _saveToken;
@@ -163,7 +164,10 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
     private void UpdateCommands()
     {
-        if (SelectedMod == null) 
+        // Some operations like swapping order of 2 lists might fire a 
+        // event with SelectedMod == null, then select our mod again.
+        // Setting up some commands (particularly ConfigureMod) can cause lag, so let's mitigate this.
+        if (SelectedMod == null || SelectedMod == _cachedModEntry) 
             return;
 
         OpenModFolderCommand = new OpenModFolderCommand(SelectedMod.Tuple);
@@ -174,5 +178,6 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         EditModUserConfigCommand = new EditModUserConfigCommand(userConfig);
         OpenUserConfigFolderCommand = new OpenUserConfigFolderCommand(userConfig);
         ConfigureModCommand = new ConfigureModCommand(SelectedMod.Tuple, userConfig);
+        _cachedModEntry = SelectedMod;
     }
 }
