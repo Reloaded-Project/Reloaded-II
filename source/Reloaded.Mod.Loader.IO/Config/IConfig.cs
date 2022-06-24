@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -108,10 +109,17 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
         CreateDirectoryIfNotExist(Path.GetDirectoryName(fullPath));
         var tempPath = $"{fullPath}.{Path.GetRandomFileName()}";
 
-        await using (var stream = await IOEx.OpenFileAsync(tempPath, FileMode.Create, FileAccess.Write, token))
-            await JsonSerializer.SerializeAsync(stream, config, _options, token);
-
-        await IOEx.MoveFileAsync(tempPath, fullPath, token);
+        try
+        {
+            await using (var stream = await IOEx.OpenFileAsync(tempPath, FileMode.Create, FileAccess.Write, token))
+                await JsonSerializer.SerializeAsync(stream, config, _options, token);
+            
+            await IOEx.MoveFileAsync(tempPath, fullPath, token);
+        }
+        catch (TaskCanceledException)
+        {
+            File.Delete(tempPath);
+        }
     }
 
     private static void CreateDirectoryIfNotExist(string directory)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Lib.Commands.Mod;
@@ -59,6 +60,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
     private ApplicationViewModel _applicationViewModel;
     private readonly ModUserConfigService _userConfigService;
+    private CancellationTokenSource _saveToken;
 
     /// <inheritdoc />
     public ConfigureModsViewModel(ApplicationViewModel model, ModUserConfigService userConfigService)
@@ -66,6 +68,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         ApplicationTuple = model.ApplicationTuple;
         _applicationViewModel = model;
         _userConfigService = userConfigService;
+        _saveToken = new CancellationTokenSource();
 
         // Wait for parent to fully initialize.
         _applicationViewModel.OnGetModsForThisApp += BuildModList;
@@ -146,8 +149,15 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
     private async Task SaveApplication()
     {
-        ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
-        await ApplicationTuple.SaveAsync();
+        _saveToken.Cancel();
+        _saveToken = new CancellationTokenSource();
+
+        try
+        {
+            ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
+            await ApplicationTuple.SaveAsync(_saveToken.Token);
+        }
+        catch (TaskCanceledException) { /* Ignored */ }
     }
 
     private void OnSelectedModChanged(object? sender, PropertyChangedEventArgs e)
