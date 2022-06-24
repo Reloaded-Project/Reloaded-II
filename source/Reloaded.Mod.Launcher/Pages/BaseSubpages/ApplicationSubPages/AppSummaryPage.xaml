@@ -53,7 +53,7 @@
                 ItemsSource="{Binding Source={StaticResource FilteredMods}}"
                 SelectedItem="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 ToolTip="{DynamicResource ConfigureModsListItemTooltip}"
-                ToolTipService.InitialShowDelay="0"
+                ToolTipService.InitialShowDelay="250"
                 VerticalAlignment="Stretch"
                 VerticalContentAlignment="Top"
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
