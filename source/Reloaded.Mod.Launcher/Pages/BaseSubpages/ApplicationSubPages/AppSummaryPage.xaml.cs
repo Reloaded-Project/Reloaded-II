@@ -72,7 +72,7 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
 
     private void HandleSwapMod(KeyEventArgs e, ListView listView)
     {
-        if (!Keyboard.IsKeyDown(KeyboardUtils.Modifier) || ViewModel.SelectedMod == null)
+        if (ViewModel.SelectedMod == null)
             return;
         
         if (!KeyboardUtils.TryGetListScrollDirection(e, out int indexOffset))
