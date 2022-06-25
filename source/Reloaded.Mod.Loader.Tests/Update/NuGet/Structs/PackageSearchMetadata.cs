@@ -48,6 +48,9 @@ public class CustomPackageSearchMetadata : IPackageSearchMetadata
     public Uri ProjectUrl { get; set; }
 
     /// <inheritdoc />
+    public Uri ReadmeUrl { get; }
+
+    /// <inheritdoc />
     public Uri ReportAbuseUrl { get; set; }
 
     /// <inheritdoc />
@@ -79,4 +82,6 @@ public class CustomPackageSearchMetadata : IPackageSearchMetadata
 
     /// <inheritdoc />
     public LicenseMetadata LicenseMetadata { get; set; }
+
+    public IEnumerable<PackageVulnerabilityMetadata> Vulnerabilities { get; }
 }
