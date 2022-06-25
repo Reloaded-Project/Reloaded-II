@@ -442,4 +442,15 @@
     <sys:String x:Key="AddAppRepoTestJsonSelectTitle">Selecteer JSON File</sys:String>
     <sys:String x:Key="AddAppRepoTestJsonSelectFilter">Community Configuratie</sys:String>
 
+    <!-- Update 1.18.0: Application Menu Tooltips -->
+    <sys:String x:Key="ApplicationTooltipCreateShortcutDescription">Slaat een snelkoppeling op, die gebruikt kan worden om een app met mods op te starten zonder Reloaded Launcher.</sys:String>
+    <sys:String x:Key="ApplicationTooltipLoadModSet">Laadt een lijst van aangezette mods.</sys:String>
+    <sys:String x:Key="ApplicationTooltipSaveModSet">Slaat de huidige lijst van aangezette mods op.</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessSysDescription">U kunt mij gebruiken om Reloaded te laden in dit programma.</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessRldDescription">U kunt mij gebruiken om de huidige geladen mods te beheren.</sys:String>
+
+    <!-- Update 1.19.0: Configure Mod Menu Reset -->
+    <sys:String x:Key="ConfigureModDialogReset">Reset</sys:String>
+    <sys:String x:Key="ConfigureModDialogResetDescription" xml:space="preserve">Reset de huidige configuratie waarden naar de standaard waarden.&#x0a;[Let op: Dit benodigd mod ondersteuning, zoek contact op met de auteur als dit niet werkt]</sys:String>
+
 </ResourceDictionary>
