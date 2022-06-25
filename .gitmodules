@@ -1,6 +1,3 @@
 [submodule "source/Submodules/DotNetCorePlugins"]
 	path = source/Submodules/DotNetCorePlugins
 	url = https://github.com/Sewer56/DotNetCorePlugins.git
-[submodule "source/Submodules/Reloaded.WPF"]
-	path = source/Submodules/Reloaded.WPF
-	url = https://github.com/Sewer56/Reloaded.WPF.git

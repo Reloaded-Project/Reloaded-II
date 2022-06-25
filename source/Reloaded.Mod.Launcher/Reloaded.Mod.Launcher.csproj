@@ -58,6 +58,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
+    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.8" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,7 +67,6 @@
     <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
-    <ProjectReference Include="..\Submodules\Reloaded.WPF\Source\Reloaded.WPF.Theme.Default\Reloaded.WPF.Theme.Default.csproj" />
   </ItemGroup>
 
   <ItemGroup>
