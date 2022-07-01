@@ -453,4 +453,7 @@
     <sys:String x:Key="ConfigureModDialogReset">Reset</sys:String>
     <sys:String x:Key="ConfigureModDialogResetDescription" xml:space="preserve">Resets the configuration values to their defaults.&#x0a;[Note: Requires mod support, contact author if doesn't work]</sys:String>
 
+    <!-- Update 1.19.0: Controller Support -->
+    <sys:String x:Key="LoaderSettingsControllerBtn">Controller Configuration</sys:String>
+
 </ResourceDictionary>

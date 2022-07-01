@@ -16,6 +16,9 @@ internal static class ListViewUtilities
     /// <returns></returns>
     internal static bool ShiftItem(this ListView listView, int offset)
     {
+        if (listView.SelectedIndex == -1)
+            return false;
+
         var index = listView.SelectedIndex;
         var list = TryGetUnderlyingList(listView);
         if (list == null)

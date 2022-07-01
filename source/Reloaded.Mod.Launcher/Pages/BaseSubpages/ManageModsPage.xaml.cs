@@ -55,11 +55,8 @@ public partial class ManageModsPage : ReloadedIIPage
         e.Accepted = textToCheck.Contains(textToFind, StringComparison.InvariantCultureIgnoreCase);
     }
 
-    private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void New_Click(object sender, RoutedEventArgs e)
     {
-        if (e.LeftButton != MouseButtonState.Pressed) 
-            return;
-            
         var createModDialog = new CreateModDialog(ViewModel.ModConfigService);
         createModDialog.Owner = Window.GetWindow(this);
         createModDialog.ShowDialog();

@@ -42,30 +42,18 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private void ReloadedMod_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void ReloadedMod_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.LeftButton != MouseButtonState.Pressed) 
-            return;
-
-        if (sender is not FrameworkElement element) 
-            return;
-
-        if (element.DataContext is not Process process) 
+        if (sender is not FrameworkElement { DataContext: Process process }) 
             return;
 
         ViewModel.SelectedProcess = process;
         ViewModel.ChangeApplicationPage(ApplicationSubPage.ReloadedProcess);
     }
 
-    private void NonReloadedMod_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void NonReloadedMod_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.LeftButton != MouseButtonState.Pressed) 
-            return;
-
-        if (sender is not FrameworkElement element) 
-            return;
-
-        if (element.DataContext is not Process process) 
+        if (sender is not FrameworkElement { DataContext: Process process }) 
             return;
 
         ViewModel.SelectedProcess = process;
@@ -75,25 +63,16 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
 
     private void Summary_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.LeftButton != MouseButtonState.Pressed) 
-            return;
-
         ViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
     }
 
     private void Edit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.LeftButton != MouseButtonState.Pressed) 
-            return;
-
         ViewModel.ChangeApplicationPage(ApplicationSubPage.EditApplication);
     }
 
     private async void LaunchApplication_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.LeftButton != MouseButtonState.Pressed) 
-            return;
-
         await ViewModel.ApplicationTuple.SaveAsync();
         ViewModel.EnforceModCompatibility();
         await Setup.CheckForMissingModDependenciesAsync();
@@ -104,7 +83,6 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
         if (!Environment.IsWine || (Environment.IsWine && CompatibilityDialogs.WineShowLaunchDialog()))
             launcher.Start();
     }
-
 
     private void MakeShortcut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {

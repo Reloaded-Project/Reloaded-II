@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using HandyControl.Controls;
 using Reloaded.Mod.Launcher.Utility;
 using static System.Environment;
 
@@ -55,6 +56,7 @@ public partial class App : Application
         Resources.MergedDictionaries.Add(languageSelector);
         Resources.MergedDictionaries.Add(themeSelector);
         themeSelector.NewFileSet += OnThemeChanged;
+        Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri($"{launcherFolder}\\Theme\\Helpers\\BackwardsCompatibilityHelpers.xaml", UriKind.RelativeOrAbsolute) });
     }
 
     private void OnThemeChanged()
@@ -72,6 +74,8 @@ public partial class App : Application
         TryAssignResource("AccentColorLighter", "DarkPrimaryColor");
         TryAssignResource("AccentColorLighter", "PrimaryColor");
         TryAssignResource("AccentColorLight", "LightPrimaryColor");
+
+        // Remove focus from scroll viewers
         if (Current.MainWindow != null)
         {
             Current.MainWindow.ApplyTemplate();

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using HandyControl.Controls;
 using Reloaded.Mod.Launcher.Lib.Commands.General;
 using Reloaded.Mod.Loader.Update.Utilities;
+using Sewer56.UI.Controller.WPF;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace Reloaded.Mod.Launcher.Controls;
@@ -136,12 +137,19 @@ public static class PropertyResolverExtensions
     private static void PropertyItemLoaded(object? sender, EventArgs e, PropertyResolverEx resolverEx, bool hasDescription)
     {
         var propertyItem = (PropertyItem)sender!;
+        
+        // Make the child textbox not use built-in tooltip
         var textbox = FindChild<TextBox>(propertyItem, "");
         if (textbox != null)
         {
             textbox.ToolTip = null;
             textbox.Focusable = false;
         }
+
+        // Make the parent expander non-focusable for controllers.
+        var expander = WpfUtilities.FindParent<Expander>(propertyItem);
+        if (expander != null)
+            expander.Focusable = false;
 
         if (!hasDescription)
             return;

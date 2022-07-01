@@ -19,9 +19,6 @@ public partial class Main : ReloadedPage
 
     private void ModIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.LeftButton != MouseButtonState.Pressed)
-            return;
-
         ViewModel.SetNewImage();
     }
 }

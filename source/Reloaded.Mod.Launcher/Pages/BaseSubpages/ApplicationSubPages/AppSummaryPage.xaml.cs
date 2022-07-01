@@ -2,6 +2,7 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -11,6 +12,9 @@ using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Launcher.Utility;
 using Reloaded.WPF.Utilities;
+using Sewer56.UI.Controller.Core.Structures;
+using Sewer56.UI.Controller.WPF;
+using Button = Sewer56.UI.Controller.Core.Enums.Button;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 
@@ -28,20 +32,18 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
         InitializeComponent();
         ViewModel = IoC.Get<ConfigureModsViewModel>();
 
+        ControllerSupport.OnProcessCustomInputs += OnProcessCustomInputs;
         _manipulator    = new DictionaryResourceManipulator(this.Contents.Resources);
         _modsViewSource = _manipulator.Get<CollectionViewSource>("FilteredMods");
         _modsViewSource.Filter += ModsViewSourceOnFilter;
-        AnimateOutFinished += Dispose;
+        Unloaded += (sender, args) => Dispose();
     }
 
-    ~AppSummaryPage()
-    {
-        Dispose();
-    }
+    ~AppSummaryPage() => Dispose();
 
     public void Dispose()
     {
-        AnimateOutFinished -= Dispose;
+        ControllerSupport.OnProcessCustomInputs -= OnProcessCustomInputs;
         ViewModel?.Dispose();
         GC.SuppressFinalize(this);
     }
@@ -63,31 +65,75 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
         _modsViewSource.View.Refresh();
     }
 
-    private void ModListView_KeyDown(object sender, KeyEventArgs e)
+    #region Keyboard Controls
+    private void KeyboardControls_KeyDown(object sender, KeyEventArgs e)
     {
-        HandleModEnableKey(e);
-        HandleSwapMod(e, (ListView)sender);
+        // Toggle On/Off
+        if (e.Key == KeyboardUtils.Accept)
+            ToggleModItem();
+
+        ProcessKeyboardItemShift(sender, e);
     }
 
-    private void HandleSwapMod(KeyEventArgs e, ListView listView)
+    private static void ProcessKeyboardItemShift(object sender, KeyEventArgs e)
     {
-        if (ViewModel.SelectedMod == null)
-            return;
-        
+        // Shift item up/down
         if (!KeyboardUtils.TryGetListScrollDirection(e, out int indexOffset))
             return;
 
-        if (!listView.ShiftItem(indexOffset)) 
+        if (!TryShiftSelectedItem((ListView)sender, indexOffset))
             return;
 
+        // Needed so our selection doesn't skip
         e.Handled = true;
     }
+    #endregion
 
-    private void HandleModEnableKey(KeyEventArgs e)
+    #region Controller Controls
+
+    private void OnProcessCustomInputs(ControllerState state)
     {
-        if (e.Key != KeyboardUtils.Accept)
+        if (!WpfUtilities.TryGetFocusedElementAndWindow(out var window, out var focused))
             return;
 
+        // We only deal with the listview.
+        if (focused is not ListViewItem item)
+            return;
+        
+        if (state.IsButtonPressed(Button.Accept))
+            ToggleModItem();
+
+        ProcessControllerItemShift(state, item);
+    }
+
+    private static void ProcessControllerItemShift(in ControllerState state, ListViewItem listViewItem)
+    {
+        // ReSharper disable once PossiblyImpureMethodCallOnReadonlyVariable
+        if (!state.IsButtonHeld(Button.Modifier))
+            return;
+
+        if (!ControllerSupport.TryGetListScrollDirection(state, out int indexOffset))
+            return;
+
+        var listView = WpfUtilities.FindParent<ListView>(listViewItem!);
+        if (listView == null)
+            return;
+
+        TryShiftSelectedItem(listView, indexOffset);
+    }
+    #endregion
+
+    private static bool TryShiftSelectedItem(ListView listView, int indexOffset)
+    {
+        if (!listView.ShiftItem(indexOffset))
+            return false;
+
+        KeyboardNav.Focus((UIElement)listView.ItemContainerGenerator.ContainerFromIndex(listView.SelectedIndex));
+        return true;
+    }
+
+    private void ToggleModItem()
+    {
         var mod = ViewModel.SelectedMod;
         if (mod == null || mod.Enabled == null)
             return;

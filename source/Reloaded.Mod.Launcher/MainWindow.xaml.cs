@@ -1,4 +1,6 @@
-﻿using Reloaded.Mod.Launcher.Lib;
+﻿using System.Windows;
+using System.Windows.Input;
+using Reloaded.Mod.Launcher.Lib;
 using Reloaded.WPF.Theme.Default;
 
 namespace Reloaded.Mod.Launcher;

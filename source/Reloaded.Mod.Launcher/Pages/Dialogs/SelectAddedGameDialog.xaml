@@ -36,8 +36,8 @@
                        TextWrapping="Wrap"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="{DynamicResource CommonItemCombinedMarginSmaller}">
-                <Button Content="{DynamicResource AddAppRepoSelectGameDialogOtherGame}" Style="{DynamicResource GridButton}" PreviewMouseDown="Cancel_PreviewMouseDown"/>
-                <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource GridButton}" PreviewMouseDown="OK_PreviewMouseDown"/>
+                <Button Content="{DynamicResource AddAppRepoSelectGameDialogOtherGame}" Style="{DynamicResource GridButton}" Click="Cancel_Click" />
+                <Button Content="{DynamicResource MessageBoxButtonOK}" Style="{DynamicResource GridButton}" Click="OK_Click" />
             </StackPanel>
 
         </StackPanel>

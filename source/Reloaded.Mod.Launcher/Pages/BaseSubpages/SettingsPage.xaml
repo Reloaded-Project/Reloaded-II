@@ -13,7 +13,7 @@
     d:DesignHeight="600" 
     d:DesignWidth="900"
     Title="{DynamicResource TitleLoaderSettings}">
-    <ScrollViewer>
+    <ScrollViewer Focusable="False">
         <Grid Margin="{DynamicResource PageMargin}" DataContext="{Binding ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
             <Grid.Resources>
                 <Thickness x:Key="BannerMargin">75,20,75,0</Thickness>
@@ -22,6 +22,7 @@
                     <Setter Property="HorizontalAlignment" Value="Center"/>
                     <Setter Property="Margin" Value="{DynamicResource ListEntryItemMarginSmall}"/>
                     <Setter Property="ToolTipService.InitialShowDelay" Value="0" />
+                    <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
                 </Style>
 
                 <system:Double x:Key="ComboBoxWidth">133</system:Double>
@@ -52,33 +53,44 @@
                 <!-- Docs / User Guide -->
                 <StackPanel Orientation="Horizontal" Margin="{DynamicResource CommonItemVerticalMargin}" HorizontalAlignment="Center">
 
-
                     <Image Source="{DynamicResource IconInfo}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource FirstLaunchLineUserguide}"
+                               Focusable="True"
                                PreviewMouseDown="Documents_PreviewMouseDown" />
 
                     <Image Source="{DynamicResource IconDiscord}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource LoaderSettingsDiscord}"
+                               Focusable="True"
                                PreviewMouseDown="Discord_PreviewMouseDown" />
 
                     <Image Source="{DynamicResource IconTwitter}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource LoaderSettingsTwitter}"
+                               Focusable="True"
                                PreviewMouseDown="Twitter_PreviewMouseDown" />
 
                     <Image Source="{DynamicResource IconSponsor}"
                                Style="{DynamicResource SocialIcon}"
                                ToolTip="{DynamicResource LoaderSettingsDonate}"
+                               Focusable="True"
                                PreviewMouseDown="Donate_PreviewMouseDown" />
 
                 </StackPanel>
 
                 <!-- Tutorial -->
-                <Button Style="{DynamicResource DefaultButton}" 
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Style="{DynamicResource DefaultButton}" 
                             Click="Tutorial_Click" 
-                            Content="{DynamicResource TitleFirstLaunchEx}"/>
+                            Content="{DynamicResource TitleFirstLaunchEx}" 
+                            Margin="{DynamicResource CommonItemHorizontalMargin}" />
+
+                    <Button Style="{DynamicResource DefaultButton}" 
+                            Click="ControllerConfig_Click" 
+                            Content="{DynamicResource LoaderSettingsControllerBtn}"
+                            Margin="{DynamicResource CommonItemHorizontalMargin}" />
+                </StackPanel>
 
                 <!-- Toggle Show Console -->
                 <controls:PopupLabel ButtonText="{DynamicResource LoaderSettingsConfigPopup}" FontSize="{DynamicResource FontSizeLarger}"

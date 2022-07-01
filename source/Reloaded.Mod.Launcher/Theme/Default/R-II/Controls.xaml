@@ -182,6 +182,7 @@
     <!-- Styles not fully inheriting from Control -->
     <Style x:Key="LabelButton" TargetType="{x:Type Button}">
 
+        <Setter Property="Focusable" Value="True"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource BorderColorBrush}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>

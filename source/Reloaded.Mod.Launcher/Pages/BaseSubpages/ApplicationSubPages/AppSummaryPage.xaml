@@ -49,6 +49,7 @@
         <Grid Grid.Row="1" Margin="{DynamicResource PanelMargin}">
             <ListView 
                 x:Name="ModListView"
+                Focusable="False"
                 HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={StaticResource FilteredMods}}"
                 SelectedItem="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -57,7 +58,7 @@
                 VerticalAlignment="Stretch"
                 VerticalContentAlignment="Top"
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
-                PreviewKeyDown="ModListView_KeyDown"
+                PreviewKeyDown="KeyboardControls_KeyDown"
                 dd:DragDrop.IsDragSource="True"
                 dd:DragDrop.IsDropTarget="True">
                 <ListView.ContextMenu>

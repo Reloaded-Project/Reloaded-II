@@ -14,6 +14,7 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
 {
     private const string DefaultApplicationConfigDirectory  = "Apps";
     private const string DefaultModConfigDirectory          = "Mods";
+    private const string DefaultMiscConfigDirectory         = "User/Misc";
     private const string DefaultModUserConfigDirectory      = "User/Mods";
     private const string DefaultPluginConfigDirectory       = "Plugins";
     private const string DefaultLanguageFile                = "en-GB.xaml";
@@ -61,10 +62,16 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     public string ApplicationConfigDirectory { private get; set; } = Empty;
 
     /// <summary>
-    /// Contains the directory which houses all Reloaded mods.
+    /// Contains the directory which houses all Reloaded mod user configurations.
     /// </summary>
     [JsonInclude]
     public string ModUserConfigDirectory { private get; set; } = Empty;
+
+    /// <summary>
+    /// Contains the directory which houses all miscellaneous Reloaded configurations.
+    /// </summary>
+    [JsonInclude]
+    public string MiscConfigDirectory { private get; set; } = Empty;
 
     /// <summary>
     /// Contains the directory which houses all Reloaded plugins.
@@ -178,6 +185,8 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
 
     public string GetModConfigDirectory() => UsePortableMode ? GetDirectoryRelativeToLauncherFolder(DefaultModConfigDirectory) : ModConfigDirectory;
 
+    public string GetMiscConfigDirectory() => UsePortableMode ? GetDirectoryRelativeToLauncherFolder(DefaultMiscConfigDirectory) : MiscConfigDirectory;
+
     private void RerouteDefaultFeed()
     {
         foreach (var feed in NuGetFeeds)
@@ -200,9 +209,11 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
                 Directory.CreateDirectory(GetModConfigDirectory());
                 Directory.CreateDirectory(GetModUserConfigDirectory());
                 Directory.CreateDirectory(GetPluginConfigDirectory());
+                Directory.CreateDirectory(GetMiscConfigDirectory());
             }
 
             ApplicationConfigDirectory  = SetDefaultDirectory(ApplicationConfigDirectory, DefaultApplicationConfigDirectory);
+            MiscConfigDirectory         = SetDefaultDirectory(MiscConfigDirectory, DefaultMiscConfigDirectory);
             ModUserConfigDirectory      = SetDefaultDirectory(ModUserConfigDirectory, DefaultModUserConfigDirectory);
             ModConfigDirectory          = SetDefaultDirectory(ModConfigDirectory, DefaultModConfigDirectory);
             PluginConfigDirectory       = SetDefaultDirectory(PluginConfigDirectory, DefaultPluginConfigDirectory);
