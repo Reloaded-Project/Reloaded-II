@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -8,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media.Media3D;
 using HandyControl.Controls;
 using Reloaded.Mod.Launcher.Lib;
+using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Loader.IO.Config;
 using Sewer56.UI.Controller.Core;
 using Sewer56.UI.Controller.Core.Enums;
@@ -36,10 +38,15 @@ public static class ControllerSupport
         if (!File.Exists(savePath))
             File.Copy(Path.Combine(AppContext.BaseDirectory, "Assets\\DefaultSettings\\Controller.json"), savePath);
 
-        Controller      = new ReloadedInputController(savePath);
-        Platform        = new WpfPlatform();
-        Navigator       = new Navigator(Platform, Controller);
-        Platform.ProcessCustomInputs += ProcessCustomInputs;
+        Controller = new ReloadedInputController(savePath);
+
+        // This code is invoked from non-primary thread; but we need to register for events on primary thread, so here we go.
+        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
+        {
+            Platform  = new WpfPlatform();
+            Navigator = new Navigator(Platform, Controller);
+            Platform.ProcessCustomInputs += ProcessCustomInputs;
+        });
     }
 
     /// <summary>

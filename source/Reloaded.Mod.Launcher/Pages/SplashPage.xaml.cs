@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Launcher.Lib;
@@ -43,7 +44,7 @@ public partial class SplashPage : ReloadedIIPage
         {
             await _setupApplicationTask;
             ChangeToMainPage();
-            ControllerSupport.Init();
+            _ = Task.Run(ControllerSupport.Init);
             DisplayFirstLaunchWarningIfNeeded();
         }
         catch (Exception ex)
