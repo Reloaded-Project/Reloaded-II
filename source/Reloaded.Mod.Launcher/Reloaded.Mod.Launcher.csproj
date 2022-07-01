@@ -27,25 +27,29 @@
   <ItemGroup>
     <Content Include="Assets\Languages\**\*.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
     </Content>
-	<Content Include="Assets\HTML\**" Link="%(RecursiveDir)\%(Filename)%(Extension)">
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	</Content>
-	<Content Include="Theme\**">
-	  <Generator>MSBuild:Compile</Generator>
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	</Content>
-	<Content Include="Assets\Loader\**" Link="Loader\%(RecursiveDir)\%(Filename)%(Extension)">
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	</Content>
-	<Content Include="LICENSE.txt">
+	  <Content Include="Assets\HTML\**" Link="%(RecursiveDir)\%(Filename)%(Extension)">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Include="Theme\**">
+	    <Generator>MSBuild:Compile</Generator>
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Include="Assets\Loader\**" Link="Loader\%(RecursiveDir)\%(Filename)%(Extension)">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-  </Content>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Include="Assets\DefaultSettings\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

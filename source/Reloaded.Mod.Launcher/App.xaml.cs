@@ -46,7 +46,7 @@ public partial class App : Application
 
     private void SetupResources()
     {
-        var launcherFolder   = Path.GetDirectoryName(GetCommandLineArgs()[0]);
+        var launcherFolder   = AppContext.BaseDirectory;
         var languageSelector = new XamlFileSelector($"{launcherFolder}\\Assets\\Languages");
         var themeSelector    = new XamlFileSelector($"{launcherFolder}\\Theme");
         

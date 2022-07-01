@@ -32,6 +32,10 @@ public static class ControllerSupport
     {
         var miscConfDir = IoC.Get<LoaderConfig>().GetMiscConfigDirectory();
         var savePath    = Path.Combine(miscConfDir, "Controller.json");
+
+        if (!File.Exists(savePath))
+            File.Copy(Path.Combine(AppContext.BaseDirectory, "Assets\\DefaultSettings\\Controller.json"), savePath);
+
         Controller      = new ReloadedInputController(savePath);
         Platform        = new WpfPlatform();
         Navigator       = new Navigator(Platform, Controller);
