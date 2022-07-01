@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Media.Media3D;
 using HandyControl.Controls;
 using Reloaded.Mod.Launcher.Lib;
 using Reloaded.Mod.Launcher.Lib.Utility;
@@ -17,6 +13,7 @@ using Sewer56.UI.Controller.Core.Structures;
 using Sewer56.UI.Controller.ReloadedInput;
 using Sewer56.UI.Controller.WPF;
 using static Sewer56.UI.Controller.Core.Enums.Button;
+using static Sewer56.UI.Controller.WPF.WpfPlatform;
 
 namespace Reloaded.Mod.Launcher.Utility;
 
@@ -28,7 +25,7 @@ public static class ControllerSupport
 
     public static Navigator Navigator { get; private set; } = null!;
 
-    public static event Action<ControllerState> OnProcessCustomInputs = state => { };
+    public static event ProcessCustomInputsDelegate OnProcessCustomInputs = (in ControllerState state) => { };
 
     public static void Init()
     {
@@ -91,13 +88,13 @@ public static class ControllerSupport
         return false;
     }
 
-    private static void ProcessCustomInputs(ControllerState state)
+    private static void ProcessCustomInputs(in ControllerState state)
     {
         ProcessCustomControls(state);
         OnProcessCustomInputs(state);
     }
 
-    private static void ProcessCustomControls(ControllerState state)
+    private static void ProcessCustomControls(in ControllerState state)
     {
         if (!WpfUtilities.TryGetFocusedElementAndWindow(out var window, out var focused))
             return;

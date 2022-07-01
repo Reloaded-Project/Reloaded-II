@@ -91,7 +91,7 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
 
     #region Controller Controls
 
-    private void OnProcessCustomInputs(ControllerState state)
+    private void OnProcessCustomInputs(in ControllerState state)
     {
         if (!WpfUtilities.TryGetFocusedElementAndWindow(out var window, out var focused))
             return;

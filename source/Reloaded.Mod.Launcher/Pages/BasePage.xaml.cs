@@ -84,7 +84,7 @@ public partial class BasePage : ReloadedIIPage, IDisposable
         ViewModel.SwitchToApplication(tuple);
     }
 
-    private void ProcessCustomInputs(ControllerState state)
+    private void ProcessCustomInputs(in ControllerState state)
     {
         if (!Window.GetWindow(this)!.IsActive)
             return;
