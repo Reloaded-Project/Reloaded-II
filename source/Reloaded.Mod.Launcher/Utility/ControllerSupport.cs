@@ -11,6 +11,7 @@ using Sewer56.UI.Controller.Core;
 using Sewer56.UI.Controller.Core.Enums;
 using Sewer56.UI.Controller.Core.Structures;
 using Sewer56.UI.Controller.ReloadedInput;
+using Sewer56.UI.Controller.ReloadedInput.Configurator;
 using Sewer56.UI.Controller.WPF;
 using static Sewer56.UI.Controller.Core.Enums.Button;
 using static Sewer56.UI.Controller.WPF.WpfPlatform;
@@ -19,7 +20,7 @@ namespace Reloaded.Mod.Launcher.Utility;
 
 public static class ControllerSupport
 {
-    public static ReloadedInputController Controller { get; private set; } = null!;
+    public static ReloadedInputControllerWithConfigurator Controller { get; private set; } = null!;
 
     public static WpfPlatform Platform { get; private set; } = null!;
 
@@ -35,7 +36,7 @@ public static class ControllerSupport
         if (!File.Exists(savePath))
             File.Copy(Path.Combine(AppContext.BaseDirectory, "Assets\\DefaultSettings\\Controller.json"), savePath);
 
-        Controller = new ReloadedInputController(savePath);
+        Controller = new ReloadedInputControllerWithConfigurator(savePath);
 
         // This code is invoked from non-primary thread; but we need to register for events on primary thread, so here we go.
         ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>

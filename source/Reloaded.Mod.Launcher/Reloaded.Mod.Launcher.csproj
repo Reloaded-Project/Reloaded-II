@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -63,6 +63,8 @@
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
     <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.9" />
+    <PackageReference Include="Sewer56.UI.Controller.ReloadedInput.Configurator" Version="1.0.0" />
+    <PackageReference Include="Sewer56.UI.Controller.WPF" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,9 +73,6 @@
     <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
-    <ProjectReference Include="..\Submodules\Sewer56.UI.Controller\Sewer56.UI.Controller.Core\Sewer56.UI.Controller.Core.csproj" />
-    <ProjectReference Include="..\Submodules\Sewer56.UI.Controller\Sewer56.UI.Controller.ReloadedInput\Sewer56.UI.Controller.ReloadedInput.csproj" />
-    <ProjectReference Include="..\Submodules\Sewer56.UI.Controller\Sewer56.UI.Controller.WPF\Sewer56.UI.Controller.WPF.csproj" />
   </ItemGroup>
 
   <ItemGroup>
