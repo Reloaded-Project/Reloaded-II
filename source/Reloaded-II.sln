@@ -83,17 +83,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controller", "Controller", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sewer56.UI.Controller.ReloadedInput", "Submodules\Sewer56.UI.Controller\Sewer56.UI.Controller.ReloadedInput\Sewer56.UI.Controller.ReloadedInput.csproj", "{311F5C0C-B992-4215-BB10-0F5A424F8F2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sewer56.UI.Controller.WPF", "Submodules\Sewer56.UI.Controller\Sewer56.UI.Controller.WPF\Sewer56.UI.Controller.WPF.csproj", "{40DC9BF8-E953-424A-9141-304C3242EB86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sewer56.UI.Controller.WPF", "Submodules\Sewer56.UI.Controller\Sewer56.UI.Controller.WPF\Sewer56.UI.Controller.WPF.csproj", "{40DC9BF8-E953-424A-9141-304C3242EB86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sewer56.UI.Controller.Core", "Submodules\Sewer56.UI.Controller\Sewer56.UI.Controller.Core\Sewer56.UI.Controller.Core.csproj", "{DE8A7AB5-B896-4601-A491-517B0AFBB1F7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Submodules", "Submodules", "{7E4CC870-39BE-40A0-887C-D8E4A560B042}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Input", "Submodules\Sewer56.UI.Controller\Submodules\Reloaded.Input\Reloaded.Input\Reloaded.Input.csproj", "{25FE548E-46C1-480C-874D-EB9D2426755C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Input.Configurator", "Submodules\Sewer56.UI.Controller\Submodules\Reloaded.Input\Reloaded.Input.Configurator\Reloaded.Input.Configurator.csproj", "{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Input.Configurator.Test", "Submodules\Sewer56.UI.Controller\Submodules\Reloaded.Input\Reloaded.Input.Configurator.Test\Reloaded.Input.Configurator.Test.csproj", "{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sewer56.UI.Controller.Core", "Submodules\Sewer56.UI.Controller\Sewer56.UI.Controller.Core\Sewer56.UI.Controller.Core.csproj", "{DE8A7AB5-B896-4601-A491-517B0AFBB1F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -573,54 +565,6 @@ Global
 		{DE8A7AB5-B896-4601-A491-517B0AFBB1F7}.Release-ModLoaderOnly|Any CPU.Build.0 = Release|Any CPU
 		{DE8A7AB5-B896-4601-A491-517B0AFBB1F7}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
 		{DE8A7AB5-B896-4601-A491-517B0AFBB1F7}.Release-ModLoaderOnly|X64+X86.Build.0 = Release|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Debug|X64+X86.ActiveCfg = Debug|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Debug|X64+X86.Build.0 = Debug|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Debug-ModLoaderOnly|Any CPU.ActiveCfg = Debug|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Debug-ModLoaderOnly|Any CPU.Build.0 = Debug|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Debug-ModLoaderOnly|X64+X86.ActiveCfg = Debug|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Debug-ModLoaderOnly|X64+X86.Build.0 = Debug|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Release|X64+X86.ActiveCfg = Release|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Release|X64+X86.Build.0 = Release|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Release-ModLoaderOnly|Any CPU.ActiveCfg = Release|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Release-ModLoaderOnly|Any CPU.Build.0 = Release|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
-		{25FE548E-46C1-480C-874D-EB9D2426755C}.Release-ModLoaderOnly|X64+X86.Build.0 = Release|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Debug|X64+X86.ActiveCfg = Debug|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Debug|X64+X86.Build.0 = Debug|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Debug-ModLoaderOnly|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Debug-ModLoaderOnly|Any CPU.Build.0 = Debug|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Debug-ModLoaderOnly|X64+X86.ActiveCfg = Debug|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Debug-ModLoaderOnly|X64+X86.Build.0 = Debug|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Release|X64+X86.ActiveCfg = Release|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Release|X64+X86.Build.0 = Release|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Release-ModLoaderOnly|Any CPU.ActiveCfg = Release|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Release-ModLoaderOnly|Any CPU.Build.0 = Release|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650}.Release-ModLoaderOnly|X64+X86.Build.0 = Release|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Debug|X64+X86.ActiveCfg = Debug|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Debug|X64+X86.Build.0 = Debug|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Debug-ModLoaderOnly|Any CPU.ActiveCfg = Debug|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Debug-ModLoaderOnly|Any CPU.Build.0 = Debug|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Debug-ModLoaderOnly|X64+X86.ActiveCfg = Debug|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Debug-ModLoaderOnly|X64+X86.Build.0 = Debug|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Release|Any CPU.Build.0 = Release|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Release|X64+X86.ActiveCfg = Release|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Release|X64+X86.Build.0 = Release|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Release-ModLoaderOnly|Any CPU.ActiveCfg = Release|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Release-ModLoaderOnly|Any CPU.Build.0 = Release|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81}.Release-ModLoaderOnly|X64+X86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -646,10 +590,6 @@ Global
 		{311F5C0C-B992-4215-BB10-0F5A424F8F2A} = {75AFA982-24B8-4295-B5B2-0E8B053AF818}
 		{40DC9BF8-E953-424A-9141-304C3242EB86} = {75AFA982-24B8-4295-B5B2-0E8B053AF818}
 		{DE8A7AB5-B896-4601-A491-517B0AFBB1F7} = {75AFA982-24B8-4295-B5B2-0E8B053AF818}
-		{7E4CC870-39BE-40A0-887C-D8E4A560B042} = {75AFA982-24B8-4295-B5B2-0E8B053AF818}
-		{25FE548E-46C1-480C-874D-EB9D2426755C} = {7E4CC870-39BE-40A0-887C-D8E4A560B042}
-		{DC0D0BE6-D318-4EDE-AC9E-BAA0540C3650} = {7E4CC870-39BE-40A0-887C-D8E4A560B042}
-		{903DD9F6-F6B4-4A52-8135-0E23FFA44D81} = {7E4CC870-39BE-40A0-887C-D8E4A560B042}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {29C01A02-5EA4-442B-92BD-67EC119B4356}
