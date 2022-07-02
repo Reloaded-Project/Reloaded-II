@@ -16,7 +16,7 @@ public struct EntryPointParameters
     /// <summary>
     /// Current version of parameters.
     /// </summary>
-    public const int CurrentVersion = 1;
+    public const int CurrentVersion = 2;
 
     // Version 1
     public int Version;

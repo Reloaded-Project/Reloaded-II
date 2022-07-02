@@ -1,17 +1,21 @@
 #pragma once
-#include "nlohmann/json.hpp"
 #include "CoreCLR.hpp"
 #include "ReloadedPaths.h"
+#include "tiny-json/tiny-json.h"
 
-using json = nlohmann::json;
+using json = json_t;
 
 class LoaderConfig
 {
 	public:
+		static constexpr int MaxFields = 256;
+
 		LoaderConfig();
 		~LoaderConfig() = default;
 
-		json config;
+		std::string configText;
+		json const* config_parent;
+		json config_buffer[MaxFields];
 
 		string_t get_loader_path();
 		string_t get_launcher_path();
