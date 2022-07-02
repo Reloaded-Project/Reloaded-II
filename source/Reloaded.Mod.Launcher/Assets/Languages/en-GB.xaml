@@ -454,6 +454,52 @@
     <sys:String x:Key="ConfigureModDialogResetDescription" xml:space="preserve">Resets the configuration values to their defaults.&#x0a;[Note: Requires mod support, contact author if doesn't work]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
-    <sys:String x:Key="LoaderSettingsControllerBtn">Controller Configuration</sys:String>
+    <sys:String x:Key="LoaderSettingsControllerBtn">Controller Configuration [Beta]</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneName">None</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneDescription">Does nothing.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnUpName">Up</sys:String>
+    <sys:String x:Key="ConfiguratorBtnUpDescription">Navigates the menu up.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDownName">Down</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDownDescription">Navigates the menu down.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLeftName">Left</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLeftDescription">Navigates the menu left.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnRightName">Right</sys:String>
+    <sys:String x:Key="ConfiguratorBtnRightDescription">Navigates the menu right.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnAcceptName">Accept</sys:String>
+    <sys:String x:Key="ConfiguratorBtnAcceptDescription">Clicks a button.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDeclineName">Decline</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDeclineDescription">Closes the current non-main window.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnNextPageName">Next Page</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNextPageDescription">Navigates to the next page inside windows with multiple pages.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLastPageName">Last Page</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLastPageDescription">Navigates to the previous page inside windows with multiple pages.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnIncrementName">Increment</sys:String>
+    <sys:String x:Key="ConfiguratorBtnIncrementDescription">Adds +1 to the current value on a UI element.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDecrementName">Decrement</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDecrementDescription">Removes 1 from the current value on a UI element.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnModifierName">Modifier</sys:String>
+    <sys:String x:Key="ConfiguratorBtnModifierDescription" xml:space="preserve">Allows for alternate behaviour on some UI elements.&#x0a;e.g. Mod+Up can be used to re-order the mod order.</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightName">Menu Left/Right [Stick]</sys:String>
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightDescription">Navigates the Menu Left/Right</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownName">Menu Up/Down [Stick]</sys:String>
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownDescription">Navigates the Menu Up/Down</sys:String>
+
+    <sys:String x:Key="ConfiguratorCustomStringMainConfig">Main Config</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
+    <sys:String x:Key="ConfiguratorCustomStringTrigger">Trigger</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
+    <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Use This if Mapping to Controller Trigger</sys:String> <!-- Displays in description of trigger bindings. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Controller Configuration [Beta]</sys:String> <!-- Name of the input configurator window. -->
 
 </ResourceDictionary>

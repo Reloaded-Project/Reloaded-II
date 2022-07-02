@@ -36,7 +36,7 @@ public static class ControllerSupport
         if (!File.Exists(savePath))
             File.Copy(Path.Combine(AppContext.BaseDirectory, "Assets\\DefaultSettings\\Controller.json"), savePath);
 
-        Controller = new ReloadedInputControllerWithConfigurator(savePath);
+        Controller = new ReloadedInputControllerWithConfigurator(savePath, new ReloadedInputLocalizationProvider());
 
         // This code is invoked from non-primary thread; but we need to register for events on primary thread, so here we go.
         ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
