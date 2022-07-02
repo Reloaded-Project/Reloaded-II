@@ -506,5 +506,4 @@
     <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip" xml:space="preserve">Left click assigns a new binding.&#x0a;Middle click inverts the value.&#x0a;Right click clears the mapping!&#x0a;! indicates the value is inverted.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
     <sys:String x:Key="ConfiguratorLibCustomStringTimeout">Timeout</sys:String> <!-- Name of the input configurator window. -->
 
-
 </ResourceDictionary>
