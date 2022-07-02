@@ -8,25 +8,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DeepCloner" Version="0.10.3" />
-    <PackageReference Include="Equals.Fody" Version="4.0.1" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.39" />
-    <PackageReference Include="Markdig" Version="0.18.0" />
+    <PackageReference Include="DeepCloner" Version="0.10.4" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.0" />
-    <PackageReference Include="NuGet.Packaging" Version="5.7.0" />
-    <PackageReference Include="NuGet.Packaging.Core" Version="5.7.0" />
-    <PackageReference Include="NuGet.Protocol" Version="5.7.0" />
-    <PackageReference Include="Octokit" Version="0.50.0" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.9">
+    <PackageReference Include="NuGet.Packaging" Version="6.2.1" />
+    <PackageReference Include="NuGet.Packaging.Core" Version="6.2.1" />
+    <PackageReference Include="NuGet.Protocol" Version="6.2.1" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Equals.Fody" Version="4.0.2">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
-    <PackageReference Include="Sewer56.Update.Resolvers.GitHub" Version="1.3.0" />
-    <PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
+    <PackageReference Include="Sewer56.Update.Resolvers.GitHub" Version="1.3.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Reloaded.Mod.Installer.DependencyInstaller\Reloaded.Mod.Installer.DependencyInstaller.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Update.Packaging\Reloaded.Mod.Loader.Update.Packaging.csproj" />
   </ItemGroup>

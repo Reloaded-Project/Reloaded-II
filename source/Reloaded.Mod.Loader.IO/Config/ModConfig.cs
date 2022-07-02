@@ -13,7 +13,7 @@ using Reloaded.Mod.Loader.IO.Utility;
 
 namespace Reloaded.Mod.Loader.IO.Config;
 
-[Equals(DoNotAddEqualityOperators = true, DoNotAddGetHashCode = true)]
+[Equals(DoNotAddEqualityOperators = true)]
 public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
 {
     /* Constants */

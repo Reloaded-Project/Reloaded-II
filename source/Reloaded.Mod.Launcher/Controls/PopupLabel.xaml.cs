@@ -108,7 +108,7 @@ public partial class PopupLabel : UserControl
         _xamlExitFadeOpacityEnd = new XamlResource<double>("PopupLabelExitFadeOpacityEnd", thisArray, this);
     }
 
-    private void Button_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void OnClick(object sender, RoutedEventArgs e)
     {
         // Close/Open
         IsOpen = !IsOpen;

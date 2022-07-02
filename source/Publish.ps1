@@ -16,6 +16,11 @@ function New-TemporaryDirectory
 	return "$returnValue"
 }
 
+# Set Working Directory
+Split-Path $MyInvocation.MyCommand.Path | Push-Location
+[Environment]::CurrentDirectory = $PWD
+Write-Host "New Current Directory: $(Get-Location)"
+
 # Build Locations
 $buildPath = New-TemporaryDirectory
 $outputPath = "$buildPath/Publish"
@@ -47,11 +52,6 @@ $templatePublishDirectory = "$publishDirectory/ModTemplate"
 $releaseFolder = "/Release"
 $toolsReleaseFileName = "/Tools.zip"
 $cleanupPaths = ("$buildPath", "$toolsPath", "$publishDirectory", "$chocoToolsPath")
-
-# Set Working Directory
-Split-Path $MyInvocation.MyCommand.Path | Push-Location
-[Environment]::CurrentDirectory = $PWD
-Write-Host "New Current Directory: $(Get-Location)"
 
 # Clean output directories
 foreach ($cleanupPath in $cleanupPaths) {
@@ -119,7 +119,8 @@ Add-Type -A System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory("$toolsPath", "$publishDirectory" + "$toolsReleaseFileName")
 
 # Publish Mod
-[IO.Compression.ZipFile]::CreateFromDirectory("$outputPath", "$publishDirectory/$releaseFolder")
+Get-ChildItem -Path "$outputPath" -Recurse -Force -ErrorAction SilentlyContinue
+New-Item "$publishDirectory/$releaseFolder" -ItemType Directory -ErrorAction SilentlyContinue
 ./Publish.Reloaded.Release.ps1 -Version "$Version" -CurrentVersionPath "$outputPath" -ReleasePath "$publishDirectory/$releaseFolder"
 
 Remove-Item "$chocoToolsPath" -Recurse -ErrorAction SilentlyContinue

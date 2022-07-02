@@ -20,12 +20,9 @@ public partial class MessageBox : ReloadedWindow
         viewModel.MaximizeButtonVisibility = Visibility.Collapsed;
     }
 
-    private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void Button_Click(object sender, RoutedEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed)
-        {
-            this.DialogResult = true;
-            this.Close();
-        }
+        this.DialogResult = true;
+        this.Close();
     }
 }

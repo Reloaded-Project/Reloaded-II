@@ -13,6 +13,7 @@
         <!-- Button -->
         <StackPanel>
             <Button Style="{DynamicResource LabelButton}"
+                    Focusable="True"                        
                     Content="{Binding ButtonText}"
                     Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"
                     FontFamily="{Binding Path=FontFamily, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"
@@ -21,7 +22,7 @@
                     FontWeight="{Binding Path=FontWeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"
                     d:DataContext="{x:Static designTimeModels:PopupLabelDesignTimeModel.Instance}"
                     DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                    PreviewMouseDown="Button_PreviewMouseDown">
+                    Click="OnClick">
             </Button>
 
             <ContentPresenter x:Name="HiddenContentContainer"

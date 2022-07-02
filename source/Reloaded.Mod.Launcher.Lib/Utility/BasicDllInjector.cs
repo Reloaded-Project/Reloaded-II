@@ -19,8 +19,8 @@ namespace Reloaded.Mod.Launcher.Lib.Utility;
 /// </summary>
 public class BasicDllInjector
 {
-    private static IntPtr _x64LoadLibraryAddress;
-    private static IntPtr _x86LoadLibraryAddress;
+    private static nuint _x64LoadLibraryAddress;
+    private static nuint _x86LoadLibraryAddress;
     private static bool _initialized;
 
     private readonly Process _process;
@@ -45,21 +45,21 @@ public class BasicDllInjector
             PreloadAddresses();
 
         var loadLibraryAddress = _process.Is64Bit() ? _x64LoadLibraryAddress : _x86LoadLibraryAddress;
-        IntPtr libraryNameMemoryAddress = WriteLoadLibraryParameter(libraryPath);
+        var libraryNameMemoryAddress = WriteLoadLibraryParameter(libraryPath);
         int result = ExecuteFunction(loadLibraryAddress, libraryNameMemoryAddress);
         _memory.Free(libraryNameMemoryAddress);
         return result;
     }
 
-    private IntPtr WriteLoadLibraryParameter(string libraryPath)
+    private nuint WriteLoadLibraryParameter(string libraryPath)
     {
         byte[] libraryNameBytes = Encoding.Unicode.GetBytes(libraryPath);
-        IntPtr processPointer   = _memory.Allocate(libraryNameBytes.Length);
+        var processPointer   = _memory.Allocate(libraryNameBytes.Length);
         _memory.WriteRaw(processPointer, libraryNameBytes);
         return processPointer;
     }
 
-    private int ExecuteFunction(IntPtr address, IntPtr parameterAddress)
+    private int ExecuteFunction(nuint address, nuint parameterAddress)
     {
         IntPtr hThread = CreateRemoteThread(_process.Handle, IntPtr.Zero, IntPtr.Zero, address, parameterAddress, 0, out _);
         WaitForSingleObject(hThread, unchecked((uint)-1));
@@ -69,13 +69,13 @@ public class BasicDllInjector
 
     /* Helper functions */
 
-    private static IntPtr Getx64LoadLibraryAddress()
+    private static nuint Getx64LoadLibraryAddress()
     {
         var kernel32Handle = LoadLibraryW("kernel32");
         return GetProcAddress(kernel32Handle, "LoadLibraryW");
     }
 
-    private static IntPtr Getx86LoadLibraryAddress()
+    private static nuint Getx86LoadLibraryAddress()
     {
         // Setup Memory Mapped File for transfer.
         var file = MemoryMappedFile.CreateOrOpen(SharedConstants.Kernel32AddressDumperMemoryMappedFileName, sizeof(long));
@@ -86,9 +86,9 @@ public class BasicDllInjector
 
         var viewStream = file.CreateViewStream();
         var reader = new BinaryReader(viewStream);
-        var result = (IntPtr)reader.ReadInt64();
+        var result = (nuint)reader.ReadInt64();
 
-        if (result == IntPtr.Zero)
+        if (result == 0)
             throw new Exception(Resources.ErrorGetProcAddress32Failed.Get());
 
         return result;
@@ -113,14 +113,14 @@ public class BasicDllInjector
 
     #region Native Imports
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    private static extern IntPtr LoadLibraryW([MarshalAs(UnmanagedType.LPWStr)] string lpFileName);
+    private static extern nuint LoadLibraryW([MarshalAs(UnmanagedType.LPWStr)] string lpFileName);
 
     [DllImport("kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
-    private static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+    private static extern nuint GetProcAddress(nuint hModule, string procName);
 
     [DllImport("kernel32.dll")]
     private static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, IntPtr dwStackSize,
-        IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out IntPtr lpThreadId);
+        nuint lpStartAddress, nuint lpParameter, uint dwCreationFlags, out IntPtr lpThreadId);
 
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);

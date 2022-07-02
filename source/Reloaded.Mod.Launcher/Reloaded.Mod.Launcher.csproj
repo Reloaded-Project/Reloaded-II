@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -27,38 +27,45 @@
   <ItemGroup>
     <Content Include="Assets\Languages\**\*.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
     </Content>
-	<Content Include="Assets\HTML\**" Link="%(RecursiveDir)\%(Filename)%(Extension)">
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	</Content>
-	<Content Include="Theme\**">
-	  <Generator>MSBuild:Compile</Generator>
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	</Content>
-	<Content Include="Assets\Loader\**" Link="Loader\%(RecursiveDir)\%(Filename)%(Extension)">
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	</Content>
-	<Content Include="LICENSE.txt">
+	  <Content Include="Assets\HTML\**" Link="%(RecursiveDir)\%(Filename)%(Extension)">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Include="Theme\**">
+	    <Generator>MSBuild:Compile</Generator>
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Include="Assets\Loader\**" Link="Loader\%(RecursiveDir)\%(Filename)%(Extension)">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-  </Content>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Include="Assets\DefaultSettings\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="3.1.1" />
     <PackageReference Include="HandyControl" Version="3.2.0-propertygrid" />
     <PackageReference Include="HandyControl.Lang.en" Version="3.3.0" />
-    <PackageReference Include="Markdig.Wpf" Version="0.4.0" />
-    <PackageReference Include="Ninject" Version="3.3.4" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0">
+    <PackageReference Include="Markdig.Wpf" Version="0.5.0.1" />
+    <PackageReference Include="Ninject" Version="3.3.6" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Reloaded.Memory" Version="6.1.3" />
-    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.7" />
+    <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
+    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.9" />
+    <PackageReference Include="Sewer56.UI.Controller.Core" Version="1.0.1" />
+    <PackageReference Include="Sewer56.UI.Controller.ReloadedInput.Configurator" Version="1.2.0" />
+    <PackageReference Include="Sewer56.UI.Controller.WPF" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

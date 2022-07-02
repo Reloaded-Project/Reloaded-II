@@ -82,7 +82,7 @@
                                 Margin="0"
                                 Style="{DynamicResource UnpaddedStretchedGridButton}"
                                 Content="{DynamicResource AddAppNewButton}" 
-                                PreviewMouseDown="Button_PreviewMouseDown"/>
+                                Click="New_Click"/>
 
                         <Button Grid.Column="1"
                                 Grid.Row="0"

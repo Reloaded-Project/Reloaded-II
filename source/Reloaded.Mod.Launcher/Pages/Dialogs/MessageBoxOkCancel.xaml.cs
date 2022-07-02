@@ -19,22 +19,16 @@ public partial class MessageBoxOkCancel : ReloadedWindow
         viewModel.MinimizeButtonVisibility = Visibility.Collapsed;
         viewModel.MaximizeButtonVisibility = Visibility.Collapsed;
     }
-
-    private void OK_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    
+    private void Cancel_Click(object sender, RoutedEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed)
-        {
-            DialogResult = true;
-            this.Close();
-        }
+        DialogResult = false;
+        this.Close();
     }
 
-    private void Cancel_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void OK_Click(object sender, RoutedEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed)
-        {
-            DialogResult = false;
-            this.Close();
-        }
+        DialogResult = true;
+        this.Close();
     }
 }

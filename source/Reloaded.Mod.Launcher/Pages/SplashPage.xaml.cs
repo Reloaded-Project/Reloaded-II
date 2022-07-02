@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Reloaded.Mod.Launcher.Lib;
@@ -6,6 +7,7 @@ using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
+using Reloaded.Mod.Launcher.Utility;
 using Reloaded.Mod.Loader.IO;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.WPF.Utilities;
@@ -42,6 +44,7 @@ public partial class SplashPage : ReloadedIIPage
         {
             await _setupApplicationTask;
             ChangeToMainPage();
+            _ = Task.Run(ControllerSupport.Init);
             DisplayFirstLaunchWarningIfNeeded();
         }
         catch (Exception ex)

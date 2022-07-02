@@ -26,7 +26,7 @@
                     It may or may not be important.
                 </TextBlock>
 
-                <Button Content="{DynamicResource MessageBoxButtonOK}" PreviewMouseDown="Button_PreviewMouseDown"/>
+                <Button Content="{DynamicResource MessageBoxButtonOK}" Click="Button_Click"/>
             </StackPanel>
         </Grid>
     </ScrollViewer>

@@ -13,7 +13,7 @@
              d:DesignHeight="600" d:DesignWidth="800"
              Title="{DynamicResource TitleMainPage}">
 
-    <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+    <Grid x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
         <Grid.Resources>
             <Style TargetType="{x:Type controls:CircleButton}" BasedOn="{StaticResource CircleButtonControlStyle}">
                 <Setter Property="Margin" Value="{DynamicResource SidebarElementMargin}"/>
@@ -47,18 +47,18 @@
                     <!-- Theme Page Buttons -->
                     <controls:CircleButton
                         ImageSource="{DynamicResource IconDownloadMods}" 
-                        TooltipText="{DynamicResource TitleDownloadMods}" PreviewMouseDown="DownloadMods_PreviewMouseDown" />
+                        TooltipText="{DynamicResource TitleDownloadMods}" Click="DownloadMods_Click" />
 
                     <controls:CircleButton
                         ImageSource="{DynamicResource IconMods}" 
-                        TooltipText="{DynamicResource TitleManageMods}" PreviewMouseDown="ManageMods_PreviewMouseDown"/>
+                        TooltipText="{DynamicResource TitleManageMods}" Click="ManageMods_Click"/>
 
                     <controls:CircleButton 
                         ImageSource="{DynamicResource IconSettings}"
-                        TooltipText="{DynamicResource TitleLoaderSettings}" PreviewMouseDown="LoaderSettings_PreviewMouseDown"/>
+                        TooltipText="{DynamicResource TitleLoaderSettings}" Click="LoaderSettings_Click"/>
 
                     <!-- Separator -->
-                    <Separator Margin="{DynamicResource SidebarElementMargin}" Style="{DynamicResource AltSeparatorStyle}" RenderTransformOrigin="0.5,0.5">
+                    <Separator Margin="{DynamicResource SidebarElementMargin}" Style="{DynamicResource AltSeparatorStyle}" RenderTransformOrigin="0.5,0.5" Focusable="False">
                         <Separator.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform ScaleY="{DynamicResource SeparatorHeight}"/>
@@ -72,7 +72,7 @@
                     <!-- List of Games -->
                     <ItemsControl Name="ProcessesPanel" ItemsSource="{Binding Source={StaticResource FilteredApps}}"
                               VirtualizingPanel.IsVirtualizing="True"
-                              VirtualizingPanel.VirtualizationMode="Recycling">
+                              VirtualizingPanel.VirtualizationMode="Recycling" Focusable="False">
 
                         <!-- Allow for virtualization of stack panel. -->
                         <ItemsControl.Template>
@@ -92,7 +92,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <controls:CircleButton TooltipText="{Binding Path=Config.AppName}"
-                                                       PreviewMouseDown="Application_PreviewMouseDown">
+                                                       Click="Application_Click">
                                     <controls:CircleButton.ImageSource>
                                         <MultiBinding Converter="{x:Static converters:ApplicationPathTupleToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
                                             <Binding Path="."/>
@@ -106,7 +106,7 @@
                     
                     <controls:CircleButton 
                         ImageSource="{DynamicResource IconAddApp}"
-                        TooltipText="{DynamicResource TitleAddApplication}" PreviewMouseDown="AddApp_PreviewMouseDown"/>
+                        TooltipText="{DynamicResource TitleAddApplication}" Click="AddApp_Click"/>
 
                 </StackPanel>
             </Grid>

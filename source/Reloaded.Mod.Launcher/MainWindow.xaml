@@ -16,7 +16,7 @@
 
     <!-- Window Content -->
     <controls:PageHost
-           CurrentPage = "{Binding Path=RealViewModel.CurrentPage, 
+        CurrentPage = "{Binding Path=RealViewModel.CurrentPage, 
                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, 
                              Converter={x:Static converters:ApplicationPageBaseToPageConverter.Instance}}"/>
 </default:ReloadedWindow>

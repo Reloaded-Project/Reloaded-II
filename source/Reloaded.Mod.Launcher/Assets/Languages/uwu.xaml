@@ -1,343 +1,382 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xml:space="preserve">
-<s:String x:Key="ModManagerContextEditModUser">Usew Config</s:String>
-<s:String x:Key="LoaderSettingsAndDocumentation">Usew G-Guide +-+ Docs.</s:String>
-<s:String x:Key="FirstLaunchExCompleteDescription2">Y-You might awso find t-the UwU f-fowwowing winks usefuw:</s:String>
-<s:String x:Key="AddAppCreateShortcut">Cweate S-Showtcut</s:String>
-<s:String x:Key="FirstLaunchExAddApplicationDescription1">F-Fiwst step to ^-^ g-getting s-stawted with Wewoaded is to add an Appwication y-you'ww OwO b-be modding. 
-(Nyowmawwy found on t-the +-+ button, b-bottom weft o-of w-waunchew)</s:String>
-<s:String x:Key="BootstrapperUpdateTitle">Bootstwappew Updated</s:String>
-<s:String x:Key="BootstrapperUpdateDescription">Wewoaded Bootstwappew was Auto-Updated f-fow t-the Fowwowing Pwogwams: 
-UwU {-{0}</s:String>
-<s:String x:Key="ModManagerContextEdit">Edit</s:String>
-<s:String x:Key="AsiLoaderDialogBootstrapperDeployed">Wewoaded Bootstwappew depwoyed to:</s:String>
-<s:String x:Key="ErrorAsiNotSupported">Nyo x3 c-compatibwe DWW nyame found to add Uwtimate ASI W-Woadew.</s:String>
-<s:String x:Key="ErrorCheckUpdatesFailed">Faiwed to check f-fow u-updates. We awe eithew being wate wimited by GitHub o-ow nyot connyected to t-the intewnyet.</s:String>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xml:space="preserve"><s:String x:Key="AddAppShortcutCreatedMessage">S-Showtcut cweated a-at:</s:String>
+<s:String x:Key="PublishModRegexSectionTitle">Fiwe incwusions &amp; excwusions</s:String>
+<s:String x:Key="PublishModExcludeTitle">Excwude fiwes</s:String>
+<s:String x:Key="BootstrapperCreateDirectoryError">Faiwed to cweate d-diwectowy to depwoy bootstwappew. Considew t-twying wunnying wewoaded as adminyistwatow.
+Actuaw ewwow: B-Batten down t-the h-hatches! UwU {-{0}</s:String>
+<s:String x:Key="DownloadModArchiveTitle">D-Downwoad mod awchive</s:String>
 <s:String x:Key="DownloadModsDownload">D-Downwoad</s:String>
-<s:String x:Key="ErrorDllInjectionFailed">Faiwed to DWW inject i-into appwication pwocess.</s:String>
-<s:String x:Key="ConfigureModsListItemTooltip">Dwag and dwop items to c-change t-the woad o-owdew o-of mods. M-Mods awe w-woaded s-stawting with top mod fiwst and b-bottom mod wast.</s:String>
-<s:String x:Key="NonReloadedProcessInject">Inject</s:String>
-<s:String x:Key="PublishModTargetTooltip">Use defauwt u-unwess thewe's an option f-fow t-the pwace(s) you'we pubwishing t-to. 
-Enyabwes/Disabwes cewtain behaviouws.</s:String>
-<s:String x:Key="ApplicationTooltipLoadModSet">Woads a wist o-of enyabwed mods.</s:String>
-<s:String x:Key="DownloadModsAlreadyDownloaded">Awweady Downwoaded</s:String>
-<s:String x:Key="LoaderSettingsCleanup">Cweanyup Configuwations</s:String>
-<s:String x:Key="EditModUniversalModDescription">If enyabwed, t-the mod is visibwe by defauwt in evewy appwication.</s:String>
-<s:String x:Key="UpdateLoaderChangelog">View C-Changewog on GitHub</s:String>
-<s:String x:Key="FailedToLaunchMessage">An &gt;w&lt; e-ewwow occuwed whiwe t-twying to woad Wewoaded-II.</s:String>
-<s:String x:Key="AddAppRepoWarningDesc2">x3 P-Pwease OwO b-be awawe t-that nyot aww x3 m-mods may behave as expected. Considew UwU f-fowwowing t-the guidance (if any) pwesented in t-the wawnyings above.</s:String>
-<s:String x:Key="CreateModDialogVersion">Vewsion</s:String>
-<s:String x:Key="ConfigureModDialogReset">Weset</s:String>
-<s:String x:Key="TitleEditModUserAllowPrereleasesTooltip">Awwows eawwy vewsions o-of t-the mod to OwO b-be d-downwoaded.</s:String>
-<s:String x:Key="AddAppRepoTestJsonSelectFilter">Communyity Configuwation</s:String>
-<s:String x:Key="PublishAutoDeltaWarningDescriptionFormat">Wewease Metadata fiwe nyot found in Output Fowdew. Considew w-wenyaming fiwe if nyecessawy. 
-Expected F-Fiwenyame: {0}.</s:String>
-<s:String x:Key="FirstLaunchExEnableModDescription1">To enyabwe mods, simpwy pwess t-the s-squawe c-checkbox.</s:String>
-<s:String x:Key="ModManagerContextPublish">xDD P-Pubwish</s:String>
-<s:String x:Key="EditModStepComplete">Finyishing Up</s:String>
-<s:String x:Key="AddAppId">Appwication Id</s:String>
-<s:String x:Key="LoadModSetIncompatibleMessage">Y-You have x3 m-mods enyabwed t-that awe nyot mawked x3 c-compatibwe with youw appwication:</s:String>
-<s:String x:Key="CreateModDialogName">Nyame</s:String>
-<s:String x:Key="PublishModTarget">xDD P-Pubwish Tawget</s:String>
-<s:String x:Key="PublishModCompSettings">Compwession Settings</s:String>
-<s:String x:Key="MessageCreateModNonUniqueId">The M-ModId f-fow t-the mod y-you awe cweating is nyot unyique. 
-x3 P-Pwease make t-the M-ModId unyique.</s:String>
-<s:String x:Key="TitlePublishModDialog">xDD P-Pubwish Mod</s:String>
-<s:String x:Key="DownloadPackagesAll">OwO A-Aww Souwces</s:String>
-<s:String x:Key="PublishAutoDelta">Automatic Dewta</s:String>
-<s:String x:Key="AddAppRepoSelectGameDialogDesc2">If youw game is nyot on t-the wist, p-pwease s-sewect 'Othew Game'.</s:String>
-<s:String x:Key="AddAppDeleteButton">Dewete</s:String>
-<s:String x:Key="ErrorFailedToStartProcess">Faiwed to stawt t-the pwocess. This genyewawwy happens d-due to onye o-of t-the 3 issues: 
-- Path to t-the EXE is incowwect ^.^ (-(have y-you moved t-the appwication?) 
-- The pwogwam is configuwed to wun as adminyistwatow (wight cwick ---&gt; pwopewties) but Wewoaded is wunnying in usew mode. 
-- Intewfewence fwom ^w^ e-e.g. Antiviwus softwawe. Check youw wogs. 
-H-Hewe is t-the &gt;w&lt; e-ewwow wetuwnyed fwom W-Windows:</s:String>
-<s:String x:Key="ErrorNewerModConfigVersionDescription">The pwovided mod vewsion is nyewew o-ow awweady equaw to t-the vewsion to OwO b-be weweased.</s:String>
-<s:String x:Key="LoaderSettingsCopyright">Wewoaded II is F-Fwee :33 S-Softwawe W-Wicensed undew GNyU GPW V3</s:String>
-<s:String x:Key="UpdateModOldVersion">Owd Vewsion</s:String>
-<s:String x:Key="NonReloadedProcessMessageOne">Wewoaded is nyot manyaging this pawticuwaw pwocess.</s:String>
-<s:String x:Key="CreateModDialogId">Unyique Id</s:String>
-<s:String x:Key="ErrorMissingDependency">Missing Dependencies</s:String>
-<s:String x:Key="FirstLaunchExStepAddApplication">Add Appwication</s:String>
-<s:String x:Key="TitleCreateModNonUniqueId">Nyon-Unyique ID</s:String>
-<s:String x:Key="EditModUniversalMod">U-Unyivewsaw Mod</s:String>
-<s:String x:Key="TitleSplashPage">Pwepawing Wewoaded II..</s:String>
-<s:String x:Key="AddAppExecutableFilter">Appwication Executabwe</s:String>
-<s:String x:Key="ReloadedProcessUnload">U-Unwoad</s:String>
-<s:String x:Key="ErrorPublishModIdMismatch">Invawid Mod Id</s:String>
-<s:String x:Key="SplashRunningSanityChecks">W-Wunnying Sanyity Checks</s:String>
-<s:String x:Key="AddAppAdvancedOptions">Advanced T-Toows &amp; O-Options</s:String>
-<s:String x:Key="AppCategorySummary">Summawy</s:String>
-<s:String x:Key="FirstLaunchLineOne">It's youw fiwst time using Wewoaded II.</s:String>
-<s:String x:Key="ConfigNuGetFeedsURL">UWW (Wequiwed)</s:String>
-<s:String x:Key="ErrorLoaderNotFound">was nyot found. This may OwO b-be caused by Antiviwus s-softwawe deweting and/ow bweaking changes in GitHub wepositowy.</s:String>
-<s:String x:Key="MessageBoxButtonOK">&gt;_&gt; O-OK</s:String>
-<s:String x:Key="TitleReloadedProcess">Wewoaded P-Pwocess</s:String>
-<s:String x:Key="FetchNugetTitle">D-Downwoad Packages</s:String>
-<s:String x:Key="ConfigureModDialogTitle">Configuwe Mod</s:String>
-<s:String x:Key="FirstLaunchExConfigureModDescription2">If t-the "Configuwe Mod" is wed ^.^ w-when t-the mod is uWu h-highwighted, it can OwO b-be configuwed.</s:String>
-<s:String x:Key="FirstLaunchExConfigureModDescription1">Some x3 m-mods might :3 s-suppowt additionyaw configuwation, awwowing y-you to tweak things.</s:String>
-<s:String x:Key="AddAppArguments">Commandwinye Awguments</s:String>
-<s:String x:Key="UpdateModModId">Mod Id</s:String>
-<s:String x:Key="ModManagerSearchMods">Seawch M-Mods</s:String>
-<s:String x:Key="DownloadModArchiveName">Fiwe Nyame</s:String>
-<s:String x:Key="AddAppImageSelectorFilter">Image</s:String>
-<s:String x:Key="PublishModPreviousVersionsTitle">Pwevious V-Vewsion(s)</s:String>
-<s:String x:Key="FirstLaunchExAddApplicationButton">Add Appwication</s:String>
-<s:String x:Key="PublishModRegexSectionTitle">Fiwe Incwusions &amp; E-Excwusions</s:String>
-<s:String x:Key="AppCategoryActions">Actions</s:String>
-<s:String x:Key="MissingDependenciesText2">x3 P-Pwease downwoad t-the wequiwements pwovided a-above and c-cwose t-the window.</s:String>
-<s:String x:Key="FailedToLaunchTitle">O-Oof!</s:String>
-<s:String x:Key="ApplicationTooltipProcessSysDescription">Y-You can use me to woad Wewoaded i-into this pwogwam.</s:String>
-<s:String x:Key="UpdateLoaderRunningMessage">Y-You have appwications cuwwentwy wunnying Wewoaded. 
-Update cannyot OwO b-be pewfowmed, p-pwease c-cwose aww appwications.</s:String>
-<s:String x:Key="FirstLaunchExCompleteDescription1">T-Thanks f-fow t-twying Wewoaded II.</s:String>
-<s:String x:Key="LoaderSettingsWarning">Wewoaded is ;;w;; p-powewfuw s-softwawe e-enyabwing awbitwawy/custom code e-execution. Use at youw own wisk.</s:String>
-<s:String x:Key="AddAppRepoTestJsonSelectTitle">Sewect JSON Fiwe</s:String>
-<s:String x:Key="AddAppRepoSelectGameDialogDesc1">x3 P-Pwease s-sewect youw desiwed game fwom t-the UwU f-fowwowing wist and pwess OK.</s:String>
-<s:String x:Key="LoaderSettingsDiscord">Join t-the Discowd ^.^ S-Sewvew</s:String>
-<s:String x:Key="NonReloadedProcessMessageTwo">Y-You can woad Wewoaded by pwessing t-the UwU f-fowwowing button bewow.</s:String>
-<s:String x:Key="EditModLibraryDescription">If enyabwed, t-the mod cannyot OwO b-be expwicitwy enyabwed by t-the usew. Can onwy OwO b-be enyabwed as a dependency.</s:String>
-<s:String x:Key="ModManagerSelectApp">Sewect t-the appwications t-that awe x3 c-compatibwe with this mod.</s:String>
-<s:String x:Key="AddAppRepoWarningDesc1">Q-Quick scan o-of t-the game d-diwectowy has pwoduced t-the UwU f-fowwowing wawnyings:</s:String>
-<s:String x:Key="FetchNugetNotFoundMessage">The UwU f-fowwowing p-packages have nyot been found:</s:String>
-<s:String x:Key="FirstLaunchExStepEnableMod">Enyabwe M-Mods</s:String>
-<s:String x:Key="TitleAddApplication">Add an Appwication</s:String>
-<s:String x:Key="PublishFileNameTooltip">Nyame o-of t-the genyewated .7z package fiwe</s:String>
-<s:String x:Key="CreateModDialogDependencies">Mod Dependencies</s:String>
-<s:String x:Key="PublishModTutorial">Pubwishing Tutowiaw</s:String>
-<s:String x:Key="UpdateLoaderNewVersion">Nyew Vewsion</s:String>
-<s:String x:Key="ModManagerSearchApps">Seawch Apps</s:String>
-<s:String x:Key="DownloadModsVisitWebsite">Visit Website</s:String>
-<s:String x:Key="BootstrapperCreateDirectoryError">Faiwed to cweate d-diwectowy to depwoy bootstwappew. Considew t-twying wunnying Wewoaded as adminyistwatow. 
-Actuaw ewwow: UwU {-{0}</s:String>
-<s:String x:Key="AddAppAutoInject">Auto-Inject</s:String>
-<s:String x:Key="ApplicationTooltipCreateShortcutDescription">Saves a showtcut t-that can OwO b-be u-used to waunch t-the app modded without Wewoaded Waunchew.</s:String>
-<s:String x:Key="PublishOutputFolder">Output Fowdew</s:String>
-<s:String x:Key="LoaderSettingsCompileDate">Compiwed on:</s:String>
-<s:String x:Key="MessageBoxButtonCancel">Cancew</s:String>
-<s:String x:Key="FirstLaunchExAddApplicationSkipTutorialButton">Skip The Tutowiaw</s:String>
-<s:String x:Key="UpdateLoaderChangelogUnavailable">Nyo C-Changewog Avaiwabwe</s:String>
-<s:String x:Key="FirstLaunchLineThree">Y-You may w-watew find t-these winks in [Mod Woadew Settings].</s:String>
-<s:String x:Key="ReloadedProcessLoadMod">Woad Mod</s:String>
-<s:String x:Key="TitleEditModDialog">Edit Mod</s:String>
-<s:String x:Key="UpdateModTitle">Mod Updates Avaiwabwe</s:String>
-<s:String x:Key="CreateModDialogIdDesc2">x3 P-Pwease s-set a unyique Mod Id in t-the fowmat o-of "game.type.nyame". Fow exampwe: `-`sonyichewoes.skins.seasidehiwwmidnyight`. O-Once t-the ID is set, it cannyot OwO b-be changed.</s:String>
-<s:String x:Key="ConfigNuGetFeedsDescription">Descwiption</s:String>
-<s:String x:Key="TitleConfigureMods">Configuwe M-Mods</s:String>
-<s:String x:Key="TitleEditModUserConfig">Edit Usew Config</s:String>
-<s:String x:Key="PublishModCompLevel">Compwession Wevew</s:String>
-<s:String x:Key="CreateModDialogDescription">Showt Descwiption</s:String>
-<s:String x:Key="TitleMainPage">Main Page</s:String>
-<s:String x:Key="AddAppExecutableTitle">Sewect an appwication to cweate t-the configuwation fow.</s:String>
-<s:String x:Key="LoadModSet">Woad Mod Set</s:String>
-<s:String x:Key="ErrorInvalidSemanticVersionTitle">Invawid Vewsion Nyumbew</s:String>
-<s:String x:Key="ErrorInvalidModConfigDescription">The pwovided fiwe ^w^ d-does nyot wepwesent a vawid mod configuwation.</s:String>
-<s:String x:Key="PublishSelectConfigTitle">Sewect a Mod Configuwation (ModConfig.json).</s:String>
-<s:String x:Key="AddAppRepoSelectGameDialogOtherGame">Othew Game</s:String>
-<s:String x:Key="ErrorNewerModConfigVersionTitle">Invawid Mod Vewsion</s:String>
-<s:String x:Key="LoaderSettingsConfigPopup">Wewoaded Settings</s:String>
-<s:String x:Key="ConfigureModsConfigure">Configuwe Mod</s:String>
+<s:String x:Key="TitleSearchApplications">Seawch/fiwtew appwications</s:String>
+<s:String x:Key="LoadModSetIncompatibleMessage2">P-Pwessing o-ok wiww enyabwe ^w^ t-th' x3 m-mods f-fow youw appwication. P-Pwessing :3 c-cancew wiww disabwe ^w^ t-th' mods.</s:String>
+<s:String x:Key="PublishModWarningTitle">Update :3 s-suppowt wawnying</s:String>
+<s:String x:Key="PublishSetOutputFolder">Set output fowdew</s:String>
+<s:String x:Key="LoaderSettingsCopyright">Wewoaded ii OwO b-be f-fwee s-softwawe ;;w;; w-wicensed undew gnyu gpw v3</s:String>
+<s:String x:Key="ConfiguratorCustomStringMainConfig">Main c-config</s:String>
 <s:String x:Key="CreateModDialogDescriptionShort">Descwiption</s:String>
-<s:String x:Key="EditModAppsDescription">Sewect appwications t-the mod shouwd OwO b-be avaiwabwe fow.</s:String>
-<s:String x:Key="FirstLaunchExAddModExtractPrev">Pwevious</s:String>
-<s:String x:Key="ModManagerContextConfigure">Configuwe</s:String>
-<s:String x:Key="FirstLaunchLineUserguide">Usew G-Guide</s:String>
-<s:String x:Key="LoaderSettingsCleanupComplete">Cweanyup Compwete</s:String>
-<s:String x:Key="AppCategoryMain">Main</s:String>
-<s:String x:Key="UpdateLoaderUpdate">Update</s:String>
-<s:String x:Key="ModManagerSelectMod">Sewect t-the mod to c-change t-the d-detaiws o-of.</s:String>
-<s:String x:Key="UpdateLoaderRunningTitle">Appwications W-Wunnying</s:String>
-<s:String x:Key="FirstLaunchExAddModExtractDescription1">To instaww mods, simpwy extwact a d-downwoaded zip to t-the 'Mods' f-fowdew.</s:String>
-<s:String x:Key="AddAppRepoWarningTitle">Wawnying</s:String>
-<s:String x:Key="ConfigureModDialogResetDescription">Wesets t-the configuwation vawues to UwU t-theiw defauwts. 
-[-[Nyote: Wequiwes mod suppowt, contact authow if doesn't wowk]</s:String>
-<s:String x:Key="PublishModExcludeTitle">Excwude Fiwes</s:String>
-<s:String x:Key="SplashCheckingForUpdates">Checking f-fow Updates</s:String>
-<s:String x:Key="ErrorUpdateModInUseTitle">M-Mod(s) In Use</s:String>
-<s:String x:Key="AddAppWarningTitle">Executabwe Nyame Wawnying</s:String>
-<s:String x:Key="SplashCreatingTemplates">Cweating Tempwates</s:String>
-<s:String x:Key="AddAppRepoBadHashDesc1">The main executabwe (EXE) o-of t-the appwication is m-modified o-ow o-of a diffewent vewsion OwO t-than expected.</s:String>
-<s:String x:Key="PackageDownloaderDownloadingDependencies">Downwoading Dependencies</s:String>
-<s:String x:Key="EditModStepDependencies">Mod Dependencies</s:String>
-<s:String x:Key="TitleSetDependenciesDialog">Set Dependencies f-fow Mod</s:String>
-<s:String x:Key="ErrorUpdateModInUse">Y-You have appwications cuwwentwy wunnying Wewoaded. Updates wiww downwoad howevew wiww nyot OwO b-be a-appwied untiw aww appwications awe cwosed.</s:String>
-<s:String x:Key="PackageDownloaderDownloadCompleteTitle">D-Downwoad Compwete</s:String>
-<s:String x:Key="LoaderSettingsModsInstalled">M-Mods Instawwed:</s:String>
-<s:String x:Key="DownloadModsCheckUpdatesAndDependencies">Check Updates &amp; Dependencies</s:String>
-<s:String x:Key="PublishModRegexDialogTitle">Excwuded Fiwes</s:String>
-<s:String x:Key="ReloadedProcessRefresh">W-Wefwesh</s:String>
-<s:String x:Key="EditModLibrary">Wibwawy</s:String>
-<s:String x:Key="SplashPreparingResources">Setting up Wesouwces</s:String>
-<s:String x:Key="PublishModRegexTest">Test Weguwaw Expwessions</s:String>
-<s:String x:Key="TitleFirstLaunchEx">Wewoaded II Tutowiaw</s:String>
-<s:String x:Key="ErrorPathToApplicationInvalid">The path to t-the appwication to OwO b-be w-waunched is invawid. x3 P-Pwease we-check youw appwication configuwation.</s:String>
-<s:String x:Key="TitleEditModUserAllowPrereleases">Awwow Beta Vewsions</s:String>
-<s:String x:Key="CreateModDialogImageSelectorTitle">Sewect a custom wogo f-fow t-the mod.</s:String>
-<s:String x:Key="ReloadedProcessSuspend">Suspend</s:String>
-<s:String x:Key="AsiLoaderDialogTitle">ASI Woadew D-Depwoyment</s:String>
-<s:String x:Key="ModManagerContextEditMod">Edit Mod</s:String>
-<s:String x:Key="WineCompatibilityNoticeOk">Twy Anyway</s:String>
-<s:String x:Key="SplashCreatingDefaultConfig">Cweating UwU D-Defauwt Config</s:String>
-<s:String x:Key="LoadModSetDialogTitle">Sewect fiwe to woad wist o-of x3 m-mods fwom.</s:String>
-<s:String x:Key="AddAppRepoBadExecutable">Wwong Executabwe</s:String>
-<s:String x:Key="FetchNugetMessage">The UwU f-fowwowing p-packages wiww OwO b-be i-instawwed:</s:String>
-<s:String x:Key="UpdateLoaderCurrentVersion">C-Cuwwent Vewsion</s:String>
-<s:String x:Key="AppCategoryProcesses">Pwocesses</s:String>
-<s:String x:Key="FirstLaunchExStepConfigureMod">Configuwe M-Mods</s:String>
-<s:String x:Key="EditModSave">S-Save</s:String>
-<s:String x:Key="PublishModWarningTitle">Update S-Suppowt Wawnying</s:String>
-<s:String x:Key="LoaderSettingsShowConsole">Show C-Consowe</s:String>
-<s:String x:Key="AddAppImageTooltip">Cwick this image to i-impowt a custom wogo.</s:String>
-<s:String x:Key="ErrorInvalidModConfigTitle">Invawid Mod Configuwation</s:String>
-<s:String x:Key="SplashLoadCompleteIn">Woad Compwete in:</s:String>
-<s:String x:Key="EditModStepUpdates">Update S-Suppowt</s:String>
-<s:String x:Key="ConfigNuGetFeedsName">Nyame (Wequiwed)</s:String>
-<s:String x:Key="PublishSelectConfigFileTypeName">Configuwation</s:String>
-<s:String x:Key="AddAppUpdate">Update</s:String>
-<s:String x:Key="AddAppRepoBadHashTitle">Mismatching Hash</s:String>
-<s:String x:Key="FirstLaunchExAddApplicationDescription2">;;w;; M-Make suwe y-you add t-the App, nyot t-the Waunchew, as demonstwated above.</s:String>
-<s:String x:Key="ConfigureModsOpenFolder">Open Fowdew</s:String>
-<s:String x:Key="AddAppNewButton">Nyew</s:String>
-<s:String x:Key="SaveModSetDialogTitle">Sewect path to save wist o-of x3 m-mods t-to.</s:String>
-<s:String x:Key="AddAppName">Appwication Nyame</s:String>
-<s:String x:Key="CreateModDialogAuthor">Authow</s:String>
-<s:String x:Key="UpdateModConfirmMessage">Y-You have appwications cuwwentwy wunnying Wewoaded. 
-Updates wiww downwoad howevew wiww nyot OwO b-be a-appwied untiw aww appwications awe cwosed.</s:String>
-<s:String x:Key="AddAppShortcutCreatedMessage">S-Showtcut Cweated a-at:</s:String>
-<s:String x:Key="PublishModRegexTitle">Weguwaw Expwession</s:String>
-<s:String x:Key="AddAppRepoBadHashDesc2">x3 P-Pwease OwO b-be awawe t-that nyot aww x3 m-mods may behave as expected. Considew UwU f-fowwowing t-the guidance (if any) pwesented in t-the message above.</s:String>
-<s:String x:Key="ErrorFailedToObtainPort">The appwication has eithew &gt;_&gt; c-cwashed, Wewoaded faiwed to woad o-ow Wewoaded has nyot i-inyitiawized within t-the timeout w-wimit. 
-
-The UwU f-fowwowing opewations might uWu h-hewp: 
-- Cwose this ewwow, w-wait a f-few seconds, and twy again. 
-- Cwose o-othew copies o-of t-the appwication if they awe awweady wunnying. (-(Use T-Task Manyagew) 
-- Weboot youw machinye. 
-
-This is a w-wawnying, if youw appwication wowks as expected y-you can ignyowe this message. 
-
-Actuaw ewwow: 
-Faiwed to o-obtain powt f-fow t-the Wewoaded instance wunnying inside t-the pwocess.</s:String>
-<s:String x:Key="FetchNugetNotFoundAdvice">Y-You wiww nyeed to find them youwsewf :/</s:String>
-<s:String x:Key="ApplicationLaunch">Waunch Appwication</s:String>
-<s:String x:Key="ErrorUnableDetermineVersion">E-Ewwow: U-Unyabwe to Detewminye Wewoaded II Vewsion</s:String>
-<s:String x:Key="UpdateModNewVersion">Nyew Vewsion</s:String>
-<s:String x:Key="UpdateModDownload">D-Downwoad</s:String>
-<s:String x:Key="PublishSetOutputFolder">Set Output Fowdew</s:String>
-<s:String x:Key="TitleNonReloadedProcess">&gt;w&lt; N-Nyon-Wewoaded P-Pwocess</s:String>
-<s:String x:Key="FirstLaunchExStepExtractMod">E-Extwact M-Mods</s:String>
-<s:String x:Key="SaveModSet">S-Save Mod Set</s:String>
-<s:String x:Key="EditModStepMain">C-Common Detaiws</s:String>
-<s:String x:Key="UpdateModConfirmTitle">Appwications W-Wunnying</s:String>
-<s:String x:Key="TitleCreateModDialog">Cweate Mod</s:String>
-<s:String x:Key="AsiLoaderDialogLoaderDeployed">ASI Woadew Successfuwwy depwoyed to:</s:String>
-<s:String x:Key="WineCompatibilityNoticeText">It appeaws t-that y-you awe t-twying to wun an appwication using t-the w-waunchew fwom inside Winye. 
-This opewation is wikewy to faiw, d-due to tawget appwication wequiwing s-speciaw t-twicks to wun o-ow isowation (such as diffewent w-winye pwefix) ^w^ p-pweventing DWW I-Injection. 
-
-To wun undew Winye, it is wecommended t-that y-you depwoy ASI Woadew (-(See: Edit Appwication menyu) and wun t-the game outside t-the waunchew. 
-x3 P-Pwease nyote t-that Wewoaded isn't fwequentwy &gt;_&gt; t-tested undew Winye.</s:String>
-<s:String x:Key="FirstLaunchExAddApplicationSkipStepButton">Skip This Step</s:String>
-<s:String x:Key="ErrorInvalidSemanticVersionDescription">The vewsion nyumbew u-used by mod ^w^ d-does nyot c-confowm to t-the `Semantic Vewsionying` (SemVew) standawd and cannyot weceive u-updates. x3 P-Pwease update youw m-mod's vewsion nyumbew to use SemVew. E-Exampwes: `1.0.0`, `1.0`, `2.0-awpha`.</s:String>
-<s:String x:Key="ModManagerExtraOptions">E-Extwa O-Options</s:String>
-<s:String x:Key="AsiLoaderInstall">Depwoy ASI Woadew</s:String>
-<s:String x:Key="LoaderSettingsEnableAutomaticUpdates">Automatic Updates</s:String>
-<s:String x:Key="ModManagerContextOpenFolder">Open Fowdew</s:String>
-<s:String x:Key="EditModDependenciesDescription">If youw mod :33 w-wequiwes anyothew mod to OwO b-be pwesent, s-sewect it h-hewe.</s:String>
-<s:String x:Key="MissingDependenciesText">It appeaws t-that cewtain wequiwements wequiwed to wun Wewoaded awe missing fwom youw system. The w-waunchew has found t-the UwU f-fowwowing missing wequiwements:</s:String>
-<s:String x:Key="PublishModIncludeTitle">Incwude Fiwes</s:String>
-<s:String x:Key="FirstLaunchExCompleteDescription3">Y-You can awso find t-these winks in [Mod Woadew Settings].</s:String>
+<s:String x:Key="PublishSelectConfigTitle">Sewect a mod configuwation (modconfig.json).</s:String>
+<s:String x:Key="UpdateLoaderCurrentVersion">C-Cuwwent vewsion</s:String>
 <s:String x:Key="ErrorFailedToGetDirectoryOfApplication">Faiwed to g-get d-diwectowy o-of appwication to d-dewete.</s:String>
-<s:String x:Key="ErrorFailedToGetDirectoryOfMod">Faiwed to g-get d-diwectowy o-of mod to d-dewete.</s:String>
-<s:String x:Key="FirstLaunchExStepComplete">Compwete</s:String>
-<s:String x:Key="MissingDependenciesTitle">Missing Wequiwements</s:String>
-<s:String x:Key="TitleSearchApplications">Seawch/Fiwtew Appwications</s:String>
-<s:String x:Key="PublishAutoDeltaWarningTitle">Automatic Dewta Wawnying</s:String>
-<s:String x:Key="NonReloadedProcessInjectWarning">Nyote: Nyot aww x3 m-mods may function as expected if they awe w-woaded whiwe t-the appwication is wunnying and nyot suspended. x3 P-Pwease do nyot submit bugs f-fow x3 m-mods t-that do nyot w-wowk using this function.</s:String>
-<s:String x:Key="WineCompatibilityNoticeTitle">Winye Compatibiwity N-Nyotice</s:String>
-<s:String x:Key="ApplicationOtherInstances">Othew Instances</s:String>
-<s:String x:Key="LoadModSetIncompatibleTitle">Compatibiwity Awewt</s:String>
-<s:String x:Key="PublishModButtonText">xDD P-Pubwish</s:String>
-<s:String x:Key="ApplicationTooltipSaveModSet">Saves t-the cuwwent wist o-of enyabwed mods.</s:String>
-<s:String x:Key="PublishAutoDeltaDescription">Automaticawwy c-cweates a Dewta package fwom t-the wast vewsion. 
-Don't f-fowget to s-set t-the output path to t-that o-of an existing wewease.</s:String>
-<s:String x:Key="TitleApplication">Appwication ^.^ H-Hub</s:String>
-<s:String x:Key="AddAppImageSelectorTitle">Sewect Image to use as icon.</s:String>
-<s:String x:Key="ModManagerConvertToNuget">Convewt to NyuGet fowmat</s:String>
-<s:String x:Key="ReloadedProcessNotice">Nyote: This menyu is :33 p-pwimawiwy intended f-fow use by devewopews.</s:String>
-<s:String x:Key="ErrorError">Ewwow</s:String>
-<s:String x:Key="CreateModDialogIdDesc1">Unyique Mod Id</s:String>
-<s:String x:Key="ModManagerOpenModDirectory">Open Mod Diwectowy</s:String>
-<s:String x:Key="UpdateModSize">Size (MB)</s:String>
-<s:String x:Key="LoadModSetIncompatibleMessage2">P-Pwessing &gt;_&gt; O-OK wiww enyabwe t-the x3 m-mods f-fow youw appwication. P-Pwessing Cancew wiww disabwe t-the mods.</s:String>
-<s:String x:Key="ConfigNuGetFeedsButton">Configuwe Souwces</s:String>
-<s:String x:Key="PublishModPreviousVersionsDescription">:3 P-Pwoviding eawwiew xDD v-vewsion(s) o-of youw mod awwows f-fow t-the use o-of dewta uWu c-compwession, a way to enyabwe s-smawwew downwoad sizes ^.^ w-when upgwading fwom an eawwiew vewsion to a w-watew vewsion o-of a mod.</s:String>
-<s:String x:Key="TitleEditApplication">Edit Appwication</s:String>
-<s:String x:Key="PublishModCompMethod">Compwession Method</s:String>
-<s:String x:Key="CreateModDialogSave">Cweate Mod</s:String>
-<s:String x:Key="FirstLaunchExAddModExtractDescription2">If thewe is nyo singwe fowdew inside t-the d-downwoaded mod, cweate onye y-youwsewf.</s:String>
-<s:String x:Key="RunAsAdminMessage">Y-You nyeed to wun this appwication as adminyistwatow. 
-Adminyistwative pwiviweges awe nyeeded to weceive appwication waunch/exit events fwom Windows Manyagement &gt;_&gt; I-Instwumentation (WMI). 
-Devewopews: Wun youw favouwite IDE ^w^ e-e.g. Visuaw Studio as A-Admin.</s:String>
-<s:String x:Key="FirstLaunchExEnableModDescription2">A mod is enyabwed if t-the checkbox is wed, disabwed if it is gwey.</s:String>
-<s:String x:Key="LoaderSettingsTwitter">^.^ T-Tweet Me</s:String>
-<s:String x:Key="FirstLaunchExAddModExtractNext">Nyext</s:String>
-<s:String x:Key="ApplicationReloadedInstances">Wewoaded Instances</s:String>
-<s:String x:Key="PackageDownloaderDownloadCompleteDescription">D-Downwoad F-Finyished. 
-This &gt;_&lt; w-window wiww automaticawwy c-cwose in a f-few seconds.</s:String>
-<s:String x:Key="LoaderSettingsAppsInstalled">Appwications Instawwed:</s:String>
-<s:String x:Key="ErrorGetProcAddress32Failed">Wawnying: Y-You awe pwobabwy missing t-the x86 vewsion o-of .NyET Cowe, 32-bit appwications wiww nyot wowk. 
-x3 P-Pwease we-check t-the wequiwements wisted on t-the downwoad page. 
-Actuaw E-Ewwow: Faiwed to acquiwe addwess o-of G-GetPwocAddwess f-fow x-x86.</s:String>
-<s:String x:Key="ErrorUnknown">Unknyown Ewwow</s:String>
-<s:String x:Key="SplashCleaningConfigurations">Cweanying App/Woadew/Mod Configuwations</s:String>
-<s:String x:Key="AddAppRepoTestButtonTooltip">Awwows y-you to test t-the appwication configuwation befowe submitting it to t-the Wewoaded Communyity Index.</s:String>
-<s:String x:Key="ModManagerManageDependencies">Manyage Dependencies</s:String>
-<s:String x:Key="UpdateLoaderProcessList">P-Pwocess W-Wist</s:String>
-<s:String x:Key="FirstLaunchLineTwo">Befowe ^-^ g-getting stawted, y-you might :3 c-considew checking x3 o-out t-the UwU f-fowwowing winks:</s:String>
-<s:String x:Key="DownloadPackagesSource">Souwce</s:String>
+<s:String x:Key="EditModStepDependencies">Mod dependencies</s:String>
+<s:String x:Key="UpdateModConfirmTitle">Appwications wunnying</s:String>
+<s:String x:Key="ModManagerContextEditModUser">Usew c-config</s:String>
+<s:String x:Key="FailedToLaunchMessage">An &gt;w&lt; e-ewwow occuwed whiwe t-twying to woad wewoaded-ii.</s:String>
+<s:String x:Key="ConfiguratorBtnAcceptName">Accept</s:String>
+<s:String x:Key="PublishOutputFolder">Output fowdew</s:String>
+<s:String x:Key="DownloadModsVisitWebsite">Visit w-website</s:String>
+<s:String x:Key="ConfiguratorBtnModifierDescription">Awwows f-fow a-awtewnyate behaviouw on some ui ewements.
+E-E.g. Thaw she bwows! Mod+up can OwO b-be u-used to we-owdew ^w^ t-th' mod o-owdew.</s:String>
+<s:String x:Key="NonReloadedProcessMessageTwo">Ye can woad wewoaded by pwessing ^w^ t-th' UwU f-fowwowing button bewow.</s:String>
+<s:String x:Key="AddAppExecutableFilter">Appwication executabwe</s:String>
+<s:String x:Key="UpdateModNewVersion">Nyew vewsion</s:String>
+<s:String x:Key="ConfiguratorLibCustomStringTimeout">Timeout</s:String>
+<s:String x:Key="AddAppWarning">Th' executabwe nyame o-of ^w^ t-th' appwication a-added OwO b-be diffewent fwom ^w^ t-th' owiginyaw.
+If &gt;_&gt; y-ye awe adding anyothew appwication, &gt;_&gt; y-ye shouwd add it as a nyew appwication. T-Thundewing typhoons!</s:String>
+<s:String x:Key="ConfigureModDialogTitle">Configuwe mod</s:String>
+<s:String x:Key="BootstrapperUpdateTitle">Bootstwappew u-updated</s:String>
+<s:String x:Key="AppCategoryProcesses">Pwocesses</s:String>
+<s:String x:Key="SplashPreparingResources">Setting up wesouwces</s:String>
+<s:String x:Key="FirstLaunchExCompleteDescription2">Ye might awso find ^w^ t-th' UwU f-fowwowing winks usefuw: Thaw she bwows!</s:String>
+<s:String x:Key="ModManagerSelectMod">Sewect ^w^ t-th' mod to c-change ^w^ t-th' d-detaiws o-of. Cweave h-him to t-the bwisket!</s:String>
+<s:String x:Key="MessageCreateModNonUniqueId">Th' modid f-fow ^w^ t-th' mod &gt;_&gt; y-ye awe cweating OwO b-be nyot unyique.
+x3 P-Pwease make ^w^ t-th' modid unyique.</s:String>
+<s:String x:Key="ConfiguratorBtnModifierName">Modifiew</s:String>
+<s:String x:Key="LoaderSettingsControllerBtn">&gt;w&lt; C-Contwowwew configuwation [beta]</s:String>
+<s:String x:Key="ModManagerSearchApps">Seawch apps</s:String>
+<s:String x:Key="ConfigNuGetFeedsButton">Configuwe souwces</s:String>
 <s:String x:Key="NoUpdateDialogTitle">Hooway!</s:String>
-<s:String x:Key="TitleDownloadMods">D-Downwoad M-Mods</s:String>
-<s:String x:Key="TitleLoaderSettings">Mod Woadew Settings</s:String>
-<s:String x:Key="AddAppRepoSelectGameDialogTitle">Sewect Game</s:String>
-<s:String x:Key="TitleManageMods">Manyage M-Mods</s:String>
-<s:String x:Key="LoaderSettingsDonate">Sponsow Me on GitHub</s:String>
-<s:String x:Key="LoaderSettingsConfigTheme">OwO T-Theme</s:String>
-<s:String x:Key="ConfigureModDialogSave">S-Save</s:String>
+<s:String x:Key="ConfiguratorBtnRightName">W-Wight</s:String>
+<s:String x:Key="UpdateLoaderRunningMessage">Ye have appwications cuwwentwy wunnying wewoaded.
+Update cannyot OwO b-be pewfowmed, p-pwease c-cwose aww appwications. Weigh anchow and hoist t-the mizzen!</s:String>
+<s:String x:Key="ConfigNuGetFeedsURLTooltip">Exampwe: H-Http://167.71.128.50:5000/v3/index.json</s:String>
+<s:String x:Key="AddAppRepoSelectGameDialogDesc1">x3 P-Pwease s-sewect youw desiwed game fwom ^w^ t-th' UwU f-fowwowing wist and pwess ok. T-Thundewing typhoons!</s:String>
+<s:String x:Key="LoaderSettingsDiscord">Join ^w^ t-th' discowd sewvew</s:String>
+<s:String x:Key="AddAppNewButton">Nyew</s:String>
+<s:String x:Key="ErrorPathToApplicationInvalid">Th' path to ^w^ t-th' appwication to OwO b-be w-waunched OwO b-be invawid. x3 P-Pwease we-check youw appwication configuwation.</s:String>
+<s:String x:Key="TitleCreateModDialog">Cweate mod</s:String>
+<s:String x:Key="FirstLaunchExAddModExtractDescription2">If thewe OwO b-be n-nyay singwe fowdew inside ^w^ t-th' d-downwoaded mod, cweate onye y-youwsewf.</s:String>
+<s:String x:Key="TitleAddApplication">Add an appwication</s:String>
 <s:String x:Key="ReloadedProcessResume">Wesume</s:String>
-<s:String x:Key="LoaderSettingsConfigFile">Open Config Fiwe</s:String>
-<s:String x:Key="AddAppAutoInjectMessage">Nyote: Auto-inject is pwovided but nyot wecommended as nyo guawantee can OwO b-be m-made t-that x3 m-mods wiww &gt;w&lt; e-execute code befowe t-the appwication. 
-x3 P-Pwease instead use weguwaw "-"Waunch ^.^ A-Appwication" fwom Wewoaded o-ow t-the "DWW Woadew" method :3 d-descwibed in t-the GitHub d-documentation. 
-x3 P-Pwease do nyot submit bugs f-fow x3 m-mods t-that do nyot w-wowk using Auto-inject mode.</s:String>
-<s:String x:Key="NoUpdateDialogMessage">Nyothing to do h-hewe. OwO A-Aww x3 m-mods in check!</s:String>
-<s:String x:Key="TitleFirstLaunch">W-Wewcome to Wewoaded II</s:String>
-<s:String x:Key="LoaderSettingsConfigLog">View Wog Fiwes</s:String>
-<s:String x:Key="AddAppRepoTestButton">Test Communyity Configuwation</s:String>
-<s:String x:Key="ConfigNuGetFeedsURLTooltip">Exampwe: http://167.71.128.50:5000/v3/index.json</s:String>
-<s:String x:Key="LoaderSettingsConfigLanguage">Wanguage</s:String>
-<s:String x:Key="ConfigureModsRightClickAdvice">W-Wight Cwick Mod f-fow Mowe O-Options</s:String>
-<s:String x:Key="FirstLaunchLineDocumentation">Documentation</s:String>
-<s:String x:Key="LoaderSettingsCleanupWarning">The UwU f-fowwowing opewation pewfowms housekeeping on vawious configuwations ^-^ (-(App, Mod e-etc.). 
-H-Housekeeping functions i-incwude things such as wemoving nyonyexisting x3 m-mods fwom a m-mod's wist o-of dependencies. 
-x3 P-Pwease OwO b-be awawe t-that if y-you awe missing a-any dependencies, suppowted appwications etc. they wiww OwO b-be wemoved fwom t-the configuwation fiwes.</s:String>
-<s:String x:Key="PublishModWarningDescription">This mod has nyo update settings configuwed, which means it w-wouwdn't OwO b-be abwe to weceive automatic u-updates. 
-Befowe pubwishing, p-pwease see `Pubwishing Tutowiaw` to find x3 o-out how y-you can s-set this u-up.</s:String>
-<s:String x:Key="ApplicationTooltipProcessRldDescription">Y-You can use me to manyage cuwwentwy w-woaded mods.</s:String>
-<s:String x:Key="DownloadModArchiveTitle">D-Downwoad Mod ^w^ A-Awchive</s:String>
-<s:String x:Key="ErrorPublishModIdDescription">The pwovided mod i-id ^w^ d-does nyot match t-the i-id o-of t-the mod to OwO b-be pubwished.</s:String>
-<s:String x:Key="AsiLoaderDialogDescription">T-ThiwteenyAG's Uwtimate ASI Woadew (3wd pawty DWW woadew) can OwO b-be depwoyed if y-you wouwd wike f-fow Wewoaded 
-to OwO b-be w-waunched automaticawwy without using a w-waunchew o-ow s-showtcut. Wouwd y-you wike to depwoy this woadew?</s:String>
-<s:String x:Key="AddAppShortcutCreatedTitle">S-Showtcut Cweated</s:String>
-<s:String x:Key="ErrorPathNullOrEmpty">The path to this appwication is eithew nyuww o-ow e-empty. x3 P-Pwease fix t-the uWu p-path.</s:String>
-<s:String x:Key="AddAppLocation">Executabwe Wocation</s:String>
-<s:String x:Key="ApplicationTotalMods">T-Totaw M-Mods</s:String>
-<s:String x:Key="AddAppWarning">The executabwe nyame o-of t-the appwication a-added is diffewent fwom t-the owiginyaw. 
-If y-you awe adding anyothew appwication, y-you shouwd add it as a nyew appwication.</s:String>
-<s:String x:Key="AddAppModSources">Mod D-Downwoad Souwces</s:String>
-<s:String x:Key="TitleConfigNuGetFeeds">Configuwe NyuGet Souwces</s:String>
-<s:String x:Key="LoaderSettingsLoadAsynchronously">Woad A-Asynchwonyouswy</s:String>
-<s:String x:Key="ConfigureModsDummyText">U-Uses Wewoaded to teww y-you to g-get some mods. Wewoaded-II is coow! Cutenyess is justice, its t-the waw!.</s:String>
-<s:String x:Key="EditModMetadataNameTooltip">Nyame o-of t-the JSON Metadata fiwe. 
-Change this onwy if y-you awe weweasing muwtipwe x3 m-mods on t-the same page.</s:String>
-<s:String x:Key="UpdateLoaderTitle">Update Avaiwabwe</s:String>
+<s:String x:Key="ErrorUnableDetermineVersion">E-Ewwow: Cweave h-him to t-the bwisket! U-Unyabwe to detewminye wewoaded ii vewsion</s:String>
+<s:String x:Key="TitleSplashPage">Pwepawing wewoaded i-ii..</s:String>
+<s:String x:Key="ConfiguratorBtnDeclineDescription">Cwoses ^w^ t-th' cuwwent n-nyon-main window.</s:String>
+<s:String x:Key="PublishModTutorial">Pubwishing tutowiaw</s:String>
+<s:String x:Key="DownloadModArchiveName">Fiwe nyame</s:String>
+<s:String x:Key="EditModLibrary">Wibwawy</s:String>
+<s:String x:Key="ConfigNuGetFeedsName">Nyame (wequiwed)</s:String>
+<s:String x:Key="PublishModButtonText">xDD P-Pubwish</s:String>
+<s:String x:Key="CreateModDialogName">Nyame</s:String>
+<s:String x:Key="LoaderSettingsCompileDate">Compiwed on:</s:String>
+<s:String x:Key="FirstLaunchExAddApplicationDescription1">F-Fiwst step to ^-^ g-getting s-stawted with wewoaded OwO b-be to add an appwication y-you'ww OwO b-be modding. Ye fwoundewin' nyincompoop.
+(nyowmawwy found on ^w^ t-th' +-+ button, b-bottom weft o-of w-waunchew)</s:String>
+<s:String x:Key="AddAppImageSelectorTitle">Sewect image to use as icon.</s:String>
+<s:String x:Key="FailedToLaunchTitle">O-Oof!</s:String>
+<s:String x:Key="TitleConfigureMods">Configuwe x3 m-mods</s:String>
+<s:String x:Key="ModManagerContextOpenFolder">Open fowdew</s:String>
+<s:String x:Key="TitleFirstLaunchEx">Wewoaded ii tutowiaw</s:String>
+<s:String x:Key="ModManagerExtraOptions">E-Extwa options</s:String>
+<s:String x:Key="AddAppRepoWarningDesc2">x3 P-Pwease OwO b-be awawe t-that nyot aww x3 m-mods may behave as expected. Considew UwU f-fowwowing ^w^ t-th' guidance (if any) pwesented in ^w^ t-th' wawnyings above.</s:String>
+<s:String x:Key="PublishModRegexTitle">Weguwaw expwession</s:String>
+<s:String x:Key="FirstLaunchExStepAddApplication">Add appwication</s:String>
+<s:String x:Key="ErrorInvalidModConfigDescription">Th' pwovided fiwe ^w^ d-does nyot wepwesent a vawid mod configuwation.</s:String>
+<s:String x:Key="ConfiguratorBtnLastPageName">Wast page</s:String>
+<s:String x:Key="ApplicationTooltipCreateShortcutDescription">Saves a showtcut t-that can OwO b-be u-used to waunch ^w^ t-th' app modded without wewoaded waunchew. Swing yew hook!</s:String>
+<s:String x:Key="AddAppAdvancedOptions">Advanced toows &amp; options</s:String>
+<s:String x:Key="ErrorInvalidSemanticVersionTitle">Invawid vewsion nyumbew</s:String>
+<s:String x:Key="LoaderSettingsConfigTheme">OwO T-Theme</s:String>
+<s:String x:Key="AddAppRepoBadHashDesc1">Th' main executabwe (exe) o-of ^w^ t-th' appwication OwO b-be m-modified o-ow o-of a diffewent vewsion OwO t-than expected.</s:String>
+<s:String x:Key="DownloadModsCheckUpdatesAndDependencies">Check u-updates &amp; dependencies</s:String>
+<s:String x:Key="ConfigureModDialogReset">Weset</s:String>
+<s:String x:Key="CreateModDialogDescription">Showt descwiption</s:String>
+<s:String x:Key="CreateModDialogSave">Cweate mod</s:String>
+<s:String x:Key="ConfigureModDialogResetDescription">Wesets ^w^ t-th' configuwation vawues to UwU t-theiw defauwts. Yo h-ho ho. A-Avast ye!
+[nyote: S-Savvy? Wequiwes mod suppowt, contact authow if doesn't wowk]</s:String>
+<s:String x:Key="ConfiguratorBtnLeftDescription">Nyavigates ^w^ t-th' menyu weft.</s:String>
+<s:String x:Key="ConfiguratorBtnIncrementName">Incwement</s:String>
+<s:String x:Key="ConfiguratorBtnRightDescription">Nyavigates ^w^ t-th' menyu wight.</s:String>
+<s:String x:Key="FirstLaunchExAddApplicationButton">Add appwication</s:String>
+<s:String x:Key="CreateModDialogAuthor">Authow</s:String>
+<s:String x:Key="PublishModCompMethod">Compwession method</s:String>
+<s:String x:Key="ConfiguratorStickVerticalStickToUpDownName">Menyu u-up/down [-[stick]</s:String>
+<s:String x:Key="ConfiguratorStickHorizontalStickToLeftRightDescription">Nyavigates ^w^ t-th' menyu weft/wight</s:String>
+<s:String x:Key="DownloadModsAlreadyDownloaded">Awweady d-downwoaded</s:String>
+<s:String x:Key="FirstLaunchExStepComplete">Compwete</s:String>
+<s:String x:Key="DownloadPackagesAll">OwO A-Aww souwces</s:String>
+<s:String x:Key="UpdateModTitle">Mod u-updates avaiwabwe</s:String>
+<s:String x:Key="AddAppImageTooltip">Cwick this image to i-impowt a custom wogo.</s:String>
+<s:String x:Key="MessageBoxButtonOK">Ok</s:String>
+<s:String x:Key="ReloadedProcessLoadMod">Woad mod</s:String>
 <s:String x:Key="CreateModDialogImageSelectorFilter">Image</s:String>
+<s:String x:Key="TitleApplication">Appwication hub</s:String>
+<s:String x:Key="ConfiguratorBtnDecrementDescription">W-Wemoves 1 fwom ^w^ t-th' cuwwent vawue on a ui ewement.</s:String>
+<s:String x:Key="LoaderSettingsWarning">Wewoaded OwO b-be ;;w;; p-powewfuw s-softwawe e-enyabwing awbitwawy/custom code e-execution. Use at youw own wisk.</s:String>
+<s:String x:Key="ModManagerConvertToNuget">Convewt to UwU n-nyuget fowmat</s:String>
+<s:String x:Key="ModManagerOpenModDirectory">Open mod d-diwectowy</s:String>
+<s:String x:Key="AddAppRepoWarningTitle">Wawnying</s:String>
+<s:String x:Key="ModManagerSelectApp">Sewect ^w^ t-th' appwications t-that awe x3 c-compatibwe with this mod.</s:String>
+<s:String x:Key="ErrorFailedToStartProcess">Faiwed to stawt ^w^ t-th' pwocess. This genyewawwy happens d-due to onye o-of ^w^ t-th' 3 issues:
+- path to ^w^ t-th' xDD e-exe OwO b-be incowwect ^.^ (-(have &gt;_&gt; y-ye moved ^w^ t-th' appwication?)
+- ^w^ t-th' pwogwam OwO b-be configuwed to wun as adminyistwatow (wight cwick UwU --&gt; pwopewties) but wewoaded OwO b-be wunnying in usew mode.
+- i-intewfewence fwom ^w^ e-e.g. Antiviwus softwawe. Awww! Check youw wogs.
+H-Hewe OwO b-be ^w^ t-th' &gt;w&lt; e-ewwow wetuwnyed fwom windows:</s:String>
+<s:String x:Key="AddAppShortcutCreatedTitle">S-Showtcut cweated</s:String>
+<s:String x:Key="AsiLoaderDialogTitle">Asi woadew d-depwoyment</s:String>
+<s:String x:Key="ErrorAsiNotSupported">Nyay x3 c-compatibwe dww nyame found to add uwtimate a-asi woadew.</s:String>
+<s:String x:Key="PublishAutoDelta">Automatic dewta</s:String>
+<s:String x:Key="DownloadPackagesSource">Souwce</s:String>
+<s:String x:Key="AsiLoaderDialogLoaderDeployed">Asi woadew successfuwwy depwoyed to:</s:String>
+<s:String x:Key="CreateModDialogDependencies">Mod dependencies</s:String>
+<s:String x:Key="LoadModSetDialogTitle">Sewect fiwe to woad wist o-of x3 m-mods fwom.</s:String>
+<s:String x:Key="FetchNugetTitle">D-Downwoad p-packages</s:String>
+<s:String x:Key="ConfiguratorBtnIncrementDescription">Adds +-+1 to ^w^ t-th' cuwwent vawue on a ui ewement.</s:String>
+<s:String x:Key="UpdateLoaderChangelog">View changewog on github</s:String>
+<s:String x:Key="TitleManageMods">Manyage x3 m-mods</s:String>
+<s:String x:Key="MissingDependenciesTitle">Missing wequiwements</s:String>
+<s:String x:Key="UpdateLoaderRunningTitle">Appwications wunnying</s:String>
+<s:String x:Key="TitleConfigNuGetFeeds">Configuwe UwU n-nyuget souwces</s:String>
+<s:String x:Key="FetchNugetMessage">Th' UwU f-fowwowing p-packages wiww OwO b-be i-instawwed: Thaw she bwows!</s:String>
+<s:String x:Key="AddAppCreateShortcut">Cweate showtcut</s:String>
+<s:String x:Key="FirstLaunchExAddModExtractDescription1">To instaww mods, simpwy extwact a d-downwoaded zip to ^w^ t-th' 'mods' f-fowdew.</s:String>
+<s:String x:Key="AppCategorySummary">Summawy</s:String>
+<s:String x:Key="EditModDependenciesDescription">If youw mod :33 w-wequiwes anyothew mod to OwO b-be pwesent, s-sewect it h-hewe.</s:String>
+<s:String x:Key="AddAppModSources">Mod downwoad souwces</s:String>
+<s:String x:Key="UpdateLoaderUpdate">Update</s:String>
+<s:String x:Key="PublishModPreviousVersionsTitle">Pwevious xDD v-vewsion(s)</s:String>
+<s:String x:Key="LoaderSettingsCleanupWarning">Th' UwU f-fowwowing opewation pewfowms housekeeping on vawious configuwations (app, mod e-etc.).
+H-Housekeeping functions i-incwude things such as wemoving nyonyexisting x3 m-mods fwom a m-mod's wist o-of dependencies.
+x3 P-Pwease OwO b-be awawe t-that if &gt;_&gt; y-ye awe missing a-any dependencies, suppowted appwications etc. T-They wiww OwO b-be wemoved fwom ^w^ t-th' configuwation fiwes.</s:String>
+<s:String x:Key="SplashCreatingDefaultConfig">Cweating defauwt c-config</s:String>
+<s:String x:Key="ModManagerContextEditMod">Edit mod</s:String>
+<s:String x:Key="ErrorPublishModIdDescription">Th' pwovided mod i-id ^w^ d-does nyot match ^w^ t-th' i-id o-of ^w^ t-th' mod to OwO b-be pubwished.</s:String>
+<s:String x:Key="ConfiguratorBtnNextPageDescription">Nyavigates to ^w^ t-th' nyext page inside w-windows with muwtipwe pages.</s:String>
+<s:String x:Key="ErrorNewerModConfigVersionDescription">Th' pwovided mod vewsion OwO b-be nyewew o-ow awweady equaw to ^w^ t-th' vewsion to OwO b-be weweased.</s:String>
+<s:String x:Key="WineCompatibilityNoticeText">It appeaws t-that &gt;_&gt; y-ye awe t-twying to wun an appwication using ^w^ t-th' w-waunchew fwom inside w-winye.
+This opewation OwO b-be wikewy to faiw, d-due to tawget appwication wequiwing s-speciaw t-twicks to wun o-ow isowation (such as diffewent w-winye pwefix) ^w^ p-pweventing dww injection.
+
+To wun undew winye, it OwO b-be wecommended t-that &gt;_&gt; y-ye depwoy a-asi woadew (see: Edit appwication menyu) and wun ^w^ t-th' game outside ^w^ t-th' waunchew.
+x3 P-Pwease nyote t-that wewoaded isn't fwequentwy &gt;_&gt; t-tested undew w-winye.</s:String>
+<s:String x:Key="ConfiguratorBtnNoneDescription">D-Does &gt;w&lt; n-nyothing.</s:String>
+<s:String x:Key="ModManagerSearchMods">Seawch x3 m-mods</s:String>
+<s:String x:Key="ModManagerManageDependencies">Manyage dependencies</s:String>
+<s:String x:Key="FirstLaunchLineThree">Ye may w-watew find t-these winks in [mod woadew s-settings].</s:String>
+<s:String x:Key="PublishModRegexTest">Test weguwaw expwessions</s:String>
+<s:String x:Key="ErrorError">Ewwow</s:String>
+<s:String x:Key="PublishSelectConfigFileTypeName">Configuwation</s:String>
+<s:String x:Key="EditModSave">S-Save</s:String>
+<s:String x:Key="AddAppArguments">Commandwinye a-awguments</s:String>
+<s:String x:Key="ErrorCheckUpdatesFailed">Faiwed to check f-fow u-updates. We awe eithew being wate wimited by github o-ow nyot connyected to ^w^ t-th' intewnyet.</s:String>
+<s:String x:Key="ApplicationTooltipProcessSysDescription">Ye can use me to woad wewoaded i-into this pwogwam.</s:String>
+<s:String x:Key="TitleLoaderSettings">Mod woadew settings</s:String>
+<s:String x:Key="NonReloadedProcessMessageOne">Wewoaded OwO b-be nyot manyaging this pawticuwaw pwocess.</s:String>
+<s:String x:Key="ConfigureModsConfigure">Configuwe mod</s:String>
+<s:String x:Key="TitlePublishModDialog">xDD P-Pubwish mod</s:String>
+<s:String x:Key="FirstLaunchExConfigureModDescription2">If ^w^ t-th' "configuwe mod" OwO b-be wed ^.^ w-when ^w^ t-th' mod OwO b-be uWu h-highwighted, it can OwO b-be configuwed.</s:String>
+<s:String x:Key="UpdateModSize">Size (mb)</s:String>
+<s:String x:Key="EditModUniversalModDescription">If enyabwed, ^w^ t-th' mod OwO b-be visibwe by defauwt in evewy appwication.</s:String>
+<s:String x:Key="ReloadedProcessSuspend">Suspend</s:String>
+<s:String x:Key="FetchNugetNotFoundAdvice">Ye wiww nyeed to find them youwsewf :/</s:String>
+<s:String x:Key="ErrorInvalidSemanticVersionDescription">Th' vewsion nyumbew u-used by mod ^w^ d-does nyot c-confowm to ^w^ t-th' `semantic vewsionying` OwO (-(semvew) standawd and cannyot weceive u-updates. x3 P-Pwease update youw m-mod's vewsion nyumbew to use s-semvew. E-Exampwes: `1.0.0`, `1.0`, `2.0-awpha`.</s:String>
+<s:String x:Key="MessageBoxButtonCancel">Cancew</s:String>
+<s:String x:Key="ConfigureModsListItemTooltip">Dwag and dwop items to c-change ^w^ t-th' woad o-owdew o-of mods. M-Mods awe w-woaded s-stawting with top mod fiwst and b-bottom mod wast. Ye fwoundewin' nyincompoop.</s:String>
+<s:String x:Key="FirstLaunchExAddModExtractPrev">Pwevious</s:String>
+<s:String x:Key="FirstLaunchLineOne">It's youw fiwst time using wewoaded i-ii.</s:String>
+<s:String x:Key="ApplicationTotalMods">T-Totaw x3 m-mods</s:String>
+<s:String x:Key="PackageDownloaderDownloadCompleteDescription">D-Downwoad finyished.
+This &gt;_&lt; w-window wiww automaticawwy c-cwose in a f-few seconds.</s:String>
+<s:String x:Key="TitleDownloadMods">D-Downwoad x3 m-mods</s:String>
+<s:String x:Key="TitleReloadedProcess">Wewoaded pwocess</s:String>
+<s:String x:Key="PublishModIncludeTitle">Incwude fiwes</s:String>
+<s:String x:Key="NoUpdateDialogMessage">Nyothing to do h-hewe. OwO A-Aww x3 m-mods in check!</s:String>
+<s:String x:Key="TitleMainPage">Main page</s:String>
+<s:String x:Key="PublishModPreviousVersionsDescription">:3 P-Pwoviding eawwiew xDD v-vewsion(s) o-of youw mod awwows f-fow ^w^ t-th' use o-of dewta uWu c-compwession, a way to enyabwe s-smawwew downwoad sizes ^.^ w-when upgwading fwom an eawwiew vewsion to a w-watew vewsion o-of a mod.</s:String>
+<s:String x:Key="ReloadedProcessUnload">U-Unwoad</s:String>
+<s:String x:Key="UpdateLoaderNewVersion">Nyew vewsion</s:String>
+<s:String x:Key="LoaderSettingsConfigFile">Open c-config fiwe</s:String>
+<s:String x:Key="LoaderSettingsLoadAsynchronously">Woad asynchwonyouswy</s:String>
+<s:String x:Key="ConfigNuGetFeedsURL">Uww (wequiwed)</s:String>
+<s:String x:Key="LoaderSettingsConfigLanguage">Wanguage</s:String>
+<s:String x:Key="ErrorUnknown">Unknyown &gt;w&lt; e-ewwow</s:String>
+<s:String x:Key="FirstLaunchExStepConfigureMod">Configuwe x3 m-mods</s:String>
+<s:String x:Key="ErrorUpdateModInUse">Ye have appwications cuwwentwy wunnying wewoaded. Updates wiww downwoad howevew wiww nyot OwO b-be a-appwied untiw aww appwications awe cwosed. Awww!</s:String>
+<s:String x:Key="PublishModTargetTooltip">Use defauwt u-unwess thewe's an option f-fow ^w^ t-th' pwace(s) you'we pubwishing t-to. Shivew me timbews!
+Enyabwes/disabwes cewtain behaviouws. A-Avast ye!</s:String>
+<s:String x:Key="FirstLaunchLineDocumentation">Documentation</s:String>
+<s:String x:Key="SplashCheckingForUpdates">Checking f-fow u-updates</s:String>
+<s:String x:Key="ConfigNuGetFeedsDescription">Descwiption</s:String>
+<s:String x:Key="ConfiguratorCustomStringWindowName">Wewoaded contwowwew configuwation [beta]</s:String>
+<s:String x:Key="ApplicationTooltipProcessRldDescription">Ye can use me to manyage cuwwentwy w-woaded mods.</s:String>
+<s:String x:Key="EditModMetadataNameTooltip">Nyame o-of ^w^ t-th' json metadata fiwe.
+Change this onwy if &gt;_&gt; y-ye awe weweasing muwtipwe x3 m-mods on ^w^ t-th' same page.</s:String>
+<s:String x:Key="AddAppRepoTestJsonSelectFilter">Communyity configuwation</s:String>
+<s:String x:Key="ErrorMissingDependency">Missing dependencies</s:String>
+<s:String x:Key="NonReloadedProcessInject">Inject</s:String>
+<s:String x:Key="FirstLaunchExConfigureModDescription1">Some x3 m-mods might :3 s-suppowt additionyaw configuwation, awwowing &gt;_&gt; y-ye to tweak things.</s:String>
+<s:String x:Key="PublishAutoDeltaWarningTitle">Automatic dewta wawnying</s:String>
+<s:String x:Key="LoadModSet">Woad mod s-set</s:String>
+<s:String x:Key="AsiLoaderInstall">Depwoy a-asi woadew</s:String>
+<s:String x:Key="FirstLaunchExCompleteDescription3">Ye can awso find t-these winks in [mod woadew s-settings].</s:String>
+<s:String x:Key="LoaderSettingsCleanupComplete">Cweanyup compwete</s:String>
+<s:String x:Key="CreateModDialogId">Unyique i-id</s:String>
+<s:String x:Key="PackageDownloaderDownloadingDependencies">Downwoading dependencies</s:String>
+<s:String x:Key="LoaderSettingsAppsInstalled">Appwications i-instawwed:</s:String>
+<s:String x:Key="LoadModSetIncompatibleTitle">Compatibiwity awewt</s:String>
+<s:String x:Key="WineCompatibilityNoticeOk">Twy ^w^ a-anyway</s:String>
+<s:String x:Key="AddAppRepoBadHashDesc2">x3 P-Pwease OwO b-be awawe t-that nyot aww x3 m-mods may behave as expected. Considew UwU f-fowwowing ^w^ t-th' guidance (if any) pwesented in ^w^ t-th' message above.</s:String>
+<s:String x:Key="FirstLaunchExAddApplicationSkipStepButton">Skip this step</s:String>
+<s:String x:Key="FirstLaunchLineTwo">Befowe ^-^ g-getting stawted, &gt;_&gt; y-ye might :3 c-considew checking x3 o-out ^w^ t-th' UwU f-fowwowing winks:</s:String>
+<s:String x:Key="PublishModTarget">xDD P-Pubwish tawget</s:String>
+<s:String x:Key="ConfiguratorStickHorizontalStickToLeftRightName">Menyu weft/wight [-[stick]</s:String>
+<s:String x:Key="LoaderSettingsShowConsole">Show consowe</s:String>
+<s:String x:Key="LoaderSettingsDonate">Sponsow me on github</s:String>
+<s:String x:Key="ErrorFailedToObtainPort">Th' appwication has eithew &gt;_&gt; c-cwashed, wewoaded faiwed to woad o-ow wewoaded has nyot i-inyitiawized within ^w^ t-th' timeout w-wimit.
+
+Th' UwU f-fowwowing opewations might uWu h-hewp:
+- c-cwose this ewwow, w-wait a f-few seconds, and twy again.
+- c-cwose o-othew copies o-of ^w^ t-th' appwication if they awe awweady wunnying. (use task manyagew)
+- weboot youw machinye.
+
+This OwO b-be a w-wawnying, if youw appwication wowks as expected &gt;_&gt; y-ye can ignyowe this message. Dead men teww nyo t-tawes.
+
+Actuaw ewwow:
+Faiwed to o-obtain powt f-fow ^w^ t-th' wewoaded instance wunnying inside ^w^ t-th' pwocess. Swing yew hook!</s:String>
+<s:String x:Key="ConfiguratorBtnUpName">Up</s:String>
+<s:String x:Key="SplashCreatingTemplates">Cweating tempwates</s:String>
+<s:String x:Key="ConfiguratorBtnDeclineName">Decwinye</s:String>
+<s:String x:Key="TitleEditApplication">Edit appwication</s:String>
+<s:String x:Key="AddAppRepoTestButton">Test c-communyity configuwation</s:String>
+<s:String x:Key="SaveModSet">S-Save mod s-set</s:String>
+<s:String x:Key="AddAppRepoWarningDesc1">Q-Quick scan o-of ^w^ t-th' game d-diwectowy has pwoduced ^w^ t-th' UwU f-fowwowing wawnyings:</s:String>
+<s:String x:Key="AddAppWarningTitle">Executabwe nyame wawnying</s:String>
+<s:String x:Key="EditModAppsDescription">Sewect appwications ^w^ t-th' mod shouwd OwO b-be avaiwabwe fow. Bwow me down!</s:String>
+<s:String x:Key="ApplicationLaunch">Waunch appwication</s:String>
+<s:String x:Key="ErrorFailedToGetDirectoryOfMod">Faiwed to g-get d-diwectowy o-of mod to d-dewete.</s:String>
+<s:String x:Key="EditModStepUpdates">Update :3 s-suppowt</s:String>
+<s:String x:Key="ConfiguratorBtnLeftName">Weft</s:String>
+<s:String x:Key="MissingDependenciesText">It appeaws t-that cewtain wequiwements wequiwed to wun wewoaded awe missing fwom youw system. Th' w-waunchew has found ^w^ t-th' UwU f-fowwowing missing wequiwements:</s:String>
+<s:String x:Key="TitleEditModUserAllowPrereleases">Awwow b-beta vewsions</s:String>
+<s:String x:Key="ConfiguratorLibCustomStringNew">Nyew</s:String>
+<s:String x:Key="ModManagerContextEdit">Edit</s:String>
+<s:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Weft cwick a-assigns a nyew binding.
+Middwe cwick i-invewts ^w^ t-th' vawue.
+W-Wight cwick cweaws ^w^ t-th' xDD m-mapping! B-Batten down t-the h-hatches!
+! I-Indicates ^w^ t-th' vawue OwO b-be invewted.</s:String>
+<s:String x:Key="AddAppRepoSelectGameDialogOtherGame">Othew game</s:String>
+<s:String x:Key="SaveModSetDialogTitle">Sewect path to save wist o-of x3 m-mods t-to.</s:String>
+<s:String x:Key="AddAppRepoSelectGameDialogDesc2">If youw game OwO b-be nyot on ^w^ t-th' wist, p-pwease s-sewect 'othew game'.</s:String>
+<s:String x:Key="SplashLoadCompleteIn">Woad compwete in:</s:String>
+<s:String x:Key="ConfiguratorCustomStringTriggerDescription">Use this if :33 m-mapping to contwowwew twiggew</s:String>
+<s:String x:Key="LoaderSettingsAndDocumentation">Usew guide +-+ docs.</s:String>
+<s:String x:Key="AsiLoaderDialogBootstrapperDeployed">Wewoaded bootstwappew depwoyed to:</s:String>
+<s:String x:Key="FirstLaunchExStepExtractMod">E-Extwact x3 m-mods</s:String>
+<s:String x:Key="AppCategoryMain">Main</s:String>
+<s:String x:Key="UpdateModDownload">D-Downwoad</s:String>
+<s:String x:Key="AddAppExecutableTitle">Sewect an appwication to cweate ^w^ t-th' configuwation fow. A-Avast ye!</s:String>
+<s:String x:Key="FirstLaunchExAddModExtractNext">Nyext</s:String>
+<s:String x:Key="LoaderSettingsCleanup">Cweanyup configuwations</s:String>
+<s:String x:Key="AddAppName">Appwication nyame</s:String>
+<s:String x:Key="FirstLaunchExEnableModDescription1">To enyabwe mods, simpwy pwess ^w^ t-th' s-squawe c-checkbox.</s:String>
+<s:String x:Key="ErrorLoaderNotFound">Was nyot found. This may OwO b-be caused by antiviwus s-softwawe deweting and/ow bweaking changes in github wepositowy.</s:String>
+<s:String x:Key="ErrorInvalidModConfigTitle">Invawid mod configuwation</s:String>
+<s:String x:Key="LoaderSettingsTwitter">^.^ T-Tweet me</s:String>
+<s:String x:Key="LoaderSettingsConfigLog">View wog fiwes</s:String>
+<s:String x:Key="PackageDownloaderDownloadCompleteTitle">D-Downwoad compwete</s:String>
+<s:String x:Key="TitleSetDependenciesDialog">Set dependencies f-fow mod</s:String>
+<s:String x:Key="EditModUniversalMod">U-Unyivewsaw mod</s:String>
+<s:String x:Key="ConfiguratorBtnDownName">Down</s:String>
+<s:String x:Key="ConfiguratorBtnDecrementName">Decwement</s:String>
+<s:String x:Key="AddAppRepoSelectGameDialogTitle">Sewect game</s:String>
+<s:String x:Key="CreateModDialogVersion">Vewsion</s:String>
+<s:String x:Key="ConfiguratorBtnNextPageName">Nyext page</s:String>
+<s:String x:Key="LoadModSetIncompatibleMessage">Ye have x3 m-mods enyabwed t-that awe nyot mawked x3 c-compatibwe with youw appwication:</s:String>
+<s:String x:Key="AddAppUpdate">Update</s:String>
+<s:String x:Key="FirstLaunchExStepEnableMod">Enyabwe x3 m-mods</s:String>
+<s:String x:Key="AddAppId">Appwication i-id</s:String>
+<s:String x:Key="ApplicationTooltipLoadModSet">Woads a wist o-of enyabwed mods.</s:String>
+<s:String x:Key="FetchNugetNotFoundMessage">Th' UwU f-fowwowing p-packages have nyot been found:</s:String>
+<s:String x:Key="ConfigureModsRightClickAdvice">W-Wight cwick mod f-fow &gt;_&gt; m-mowe options</s:String>
+<s:String x:Key="ReloadedProcessNotice">Nyote: This menyu OwO b-be :33 p-pwimawiwy intended f-fow use by devewopews.</s:String>
+<s:String x:Key="ConfigureModDialogSave">S-Save</s:String>
+<s:String x:Key="FirstLaunchLineUserguide">Usew guide</s:String>
+<s:String x:Key="MissingDependenciesText2">x3 P-Pwease downwoad ^w^ t-th' wequiwements pwovided a-above and c-cwose ^w^ t-th' window.</s:String>
+<s:String x:Key="PublishModCompSettings">Compwession settings</s:String>
+<s:String x:Key="ConfiguratorBtnLastPageDescription">Nyavigates to ^w^ t-th' pwevious page inside w-windows with muwtipwe pages.</s:String>
+<s:String x:Key="FirstLaunchExAddApplicationDescription2">;;w;; M-Make suwe &gt;_&gt; y-ye add ^w^ t-th' a-app, nyot ^w^ t-th' waunchew, as demonstwated above.</s:String>
+<s:String x:Key="CreateModDialogImageSelectorTitle">Sewect a custom wogo f-fow ^w^ t-th' mod.</s:String>
+<s:String x:Key="PublishModCompLevel">Compwession wevew</s:String>
+<s:String x:Key="FirstLaunchExAddApplicationSkipTutorialButton">Skip ^w^ t-th' tutowiaw</s:String>
+<s:String x:Key="LoaderSettingsModsInstalled">M-Mods i-instawwed:</s:String>
+<s:String x:Key="PublishAutoDeltaDescription">Automaticawwy c-cweates a dewta package fwom ^w^ t-th' wast vewsion.
+Don't f-fowget to s-set ^w^ t-th' output path to t-that o-of an existing wewease. Awww!</s:String>
+<s:String x:Key="UpdateLoaderTitle">Update avaiwabwe</s:String>
+<s:String x:Key="WineCompatibilityNoticeTitle">Winye compatibiwity nyotice</s:String>
+<s:String x:Key="ApplicationReloadedInstances">Wewoaded instances</s:String>
+<s:String x:Key="AsiLoaderDialogDescription">Thiwteenyag's uwtimate a-asi woadew (3wd pawty dww woadew) can OwO b-be depwoyed if &gt;_&gt; y-ye wouwd wike f-fow wewoaded
+To OwO b-be w-waunched automaticawwy without using a w-waunchew o-ow s-showtcut. Wouwd &gt;_&gt; y-ye wike to depwoy this woadew?</s:String>
+<s:String x:Key="ModManagerContextConfigure">Configuwe</s:String>
+<s:String x:Key="ErrorPathNullOrEmpty">Th' path to this appwication OwO b-be eithew nyuww o-ow e-empty. x3 P-Pwease fix ^w^ t-th' uWu p-path.</s:String>
 <s:String x:Key="DownloadModsDownloading">Downwoading</s:String>
+<s:String x:Key="SplashRunningSanityChecks">W-Wunnying sanyity checks</s:String>
+<s:String x:Key="ErrorPublishModIdMismatch">Invawid mod i-id</s:String>
+<s:String x:Key="AddAppRepoBadHashTitle">Mismatching h-hash</s:String>
+<s:String x:Key="UpdateModModId">Mod i-id</s:String>
+<s:String x:Key="RunAsAdminMessage">Ye nyeed to wun this appwication as adminyistwatow.
+Adminyistwative pwiviweges awe nyeeded to weceive appwication waunch/exit events fwom w-windows manyagement instwumentation (-(wmi).
+Devewopews: Wun youw favouwite ide ^w^ e-e.g. Visuaw studio as admin.</s:String>
+<s:String x:Key="EditModStepComplete">Finyishing up</s:String>
+<s:String x:Key="PublishFileNameTooltip">Nyame o-of ^w^ t-th' genyewated .7z package fiwe</s:String>
+<s:String x:Key="EditModStepMain">C-Common d-detaiws</s:String>
+<s:String x:Key="LoaderSettingsEnableAutomaticUpdates">Automatic u-updates</s:String>
+<s:String x:Key="FirstLaunchExEnableModDescription2">A mod OwO b-be enyabwed if ^w^ t-th' checkbox OwO b-be wed, disabwed if it OwO b-be gwey.</s:String>
+<s:String x:Key="ConfiguratorStickVerticalStickToUpDownDescription">Nyavigates ^w^ t-th' menyu u-up/down</s:String>
+<s:String x:Key="CreateModDialogIdDesc2">x3 P-Pwease s-set a unyique mod i-id in ^w^ t-th' fowmat o-of "game.type.nyame". Fow exampwe: `-`sonyichewoes.skins.seasidehiwwmidnyight`. O-Once ^w^ t-th' i-id OwO b-be set, it cannyot OwO b-be changed.</s:String>
+<s:String x:Key="ConfiguratorBtnAcceptDescription">Cwicks a button.</s:String>
+<s:String x:Key="ConfiguratorBtnUpDescription">Nyavigates ^w^ t-th' menyu u-up.</s:String>
+<s:String x:Key="TitleFirstLaunch">W-Wewcome to wewoaded ii</s:String>
+<s:String x:Key="PublishModRegexDialogTitle">Excwuded fiwes</s:String>
+<s:String x:Key="ConfiguratorBtnNoneName">N-Nyonye</s:String>
+<s:String x:Key="ErrorUpdateModInUseTitle">M-Mod(s) in use</s:String>
+<s:String x:Key="ReloadedProcessRefresh">W-Wefwesh</s:String>
+<s:String x:Key="BootstrapperUpdateDescription">Wewoaded bootstwappew was auto-updated f-fow ^w^ t-th' UwU f-fowwowing pwogwams:
+UwU {-{0}</s:String>
+<s:String x:Key="PublishAutoDeltaWarningDescriptionFormat">Wewease metadata fiwe nyot found in output f-fowdew. Considew w-wenyaming fiwe if nyecessawy.
+Expected fiwenyame: Swing yew hook! {0}.</s:String>
+<s:String x:Key="AddAppRepoTestJsonSelectTitle">Sewect json fiwe</s:String>
+<s:String x:Key="AddAppRepoBadExecutable">Wwong executabwe</s:String>
+<s:String x:Key="AddAppDeleteButton">Dewete</s:String>
+<s:String x:Key="FirstLaunchExCompleteDescription1">T-Thanks f-fow t-twying wewoaded i-ii.</s:String>
+<s:String x:Key="ConfigureModsDummyText">U-Uses wewoaded to teww &gt;_&gt; y-ye to g-get some mods. Wewoaded-ii OwO b-be coow! Cutenyess OwO b-be justice, its ^w^ t-th' waw!. Bwimey!</s:String>
+<s:String x:Key="PublishModWarningDescription">This mod has n-nyay update settings configuwed, which means it w-wouwdn't OwO b-be abwe to weceive automatic u-updates.
+Befowe pubwishing, p-pwease see `pubwishing tutowiaw` to find x3 o-out how &gt;_&gt; y-ye can s-set this u-up. A-Avast ye!</s:String>
+<s:String x:Key="AddAppAutoInjectMessage">Nyote: Auto-inject OwO b-be pwovided but nyot wecommended as n-nyay guawantee can OwO b-be m-made t-that x3 m-mods wiww &gt;w&lt; e-execute code befowe ^w^ t-th' appwication.
+x3 P-Pwease instead use weguwaw "waunch appwication" fwom wewoaded o-ow ^w^ t-th' "dww woadew" method :3 d-descwibed in ^w^ t-th' github d-documentation.
+x3 P-Pwease do nyot submit bugs f-fow x3 m-mods t-that do nyot w-wowk using auto-inject mode.</s:String>
+<s:String x:Key="UpdateModOldVersion">Bawnyacwe covewed vewsion</s:String>
+<s:String x:Key="AddAppAutoInject">Auto-inject</s:String>
+<s:String x:Key="UpdateLoaderChangelogUnavailable">Nyay changewog avaiwabwe</s:String>
+<s:String x:Key="CreateModDialogIdDesc1">Unyique mod i-id</s:String>
+<s:String x:Key="AddAppLocation">Executabwe wocation</s:String>
+<s:String x:Key="ConfiguratorCustomStringTrigger">Twiggew</s:String>
+<s:String x:Key="TitleEditModUserAllowPrereleasesTooltip">Awwows eawwy vewsions o-of ^w^ t-th' mod to OwO b-be d-downwoaded.</s:String>
+<s:String x:Key="TitleNonReloadedProcess">Nyon-wewoaded pwocess</s:String>
+<s:String x:Key="AppCategoryActions">Actions</s:String>
+<s:String x:Key="ConfiguratorBtnDownDescription">Nyavigates ^w^ t-th' menyu down.</s:String>
+<s:String x:Key="SplashCleaningConfigurations">Cweanying a-app/woadew/mod configuwations</s:String>
+<s:String x:Key="ApplicationTooltipSaveModSet">Saves ^w^ t-th' cuwwent wist o-of enyabwed mods.</s:String>
+<s:String x:Key="AddAppImageSelectorFilter">Image</s:String>
+<s:String x:Key="ErrorDllInjectionFailed">Faiwed to dww inject i-into appwication pwocess.</s:String>
+<s:String x:Key="NonReloadedProcessInjectWarning">Nyote: Nyot aww x3 m-mods may function as expected if they awe w-woaded whiwe ^w^ t-th' appwication OwO b-be wunnying and nyot suspended. x3 P-Pwease do nyot submit bugs f-fow x3 m-mods t-that do nyot w-wowk using this function.</s:String>
+<s:String x:Key="UpdateLoaderProcessList">P-Pwocess wist</s:String>
+<s:String x:Key="AddAppRepoTestButtonTooltip">Awwows &gt;_&gt; y-ye to test ^w^ t-th' appwication configuwation befowe submitting it to ^w^ t-th' wewoaded c-communyity xDD i-index.</s:String>
+<s:String x:Key="ErrorNewerModConfigVersionTitle">Invawid mod vewsion</s:String>
+<s:String x:Key="TitleCreateModNonUniqueId">Nyon-unyique i-id</s:String>
+<s:String x:Key="ApplicationOtherInstances">Othew instances</s:String>
+<s:String x:Key="ErrorGetProcAddress32Failed">Wawnying: Ye awe pwobabwy missing ^w^ t-th' x86 vewsion o-of .-.nyet cowe, 32-bit appwications wiww nyot wowk.
+x3 P-Pwease we-check ^w^ t-th' wequiwements wisted on ^w^ t-th' downwoad page.
+Actuaw ewwow: Awww! Faiwed to acquiwe addwess o-of getpwocaddwess f-fow x-x86. Cweave h-him to t-the bwisket!</s:String>
+<s:String x:Key="EditModLibraryDescription">If enyabwed, ^w^ t-th' mod cannyot OwO b-be expwicitwy enyabwed by ^w^ t-th' usew. Can onwy OwO b-be enyabwed as a dependency.</s:String>
+<s:String x:Key="TitleEditModDialog">Edit mod</s:String>
+<s:String x:Key="TitleEditModUserConfig">Edit usew c-config</s:String>
+<s:String x:Key="LoaderSettingsConfigPopup">Wewoaded settings</s:String>
+<s:String x:Key="ModManagerContextPublish">xDD P-Pubwish</s:String>
+<s:String x:Key="ConfigureModsOpenFolder">Open fowdew</s:String>
+<s:String x:Key="UpdateModConfirmMessage">Ye have appwications cuwwentwy wunnying wewoaded.
+Updates wiww downwoad howevew wiww nyot OwO b-be a-appwied untiw aww appwications awe cwosed. Thaw she bwows!</s:String>
 </ResourceDictionary>

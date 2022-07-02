@@ -26,6 +26,7 @@ $IncludeRegexesPath = "./Publish-Settings/Include-Regexes.txt"
 $PackagesListPath = "./Publish-Settings/Packages.txt"
 Remove-Item "$PackagesPath" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "$ReleasePath" -Recurse -Force -ErrorAction SilentlyContinue
+New-Item "$PackagesPath" -ItemType Directory -ErrorAction SilentlyContinue
 
 ## Download Update Tool
 if (-Not (Test-Path -Path 'Sewer56.Update.Tool')) {
@@ -37,14 +38,18 @@ if (-Not (Test-Path -Path 'Sewer56.Update.Tool')) {
 }
 
 ## Generate Package 
+Write-Host "Creating Copy Package"
 $toolPath = "./Sewer56.Update.Tool/Sewer56.Update.Tool.dll"
 dotnet $toolPath CreateCopyPackage --folderpath "$CurrentVersionPath" --version "$Version" --outputpath "$PackagesPath/current-version-package" --ignoreregexespath "$IgnoreRegexesPath" --includeregexespath "$IncludeRegexesPath"
 
 ## Uncomment for 2nd update and above
+Write-Host "Downloading Delta"
 $LastVersion = & dotnet $toolPath DownloadPackage --outputpath "$PackagesPath/last-version-package" --source "GitHub" --githubusername "Reloaded-Project" --githubrepositoryname "Reloaded-II" --githublegacyfallbackpattern "Release.zip" --extract
 
+Write-Host "Creating Delta"
 dotnet $toolPath CreateDeltaPackage --lastversionfolderpath "$PackagesPath/last-version-package" --lastversion "$LastVersion" --folderpath "$PackagesPath/current-version-package" --version "$Version" --outputpath "$PackagesPath/delta-package-path"  --ignoreregexespath "$IgnoreRegexesPath" --includeregexespath "$IncludeRegexesPath"
 
 ## Create Release
+Write-Host "Creating Release"
 dotnet $toolPath CreateRelease --existingpackagespath "$PackagesListPath" --outputpath "$ReleasePath" --packagename "Release" --dontappendversiontopackages
 Remove-Item "$PackagesPath" -Recurse -Force

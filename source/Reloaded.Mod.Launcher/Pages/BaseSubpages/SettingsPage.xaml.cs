@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -7,6 +8,8 @@ using Reloaded.Mod.Launcher.Lib.Commands.General;
 using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Launcher.Pages.Dialogs;
+using Reloaded.Mod.Launcher.Utility;
+using Sewer56.UI.Controller.ReloadedInput;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 
@@ -45,4 +48,6 @@ public partial class SettingsPage : ReloadedIIPage
         firstLaunchWindow.Owner = Window.GetWindow(this);
         firstLaunchWindow.ShowDialog();
     }
+
+    private void ControllerConfig_Click(object sender, RoutedEventArgs e) => ControllerSupport.Controller.Configure(true);
 }

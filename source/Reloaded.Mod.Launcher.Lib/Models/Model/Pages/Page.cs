@@ -6,6 +6,11 @@
 public enum Page
 {
     /// <summary>
+    /// Page allowing the user to download individual mods.
+    /// </summary>
+    DownloadMods,
+
+    /// <summary>
     /// Browse to the Manage Mods page, where the user. 
     /// </summary>
     ManageMods,
@@ -19,9 +24,4 @@ public enum Page
     /// Page for an individual application.
     /// </summary>
     Application,
-
-    /// <summary>
-    /// Page allowing the user to download individual mods.
-    /// </summary>
-    DownloadMods
 }

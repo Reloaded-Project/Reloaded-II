@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Launcher.Lib.Commands.Mod;
@@ -52,8 +53,10 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// <summary/>
     public OpenUserConfigFolderCommand OpenUserConfigFolderCommand { get; set; } = null!;
 
+    private ModEntry? _cachedModEntry;
     private ApplicationViewModel _applicationViewModel;
     private readonly ModUserConfigService _userConfigService;
+    private CancellationTokenSource _saveToken;
 
     /// <inheritdoc />
     public ConfigureModsViewModel(ApplicationViewModel model, ModUserConfigService userConfigService)
@@ -61,6 +64,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         ApplicationTuple = model.ApplicationTuple;
         _applicationViewModel = model;
         _userConfigService = userConfigService;
+        _saveToken = new CancellationTokenSource();
 
         // Wait for parent to fully initialize.
         _applicationViewModel.OnGetModsForThisApp += BuildModList;
@@ -89,7 +93,10 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     private void BuildModList()
     {
         AllMods = new ObservableCollection<ModEntry>(GetInitialModSet(_applicationViewModel, ApplicationTuple));
-        AllMods.CollectionChanged += async (_, _) => await SaveApplication(); // Save on reorder.
+        AllMods.CollectionChanged += async (_, _) =>
+        {
+            await SaveApplication(); // Save on reorder.
+        }; 
     }
 
     /// <summary>
@@ -138,8 +145,15 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
     private async Task SaveApplication()
     {
-        ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
-        await ApplicationTuple.SaveAsync();
+        _saveToken.Cancel();
+        _saveToken = new CancellationTokenSource();
+
+        try
+        {
+            ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
+            await ApplicationTuple.SaveAsync(_saveToken.Token);
+        }
+        catch (TaskCanceledException) { /* Ignored */ }
     }
 
     private void OnSelectedModChanged(object? sender, PropertyChangedEventArgs e)
@@ -150,7 +164,10 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
     private void UpdateCommands()
     {
-        if (SelectedMod == null) 
+        // Some operations like swapping order of 2 lists might fire a 
+        // event with SelectedMod == null, then select our mod again.
+        // Setting up some commands (particularly ConfigureMod) can cause lag, so let's mitigate this.
+        if (SelectedMod == null || SelectedMod == _cachedModEntry) 
             return;
 
         OpenModFolderCommand = new OpenModFolderCommand(SelectedMod.Tuple);
@@ -161,5 +178,6 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         EditModUserConfigCommand = new EditModUserConfigCommand(userConfig);
         OpenUserConfigFolderCommand = new OpenUserConfigFolderCommand(userConfig);
         ConfigureModCommand = new ConfigureModCommand(SelectedMod.Tuple, userConfig);
+        _cachedModEntry = SelectedMod;
     }
 }

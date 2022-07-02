@@ -9,7 +9,7 @@ using Reloaded.Mod.Loader.IO.Utility;
 namespace Reloaded.Mod.Loader.IO.Config;
 
 [DebuggerDisplay("{ModId}")]
-[Equals(DoNotAddEqualityOperators = true, DoNotAddGetHashCode = true)]
+[Equals(DoNotAddEqualityOperators = true)]
 public class ModUserConfig : ObservableObject, IConfig<ModUserConfig>, IModUserConfig
 {
     public const string ConfigFileName = "ModUserConfig.json";

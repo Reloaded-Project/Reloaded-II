@@ -23,6 +23,7 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
     private static Type[] _sharedTypes = { typeof(IConfiguratorV1) };
     private readonly PathTuple<ModConfig>? _modTuple;
     private readonly PathTuple<ModUserConfig>? _modUserConfigTuple;
+    private bool? _canExecute = null;
 
     /// <inheritdoc />
     public ConfigureModCommand(PathTuple<ModConfig>? modTuple, PathTuple<ModUserConfig>? userConfig)
@@ -50,15 +51,18 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         if (_modTuple == null) 
             return false;
 
+        if (_canExecute.HasValue)
+            return _canExecute.Value;
+
         try
         {
-            var result = TryGetConfiguratorDisposing();
-            GC.Collect(0, GCCollectionMode.Forced, false);
-            return result;
+            _canExecute = TryGetConfiguratorDisposing();
+            return _canExecute.Value;
         }
         catch (Exception)
         {
-            return false;
+            _canExecute = false;
+            return _canExecute.Value;
         }
     }
 
@@ -68,8 +72,6 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
     {
         var result = TryGetConfigurator(out var configurator, out var loader);
         loader?.Dispose();
-        configurator = null;
-        loader = null;
         return result;
     }
 
