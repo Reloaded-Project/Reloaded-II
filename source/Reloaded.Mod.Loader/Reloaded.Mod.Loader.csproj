@@ -11,7 +11,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU1605</NoWarn>
-	  <Version>1.18.0</Version>
+	  <Version>1.19.0</Version>
     <OutputPath>..\\Output\\Launcher\\Loader</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
 
