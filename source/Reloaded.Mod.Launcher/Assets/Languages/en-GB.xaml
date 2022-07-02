@@ -502,4 +502,9 @@
     <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Use This if Mapping to Controller Trigger</sys:String> <!-- Displays in description of trigger bindings. -->
     <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Controller Configuration [Beta]</sys:String> <!-- Name of the input configurator window. -->
 
+    <sys:String x:Key="ConfiguratorLibCustomStringNew">New</sys:String> <!-- "New" Used for button that adds values. -->
+    <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip" xml:space="preserve">Left click assigns a new binding.&#x0a;Middle click inverts the value.&#x0a;Right click clears the mapping!&#x0a;! indicates the value is inverted.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
+    <sys:String x:Key="ConfiguratorLibCustomStringTimeout">Timeout</sys:String> <!-- Name of the input configurator window. -->
+
+
 </ResourceDictionary>

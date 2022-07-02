@@ -2,6 +2,7 @@
 using Sewer56.UI.Controller.Core.Enums;
 using Sewer56.UI.Controller.ReloadedInput.Configurator;
 using Sewer56.UI.Controller.ReloadedInput.Enums;
+using ILocalizationProvider = Sewer56.UI.Controller.ReloadedInput.Configurator.ILocalizationProvider;
 
 namespace Reloaded.Mod.Launcher.Utility;
 
@@ -32,5 +33,10 @@ internal class ReloadedInputLocalizationProvider : ILocalizationProvider
     public string? GetCustomString(CustomStrings customString)
     {
         return _xamlResourceProvider.Get<string>($"ConfiguratorCustomString{customString}");
+    }
+
+    public string? GetText(Input.Configurator.Localization.CustomStrings text)
+    {
+        return _xamlResourceProvider.Get<string>($"ConfiguratorLibCustomString{text}");
     }
 }
