@@ -106,7 +106,11 @@ public static unsafe class ProcessExtensions
     /// </summary>
     public static void OpenFileWithExplorer(string url)
     {
-        Process.Start(new ProcessStartInfo("cmd", $"/c start explorer \"{url}\""));
+        Process.Start(new ProcessStartInfo("cmd", $"/c start explorer \"{url}\"")
+        {
+            CreateNoWindow = true,
+            WindowStyle = ProcessWindowStyle.Hidden
+        });
     }
 
     /// <summary>
@@ -114,7 +118,11 @@ public static unsafe class ProcessExtensions
     /// </summary>
     public static void OpenFileWithDefaultProgram(string url)
     {
-        Process.Start(new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\""));
+        Process.Start(new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\"")
+        {
+            CreateNoWindow = true,
+            WindowStyle = ProcessWindowStyle.Hidden
+        });
     }
 
     /// <summary>
