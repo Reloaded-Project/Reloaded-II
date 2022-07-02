@@ -1,8 +1,6 @@
 ^Theme[\\\/]Default*
 ^Theme[\\\/]Halogen*
-^Theme[\\\/]Default\.xaml
-^Theme[\\\/]Halogen\.xaml
-^Theme[\\\/]NoCorners\.xaml
+^Theme[\\\/]Helpers*
 ^Assets[\\\/]Languages[\\\/]en-GB\.xaml
 ^Assets[\\\/]Languages[\\\/]es-ES\.xaml
 ^Assets[\\\/]Languages[\\\/]nl-NL\.xaml
