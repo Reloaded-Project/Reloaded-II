@@ -21,10 +21,10 @@ public partial class AddApplication : ReloadedPage
 
     private void SkipStep_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.FirstLaunchViewModel.GoToNextStep();
 
-    private void AddApplication_Click(object sender, System.Windows.RoutedEventArgs e)
+    private async void AddApplication_Click(object sender, System.Windows.RoutedEventArgs e)
     {
         var parameters = new AddApplicationCommandParams();
-        ViewModel.AddApplicationCommand.Execute(parameters);
+        await ViewModel.AddApplicationCommand.ExecuteAsync(parameters);
 
         if (parameters.ResultCreatedApplication)
             ViewModel.FirstLaunchViewModel.GoToNextStep();

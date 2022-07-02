@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 using Reloaded.Mod.Interfaces;
@@ -38,6 +39,13 @@ public class AddApplicationCommand : ICommand
     /// <summary/>
     /// <param name="parameter">Optional parameter. See <see cref="AddApplicationCommandParams"/>.</param>
     public async void Execute(object? parameter)
+    {
+        await ExecuteAsync(parameter);
+    }
+
+    /// <summary/>
+    /// <param name="parameter">Optional parameter. See <see cref="AddApplicationCommandParams"/>.</param>
+    public async Task ExecuteAsync(object? parameter)
     {
         var commandParam = parameter as AddApplicationCommandParams;
         var param = commandParam ?? new AddApplicationCommandParams();
