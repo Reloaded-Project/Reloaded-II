@@ -177,7 +177,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         var userConfig = _userConfigService.ItemsById.GetValueOrDefault(SelectedMod.Tuple.Config.ModId);
         EditModUserConfigCommand = new EditModUserConfigCommand(userConfig);
         OpenUserConfigFolderCommand = new OpenUserConfigFolderCommand(userConfig);
-        ConfigureModCommand = new ConfigureModCommand(SelectedMod.Tuple, userConfig);
+        ConfigureModCommand = new ConfigureModCommand(SelectedMod.Tuple, userConfig, ApplicationTuple);
         _cachedModEntry = SelectedMod;
     }
 }

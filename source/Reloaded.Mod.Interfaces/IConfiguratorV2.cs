@@ -2,7 +2,7 @@
 
 /// <summary>
 /// Version 2 of the configurator.
-/// With support for migration from Version 1 and 
+/// With support for migration from Version 1 and custom config directory.
 /// </summary>
 public interface IConfiguratorV2 : IConfiguratorV1
 {

@@ -23,13 +23,15 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
     private static Type[] _sharedTypes = { typeof(IConfiguratorV1) };
     private readonly PathTuple<ModConfig>? _modTuple;
     private readonly PathTuple<ModUserConfig>? _modUserConfigTuple;
+    private readonly PathTuple<ApplicationConfig> _applicationTuple;
     private bool? _canExecute = null;
 
     /// <inheritdoc />
-    public ConfigureModCommand(PathTuple<ModConfig>? modTuple, PathTuple<ModUserConfig>? userConfig)
+    public ConfigureModCommand(PathTuple<ModConfig>? modTuple, PathTuple<ModUserConfig>? userConfig, PathTuple<ApplicationConfig> applicationTuple)
     {
         _modTuple = modTuple;
         _modUserConfigTuple = userConfig;
+        _applicationTuple = applicationTuple;
     }
 
     /* ICommand */
@@ -110,6 +112,16 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
             var configDirectory = Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!);
             versionTwo.Migrate(modDirectory, configDirectory);
             versionTwo.SetConfigDirectory(configDirectory);
+        }
+
+        if (configurator is IConfiguratorV3 versionThree)
+        {
+            versionThree.SetContext(new ConfiguratorContext()
+            {
+                Application = _applicationTuple.Config,
+                ModConfigPath = _modTuple.Path,
+                ApplicationConfigPath = _applicationTuple.Path
+            });
         }
             
         return true;
