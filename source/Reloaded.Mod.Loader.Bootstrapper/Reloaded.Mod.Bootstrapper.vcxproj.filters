@@ -25,8 +25,8 @@
     <Filter Include="Header Files\core-setup">
       <UniqueIdentifier>{4c4bb2b8-9685-4b64-9e37-876edd98b4f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\tiny-json">
-      <UniqueIdentifier>{5a3500f5-0acf-4ffd-b83c-d1a0f780946a}</UniqueIdentifier>
+    <Filter Include="Header Files\nlohmann">
+      <UniqueIdentifier>{983af5d2-79ad-4ed3-a516-487073aafd86}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,11 +45,17 @@
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LoaderConfig.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nlohmann\json.hpp">
+      <Filter>Header Files\nlohmann</Filter>
     </ClInclude>
     <ClInclude Include="EntryPointParameter.h">
       <Filter>Header Files</Filter>
@@ -60,12 +66,12 @@
     <ClInclude Include="version.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="tiny-json\tiny-json.h">
-      <Filter>Header Files\tiny-json</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CoreCLR.cpp">
@@ -75,9 +81,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LoaderConfig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tiny-json\tiny-json.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "LoaderConfig.h"
 #include "Utilities.h"
 #include <Shlobj_core.h>
@@ -22,25 +23,17 @@ LoaderConfig::LoaderConfig()
 	if (!Utilities::file_exists(reloadedConfigPath))
 		throw std::exception("Reloaded config has not been found.");
 
-	// Read Config file into configFileText
-	std::ifstream t(reloadedConfigPath);
-	t.seekg(0, std::ios::end);
-	size_t size = t.tellg();
-	configText = std::string(size, ' ');
-	t.seekg(0);
-	t.read(&configText[0], size);
-
-	// Read JSON file.
-	config_parent = json_create(const_cast<char*>(configText.c_str()), config_buffer, MaxFields);
+	// Get loader path.
+	std::ifstream configFile = std::ifstream(reloadedConfigPath);
+	config = json::parse(configFile);
 }
 
 string_t LoaderConfig::get_loader_path()
 {
 	#if _WIN64
-
-	const std::string stringLoaderPath = json_getValue(json_getProperty(config_parent, "LoaderPath64"));
+	const std::string stringLoaderPath = config["LoaderPath64"];
 	#else
-	const std::string stringLoaderPath = json_getValue(json_getProperty(config_parent, "LoaderPath32"));
+	const std::string stringLoaderPath = config["LoaderPath32"];
 	#endif
 	
 
@@ -71,7 +64,7 @@ string_t LoaderConfig::get_runtime_config_path()
 
 string_t LoaderConfig::get_launcher_path()
 {
-	const std::string stringLauncherPath = json_getValue(json_getProperty(config_parent, "LauncherPath"));
+	const std::string stringLauncherPath = config["LauncherPath"];
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 	const string_t launcherPath = converter.from_bytes(stringLauncherPath);
 

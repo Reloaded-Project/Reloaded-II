@@ -5,7 +5,7 @@
 #include "Shlobj_core.h"
 #include "ReloadedPaths.h"
 #include "CoreCLR.hpp"
-#include "tiny-json/tiny-json.h"
+#include "nlohmann/json.hpp"
 
 #include <locale>
 #include <codecvt>
@@ -16,7 +16,7 @@
 #include <sstream>
 #include "EntryPointParameter.h"
 
-using json = json_t;
+using json = nlohmann::json;
 
 // Constants
 static string_t PORTABLE_MODE_FILE	= L"ReloadedPortable.txt";

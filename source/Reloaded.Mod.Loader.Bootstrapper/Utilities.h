@@ -1,6 +1,6 @@
 #pragma once
+#include "pch.h"
 #include "CoreCLR.hpp"
-#include "framework.h"
 
 class Utilities
 {
