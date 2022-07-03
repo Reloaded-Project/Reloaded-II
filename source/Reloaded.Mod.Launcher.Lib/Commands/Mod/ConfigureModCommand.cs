@@ -1,18 +1,3 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Loader;
-using System.Windows.Input;
-using McMaster.NETCore.Plugins;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Lib.Commands.Templates;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Mod;
 
 /// <summary>

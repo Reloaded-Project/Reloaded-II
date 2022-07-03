@@ -1,8 +1,3 @@
-﻿using System.Text.Json;
-using Reloaded.Messaging.Interfaces;
-using Reloaded.Messaging.Serializer.SystemTextJson;
-using Reloaded.Mod.Loader.Server.Messages.Structures;
-
 namespace Reloaded.Mod.Loader.Server.Messages.Response;
 
 public struct GetLoadedModsResponse : IMessage<MessageType>

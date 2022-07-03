@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using CommandLine;
-using SevenZip;
-using Sewer56.Update.Packaging.Structures;
-
 namespace Reloaded.Publisher.Options
 {
     [Verb("Publish", HelpText = "Creates a new release or updates an existing release.")]

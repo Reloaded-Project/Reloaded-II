@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Windows.Controls;
-
-namespace Reloaded.Mod.Launcher.Utility;
+﻿namespace Reloaded.Mod.Launcher.Utility;
 
 internal static class ListViewUtilities
 {

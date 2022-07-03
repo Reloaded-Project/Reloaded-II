@@ -1,23 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
-using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
-using PropertyChanged;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Utilities;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Resolvers.NuGet;
-using Sewer56.Update.Resolvers.NuGet.Utilities;
-using Sewer56.Update.Structures;
 using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
+using NugetRepository = Sewer56.Update.Resolvers.NuGet.Utilities.NugetRepository;
 
 namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 
@@ -101,7 +83,7 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     
     private NuGetUpdateResolver GetResolver()
     {
-        NugetRepository GetRepositoryFromKey(ICacheEntry entry) => new((string)entry.Key);
+        Sewer56.Update.Resolvers.NuGet.Utilities.NugetRepository GetRepositoryFromKey(ICacheEntry entry) => new((string)entry.Key);
 
         var repository = ItemCache<NugetRepository>.GetOrCreateKey(_repository.SourceUrl, GetRepositoryFromKey);
         var resolverSettings = new NuGetUpdateResolverSettings(_package.Identity.Id, repository);

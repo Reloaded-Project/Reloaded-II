@@ -1,6 +1,3 @@
-﻿using System;
-using Microsoft.Extensions.Caching.Memory;
-
 namespace Reloaded.Mod.Loader.Update.Utilities;
 
 /// <summary>

@@ -1,6 +1,3 @@
-﻿using System;
-using System.Windows.Input;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.General;
 
 /// <summary>
@@ -36,8 +33,8 @@ public class RelayCommand : ICommand
     /// <param name="canExecute">The execution status logic.</param>
     public RelayCommand(Action<object?>? execute, Predicate<object?>? canExecute)
     {
-        this._execute = execute ?? throw new ArgumentNullException("execute");
-        this._canExecute = canExecute;
+        _execute = execute ?? throw new ArgumentNullException("execute");
+        _canExecute = canExecute;
     }
 
     ///<summary>

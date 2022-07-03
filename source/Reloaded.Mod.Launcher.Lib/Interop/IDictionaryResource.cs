@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Lib.Interop;
+namespace Reloaded.Mod.Launcher.Lib.Interop;
 
 /// <summary>
 /// Abstraction for an individual resource from the resource provider. (<see cref="IDictionaryResourceProvider"/>).

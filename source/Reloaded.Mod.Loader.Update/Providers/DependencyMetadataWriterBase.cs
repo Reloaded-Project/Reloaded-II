@@ -1,11 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using Reloaded.Mod.Interfaces.Utilities;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Packaging.Structures;
-
 namespace Reloaded.Mod.Loader.Update.Providers;
 
 /// <summary>

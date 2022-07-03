@@ -1,5 +1,3 @@
-﻿using System.ComponentModel;
-
 namespace Reloaded.Mod.Installer.Utilities;
 
 /// <summary>

@@ -1,16 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using PropertyChanged;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Structs.Dependencies;
-using Reloaded.Mod.Loader.IO.Structs.Sorting;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Loader.IO.Config;
 
 [Equals(DoNotAddEqualityOperators = true)]

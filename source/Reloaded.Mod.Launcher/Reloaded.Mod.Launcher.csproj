@@ -17,6 +17,7 @@
 	  <RuntimeFrameworkVersion>5.0.1</RuntimeFrameworkVersion>
     <Nullable>enable</Nullable>
     <Deterministic>true</Deterministic>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 	
   <ItemGroup>

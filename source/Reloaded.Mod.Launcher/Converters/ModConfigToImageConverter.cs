@@ -1,12 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Media;
-using Reloaded.Mod.Launcher.Misc;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-
-namespace Reloaded.Mod.Launcher.Converters;
+﻿namespace Reloaded.Mod.Launcher.Converters;
 
 public class ModConfigToImageConverter : IMultiValueConverter
 {

@@ -1,10 +1,3 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.Loader;
-using McMaster.NETCore.Plugins.Loader;
-using Reloaded.Mod.Interfaces;
-
 namespace Reloaded.Mod.Loader.Utilities;
 
 public class LoadContext : IDisposable

@@ -1,6 +1,4 @@
-﻿using Reloaded.WPF.Utilities;
-
-namespace Reloaded.Mod.Launcher.Pages.Dialogs;
+﻿namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
 /// <summary>
 /// Interaction logic for MessageBoxOkCancel.xaml

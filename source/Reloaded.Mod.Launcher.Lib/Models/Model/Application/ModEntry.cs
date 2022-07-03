@@ -1,8 +1,3 @@
-﻿using System;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Application;
 
 /// <summary>
@@ -54,7 +49,7 @@ public class ModEntry : ObservableObject, IEquatable<ModEntry>
     {
         if (ReferenceEquals(null, obj)) return false;
         if (ReferenceEquals(this, obj)) return true;
-        if (obj.GetType() != this.GetType()) return false;
+        if (obj.GetType() != GetType()) return false;
         return Equals((ModEntry)obj);
     }
 

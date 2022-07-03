@@ -1,26 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Lib.Commands.Mod;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Update;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Interfaces;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>
 /// The ViewModel for a dialog which allows us to edit the details of an individual mod.
 /// </summary>
-public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
+public class EditModDialogViewModel : ObservableObject
 {
     /// <summary>
     /// The individual mod configuration to be edited.
@@ -110,7 +93,7 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
         // Everything Else
         _setModImageCommand = new SetModImageCommand(modTuple);
         IoC.Kernel.Rebind<EditModDialogViewModel>().ToConstant(this);
-        this.PropertyChanged += OnPageChanged;
+        PropertyChanged += OnPageChanged;
     }
 
     /// <summary>
@@ -154,7 +137,7 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
         if (ModsFilter.Length <= 0)
             return true;
         
-        return item.Generic.ModName.IndexOf(this.ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        return item.Generic.ModName.IndexOf(ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
     }
 
     /// <summary>
@@ -166,7 +149,7 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
         if (ModsFilter.Length <= 0)
             return true;
 
-        return item.Generic.AppName.IndexOf(this.ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        return item.Generic.AppName.IndexOf(ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
     }
 
     /// <summary>

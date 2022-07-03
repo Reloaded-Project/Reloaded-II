@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Community.Utility;
+namespace Reloaded.Mod.Loader.Community.Utility;
 
 /// <summary>
 /// Utility methods related to hashing files.

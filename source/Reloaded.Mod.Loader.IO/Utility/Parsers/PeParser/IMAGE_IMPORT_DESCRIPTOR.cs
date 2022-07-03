@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser;
+namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser;
 
 public struct IMAGE_IMPORT_DESCRIPTOR
 {

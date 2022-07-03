@@ -1,27 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
-using Microsoft.Win32;
-using Reloaded.Mod.Launcher.Lib.Misc;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Lib.Utility.Interfaces;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Dependency;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
+using Application = System.Windows.Application;
+using Environment = System.Environment;
 
 namespace Reloaded.Mod.Launcher.Lib;
 

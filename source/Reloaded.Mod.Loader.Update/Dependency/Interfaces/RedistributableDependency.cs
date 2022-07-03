@@ -1,6 +1,3 @@
-﻿using System;
-using System.Threading.Tasks;
-using NetCoreInstallChecker.Structs.Config.Enum;
 #pragma warning disable CS1591
 
 namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces;

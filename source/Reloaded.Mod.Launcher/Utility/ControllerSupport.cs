@@ -1,20 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using HandyControl.Controls;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Sewer56.UI.Controller.Core;
-using Sewer56.UI.Controller.Core.Enums;
-using Sewer56.UI.Controller.Core.Structures;
-using Sewer56.UI.Controller.ReloadedInput;
-using Sewer56.UI.Controller.ReloadedInput.Configurator;
-using Sewer56.UI.Controller.WPF;
-using static Sewer56.UI.Controller.Core.Enums.Button;
+﻿using static Sewer56.UI.Controller.Core.Enums.Button;
 using static Sewer56.UI.Controller.WPF.WpfPlatform;
+using Image = System.Windows.Controls.Image;
 
 namespace Reloaded.Mod.Launcher.Utility;
 

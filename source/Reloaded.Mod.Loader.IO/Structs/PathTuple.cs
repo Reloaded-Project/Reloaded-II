@@ -1,10 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.IO.Config;
-
 namespace Reloaded.Mod.Loader.IO.Structs;
 
 /// <summary>

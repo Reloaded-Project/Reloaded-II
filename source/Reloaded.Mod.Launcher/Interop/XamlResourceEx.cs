@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using Reloaded.Mod.Launcher.Lib.Interop;
-using Reloaded.WPF.Utilities;
-
-namespace Reloaded.Mod.Launcher.Interop;
+﻿namespace Reloaded.Mod.Launcher.Interop;
 
 /// <summary>
 /// Represents an individual XAML resource sourced from a WPF application.

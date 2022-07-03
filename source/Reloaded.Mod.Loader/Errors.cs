@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader;
+namespace Reloaded.Mod.Loader;
 
 public static class Errors
 {

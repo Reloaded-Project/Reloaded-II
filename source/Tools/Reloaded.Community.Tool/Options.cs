@@ -1,5 +1,3 @@
-﻿using CommandLine;
-
 namespace Reloaded.Community.Tool;
 
 [Verb("buildIndex", HelpText = "Builds the Community Game Index.")]

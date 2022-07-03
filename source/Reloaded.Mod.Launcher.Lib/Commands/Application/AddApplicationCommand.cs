@@ -1,18 +1,3 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Ookii.Dialogs.Wpf;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Application;
 
 /// <summary>

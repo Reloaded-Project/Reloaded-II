@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Server.Messages;
+namespace Reloaded.Mod.Loader.Server.Messages;
 
 public enum MessageType : byte
 {

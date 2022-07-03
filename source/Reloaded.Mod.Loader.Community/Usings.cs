@@ -1,0 +1,11 @@
+global using Reloaded.Mod.Loader.Community.Config;
+global using Reloaded.Mod.Loader.Community.Utility;
+global using Standart.Hash.xxHash;
+global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.IO.Compression;
+global using System.Net;
+global using System.Text;
+global using System.Text.Json;
+global using System.Threading.Tasks;

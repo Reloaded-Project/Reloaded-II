@@ -1,11 +1,3 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana;
-using Reloaded.Mod.Loader.Update.Providers.GitHub;
-
 namespace Reloaded.Mod.Loader.Update;
 
 /// <summary>

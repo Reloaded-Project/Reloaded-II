@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Reloaded.Mod.Loader.Mods.Structs;
 using Reloaded.Mod.Loader.Server;
-using Reloaded.Mod.Loader.Server.Messages.Response;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Tests.SETUP;
 using TestInterfaces;

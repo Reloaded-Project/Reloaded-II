@@ -1,15 +1,4 @@
-﻿using System.ComponentModel;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Commands.General;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Pages.Dialogs;
-using Reloaded.Mod.Launcher.Utility;
-using Sewer56.UI.Controller.ReloadedInput;
+﻿using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 

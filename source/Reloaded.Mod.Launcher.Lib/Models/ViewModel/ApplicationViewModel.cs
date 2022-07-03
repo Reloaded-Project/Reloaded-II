@@ -1,20 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Windows.Documents;
-using Ookii.Dialogs.Wpf;
-using Reloaded.Mod.Launcher.Lib.Commands.Application;
-using Reloaded.Mod.Launcher.Lib.Misc;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
 using ApplicationSubPage = Reloaded.Mod.Launcher.Lib.Models.Model.Pages.ApplicationSubPage;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
@@ -88,7 +71,7 @@ public class ApplicationViewModel : ObservableObject, IDisposable
         if (_initialiseTokenSrc.IsCancellationRequested)
             return;
 
-        MakeShortcutCommand = new MakeShortcutCommand(tuple, Launcher.Lib.Lib.IconConverter);
+        MakeShortcutCommand = new MakeShortcutCommand(tuple, Lib.IconConverter);
         _modConfigService.Items.CollectionChanged += OnGetModifications;
         _instanceTracker.OnProcessesChanged += OnProcessesChanged;
 

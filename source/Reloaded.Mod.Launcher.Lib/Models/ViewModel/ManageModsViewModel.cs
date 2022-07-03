@@ -1,14 +1,3 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using Force.DeepCloner;
-using Reloaded.Mod.Launcher.Lib.Commands.Mod;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
 /// <summary>
@@ -54,7 +43,7 @@ public class ManageModsViewModel : ObservableObject
 
         SelectedModTuple   = ModConfigService.Items.FirstOrDefault()!;
         CloneCurrentItem();
-        this.PropertyChanged += OnSelectedModChanged;
+        PropertyChanged += OnSelectedModChanged;
         UpdateCommands();
     }
 

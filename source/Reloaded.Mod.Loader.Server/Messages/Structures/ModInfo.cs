@@ -1,5 +1,3 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
 namespace Reloaded.Mod.Loader.Server.Messages.Structures;
 
 public class ModInfo

@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.IO.Structs.Sorting;
+namespace Reloaded.Mod.Loader.IO.Structs.Sorting;
 
 public enum Mark
 {

@@ -1,19 +1,3 @@
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.IO.MemoryMappedFiles;
-using System.Runtime;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Reloaded.Hooks;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Utility.Parsers;
-using Reloaded.Mod.Loader.Logging;
-using Reloaded.Mod.Loader.Server;
-using Reloaded.Mod.Loader.Utilities;
-using Reloaded.Mod.Loader.Utilities.Native;
-using Reloaded.Mod.Loader.Utilities.Steam;
-using Reloaded.Mod.Shared;
 using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader;

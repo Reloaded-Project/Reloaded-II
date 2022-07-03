@@ -1,10 +1,3 @@
-﻿using Reloaded.Mod.Loader.IO.Config;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Sewer56.Update.Resolvers.NuGet;
-using System.IO;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.IO.Structs;
-
 namespace Reloaded.Mod.Loader.Update.Packaging.Converters.NuGet;
 
 /// <summary>

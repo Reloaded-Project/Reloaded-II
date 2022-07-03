@@ -1,6 +1,3 @@
-﻿using System.Collections.Generic;
-using Reloaded.Mod.Loader.Community.Config;
-
 namespace Reloaded.Community.Tool;
 
 public static class Samples

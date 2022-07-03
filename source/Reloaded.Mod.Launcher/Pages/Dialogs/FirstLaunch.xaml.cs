@@ -1,11 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.WPF.Theme.Default;
-
-namespace Reloaded.Mod.Launcher.Pages.Dialogs;
+﻿namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
 /// <summary>
 /// Interaction logic for FirstLaunch.xaml

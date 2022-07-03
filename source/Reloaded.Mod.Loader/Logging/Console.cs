@@ -1,13 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Logging.Init;
-using Reloaded.Mod.Loader.Logging.Interfaces;
-using Reloaded.Mod.Loader.Logging.Structs;
-using Reloaded.Mod.Loader.Utilities.Native;
-
 namespace Reloaded.Mod.Loader.Logging;
 
 public class Console

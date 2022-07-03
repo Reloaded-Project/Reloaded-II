@@ -1,9 +1,3 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Dialog;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Update.Dependency;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>

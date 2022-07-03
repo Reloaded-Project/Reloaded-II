@@ -1,10 +1,3 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Reloaded.Hooks;
-using Reloaded.Hooks.Definitions;
-using Reloaded.Hooks.Definitions.Helpers;
-using Reloaded.Mod.Loader.Utilities.Native;
-
 namespace Reloaded.Mod.Loader.Utilities;
 
 /// <summary>

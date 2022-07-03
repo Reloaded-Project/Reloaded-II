@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
+namespace Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
 
 /// <summary>
 /// Represents an individual launcher page that the user can browse to.

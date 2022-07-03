@@ -1,7 +1,4 @@
-﻿using System.Windows;
-using Reloaded.Mod.Launcher.Lib.Interop;
-
-namespace Reloaded.Mod.Launcher.Interop;
+﻿namespace Reloaded.Mod.Launcher.Interop;
 
 /// <summary>
 /// Resource provider which fetches resources from WPF's implementation of XAML.

@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
+namespace Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
 
 /// <summary>
 /// The base page to display on the main window.

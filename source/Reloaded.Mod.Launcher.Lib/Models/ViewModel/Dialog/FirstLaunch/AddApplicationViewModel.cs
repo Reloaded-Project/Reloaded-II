@@ -1,6 +1,3 @@
-﻿using Reloaded.Mod.Launcher.Lib.Commands.Application;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog.FirstLaunch;
 
 /// <summary>

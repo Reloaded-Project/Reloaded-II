@@ -1,7 +1,4 @@
-﻿using System;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.WPF.Theme.Default;
-using WindowViewModel = Reloaded.Mod.Launcher.Lib.Models.ViewModel.WindowViewModel;
+﻿using WindowViewModel = Reloaded.Mod.Launcher.Lib.Models.ViewModel.WindowViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages;
 

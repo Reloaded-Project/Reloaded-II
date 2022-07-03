@@ -1,28 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using NuGet.Frameworks;
-using NuGet.Packaging;
-using NuGet.Packaging.Core;
-using NuGet.Versioning;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update.Packaging.Extra;
-using SevenZip;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Packaging;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Packaging.IO;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Packaging.Structures.ReleaseBuilder;
-using Sewer56.Update.Resolvers.GameBanana;
-using Sewer56.Update.Resolvers.NuGet;
 using PackageType = Sewer56.Update.Packaging.Enums.PackageType;
 
 namespace Reloaded.Mod.Loader.Update.Packaging;
@@ -257,6 +232,4 @@ public static class Publisher
         GameBanana,
     }
 }
-
-
 

@@ -1,4 +1,3 @@
-﻿
 // ReSharper disable InconsistentNaming
 
 namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser;

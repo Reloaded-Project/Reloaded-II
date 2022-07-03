@@ -1,15 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using NuGet.Versioning;
-using Octokit;
-using Reloaded.Mod.Launcher.Lib.Misc;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Utility;
-using Sewer56.Update;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Structures;
+using Environment = System.Environment;
 using Version = Reloaded.Mod.Launcher.Lib.Utility.Version;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;

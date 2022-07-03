@@ -1,23 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Ookii.Dialogs.Wpf;
-using Reloaded.Mod.Launcher.Lib.Commands.Application;
-using Reloaded.Mod.Launcher.Lib.Commands.Templates;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Update;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.Community.Config;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Interfaces;
+using Page = Reloaded.Mod.Launcher.Lib.Models.Model.Pages.Page;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 

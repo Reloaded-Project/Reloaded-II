@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
+namespace Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
 
 /// <summary>
 /// Contains the list of pages accessible from the first launch window.

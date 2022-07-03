@@ -1,17 +1,6 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Pages.Dialogs;
-using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.WPF.Utilities;
-using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
+﻿using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
+using Paths = Reloaded.Mod.Loader.IO.Paths;
+using Window = System.Windows.Window;
 using WindowViewModel = Reloaded.Mod.Launcher.Lib.Models.ViewModel.WindowViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages;

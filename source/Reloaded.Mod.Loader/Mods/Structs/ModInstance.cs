@@ -1,9 +1,3 @@
-﻿using System;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Interfaces.Internal;
-using Reloaded.Mod.Loader.Server.Messages.Structures;
-using Reloaded.Mod.Loader.Utilities;
-
 namespace Reloaded.Mod.Loader.Mods.Structs;
 
 /// <summary>

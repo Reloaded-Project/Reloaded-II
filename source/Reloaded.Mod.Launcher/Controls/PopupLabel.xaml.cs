@@ -1,11 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using Reloaded.WPF.Pages.Animations;
-using Reloaded.WPF.Pages.Animations.Enum;
-using Reloaded.WPF.Utilities;
-
-namespace Reloaded.Mod.Launcher.Controls;
+﻿namespace Reloaded.Mod.Launcher.Controls;
 
 /// <summary>
 /// Interaction logic for PopupLabel.xaml

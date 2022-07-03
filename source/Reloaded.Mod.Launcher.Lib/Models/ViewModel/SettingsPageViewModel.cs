@@ -1,13 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Reloaded.Mod.Launcher.Lib.Interop;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Utility;
+using Version = Reloaded.Mod.Launcher.Lib.Utility.Version;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
@@ -54,12 +45,12 @@ public class SettingsPageViewModel : ObservableObject
     /// <summary>
     /// Allows you to select the mod loader language.
     /// </summary>
-    public IResourceFileSelector? LanguageSelector => Launcher.Lib.Lib.LanguageSelector;
+    public IResourceFileSelector? LanguageSelector => Lib.LanguageSelector;
 
     /// <summary>
     /// Allows you to select the mod loader theme.
     /// </summary>
-    public IResourceFileSelector? ThemeSelector => Launcher.Lib.Lib.ThemeSelector;
+    public IResourceFileSelector? ThemeSelector => Lib.ThemeSelector;
 
     /// <summary/>
     public SettingsPageViewModel(ApplicationConfigService appConfigService, ModConfigService modConfigService, LoaderConfig loaderConfig)
@@ -75,7 +66,7 @@ public class SettingsPageViewModel : ObservableObject
 
         var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule!.FileName!);
         Copyright = Regex.Replace(version.LegalCopyright!, @"\|.*", $"| {Version.GetReleaseVersion()!.ToNormalizedString()}");
-        RuntimeVersion = $"Core: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}";
+        RuntimeVersion = $"Core: {RuntimeInformation.FrameworkDescription}";
         ActionWrappers.ExecuteWithApplicationDispatcher(() =>
         {
             SelectCurrentLanguage();

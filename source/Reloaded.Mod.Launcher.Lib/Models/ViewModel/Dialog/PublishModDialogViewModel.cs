@@ -1,35 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Versioning;
-using Ookii.Dialogs.Wpf;
-using Reloaded.Mod.Launcher.Lib.Misc;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Update.Packaging;
-using Reloaded.Mod.Loader.Update.Utilities;
-using SevenZip;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Packaging;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Packaging.Structures.ReleaseBuilder;
-using Sewer56.Update.Resolvers.GameBanana;
-using Sewer56.Update.Resolvers.NuGet;
 using static Reloaded.Mod.Loader.Update.Packaging.Publisher;
+using CompressionLevel = SevenZip.CompressionLevel;
 using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
+using Paths = Sewer56.DeltaPatchGenerator.Lib.Utility.Paths;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
@@ -137,7 +109,7 @@ public class PublishModDialogViewModel : ObservableObject
         };
 
         // Set notifications
-        this.PropertyChanged += ChangeUiVisbilityOnPropertyChanged;
+        PropertyChanged += ChangeUiVisbilityOnPropertyChanged;
     }
 
     /// <summary>
@@ -161,7 +133,7 @@ public class PublishModDialogViewModel : ObservableObject
         {
             await Task.Run(async () =>
             {
-                await Publisher.PublishAsync(new PublishArgs()
+                await PublishAsync(new PublishArgs()
                 {
                     PublishTarget = PublishTarget,
                     OutputFolder = OutputFolder,
@@ -178,7 +150,7 @@ public class PublishModDialogViewModel : ObservableObject
                 });
             });
 
-            ProcessExtensions.OpenFileWithExplorer(this.OutputFolder);
+            ProcessExtensions.OpenFileWithExplorer(OutputFolder);
         }
         catch (Exception ex)
         {

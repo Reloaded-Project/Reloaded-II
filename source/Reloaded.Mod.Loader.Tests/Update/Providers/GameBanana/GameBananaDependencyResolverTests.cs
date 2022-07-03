@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Force.DeepCloner;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Tests.SETUP;
-using Reloaded.Mod.Loader.Tests.Update.NuGet;
 using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Providers.GameBanana;
 using Sewer56.DeltaPatchGenerator.Lib.Utility;

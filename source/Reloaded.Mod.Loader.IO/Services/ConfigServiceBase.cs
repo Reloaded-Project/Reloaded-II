@@ -1,11 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Threading;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
 using static Reloaded.Mod.Loader.IO.Utility.FileSystemWatcherFactory;
 
 namespace Reloaded.Mod.Loader.IO.Services;

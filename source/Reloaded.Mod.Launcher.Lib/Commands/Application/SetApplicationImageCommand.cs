@@ -1,12 +1,3 @@
-﻿using System;
-using System.IO;
-using System.Windows.Input;
-using Ookii.Dialogs.Wpf;
-using Reloaded.Mod.Launcher.Lib.Misc;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Application;
 
 /// <summary>

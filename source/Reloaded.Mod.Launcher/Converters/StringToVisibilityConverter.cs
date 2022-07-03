@@ -1,9 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-
-namespace Reloaded.Mod.Launcher.Converters;
+﻿namespace Reloaded.Mod.Launcher.Converters;
 
 /// <summary>
 /// Class that converts a null or empty string to a visibility type of collapsed.

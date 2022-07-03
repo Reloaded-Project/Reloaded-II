@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
-
-namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
+﻿namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 
 /// <summary>
 /// Interaction logic for CreateModDialog.xaml

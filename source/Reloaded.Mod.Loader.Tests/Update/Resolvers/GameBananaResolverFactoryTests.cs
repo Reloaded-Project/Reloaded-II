@@ -7,7 +7,6 @@ using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Providers.GameBanana;
 using Reloaded.Mod.Loader.Update.Providers.NuGet;
 using Reloaded.Mod.Loader.Update.Structures;
-using Sewer56.Update.Resolvers.GameBanana;
 using Sewer56.Update.Structures;
 using Xunit;
 

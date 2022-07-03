@@ -1,8 +1,4 @@
-﻿using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
-using Reloaded.Mod.Launcher.Lib.Utility;
-
-namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
+﻿namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 
 /// <summary>
 /// Interaction logic for NonReloadedProcessPage.xaml

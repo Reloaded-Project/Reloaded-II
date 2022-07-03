@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 // ReSharper disable InconsistentNaming
 
 namespace Reloaded.Mod.Loader.IO.Utility.Windows;

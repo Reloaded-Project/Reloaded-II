@@ -1,12 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Interfaces.Utilities;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers.Update;
-using Sewer56.Update.Interfaces;
-using Sewer56.Update.Resolvers.GitHub;
-using Sewer56.Update.Structures;
+using IPackageResolver = Sewer56.Update.Interfaces.IPackageResolver;
 
 namespace Reloaded.Mod.Loader.Update.Providers.GitHub;
 

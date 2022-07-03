@@ -1,22 +1,3 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Versioning;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.Update.Providers;
-using Reloaded.Mod.Loader.Update.Structures;
-using Sewer56.Update;
-using Sewer56.Update.Extensions;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Structures;
-
 namespace Reloaded.Mod.Loader.Update;
 
 /// <summary>

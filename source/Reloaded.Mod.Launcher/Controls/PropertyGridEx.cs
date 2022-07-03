@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media;
-using HandyControl.Controls;
-using Reloaded.Mod.Launcher.Lib.Commands.General;
-using Reloaded.Mod.Loader.Update.Utilities;
-using Sewer56.UI.Controller.WPF;
+﻿using Color = System.Windows.Media.Color;
+using PropertyItem = HandyControl.Controls.PropertyItem;
 using TextBox = System.Windows.Controls.TextBox;
 
 namespace Reloaded.Mod.Launcher.Controls;

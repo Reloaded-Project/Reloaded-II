@@ -1,9 +1,4 @@
-﻿using System.ComponentModel;
-using System.Threading;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
-
-namespace Reloaded.Mod.Launcher.Pages.Dialogs;
+﻿namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
 /// <summary>
 /// Interaction logic for PublishModDialog.xaml

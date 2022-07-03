@@ -1,10 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Windows;
-using HandyControl.Controls;
-using Reloaded.Mod.Launcher.Utility;
-using static System.Environment;
+﻿using static System.Environment;
 
 namespace Reloaded.Mod.Launcher;
 

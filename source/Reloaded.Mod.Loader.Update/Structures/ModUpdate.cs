@@ -1,5 +1,3 @@
-﻿using NuGet.Versioning;
-
 namespace Reloaded.Mod.Loader.Update.Structures;
 
 /// <summary>

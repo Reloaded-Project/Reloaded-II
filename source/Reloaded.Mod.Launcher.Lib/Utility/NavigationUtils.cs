@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Lib.Utility;
+namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
 /// Various utilities related to UI Navigation.

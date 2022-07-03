@@ -1,19 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using Reloaded.Mod.Launcher.Interop;
-using Reloaded.Mod.Launcher.Lib.Interop;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs;
-using Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
-using Reloaded.Mod.Launcher.Pages.Dialogs;
-using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Loader.Community.Config;
-using Reloaded.WPF.Theme.Default;
+﻿using IconConverter = Reloaded.Mod.Launcher.Interop.IconConverter;
+using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher;
 

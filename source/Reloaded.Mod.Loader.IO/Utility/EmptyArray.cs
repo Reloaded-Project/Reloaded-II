@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.IO.Utility;
+namespace Reloaded.Mod.Loader.IO.Utility;
 
 /// <summary>
 /// Represents a non-modifiable empty array.

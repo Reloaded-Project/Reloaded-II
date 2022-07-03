@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Shared;
+namespace Reloaded.Mod.Shared;
 
 public class SharedConstants
 {

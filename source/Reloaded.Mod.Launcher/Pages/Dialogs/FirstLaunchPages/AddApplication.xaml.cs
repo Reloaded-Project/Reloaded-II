@@ -1,9 +1,4 @@
-﻿using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Commands.Application;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog.FirstLaunch;
-using Reloaded.WPF.Theme.Default;
-
-namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
+﻿namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
 
 /// <summary>
 /// Interaction logic for AddApplication.xaml

@@ -1,9 +1,3 @@
-﻿using System;
-using System.Threading.Tasks;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>

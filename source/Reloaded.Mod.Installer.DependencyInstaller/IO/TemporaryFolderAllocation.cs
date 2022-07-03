@@ -1,6 +1,3 @@
-﻿using System;
-using System.IO;
-
 namespace Reloaded.Mod.Installer.DependencyInstaller.IO;
 
 /// <summary>

@@ -1,12 +1,3 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Structures;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>

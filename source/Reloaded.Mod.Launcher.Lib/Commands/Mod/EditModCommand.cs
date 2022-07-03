@@ -1,9 +1,3 @@
-﻿using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib.Commands.Templates;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
 using Actions = Reloaded.Mod.Launcher.Lib.Static.Actions;
 
 namespace Reloaded.Mod.Launcher.Lib.Commands.Mod;

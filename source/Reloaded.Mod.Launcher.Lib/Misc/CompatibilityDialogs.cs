@@ -1,5 +1,3 @@
-﻿using Reloaded.Mod.Launcher.Lib.Static;
-
 namespace Reloaded.Mod.Launcher.Lib.Misc;
 
 /// <summary>

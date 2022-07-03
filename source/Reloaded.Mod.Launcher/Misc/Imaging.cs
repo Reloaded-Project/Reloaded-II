@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Windows.Media.Imaging;
-using Reloaded.Memory;
-using Reloaded.Memory.Streams;
-using Reloaded.Mod.Launcher.Lib.Misc;
+﻿using Image = System.Drawing.Image;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace Reloaded.Mod.Launcher.Misc;
 
@@ -16,25 +8,21 @@ public class Imaging
     public static BitmapImage BitmapFromUri(Uri source)
     {
         string uri = source.OriginalString.Replace("pack://siteoforigin:,,,", Constants.ApplicationDirectory);
-        using (var stream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.Read))
-        {
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.StreamSource = stream;
-            bitmapImage.EndInit();
-            bitmapImage.Freeze();
-            return bitmapImage;
-        }
+        using var stream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.Read);
+        var bitmapImage = new BitmapImage();
+        bitmapImage.BeginInit();
+        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+        bitmapImage.StreamSource = stream;
+        bitmapImage.EndInit();
+        bitmapImage.Freeze();
+        return bitmapImage;
     }
 
     public static Image ImageFromUri(Uri source)
     {
         string uri = source.OriginalString.Replace("pack://siteoforigin:,,,", Constants.ApplicationDirectory);
-        using (var stream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.Read))
-        {
-            return Image.FromStream(stream);
-        }
+        using var stream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.Read);
+        return Image.FromStream(stream);
     }
 
     /*
@@ -111,7 +99,7 @@ public class Imaging
     /// <param name="output">The output stream</param
     public static bool TryConvertToIcon(Stream input, Stream output)
     {
-        Bitmap inputBitmap = (Bitmap) Image.FromStream(input);
+        var inputBitmap = (Bitmap) Image.FromStream(input);
         return TryConvertToIcon(inputBitmap, output);
     }
 
@@ -122,11 +110,9 @@ public class Imaging
     /// <param name="outputPath">The output path.</param>
     public static bool TryConvertToIcon(string inputPath, string outputPath)
     {
-        using (FileStream inputStream = new FileStream(inputPath, FileMode.Open))
-        using (FileStream outputStream = new FileStream(outputPath, FileMode.OpenOrCreate))
-        {
-            return TryConvertToIcon(inputStream, outputStream);
-        }
+        using FileStream inputStream = new FileStream(inputPath, FileMode.Open);
+        using FileStream outputStream = new FileStream(outputPath, FileMode.OpenOrCreate);
+        return TryConvertToIcon(inputStream, outputStream);
     }
 
     /// <summary>
@@ -136,10 +122,8 @@ public class Imaging
     /// <param name="outputPath">The output path.</param>
     public static bool TryConvertToIcon(Image inputImage, string outputPath)
     {
-        using (FileStream outputStream = new FileStream(outputPath, FileMode.OpenOrCreate))
-        {
-            return TryConvertToIcon(new Bitmap(inputImage), outputStream);
-        }
+        using FileStream outputStream = new FileStream(outputPath, FileMode.OpenOrCreate);
+        return TryConvertToIcon(new Bitmap(inputImage), outputStream);
     }
 
 

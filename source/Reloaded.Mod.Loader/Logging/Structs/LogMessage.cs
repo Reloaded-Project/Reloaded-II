@@ -1,5 +1,3 @@
-﻿using System.Drawing;
-
 namespace Reloaded.Mod.Loader.Logging.Structs;
 
 internal struct LogMessage

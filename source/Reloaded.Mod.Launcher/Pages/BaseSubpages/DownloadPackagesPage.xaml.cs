@@ -1,10 +1,4 @@
-﻿using System;
-using System.Windows;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Lib.Static;
-
-namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
+﻿namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 
 /// <summary>
 /// Interaction logic for DownloadModsPage.xaml

@@ -1,6 +1,3 @@
-﻿using Reloaded.Messaging.Interfaces;
-using Reloaded.Messaging.Serializer.ReloadedMemory;
-
 namespace Reloaded.Mod.Loader.Server.Messages.Response;
 
 public struct Acknowledgement : IMessage<MessageType>

@@ -1,20 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Application;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Utility;
-using Reloaded.WPF.Utilities;
-using Sewer56.UI.Controller.Core.Structures;
-using Sewer56.UI.Controller.WPF;
-using Button = Sewer56.UI.Controller.Core.Enums.Button;
+﻿using Button = Sewer56.UI.Controller.Core.Enums.Button;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 

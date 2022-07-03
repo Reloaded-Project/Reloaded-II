@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Reloaded.Mod.Loader.Mods.Structs;
 
 public class ModAssemblyMetadata

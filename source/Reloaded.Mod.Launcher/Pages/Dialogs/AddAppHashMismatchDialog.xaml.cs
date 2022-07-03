@@ -1,8 +1,4 @@
-﻿using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
-
-namespace Reloaded.Mod.Launcher.Pages.Dialogs;
+﻿namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
 /// <summary>
 /// Interaction logic for AddAppHashMismatchDialog.xaml

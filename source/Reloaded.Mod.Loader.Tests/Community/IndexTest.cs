@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
-using Newtonsoft.Json;
 using Reloaded.Mod.Loader.Community;
 using Reloaded.Mod.Loader.Community.Config;
 using Sewer56.DeltaPatchGenerator.Lib.Utility;

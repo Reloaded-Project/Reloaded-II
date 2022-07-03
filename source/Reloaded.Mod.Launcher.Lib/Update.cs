@@ -1,25 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Protocol.Core.Types;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Structures;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
-using Sewer56.Update;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Resolvers.GitHub;
-using Sewer56.Update.Structures;
 using Constants = Reloaded.Mod.Launcher.Lib.Misc.Constants;
 using Version = Reloaded.Mod.Launcher.Lib.Utility.Version;
 

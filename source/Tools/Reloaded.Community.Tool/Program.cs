@@ -1,16 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using CommandLine;
-using CommandLine.Text;
-using Reloaded.Mod.Interfaces.Utilities;
-using Reloaded.Mod.Loader.Community.Config;
-using Reloaded.Mod.Loader.Community.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Standart.Hash.xxHash;
 using Index = Reloaded.Mod.Loader.Community.Config.Index;
 
 namespace Reloaded.Community.Tool;

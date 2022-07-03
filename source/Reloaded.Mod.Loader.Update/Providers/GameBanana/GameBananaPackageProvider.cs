@@ -1,20 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Versioning;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Packaging.Extra;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana.Structures;
-using Reloaded.Mod.Loader.Update.Providers.Web;
-using Reloaded.Mod.Loader.Update.Utilities;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Resolvers.GameBanana;
-
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
 /// <summary>

@@ -1,18 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.WPF.Utilities;
-using Sewer56.UI.Controller.Core.Structures;
-using Sewer56.UI.Controller.WPF;
+﻿using Page = Reloaded.Mod.Launcher.Lib.Models.Model.Pages.Page;
+using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher.Pages;
 

@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
+namespace Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
 
 /// <summary>
 /// Represents the individual pages of the Edit Mod Menu.

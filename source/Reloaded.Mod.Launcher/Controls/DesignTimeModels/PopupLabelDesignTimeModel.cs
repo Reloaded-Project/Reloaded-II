@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using Button = System.Windows.Controls.Button;
 
 namespace Reloaded.Mod.Launcher.Controls.DesignTimeModels;
 

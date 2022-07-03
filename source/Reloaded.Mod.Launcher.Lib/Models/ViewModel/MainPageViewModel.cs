@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using PropertyChanged;
-using Reloaded.Mod.Launcher.Lib.Commands.Application;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
+using Page = Reloaded.Mod.Launcher.Lib.Models.Model.Pages.Page;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
 /// <summary>
 /// A viewmodel for the 'main page', which consists of the sidebar and a secondary, child page on the right panel.
 /// </summary>
-public class MainPageViewModel : Loader.IO.Utility.ObservableObject
+public class MainPageViewModel : ObservableObject
 {
     /// <summary>
     /// Stores the page to be displayed to the user.

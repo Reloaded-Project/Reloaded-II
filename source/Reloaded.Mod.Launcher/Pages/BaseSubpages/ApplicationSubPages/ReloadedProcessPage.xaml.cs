@@ -1,7 +1,4 @@
-﻿using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
-
-namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
+﻿namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 
 /// <summary>
 /// Interaction logic for RunningProcessPage.xaml

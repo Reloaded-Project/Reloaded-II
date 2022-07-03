@@ -1,7 +1,4 @@
-﻿using System.Windows.Controls;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.WPF.Theme.Default;
+﻿using Button = System.Windows.Controls.Button;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 

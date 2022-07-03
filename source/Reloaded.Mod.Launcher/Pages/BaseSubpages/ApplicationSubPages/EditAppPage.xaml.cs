@@ -1,9 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
-
-namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
+﻿namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 
 /// <summary>
 /// The main page of the application.

@@ -1,14 +1,4 @@
-﻿using System.ComponentModel;
-using System.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Structures;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Interfaces;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Resolvers.GameBanana;
+using IPackageResolver = Sewer56.Update.Interfaces.IPackageResolver;
 
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 

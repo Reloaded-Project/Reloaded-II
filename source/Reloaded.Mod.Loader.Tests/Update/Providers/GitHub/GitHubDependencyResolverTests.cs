@@ -5,7 +5,6 @@ using Force.DeepCloner;
 using Reloaded.Mod.Loader.IO.Config;
 using Reloaded.Mod.Loader.Tests.SETUP;
 using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana;
 using Reloaded.Mod.Loader.Update.Providers.GitHub;
 using Sewer56.DeltaPatchGenerator.Lib.Utility;
 using Sewer56.Update.Misc;

@@ -1,9 +1,3 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Protocol.Core.Types;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
-
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
 
 /// <summary>

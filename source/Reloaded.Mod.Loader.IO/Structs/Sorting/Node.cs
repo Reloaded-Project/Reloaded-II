@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
 namespace Reloaded.Mod.Loader.IO.Structs.Sorting;
 
 public class Node<T>

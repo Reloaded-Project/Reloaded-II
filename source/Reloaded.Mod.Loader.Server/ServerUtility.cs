@@ -1,4 +1,4 @@
-﻿#pragma warning disable CS1591
+#pragma warning disable CS1591
 namespace Reloaded.Mod.Loader.Server;
 
 public static class ServerUtility

@@ -1,4 +1,3 @@
-﻿using System.IO;
 using static System.Environment;
 
 namespace Reloaded.Mod.Loader.IO;

@@ -1,18 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Lib.Commands.Mod;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Application;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 
 /// <summary>
@@ -72,7 +57,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         BuildModList();
 
         SelectedMod = AllMods.FirstOrDefault();
-        this.PropertyChanged += OnSelectedModChanged;
+        PropertyChanged += OnSelectedModChanged;
         UpdateCommands();
     }
 

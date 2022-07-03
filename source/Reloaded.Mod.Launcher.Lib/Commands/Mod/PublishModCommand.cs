@@ -1,12 +1,3 @@
-﻿using System.Windows.Input;
-using NuGet.Versioning;
-using Reloaded.Mod.Launcher.Lib.Commands.Templates;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Mod;
 
 /// <summary>

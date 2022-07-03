@@ -1,9 +1,3 @@
-﻿using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows;
-using HandyControl.Controls;
-
 namespace Reloaded.Mod.Installer;
 
 /// <summary>

@@ -8,7 +8,6 @@ using Reloaded.Mod.Loader.Update.Interfaces;
 using Reloaded.Mod.Loader.Update.Providers.NuGet;
 using Reloaded.Mod.Loader.Update.Structures;
 using Reloaded.Mod.Loader.Update.Utilities;
-using Sewer56.Update.Misc;
 using Sewer56.Update.Resolvers;
 using Sewer56.Update.Structures;
 using Xunit;

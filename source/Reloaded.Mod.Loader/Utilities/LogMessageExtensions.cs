@@ -1,6 +1,3 @@
-﻿using System.Drawing;
-using Reloaded.Mod.Interfaces;
-
 namespace Reloaded.Mod.Loader.Utilities;
 
 /// <summary>

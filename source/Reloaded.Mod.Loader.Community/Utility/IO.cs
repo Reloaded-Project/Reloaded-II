@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Community.Utility;
+namespace Reloaded.Mod.Loader.Community.Utility;
 
 /// <summary>
 /// Various utility functions for quick I/O operations.

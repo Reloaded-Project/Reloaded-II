@@ -1,8 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.WPF.Theme.Default;
-
+﻿
 namespace Reloaded.Mod.Launcher;
 
 /// <summary>
@@ -21,7 +17,7 @@ public partial class MainWindow : ReloadedWindow
         InitializeComponent();
 
         // Bind other models.
-        IoC.Kernel.Bind<WindowViewModel>().ToConstant((WindowViewModel)this.DataContext); // Controls window properties.
+        IoC.Kernel.Bind<WPF.Theme.Default.WindowViewModel>().ToConstant((WPF.Theme.Default.WindowViewModel)DataContext); // Controls window properties.
         IoC.Kernel.Bind<MainWindow>().ToConstant(this);
     }
 }

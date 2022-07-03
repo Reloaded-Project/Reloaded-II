@@ -1,15 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Text.Json;
-using Reloaded.Hooks;
-using Reloaded.Hooks.Definitions;
-using Reloaded.Memory.Buffers;
-using Reloaded.Mod.Loader.Logging;
-using Reloaded.Mod.Loader.Utilities.Asm;
-
 namespace Reloaded.Mod.Loader.Utilities;
 
 /// <summary>

@@ -1,9 +1,3 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Launcher.Lib.Static;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>

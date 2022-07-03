@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Lib.Interop;
+namespace Reloaded.Mod.Launcher.Lib.Interop;
 
 /// <summary>
 /// Interface used for providing the conversion of images to icons.

@@ -1,7 +1,3 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-
 namespace Reloaded.Mod.Installer.Utilities
 {
     // ReSharper disable once InconsistentNaming

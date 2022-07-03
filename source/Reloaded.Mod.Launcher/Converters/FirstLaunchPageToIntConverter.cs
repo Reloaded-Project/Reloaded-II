@@ -1,11 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Windows.Data;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
-using Reloaded.WPF.Theme.Default;
-
-namespace Reloaded.Mod.Launcher.Converters;
+﻿namespace Reloaded.Mod.Launcher.Converters;
 
 [ValueConversion(typeof(FirstLaunchPage), typeof(ReloadedPage))]
 public class FirstLaunchPageToIntConverter : IValueConverter

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Windows.Data;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
-using Reloaded.WPF.Theme.Default;
+﻿using Complete = Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages.Complete;
 
 namespace Reloaded.Mod.Launcher.Converters;
 

@@ -1,6 +1,3 @@
-﻿using System.Threading.Tasks;
-using NetCoreInstallChecker.Structs.Config.Enum;
-
 namespace Reloaded.Mod.Loader.Update.Dependency.Interfaces;
 
 /// <summary/>

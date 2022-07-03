@@ -1,8 +1,3 @@
-﻿using System.Security.Principal;
-using System.Threading;
-using Reloaded.Mod.Launcher.Lib.Interop;
-using Reloaded.Mod.Launcher.Lib.Static;
-
 namespace Reloaded.Mod.Launcher.Lib;
 
 /// <summary>

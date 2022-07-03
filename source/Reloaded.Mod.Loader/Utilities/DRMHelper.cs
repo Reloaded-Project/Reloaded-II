@@ -1,8 +1,3 @@
-﻿using System;
-using Reloaded.Mod.Loader.IO.Utility.Parsers;
-using Reloaded.Mod.Loader.Logging;
-using Reloaded.Mod.Loader.Utilities.DRM;
-
 namespace Reloaded.Mod.Loader.Utilities;
 
 /// <summary>
