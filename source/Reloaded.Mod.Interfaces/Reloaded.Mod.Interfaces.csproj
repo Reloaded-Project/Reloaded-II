@@ -19,6 +19,7 @@
     <Platforms>AnyCPU</Platforms>
     <NoWarn>1701;1702;1591</NoWarn>
     <LangVersion>preview</LangVersion>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>

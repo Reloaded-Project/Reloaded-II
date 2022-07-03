@@ -16,6 +16,7 @@
 	  <RepositoryType>git</RepositoryType>
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <LangVersion>preview</LangVersion>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>

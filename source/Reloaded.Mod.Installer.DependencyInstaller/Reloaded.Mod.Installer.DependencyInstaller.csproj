@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>preview</LangVersion>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>

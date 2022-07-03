@@ -9,6 +9,7 @@
     <AssemblyName>Setup</AssemblyName>
     <Nullable>enable</Nullable>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>

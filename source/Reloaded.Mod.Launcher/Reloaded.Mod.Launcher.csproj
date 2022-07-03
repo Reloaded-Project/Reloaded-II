@@ -16,6 +16,7 @@
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <RuntimeFrameworkVersion>5.0.1</RuntimeFrameworkVersion>
     <Nullable>enable</Nullable>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
 	
   <ItemGroup>
