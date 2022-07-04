@@ -6,6 +6,7 @@ namespace Reloaded.Mod.Loader.IO.Config;
 public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
 {
     private static JsonSerializerOptions _options = new JsonSerializerOptions() { WriteIndented = true };
+    private static Encoding _encoding = new UTF8Encoding(false);
 
     /// <summary>
     /// Writes a given mod configurations to an absolute file path.
@@ -83,7 +84,7 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
         var tempPath     = $"{fullPath}.{Path.GetRandomFileName()}";
         
         using (var stream = IOEx.OpenFile(tempPath, FileMode.Create, FileAccess.Write))
-        using (var textWriter = new StreamWriter(stream, Encoding.UTF8))
+        using (var textWriter = new StreamWriter(stream, _encoding))
             textWriter.WriteLine(jsonFile);
 
         IOEx.MoveFile(tempPath, fullPath);
