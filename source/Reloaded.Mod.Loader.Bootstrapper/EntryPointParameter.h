@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 /* For C# source, see EntryPoint.cs */
-#define CURRENT_VERSION 1
+#define CURRENT_VERSION 3
 
 enum EntryPointFlags : int
 {
