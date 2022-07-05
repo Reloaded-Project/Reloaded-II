@@ -28,7 +28,6 @@
     -->
     <!-- If it produces trim warnings, add it here. -->
     <RobustLinkRoots Include="Reloaded.Mod.Loader" />
-    <RobustLinkRoots Include="Reloaded.Hooks" />
     <RobustLinkRoots Include="Reloaded.Mod.Loader.Server" />
     <RobustLinkRoots Include="Reloaded.Mod.Loader.IO" />
     <RobustLinkRoots Include="McMaster.NETCore.Plugins" />
@@ -44,6 +43,8 @@
     <RobustLinkAssemblies Include="Indieteur.SAMAPI" />
     <RobustLinkAssemblies Include="Indieteur.VDFAPI" />
     <RobustLinkAssemblies Include="LiteNetLib" />
+    <RobustLinkAssemblies Include="Reloaded.Hooks" />
+    <RobustLinkAssemblies Include="Reloaded.Hooks.Definitions" />
     <RobustLinkAssemblies Include="Colorful.Console" />
     <RobustLinkAssemblies Include="Microsoft.DotNet.PlatformAbstractions" />
     <RobustLinkAssemblies Include="Microsoft.Extensions.DependencyModel" />
@@ -71,7 +72,7 @@
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.5" />
-    <PackageReference Include="Reloaded.Hooks" Version="4.0.1" />
+    <PackageReference Include="Reloaded.Hooks" Version="4.2.0" />
     <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
