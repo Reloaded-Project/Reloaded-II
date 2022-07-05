@@ -43,7 +43,7 @@ public class Host
             {
                 var message = new Message<MessageType, GenericExceptionResponse>(new GenericExceptionResponse(ex.Message));
                 netMessage.Peer.Send(message.Serialize(), DeliveryMethod.ReliableOrdered);
-                netMessage.Peer.Flush();
+                netMessage.Peer.NetManager.TriggerUpdate();
             }
         }
 

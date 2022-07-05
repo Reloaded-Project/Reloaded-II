@@ -43,6 +43,7 @@
     <RobustLinkAssemblies Include="Reloaded.Memory.Buffers" />
     <RobustLinkAssemblies Include="Indieteur.SAMAPI" />
     <RobustLinkAssemblies Include="Indieteur.VDFAPI" />
+    <RobustLinkAssemblies Include="LiteNetLib" />
     <RobustLinkAssemblies Include="Colorful.Console" />
     <RobustLinkAssemblies Include="Microsoft.DotNet.PlatformAbstractions" />
     <RobustLinkAssemblies Include="Microsoft.Extensions.DependencyModel" />

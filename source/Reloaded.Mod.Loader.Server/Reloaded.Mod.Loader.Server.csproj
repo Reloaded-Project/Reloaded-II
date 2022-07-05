@@ -20,9 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Reloaded.Messaging" Version="1.3.0" />
-    <PackageReference Include="Reloaded.Messaging.Serializer.ReloadedMemory" Version="1.1.0" />
-    <PackageReference Include="Reloaded.Messaging.Serializer.SystemTextJson" Version="1.0.2" />
+    <PackageReference Include="LiteNetLib" Version="1.0.0-rc.3" />
   </ItemGroup>
 	
   <ItemGroup>
@@ -30,6 +28,12 @@
 	  <Pack>True</Pack>
 	  <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging.Serializer.ReloadedMemory\Reloaded.Messaging.Serializer.ReloadedMemory.csproj" />
+    <ProjectReference Include="..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging.Serializer.SystemTextJson\Reloaded.Messaging.Serializer.SystemTextJson.csproj" />
+    <ProjectReference Include="..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging\Reloaded.Messaging.csproj" />
   </ItemGroup>
 
 </Project>
