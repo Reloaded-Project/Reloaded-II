@@ -84,7 +84,7 @@ public class Updater
     /// </summary>
     /// <param name="summary">Summary of updates returned from <see cref="GetUpdateDetailsAsync"/></param>
     /// <param name="progressHandler">Event to receive information about the overall download and extract progress of all mods combined.</param>
-    public async Task Update(ModUpdateSummary summary, IProgress<double> progressHandler = null)
+    public async Task Update(ModUpdateSummary summary, IProgress<double>? progressHandler = null)
     {
         // Guard against null.
         var progressMixer      = new ProgressSlicer(progressHandler);

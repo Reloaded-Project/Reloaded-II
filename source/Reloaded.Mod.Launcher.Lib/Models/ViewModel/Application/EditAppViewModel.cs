@@ -65,6 +65,7 @@ public class EditAppViewModel : ObservableObject
         RefreshCommands();
     }
 
+    [SuppressPropertyChangedWarnings]
     private void OnApplicationChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Application))
@@ -152,6 +153,7 @@ public class EditAppViewModel : ObservableObject
         _lastApplication.Config.PropertyChanged += OnAppLocationChanged;
     }
 
+    [SuppressPropertyChangedWarnings]
     private void OnAppLocationChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName!.Equals(nameof(Application.Config.AppLocation)))

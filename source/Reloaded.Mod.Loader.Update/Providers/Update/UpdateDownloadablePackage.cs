@@ -77,6 +77,8 @@ public class UpdateDownloadablePackage : IDownloadablePackage
         return WebDownloadablePackage.CopyPackagesFromExtractFolderToTargetDir(packageFolder, tempExtractDir.FolderPath, token);
     }
 
+#pragma warning disable CS0067 // Event never used
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
+#pragma warning restore CS0067 // Event never used
 }

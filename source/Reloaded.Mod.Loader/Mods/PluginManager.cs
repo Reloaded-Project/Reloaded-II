@@ -392,7 +392,7 @@ public class PluginManager : IDisposable
         var assemblies = new Assembly[types.Count];
         for (var x = 0; x < types.Count; x++)
         {
-            var path = new Uri(types[x].Module.Assembly.CodeBase).LocalPath;
+            var path = new Uri(types[x].Module.Assembly.Location).LocalPath;
             assemblies[x] = _sharedContext.Context.LoadFromAssemblyPath(path);
         }
 

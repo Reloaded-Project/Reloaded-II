@@ -1,5 +1,6 @@
 namespace Reloaded.Mod.Installer.DependencyInstaller;
 
+#nullable enable
 /// <summary>
 /// A class that splits up the reporting of progress into multiple "slices"; such that
 /// multiple operations can be reported using one progress.
@@ -40,3 +41,4 @@ public class ProgressSlicer
         });
     }
 }
+#nullable disable

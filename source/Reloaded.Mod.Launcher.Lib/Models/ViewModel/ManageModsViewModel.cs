@@ -88,6 +88,7 @@ public class ManageModsViewModel : ObservableObject
             _setModImageCommand.Execute(null);
     }
 
+    [SuppressPropertyChangedWarnings]
     private void OnSelectedModChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SelectedModTuple))

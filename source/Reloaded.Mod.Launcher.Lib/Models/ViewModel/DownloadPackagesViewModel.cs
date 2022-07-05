@@ -127,6 +127,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         await GetSearchResults();
     }
 
+    [SuppressPropertyChangedWarnings]
     private void OnAnyPropChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SearchQuery))

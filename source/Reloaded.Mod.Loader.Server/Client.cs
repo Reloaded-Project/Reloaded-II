@@ -1,3 +1,5 @@
+using System.Runtime.Versioning;
+
 namespace Reloaded.Mod.Loader.Server
 {
     public class Client
@@ -33,6 +35,7 @@ namespace Reloaded.Mod.Loader.Server
         /// Returns true if the mod loader is loaded and present inside a specified process. Else returns false.
         /// </summary>
         /// <param name="process">The process to check for.</param>
+        [SupportedOSPlatform("windows")]
         public static bool IsModLoaderPresent(Process process)
         {
             try
@@ -51,6 +54,7 @@ namespace Reloaded.Mod.Loader.Server
         /// </summary>
         /// <exception cref="FileNotFoundException"><see cref="MemoryMappedFile"/> was not created by the mod loader, in other words, mod loader is not loaded.</exception>
         /// <returns>0 if Reloaded is still initializing, exception if not initialized, else a valid port.</returns>
+        [SupportedOSPlatform("windows")]
         public static int GetPort(int pid)
         {
             var mappedFile = MemoryMappedFile.OpenExisting(ServerUtility.GetMappedFileNameForPid(pid));

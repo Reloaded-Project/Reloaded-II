@@ -166,6 +166,7 @@ public class EditModDialogViewModel : ObservableObject
     /// </summary>
     public void Close() => _close?.Invoke();
 
+    [SuppressPropertyChangedWarnings]
     private void OnPageChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Page))

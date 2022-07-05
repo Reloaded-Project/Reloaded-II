@@ -34,7 +34,7 @@ public class Index
         foreach (var file in files)
         {
             var appItem = JsonSerializer.Deserialize<AppItem>(File.ReadAllBytes(file));
-            if (string.IsNullOrEmpty(appItem.AppId) || string.IsNullOrEmpty(appItem.Hash))
+            if (appItem == null || string.IsNullOrEmpty(appItem.AppId) || string.IsNullOrEmpty(appItem.Hash))
                 continue;
 
             // Make Index Entry
@@ -51,7 +51,7 @@ public class Index
             // Write new File Out
             var newAppItemBytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(appItem)); // Because user made JSON is readable, not indented.
             var newFilePath = Path.Combine(outputFolder, Routes.Application, indexEntry.FilePath);
-            Directory.CreateDirectory(Path.GetDirectoryName(newFilePath));
+            Directory.CreateDirectory(Path.GetDirectoryName(newFilePath)!);
             File.WriteAllBytes(newFilePath, Compression.Compress(newAppItemBytes));
         }
 

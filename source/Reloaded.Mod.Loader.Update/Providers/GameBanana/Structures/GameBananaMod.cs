@@ -87,10 +87,10 @@ public class GameBananaCredit
     public string[]? Values { get; set; }
 
     [JsonIgnore]
-    public string Name => Values[0];
+    public string? Name => Values?[0];
 
     [JsonIgnore]
-    public string Role => Values[1];
+    public string? Role => Values?[1];
 
     public class GameBananaCreditJsonConverter : JsonConverter<GameBananaCredit>
     {

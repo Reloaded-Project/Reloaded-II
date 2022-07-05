@@ -7,7 +7,7 @@ public partial class MainWindow : GlowWindow
 {
     public MainWindowViewModel ViewModel { get; set; }
 
-    public Task InstallTask { get; set; }
+    public Task? InstallTask { get; set; }
 
     public MainWindow()
     {
@@ -25,6 +25,7 @@ public partial class MainWindow : GlowWindow
     private async void OnClosing(object sender, CancelEventArgs e)
     {
         ViewModel.CancellationToken.Cancel();
-        await InstallTask;
+        if (InstallTask != null)
+            await InstallTask;
     }
 }

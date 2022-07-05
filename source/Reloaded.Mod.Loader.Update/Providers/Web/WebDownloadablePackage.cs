@@ -7,8 +7,10 @@ namespace Reloaded.Mod.Loader.Update.Providers.Web;
 /// </summary>
 public class WebDownloadablePackage : IDownloadablePackage
 {
+#pragma warning disable CS0067 // Event never used
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
+#pragma warning restore CS0067 // Event never used
 
     /// <inheritdoc />
     public string Id { get; set; } = "Unknown Package Id";

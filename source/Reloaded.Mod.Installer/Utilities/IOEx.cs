@@ -66,7 +66,7 @@ namespace Reloaded.Mod.Installer.Utilities
         /// Tries to open a stream for a specified file.
         /// Returns null if it fails due to file lock.
         /// </summary>
-        public static FileStream TryOpenOrCreateFileStream(string filePath, FileMode mode = FileMode.OpenOrCreate, FileAccess access = FileAccess.ReadWrite)
+        public static FileStream? TryOpenOrCreateFileStream(string filePath, FileMode mode = FileMode.OpenOrCreate, FileAccess access = FileAccess.ReadWrite)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace Reloaded.Mod.Installer.Utilities
         public static void TryDeleteDirectory(string path, bool recursive = true)
         {
             try { Directory.Delete(path, recursive); }
-            catch (Exception e) { /* Ignored */ }
+            catch (Exception) { /* Ignored */ }
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Reloaded.Mod.Installer.Utilities
         public static void TryDeleteFile(string path)
         {
             try { File.Delete(path); }
-            catch (Exception e) { /* Ignored */ }
+            catch (Exception) { /* Ignored */ }
         }
 
         /// <summary>

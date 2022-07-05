@@ -68,7 +68,7 @@ public class MainWindowViewModel : ObservableObject
             CurrentStepDescription = "All Set";
             Process.Start(executablePath);
         }
-        catch (TaskCanceledException e)
+        catch (TaskCanceledException)
         {
             IOEx.TryDeleteDirectory(installFolder);
         }

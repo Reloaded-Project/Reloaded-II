@@ -146,6 +146,8 @@ public class ApplicationViewModel : ObservableObject, IDisposable
 
     // == Events ==
     private void RefreshTimerCallback(object? state) => UpdateReloadedProcesses();
+
+    [SuppressPropertyChangedWarnings]
     private void OnProcessesChanged(Process[]? processes)
     {
         if (processes != null)

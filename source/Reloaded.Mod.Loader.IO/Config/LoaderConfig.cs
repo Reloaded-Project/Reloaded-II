@@ -154,7 +154,7 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     [JsonIgnore]
     public bool UsePortableMode { get; set; }
 
-    private string? _launcherFolder;
+    private string _launcherFolder;
 
     /* Some mods are universal :wink: */
 

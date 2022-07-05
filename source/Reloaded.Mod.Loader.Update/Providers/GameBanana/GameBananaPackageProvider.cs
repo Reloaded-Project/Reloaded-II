@@ -185,7 +185,8 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         foreach (var creditCategory in result.Credits)
         foreach (var credit in creditCategory.Value)
         {
-            authors.Add(credit.Name);
+            if (!string.IsNullOrEmpty(credit.Name))
+                authors.Add(credit.Name);
         }
 
         string author = authors.Count switch

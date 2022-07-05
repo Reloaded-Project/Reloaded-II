@@ -1,5 +1,7 @@
 namespace Reloaded.Community.Tool;
 
+#nullable disable
+
 [Verb("buildIndex", HelpText = "Builds the Community Game Index.")]
 internal class BuildIndexOptions
 {
@@ -38,3 +40,5 @@ public enum TemplateType
 {
     Application,
 }
+
+#nullable enable

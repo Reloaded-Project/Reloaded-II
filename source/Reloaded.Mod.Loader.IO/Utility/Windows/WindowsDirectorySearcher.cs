@@ -270,7 +270,7 @@ public class NtQueryDirectoryFileSearcher
             return true;
         }
 
-        private void ThreadLogic(object? threadIdObj)
+        private void ThreadLogic(object threadIdObj)
         {
             var threadId = (int)threadIdObj!;
             _threadReset.Wait();

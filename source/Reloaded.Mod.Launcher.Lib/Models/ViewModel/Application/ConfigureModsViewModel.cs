@@ -141,6 +141,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         catch (TaskCanceledException) { /* Ignored */ }
     }
 
+    [SuppressPropertyChangedWarnings]
     private void OnSelectedModChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SelectedMod))
