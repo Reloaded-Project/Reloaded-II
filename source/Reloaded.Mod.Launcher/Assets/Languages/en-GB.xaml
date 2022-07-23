@@ -506,4 +506,7 @@
     <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip" xml:space="preserve">Left click assigns a new binding.&#x0a;Middle click inverts the value.&#x0a;Right click clears the mapping!&#x0a;! indicates the value is inverted.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
     <sys:String x:Key="ConfiguratorLibCustomStringTimeout">Timeout</sys:String> <!-- Name of the input configurator window. -->
 
+    <!-- Update 1.20.0: Server as Separate Mod -->
+    <sys:String x:Key="ReloadedProcessNoticeNew">Requires Reloaded II Server Mod to be Enabled w/ LiteNetLib Host.</sys:String>
+
 </ResourceDictionary>

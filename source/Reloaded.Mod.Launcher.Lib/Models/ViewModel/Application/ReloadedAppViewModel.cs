@@ -35,6 +35,7 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
 
     private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
     private System.Timers.Timer? _refreshTimer;
+    private int _port;
 
     /// <summary/>
     public ReloadedAppViewModel(ApplicationViewModel applicationViewModel)
@@ -44,30 +45,37 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
         ApplicationViewModel.SelectedProcess.Exited += SelectedProcessOnExited;
 
         /* Try establish connection. */
-        int port = 0;
+        if (!TryGetPort(out _port)) 
+            return;
+
+        Client = new LiteNetLibClient(IPAddress.Loopback, "", _port, true);
+        Client.OnTryReconnect += (peer) => TryGetPort(out _port);
+        Client.OverrideDetailsOnReconnect += () => (null, _port);
+        Client.OnReceiveException += ClientOnReceiveException;
+
+        _refreshTimer = new System.Timers.Timer(ClientModListRefreshInterval);
+        _refreshTimer.AutoReset = true;
+        _refreshTimer.Elapsed += (sender, args) =>
+        {
+            if (Client is { IsConnected: true })
+                Refresh();
+        };
+        _refreshTimer.Enabled = true;
+    }
+
+    private bool TryGetPort(out int port)
+    {
         try
         {
             port = ActionWrappers.TryGetValue(GetPort, ClientLoaderSetupTimeout, ClientLoaderSetupSleepTime);
+            return true;
         }
         catch (Exception ex)
         {
+            port = -1;
             Errors.HandleException(new Exception(Resources.ErrorFailedToObtainPort.Get(), ex));
-            return;
+            return false;
         }
-
-        Client = new LiteNetLibClient(IPAddress.Loopback, "", port);
-        Client.OnReceiveException += ClientOnReceiveException;
-        Client.Host.Listener.PeerConnectedEvent += OnHostConnected;
-    }
-
-    private void OnHostConnected(LiteNetLib.NetPeer peer)
-    {
-        Refresh();
-        
-        _refreshTimer = new System.Timers.Timer(ClientModListRefreshInterval);
-        _refreshTimer.AutoReset = true;
-        _refreshTimer.Elapsed += (sender, args) => Refresh();
-        _refreshTimer.Enabled = true;
     }
 
     /// <summary/>

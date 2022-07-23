@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages"
+      xmlns:misc="clr-namespace:Reloaded.Mod.Launcher.Misc"
       mc:Ignorable="d" 
       d:DesignHeight="600" 
       d:DesignWidth="576"
@@ -29,6 +30,7 @@
                 SelectedValue="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 VerticalAlignment="Stretch"
                 VerticalContentAlignment="Top"
+                misc:FixDataGridColumnWidths.Value="true"
             
                 ColumnWidth="*" 
                 CanUserResizeColumns="False"
@@ -41,7 +43,7 @@
                 IsReadOnly="True"
                 AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ModId" Binding="{Binding ModId}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="ModId" Binding="{Binding ModId, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
                     <DataGridTextColumn Header="State" Binding="{Binding State}" Width="Auto" IsReadOnly="True" />
                     <DataGridTextColumn Header="Unload" Binding="{Binding CanUnload}" Width="Auto" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Suspend" Binding="{Binding CanSuspend}" Width="Auto" IsReadOnly="True"/>
@@ -72,7 +74,7 @@
 
         <!-- Text -->
         <Grid Grid.Row="2" Margin="{DynamicResource PanelMargin}">
-            <TextBlock Text="{DynamicResource ReloadedProcessNotice}"
+            <TextBlock Text="{DynamicResource ReloadedProcessNoticeNew}"
                        Style="{DynamicResource RIIDefaultTextBlock}"
                        HorizontalAlignment="Center" />
         </Grid>
