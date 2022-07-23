@@ -56,6 +56,18 @@ jobs:
         
     - name: Setup AutoChangelog
       run: npm install -g auto-changelog
+   
+    - name: Setup Dotnet SDK (5.0)
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '5.0.x'
+        include-prerelease: true
+   
+    - name: Setup Dotnet SDK (7.0)
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '7.0.x'
+        include-prerelease: true
     
     - name: Get Dotnet Info
       run: dotnet --info

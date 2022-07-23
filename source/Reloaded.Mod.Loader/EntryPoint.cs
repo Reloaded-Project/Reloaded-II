@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using System.Runtime.Versioning;
+using System.Security.Cryptography;
 using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader;
@@ -11,10 +14,9 @@ public static class EntryPoint
     // DO NOT RENAME THIS CLASS OR ITS PUBLIC METHODS
     private static Stopwatch _stopWatch;
     private static Loader _loader;
-    private static Host _server;
     private static MemoryMappedFile _memoryMappedFile;
     private static DelayInjector _delayInjector;
-    private static Process _process;
+    private static Process _process = Process.GetCurrentProcess();
     private static SteamHook _steamHook;
     private static ProcessExitHook _exitHook;
     private static EntryPointParameters _parameters;
@@ -32,23 +34,9 @@ public static class EntryPoint
     /// </summary>
     public static unsafe int Initialize(IntPtr argument, int argSize)
     {
-        // Write port as a Memory Mapped File, to allow Mod Loader's Launcher to discover the mod port.
-        // (And to stop bootstrapper from loading loader again).
-        _process = Process.GetCurrentProcess();
-        int pid = _process.Id;
-        _memoryMappedFile = MemoryMappedFile.CreateOrOpen(ServerUtility.GetMappedFileNameForPid(pid), sizeof(int));
-        var view = _memoryMappedFile.CreateViewStream();
-        var binaryWriter = new BinaryWriter(view);
-        binaryWriter.Write((int)0);
-
-        // Setup Loader
-        SetupLoader((EntryPointParameters*) argument);
-
-        // Only write port on completed initialization.
-        // If port is 0, assume in loading state
-        binaryWriter.Seek(-sizeof(int), SeekOrigin.Current);
-        binaryWriter.Write(_server.Port);
-        return _server?.Port ?? 0;
+        WriteServerPort();
+        SetupLoader((EntryPointParameters*)argument);
+        return 0; // Server is no longer part of mod loader, return 0 port.
     }
 
     private static unsafe void SetupLoader(EntryPointParameters* parameters)
@@ -62,12 +50,10 @@ public static class EntryPoint
             AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
             ExecuteTimed("Create Loader", CreateLoader);
             InitialiseParameters(parameters);
-            var createHostTask = Task.Run(() => ExecuteTimed("Create Loader Host (Async)", CreateHost));
             var setupHooksTask = Task.Run(() => ExecuteTimed("Setting Up Hooks (Async)", SetupHooks));
             ExecuteTimed("Loading Mods (Total)", LoadMods);
 
             setupHooksTask.Wait();
-            createHostTask.Wait();
             Logger?.LogWriteLineAsync($"Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
             _stopWatch.Reset();
         }
@@ -93,7 +79,20 @@ public static class EntryPoint
         }
     }
 
-    private static void CreateHost()   => _server = new Host(_loader);
+    /// <summary>
+    /// Older versions of Reloaded used to host a server inside the mod loader.
+    /// This has been moved out to a separate mod, but for backwards compatibility reasons, we should
+    /// still emit a server port.
+    /// </summary>
+    private static unsafe void WriteServerPort()
+    {
+        var pid = Process.GetCurrentProcess().Id;
+        _memoryMappedFile = MemoryMappedFile.CreateOrOpen($"Reloaded-Mod-Loader-Server-PID-{pid}", sizeof(int));
+        var view = _memoryMappedFile.CreateViewStream();
+        var binaryWriter = new BinaryWriter(view);
+        binaryWriter.Write(-1);
+    }
+
     private static void SetupHooks()
     {
         // Hook ExitProcess to ensure log save on process exit.

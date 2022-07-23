@@ -28,7 +28,6 @@
     -->
     <!-- If it produces trim warnings, add it here. -->
     <RobustLinkRoots Include="Reloaded.Mod.Loader" />
-    <RobustLinkRoots Include="Reloaded.Mod.Loader.Server" />
     <RobustLinkRoots Include="Reloaded.Mod.Loader.IO" />
     <RobustLinkRoots Include="McMaster.NETCore.Plugins" />
 
@@ -65,7 +64,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
-    <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
     <ProjectReference Include="..\Submodules\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj" />
   </ItemGroup>

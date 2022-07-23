@@ -96,7 +96,7 @@ public class ApplicationInstanceTracker : IDisposable
             if (token.IsCancellationRequested)
                 return processCollection;
 
-            if (Client.IsModLoaderPresent(process))
+            if (ServerUtility.IsServerPresent(process))
                 processCollection.ReloadedProcesses.Add(process);
             else
                 processCollection.NonReloadedProcesses.Add(process);

@@ -1,18 +1,25 @@
 namespace Reloaded.Mod.Loader.Server.Messages;
 
+/// <summary>
+/// Contains all message types handled at the server level.
+/// </summary>
 public enum MessageType : byte
 {
-    // Parameters | 0 - 128
-    ResumeMod = 0,
-    SuspendMod,
-    UnloadMod,
-    LoadMod,
-    GetLoadedMods,
+    /// <summary>
+    /// [Request] Requests a specific state to be applied to a mod.
+    /// Load/Unload/Suspend/Reload. etc.
+    /// </summary>
+    SetModState = 0,
 
-    // Responses | 128 - 200
-    Acknowledgement         = 128, // Acknowledgement of any action without a real return value.
-    GetLoadedModsResponse   = 129,
+    /// <summary>
+    /// [Request + Response]<br/>
+    /// Client: Asks for list of currently loaded mods.<br/>
+    /// Server: Responds with list of currently loaded mods.
+    /// </summary>
+    GetLoadedMods = 1,
 
-    // Exceptions (Responses) | 200 - 255 
-    GenericException = 200
+    /// <summary>
+    /// [Response] Returns an exception from the server.
+    /// </summary>
+    Acknowledgement = 2
 }

@@ -1,3 +1,4 @@
+using Reloaded.Mod.Interfaces.Structs;
 using Console = Reloaded.Mod.Loader.Logging.Console;
 using Environment = Reloaded.Mod.Shared.Environment;
 
@@ -87,10 +88,10 @@ public class Loader : IDisposable
         Manager.ResumeMod(modId);
     }
 
-    public List<ModInfo> GetLoadedModSummary()
+    public ModInfo[] GetLoadedModInfo()
     {
         Wrappers.ThrowIfENotEqual(IsLoaded, true, Errors.ModLoaderNotInitialized);
-        return Manager.GetLoadedModSummary();
+        return Manager.GetLoadedModInfo();
     }
 
     /* Methods */

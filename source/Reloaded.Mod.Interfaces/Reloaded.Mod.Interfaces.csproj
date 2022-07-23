@@ -33,4 +33,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Structs\Enums\" />
+  </ItemGroup>
+
 </Project>

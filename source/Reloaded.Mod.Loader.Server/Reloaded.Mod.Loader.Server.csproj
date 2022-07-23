@@ -17,10 +17,18 @@
     <LangVersion>preview</LangVersion>
     <Deterministic>true</Deterministic>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteNetLib" Version="1.0.0-rc.3" />
+    <PackageReference Include="AnyOf" Version="0.3.0" />
+    <PackageReference Include="FastExpressionCompiler" Version="3.3.2" />
+    <PackageReference Include="Mapster" Version="7.3.0" />
+    <PackageReference Include="Equals.Fody" Version="4.0.2">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 	
   <ItemGroup>
@@ -35,8 +43,10 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <ProjectReference Include="..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging.Serializer.ReloadedMemory\Reloaded.Messaging.Serializer.ReloadedMemory.csproj" />
-    <ProjectReference Include="..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging.Serializer.SystemTextJson\Reloaded.Messaging.Serializer.SystemTextJson.csproj" />
+    <ProjectReference Include="..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
+    <ProjectReference Include="..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging.Extras.Runtime\Reloaded.Messaging.Extras.Runtime.csproj" />
+    <ProjectReference Include="..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging.Host.LiteNetLib\Reloaded.Messaging.Host.LiteNetLib.csproj" />
+    <ProjectReference Include="..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging.Serializer.MessagePack\Reloaded.Messaging.Serializer.MessagePack.csproj" />
     <ProjectReference Include="..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging\Reloaded.Messaging.csproj" />
   </ItemGroup>
 

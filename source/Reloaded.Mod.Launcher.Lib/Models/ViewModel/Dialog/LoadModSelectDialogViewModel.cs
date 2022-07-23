@@ -30,7 +30,7 @@ public class LoadModSelectDialogViewModel
     {
         try
         {
-            Task.Run(() => ReloadedAppViewModel.Client?.LoadMod(SelectedMod!.Config.ModId));
+            Task.Run(() => ReloadedAppViewModel.Client?.LoadModAsync(SelectedMod!.Config.ModId));
         }
         catch (Exception)
         {

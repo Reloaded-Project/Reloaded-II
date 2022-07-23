@@ -1,3 +1,6 @@
+using AnyOfTypes;
+using Reloaded.Mod.Loader.Server.Messages.Responses;
+
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 
 /// <summary>
@@ -5,29 +8,30 @@ namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 /// </summary>
 public class ReloadedAppViewModel : ObservableObject, IDisposable
 {
+    private const int RequestTimeout = 8000;
     private static int ClientLoaderSetupTimeout { get; set; } = 1000;
     private static int ClientLoaderSetupSleepTime { get; set; } = 32;
-    private static int ClientModListRefreshInterval { get; set; } = 100;
+    private static int ClientModListRefreshInterval { get; set; } = 125;
 
     /// <summary>
     /// ViewModel of the application being manipulated.
     /// </summary>
-    public ApplicationViewModel          ApplicationViewModel   { get; set; }
+    public ApplicationViewModel ApplicationViewModel { get; set; }
     
     /// <summary>
     /// Client used to connect to the server on the remote process.
     /// </summary>
-    public Client?                        Client                { get; set; }
+    public LiteNetLibClient? Client { get; set; }
 
     /// <summary>
     /// The currently highlighted mod.
     /// </summary>
-    public ModInfo                       SelectedMod            { get; set; } = null!;
+    public ServerModInfo SelectedMod { get; set; } = null!;
 
     /// <summary>
     /// List of currently loaded mods.
     /// </summary>
-    public ObservableCollection<ModInfo> CurrentMods            { get; set; } = new ObservableCollection<ModInfo>();
+    public ObservableCollection<ServerModInfo> CurrentMods { get; set; } = new ObservableCollection<ServerModInfo>();
 
     private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
     private System.Timers.Timer? _refreshTimer;
@@ -51,10 +55,15 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
             return;
         }
 
-        Client = new Client(port);
+        Client = new LiteNetLibClient(IPAddress.Loopback, "", port);
         Client.OnReceiveException += ClientOnReceiveException;
-        Refresh();
+        Client.Host.Listener.PeerConnectedEvent += OnHostConnected;
+    }
 
+    private void OnHostConnected(LiteNetLib.NetPeer peer)
+    {
+        Refresh();
+        
         _refreshTimer = new System.Timers.Timer(ClientModListRefreshInterval);
         _refreshTimer.AutoReset = true;
         _refreshTimer.Elapsed += (sender, args) => Refresh();
@@ -80,7 +89,7 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
         ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
     }
 
-    private void ClientOnReceiveException(GenericExceptionResponse obj) => Errors.HandleException(new Exception(obj.Message));
+    private void ClientOnReceiveException(AcknowledgementOrExceptionResponse obj) => Errors.HandleException(new Exception(obj.Message));
 
     /// <summary>
     /// Resets the selected index.
@@ -107,10 +116,10 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
     /// </summary>
     public void Resume()    => Task.Run(ResumeTask).ContinueWith((_) => Refresh());
 
-    Task<Acknowledgement>?       UnloadTask()   => Client?.UnloadModAsync(SelectedMod.ModId, 1000, _cancellationTokenSource.Token);
-    Task<Acknowledgement>?       SuspendTask()  => Client?.SuspendModAsync(SelectedMod.ModId, 1000, _cancellationTokenSource.Token);
-    Task<Acknowledgement>?       ResumeTask()   => Client?.ResumeModAsync(SelectedMod.ModId, 1000, _cancellationTokenSource.Token);
-    Task<GetLoadedModsResponse>? RefreshTask()  => Client?.GetLoadedModsAsync(1000, _cancellationTokenSource.Token);
+    Task<AnyOf<AcknowledgementOrExceptionResponse, NullResponse>>?       UnloadTask()   => Client?.UnloadModAsync(SelectedMod.ModId, RequestTimeout, _cancellationTokenSource.Token);
+    Task<AnyOf<AcknowledgementOrExceptionResponse, NullResponse>>?       SuspendTask()  => Client?.SuspendModAsync(SelectedMod.ModId, RequestTimeout, _cancellationTokenSource.Token);
+    Task<AnyOf<AcknowledgementOrExceptionResponse, NullResponse>>?       ResumeTask()   => Client?.ResumeModAsync(SelectedMod.ModId, RequestTimeout, _cancellationTokenSource.Token);
+    Task<AnyOf<AcknowledgementOrExceptionResponse, GetLoadedModsResponse>>? RefreshTask()  => Client?.GetLoadedModsAsync(RequestTimeout, _cancellationTokenSource.Token);
 
     /// <summary>
     /// Refreshes the list of loaded mods.
@@ -120,9 +129,12 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
         try
         {
             var loadedMods = await Task.Run(RefreshTask).ConfigureAwait(false);
+            if (!loadedMods.IsSecond)
+                return;
+
             ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
-                Collections.ModifyObservableCollection(CurrentMods, loadedMods.Mods);
+                Collections.ModifyObservableCollection(CurrentMods, loadedMods.Second.Mods);
                 RaisePropertyChangedEvent(nameof(CurrentMods));
             });
         }
@@ -138,7 +150,7 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
     private int GetPort()
     {
         int pid = ApplicationViewModel.SelectedProcess!.Id;
-        return Client.GetPort(pid);
+        return ServerUtility.GetPort(pid);
     }
 
     /// <summary>

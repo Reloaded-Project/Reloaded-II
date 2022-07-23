@@ -1,37 +1,41 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Reloaded.Mod.Interfaces.Structs;
+using Reloaded.Mod.Interfaces.Structs.Enums;
 using Reloaded.Mod.Loader.Mods.Structs;
 using Reloaded.Mod.Loader.Server;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Tests.SETUP;
+using Reloaded.Utils.Server;
 using TestInterfaces;
 using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.Loader;
 
-public class ServerTest : IDisposable
+public class LnlServerHost : IDisposable
 {
     private static Random _random = new Random();
     private Mod.Loader.Loader _loader;
-    private TestEnvironmoent _testEnvironmoent;
-    private Host _host;
-    private Client _client;
+    private TestEnvironmoent _testEnvironment;
+    private LiteNetLibServer _host;
+    private LiteNetLibClient _client;
 
-    public ServerTest()
+    public LnlServerHost()
     {
-        _testEnvironmoent = new TestEnvironmoent();
+        _testEnvironment = new TestEnvironmoent();
 
         _loader = new Mod.Loader.Loader(true);
         _loader.LoadForCurrentProcess();
 
-        _host = new Host(_loader);
-        _client = new Client(_host.Port);
+        _host = LiteNetLibServer.Create(_loader.Logger, _loader.Manager.LoaderApi, new Utils.Server.Configuration.Config());
+        _client = new LiteNetLibClient(IPAddress.Loopback, "", _host.Host.Manager.LocalPort);
     }
 
     public void Dispose()
     {
-        _testEnvironmoent?.Dispose();
+        _testEnvironment?.Dispose();
         _loader?.Dispose();
     }
 
@@ -41,7 +45,7 @@ public class ServerTest : IDisposable
         var  response = await _client.GetLoadedModsAsync();
 
         int loadedMods = _loader.Manager.GetLoadedMods().Length;
-        Assert.Equal(loadedMods, response.Mods.Length);
+        Assert.Equal(loadedMods, response.Second.Mods.Length);
     }
 
     [Fact]
@@ -49,10 +53,10 @@ public class ServerTest : IDisposable
     {
         var response = await _client.GetLoadedModsAsync();
 
-        ModInstance[]   localLoadedMods = _loader.Manager.GetLoadedMods();
-        ModInfo[]       remoteLoadedMods = response.Mods;
+        ModInstance[] localLoadedMods = _loader.Manager.GetLoadedMods();
+        var remoteLoadedMods = response.Second.Mods;
 
-        bool Equals(ModInstance instance, ModInfo info)
+        bool Equals(ModInstance instance, ServerModInfo info)
         {
             return instance.State == info.State &&
                    instance.ModConfig.ModId == info.ModId &&
@@ -67,40 +71,38 @@ public class ServerTest : IDisposable
     [Fact]
     public async Task LoadMod()
     { 
-        await _client.LoadMod(_testEnvironmoent.TestModConfigC.ModId);
+        await _client.LoadModAsync(_testEnvironment.TestModConfigC.ModId);
 
         // Should be loaded last.
         var loadedMods = _loader.Manager.GetLoadedMods();
-        var testModC = (ITestHelper) loadedMods.First(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigC.ModId).Mod;
-        Assert.Equal(_testEnvironmoent.TestModConfigC.ModId, testModC.MyId);
+        var testModC = (ITestHelper) loadedMods.First(x => x.ModConfig.ModId == _testEnvironment.TestModConfigC.ModId).Mod;
+        Assert.Equal(_testEnvironment.TestModConfigC.ModId, testModC.MyId);
 
         // Check state consistency
-        Assert.Equal(ModState.Running, loadedMods.First(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigC.ModId).State);
+        Assert.Equal(ModState.Running, loadedMods.First(x => x.ModConfig.ModId == _testEnvironment.TestModConfigC.ModId).State);
     }
 
     [Fact]
     public async Task LoadDuplicateMod()
     {
-        bool testPassed = false;
-        _client.OnReceiveException += response => { testPassed = true; };
+        bool receivedException = false;
+        _client.OnReceiveException += response => { receivedException = true; };
 
-        await Assert.ThrowsAsync<Exception>(async () =>
-        {
-            // No Response
-            await _client.LoadMod(_testEnvironmoent.TestModConfigA.ModId);
-        });
+        var loadDuplicate = await _client.LoadModAsync(_testEnvironment.TestModConfigA.ModId);
             
-        Assert.True(testPassed);
+        Assert.True(loadDuplicate.IsFirst);
+        Assert.True(loadDuplicate.First.IsException());
+        Assert.True(receivedException);
     }
 
     [Fact]
     public async Task UnloadMod()
     {
-        await _client.UnloadModAsync(_testEnvironmoent.TestModConfigB.ModId);
+        await _client.UnloadModAsync(_testEnvironment.TestModConfigB.ModId);
 
         // Should be loaded last.
         var loadedMods        = _loader.Manager.GetLoadedMods();
-        ModInstance configB   = loadedMods.FirstOrDefault(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigB.ModId);
+        ModInstance configB   = loadedMods.FirstOrDefault(x => x.ModConfig.ModId == _testEnvironment.TestModConfigB.ModId);
 
         Assert.Null(configB);
     }
@@ -108,11 +110,11 @@ public class ServerTest : IDisposable
     [Fact]
     public async Task SuspendMod()
     {
-        await _client.SuspendModAsync(_testEnvironmoent.TestModConfigB.ModId);
+        await _client.SuspendModAsync(_testEnvironment.TestModConfigB.ModId);
 
         // Get instance for B
         var loadedMods = _loader.Manager.GetLoadedMods();
-        ModInstance configB = loadedMods.FirstOrDefault(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigB.ModId);
+        ModInstance configB = loadedMods.FirstOrDefault(x => x.ModConfig.ModId == _testEnvironment.TestModConfigB.ModId);
 
         Assert.Equal(ModState.Suspended, configB.State);
     }
@@ -124,11 +126,11 @@ public class ServerTest : IDisposable
         await SuspendMod();
 
         // Now resume.
-        await _client.ResumeModAsync(_testEnvironmoent.TestModConfigB.ModId);
+        await _client.ResumeModAsync(_testEnvironment.TestModConfigB.ModId);
 
         // Get instance for B
         var loadedMods      = _loader.Manager.GetLoadedMods();
-        ModInstance configB = loadedMods.FirstOrDefault(x => x.ModConfig.ModId == _testEnvironmoent.TestModConfigB.ModId);
+        ModInstance configB = loadedMods.FirstOrDefault(x => x.ModConfig.ModId == _testEnvironment.TestModConfigB.ModId);
 
         Assert.Equal(ModState.Running, configB.State);
     }
