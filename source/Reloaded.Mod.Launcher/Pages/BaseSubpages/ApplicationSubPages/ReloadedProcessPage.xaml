@@ -43,7 +43,7 @@
                 IsReadOnly="True"
                 AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ModId" Binding="{Binding ModId, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Config.ModName, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
                     <DataGridTextColumn Header="State" Binding="{Binding State}" Width="Auto" IsReadOnly="True" />
                     <DataGridTextColumn Header="Unload" Binding="{Binding CanUnload}" Width="Auto" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Suspend" Binding="{Binding CanSuspend}" Width="Auto" IsReadOnly="True"/>
