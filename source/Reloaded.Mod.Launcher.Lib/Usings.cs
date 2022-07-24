@@ -38,7 +38,6 @@ global using Reloaded.Mod.Loader.IO.Structs;
 global using Reloaded.Mod.Loader.IO.Utility;
 global using Reloaded.Mod.Loader.IO.Utility.Parsers;
 global using Reloaded.Mod.Loader.Server;
-global using Reloaded.Mod.Loader.Server.Messages.Response;
 global using Reloaded.Mod.Loader.Server.Messages.Structures;
 global using Reloaded.Mod.Loader.Update;
 global using Reloaded.Mod.Loader.Update.Dependency;

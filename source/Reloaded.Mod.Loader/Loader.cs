@@ -87,10 +87,10 @@ public class Loader : IDisposable
         Manager.ResumeMod(modId);
     }
 
-    public List<ModInfo> GetLoadedModSummary()
+    public ModInfo[] GetLoadedModInfo()
     {
         Wrappers.ThrowIfENotEqual(IsLoaded, true, Errors.ModLoaderNotInitialized);
-        return Manager.GetLoadedModSummary();
+        return Manager.GetLoadedModInfo();
     }
 
     /* Methods */

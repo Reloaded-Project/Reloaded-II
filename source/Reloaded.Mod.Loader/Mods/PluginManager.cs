@@ -18,7 +18,6 @@ public class PluginManager : IDisposable
     private LoadContext _sharedContext;
     private readonly Loader _loader;
 
-
     /// <summary>
     /// Initializes the <see cref="PluginManager"/>
     /// </summary>
@@ -188,12 +187,15 @@ public class PluginManager : IDisposable
     /// <summary>
     /// Returns a summary of all of the loaded mods in this process.
     /// </summary>
-    public List<ModInfo> GetLoadedModSummary()
+    [SkipLocalsInit]
+    public ModInfo[] GetLoadedModInfo()
     {
-        var allModInfo = new List<ModInfo>();
+        var modCount = _modifications.Count;
+        var allModInfo = GC.AllocateUninitializedArray<ModInfo>(modCount);
 
+        int currentIndex = 0;
         foreach (var entry in _modifications)
-            allModInfo.Add(new ModInfo(entry.Value.State, entry.Key, entry.Value.CanSuspend, entry.Value.CanUnload));
+            allModInfo[currentIndex++] = new ModInfo(entry.Value.State, entry.Value.ModConfig, entry.Value.CanSuspend, entry.Value.CanUnload);
 
         return allModInfo;
     }

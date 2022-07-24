@@ -154,4 +154,18 @@ public class LoaderAPI : IModLoader
 
         return directory;
     }
+
+    /* IModLoader V4 */
+    public void LoadMod(string modId) => _loader.LoadMod(modId);
+
+    public void UnloadMod(string modId) => _loader.UnloadMod(modId);
+
+    public void SuspendMod(string modId) => _loader.SuspendMod(modId);
+
+    public void ResumeMod(string modId) => _loader.ResumeMod(modId);
+
+    public ModInfo[] GetLoadedMods()
+    {
+        return _loader.GetLoadedModInfo();
+    }
 }

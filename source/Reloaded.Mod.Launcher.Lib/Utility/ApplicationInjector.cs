@@ -50,7 +50,7 @@ public class ApplicationInjector
                 if (_process.HasExited)
                     return 0;
 
-                var port = Client.GetPort(_process.Id);
+                var port = ServerUtility.GetPort(_process.Id);
                 if (port == 0)
                     throw new Exception("Reloaded is still loading.");
 

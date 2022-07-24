@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <OutputPath>$(RELOADEDIIMODS)/Reloaded.Utils.Server</OutputPath>
+    <Deterministic>true</Deterministic>
+    <Nullable>enable</Nullable>
+
+    <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License
+         If you set this to true, trimming will be enabled when you publish the mod.
+         Test trimming with: `BuildLinked.ps1` in PowerShell. -->
+    <RobustILLink>true</RobustILLink>
+    <TrimmerDefaultAction>link</TrimmerDefaultAction>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <RobustLinkRoots Include="Reloaded.Utils.Server" />
+    <RobustLinkRoots Include="FastExpressionCompiler" />
+    <RobustLinkRoots Include="MessagePack" />
+    <RobustLinkRoots Include="Mapster" />
+    <RobustLinkRoots Include="Mapster.Core" />
+    <RobustLinkRoots Include="Reloaded.Mod.Loader.Server" />
+    
+    <!-- Add assemblies to be trimmed. You might need to add their dependencies too!  -->
+    <!-- <RobustLinkAssemblies Include="Reloaded.Memory" /> -->
+  </ItemGroup>
+
+  <Import Project="Robust.Trimming.targets" />
+
+  <ItemGroup>
+    <None Remove="ModConfig.json" />
+    <None Remove="Preview.png" />
+    <None Remove="Publish.ps1" />
+    <None Remove="BuildLinked.ps1" />
+    <None Remove="Robust.Trimming.targets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ModConfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
+    <ProjectReference Include="..\..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
+  </ItemGroup>
+
+</Project>

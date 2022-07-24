@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Reloaded.Mod.Interfaces.Structs.Enums;
 using Reloaded.Mod.Loader.Exceptions;
 using Reloaded.Mod.Loader.Server.Messages.Structures;
 using Reloaded.Mod.Loader.Tests.SETUP;
