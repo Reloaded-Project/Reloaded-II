@@ -1,5 +1,3 @@
-using Reloaded.Mod.Interfaces.Structs;
-
 namespace Reloaded.Mod.Loader.Mods;
 
 /// <summary>

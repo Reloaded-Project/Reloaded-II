@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Server.Messages.Interfaces;
+namespace Reloaded.Mod.Loader.Server.Messages.Interfaces;
 
 /// <summary>
 /// Represents an individual message that contains a key echoed from the request to the response.

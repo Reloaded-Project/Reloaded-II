@@ -1,6 +1,4 @@
 #pragma warning disable CS1591
-using System.IO.MemoryMappedFiles;
-using System.Runtime.Versioning;
 
 namespace Reloaded.Mod.Loader.Server;
 

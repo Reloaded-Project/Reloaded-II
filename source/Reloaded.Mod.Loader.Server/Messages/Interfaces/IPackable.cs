@@ -1,5 +1,3 @@
-﻿using Reloaded.Messaging.Messages.Disposables;
-
 namespace Reloaded.Mod.Loader.Server.Messages.Interfaces;
 
 /// <summary>

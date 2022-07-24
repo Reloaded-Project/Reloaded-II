@@ -1,8 +1,3 @@
-using Mapster;
-using Reloaded.Messaging.Serializer.MessagePack;
-using Reloaded.Mod.Interfaces.Structs;
-using Reloaded.Mod.Loader.Server.Messages.Interfaces;
-
 namespace Reloaded.Mod.Loader.Server.Messages.Responses;
 
 /// <summary>

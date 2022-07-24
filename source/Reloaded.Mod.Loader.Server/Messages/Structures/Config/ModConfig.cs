@@ -1,6 +1,3 @@
-﻿using Reloaded.Mod.Interfaces;
-using System.Collections.Generic;
-
 namespace Reloaded.Mod.Loader.Server.Messages.Structures.Config;
 
 /// <summary>

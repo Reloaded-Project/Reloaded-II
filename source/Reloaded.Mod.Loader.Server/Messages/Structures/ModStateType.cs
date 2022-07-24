@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Server.Messages.Structures;
+namespace Reloaded.Mod.Loader.Server.Messages.Structures;
 
 /// <summary>
 /// Requests a specific state be applied to a specified mod.

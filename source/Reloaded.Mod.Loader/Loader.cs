@@ -1,4 +1,3 @@
-using Reloaded.Mod.Interfaces.Structs;
 using Console = Reloaded.Mod.Loader.Logging.Console;
 using Environment = Reloaded.Mod.Shared.Environment;
 

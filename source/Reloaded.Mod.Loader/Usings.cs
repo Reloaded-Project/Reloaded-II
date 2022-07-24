@@ -7,6 +7,8 @@ global using Reloaded.Hooks.Definitions.Helpers;
 global using Reloaded.Memory.Buffers;
 global using Reloaded.Mod.Interfaces;
 global using Reloaded.Mod.Interfaces.Internal;
+global using Reloaded.Mod.Interfaces.Structs;
+global using Reloaded.Mod.Interfaces.Structs.Enums;
 global using Reloaded.Mod.Loader.Exceptions;
 global using Reloaded.Mod.Loader.IO;
 global using Reloaded.Mod.Loader.IO.Config;

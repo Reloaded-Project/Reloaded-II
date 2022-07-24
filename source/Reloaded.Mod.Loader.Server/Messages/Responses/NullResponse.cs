@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Server.Messages.Responses;
+namespace Reloaded.Mod.Loader.Server.Messages.Responses;
 
 /// <summary>
 /// Used to indicate no response in this slot is expected.
