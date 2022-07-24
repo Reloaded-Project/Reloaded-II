@@ -21,6 +21,7 @@ public class LnlServerHost : IDisposable
     private TestEnvironmoent _testEnvironment;
     private LiteNetLibServer _host;
     private LiteNetLibClient _client;
+    private const int RequestTimeout = 20000;
 
     public LnlServerHost()
     {
@@ -42,7 +43,7 @@ public class LnlServerHost : IDisposable
     [Fact]
     public async Task LoadedModsCount()
     {
-        var  response = await _client.GetLoadedModsAsync();
+        var  response = await _client.GetLoadedModsAsync(RequestTimeout);
 
         int loadedMods = _loader.Manager.GetLoadedMods().Length;
         Assert.Equal(loadedMods, response.Second.Mods.Length);
@@ -71,7 +72,7 @@ public class LnlServerHost : IDisposable
     [Fact]
     public async Task LoadMod()
     { 
-        await _client.LoadModAsync(_testEnvironment.TestModConfigC.ModId);
+        await _client.LoadModAsync(_testEnvironment.TestModConfigC.ModId, RequestTimeout);
 
         // Should be loaded last.
         var loadedMods = _loader.Manager.GetLoadedMods();
@@ -88,7 +89,7 @@ public class LnlServerHost : IDisposable
         bool receivedException = false;
         _client.OnReceiveException += response => { receivedException = true; };
 
-        var loadDuplicate = await _client.LoadModAsync(_testEnvironment.TestModConfigA.ModId);
+        var loadDuplicate = await _client.LoadModAsync(_testEnvironment.TestModConfigA.ModId, RequestTimeout);
             
         Assert.True(loadDuplicate.IsFirst);
         Assert.True(loadDuplicate.First.IsException());
@@ -98,7 +99,7 @@ public class LnlServerHost : IDisposable
     [Fact]
     public async Task UnloadMod()
     {
-        await _client.UnloadModAsync(_testEnvironment.TestModConfigB.ModId);
+        await _client.UnloadModAsync(_testEnvironment.TestModConfigB.ModId, RequestTimeout);
 
         // Should be loaded last.
         var loadedMods        = _loader.Manager.GetLoadedMods();
@@ -110,7 +111,7 @@ public class LnlServerHost : IDisposable
     [Fact]
     public async Task SuspendMod()
     {
-        await _client.SuspendModAsync(_testEnvironment.TestModConfigB.ModId);
+        await _client.SuspendModAsync(_testEnvironment.TestModConfigB.ModId, RequestTimeout);
 
         // Get instance for B
         var loadedMods = _loader.Manager.GetLoadedMods();
@@ -126,7 +127,7 @@ public class LnlServerHost : IDisposable
         await SuspendMod();
 
         // Now resume.
-        await _client.ResumeModAsync(_testEnvironment.TestModConfigB.ModId);
+        await _client.ResumeModAsync(_testEnvironment.TestModConfigB.ModId, RequestTimeout);
 
         // Get instance for B
         var loadedMods      = _loader.Manager.GetLoadedMods();
