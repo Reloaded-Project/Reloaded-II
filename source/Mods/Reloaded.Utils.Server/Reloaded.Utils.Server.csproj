@@ -49,8 +49,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
     <ProjectReference Include="..\..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
-    <ProjectReference Include="..\..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging.Extras.Runtime\Reloaded.Messaging.Extras.Runtime.csproj" />
-    <ProjectReference Include="..\..\Submodules\Reloaded.Messaging\Source\Reloaded.Messaging.Host.LiteNetLib\Reloaded.Messaging.Host.LiteNetLib.csproj" />
   </ItemGroup>
 
 </Project>
