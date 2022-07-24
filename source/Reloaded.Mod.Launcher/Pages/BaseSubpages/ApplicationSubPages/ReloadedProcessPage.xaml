@@ -43,10 +43,10 @@
                 IsReadOnly="True"
                 AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Config.ModName, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
-                    <DataGridTextColumn Header="State" Binding="{Binding State}" Width="Auto" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Unload" Binding="{Binding CanUnload}" Width="Auto" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Suspend" Binding="{Binding CanSuspend}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Config.ModName, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
+                    <DataGridTextColumn Header="{DynamicResource ReloadedProcessState}" Binding="{Binding State}" Width="Auto" IsReadOnly="True" />
+                    <DataGridTextColumn Header="{DynamicResource ReloadedProcessUnload}" Binding="{Binding CanUnload}" Width="Auto" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="{DynamicResource ReloadedProcessSuspend}" Binding="{Binding CanSuspend}" Width="Auto" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

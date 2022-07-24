@@ -508,5 +508,6 @@
 
     <!-- Update 1.20.0: Server as Separate Mod -->
     <sys:String x:Key="ReloadedProcessNoticeNew">Requires Reloaded II Server Mod to be Enabled w/ LiteNetLib Host.</sys:String>
+    <sys:String x:Key="ReloadedProcessState">State</sys:String> <!-- Is the mod running or paused? -->
 
 </ResourceDictionary>
