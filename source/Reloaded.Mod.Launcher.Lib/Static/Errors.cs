@@ -13,9 +13,6 @@ public static class Errors
         if (!Debugger.IsAttached)
             Actions.SynchronizationContext.Send((x) => Actions.DisplayMessagebox?.Invoke(Resources.ErrorUnknown.Get(), $"{message}{ex.Message}\n{ex.StackTrace}"), null);
         else
-        {
-            Debug.WriteLine($"Unhandled Exception: {ex.Message}, {ex.StackTrace}");
-            //Debugger.Break();
-        }
+            Debugger.Break();
     }
 }
