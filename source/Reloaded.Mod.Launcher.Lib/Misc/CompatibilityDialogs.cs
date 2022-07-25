@@ -1,3 +1,5 @@
+using Reloaded.Mod.Loader.IO.Config;
+
 namespace Reloaded.Mod.Launcher.Lib.Misc;
 
 /// <summary>
@@ -11,6 +13,10 @@ public static class CompatibilityDialogs
     /// <returns></returns>
     public static bool WineShowLaunchDialog()
     {
+        var loaderSettings = IoC.Get<LoaderConfig>();
+        if (loaderSettings.SkipWineLaunchWarning)
+            return true;
+
         return Actions.DisplayResourceMessageBoxOkCancel("WineCompatibilityNoticeTitle", "WineCompatibilityNoticeText", "WineCompatibilityNoticeOk", "MessageBoxButtonCancel");
     }
 }

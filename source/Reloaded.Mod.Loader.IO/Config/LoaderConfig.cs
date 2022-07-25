@@ -154,6 +154,11 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     [JsonIgnore]
     public bool UsePortableMode { get; set; }
 
+    /// <summary>
+    /// Skips launch warnings related to WINE.
+    /// </summary>
+    public bool SkipWineLaunchWarning { get; set; }
+
     private string _launcherFolder;
 
     /* Some mods are universal :wink: */
