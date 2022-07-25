@@ -14,7 +14,7 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
     public AppSummaryPage()
     {
         InitializeComponent();
-        ViewModel = IoC.Get<ConfigureModsViewModel>();
+        ViewModel = Lib.IoC.Get<ConfigureModsViewModel>();
 
         ControllerSupport.OnProcessCustomInputs += OnProcessCustomInputs;
         _manipulator    = new DictionaryResourceManipulator(this.Contents.Resources);

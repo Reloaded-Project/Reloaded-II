@@ -14,13 +14,13 @@ public class ApplicationSubPageToPageConverter : IValueConverter
             case ApplicationSubPage.Null:
                 return null!;
             case ApplicationSubPage.NonReloadedProcess:
-                return IoC.Get<NonReloadedProcessPage>();
+                return Lib.IoC.Get<NonReloadedProcessPage>();
             case ApplicationSubPage.ReloadedProcess:
-                return IoC.Get<ReloadedProcessPage>();
+                return Lib.IoC.Get<ReloadedProcessPage>();
             case ApplicationSubPage.ApplicationSummary:
-                return IoC.Get<AppSummaryPage>();
+                return Lib.IoC.Get<AppSummaryPage>();
             case ApplicationSubPage.EditApplication:
-                return IoC.Get<EditAppPage>();
+                return Lib.IoC.Get<EditAppPage>();
             default:
                 Debugger.Break();
                 return null!;

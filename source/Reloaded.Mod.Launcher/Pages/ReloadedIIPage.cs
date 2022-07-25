@@ -18,6 +18,6 @@ public class ReloadedIIPage : ReloadedPage
     {
         // Change window title to current page title.
         if (! String.IsNullOrEmpty(this.Title))
-            IoC.Get<WindowViewModel>().WindowTitle = this.Title;
+            Lib.IoC.Get<WindowViewModel>().WindowTitle = this.Title;
     }
 }

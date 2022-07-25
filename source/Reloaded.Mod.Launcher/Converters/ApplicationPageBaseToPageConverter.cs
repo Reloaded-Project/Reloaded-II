@@ -13,10 +13,10 @@ public class ApplicationPageBaseToPageConverter : IValueConverter
                 return null!;
 
             case PageBase.Splash:
-                return IoC.GetConstant<SplashPage>();
+                return Lib.IoC.GetConstant<SplashPage>();
 
             case PageBase.Base:
-                return IoC.GetConstant<BasePage>();
+                return Lib.IoC.GetConstant<BasePage>();
 
             default:
                 Debugger.Break();

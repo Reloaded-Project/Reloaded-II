@@ -14,7 +14,7 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
     public ApplicationPage()
     {
         InitializeComponent();
-        ViewModel = new ApplicationViewModel(IoC.Get<MainPageViewModel>().SelectedApplication!, IoC.Get<ModConfigService>(), IoC.Get<ModUserConfigService>(), IoC.Get<LoaderConfig>());
+        ViewModel = new ApplicationViewModel(Lib.IoC.Get<MainPageViewModel>().SelectedApplication!, Lib.IoC.Get<ModConfigService>(), Lib.IoC.Get<ModUserConfigService>(), Lib.IoC.Get<LoaderConfig>());
         this.AnimateOutStarted += Dispose;
     }
 
@@ -95,6 +95,6 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
     protected override void OnAnimateInFinished()
     {
         if (!String.IsNullOrEmpty(this.Title))
-            IoC.Get<WindowViewModel>().WindowTitle = $"{this.Title}: {ViewModel.ApplicationTuple.Config.AppName}";
+            Lib.IoC.Get<WindowViewModel>().WindowTitle = $"{this.Title}: {ViewModel.ApplicationTuple.Config.AppName}";
     }
 }

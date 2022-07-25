@@ -16,7 +16,7 @@ public partial class BasePage : ReloadedIIPage, IDisposable
     public BasePage() : base()
     {
         InitializeComponent();
-        ViewModel = IoC.Get<MainPageViewModel>();
+        ViewModel = Lib.IoC.Get<MainPageViewModel>();
         var manipulator = new DictionaryResourceManipulator(this.Contents.Resources);
         _appsViewSource = manipulator.Get<CollectionViewSource>("FilteredApps");
         this.Loaded += OnLoaded;

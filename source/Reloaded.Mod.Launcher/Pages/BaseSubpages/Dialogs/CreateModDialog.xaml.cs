@@ -22,11 +22,11 @@ public partial class CreateModDialog : ReloadedWindow
         if (createdMod == null)
             return;
 
-        var modConfigService = IoC.Get<ModConfigService>();
+        var modConfigService = Lib.IoC.Get<ModConfigService>();
         var mod = await ActionWrappers.TryGetValueAsync(() => modConfigService.ItemsById[createdMod.Config.ModId], 5000, 32);
         if (mod != null)
         {
-            var createModDialog = new EditModDialog(new EditModDialogViewModel(mod, IoC.Get<ApplicationConfigService>(), modConfigService));
+            var createModDialog = new EditModDialog(new EditModDialogViewModel(mod, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
             createModDialog.Owner = Window.GetWindow(this);
             createModDialog.ShowDialog();
         }

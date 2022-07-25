@@ -1,3 +1,5 @@
+using IDependency = Reloaded.Mod.Loader.Update.Dependency.Interfaces.IDependency;
+
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Dialog;
 
 /// <summary>

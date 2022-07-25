@@ -12,13 +12,13 @@ public class EditModPageToPageConverter : IValueConverter
         switch ((EditModPage)value)
         {
             case EditModPage.Main:
-                return IoC.Get<Main>();
+                return Lib.IoC.Get<Main>();
             case EditModPage.Dependencies:
-                return IoC.Get<Dependencies>();
+                return Lib.IoC.Get<Dependencies>();
             case EditModPage.Updates:
-                return IoC.Get<Updates>();
+                return Lib.IoC.Get<Updates>();
             case EditModPage.Special:
-                return IoC.Get<Complete>();
+                return Lib.IoC.Get<Complete>();
             default:
                 Debugger.Break();
                 return null!;

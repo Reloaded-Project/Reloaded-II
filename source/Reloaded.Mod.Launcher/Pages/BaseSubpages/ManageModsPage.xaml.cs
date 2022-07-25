@@ -14,10 +14,10 @@ public partial class ManageModsPage : ReloadedIIPage
     public ManageModsPage() : base()
     {
         InitializeComponent();
-        ViewModel = IoC.GetConstant<ManageModsViewModel>();
+        ViewModel = Lib.IoC.GetConstant<ManageModsViewModel>();
         this.DataContext = ViewModel;
         this.AnimateOutStarted += SaveCurrentMod;
-        IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
+        Lib.IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
 
         // Setup filters
         var manipulator = new DictionaryResourceManipulator(this.Contents.Resources);

@@ -45,13 +45,13 @@ public partial class SplashPage : ReloadedIIPage
 
     private void ChangeToMainPage()
     {
-        var viewModel = IoC.Get<WindowViewModel>();
+        var viewModel = Lib.IoC.Get<WindowViewModel>();
         viewModel.CurrentPage = PageBase.Base;
     }
 
     private void DisplayFirstLaunchWarningIfNeeded()
     {
-        var loaderConfig = IoC.Get<LoaderConfig>();
+        var loaderConfig = Lib.IoC.Get<LoaderConfig>();
         if (loaderConfig.FirstLaunch)
         {
             IConfig<LoaderConfig>.ToPath(loaderConfig, Paths.LoaderConfigPath);

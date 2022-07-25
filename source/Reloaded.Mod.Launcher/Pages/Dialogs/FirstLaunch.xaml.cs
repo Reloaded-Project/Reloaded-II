@@ -5,7 +5,7 @@
 /// </summary>
 public partial class FirstLaunch : ReloadedWindow
 {
-    public new FirstLaunchViewModel ViewModel { get; set; } = IoC.Get<FirstLaunchViewModel>();
+    public new FirstLaunchViewModel ViewModel { get; set; } = Lib.IoC.Get<FirstLaunchViewModel>();
 
     public Visibility OriginalCloseVisibility;
     public Visibility OriginalMinimizeVisibility;

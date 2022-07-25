@@ -1,7 +1,7 @@
 global using Force.DeepCloner;
+global using IoC;
 global using McMaster.NETCore.Plugins;
 global using Microsoft.Win32;
-global using Ninject;
 global using NuGet.Packaging;
 global using NuGet.Versioning;
 global using Octokit;

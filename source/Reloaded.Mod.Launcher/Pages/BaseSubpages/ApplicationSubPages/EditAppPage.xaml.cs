@@ -12,16 +12,16 @@ public partial class EditAppPage : ReloadedIIPage, IDisposable
         InitializeComponent();
 
         // Setup ViewModel
-        ViewModel = IoC.Get<EditAppViewModel>();
+        ViewModel = Lib.IoC.Get<EditAppViewModel>();
         this.DataContext = ViewModel;
         this.AnimateOutStarted += SaveSelectedItemOnAnimateOut;
         this.AnimateOutStarted += Dispose;
-        IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
+        Lib.IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
     }
 
     public void Dispose()
     {
-        IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
+        Lib.IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
     }
 
     private async void SaveSelectedItemOnAnimateOut() => await ViewModel.SaveSelectedItemAsync();

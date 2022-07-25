@@ -16,7 +16,7 @@ public static class ControllerSupport
 
     public static void Init()
     {
-        var miscConfDir = IoC.Get<LoaderConfig>().GetMiscConfigDirectory();
+        var miscConfDir = Lib.IoC.Get<LoaderConfig>().GetMiscConfigDirectory();
         var savePath    = Path.Combine(miscConfDir, "Controller.json");
 
         if (!File.Exists(savePath))

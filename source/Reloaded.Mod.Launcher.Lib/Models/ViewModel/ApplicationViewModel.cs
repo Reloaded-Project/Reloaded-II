@@ -79,7 +79,7 @@ public class ApplicationViewModel : ObservableObject, IDisposable
         GetModsForThisApp();
         _refreshProcessesWithLoaderTimer = new Timer(RefreshTimerCallback, null, 500, loaderConfig.ProcessRefreshInterval);
         Page = ApplicationSubPage.ApplicationSummary;
-        IoC.Kernel.Rebind<ApplicationViewModel>().ToConstant(this);
+        IoC.RebindToConstant(this);
     }
 
     /// <inheritdoc />

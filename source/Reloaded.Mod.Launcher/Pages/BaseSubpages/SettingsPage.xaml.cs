@@ -12,9 +12,9 @@ public partial class SettingsPage : ReloadedIIPage
     public SettingsPage()
     {
         InitializeComponent();
-        ViewModel = IoC.GetConstant<SettingsPageViewModel>();
+        ViewModel = Lib.IoC.GetConstant<SettingsPageViewModel>();
         this.AnimateOutStarted += OnLeavingPage;
-        IoC.Get<MainWindow>().Closing += OnMainWindowExit;
+        Lib.IoC.Get<MainWindow>().Closing += OnMainWindowExit;
     }
 
     private void OnMainWindowExit(object sender, CancelEventArgs e) => OnLeavingPage();

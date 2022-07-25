@@ -10,11 +10,11 @@ public class VideoTutorialPage : ReloadedPage
 
     protected void Next_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        IoC.Get<FirstLaunchViewModel>().GoToNextStep();
+        Lib.IoC.Get<FirstLaunchViewModel>().GoToNextStep();
     }
 
     protected void Previous_Click(object sender, System.Windows.RoutedEventArgs e)
     {
-        IoC.Get<FirstLaunchViewModel>().GoToLastStep();
+        Lib.IoC.Get<FirstLaunchViewModel>().GoToLastStep();
     }
 }

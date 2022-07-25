@@ -92,7 +92,7 @@ public class EditModDialogViewModel : ObservableObject
 
         // Everything Else
         _setModImageCommand = new SetModImageCommand(modTuple);
-        IoC.Kernel.Rebind<EditModDialogViewModel>().ToConstant(this);
+        IoC.RebindToConstant(this);
         PropertyChanged += OnPageChanged;
     }
 

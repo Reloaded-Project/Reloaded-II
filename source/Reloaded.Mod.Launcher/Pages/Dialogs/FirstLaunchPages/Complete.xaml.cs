@@ -5,7 +5,7 @@
 /// </summary>
 public partial class Complete : ReloadedPage
 {
-    public CompleteViewModel ViewModel { get; set; } = IoC.Get<CompleteViewModel>();
+    public CompleteViewModel ViewModel { get; set; } = Lib.IoC.Get<CompleteViewModel>();
 
     public Complete()
     {

@@ -15,7 +15,7 @@ public class FirstLaunchViewModel : ObservableObject
     /// <inheritdoc />
     public FirstLaunchViewModel()
     {
-        IoC.Kernel.Rebind<FirstLaunchViewModel>().ToConstant(this);
+        IoC.RebindToConstant(this);
     }
 
     /// <summary>
