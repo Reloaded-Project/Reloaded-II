@@ -83,6 +83,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mods", "Mods", "{197F0BD0-0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Utils.Server", "Mods\Reloaded.Utils.Server\Reloaded.Utils.Server.csproj", "{EFEE7C5A-A1E7-44E8-9640-B0194146501C}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Reloaded.Mod.Loader.IPC", "Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.shproj", "{1050BFD3-EDA7-4AA1-BFF8-DD9DB0C8EE79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|X64+X86 = Debug|X64+X86
@@ -316,5 +318,10 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {29C01A02-5EA4-442B-92BD-67EC119B4356}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems*{1050bfd3-eda7-4aa1-bff8-dd9db0c8ee79}*SharedItemsImports = 13
+		Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems*{9d416472-b721-4df6-8218-63853a17d8f6}*SharedItemsImports = 5
+		Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems*{cf3e2dc7-04f8-4878-97f4-1bcf950ac97d}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

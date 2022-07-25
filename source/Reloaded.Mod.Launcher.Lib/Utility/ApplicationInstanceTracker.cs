@@ -1,3 +1,5 @@
+using Reloaded.Mod.Loader.IPC;
+
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
@@ -96,7 +98,7 @@ public class ApplicationInstanceTracker : IDisposable
             if (token.IsCancellationRequested)
                 return processCollection;
 
-            if (ServerUtility.IsServerPresent(process))
+            if (ReloadedMappedFile.Exists(process.Id))
                 processCollection.ReloadedProcesses.Add(process);
             else
                 processCollection.NonReloadedProcesses.Add(process);

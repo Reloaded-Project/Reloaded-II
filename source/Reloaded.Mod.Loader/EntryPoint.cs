@@ -1,3 +1,4 @@
+using Reloaded.Mod.Loader.IPC;
 using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader;
@@ -11,7 +12,7 @@ public static class EntryPoint
     // DO NOT RENAME THIS CLASS OR ITS PUBLIC METHODS
     private static Stopwatch _stopWatch;
     private static Loader _loader;
-    private static MemoryMappedFile _memoryMappedFile;
+    private static ReloadedMappedFile _reloadedMappedFile;
     private static DelayInjector _delayInjector;
     private static Process _process = Process.GetCurrentProcess();
     private static SteamHook _steamHook;
@@ -31,8 +32,9 @@ public static class EntryPoint
     /// </summary>
     public static unsafe int Initialize(IntPtr argument, int argSize)
     {
-        WriteServerPort();
+        _reloadedMappedFile = new ReloadedMappedFile(_process.Id);
         SetupLoader((EntryPointParameters*)argument);
+        _reloadedMappedFile.SetInitialized(true);
         return 0; // Server is no longer part of mod loader, return 0 port.
     }
 
@@ -74,20 +76,6 @@ public static class EntryPoint
         {
             Logger?.LogWriteLineAsync($"Expected EntryPointParameters but did not receive any. Bootstrapper (Reloaded.Mod.Loader.Bootstrapper.dll) is likely outdated. Please upgrade by copying a newer version of Reloaded.Mod.Loader.Bootstrapper.dll if integrating with another mod loader or re-deploy ASI Loader (if using ASI Loader).", Logger.ColorWarning);
         }
-    }
-
-    /// <summary>
-    /// Older versions of Reloaded used to host a server inside the mod loader.
-    /// This has been moved out to a separate mod, but for backwards compatibility reasons, we should
-    /// still emit a server port.
-    /// </summary>
-    private static unsafe void WriteServerPort()
-    {
-        var pid = Process.GetCurrentProcess().Id;
-        _memoryMappedFile = MemoryMappedFile.CreateOrOpen($"Reloaded-Mod-Loader-Server-PID-{pid}", sizeof(int));
-        var view = _memoryMappedFile.CreateViewStream();
-        var binaryWriter = new BinaryWriter(view);
-        binaryWriter.Write(-1);
     }
 
     private static void SetupHooks()

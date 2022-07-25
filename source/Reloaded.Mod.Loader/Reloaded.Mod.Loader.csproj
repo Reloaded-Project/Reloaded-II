@@ -54,6 +54,8 @@
       <!-- DO NOT ADD Reloaded.Mod.Interfaces or stuff we share with other mods!! -->
   </ItemGroup>
 
+  <Import Project="..\Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems" Label="Shared" />
+
   <Import Project="../Robust.Trimming.targets" />
 
   <!-- USE NLS Instead of ICU. Saves around 25MB address space on x86 processes. -->

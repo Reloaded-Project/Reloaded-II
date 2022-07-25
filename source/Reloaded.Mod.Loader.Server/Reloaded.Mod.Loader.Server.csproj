@@ -20,6 +20,8 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
     <Nullable>enable</Nullable>
+
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -50,5 +52,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
   </ItemGroup>
+	
+  <Import Project="..\Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems" Label="Shared" />
 
 </Project>

@@ -38,6 +38,7 @@ global using System.Linq;
 global using System.Reflection;
 global using System.Runtime.CompilerServices;
 global using System.Runtime.InteropServices;
+global using System.Runtime.Versioning;
 global using System.Runtime.Loader;
 global using System.Text.Json;
 global using System.Threading;
