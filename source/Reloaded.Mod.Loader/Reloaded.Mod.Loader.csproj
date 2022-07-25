@@ -73,7 +73,6 @@
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.5" />
     <PackageReference Include="Reloaded.Hooks" Version="4.2.0" />
-    <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DelayInjectHooks.json">
