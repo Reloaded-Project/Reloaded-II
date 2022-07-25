@@ -11,22 +11,29 @@
 .PARAMETER ReleasePath
     Where to save the release for upload.
 
+.PARAMETER NumberOfDeltaReleases
+    The number of delta releases to create.
+
 #>
 [cmdletbinding()]
 param (
     ## => User Config <= ## 
     $Version = "1.0.0",
     $CurrentVersionPath = "./CurrentVersion",
-    $ReleasePath = "./Publish/Release"
+    $ReleasePath = "./Publish/Release",
+    $NumberOfDeltaReleases = 1
 )
 
 $PackagesPath = "./Publish/Packages"
 $IgnoreRegexesPath = "./Publish-Settings/Ignore-Regexes.txt"
 $IncludeRegexesPath = "./Publish-Settings/Include-Regexes.txt"
-$PackagesListPath = "./Publish-Settings/Packages.txt"
+$PackagesListBasePath = "./Publish-Settings/Packages.txt"
+$PackagesListPath = "$PackagesPath/Packages.txt"
+
 Remove-Item "$PackagesPath" -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item "$ReleasePath" -Recurse -Force -ErrorAction SilentlyContinue
 New-Item "$PackagesPath" -ItemType Directory -ErrorAction SilentlyContinue
+Copy-Item -Path "$PackagesListBasePath" -Destination "$PackagesListPath"
 
 ## Download Update Tool
 if (-Not (Test-Path -Path 'Sewer56.Update.Tool')) {
@@ -38,16 +45,13 @@ if (-Not (Test-Path -Path 'Sewer56.Update.Tool')) {
 }
 
 ## Generate Package 
-Write-Host "Creating Copy Package"
+Write-Host "Creating Current Version Package"
 $toolPath = "./Sewer56.Update.Tool/Sewer56.Update.Tool.dll"
 dotnet $toolPath CreateCopyPackage --folderpath "$CurrentVersionPath" --version "$Version" --outputpath "$PackagesPath/current-version-package" --ignoreregexespath "$IgnoreRegexesPath" --includeregexespath "$IncludeRegexesPath"
 
 ## Uncomment for 2nd update and above
-Write-Host "Downloading Delta"
-$LastVersion = & dotnet $toolPath DownloadPackage --outputpath "$PackagesPath/last-version-package" --source "GitHub" --githubusername "Reloaded-Project" --githubrepositoryname "Reloaded-II" --githublegacyfallbackpattern "Release.zip" --extract
-
-Write-Host "Creating Delta"
-dotnet $toolPath CreateDeltaPackage --lastversionfolderpath "$PackagesPath/last-version-package" --lastversion "$LastVersion" --folderpath "$PackagesPath/current-version-package" --version "$Version" --outputpath "$PackagesPath/delta-package-path"  --ignoreregexespath "$IgnoreRegexesPath" --includeregexespath "$IncludeRegexesPath"
+Write-Host "Creating Deltas"
+dotnet $toolPath AutoCreateDelta --outputpath "$PackagesPath" --source GitHub --folderpath "$CurrentVersionPath" --version "$Version" --githubusername "Reloaded-Project" --githubrepositoryname "Reloaded-II" --githublegacyfallbackpattern "Release.zip" --numreleases $NumberOfDeltaReleases --noprogressbar | Out-File -FilePath "$PackagesListPath" -Encoding utf8 -Append 
 
 ## Create Release
 Write-Host "Creating Release"

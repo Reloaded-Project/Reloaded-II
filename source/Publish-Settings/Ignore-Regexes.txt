@@ -1,4 +1,4 @@
-Sewer56\.Update\.Metadata\.json
+.*Sewer56\.Update\.Metadata\.json
 ^Apps
 ^Mods
 ^Plugins
