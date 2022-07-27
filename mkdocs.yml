@@ -54,6 +54,7 @@ nav:
   - For Users:
     - Quick Start: QuickStart.md
     - Frequently Asked Questions: FAQ.md
+    - Linux Setup Guide: LinuxSetupGuide.md
     - Advanced:
         - NuGet Sources: NuGetSources.md
         - Injection Methods: InjectionMethods.md

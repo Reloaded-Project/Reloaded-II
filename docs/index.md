@@ -307,13 +307,11 @@ It is an ***extensible*** and ***modular*** framework that allows you to create 
 
 ## Platform Support
 
-!!! todo
+!!! info
 
-	This wiki needs troubleshooting information for non-Windows users.  
-	If you have experience with setting up Reloaded on Wine, consider contributing to this wiki.  
-
-Reloaded is natively a Windows application, however active effort is undertaken to ensure compatibility with Wine.  
-
+	Reloaded is natively a Windows application, however active effort is undertaken to ensure compatibility with Wine.  
+	For running Reloaded on Linux, refer to the [Linux Setup Guide](./LinuxSetupGuide.md).
+ 
 | Operating System    | Description                          |
 | ------------------- | ------------------------------------ |
 | Windows             | ✅ Native                            |
@@ -327,7 +325,6 @@ Reloaded is natively a Windows application, however active effort is undertaken 
 | x86_64         | ✅                   |
 | Windows on ARM | ❓ Unknown.           |
 | ARM            | ❌                   |
-
 
 ## Contributions
 
