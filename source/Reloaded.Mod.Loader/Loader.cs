@@ -199,6 +199,7 @@ public class Loader : IDisposable
     {
         var configurations = ApplicationConfig.GetAllApplications(LoaderConfig.GetApplicationConfigDirectory());
         var fullPath       = NormalizePath(Environment.CurrentProcessLocation.Value);
+        Logger.LogWriteLineAsync($"Current Process Location: {fullPath}");
 
         foreach (var configuration in configurations)
         {
