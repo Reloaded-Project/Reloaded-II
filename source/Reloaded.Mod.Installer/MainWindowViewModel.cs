@@ -17,6 +17,7 @@ public class MainWindowViewModel : ObservableObject
 
     /// <summary>
     /// The current setup progress.
+    /// Range 0 - 100.0f.
     /// </summary>
     public double Progress { get; set; }
 
@@ -25,7 +26,7 @@ public class MainWindowViewModel : ObservableObject
     /// </summary>
     public CancellationTokenSource CancellationToken { get; set; } = new CancellationTokenSource();
 
-    public async Task InstallReloadedAsync(string? installFolder = null)
+    public async Task InstallReloadedAsync(string? installFolder = null, bool createShortcut = true, bool startReloaded = true)
     {
         // Step
         installFolder ??= Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II");
@@ -59,14 +60,20 @@ public class MainWindowViewModel : ObservableObject
                 progressSlicer.Slice(0.8),
                 s => { CurrentStepDescription = s; }, CancellationToken.Token);
 
-            CurrentStepDescription = "Creating Shortcut";
             var executableName = IntPtr.Size == 8 ? "Reloaded-II.exe" : "Reloaded-II32.exe";
             var executablePath = Path.Combine(installFolder, executableName);
-            var shortcutPath   = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II.lnk");
-            MakeShortcut(shortcutPath, executablePath);
+            var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II.lnk");
+
+            if (createShortcut)
+            {
+                CurrentStepDescription = "Creating Shortcut";
+                MakeShortcut(shortcutPath, executablePath);
+            }
 
             CurrentStepDescription = "All Set";
-            Process.Start(executablePath);
+            
+            if (startReloaded)
+                Process.Start(executablePath);
         }
         catch (TaskCanceledException)
         {
