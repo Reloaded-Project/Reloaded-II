@@ -27,7 +27,7 @@ Run the following command:
 winetricks dotnet48
 ```
 
-You can then download the Reloaded Installer (`Setup.exe`) from the downloads page, and run it via Wine (doubleclick).  
+You can then download the Reloaded Installer (`Setup.exe`) [from the downloads page](https://github.com/Reloaded-Project/Reloaded-II/releases/latest), and run it via Wine (doubleclick).  
 
 !!! info
 
@@ -57,9 +57,9 @@ Once install completes, Reloaded will be on your desktop. If you cannot see it t
 The easiest way to find your Steam games is simply right clicking the game, right click and clicking `Manage -> Browse local files`.  
 
 Then when adding the game in Reloaded, go to the folder opened by Steam inside the file picker.  
-The path is most likely to be of the format `/home/<username>/.local/share/Steam/steamapps/common/<game>/`.  
+The path is most likely to be of the format `Z:/home/<username>/.local/share/Steam/steamapps/common/<game>/`.  
 
-Your path should not start with `/home/<username>/.steam/steam/`, that is a symlink.  
+Your path should not start with `Z:/home/<username>/.steam/steam/`, that is a symlink.  
 
 ### Using ASI Loader
 
@@ -76,15 +76,19 @@ Note down the name of the non-Reloaded DLL that has been placed inside the insta
 
 Then you will need to make sure that Wine will load this DLL; there is more than 1 way to achieve this:  
 
-- `WINEDLLOVERRIDES` lets you temporarily specify DLL overrides for a specific wine process. You can use it in the terminal as such: `WINEDLLOVERRIDES="version=n,b" wine BTD5-Win.exe`.  
+=== "Recommended Approach (Per-Application)"
 
-If you are using Steam to launch your games you can, Right Click Game in Library, `Properties` and in `Launch Options` add `WINEDLLOVERRIDES="version=n,b %command%"`.  
+    `WINEDLLOVERRIDES` lets you temporarily specify DLL overrides for a specific wine process. You can use it in the terminal as such: `WINEDLLOVERRIDES="version=n,b" wine BTD5-Win.exe`.  
 
-![Steam Launch Options](./Images/Steam-LaunchOptions-ASILoader.png)
+    If you are using Steam to launch your games you can, Right Click Game in Library, `Properties` and in `Launch Options` add `WINEDLLOVERRIDES="version=n,b" %command%`.  
 
-- Alternatively, for a more permanent solution, you can run `winecfg` (Wine Configuration), navigate to `Libraries`, select the DLL in the `New override for library` box and click `Add`.  
+    ![Steam Launch Options](./Images/Steam-LaunchOptions-ASILoader.png)
 
-![Library Override Wine](./Images/Linux-ASILoader-Override.png)
+=== "Alternative Approach (More Permanent)"
+
+    Alternatively, for a more permanent solution, you can run `winecfg` (Wine Configuration), navigate to `Libraries`, select the DLL in the `New override for library` box and click `Add`.  
+
+    ![Library Override Wine](./Images/Linux-ASILoader-Override.png)
 
 Now Reloaded should automatically start with your game outside of the launcher.  
 
@@ -112,11 +116,46 @@ You can now start Reloaded with `Reloaded-II.exe`.
 !!! info
 
     The following instructions will allow you to setup Reloaded to run inside your game's Proton configuration.  
-    With this setup, [you should still use regular Wine for running the Reloaded launcher](#wine) and instead of launching games via the launcher, you will close the launcher and launch them via Steam.  
+    This section assumes [you have already setup Reloaded using Wine](#wine).  
 
-!!! info "Coming Soon!"
+!!! caution
 
-    Coming Soon (TM). 
+    This guide uses new flag `--dependenciesOnly` in installer for Reloaded 1.20.0 and above which is *not yet released*.  
+    It will be released soon.  
+
+When you use Proton, Steam creates a 'clean slate' (`WINEPREFIX`) for each game; meaning that the dependencies for Reloaded wouldn't be installed when you run from Proton. We will use the Reloaded Installer (`Setup.exe`) to manually install the dependencies for Reloaded inside your game's WINEPREFIX and then setup Reloaded to run when you boot the game from Steam.  
+
+Start by finding the *Steam App ID* of the game [e.g. `306020`]. The recommended way to do this is [protontricks](https://github.com/Matoking/protontricks) (`protontricks -l`). Alternatively, you can get this number by [searching your game on SteamDB](https://steamdb.info/search), [or by checking the store page](https://gaming.stackexchange.com/a/149839).  
+
+![Listing games via Protontricks](./Images/Protontricks-List-Games.png)
+
+Once you have the AppID, locate the `WINEPREFIX` for your game, it should be located in `/home/<YOUR_USERNAME>/.local/share/Steam/steamapps/compatdata/306020/pfx`.  
+
+Run the following series of commands in your terminal, substituting the parts in `<brackets>`:  
+
+```bash
+## The path you located in the previous step.
+export WINEPREFIX="/home/<YOUR_USERNAME>/.local/share/Steam/steamapps/compatdata/<APPID>/pfx"
+
+## Run Reloaded Installer in 'Install Dependencies Only' mode.
+wine Setup.exe --dependenciesOnly
+
+## Create Symbolic Link for Mod Loader Settings.
+ln -s "/home/<YOUR_USERNAME>/.wine/drive_c/users/<USERNAME>/AppData/Roaming/Reloaded-Mod-Loader-II/" "/home/<YOUR_USERNAME>/.local/share/Steam/steamapps/compatdata/<APPID>/pfx/drive_c/users/steamuser/AppData/Roaming/Reloaded-Mod-Loader-II/"
+```
+
+Once you are done, launch the Reloaded launcher and [Deploy ASI Loader](#using-asi-loader).  
+If all goes well, you should be able to launch your game from Steam, running on Proton with Reloaded present.   
+
+![BTD5 on Proton](./Images/Protontricks-BTD5.png)  
+
+Example: Bloons TD5 running on Proton via Steam.
+
+!!! warning
+
+    Reloaded upgrades its .NET Runtime around once a year with, each release of the runtime.  
+    When this happens, you will need to upgrade your runtime by running `Setup.exe --dependenciesonly` again.  
+    Currently an upgrade to .NET 7 is expected on November 2022 Release.  
 
 ## Setting up a Virtual Machine Testing Environment
 

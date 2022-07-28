@@ -16,13 +16,15 @@ markdown_extensions:
   - tables
   - pymdownx.details
   - pymdownx.highlight
-  - pymdownx.superfences
+  - pymdownx.superfences 
   - pymdownx.tasklist
   - def_list
   - meta
   - md_in_html
   - attr_list
   - footnotes
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
