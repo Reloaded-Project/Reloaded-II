@@ -121,7 +121,7 @@ You can now start Reloaded with `Reloaded-II.exe`.
 !!! caution
 
     This guide uses new flag `--dependenciesOnly` in installer for Reloaded 1.20.0 and above which is *not yet released*.  
-    It will be released soon.  
+    In the meantime, [please use this installer binary](https://cdn.discordapp.com/attachments/746431668058849280/1002228585458843779/Setup.exe).  
 
 When you use Proton, Steam creates a 'clean slate' (`WINEPREFIX`) for each game; meaning that the dependencies for Reloaded wouldn't be installed when you run from Proton. We will use the Reloaded Installer (`Setup.exe`) to manually install the dependencies for Reloaded inside your game's WINEPREFIX and then setup Reloaded to run when you boot the game from Steam.  
 
