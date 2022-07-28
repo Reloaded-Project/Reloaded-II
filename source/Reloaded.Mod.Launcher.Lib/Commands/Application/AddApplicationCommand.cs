@@ -1,3 +1,5 @@
+using static Akavache.Sqlite3.Internal.SQLite3;
+
 namespace Reloaded.Mod.Launcher.Lib.Commands.Application;
 
 /// <summary>
@@ -45,6 +47,7 @@ public class AddApplicationCommand : ICommand
         }
 
         // Get file information and populate initial application details.
+        exePath = SymlinkResolver.GetFinalPathName(exePath);
         var fileInfo = FileVersionInfo.GetVersionInfo(exePath);
         var config = new ApplicationConfig(Path.GetFileName(fileInfo.FileName).ToLower(), fileInfo.ProductName, exePath);
 

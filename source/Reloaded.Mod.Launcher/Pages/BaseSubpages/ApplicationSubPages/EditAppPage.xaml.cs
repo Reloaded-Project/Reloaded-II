@@ -17,6 +17,8 @@ public partial class EditAppPage : ReloadedIIPage, IDisposable
         this.AnimateOutStarted += SaveSelectedItemOnAnimateOut;
         this.AnimateOutStarted += Dispose;
         Lib.IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
+
+        DataObject.AddPastingHandler(ApplicationPathTextbox, HandleSymlinkOnPaste);
     }
 
     public void Dispose()
@@ -33,4 +35,25 @@ public partial class EditAppPage : ReloadedIIPage, IDisposable
     private void UpdateExecutablePath_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.SetNewExecutablePath();
 
     private void TestRepoConfiguration_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.TestRepoConfiguration();
+
+    private void HandleSymlinkOnPaste(object sender, DataObjectPastingEventArgs e)
+    {
+        var sourceDataObject = e.DataObject;
+        var isText = sourceDataObject.GetDataPresent(typeof(string));
+        if (!isText) 
+            return;
+
+        var text = sourceDataObject.GetData(typeof(string)) as string;
+        try
+        {
+            var finalText = SymlinkResolver.GetFinalPathName(text!);
+            var newDataObject = new DataObject();
+            newDataObject.SetData(finalText);
+            e.DataObject = newDataObject;
+        }
+        catch (Exception)
+        {
+            // Swallow exception.
+        }
+    }
 }

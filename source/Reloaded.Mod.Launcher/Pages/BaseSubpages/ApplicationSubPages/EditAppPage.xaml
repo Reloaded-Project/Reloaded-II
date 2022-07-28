@@ -75,6 +75,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBox
+                        x:Name="ApplicationPathTextbox"
                         Grid.Column="0"
                         Text="{Binding Application.Config.AppLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Margin="{DynamicResource CommonItemVerticalMargin}"

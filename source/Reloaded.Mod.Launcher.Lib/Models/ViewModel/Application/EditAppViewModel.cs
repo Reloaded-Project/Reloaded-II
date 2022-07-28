@@ -123,6 +123,7 @@ public class EditAppViewModel : ObservableObject
         if (string.IsNullOrEmpty(result))
             return;
 
+        result = SymlinkResolver.GetFinalPathName(result);
         if (!Path.GetFileName(Application.Config.AppLocation).Equals(Path.GetFileName(result), StringComparison.OrdinalIgnoreCase))
             Actions.DisplayMessagebox(Resources.AddAppWarningTitle.Get(), Resources.AddAppWarning.Get());
 
