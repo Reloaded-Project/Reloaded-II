@@ -39,7 +39,6 @@ public class LoadContext : IDisposable
         var interFacesAsmName = typeof(IModLoader).Assembly.GetName();
         var interFacesAsmFile = Path.Combine(loaderFolder, $"{interFacesAsmName.Name}.dll");
         var builder = new AssemblyLoadContextBuilder()
-            .EnableUnloading()
             .IsLazyLoaded(true)
             .PreferDefaultLoadContextAssembly(interFacesAsmName)
             .SetMainAssemblyPath(interFacesAsmFile);

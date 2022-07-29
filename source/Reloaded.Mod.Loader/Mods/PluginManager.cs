@@ -236,7 +236,7 @@ public class PluginManager : IDisposable
         var dllPath = tuple.Config.GetDllPath(tuple.Path);
         _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
 
-        var loadContext     = LoadContext.BuildModLoadContext(dllPath, true, GetExportsForModConfig(tuple.Config), _sharedContext.Context);
+        var loadContext     = LoadContext.BuildModLoadContext(dllPath, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Config), _sharedContext.Context);
         var defaultAssembly = loadContext.LoadDefaultAssembly();
         var types           = defaultAssembly.GetTypes();
         var entryPoint      = types.FirstOrDefault(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
