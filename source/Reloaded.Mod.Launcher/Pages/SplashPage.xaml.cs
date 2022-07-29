@@ -34,6 +34,7 @@ public partial class SplashPage : ReloadedIIPage
             await _setupApplicationTask;
             ChangeToMainPage();
             _ = Task.Run(ControllerSupport.Init);
+            App.StopProfileOptimization();
             DisplayFirstLaunchWarningIfNeeded();
         }
         catch (Exception ex)

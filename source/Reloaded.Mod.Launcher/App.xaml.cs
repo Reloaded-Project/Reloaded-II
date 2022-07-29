@@ -1,4 +1,6 @@
-﻿using static System.Environment;
+﻿using System.Runtime;
+using static System.Environment;
+using Paths = Reloaded.Mod.Loader.IO.Paths;
 
 namespace Reloaded.Mod.Launcher;
 
@@ -36,6 +38,7 @@ public partial class App : Application
         }
 
         Application.Current.ShutdownMode = originalMode;
+        StartProfileOptimization();
     }
 
     private void SetupResources()
@@ -76,5 +79,30 @@ public partial class App : Application
             Current.MainWindow.OnApplyTemplate();
             Current.MainWindow.InvalidateVisual();
         }
+    }
+
+    /// <summary>
+    /// Starts profile-optimization a.k.a. 'Multicore JIT'.
+    /// We're not actually using this for the async JIT but to load other DLLs on a background thread to avoid an I/O bottleneck.  
+    /// </summary>
+    public static void StartProfileOptimization()
+    {
+        // Start Profile Optimization
+        var profileRoot = Path.Combine(Paths.ConfigFolder, "ProfileOptimization");
+        Directory.CreateDirectory(profileRoot);
+
+        // Define the folder where to save the profile files.
+        ProfileOptimization.SetProfileRoot(profileRoot);
+
+        // Start profiling.
+        ProfileOptimization.StartProfile("Launcher-startup.profile");
+    }
+
+    /// <summary>
+    /// Finishes profile-optimization a.k.a. 'Multicore JIT'
+    /// </summary>
+    public static void StopProfileOptimization()
+    {
+        ProfileOptimization.StartProfile(null!);
     }
 }
