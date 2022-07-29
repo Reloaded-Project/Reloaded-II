@@ -29,7 +29,8 @@ public static class LibraryBindings
             showFetchPackageDialog: ShowFetchPackageDialog,
             showSelectAddedGameDialog: ShowSelectAddedGameDialog,
             showAddAppMismatchDialog: ShowAddAppMismatchDialog,
-            showApplicationWarningDialog: ShowApplicationWarningDialog
+            showApplicationWarningDialog: ShowApplicationWarningDialog,
+            showRunAppViaWineDialog: ShowRunAppViaWineDialog
         );
     }
 
@@ -104,6 +105,7 @@ public static class LibraryBindings
     private static bool ShowFetchPackageDialog(DownloadPackageViewModel viewmodel) => ShowDialogAndGetResult(new DownloadPackageDialog(viewmodel));
     private static bool ShowAddAppMismatchDialog(AddAppHashMismatchDialogViewModel viewmodel) => ShowDialogAndGetResult(new AddAppHashMismatchDialog(viewmodel));
     private static bool ShowApplicationWarningDialog(AddApplicationWarningDialogViewModel viewmodel) => ShowDialogAndGetResult(new ShowApplicationWarningDialog(viewmodel));
+    private static bool ShowRunAppViaWineDialog() => ShowDialogAndGetResult(new RunAppViaWineDialog());
 
     private static IndexAppEntry? ShowSelectAddedGameDialog(SelectAddedGameDialogViewModel viewmodel)
     {

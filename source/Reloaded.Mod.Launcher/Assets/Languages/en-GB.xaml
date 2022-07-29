@@ -511,4 +511,24 @@
     <sys:String x:Key="ReloadedProcessNoticeNew">Requires Reloaded II Server Mod to be Enabled w/ LiteNetLib Host.</sys:String>
     <sys:String x:Key="ReloadedProcessState">State</sys:String> <!-- Is the mod running or paused? -->
 
+    <!-- Update 1.20.0: New Run Dialog -->
+    <sys:String x:Key="WineCompatibilityNoticeTitleNew">Launching from Wine</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeHeader_1">You are running Reloaded inside Wine, please note the following:</sys:String>
+    
+    <sys:String x:Key="WineCompatibilityNoticeList_1">- The game will launch using the same Wine/Proton configuration as this launcher.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_2_1">- If this is not desired</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_2_2">Deploy ASI Loader</sys:String> <!-- Hyperlink-->
+    <sys:String x:Key="WineCompatibilityNoticeList_2_3">and launch your game from outside the launcher.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_3_1">- Running with Proton requires some extra steps,</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_3_2">please refer to the wiki.</sys:String> <!-- Hyperlink-->
+
+    <sys:String x:Key="WineCompatibilityNoticeFooter_1">For additional help, please</sys:String> <!-- Start of footer, continued below. -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_2">refer to the Wiki</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_3">or</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeFooter_4">raise an issue on GitHub.</sys:String>  <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <sys:String x:Key="WineCompatibilityNoticeOkNew">Start Application</sys:String>
+
 </ResourceDictionary>

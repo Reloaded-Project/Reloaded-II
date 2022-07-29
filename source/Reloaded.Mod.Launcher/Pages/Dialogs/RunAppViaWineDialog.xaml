@@ -1,0 +1,59 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.RunAppViaWineDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        MinHeight="10"
+        MinWidth="10"
+        SizeToContent="WidthAndHeight"
+        Height="Auto" 
+        Width="Auto"
+        WindowStartupLocation="CenterOwner"
+        Title="{DynamicResource WineCompatibilityNoticeTitleNew}"
+        Style="{DynamicResource ReloadedWindow}">
+    <ScrollViewer>
+        <Grid Margin="{DynamicResource PanelMargin}">
+            <StackPanel>
+                <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Style="{DynamicResource RIIDefaultTextBlock}"
+                           Margin="{DynamicResource CommonItemVerticalMargin}" >
+
+                    <!-- Header -->
+                    <Run Text="{DynamicResource WineCompatibilityNoticeHeader_1}"/> <LineBreak/>
+
+                    <!-- Bullet 1 -->
+                    <Run Text="{DynamicResource WineCompatibilityNoticeList_1}"/> <LineBreak/>
+                    
+                    <!-- Bullet 2 -->
+                    <Run Text="{DynamicResource WineCompatibilityNoticeList_2_1}"/>
+                    <Hyperlink NavigateUri="https://reloaded-project.github.io/Reloaded-II/LinuxSetupGuide/#using-asi-loader" RequestNavigate="OpenHyperlink">
+                        <Run Text="{DynamicResource WineCompatibilityNoticeList_2_2}"/>
+                    </Hyperlink>
+                    <Run Text="{DynamicResource WineCompatibilityNoticeList_2_3}"/> <LineBreak/>
+
+                    <!-- Bullet 3 -->
+                    <Run Text="{DynamicResource WineCompatibilityNoticeList_3_1}"/>
+                    <Hyperlink NavigateUri="https://reloaded-project.github.io/Reloaded-II/LinuxSetupGuide/#proton" RequestNavigate="OpenHyperlink">
+                        <Run Text="{DynamicResource WineCompatibilityNoticeList_3_2}"/>
+                    </Hyperlink>
+                    <LineBreak/> <LineBreak/>
+
+                    <!-- Footer -->
+                    <Run Text="{DynamicResource WineCompatibilityNoticeFooter_1}"/>
+                    <Hyperlink NavigateUri="https://reloaded-project.github.io/Reloaded-II/LinuxSetupGuide/" RequestNavigate="OpenHyperlink">
+                        <Run Text="{DynamicResource WineCompatibilityNoticeFooter_2}"/>
+                    </Hyperlink>
+                    <Run Text="{DynamicResource WineCompatibilityNoticeFooter_3}"/>
+                    <Hyperlink NavigateUri="https://github.com/Reloaded-Project/Reloaded-II/issues" RequestNavigate="OpenHyperlink">
+                        <Run Text="{DynamicResource WineCompatibilityNoticeFooter_4}"/>
+                    </Hyperlink>
+
+                </TextBlock>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="CancelBtn" Content="{DynamicResource MessageBoxButtonCancel}" Style="{DynamicResource GridButton}" Click="Cancel_Click" />
+                    <Button x:Name="OKBtn" Content="{DynamicResource WineCompatibilityNoticeOkNew}" Style="{DynamicResource GridButton}" Click="OK_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</default:ReloadedWindow>

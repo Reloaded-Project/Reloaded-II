@@ -64,7 +64,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
-    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.0.9" />
+    <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.1.1" />
     <PackageReference Include="Sewer56.UI.Controller.Core" Version="1.0.1" />
     <PackageReference Include="Sewer56.UI.Controller.ReloadedInput.Configurator" Version="1.2.0" />
     <PackageReference Include="Sewer56.UI.Controller.WPF" Version="1.0.1" />

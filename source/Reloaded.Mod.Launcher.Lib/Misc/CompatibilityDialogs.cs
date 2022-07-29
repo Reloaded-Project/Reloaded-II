@@ -17,6 +17,6 @@ public static class CompatibilityDialogs
         if (loaderSettings.SkipWineLaunchWarning)
             return true;
 
-        return Actions.DisplayResourceMessageBoxOkCancel("WineCompatibilityNoticeTitle", "WineCompatibilityNoticeText", "WineCompatibilityNoticeOk", "MessageBoxButtonCancel");
+        return Actions.ShowRunAppViaWineDialog();
     }
 }

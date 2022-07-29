@@ -93,6 +93,11 @@ public static class Actions
     public static ShowApplicationWarningDialogDelegate ShowApplicationWarningDialog { get; set; } = null!;
 
     /// <summary>
+    /// Shows a dialog that displays information about running an application using Reloaded on Wine.
+    /// </summary>
+    public static ShowRunAppViaWineDialogDelegate ShowRunAppViaWineDialog { get; set; } = null!;
+
+    /// <summary>
     /// Delegate used to display a message to user's screen.
     /// </summary>
     /// <param name="title">Title of the error.</param>
@@ -251,4 +256,9 @@ public static class Actions
     /// </summary>
     /// <param name="viewModel">The ViewModel used for showing warnings about the application.</param>
     public delegate bool ShowApplicationWarningDialogDelegate(AddApplicationWarningDialogViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that displays information about running an application using Reloaded on Wine.
+    /// </summary>
+    public delegate bool ShowRunAppViaWineDialogDelegate();
 }
