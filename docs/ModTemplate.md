@@ -36,6 +36,11 @@ See [Delta Updates](./PublishingMods/#delta-updates) on more information about t
 
 ### Publishing as ReadyToRun
 
+!!! note 
+
+    Using ReadyToRun is incompatible with unloadable mods due to a runtime limitation.  
+    If you are using ReadyToRun, you should return `false` in `CanUnload()`.
+
 If your mod has a lot of code that is executed at startup, consider using `ReadyToRun` in order to reduce the startup time.  
 
 To use `ReadyToRun` set the `BuildR2R` flag to true when using the build script.  
