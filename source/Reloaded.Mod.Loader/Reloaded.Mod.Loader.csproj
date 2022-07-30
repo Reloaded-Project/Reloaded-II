@@ -12,8 +12,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU1605</NoWarn>
 	  <Version>1.19.2</Version>
-    <OutputPath>..\\Output\\Launcher\\Loader</OutputPath>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Platforms>x86;x64</Platforms>
     <Deterministic>true</Deterministic>
 
     <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
@@ -63,6 +62,19 @@
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
   </ItemGroup>
 
+  <!-- Build dual x86 & x64 -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <MSBuild Condition=" '$(Platform)' == 'x64' " Projects="$(MSBuildProjectFile)" Properties="Platform=x86;PlatFormTarget=x86" RunEachTargetSeparately="true" />
+  </Target>
+
+  <PropertyGroup Condition="'$(Platform)'=='x86'">
+    <OutputPath>..\\Output\\Launcher\\Loader\\x86</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x64'">
+    <OutputPath>..\\Output\\Launcher\\Loader\\x64</OutputPath>
+  </PropertyGroup>
+
+  <!-- NuGet Stuff -->
   <ItemGroup>
     <ProjectReference Include="..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />

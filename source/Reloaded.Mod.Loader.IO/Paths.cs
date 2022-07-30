@@ -69,13 +69,13 @@ public class Paths
     /// Gets the path of the 32-bit Reloaded Loader DLL.
     /// </summary>
     /// <param name="launcherPath">Path to the launcher folder.</param>
-    public static string GetLoaderPath32(string launcherPath) => Path.Combine(GetLoaderFolder(launcherPath), "Reloaded.Mod.Loader.dll");
+    public static string GetLoaderPath32(string launcherPath) => Path.Combine(GetLoaderFolder32(launcherPath), "Reloaded.Mod.Loader.dll");
 
     /// <summary>
     /// Gets the path of the 64-bit Reloaded Loader DLL.
     /// </summary>
     /// <param name="launcherPath">Path to the launcher folder.</param>
-    public static string GetLoaderPath64(string launcherPath) => Path.Combine(GetLoaderFolder(launcherPath), "Reloaded.Mod.Loader.dll");
+    public static string GetLoaderPath64(string launcherPath) => Path.Combine(GetLoaderFolder64(launcherPath), "Reloaded.Mod.Loader.dll");
 
     /// <summary>
     /// Gets the path of the 32-bit Reloaded Loader Bootstrapper DLL.
