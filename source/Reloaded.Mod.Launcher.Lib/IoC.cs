@@ -48,7 +48,8 @@ public static class IoC
     {
         if (!IsExplicitlyBound<T>())
         {
-            var token = BindToTransient<T>();
+            // We need to do it this way because rebind might fail with existing binding.
+            var token  = BindToTransient<T>();
             var result = Container.Resolve<T>();
             token.Dispose();
             return result;
