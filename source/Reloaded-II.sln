@@ -39,8 +39,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestAppA", "Testing\Apps\Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestInterfaces", "Testing\Other\TestInterfaces\TestInterfaces.csproj", "{D0363CCD-17A6-4700-8C94-D4E3327C6A07}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Shared", "Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj", "{85C2C4F7-AFC2-4745-A6E4-804B81EAE262}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Launcher.Kernel32AddressDumper", "Reloaded.Mod.Launcher.Kernel32AddressDumper\Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj", "{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestModD", "Testing\Mods\TestModD\TestModD.csproj", "{E036F18E-312A-4C78-A8E9-5E37E5EBA9B9}"
@@ -84,6 +82,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Utils.Server", "Mods\Reloaded.Utils.Server\Reloaded.Utils.Server.csproj", "{EFEE7C5A-A1E7-44E8-9640-B0194146501C}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Reloaded.Mod.Loader.IPC", "Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.shproj", "{1050BFD3-EDA7-4AA1-BFF8-DD9DB0C8EE79}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Reloaded.Mod.Shared", "Reloaded.Mod.Shared\Reloaded.Mod.Shared.shproj", "{D322E71A-F32E-42E9-8340-C747D3D9028C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -177,14 +177,6 @@ Global
 		{D0363CCD-17A6-4700-8C94-D4E3327C6A07}.Release|X64+X86.ActiveCfg = Release|Any CPU
 		{D0363CCD-17A6-4700-8C94-D4E3327C6A07}.Release|X64+X86.Build.0 = Release|Any CPU
 		{D0363CCD-17A6-4700-8C94-D4E3327C6A07}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
-		{85C2C4F7-AFC2-4745-A6E4-804B81EAE262}.Debug|X64+X86.ActiveCfg = Debug|Any CPU
-		{85C2C4F7-AFC2-4745-A6E4-804B81EAE262}.Debug|X64+X86.Build.0 = Debug|Any CPU
-		{85C2C4F7-AFC2-4745-A6E4-804B81EAE262}.Debug-ModLoaderOnly|X64+X86.ActiveCfg = Debug|Any CPU
-		{85C2C4F7-AFC2-4745-A6E4-804B81EAE262}.Debug-ModLoaderOnly|X64+X86.Build.0 = Debug|Any CPU
-		{85C2C4F7-AFC2-4745-A6E4-804B81EAE262}.Release|X64+X86.ActiveCfg = Release|Any CPU
-		{85C2C4F7-AFC2-4745-A6E4-804B81EAE262}.Release|X64+X86.Build.0 = Release|Any CPU
-		{85C2C4F7-AFC2-4745-A6E4-804B81EAE262}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
-		{85C2C4F7-AFC2-4745-A6E4-804B81EAE262}.Release-ModLoaderOnly|X64+X86.Build.0 = Release|Any CPU
 		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Debug|X64+X86.ActiveCfg = Debug|x86
 		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Debug|X64+X86.Build.0 = Debug|x86
 		{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}.Debug-ModLoaderOnly|X64+X86.ActiveCfg = Debug|x86
@@ -321,7 +313,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems*{1050bfd3-eda7-4aa1-bff8-dd9db0c8ee79}*SharedItemsImports = 13
+		Reloaded.Mod.Shared\Reloaded.Mod.Shared.projitems*{4d10ed29-b435-4b9c-a75b-a8961f6d3b31}*SharedItemsImports = 5
 		Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems*{9d416472-b721-4df6-8218-63853a17d8f6}*SharedItemsImports = 5
+		Reloaded.Mod.Shared\Reloaded.Mod.Shared.projitems*{b0bfee3e-4a56-4f9f-95a8-9229fc74d46e}*SharedItemsImports = 5
 		Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems*{cf3e2dc7-04f8-4878-97f4-1bcf950ac97d}*SharedItemsImports = 5
+		Reloaded.Mod.Shared\Reloaded.Mod.Shared.projitems*{cf3e2dc7-04f8-4878-97f4-1bcf950ac97d}*SharedItemsImports = 5
+		Reloaded.Mod.Shared\Reloaded.Mod.Shared.projitems*{d322e71a-f32e-42e9-8340-c747d3d9028c}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

@@ -2,6 +2,7 @@
   <PropertyGroup>
     <ProjectGuid>{B0BFEE3E-4A56-4F9F-95A8-9229FC74D46E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
+    <LangVersion>preview</LangVersion>
     <AssemblyName>Kernel32AddressDumper</AssemblyName>
     <TargetFramework>net5.0-windows</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -10,8 +11,7 @@
     <Product>Reloaded.Mod.Launcher.Kernel32AddressDumper</Product>
     <Copyright>Copyright ©  2019</Copyright>
     <Platforms>x86</Platforms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
-  </ItemGroup>
+  <Import Project="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.projitems" Label="Shared" />
 </Project>

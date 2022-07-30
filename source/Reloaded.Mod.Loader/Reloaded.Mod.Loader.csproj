@@ -55,6 +55,8 @@
 
   <Import Project="..\Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems" Label="Shared" />
 
+  <Import Project="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.projitems" Label="Shared" />
+
   <Import Project="../Robust.Trimming.targets" />
 
   <!-- USE NLS Instead of ICU. Saves around 25MB address space on x86 processes. -->
@@ -78,7 +80,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
-    <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
     <ProjectReference Include="..\Submodules\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj" />
   </ItemGroup>
   <ItemGroup>
