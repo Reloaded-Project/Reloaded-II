@@ -5,10 +5,6 @@
     This documentation page could be improved, it only covers the barebones information.  
     Community contributions would be very welcome. 
 
-!!! warning "Work in Progress"
-
-    This page is a work in progress.
-
 ## Wine
 
 Open a `Terminal` window (Konsole, GNOME Terminal, Kitty etc.) and install `wine` & `winetricks`:  
