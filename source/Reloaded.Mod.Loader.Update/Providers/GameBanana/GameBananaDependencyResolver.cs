@@ -6,14 +6,14 @@ namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 public class GameBananaDependencyResolver : IDependencyResolver
 {
     /// <inheritdoc />
-    public async Task<ModDependencyResolveResult> ResolveAsync(string packageId, ModConfig? modConfig = null, CancellationToken token = default)
+    public async Task<ModDependencyResolveResult> ResolveAsync(string packageId, Dictionary<string, object>? pluginData = null, CancellationToken token = default)
     {
         // If no mod config is provided, we cannot resolve.
-        if (modConfig == null)
+        if (pluginData == null)
             return new ModDependencyResolveResult() { NotFoundDependencies = { packageId }};
 
         // If no dependency data is available, return none.
-        if (!modConfig.PluginData.TryGetValue(GameBananaDependencyMetadataWriter.PluginId, out DependencyResolverMetadata<GameBananaUpdateResolverFactory.GameBananaConfig> metadata))
+        if (!pluginData.TryGetValue(GameBananaDependencyMetadataWriter.PluginId, out DependencyResolverMetadata<GameBananaUpdateResolverFactory.GameBananaConfig> metadata))
             return new ModDependencyResolveResult() { NotFoundDependencies = { packageId } };
 
         // Try to get configuration for update.

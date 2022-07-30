@@ -40,7 +40,7 @@ public class GitHubDependencyResolverTests : IDisposable
 
         // Act
         var resolver = new GitHubDependencyResolver();
-        var result = await resolver.ResolveAsync(clonedDependency.Config.ModId, clonedOriginal.Config);
+        var result = await resolver.ResolveAsync(clonedDependency.Config.ModId, clonedOriginal.Config.PluginData);
 
         // Assert
         Assert.NotEmpty(result.FoundDependencies);
@@ -70,7 +70,7 @@ public class GitHubDependencyResolverTests : IDisposable
         // Act
         using var outputDirectory = new TemporaryFolderAllocation();
         var resolver = new GitHubDependencyResolver();
-        var result   = await resolver.ResolveAsync(clonedDependency.Config.ModId, clonedOriginal.Config);
+        var result   = await resolver.ResolveAsync(clonedDependency.Config.ModId, clonedOriginal.Config.PluginData);
         var downloadedPackagePath = await result.FoundDependencies[0].DownloadAsync(outputDirectory.FolderPath, null);
 
         // Assert

@@ -139,7 +139,7 @@ public static class Update
             {
                 foreach (var dependency in dependencyItem.Dependencies)
                 {
-                    results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod, token));
+                    results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod.PluginData, token));
                 }
             }
 

@@ -36,7 +36,7 @@ public class GameBananaDependencyResolverTests : IDisposable
 
         // Act
         var resolver = new GameBananaDependencyResolver();
-        var result = await resolver.ResolveAsync(clonedDependency.Config.ModId, clonedOriginal.Config);
+        var result = await resolver.ResolveAsync(clonedDependency.Config.ModId, clonedOriginal.Config.PluginData);
 
         // Assert
         Assert.NotEmpty(result.FoundDependencies);
@@ -59,7 +59,7 @@ public class GameBananaDependencyResolverTests : IDisposable
         // Act
         using var outputDirectory = new TemporaryFolderAllocation();
         var resolver = new GameBananaDependencyResolver();
-        var result   = await resolver.ResolveAsync(clonedDependency.Config.ModId, clonedOriginal.Config);
+        var result   = await resolver.ResolveAsync(clonedDependency.Config.ModId, clonedOriginal.Config.PluginData);
         var downloadedPackagePath = await result.FoundDependencies[0].DownloadAsync(outputDirectory.FolderPath, null);
 
         // Assert

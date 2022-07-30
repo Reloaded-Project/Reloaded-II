@@ -14,7 +14,7 @@ public class NuGetDependencyResolver : IDependencyResolver
     }
 
     /// <inheritdoc />
-    public async Task<ModDependencyResolveResult> ResolveAsync(string packageId, ModConfig? modConfig = null, CancellationToken token = default)
+    public async Task<ModDependencyResolveResult> ResolveAsync(string packageId, Dictionary<string, object>? pluginData = null, CancellationToken token = default)
     {
         var searchResult = await _repository.FindDependencies(packageId, true, true, token);
         var result       = new ModDependencyResolveResult();

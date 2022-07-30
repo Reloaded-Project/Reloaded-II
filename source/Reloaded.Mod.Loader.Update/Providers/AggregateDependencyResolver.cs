@@ -14,12 +14,12 @@ public class AggregateDependencyResolver : IDependencyResolver
     }
 
     /// <inheritdoc />
-    public async Task<ModDependencyResolveResult> ResolveAsync(string packageId, ModConfig? modConfig = null, CancellationToken token = default)
+    public async Task<ModDependencyResolveResult> ResolveAsync(string packageId, Dictionary<string, object>? pluginData = null, CancellationToken token = default)
     {
         // Run parallel resolve operations
         var tasks = new Task<ModDependencyResolveResult>[_resolvers.Length];
         for (var x = 0; x < _resolvers.Length; x++)
-            tasks[x] = _resolvers[x].ResolveAsync(packageId, modConfig, token);
+            tasks[x] = _resolvers[x].ResolveAsync(packageId, pluginData, token);
 
         await Task.WhenAll(tasks);
 
