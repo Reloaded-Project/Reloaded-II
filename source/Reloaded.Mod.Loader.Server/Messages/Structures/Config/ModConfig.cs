@@ -45,8 +45,8 @@ public struct ModConfig : IModConfig
     /// <inheritdoc/>
     public string ReleaseMetadataFileName { get; set; } = "";
 
-    [IgnoreDuringEquals]
     /// <inheritdoc/>
+    [IgnoreDuringEquals]
     public Dictionary<string, object>? PluginData { get; set; } = null!;
 
     /// <inheritdoc/>
