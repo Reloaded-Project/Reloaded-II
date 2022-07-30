@@ -2,26 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-	  <Version>3.0.0</Version>
-	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
-	  <NoWarn>1701;1702;CS1591;NU5104</NoWarn>
+    <NoWarn>1701;1702;CS1591;NU5104</NoWarn>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Version>3.0.0</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <Authors>Sewer56</Authors>
-	  <Company />
-	  <Description>Contains code for communicating remotely with Reloaded-II's Mod Loader when loaded inside a remote process. Allows for querying information as well as load/unload/resume/suspend of mods in real time. This is an "internal" package; no documentation is provided and the API can change at any time.</Description>
-	  <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-	  <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
-	  <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
-	  <RepositoryType>git</RepositoryType>
-	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>Sewer56</Authors>
+    <Company />
+    <Description>Library for communicating with 'Reloaded II Server' mod. Allows for querying information as well as load/unload/resume/suspend of mods in real time. For usage instructions please see the Programmers' section in Reloaded wiki.</Description>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <LangVersion>preview</LangVersion>
     <Deterministic>true</Deterministic>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-
-    <Nullable>enable</Nullable>
-
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

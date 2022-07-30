@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-	  <Version>2.4.1</Version>
+	  <Version>2.4.2</Version>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <LangVersion>preview</LangVersion>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -10,7 +10,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <Authors>Sewer56</Authors>
 	  <Company />
-	  <Description>Contains code for parsing Reloaded-II's various configuration files as well as providing services for reading configurations in real time. This is an "internal" package; no documentation is provided and the API can change at any time.</Description>
+	  <Description>Library for discovery, monitoring and parsing of Reloaded-II's configuration files. For usage instructions please see the Programmers' section in Reloaded wiki.</Description>
 	  <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 	  <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
 	  <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>

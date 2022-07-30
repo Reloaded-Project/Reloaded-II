@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Version>1.0.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>preview</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -9,7 +10,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Sewer56</Authors>
     <Company />
-    <Description>Contains code for parsing Reloaded-II's various configuration files as well as providing services for reading configurations in real time. This is an "internal" package; no documentation is provided and the API can change at any time.</Description>
+    <Description>API for Reloaded II's Community Index available at https://github.com/Reloaded-Project/Reloaded.Community. For usage instructions please see the Programmers' section in Reloaded wiki.</Description>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
@@ -18,6 +19,7 @@
     <Nullable>enable</Nullable>
     <Deterministic>true</Deterministic>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
+    <Title>Reloaded II Community API</Title>
   </PropertyGroup>
 
   <ItemGroup>
