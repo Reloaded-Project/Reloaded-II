@@ -13,7 +13,8 @@ public static class DependencyResolverFactory
         return new AggregateDependencyResolver(new IDependencyResolver[]
         {
             new NuGetDependencyResolver(repository),
-            new GameBananaDependencyResolver()
+            new GameBananaDependencyResolver(),
+            new GitHubDependencyResolver()
         });
     }
 }
