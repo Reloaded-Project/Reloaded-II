@@ -11,26 +11,26 @@
 #   - Upload to GitHub Releases
 #   - Upload to Reloaded NuGet Repository (if GitHub Secret RELOADED_NUGET_KEY is specified) 
 
-name: Build and Publish Reloaded Mod
+name: Build and Publish Reloaded Utils Server
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
     tags:
       - '*'
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch:
 
 env: 
-  PUBLISH_COMMON_PATH: ./Publish/ToUpload/
+  PUBLISH_COMMON_PATH: ./source/Mods/Reloaded.Utils.Server/Publish/ToUpload/
 
-  PUBLISH_GAMEBANANA_PATH: ./Publish/ToUpload/GameBanana
-  PUBLISH_GITHUB_PATH: ./Publish/ToUpload/Generic
-  PUBLISH_NUGET_PATH: ./Publish/ToUpload/NuGet
+  PUBLISH_GAMEBANANA_PATH: ./source/Mods/Reloaded.Utils.Server/Publish/ToUpload/GameBanana
+  PUBLISH_GITHUB_PATH: ./source/Mods/Reloaded.Utils.Server/Publish/ToUpload/Generic
+  PUBLISH_NUGET_PATH: ./source/Mods/Reloaded.Utils.Server/Publish/ToUpload/NuGet
   
-  PUBLISH_CHANGELOG_PATH: ./Publish/Changelog.md
-  PUBLISH_PATH: ./Publish
+  PUBLISH_CHANGELOG_PATH: ./source/Mods/Reloaded.Utils.Server/Publish/Changelog.md
+  PUBLISH_PATH: ./source/Mods/Reloaded.Utils.Server/Publish
 
   # Default value is official Reloaded package server.  
   NUGET_URL: http://packages.sewer56.moe:5000/v3/index.json
@@ -56,10 +56,11 @@ jobs:
       with:
         dotnet-version: 5.0.x
         
-    - name: Setup .NET Core SDK (6.0)
+    - name: Setup .NET Core SDK (7.0)
       uses: actions/setup-dotnet@v1.8.2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
+        include-prerelease: true
         
     - name: Setup Node.js
       uses: actions/setup-node@v2
@@ -80,7 +81,7 @@ jobs:
         }
         
     - name: Build
-      run: ./Publish.ps1 -ChangelogPath "$env:PUBLISH_CHANGELOG_PATH"
+      run: ./source/Mods/Reloaded.Utils.Server/Publish.ps1 -ChangelogPath "$env:PUBLISH_CHANGELOG_PATH"
       
     - name: Upload GitHub Release Artifact
       uses: actions/upload-artifact@v2.2.4
@@ -117,16 +118,6 @@ jobs:
         # A file, directory or wildcard pattern that describes what to upload
         path: ${{ env.PUBLISH_CHANGELOG_PATH }}
         retention-days: 0
-    
-    - name: Upload to GitHub Releases (on Tag)
-      uses: softprops/action-gh-release@v0.1.14
-      if: env.IS_RELEASE == 'true'
-      with:
-        # Path to load note-worthy description of changes in release from
-        body_path: ${{ env.PUBLISH_CHANGELOG_PATH }}
-        # Newline-delimited list of path globs for asset files to upload
-        files: |
-          ${{ env.PUBLISH_GITHUB_PATH }}/*
         
     - name: Push to NuGet (on Tag)
       env: 
