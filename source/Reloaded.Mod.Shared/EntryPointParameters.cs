@@ -17,7 +17,14 @@ public struct EntryPointParameters
     public const int CurrentVersion = 3;
 
     // Version 1
+    /// <summary>
+    /// Version of the Reloaded bootstrapper.
+    /// </summary>
     public int Version;
+
+    /// <summary>
+    /// Contains various information about how Reloaded has been loaded.
+    /// </summary>
     public EntryPointFlags Flags;
 
     // Version 2
@@ -59,6 +66,13 @@ public struct EntryPointParameters
 [Flags]
 public enum EntryPointFlags : int
 {
+    /// <summary>
+    /// Nothing special.
+    /// </summary>
     None = 0,
+    
+    /// <summary>
+    /// Reloaded has been loaded via an external mod loader or DLL hijacking method.
+    /// </summary>
     LoadedExternally = 1,
 }
