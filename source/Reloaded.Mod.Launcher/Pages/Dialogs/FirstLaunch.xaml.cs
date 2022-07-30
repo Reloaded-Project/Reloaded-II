@@ -5,7 +5,7 @@
 /// </summary>
 public partial class FirstLaunch : ReloadedWindow
 {
-    public new FirstLaunchViewModel ViewModel { get; set; } = Lib.IoC.Get<FirstLaunchViewModel>();
+    public new FirstLaunchViewModel ViewModel { get; set; }
 
     public Visibility OriginalCloseVisibility;
     public Visibility OriginalMinimizeVisibility;
@@ -16,6 +16,8 @@ public partial class FirstLaunch : ReloadedWindow
         InitializeComponent();
             
         // Disable Original Button Visibility
+        Lib.IoC.Unbind<FirstLaunchViewModel>();
+        ViewModel = Lib.IoC.Get<FirstLaunchViewModel>();
         OriginalCloseVisibility = base.ViewModel.CloseButtonVisibility;
         OriginalMinimizeVisibility = base.ViewModel.MinimizeButtonVisibility;
         OriginalMaximizeVisibility = base.ViewModel.MaximizeButtonVisibility;

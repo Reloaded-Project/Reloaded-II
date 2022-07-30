@@ -44,12 +44,28 @@ public static class IoC
     /// <summary>
     /// Retrieves a service (class) from the IoC of a specified type.
     /// </summary>
-    public static T Get<T>() => Container.Resolve<T>();
+    public static T Get<T>()
+    {
+        if (!IsExplicitlyBound<T>())
+            BindToTransient<T>();
+        
+        return Container.Resolve<T>();
+    }
+
+    /// <summary>
+    /// Binds the given type to a transient value (new type is created each time).
+    /// </summary>
+    /// <typeparam name="T">The type of the value to bind.</typeparam>
+    public static void BindToTransient<T>()
+    {
+        var token = Container.Bind<T>().As(Lifetime.Transient).To();
+        TypeToTokenMap[typeof(T)] = token;
+    }
 
     /// <summary>
     /// Binds the given type to a constant value.
     /// </summary>
-    /// <typeparam name="T">The type of the value to obtain.</typeparam>
+    /// <typeparam name="T">The type of the value to bind.</typeparam>
     /// <param name="item">The item to set.</param>
     public static void BindToConstant<T>(T item)
     {
@@ -60,14 +76,22 @@ public static class IoC
     /// <summary>
     /// Re-binds the given type to a constant value.
     /// </summary>
-    /// <typeparam name="T">The type of the value to obtain.</typeparam>
+    /// <typeparam name="T">The type of the value to bind.</typeparam>
     /// <param name="item">The item to set.</param>
     public static void RebindToConstant<T>(T item)
     {
+        Unbind<T>();
+        BindToConstant(item);
+    }
+
+    /// <summary>
+    /// Unbinds a specified type.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public static void Unbind<T>()
+    {
         if (TypeToTokenMap.Remove(typeof(T), out var token))
             token.Dispose();
-        
-        BindToConstant(item);
     }
 
     /// <summary>
