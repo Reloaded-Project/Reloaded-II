@@ -1,5 +1,8 @@
 ﻿using System.Runtime;
+using System.Runtime.InteropServices;
+using Reloaded.Mod.Shared;
 using static System.Environment;
+using Environment = Reloaded.Mod.Shared.Environment;
 using Paths = Reloaded.Mod.Loader.IO.Paths;
 
 namespace Reloaded.Mod.Launcher;
@@ -105,4 +108,15 @@ public partial class App : Application
     {
         ProfileOptimization.StartProfile(null!);
     }
+
+    /// <summary>
+    /// Empties the working set of the process, purging as much memory back to RAM as possible.  
+    /// We do this after initializing Reloaded (at a small perf penalty) as there's gonna be stuff that will never be needed in RAM again.
+    ///
+    /// We can let the CEF & Electron apps in this world (like your Slacks and Discords) eat up all the RAM instead.
+    /// </summary>
+    public static void EmptyWorkingSet() => EmptyWorkingSet(Environment.CurrentProcess.Handle);
+
+    [DllImport("psapi")]
+    private static extern bool EmptyWorkingSet(IntPtr hProcess);
 }

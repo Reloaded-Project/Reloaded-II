@@ -16,7 +16,8 @@ public static class Setup
     /// </summary>
     /// <param name="updateText">A function that updates the visible text onscreen.</param>
     /// <param name="minimumSplashDelay">Minimum amount of time to wait to complete the loading process.</param>
-    public static async Task SetupApplicationAsync(Action<string> updateText, int minimumSplashDelay)
+    /// <param name="backgroundTasks">Contains all background tasks.</param>
+    public static async Task SetupApplicationAsync(Action<string> updateText, int minimumSplashDelay, List<Task> backgroundTasks)
     {
         if (!_loadExecuted)
         {
@@ -31,21 +32,17 @@ public static class Setup
             RegisterReloadedProtocol();
 
             updateText(Resources.SplashCreatingDefaultConfig.Get());
-#pragma warning disable 4014
-            UpdateDefaultConfig(); // Fire and forget.
-#pragma warning restore 4014
+            backgroundTasks.Add(UpdateDefaultConfig()); // Fire and forget.
             CheckForMissingDependencies();
                 
             updateText(Resources.SplashPreparingResources.Get());
-#pragma warning disable CS4014
-            Task.Run(CheckForUpdatesAsync);  // Fire and forget, we don't want to delay startup time.
-#pragma warning restore CS4014
+            backgroundTasks.Add(Task.Run(CheckForUpdatesAsync)); // Fire and forget, we don't want to delay startup time.
             await setupServicesTask; // required for viewmodels & sanity tests.
             SetupViewModels();
 
             updateText(Resources.SplashRunningSanityChecks.Get());
             DoSanityTests();
-            var _ = Task.Run(CompressOldLogs);
+            backgroundTasks.Add(Task.Run(CompressOldLogs));
 
             // Wait until splash screen time.
             updateText($"{Resources.SplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");

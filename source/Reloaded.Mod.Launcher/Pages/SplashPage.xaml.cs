@@ -1,4 +1,5 @@
-﻿using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
+﻿using System.Runtime.InteropServices;
+using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 using Paths = Reloaded.Mod.Loader.IO.Paths;
 using Window = System.Windows.Window;
 using WindowViewModel = Reloaded.Mod.Launcher.Lib.Models.ViewModel.WindowViewModel;
@@ -15,7 +16,8 @@ public partial class SplashPage : ReloadedIIPage
     private XamlResource<string> _xamlFailedToLaunchTitle = new XamlResource<string>("FailedToLaunchTitle");
     private XamlResource<string> _xamlFailedToLaunchMessage = new XamlResource<string>("FailedToLaunchMessage");
     private Task _setupApplicationTask;
-        
+    private List<Task> _backgroundTasks = new List<Task>();
+
     public SplashPage() : base()
     {  
         InitializeComponent();
@@ -23,7 +25,7 @@ public partial class SplashPage : ReloadedIIPage
         // Setup ViewModel
         _splashViewModel    = new SplashViewModel();
         this.DataContext    = _splashViewModel;
-        _setupApplicationTask = Task.Run(() => Setup.SetupApplicationAsync(UpdateText, _xamlSplashMinimumTime.Get()));
+        _setupApplicationTask = Task.Run(() => Setup.SetupApplicationAsync(UpdateText, _xamlSplashMinimumTime.Get(), _backgroundTasks));
         ActionWrappers.ExecuteWithApplicationDispatcherAsync(Load);
     }
 
@@ -33,8 +35,15 @@ public partial class SplashPage : ReloadedIIPage
         {
             await _setupApplicationTask;
             ChangeToMainPage();
-            _ = Task.Run(ControllerSupport.Init);
-            App.StopProfileOptimization();
+            _backgroundTasks.Add(Task.Run(ControllerSupport.Init));
+
+            // Post init cleanup.
+            _ = Task.WhenAll(_backgroundTasks).ContinueWith(task =>
+            {
+                App.StopProfileOptimization();
+                App.EmptyWorkingSet();
+            });
+
             DisplayFirstLaunchWarningIfNeeded();
         }
         catch (Exception ex)

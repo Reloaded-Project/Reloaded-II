@@ -5,12 +5,17 @@ public static class Environment
     /// <summary>
     /// True if executing under Wine, else false.
     /// </summary>
-    public static bool IsWine { get; private set; }
+    public static bool IsWine { get; }
 
     /// <summary>
     /// Gets the full path to the current process.
     /// </summary>
-    public static Lazy<string> CurrentProcessLocation { get; private set; } = new Lazy<string>(() => Path.GetFullPath(Process.GetCurrentProcess().MainModule.FileName));
+    public static Process CurrentProcess { get; } = Process.GetCurrentProcess();
+
+    /// <summary>
+    /// Gets the full path to the current process.
+    /// </summary>
+    public static Lazy<string> CurrentProcessLocation { get; } = new(() => Path.GetFullPath(CurrentProcess.MainModule.FileName));
 
     static Environment()
     {
