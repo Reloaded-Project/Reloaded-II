@@ -13,7 +13,7 @@ public class ApplicationPageBaseToPageConverter : IValueConverter
                 return null!;
 
             case PageBase.Splash:
-                return Lib.IoC.GetConstant<SplashPage>();
+                return Lib.IoC.Get<SplashPage>();
 
             case PageBase.Base:
                 return Lib.IoC.GetConstant<BasePage>();
