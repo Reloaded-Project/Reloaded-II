@@ -508,7 +508,7 @@
     <sys:String x:Key="ConfiguratorLibCustomStringTimeout">Timeout</sys:String> <!-- Name of the input configurator window. -->
 
     <!-- Update 1.20.0: Server as Separate Mod -->
-    <sys:String x:Key="ReloadedProcessNoticeNew">Requires Reloaded II Server Mod to be Enabled w/ LiteNetLib Host.</sys:String>
+    <sys:String x:Key="ReloadedProcessNoticeNew">Requires 'Reloaded II Server' Mod to be Enabled w/ LiteNetLib Host.&#x0a;Download it from 'Download Mods' menu.</sys:String>
     <sys:String x:Key="ReloadedProcessState">State</sys:String> <!-- Is the mod running or paused? -->
 
     <!-- Update 1.20.0: New Run Dialog -->
