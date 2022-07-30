@@ -47,7 +47,12 @@ public static class IoC
     public static T Get<T>()
     {
         if (!IsExplicitlyBound<T>())
-            BindToTransient<T>();
+        {
+            var token = BindToTransient<T>();
+            var result = Container.Resolve<T>();
+            token.Dispose();
+            return result;
+        }
         
         return Container.Resolve<T>();
     }
@@ -56,10 +61,11 @@ public static class IoC
     /// Binds the given type to a transient value (new type is created each time).
     /// </summary>
     /// <typeparam name="T">The type of the value to bind.</typeparam>
-    public static void BindToTransient<T>()
+    public static IToken BindToTransient<T>()
     {
         var token = Container.Bind<T>().As(Lifetime.Transient).To();
         TypeToTokenMap[typeof(T)] = token;
+        return token;
     }
 
     /// <summary>
@@ -67,10 +73,11 @@ public static class IoC
     /// </summary>
     /// <typeparam name="T">The type of the value to bind.</typeparam>
     /// <param name="item">The item to set.</param>
-    public static void BindToConstant<T>(T item)
+    public static IToken BindToConstant<T>(T item)
     {
         var token = Container.Bind<T>().As(Lifetime.ContainerSingleton).To(context => item);
         TypeToTokenMap[typeof(T)] = token;
+        return token;
     }
 
     /// <summary>
@@ -78,10 +85,10 @@ public static class IoC
     /// </summary>
     /// <typeparam name="T">The type of the value to bind.</typeparam>
     /// <param name="item">The item to set.</param>
-    public static void RebindToConstant<T>(T item)
+    public static IToken RebindToConstant<T>(T item)
     {
         Unbind<T>();
-        BindToConstant(item);
+        return BindToConstant(item);
     }
 
     /// <summary>

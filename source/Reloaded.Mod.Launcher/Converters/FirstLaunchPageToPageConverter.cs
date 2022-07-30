@@ -12,15 +12,15 @@ public class FirstLaunchPageToPageConverter : IValueConverter
         switch ((FirstLaunchPage)value)
         {
             case FirstLaunchPage.Complete:
-                return Lib.IoC.GetConstant<Complete>();
+                return Lib.IoC.Get<Complete>();
             case FirstLaunchPage.AddApplication:
-                return Lib.IoC.GetConstant<AddApplication>();
+                return Lib.IoC.Get<AddApplication>();
             case FirstLaunchPage.AddModExtract:
-                return Lib.IoC.GetConstant<AddModExtract>();
+                return Lib.IoC.Get<AddModExtract>();
             case FirstLaunchPage.ModEnablePage:
-                return Lib.IoC.GetConstant<ModEnablePage>();
+                return Lib.IoC.Get<ModEnablePage>();
             case FirstLaunchPage.ModConfigPage:
-                return Lib.IoC.GetConstant<ModConfigPage>();
+                return Lib.IoC.Get<ModConfigPage>();
             default:
                 Debugger.Break();
                 return null!;

@@ -5,10 +5,11 @@
 /// </summary>
 public partial class AddApplication : ReloadedPage
 {
-    public AddApplicationViewModel ViewModel { get; set; } = Lib.IoC.Get<AddApplicationViewModel>();
+    public AddApplicationViewModel ViewModel { get; set; } 
 
     public AddApplication()
     {
+        ViewModel = Lib.IoC.Get<AddApplicationViewModel>();
         InitializeComponent();
     }
 
