@@ -13,6 +13,7 @@ public static class PackageResolverFactory
     public static IUpdateResolverFactory[] All { get; private set; } =
     {
         // Listed in order of preference.
+        // Note that AggregatePackageResolver will pick based on smallest download size first, then use this order.
         new NuGetUpdateResolverFactory(),
         new GitHubReleasesUpdateResolverFactory(),
         new GameBananaUpdateResolverFactory()

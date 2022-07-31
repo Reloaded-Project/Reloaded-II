@@ -25,7 +25,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sewer56.Update" Version="2.2.1" />
+    <PackageReference Include="Sewer56.Update" Version="3.0.0" />
     <PackageReference Include="Sewer56.Update.Extractors.SevenZipSharp" Version="1.1.2" GeneratePathProperty="true" />
     <PackageReference Include="Sewer56.Update.Packaging" Version="2.3.4" />
     <PackageReference Include="Sewer56.Update.Resolvers.NuGet" Version="1.1.0" />
