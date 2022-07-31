@@ -209,6 +209,7 @@ public class AsiLoaderDeployer
 
     private static readonly string[] AsiLoaderSupportedDll64 = 
     {
+        "winmm.dll",
         "wininet.dll",
         "version.dll",
         "dsound.dll",
