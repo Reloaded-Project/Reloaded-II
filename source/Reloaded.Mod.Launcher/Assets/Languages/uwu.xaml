@@ -40,7 +40,9 @@
     <sys:String x:Key="AddAppAdvancedOptions">Advanced T-Toows &amp; O-Options</sys:String>
     <sys:String x:Key="AddAppCreateShortcut">Cweate S-Showtcut</sys:String>
     <sys:String x:Key="AddAppAutoInject">Auto-Inject</sys:String>
-    <sys:String x:Key="AddAppAutoInjectMessage">Nyote: Auto-inject is pwovided but nyot wecommended as nyo guawantee can OwO b-be m-made t-that x3 m-mods wiww &gt;w&lt; e-execute code befowe t-the appwication. x3 P-Pwease instead use weguwaw &quot;-&quot;Waunch ^.^ A-Appwication&quot; fwom Wewoaded o-ow t-the &quot;DWW Woadew&quot; method :3 d-descwibed in t-the GitHub d-documentation. x3 P-Pwease do nyot submit bugs f-fow x3 m-mods t-that do nyot w-wowk using Auto-inject mode.</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage">Nyote: Auto-inject is pwovided but nyot wecommended as nyo guawantee can OwO b-be m-made t-that x3 m-mods wiww &gt;w&lt; e-execute code befowe t-the appwication.
+x3 P-Pwease instead use weguwaw &quot;-&quot;Waunch ^.^ A-Appwication&quot; fwom Wewoaded o-ow t-the &quot;DWW Woadew&quot; method :3 d-descwibed in t-the GitHub d-documentation.
+x3 P-Pwease do nyot submit bugs f-fow x3 m-mods t-that do nyot w-wowk using Auto-inject mode.</sys:String>
 
     <sys:String x:Key="AddAppExecutableTitle">Sewect an appwication to cweate t-the configuwation fow.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">Appwication Executabwe</sys:String>
@@ -75,11 +77,14 @@
     <sys:String x:Key="CreateModDialogImageSelectorFilter">Image</sys:String>
 
     <sys:String x:Key="TitleCreateModNonUniqueId">N-Nyon-Unyique ID</sys:String>
-    <sys:String x:Key="MessageCreateModNonUniqueId">The M-ModId f-fow t-the mod y-you awe cweating is nyot unyique. x3 P-Pwease make t-the M-ModId unyique.</sys:String>
+    <sys:String x:Key="MessageCreateModNonUniqueId">The M-ModId f-fow t-the mod y-you awe cweating is nyot unyique.
+x3 P-Pwease make t-the M-ModId unyique.</sys:String>
 
     <!-- Mod Loader Settings -->
     <sys:String x:Key="LoaderSettingsCleanup">Cweanyup Configuwations</sys:String>
-    <sys:String x:Key="LoaderSettingsCleanupWarning">The UwU f-fowwowing opewation pewfowms housekeeping on vawious configuwations ^-^ (-(App, Mod e-etc.). H-Housekeeping functions i-incwude things such as wemoving nyonyexisting x3 m-mods fwom a m-mod&apos;s wist o-of dependencies. x3 P-Pwease OwO b-be awawe t-that if y-you awe missing a-any dependencies, suppowted appwications etc. they wiww OwO b-be wemoved fwom t-the configuwation fiwes.</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupWarning">The UwU f-fowwowing opewation pewfowms housekeeping on vawious configuwations ^-^ (-(App, Mod e-etc.).
+H-Housekeeping functions i-incwude things such as wemoving nyonyexisting x3 m-mods fwom a m-mod&apos;s wist o-of dependencies.
+x3 P-Pwease OwO b-be awawe t-that if y-you awe missing a-any dependencies, suppowted appwications etc. they wiww OwO b-be wemoved fwom t-the configuwation fiwes.</sys:String>
     <sys:String x:Key="LoaderSettingsCleanupComplete">Cweanyup Compwete</sys:String>
 
     <sys:String x:Key="LoaderSettingsAppsInstalled">Appwications Instawwed:</sys:String>
@@ -157,7 +162,8 @@
 
     <!-- Update Mod Confirmation Dialog -->
     <sys:String x:Key="UpdateModConfirmTitle">Appwications W-Wunnying</sys:String>
-    <sys:String x:Key="UpdateModConfirmMessage">Y-You have appwications cuwwentwy wunnying Wewoaded. Updates wiww downwoad howevew wiww nyot OwO b-be a-appwied untiw aww appwications awe cwosed.</sys:String>
+    <sys:String x:Key="UpdateModConfirmMessage">Y-You have appwications cuwwentwy wunnying Wewoaded.
+Updates wiww downwoad howevew wiww nyot OwO b-be a-appwied untiw aww appwications awe cwosed.</sys:String>
 
     <!-- Update Loader Dialog -->
     <sys:String x:Key="UpdateLoaderTitle">Update Avaiwabwe</sys:String>
@@ -169,7 +175,8 @@
     <sys:String x:Key="UpdateLoaderUpdate">Update</sys:String>
 
     <sys:String x:Key="UpdateLoaderRunningTitle">Appwications W-Wunnying</sys:String>
-    <sys:String x:Key="UpdateLoaderRunningMessage">Y-You have appwications cuwwentwy wunnying Wewoaded. Update cannyot OwO b-be pewfowmed, p-pwease c-cwose aww appwications.</sys:String>
+    <sys:String x:Key="UpdateLoaderRunningMessage">Y-You have appwications cuwwentwy wunnying Wewoaded.
+Update cannyot OwO b-be pewfowmed, p-pwease c-cwose aww appwications.</sys:String>
     <sys:String x:Key="UpdateLoaderProcessList">P-Pwocess W-Wist</sys:String>
 
     <!-- Download Mods Page -->
@@ -199,7 +206,9 @@
     <sys:String x:Key="DownloadModArchiveName">Fiwe Nyame</sys:String>
 
     <!-- WMI Administrator Message -->
-    <sys:String x:Key="RunAsAdminMessage">Y-You nyeed to wun this appwication as adminyistwatow. Adminyistwative pwiviweges awe nyeeded to weceive appwication waunch/exit events fwom Windows Manyagement &gt;_&gt; I-Instwumentation (WMI). Devewopews: Wun youw favouwite IDE ^w^ e-e.g. Visuaw Studio as A-Admin.</sys:String>
+    <sys:String x:Key="RunAsAdminMessage">Y-You nyeed to wun this appwication as adminyistwatow.
+Adminyistwative pwiviweges awe nyeeded to weceive appwication waunch/exit events fwom Windows Manyagement &gt;_&gt; I-Instwumentation (WMI).
+Devewopews: Wun youw favouwite IDE ^w^ e-e.g. Visuaw Studio as A-Admin.</sys:String>
 
     <!-- Configure Mod Dialog -->
     <sys:String x:Key="ConfigureModDialogTitle">Configuwe Mod</sys:String>
@@ -212,16 +221,23 @@
     <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">Faiwed to g-get d-diwectowy o-of mod to d-dewete.</sys:String>
     <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">Faiwed to g-get d-diwectowy o-of appwication to d-dewete.</sys:String>
     <sys:String x:Key="ErrorLoaderNotFound">was nyot found. This may OwO b-be caused by Antiviwus s-softwawe deweting and/ow bweaking changes in GitHub wepositowy.</sys:String> <!-- Loader DLL Name displays before this message -->
-    <sys:String x:Key="ErrorFailedToStartProcess">Faiwed to stawt t-the pwocess. This genyewawwy happens d-due to onye o-of t-the 3 issues: - Path to t-the EXE is incowwect ^.^ (-(have y-you moved t-the appwication?) - The pwogwam is configuwed to wun as adminyistwatow (wight cwick UwU --&gt; pwopewties) but Wewoaded is wunnying in usew mode. - Intewfewence fwom ^w^ e-e.g. Antiviwus softwawe. Check youw wogs. H-Hewe is t-the &gt;w&lt; e-ewwow wetuwnyed fwom W-Windows:</sys:String>
+    <sys:String x:Key="ErrorFailedToStartProcess">Faiwed to stawt t-the pwocess. This genyewawwy happens d-due to onye o-of t-the 3 issues:
+- Path to t-the EXE is incowwect ^.^ (-(have y-you moved t-the appwication?)
+- The pwogwam is configuwed to wun as adminyistwatow (wight cwick UwU --&gt; pwopewties) but Wewoaded is wunnying in usew mode.
+- Intewfewence fwom ^w^ e-e.g. Antiviwus softwawe. Check youw wogs.
+H-Hewe is t-the &gt;w&lt; e-ewwow wetuwnyed fwom W-Windows:</sys:String>
     <sys:String x:Key="ErrorDllInjectionFailed">Faiwed to DWW inject i-into appwication pwocess.</sys:String>
     <sys:String x:Key="ErrorPathToApplicationInvalid">The path to t-the appwication to OwO b-be w-waunched is invawid. x3 P-Pwease we-check youw appwication configuwation.</sys:String>
     <sys:String x:Key="ErrorCheckUpdatesFailed">Faiwed to check f-fow u-updates. We awe eithew being wate wimited by GitHub o-ow nyot connyected to t-the intewnyet.</sys:String>
-    <sys:String x:Key="ErrorGetProcAddress32Failed">Wawnying: Y-You awe pwobabwy missing t-the x86 vewsion o-of .NyET Cowe, 32-bit appwications wiww nyot wowk. x3 P-Pwease we-check t-the wequiwements wisted on t-the downwoad page. Actuaw E-Ewwow: Faiwed to acquiwe addwess o-of G-GetPwocAddwess f-fow x-x86.</sys:String>
+    <sys:String x:Key="ErrorGetProcAddress32Failed">Wawnying: Y-You awe pwobabwy missing t-the x86 vewsion o-of .NyET Cowe, 32-bit appwications wiww nyot wowk.
+x3 P-Pwease we-check t-the wequiwements wisted on t-the downwoad page.
+Actuaw E-Ewwow: Faiwed to acquiwe addwess o-of G-GetPwocAddwess f-fow x-x86.</sys:String>
 
     <!-- Asi Loader -->
     <sys:String x:Key="AsiLoaderInstall">Depwoy ASI Woadew</sys:String>
     <sys:String x:Key="AsiLoaderDialogTitle">ASI Woadew D-Depwoyment</sys:String>
-    <sys:String x:Key="AsiLoaderDialogDescription">T-ThiwteenyAG&apos;s Uwtimate ASI Woadew (3wd pawty DWW woadew) can OwO b-be depwoyed if y-you wouwd wike f-fow Wewoaded to OwO b-be w-waunched automaticawwy without using a w-waunchew o-ow s-showtcut. Wouwd y-you wike to depwoy this woadew?</sys:String>
+    <sys:String x:Key="AsiLoaderDialogDescription">T-ThiwteenyAG&apos;s Uwtimate ASI Woadew (3wd pawty DWW woadew) can OwO b-be depwoyed if y-you wouwd wike f-fow Wewoaded
+to OwO b-be w-waunched automaticawwy without using a w-waunchew o-ow s-showtcut. Wouwd y-you wike to depwoy this woadew?</sys:String>
     <sys:String x:Key="AsiLoaderDialogLoaderDeployed">ASI Woadew Successfuwwy depwoyed to:</sys:String>
     <sys:String x:Key="AsiLoaderDialogBootstrapperDeployed">Wewoaded Bootstwappew depwoyed to:</sys:String>
     <sys:String x:Key="ErrorAsiNotSupported">Nyo x3 c-compatibwe DWW nyame found to add Uwtimate ASI W-Woadew.</sys:String> <!-- Unused at the moment, may be used in the future. -->
@@ -253,7 +269,11 @@
 
     <!-- Update 1.7.9: Wine Compatibility Notes -->
     <sys:String x:Key="WineCompatibilityNoticeTitle">Winye Compatibiwity N-Nyotice</sys:String>
-    <sys:String x:Key="WineCompatibilityNoticeText">It appeaws t-that y-you awe t-twying to wun an appwication using t-the w-waunchew fwom inside Winye. This opewation is wikewy to faiw, d-due to tawget appwication wequiwing s-speciaw t-twicks to wun o-ow isowation (such as diffewent w-winye pwefix) ^w^ p-pweventing DWW I-Injection. To wun undew Winye, it is wecommended t-that y-you depwoy ASI Woadew (-(See: Edit Appwication menyu) and wun t-the game outside t-the waunchew. x3 P-Pwease nyote t-that Wewoaded isn&apos;t fwequentwy &gt;_&gt; t-tested undew Winye.</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeText">It appeaws t-that y-you awe t-twying to wun an appwication using t-the w-waunchew fwom inside Winye.
+This opewation is wikewy to faiw, d-due to tawget appwication wequiwing s-speciaw t-twicks to wun o-ow isowation (such as diffewent w-winye pwefix) ^w^ p-pweventing DWW I-Injection.
+
+To wun undew Winye, it is wecommended t-that y-you depwoy ASI Woadew (-(See: Edit Appwication menyu) and wun t-the game outside t-the waunchew.
+x3 P-Pwease nyote t-that Wewoaded isn&apos;t fwequentwy &gt;_&gt; t-tested undew Winye.</sys:String>
     <sys:String x:Key="WineCompatibilityNoticeOk">Twy Anyway</sys:String>
 
     <!-- Update 1.8.0: Configuration -->
@@ -264,14 +284,26 @@
     <sys:String x:Key="LoaderSettingsConfigFile">Open Config Fiwe</sys:String>
 
     <!-- Update 1.8.0: Extra Error(s) -->
-    <sys:String x:Key="ErrorFailedToObtainPort">The appwication has eithew &gt;_&gt; c-cwashed, Wewoaded faiwed to woad o-ow Wewoaded has nyot i-inyitiawized within t-the timeout w-wimit. The UwU f-fowwowing opewations might uWu h-hewp: - Cwose this ewwow, w-wait a f-few seconds, and twy again. - Cwose o-othew copies o-of t-the appwication if they awe awweady wunnying. (-(Use T-Task Manyagew) - Weboot youw machinye. This is a w-wawnying, if youw appwication wowks as expected y-you can ignyowe this message. Actuaw ewwow: Faiwed to o-obtain powt f-fow t-the Wewoaded instance wunnying inside t-the pwocess.</sys:String>
+    <sys:String x:Key="ErrorFailedToObtainPort">The appwication has eithew &gt;_&gt; c-cwashed, Wewoaded faiwed to woad o-ow Wewoaded has nyot i-inyitiawized within t-the timeout w-wimit.
+
+The UwU f-fowwowing opewations might uWu h-hewp:
+- Cwose this ewwow, w-wait a f-few seconds, and twy again.
+- Cwose o-othew copies o-of t-the appwication if they awe awweady wunnying. (-(Use T-Task Manyagew)
+- Weboot youw machinye.
+
+This is a w-wawnying, if youw appwication wowks as expected y-you can ignyowe this message.
+
+Actuaw ewwow:
+Faiwed to o-obtain powt f-fow t-the Wewoaded instance wunnying inside t-the pwocess.</sys:String>
 
     <!-- Update 1.10.0: Reloaded Bootstrapper Update -->
     <sys:String x:Key="BootstrapperUpdateTitle">Bootstwappew Updated</sys:String>
-    <sys:String x:Key="BootstrapperUpdateDescription">Wewoaded Bootstwappew was A-Auto-Updated f-fow t-the Fowwowing Pwogwams: UwU {-{0}</sys:String>
+    <sys:String x:Key="BootstrapperUpdateDescription">Wewoaded Bootstwappew was A-Auto-Updated f-fow t-the Fowwowing Pwogwams:
+UwU {-{0}</sys:String>
 
     <!-- Update 1.10.1: Reloaded Bootstrapper Hotfix -->
-    <sys:String x:Key="BootstrapperCreateDirectoryError">Faiwed to cweate d-diwectowy to depwoy bootstwappew. Considew t-twying wunnying Wewoaded as adminyistwatow. Actuaw ewwow: UwU {-{0}</sys:String>
+    <sys:String x:Key="BootstrapperCreateDirectoryError">Faiwed to cweate d-diwectowy to depwoy bootstwappew. Considew t-twying wunnying Wewoaded as adminyistwatow.
+Actuaw ewwow: UwU {-{0}</sys:String>
 
     <!-- Update 1.12.0: New First Launch Experience -->
     <sys:String x:Key="TitleFirstLaunchEx">Wewoaded II Tutowiaw</sys:String>
@@ -285,7 +317,8 @@
     <sys:String x:Key="FirstLaunchExAddApplicationButton">Add Appwication</sys:String>
     <sys:String x:Key="FirstLaunchExAddApplicationSkipTutorialButton">Skip The Tutowiaw</sys:String>
     <sys:String x:Key="FirstLaunchExAddApplicationSkipStepButton">Skip This Step</sys:String>
-    <sys:String x:Key="FirstLaunchExAddApplicationDescription1">F-Fiwst step to ^-^ g-getting s-stawted with Wewoaded is to add an Appwication y-you&apos;ww OwO b-be modding. (Nyowmawwy found on t-the +-+ button, b-bottom weft o-of w-waunchew)</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription1">F-Fiwst step to ^-^ g-getting s-stawted with Wewoaded is to add an Appwication y-you&apos;ww OwO b-be modding.
+(Nyowmawwy found on t-the +-+ button, b-bottom weft o-of w-waunchew)</sys:String>
     <sys:String x:Key="FirstLaunchExAddApplicationDescription2">;;w;; M-Make suwe y-you add t-the App, nyot t-the Waunchew, as demonstwated above.</sys:String>
 
     <sys:String x:Key="FirstLaunchExAddModExtractDescription1">To instaww mods, simpwy extwact a d-downwoaded zip to t-the &apos;Mods&apos; f-fowdew.</sys:String>
@@ -317,10 +350,13 @@
     <!-- Update 1.12.0: Additional Errors -->
     <sys:String x:Key="ErrorUnableDetermineVersion">E-Ewwow: U-Unyabwe to Detewminye Wewoaded II Vewsion</sys:String>
     <sys:String x:Key="ErrorUpdateModInUseTitle">M-Mod(s) In Use</sys:String>
-    <sys:String x:Key="ErrorUpdateModInUse">Y-You have appwications cuwwentwy wunnying Wewoaded. Updates wiww downwoad howevew wiww nyot OwO b-be a-appwied untiw aww appwications awe cwosed.</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUse">Y-You have appwications cuwwentwy wunnying Wewoaded.
+Updates wiww downwoad howevew wiww nyot OwO b-be a-appwied untiw aww appwications awe cwosed.</sys:String>
     <sys:String x:Key="ErrorMissingDependency">Missing Dependencies</sys:String>
     <sys:String x:Key="ErrorInvalidSemanticVersionTitle">Invawid Vewsion Nyumbew</sys:String>
-    <sys:String x:Key="ErrorInvalidSemanticVersionDescription">The vewsion nyumbew u-used by mod ^w^ d-does nyot c-confowm to t-the `Semantic Vewsionying` (SemVew) standawd and cannyot weceive u-updates. x3 P-Pwease update youw m-mod&apos;s vewsion nyumbew to use SemVew. E-Exampwes: `1.0.0`, `1.0`, `2.0-awpha`.</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionDescription">The vewsion nyumbew u-used by mod ^w^ d-does nyot c-confowm to t-the `Semantic Vewsionying` (SemVew) standawd and cannyot weceive u-updates.
+x3 P-Pwease update youw m-mod&apos;s vewsion nyumbew to use SemVew.
+E-Exampwes: `1.0.0`, `1.0`, `2.0-awpha`.</sys:String>
 
     <!-- Update 1.12.0: Extended Edit Mod -->
     <sys:String x:Key="CreateModDialogDescriptionShort">Descwiption</sys:String>
@@ -341,7 +377,8 @@
     <sys:String x:Key="EditModSave">S-Save</sys:String>
     <sys:String x:Key="EditModAppsDescription">Sewect appwications t-the mod shouwd OwO b-be avaiwabwe fow.</sys:String>
 
-    <sys:String x:Key="EditModMetadataNameTooltip">Nyame o-of t-the JSON Metadata fiwe. Change this onwy if y-you awe weweasing muwtipwe x3 m-mods on t-the same page.</sys:String>
+    <sys:String x:Key="EditModMetadataNameTooltip">Nyame o-of t-the JSON Metadata fiwe.
+Change this onwy if y-you awe weweasing muwtipwe x3 m-mods on t-the same page.</sys:String>
 
     <!-- Update 1.12.0: Extended Application Configuration -->
     <sys:String x:Key="ConfigureModsRightClickAdvice">W-Wight Cwick Mod f-fow Mowe O-Options</sys:String>
@@ -355,12 +392,14 @@
     <sys:String x:Key="AddAppUpdate">Update</sys:String>
 
     <sys:String x:Key="AddAppWarningTitle">Executabwe Nyame Wawnying</sys:String>
-    <sys:String x:Key="AddAppWarning">The executabwe nyame o-of t-the appwication a-added is diffewent fwom t-the owiginyaw. If y-you awe adding anyothew appwication, y-you shouwd add it as a nyew appwication.</sys:String>
+    <sys:String x:Key="AddAppWarning">The executabwe nyame o-of t-the appwication a-added is diffewent fwom t-the owiginyaw.
+If y-you awe adding anyothew appwication, y-you shouwd add it as a nyew appwication.</sys:String>
 
     <!-- Update 1.12.0: Publish Mod Dialog -->
     <sys:String x:Key="TitlePublishModDialog">xDD P-Pubwish Mod</sys:String>
     <sys:String x:Key="PublishModTarget">xDD P-Pubwish Tawget</sys:String>
-    <sys:String x:Key="PublishModTargetTooltip">Use defauwt u-unwess thewe&apos;s an option f-fow t-the pwace(s) you&apos;we pubwishing t-to. Enyabwes/Disabwes cewtain behaviouws.</sys:String>
+    <sys:String x:Key="PublishModTargetTooltip">Use defauwt u-unwess thewe&apos;s an option f-fow t-the pwace(s) you&apos;we pubwishing t-to.
+Enyabwes/Disabwes cewtain behaviouws.</sys:String>
 
     <sys:String x:Key="PublishModExcludeTitle">Excwude Fiwes</sys:String>
     <sys:String x:Key="PublishModIncludeTitle">Incwude Fiwes</sys:String>
@@ -393,16 +432,19 @@
     <sys:String x:Key="PublishSetOutputFolder">Set Output Fowdew</sys:String>
 
     <sys:String x:Key="PublishAutoDelta">Automatic Dewta</sys:String>
-    <sys:String x:Key="PublishAutoDeltaDescription">Automaticawwy c-cweates a Dewta package fwom t-the wast vewsion. Don&apos;t f-fowget to s-set t-the output path to t-that o-of an existing wewease.</sys:String>
+    <sys:String x:Key="PublishAutoDeltaDescription">Automaticawwy c-cweates a Dewta package fwom t-the wast vewsion.
+Don&apos;t f-fowget to s-set t-the output path to t-that o-of an existing wewease.</sys:String>
 
     <sys:String x:Key="PublishAutoDeltaWarningTitle">Automatic Dewta Wawnying</sys:String>
-    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat">Wewease Metadata fiwe nyot found in Output Fowdew. Considew w-wenyaming fiwe if nyecessawy. Expected F-Fiwenyame: {0}.</sys:String>
+    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat">Wewease Metadata fiwe nyot found in Output Fowdew. Considew w-wenyaming fiwe if nyecessawy.
+Expected F-Fiwenyame: {0}.</sys:String>
 
     <sys:String x:Key="PublishFileNameTooltip">Nyame o-of t-the genyewated .7z package fiwe</sys:String>
 
     <sys:String x:Key="PublishModTutorial">Pubwishing Tutowiaw</sys:String>
     <sys:String x:Key="PublishModWarningTitle">Update S-Suppowt Wawnying</sys:String>
-    <sys:String x:Key="PublishModWarningDescription">This mod has nyo update settings configuwed, which means it w-wouwdn&apos;t OwO b-be abwe to weceive automatic u-updates. Befowe pubwishing, p-pwease see `Pubwishing Tutowiaw` to find x3 o-out how y-you can s-set this u-up.</sys:String>
+    <sys:String x:Key="PublishModWarningDescription">This mod has nyo update settings configuwed, which means it w-wouwdn&apos;t OwO b-be abwe to weceive automatic u-updates.
+Befowe pubwishing, p-pwease see `Pubwishing Tutowiaw` to find x3 o-out how y-you can s-set this u-up.</sys:String>
 
     <!-- Update 1.12.0: Edit Mod User Config -->
     <sys:String x:Key="TitleEditModUserConfig">Edit Usew Config</sys:String>
@@ -411,7 +453,8 @@
 
     <!-- Update 1.12.0: Fast Package Download Experience -->
     <sys:String x:Key="PackageDownloaderDownloadCompleteTitle">D-Downwoad Compwete</sys:String>
-    <sys:String x:Key="PackageDownloaderDownloadCompleteDescription">D-Downwoad F-Finyished. This &gt;_&lt; w-window wiww automaticawwy c-cwose in a f-few seconds.</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadCompleteDescription">D-Downwoad F-Finyished.
+This &gt;_&lt; w-window wiww automaticawwy c-cwose in a f-few seconds.</sys:String>
     <sys:String x:Key="PackageDownloaderDownloadingDependencies">Downwoading Dependencies</sys:String>
 
     <!-- Update 1.12.0: Extended Download Mods Menu -->
@@ -446,13 +489,14 @@
     <!-- Update 1.18.0: Application Menu Tooltips -->
     <sys:String x:Key="ApplicationTooltipCreateShortcutDescription">Saves a showtcut t-that can OwO b-be u-used to waunch t-the app modded without Wewoaded Waunchew.</sys:String>
     <sys:String x:Key="ApplicationTooltipLoadModSet">Woad Mod Set</sys:String>
-    <sys:String x:Key="ApplicationTooltipSaveModSet">S-Save Mod Set</sys:String>
+    <sys:String x:Key="ApplicationTooltipSaveModSet">Saves t-the cuwwent wist o-of enyabwed mods.</sys:String>
     <sys:String x:Key="ApplicationTooltipProcessSysDescription">Y-You can use me to woad Wewoaded i-into this pwogwam.</sys:String>
     <sys:String x:Key="ApplicationTooltipProcessRldDescription">Y-You can use me to manyage cuwwentwy w-woaded mods.</sys:String>
 
     <!-- Update 1.19.0: Configure Mod Menu Reset -->
     <sys:String x:Key="ConfigureModDialogReset">Weset</sys:String>
-    <sys:String x:Key="ConfigureModDialogResetDescription">Wesets t-the configuwation vawues to UwU t-theiw defauwts. [-[Nyote: Wequiwes mod suppowt, contact authow if doesn&apos;t wowk]</sys:String>
+    <sys:String x:Key="ConfigureModDialogResetDescription">Wesets t-the configuwation vawues to UwU t-theiw defauwts.
+[-[Nyote: Wequiwes mod suppowt, contact authow if doesn&apos;t wowk]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
     <sys:String x:Key="LoaderSettingsControllerBtn">&gt;w&lt; C-Contwowwew Configuwation [Beta]</sys:String>
@@ -490,7 +534,8 @@
     <sys:String x:Key="ConfiguratorBtnDecrementDescription">W-Wemoves 1 fwom t-the cuwwent vawue on a UI ewement.</sys:String>
 
     <sys:String x:Key="ConfiguratorBtnModifierName">Modifiew</sys:String>
-    <sys:String x:Key="ConfiguratorBtnModifierDescription">Awwows f-fow a-awtewnyate behaviouw on some UI ewements. ^w^ e-e.g. &gt;w&lt; M-Mod+Up can OwO b-be u-used to we-owdew t-the mod o-owdew.</sys:String>
+    <sys:String x:Key="ConfiguratorBtnModifierDescription">Awwows f-fow a-awtewnyate behaviouw on some UI ewements.
+^w^ e-e.g. &gt;w&lt; M-Mod+Up can OwO b-be u-used to we-owdew t-the mod o-owdew.</sys:String>
 
     <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightName">Menyu Weft/Wight [Stick]</sys:String>
     <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightDescription">Nyavigates t-the Menyu Weft/Wight</sys:String>
@@ -504,11 +549,35 @@
     <sys:String x:Key="ConfiguratorCustomStringWindowName">Wewoaded &gt;w&lt; C-Contwowwew Configuwation [Beta]</sys:String> <!-- Name of the input configurator window. -->
 
     <sys:String x:Key="ConfiguratorLibCustomStringNew">Nyew</sys:String> <!-- "New" Used for button that adds values. -->
-    <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Weft cwick a-assigns a nyew binding. Middwe cwick i-invewts t-the vawue. W-Wight cwick cweaws t-the xDD m-mapping! ! i-indicates t-the vawue is invewted.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
+    <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Weft cwick a-assigns a nyew binding.
+Middwe cwick i-invewts t-the vawue.
+W-Wight cwick cweaws t-the xDD m-mapping!
+! i-indicates t-the vawue is invewted.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
     <sys:String x:Key="ConfiguratorLibCustomStringTimeout">Timeout</sys:String> <!-- Name of the input configurator window. -->
 
     <!-- Update 1.20.0: Server as Separate Mod -->
-    <sys:String x:Key="ReloadedProcessNoticeNew">Wequiwes Wewoaded II ^.^ S-Sewvew Mod to OwO b-be E-Enyabwed w/ WiteNyetWib Host.</sys:String>
+    <sys:String x:Key="ReloadedProcessNoticeNew">Wequiwes &apos;Wewoaded II Sewvew&apos; Mod to OwO b-be E-Enyabwed w/ WiteNyetWib Host.
+D-Downwoad it fwom &apos;Downwoad M-Mods&apos; menyu.</sys:String>
     <sys:String x:Key="ReloadedProcessState">S-State</sys:String> <!-- Is the mod running or paused? -->
+
+    <!-- Update 1.20.0: New Run Dialog -->
+    <sys:String x:Key="WineCompatibilityNoticeTitleNew">Waunching fwom Winye</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeHeader_1">Y-You awe wunnying Wewoaded inside Winye, p-pwease nyote t-the fowwowing:</sys:String>
+    
+    <sys:String x:Key="WineCompatibilityNoticeList_1">- The game wiww waunch using t-the same Winye/Pwoton configuwation as this waunchew.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_2_1">- If this is nyot desiwed</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_2_2">Depwoy ASI Woadew</sys:String> <!-- Hyperlink-->
+    <sys:String x:Key="WineCompatibilityNoticeList_2_3">and waunch youw game fwom outside t-the waunchew.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_3_1">- W-Wunnying with P-Pwoton :33 w-wequiwes some extwa steps,</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_3_2">p-pwease wefew to t-the wiki.</sys:String> <!-- Hyperlink-->
+
+    <sys:String x:Key="WineCompatibilityNoticeFooter_1">Fow additionyaw hewp, p-pwease</sys:String> <!-- Start of footer, continued below. -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_2">wefew to t-the Wiki</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_3">o-ow</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeFooter_4">waise an i-issue on GitHub.</sys:String>  <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <sys:String x:Key="WineCompatibilityNoticeOkNew">:33 S-Stawt Appwication</sys:String>
 
 </ResourceDictionary>
