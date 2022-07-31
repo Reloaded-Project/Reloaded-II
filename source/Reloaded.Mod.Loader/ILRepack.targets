@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="ILRepacker" AfterTargets="Build" DependsOnTargets="_ResolveILRepackTargets">
+
+    <PropertyGroup>
+      <DoILRepack>false</DoILRepack>
+    </PropertyGroup>
+
+    <Message Importance="high" Text="$(OutputPath)FASM.DLL"/>
+    <Message Importance="high" Text="$(OutputPath)FASMX64.DLL"/>
+
+    <ItemGroup>
+      <!-- Must be a fully qualified name -->
+      <ILRepackInputAssemblies Remove="$(OutputPath)FASM.DLL" />
+      <ILRepackInputAssemblies Remove="$(OutputPath)FASMX64.DLL" />
+      <ILRepackInputAssemblies Remove="$(OutputPath)Reloaded.Mod.Interfaces.dll" />
+      <ILRepackInputAssemblies Remove="$(OutputPath)Reloaded.Mod.Loader.IO.dll" />
+
+      <ILRepackToDelete Remove="$(OutputPath)FASM.DLL" />
+      <ILRepackToDelete Remove="$(OutputPath)FASMX64.DLL" />
+      <ILRepackToDelete Remove="$(OutputPath)Reloaded.Mod.Interfaces.dll" />
+      <ILRepackToDelete Remove="$(OutputPath)Reloaded.Mod.Loader.IO.dll" />
+    </ItemGroup>
+
+    <ILRepack
+      Parallel="false"
+      Internalize="$(ILRepackInternalize)"
+      DebugInfo="true"
+      AllowDuplicateResources="false"
+      InputAssemblies="@(ILRepackInputAssemblies)"
+      LibraryPath="@(ILRepackAllLibPath)"
+      InternalizeExclude="@(DoNotInternalizePatterns)"
+      InternalizeExcludeAssemblies="@(DoNotInternalizeAssemblies)"
+      TargetKind="SameAsPrimaryAssembly"
+      KeyFile="$(KeyFile)"
+      OutputFile="$(OutputPath)$(TargetName)$(TargetExt)"
+    />
+
+    <Delete Files="@(ILRepackToDelete)"/>
+  </Target>
+</Project>

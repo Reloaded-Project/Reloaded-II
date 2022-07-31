@@ -18,6 +18,9 @@
     <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
     <!-- If you set this to true, trimming will be enabled when you publish the Mod Loader. -->
     <RobustILLink>true</RobustILLink>
+
+    <!-- IL Repacking Support -->
+    <DoILRepack>false</DoILRepack>
   </PropertyGroup>
 
   <ItemGroup>
@@ -53,6 +56,8 @@
       <!-- DO NOT ADD Reloaded.Mod.Interfaces or stuff we share with other mods!! -->
   </ItemGroup>
 
+  <!-- ILRepack -->
+
   <Import Project="..\Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems" Label="Shared" />
 
   <Import Project="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.projitems" Label="Shared" />
@@ -70,10 +75,10 @@
   </Target>
 
   <PropertyGroup Condition="'$(Platform)'=='x86'">
-    <OutputPath>..\\Output\\Launcher\\Loader\\x86</OutputPath>
+    <OutputPath>..\Output\Launcher\Loader\x86</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)'=='x64'">
-    <OutputPath>..\\Output\\Launcher\\Loader\\x64</OutputPath>
+    <OutputPath>..\Output\Launcher\Loader\x64</OutputPath>
   </PropertyGroup>
 
   <!-- NuGet Stuff -->
@@ -84,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
+    <PackageReference Include="ILRepack.Lib.MSBuild" Version="2.1.18" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.5" />
     <PackageReference Include="Reloaded.Hooks" Version="4.2.0" />
   </ItemGroup>
