@@ -31,7 +31,7 @@ public class QueryCommunityIndexCommand : ICommand
         await using var fileStream = new FileStream(ApplicationConfig.GetAbsoluteAppLocation(_application), FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 524288);
         var indexApi  = new IndexApi();
         var index = await indexApi.GetIndexAsync();
-        var hash = Hashing.ToString(await xxHash64.ComputeHashAsync(fileStream));
+        var hash = Hashing.ToString(await Hashing.FromStreamAsync(fileStream));
         var applications = index.FindApplication(hash, config.AppId, out bool hashMatches);
 
         await await ActionWrappers.ExecuteWithApplicationDispatcherAsync(async () =>

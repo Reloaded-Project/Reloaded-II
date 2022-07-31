@@ -86,6 +86,13 @@ nav:
         - How does it Really Work: DependencyInjection_HowItReallyWork.md
     - Mod Template Features: ModTemplate.md
     - Writing Native Mods: NativeMods.md
+    - Internal Libraries: 
+        - Introduction: InternalLibrariesIntro.md
+        - I/O Library: InternalLibrariesIO.md
+        - Community Index: InternalLibrariesCommunity.md
+        - Packaging: InternalLibrariesPackaging.md
+        - Update: InternalLibrariesUpdate.md
+        - Server: InternalLibrariesServer.md
     - Miscellaneous:
         - Adding Mod Update Support: AddingUpdateSupport.md
         - API Overview: APIOverview.md

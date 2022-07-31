@@ -10,7 +10,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <Authors>Sewer56</Authors>
 	  <Company />
-	  <Description>Library for discovery, monitoring and parsing of Reloaded-II's configuration files. For usage instructions please see the Programmers' section in Reloaded wiki.</Description>
+	  <Description>The I/O library is used for discovery, monitoring changes and parsing of Reloaded-II's configuration files. For usage instructions please see the Programmers' section in Reloaded wiki.</Description>
 	  <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 	  <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
 	  <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>

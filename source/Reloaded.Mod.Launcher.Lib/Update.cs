@@ -134,14 +134,11 @@ public static class Update
 
             // Get Dependencies
             var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
+            
             var results = new List<Task<ModDependencyResolveResult>>();
             foreach (var dependencyItem in missingDeps.Items)
-            {
-                foreach (var dependency in dependencyItem.Dependencies)
-                {
-                    results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod.PluginData, token));
-                }
-            }
+            foreach (var dependency in dependencyItem.Dependencies)
+                results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod.PluginData, token));
 
             await Task.WhenAll(results);
 

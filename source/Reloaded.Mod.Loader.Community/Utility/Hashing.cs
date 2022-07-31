@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Reloaded.Mod.Loader.Community.Utility;
 
 /// <summary>
@@ -5,6 +7,12 @@ namespace Reloaded.Mod.Loader.Community.Utility;
 /// </summary>
 public static class Hashing
 {
+    /// <summary>
+    /// Converts a stream from hash.
+    /// </summary>
+    /// <param name="stream">Stream to compute a hash from.</param>
+    public static async ValueTask<ulong> FromStreamAsync(Stream stream) => await xxHash64.ComputeHashAsync(stream);
+
     /// <summary>
     /// Converts the specified hash into a string.
     /// </summary>
