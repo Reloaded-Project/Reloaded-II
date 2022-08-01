@@ -45,6 +45,11 @@ public class UpdateDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public string? MarkdownReadme { get; } = null!;
 
+    /// <summary>
+    /// Unsupported.
+    /// </summary>
+    public DownloadableImage[]? Images { get; set; } = null;
+
     private async Task GetPackageDetailsAsync()
     {
         var versions      = await PackageResolver.GetPackageVersionsAsync();

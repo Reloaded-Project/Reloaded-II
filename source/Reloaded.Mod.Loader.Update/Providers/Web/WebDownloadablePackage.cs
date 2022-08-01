@@ -38,6 +38,11 @@ public class WebDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public string? MarkdownReadme { get; set; }
 
+    /// <summary>
+    /// Not natively supported. Can be added by external sources.
+    /// </summary>
+    public DownloadableImage[]? Images { get; set; }
+
     private Uri _url;
 
     /// <summary>

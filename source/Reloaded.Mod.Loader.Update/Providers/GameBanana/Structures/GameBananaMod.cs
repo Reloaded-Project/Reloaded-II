@@ -23,6 +23,9 @@ public class GameBananaMod
     [JsonPropertyName("_aCredits")]
     public Dictionary<string, GameBananaCredit[]>? Credits { get; set; }
 
+    [JsonPropertyName("_aPreviewMedia")]
+    public GameBananaPreviewMedia? PreviewMedia { get; set; }
+
     [JsonConverter(typeof(GameBananaManagerIntegrationConverter))]
     [JsonPropertyName("_aModManagerIntegrations")]
     public Dictionary<string, GameBananaManagerIntegration[]>? ManagerIntegrations { get; set; }
@@ -50,7 +53,7 @@ public class GameBananaMod
                 urlString = $"https://gamebanana.com/apiv7/Mod/ByName?" +
                             $"_nPerpage={take}&" +
                             $"_nPage={page}&" +
-                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText&" +
+                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia&" +
                             $"_sName={searchText}&" +
                             $"_idGameRow={gameId}";
             }
@@ -59,7 +62,7 @@ public class GameBananaMod
                 urlString = $"https://gamebanana.com/apiv7/Mod/ByGame?" +
                             $"_nPerpage={take}&" +
                             $"_nPage={page}&" +
-                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText&" +
+                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia&" +
                             $"_aGameRowIds[]={gameId}";
             }
 
@@ -74,6 +77,58 @@ public class GameBananaMod
             return null;
         }
     }
+}
+
+/// <summary>
+/// Includes the details of previewable media such as images.
+/// </summary>
+[ExcludeFromCodeCoverage]
+public class GameBananaPreviewMedia
+{
+    /// <summary>Images for this submission.</summary>
+    [JsonPropertyName("_aImages")]
+    public GameBananaPreviewImage[]? Images { get; set; }
+}
+
+
+/// <summary>
+/// Includes the details of an preview image.
+/// </summary>
+[ExcludeFromCodeCoverage]
+public class GameBananaPreviewImage
+{
+    /// <summary>
+    /// Maximum number of thumbnails supported.
+    /// </summary>
+    public const int MaxThumbnailCount = 3;
+
+    /// <summary> e.g. 'screenshot' </summary>
+    [JsonPropertyName("_sType")]
+    public string Type { get; set; } = null!;
+
+    /// <summary> e.g. 'https://images.gamebanana.com/img/ss/mods' </summary>
+    [JsonPropertyName("_sBaseUrl")]
+    public string BaseUrl { get; set; } = null!;
+
+    /// <summary> e.g. 'SH title in Widescreen baby' </summary>
+    [JsonPropertyName("_sCaption")]
+    public string? Caption { get; set; }
+
+    /// <summary> e.g. '62646971886ef.jpg' </summary>
+    [JsonPropertyName("_sFile")]
+    public string File { get; set; } = null!;
+
+    /// <summary> e.g. '220-90_62646971886ef.jpg"' </summary>
+    [JsonPropertyName("_sFile220")]
+    public string? FileWidth220 { get; set; }
+
+    /// <summary> e.g. '530-90_62646971886ef.jpg"' </summary>
+    [JsonPropertyName("_sFile530")]
+    public string? FileWidth530 { get; set; }
+
+    /// <summary> e.g. '100-90_62646971886ef.jpg"' </summary>
+    [JsonPropertyName("_sFile100")]
+    public string? FileWidth100 { get; set; }
 }
 
 /// <summary>

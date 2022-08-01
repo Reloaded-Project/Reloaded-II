@@ -1,4 +1,6 @@
+using System.Runtime.InteropServices;
 using ReverseMarkdown;
+using static Akavache.Sqlite3.Internal.SQLite3;
 
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
@@ -74,7 +76,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                         counter++;
                     }
 
-                    results.Add(new WebDownloadablePackage(url, false)
+                    var package = new WebDownloadablePackage(url, false)
                     {
                         Name = fileName,
                         Description = $"[{downloadFileName}] {textDesc}",
@@ -82,7 +84,10 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                         FileSize = file.FileSize.GetValueOrDefault(),
                         Source = SourceName,
                         MarkdownReadme = Singleton<Converter>.Instance.Convert(result.Description)
-                    });
+                    };
+
+                    GameBananaAddImages(result, package);
+                    results.Add(package);
                 }
             }
         }
@@ -147,6 +152,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                     if (string.IsNullOrEmpty(package.MarkdownReadme))
                         package.MarkdownReadme = Singleton<Converter>.Instance.Convert(item.Description);
 
+                    GameBananaAddImages(item, package);
                     results.Add(package);
                 }
                 catch (Exception) { /* Suppress */ }
@@ -154,6 +160,47 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         }
 
         return results.Count > resultCount;
+    }
+
+    private static void GameBananaAddImages(GameBananaMod file, IDownloadablePackage package)
+    {
+        if (file.PreviewMedia?.Images == null)
+            return;
+
+        var gbImages = file.PreviewMedia.Images;
+        if (gbImages.Length <= 0)
+            return;
+
+        var images = new DownloadableImage[gbImages.Length];
+        var imagesSpan = new SpanList<DownloadableImage>(images);
+        var thumbsSpan = new DownloadableImageThumbnail[GameBananaPreviewImage.MaxThumbnailCount];
+
+        foreach (var gbImage in gbImages)
+        {
+            var baseUri = new Uri(gbImage.BaseUrl);
+            var image   = new DownloadableImage()
+            {
+                Uri = baseUri,
+                Caption = gbImage.Caption
+            };
+
+            var thumbs = new SpanList<DownloadableImageThumbnail>(thumbsSpan);
+            if (!string.IsNullOrEmpty(gbImage.FileWidth100))
+                thumbs.Add(new DownloadableImageThumbnail(new Uri(baseUri, gbImage.FileWidth100), 100));
+
+            if (!string.IsNullOrEmpty(gbImage.FileWidth220))
+                thumbs.Add(new DownloadableImageThumbnail(new Uri(baseUri, gbImage.FileWidth220), 220));
+            
+            if (!string.IsNullOrEmpty(gbImage.FileWidth530))
+                thumbs.Add(new DownloadableImageThumbnail(new Uri(baseUri, gbImage.FileWidth530), 530));
+            
+            if (thumbs.Length > 0)
+                image.Thumbnails = thumbs.AsSpan.ToArray();
+
+            imagesSpan.Add(image);
+        }
+
+        package.Images = images;
     }
 
     private static string? GetDownloadUrlForFileName(string fileName, List<GameBananaModFile> files, out GameBananaModFile? file)

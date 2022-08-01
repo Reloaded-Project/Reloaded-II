@@ -51,6 +51,9 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     [DoNotNotify]
     public string? MarkdownReadme { get; } = null!; // unsupported
 
+    /// <inheritdoc />
+    public DownloadableImage[]? Images { get; set; }
+
     private readonly IPackageSearchMetadata _package;
     private readonly INugetRepository _repository;
     private long? _fileSize;
@@ -62,7 +65,8 @@ public class NuGetDownloadablePackage : IDownloadablePackage
         _package    = package;
         _repository = repository;
         _resolver   = new Lazy<NuGetUpdateResolver>(GetResolver, true);
-
+        if (_package.IconUrl != null)
+            Images = new[] { new DownloadableImage() { Uri = _package.IconUrl } };
     }
 
     /// <inheritdoc />
