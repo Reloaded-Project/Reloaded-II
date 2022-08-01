@@ -15,6 +15,7 @@ public class DummyDownloadablePackage : IDownloadablePackage
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
     public string Authors { get; set; } = "";
+    public Submitter Submitter { get; set; }
     public string Description { get; set; } = "";
     public string Source { get; set; } = "";
     public NuGetVersion Version { get; set; } = new NuGetVersion("1.0.0");

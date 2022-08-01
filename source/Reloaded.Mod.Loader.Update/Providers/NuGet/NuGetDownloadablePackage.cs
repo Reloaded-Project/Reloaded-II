@@ -19,6 +19,11 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public string Authors => _package.Authors;
 
+    /// <summary>
+    /// The submitter to use for this package.
+    /// </summary>
+    public Submitter Submitter => new Submitter() { UserName = _package.Authors };
+
     /// <inheritdoc />
     public string Description => _package.Description;
 

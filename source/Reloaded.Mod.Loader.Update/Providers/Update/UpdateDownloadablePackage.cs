@@ -31,6 +31,9 @@ public class UpdateDownloadablePackage : IDownloadablePackage
     public string Authors { get; set; } = "Unknown Author";
 
     /// <inheritdoc />
+    public Submitter Submitter { get; set; } = new() { UserName = "Unknown Submitter" };
+
+    /// <inheritdoc />
     public string Description { get; set; } = "No Description";
 
     /// <inheritdoc />

@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using ReverseMarkdown;
 using static Akavache.Sqlite3.Internal.SQLite3;
 
@@ -80,12 +79,13 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                     {
                         Name = fileName,
                         Description = $"[{downloadFileName}] {textDesc}",
-                        Authors = GetAuthorForModItem(result),
+                        Authors = GetAuthorsForModItem(result),
                         FileSize = file.FileSize.GetValueOrDefault(),
                         Source = SourceName,
                         MarkdownReadme = Singleton<Converter>.Instance.Convert(result.Description)
                     };
 
+                    GameBananaAddSubmitter(result, package);
                     GameBananaAddImages(result, package);
                     results.Add(package);
                 }
@@ -134,7 +134,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                     {
                         Name = item.Name!,
                         Description = HtmlUtilities.ConvertToPlainText(item.Description),
-                        Authors = GetAuthorForModItem(item),
+                        Authors = GetAuthorsForModItem(item),
                         FileSize = modFile!.FileSize.GetValueOrDefault(),
                         Source = SourceName
                     };
@@ -152,6 +152,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                     if (string.IsNullOrEmpty(package.MarkdownReadme))
                         package.MarkdownReadme = Singleton<Converter>.Instance.Convert(item.Description);
 
+                    GameBananaAddSubmitter(item, package);
                     GameBananaAddImages(item, package);
                     results.Add(package);
                 }
@@ -162,7 +163,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         return results.Count > resultCount;
     }
 
-    private static void GameBananaAddImages(GameBananaMod file, IDownloadablePackage package)
+    private static void GameBananaAddImages(GameBananaMod file, WebDownloadablePackage package)
     {
         if (file.PreviewMedia?.Images == null)
             return;
@@ -203,6 +204,22 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         package.Images = images;
     }
 
+    private static void GameBananaAddSubmitter(GameBananaMod result, WebDownloadablePackage package)
+    {
+        var gbSubmitter  = result.Submitter;
+        var pkgSubmitter = new Submitter
+        {
+            UserName = gbSubmitter.Name!,
+            JoinDate = gbSubmitter.JoinDate,
+            ProfileUrl = new Uri(gbSubmitter.ProfileUrl)
+        };
+
+        if (gbSubmitter.AvatarUrl != null)
+            pkgSubmitter.AvatarUrl = new Uri(gbSubmitter.AvatarUrl);
+
+        package.Submitter = pkgSubmitter;
+    }
+
     private static string? GetDownloadUrlForFileName(string fileName, List<GameBananaModFile> files, out GameBananaModFile? file)
     {
         var expectedFileNames = GameBananaUtilities.GetFileNameStarts(fileName);
@@ -231,7 +248,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         }
     }
 
-    private static string GetAuthorForModItem(GameBananaMod result)
+    private static string GetAuthorsForModItem(GameBananaMod result)
     {
         if (result.Credits == null)
             return "";
@@ -244,12 +261,6 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                 authors.Add(credit.Name);
         }
 
-        string author = authors.Count switch
-        {
-            >= 3 => $"{authors[0]}, {authors[1]}, ...",
-            <= 1 => authors[0],
-            _ => $"{authors[0]}, {authors[1]}"
-        };
-        return author;
+        return string.Join(", ", authors);
     }
 }

@@ -26,6 +26,9 @@ public class GameBananaMod
     [JsonPropertyName("_aPreviewMedia")]
     public GameBananaPreviewMedia? PreviewMedia { get; set; }
 
+    [JsonPropertyName("_aSubmitter")]
+    public GameBananaSubmitter Submitter { get; set; } = new GameBananaSubmitter();
+
     [JsonConverter(typeof(GameBananaManagerIntegrationConverter))]
     [JsonPropertyName("_aModManagerIntegrations")]
     public Dictionary<string, GameBananaManagerIntegration[]>? ManagerIntegrations { get; set; }
@@ -43,6 +46,7 @@ public class GameBananaMod
         try
         {
             // Note: Page is 1 indexed.
+            // TODO: Compression support
             using var client = new WebClient();
             string urlString = "";
 
@@ -53,7 +57,7 @@ public class GameBananaMod
                 urlString = $"https://gamebanana.com/apiv7/Mod/ByName?" +
                             $"_nPerpage={take}&" +
                             $"_nPage={page}&" +
-                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia&" +
+                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter&" +
                             $"_sName={searchText}&" +
                             $"_idGameRow={gameId}";
             }
@@ -62,7 +66,7 @@ public class GameBananaMod
                 urlString = $"https://gamebanana.com/apiv7/Mod/ByGame?" +
                             $"_nPerpage={take}&" +
                             $"_nPage={page}&" +
-                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia&" +
+                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter&" +
                             $"_aGameRowIds[]={gameId}";
             }
 
@@ -89,7 +93,6 @@ public class GameBananaPreviewMedia
     [JsonPropertyName("_aImages")]
     public GameBananaPreviewImage[]? Images { get; set; }
 }
-
 
 /// <summary>
 /// Includes the details of an preview image.
@@ -216,10 +219,10 @@ public class GameBananaManagerIntegration
 public class GameBananaSubmitter
 {
     [JsonPropertyName("_idRow")]
-    public long? Id { get; set; }
+    public long Id { get; set; } = default;
 
     [JsonPropertyName("_sName")]
-    public string? Name { get; set; }
+    public string Name { get; set; } = "";
 
     [JsonPropertyName("_sUserTitle")]
     public string? UserTitle { get; set; }
@@ -240,7 +243,7 @@ public class GameBananaSubmitter
     public string? SignatureUrl { get; set; }
 
     [JsonPropertyName("_sProfileUrl")]
-    public string? ProfileUrl { get; set; }
+    public string ProfileUrl { get; set; } = "";
 
     [JsonPropertyName("_sUpicUrl")]
     public string? UberPicUrl { get; set; }

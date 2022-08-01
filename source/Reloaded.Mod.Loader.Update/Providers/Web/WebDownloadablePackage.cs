@@ -22,6 +22,9 @@ public class WebDownloadablePackage : IDownloadablePackage
     public string Authors { get; set; } = "Unknown";
 
     /// <inheritdoc />
+    public Submitter Submitter { get; set; } = new() { UserName = "Unknown" };
+
+    /// <inheritdoc />
     public string Description { get; set; } = "Unknown Package. Comes from the web.";
 
     /// <inheritdoc />

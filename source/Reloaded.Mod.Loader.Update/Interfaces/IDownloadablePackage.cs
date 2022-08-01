@@ -16,9 +16,15 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     public string Name { get; }
 
     /// <summary>
-    /// The mod authors.
+    /// The mod authors. As displayed in launcher.
+    /// Used for credits.
     /// </summary>
     public string Authors { get; }
+
+    /// <summary>
+    /// Contains information about the person who uploaded this item.
+    /// </summary>
+    public Submitter Submitter { get; }
 
     /// <summary>
     /// Short description of the mod, as seen in mod config menu.
@@ -27,6 +33,7 @@ public interface IDownloadablePackage : INotifyPropertyChanged
 
     /// <summary>
     /// Source of the package.
+    /// Which provider the package comes from.
     /// </summary>
     public string Source { get; }
 
@@ -53,7 +60,7 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     /// <summary>
     /// Provides a list of images for this package.
     /// </summary>
-    public DownloadableImage[]? Images { get; set; }
+    public DownloadableImage[]? Images { get; }
 
     /// <summary>
     /// Downloads the package in question asynchronously.
@@ -112,4 +119,33 @@ public struct DownloadableImageThumbnail
     /// Used for picking images without downloading them.
     /// </summary>
     public short? WidthHint { get; set; }
+}
+
+/// <summary>
+/// Represents the submitter of the downloadable item, i.e. the person that uploaded it.
+/// </summary>
+public struct Submitter
+{
+    /// <summary>
+    /// Name of the submitter.
+    /// </summary>
+    public string UserName { get; set; } = "";
+
+    /// <summary>
+    /// Provides an URL to the user's avatar.
+    /// </summary>
+    public Uri? AvatarUrl { get; set; } = null;
+
+    /// <summary>
+    /// Date of when the user has joined.
+    /// </summary>
+    public DateTime? JoinDate { get; set; } = null;
+
+    /// <summary>
+    /// URL of the user created profile.
+    /// </summary>
+    public Uri? ProfileUrl { get; set; } = null;
+
+    /// <summary/>
+    public Submitter() { }
 }
