@@ -13,7 +13,7 @@
                         xmlns:sevenZip="clr-namespace:SevenZip;assembly=SevenZipSharp"
                         mc:Ignorable="d"
                 Height="Auto" 
-                Width="600"
+                Width="850"
                 MinWidth="600"
                 MaxHeight="700"
                 SizeToContent="Height"
@@ -184,33 +184,51 @@
                                  Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                  FontFamily="{DynamicResource FontLight}">
                 <controls:PopupLabel.HiddenContent>
-                    <StackPanel>
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" MinWidth="200"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Left Side -->
                         <TextBlock Text="{DynamicResource PublishModCompLevel}" 
-                                   Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                   Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
                                    HorizontalAlignment="Center" 
                                    VerticalAlignment="Center"
-                                   Style="{DynamicResource DefaultTextBlock}" />
+                                   Style="{DynamicResource DefaultTextBlock}" 
+                                   Grid.Column="0"
+                                   Grid.Row="0"/>
 
-                        <ComboBox VerticalAlignment="Center" HorizontalAlignment="Center"
-                                  Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                        <TextBlock Text="{DynamicResource PublishModCompMethod}" 
+                                   Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource DefaultTextBlock}" 
+                                   Grid.Column="0"
+                                   Grid.Row="1"/>
+
+                        <!-- Right Side -->
+                        <ComboBox VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                  Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
                                   IsSynchronizedWithCurrentItem="True"
                                   SelectedItem="{Binding CompressionLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                   ItemsSource="{utilities:EnumBindingSource EnumType=sevenZip:CompressionLevel}"
-                                  Width="200" />
+                                  Grid.Column="1"
+                                  Grid.Row="0"/>
 
-                        <TextBlock Text="{DynamicResource PublishModCompMethod}" 
-                                   Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource DefaultTextBlock}" />
-
-                        <ComboBox VerticalAlignment="Center" HorizontalAlignment="Center"
-                                  Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                        <ComboBox VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                  Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
                                   IsSynchronizedWithCurrentItem="True"
                                   SelectedItem="{Binding CompressionMethod, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                   ItemsSource="{utilities:EnumBindingSource EnumType=sevenZip:CompressionMethod}"
-                                  Width="200" />
-                    </StackPanel>
+                                  Grid.Column="1"
+                                  Grid.Row="1"/>
+                    </Grid>
                 </controls:PopupLabel.HiddenContent>
 
             </controls:PopupLabel>
