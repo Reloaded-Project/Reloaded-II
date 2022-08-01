@@ -1,5 +1,8 @@
 namespace Reloaded.Mod.Shared;
 
+/// <summary>
+/// Provides various pieces of information about the currently operating environment.
+/// </summary>
 public static class Environment
 {
     /// <summary>
@@ -15,7 +18,7 @@ public static class Environment
     /// <summary>
     /// Gets the full path to the current process.
     /// </summary>
-    public static Lazy<string> CurrentProcessLocation { get; } = new(() => Path.GetFullPath(CurrentProcess.MainModule.FileName));
+    public static Lazy<string> CurrentProcessLocation { get; } = new(() => Path.GetFullPath(CurrentProcess.MainModule!.FileName!));
 
     static Environment()
     {
