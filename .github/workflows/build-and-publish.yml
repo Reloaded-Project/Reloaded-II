@@ -107,11 +107,11 @@ jobs:
         [System.IO.Directory]::CreateDirectory("$env:PUBLISH_PATH")
         if ($env:IS_RELEASE -eq 'true') 
         {
-            auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --unreleased --starting-version "$env:RELEASE_TAG" --output "$env:PUBLISH_CHANGELOG_PATH"
+            auto-changelog --sort-commits date --hide-credit --template changelog-template.hbs --commit-limit false --starting-version "$env:RELEASE_TAG" --output "$env:PUBLISH_CHANGELOG_PATH"
         }
         else 
         {
-            auto-changelog --sort-commits date --hide-credit --template keepachangelog --commit-limit false --unreleased --output "$env:PUBLISH_CHANGELOG_PATH"
+            auto-changelog --sort-commits date --hide-credit --template changelog-template.hbs --commit-limit false --unreleased --output "$env:PUBLISH_CHANGELOG_PATH"
         }
         
     - name: Upload Chocolatey Artifact
