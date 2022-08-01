@@ -84,6 +84,9 @@ public static class Publisher
         if (!string.IsNullOrEmpty(args.ChangelogPath))
             extraData.Changelog = await File.ReadAllTextAsync(args.ChangelogPath);
 
+        if (!string.IsNullOrEmpty(args.ReadmePath))
+            extraData.Readme = await File.ReadAllTextAsync(args.ReadmePath);
+
         var buildArgs = new BuildArgs()
         {
             FileName = fileName,
@@ -209,6 +212,11 @@ public static class Publisher
         /// Path to the changelog to use for this release.
         /// </summary>
         public string? ChangelogPath { get; set; } = null;
+
+        /// <summary>
+        /// Path to the readme to use for this release.
+        /// </summary>
+        public string? ReadmePath { get; set; } = null;
     }
 
     /// <summary>

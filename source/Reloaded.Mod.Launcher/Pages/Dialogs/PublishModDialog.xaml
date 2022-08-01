@@ -215,6 +215,64 @@
 
             </controls:PopupLabel>
 
+            <!-- Readme -->
+            <controls:PopupLabel ButtonText="{DynamicResource PublishModReadmeSectionTitle}" IsOpen="False" HiddenVisibilityType="Collapsed"
+                                 FontSize="{DynamicResource FontSizeRegular}"
+                                 Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                 FontFamily="{DynamicResource FontLight}">
+                <controls:PopupLabel.HiddenContent>
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Left Side -->
+                        <TextBlock Text="{Binding ChangelogPath}" 
+                                   Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                                   HorizontalAlignment="Right" 
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource DefaultTextBlock}" 
+                                   Grid.Column="0"
+                                   Grid.Row="0"/>
+
+                        <TextBlock Text="{Binding ReadmePath}" 
+                                   Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                                   HorizontalAlignment="Right" 
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource DefaultTextBlock}" 
+                                   Grid.Column="0"
+                                   Grid.Row="1"/>
+
+                        <!-- Right Side -->
+                        <Button Content="{DynamicResource PublishModChangelogSet}" 
+                                Click="SetChangelogPath_Click"
+                                Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                                Style="{DynamicResource DefaultButton}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Stretch"
+                                Grid.Column="1"
+                                Grid.Row="0"/>
+
+                        <Button Content="{DynamicResource PublishModReadmeSet}" 
+                                Click="SetReadmePath_Click"
+                                Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                                Style="{DynamicResource DefaultButton}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                Grid.Column="1"
+                                Grid.Row="1"/>
+
+                    </Grid>
+                </controls:PopupLabel.HiddenContent>
+
+            </controls:PopupLabel>
+
             <!-- Progress -->
             <TextBox Text="{Binding PackageName, UpdateSourceTrigger=PropertyChanged}" 
                      Margin="{DynamicResource CommonItemVerticalMarginSmaller}"

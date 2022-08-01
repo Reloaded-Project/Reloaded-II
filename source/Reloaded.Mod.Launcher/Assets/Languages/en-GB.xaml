@@ -511,7 +511,7 @@
     <sys:String x:Key="ReloadedProcessNoticeNew">Requires 'Reloaded II Server' Mod to be Enabled w/ LiteNetLib Host.&#x0a;Download it from 'Download Mods' menu.</sys:String>
     <sys:String x:Key="ReloadedProcessState">State</sys:String> <!-- Is the mod running or paused? -->
 
-    <!-- Update 1.20.0: New Run Dialog -->
+    <!-- Update 1.20.0: New Wine Run Dialog -->
     <sys:String x:Key="WineCompatibilityNoticeTitleNew">Launching from Wine</sys:String>
     <sys:String x:Key="WineCompatibilityNoticeHeader_1">You are running Reloaded inside Wine, please note the following:</sys:String>
     
@@ -530,5 +530,13 @@
     <sys:String x:Key="WineCompatibilityNoticeFooter_4">raise an issue on GitHub.</sys:String>  <!-- Hyperlink. (Continues from previous entry.) -->
 
     <sys:String x:Key="WineCompatibilityNoticeOkNew">Start Application</sys:String>
+
+    <!-- Update 1.20.0: Extended Publish Options -->
+    <sys:String x:Key="PublishModReadmeSectionTitle">Readme &amp; Changelog</sys:String>
+    <sys:String x:Key="PublishModReadmeSet">Set Readme File</sys:String>
+    <sys:String x:Key="PublishModChangelogSet">Set Changelog File</sys:String>
+
+    <sys:String x:Key="PublishSelectMarkdownTitle">Select a Markdown File (*.md).</sys:String>
+    <sys:String x:Key="PublishSelectMarkdownTypeName">Markdown File</sys:String>
 
 </ResourceDictionary>

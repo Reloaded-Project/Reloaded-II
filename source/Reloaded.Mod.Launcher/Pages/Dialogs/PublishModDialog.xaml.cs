@@ -46,4 +46,8 @@ public partial class PublishModDialog : ReloadedWindow
     private void SetOutputFolder_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.SetOutputFolder();
 
     private void PublishTutorial_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.ShowPublishTutorial();
+
+    private void SetChangelogPath_Click(object sender, RoutedEventArgs e) => ViewModel.SetChangelogPath();
+
+    private void SetReadmePath_Click(object sender, RoutedEventArgs e) => ViewModel.SetReadmePath();
 }

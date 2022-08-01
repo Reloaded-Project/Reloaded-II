@@ -471,4 +471,8 @@ public static class Resources
 
     public static IDictionaryResource<string> AddAppRepoTestJsonSelectTitle { get; set; }
     public static IDictionaryResource<string> AddAppRepoTestJsonSelectFilter { get; set; }
+
+    // Update 1.20.0: Extended Publish Menu
+    public static IDictionaryResource<string> PublishSelectMarkdownTitle { get; set; }
+    public static IDictionaryResource<string> PublishSelectMarkdownTypeName { get; set; }
 }

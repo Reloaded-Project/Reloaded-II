@@ -87,6 +87,16 @@ public class PublishModDialogViewModel : ObservableObject
     /// </summary>
     public bool AutomaticDelta { get; set; }
 
+    /// <summary>
+    /// Path to the changelog file.
+    /// </summary>
+    public string? ChangelogPath { get; set; }
+
+    /// <summary>
+    /// Path to the readme for the file.
+    /// </summary>
+    public string? ReadmePath { get; set; }
+
     /// <summary/>
     public PublishModDialogViewModel(PathTuple<ModConfig> modTuple)
     {
@@ -146,7 +156,9 @@ public class PublishModDialogViewModel : ObservableObject
                     CompressionMethod = CompressionMethod,
                     OlderVersionFolders = OlderVersionFolders.Select(x => x.Value).ToList(),
                     PackageName = PackageName,
-                    MetadataFileName = _modTuple.Config.ReleaseMetadataFileName
+                    MetadataFileName = _modTuple.Config.ReleaseMetadataFileName,
+                    ChangelogPath = ChangelogPath,
+                    ReadmePath = ReadmePath
                 });
             });
 
@@ -264,6 +276,16 @@ public class PublishModDialogViewModel : ObservableObject
     /// </summary>
     public void ShowPublishTutorial() => ProcessExtensions.OpenFileWithDefaultProgram("https://reloaded-project.github.io/Reloaded-II/AddingUpdateSupport");
 
+    /// <summary>
+    /// Lets the user select a new changelog path.
+    /// </summary>
+    public void SetChangelogPath() => ChangelogPath = SelectMarkdownFile();
+
+    /// <summary>
+    /// Lets the user select a new readme path.
+    /// </summary>
+    public void SetReadmePath() => ReadmePath = SelectMarkdownFile();
+
     private string GetModFolder() => Path.GetDirectoryName(_modTuple.Path)!;
     
     private string SelectConfigFile()
@@ -272,6 +294,17 @@ public class PublishModDialogViewModel : ObservableObject
         dialog.Title = Resources.PublishSelectConfigTitle.Get();
         dialog.FileName = ModConfig.ConfigFileName;
         dialog.Filter = $"{Resources.PublishSelectConfigFileTypeName.Get()}|ModConfig.json";
+        if ((bool)dialog.ShowDialog()!)
+            return dialog.FileName;
+
+        return "";
+    }
+
+    private string SelectMarkdownFile()
+    {
+        var dialog = new VistaOpenFileDialog();
+        dialog.Title = Resources.PublishSelectMarkdownTitle.Get();
+        dialog.Filter = $"{Resources.PublishSelectMarkdownTypeName.Get()}|*.md";
         if ((bool)dialog.ShowDialog()!)
             return dialog.FileName;
 

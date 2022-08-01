@@ -27,4 +27,9 @@ public class ReleaseMetadataExtraData
     /// Reserved for future use.
     /// </summary>
     public string? Changelog { get; set; }
+
+    /// <summary>
+    /// Contains the readme for the package, encoded as markdown.
+    /// </summary>
+    public string? Readme { get; set; }
 }
