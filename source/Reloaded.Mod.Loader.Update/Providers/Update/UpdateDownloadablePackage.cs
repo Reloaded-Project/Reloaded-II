@@ -42,6 +42,9 @@ public class UpdateDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public long FileSize { get; internal set; }
 
+    /// <inheritdoc />
+    public string? MarkdownReadme { get; } = null!;
+
     private async Task GetPackageDetailsAsync()
     {
         var versions      = await PackageResolver.GetPackageVersionsAsync();

@@ -1,3 +1,5 @@
+using ReverseMarkdown;
+
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
 /// <summary>
@@ -78,7 +80,8 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                         Description = $"[{downloadFileName}] {textDesc}",
                         Authors = GetAuthorForModItem(result),
                         FileSize = file.FileSize.GetValueOrDefault(),
-                        Source = SourceName
+                        Source = SourceName,
+                        MarkdownReadme = Singleton<Converter>.Instance.Convert(result.Description)
                     });
                 }
             }
@@ -137,7 +140,12 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                         package.Id = !string.IsNullOrEmpty(extraData!.ModId) ? extraData.ModId : package.Name;
                         package.Name = !string.IsNullOrEmpty(extraData.ModName) ? extraData.ModName : package.Name;
                         package.Description = !string.IsNullOrEmpty(extraData.ModDescription) ? extraData.ModDescription : package.Name;
+                        package.MarkdownReadme = extraData.Readme;
                     }
+
+                    // Set enhanced readme if possible.
+                    if (string.IsNullOrEmpty(package.MarkdownReadme))
+                        package.MarkdownReadme = Singleton<Converter>.Instance.Convert(item.Description);
 
                     results.Add(package);
                 }

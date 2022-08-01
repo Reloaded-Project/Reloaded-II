@@ -35,6 +35,9 @@ public class WebDownloadablePackage : IDownloadablePackage
     /// </summary>
     public long FileSize { get; set; }
 
+    /// <inheritdoc />
+    public string? MarkdownReadme { get; set; }
+
     private Uri _url;
 
     /// <summary>

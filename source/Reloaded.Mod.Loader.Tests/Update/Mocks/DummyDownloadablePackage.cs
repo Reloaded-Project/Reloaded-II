@@ -19,6 +19,7 @@ public class DummyDownloadablePackage : IDownloadablePackage
     public string Source { get; set; } = "";
     public NuGetVersion Version { get; set; } = new NuGetVersion("1.0.0");
     public long FileSize { get; } = 0;
+    public string? MarkdownReadme { get; } = null;
 
     public Task<string> DownloadAsync(string packageFolder, IProgress<double> progress, CancellationToken token = default)
     {

@@ -21,7 +21,7 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     public string Authors { get; }
 
     /// <summary>
-    /// Description of the mod.
+    /// Short description of the mod, as seen in mod config menu.
     /// </summary>
     public string Description { get; }
 
@@ -39,6 +39,16 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     /// File size in bytes of the item to be downloaded.
     /// </summary>
     public long FileSize { get; }
+
+    /// <summary>
+    /// Provides a human readable readme file, in markdown format.
+    /// </summary>
+    public string? MarkdownReadme { get; }
+
+    /// <summary>
+    /// Long description of the mod.
+    /// </summary>
+    public string LongDescription => MarkdownReadme ?? Description;
 
     /// <summary>
     /// Downloads the package in question asynchronously.

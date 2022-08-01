@@ -47,6 +47,10 @@ public class NuGetDownloadablePackage : IDownloadablePackage
         set => _fileSize = value;
     }
 
+    /// <inheritdoc />
+    [DoNotNotify]
+    public string? MarkdownReadme { get; } = null!; // unsupported
+
     private readonly IPackageSearchMetadata _package;
     private readonly INugetRepository _repository;
     private long? _fileSize;
@@ -58,6 +62,7 @@ public class NuGetDownloadablePackage : IDownloadablePackage
         _package    = package;
         _repository = repository;
         _resolver   = new Lazy<NuGetUpdateResolver>(GetResolver, true);
+
     }
 
     /// <inheritdoc />
@@ -83,7 +88,7 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     
     private NuGetUpdateResolver GetResolver()
     {
-        Sewer56.Update.Resolvers.NuGet.Utilities.NugetRepository GetRepositoryFromKey(ICacheEntry entry) => new((string)entry.Key);
+        NugetRepository GetRepositoryFromKey(ICacheEntry entry) => new((string)entry.Key);
 
         var repository = ItemCache<NugetRepository>.GetOrCreateKey(_repository.SourceUrl, GetRepositoryFromKey);
         var resolverSettings = new NuGetUpdateResolverSettings(_package.Identity.Id, repository);
