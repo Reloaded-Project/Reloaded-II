@@ -46,6 +46,9 @@ public class WebDownloadablePackage : IDownloadablePackage
     /// </summary>
     public DownloadableImage[]? Images { get; set; }
 
+    /// <inheritdoc />
+    public Uri? ProjectUri { get; set; } = null;
+
     private Uri _url;
 
     /// <summary>

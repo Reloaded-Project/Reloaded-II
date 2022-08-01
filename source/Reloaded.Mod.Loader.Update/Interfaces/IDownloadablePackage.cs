@@ -63,6 +63,11 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     public DownloadableImage[]? Images { get; }
 
     /// <summary>
+    /// The URL of the web page of the project.
+    /// </summary>
+    public Uri? ProjectUri { get; }
+    
+    /// <summary>
     /// Downloads the package in question asynchronously.
     /// </summary>
     /// <param name="packageFolder">The folder containing all the packages.</param>

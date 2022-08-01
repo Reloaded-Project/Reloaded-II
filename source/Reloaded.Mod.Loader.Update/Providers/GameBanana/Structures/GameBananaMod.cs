@@ -17,6 +17,9 @@ public class GameBananaMod
     [JsonPropertyName("_sText")]
     public string? Description { get; set; }
 
+    [JsonPropertyName("_sProfileUrl")]
+    public string LinkToModPage { get; set; } = "";
+
     [JsonPropertyName("_aFiles")]
     public List<GameBananaModFile>? Files { get; set; }
 

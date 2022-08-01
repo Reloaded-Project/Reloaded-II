@@ -62,31 +62,29 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                         continue;
 
                     var url = new Uri(integration.GetReloadedDownloadUrl());
-                    var textDesc = HtmlUtilities.ConvertToPlainText(result.Description);
                     var downloadFileName = !string.IsNullOrEmpty(file.Description) ? file.Description : file.FileName;
                     var fileName = "";
+                    var textDesc = "";
                     if (counter > 0)
                     {
                         fileName = $"{result.Name!} [{counter++}]";
+                        textDesc = $"[{downloadFileName}] {textDesc}";
                     }
                     else
                     {
                         fileName = $"{result.Name!}";
+                        textDesc = HtmlUtilities.ConvertToPlainText(result.Description);
                         counter++;
                     }
 
                     var package = new WebDownloadablePackage(url, false)
                     {
                         Name = fileName,
-                        Description = $"[{downloadFileName}] {textDesc}",
-                        Authors = GetAuthorsForModItem(result),
-                        FileSize = file.FileSize.GetValueOrDefault(),
-                        Source = SourceName,
+                        Description = textDesc,
                         MarkdownReadme = Singleton<Converter>.Instance.Convert(result.Description)
                     };
 
-                    GameBananaAddSubmitter(result, package);
-                    GameBananaAddImages(result, package);
+                    GameBananaAddCommon(result, file, package);
                     results.Add(package);
                 }
             }
@@ -133,10 +131,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                     var package = new WebDownloadablePackage(new Uri(url), false)
                     {
                         Name = item.Name!,
-                        Description = HtmlUtilities.ConvertToPlainText(item.Description),
-                        Authors = GetAuthorsForModItem(item),
-                        FileSize = modFile!.FileSize.GetValueOrDefault(),
-                        Source = SourceName
+                        Description = HtmlUtilities.ConvertToPlainText(item.Description)
                     };
 
                     // Get better details from extra data.
@@ -152,8 +147,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                     if (string.IsNullOrEmpty(package.MarkdownReadme))
                         package.MarkdownReadme = Singleton<Converter>.Instance.Convert(item.Description);
 
-                    GameBananaAddSubmitter(item, package);
-                    GameBananaAddImages(item, package);
+                    GameBananaAddCommon(item, modFile!, package);
                     results.Add(package);
                 }
                 catch (Exception) { /* Suppress */ }
@@ -161,63 +155,6 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         }
 
         return results.Count > resultCount;
-    }
-
-    private static void GameBananaAddImages(GameBananaMod file, WebDownloadablePackage package)
-    {
-        if (file.PreviewMedia?.Images == null)
-            return;
-
-        var gbImages = file.PreviewMedia.Images;
-        if (gbImages.Length <= 0)
-            return;
-
-        var images = new DownloadableImage[gbImages.Length];
-        var imagesSpan = new SpanList<DownloadableImage>(images);
-        var thumbsSpan = new DownloadableImageThumbnail[GameBananaPreviewImage.MaxThumbnailCount];
-
-        foreach (var gbImage in gbImages)
-        {
-            var baseUri = new Uri(gbImage.BaseUrl);
-            var image   = new DownloadableImage()
-            {
-                Uri = baseUri,
-                Caption = gbImage.Caption
-            };
-
-            var thumbs = new SpanList<DownloadableImageThumbnail>(thumbsSpan);
-            if (!string.IsNullOrEmpty(gbImage.FileWidth100))
-                thumbs.Add(new DownloadableImageThumbnail(new Uri(baseUri, gbImage.FileWidth100), 100));
-
-            if (!string.IsNullOrEmpty(gbImage.FileWidth220))
-                thumbs.Add(new DownloadableImageThumbnail(new Uri(baseUri, gbImage.FileWidth220), 220));
-            
-            if (!string.IsNullOrEmpty(gbImage.FileWidth530))
-                thumbs.Add(new DownloadableImageThumbnail(new Uri(baseUri, gbImage.FileWidth530), 530));
-            
-            if (thumbs.Length > 0)
-                image.Thumbnails = thumbs.AsSpan.ToArray();
-
-            imagesSpan.Add(image);
-        }
-
-        package.Images = images;
-    }
-
-    private static void GameBananaAddSubmitter(GameBananaMod result, WebDownloadablePackage package)
-    {
-        var gbSubmitter  = result.Submitter;
-        var pkgSubmitter = new Submitter
-        {
-            UserName = gbSubmitter.Name!,
-            JoinDate = gbSubmitter.JoinDate,
-            ProfileUrl = new Uri(gbSubmitter.ProfileUrl)
-        };
-
-        if (gbSubmitter.AvatarUrl != null)
-            pkgSubmitter.AvatarUrl = new Uri(gbSubmitter.AvatarUrl);
-
-        package.Submitter = pkgSubmitter;
     }
 
     private static string? GetDownloadUrlForFileName(string fileName, List<GameBananaModFile> files, out GameBananaModFile? file)
@@ -248,10 +185,77 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         }
     }
 
-    private static string GetAuthorsForModItem(GameBananaMod result)
+    private static void GameBananaAddCommon(GameBananaMod modItem, GameBananaModFile file, WebDownloadablePackage package)
+    {
+        package.Source = SourceName;
+        package.FileSize = file.FileSize.GetValueOrDefault();
+        package.ProjectUri = new Uri(modItem.LinkToModPage);
+        GameBananaAddAuthors(modItem, package);
+        GameBananaAddSubmitter(modItem, package);
+        GameBananaAddImages(modItem, package);
+    }
+
+    private static void GameBananaAddImages(GameBananaMod file, WebDownloadablePackage package)
+    {
+        if (file.PreviewMedia?.Images == null)
+            return;
+
+        var gbImages = file.PreviewMedia.Images;
+        if (gbImages.Length <= 0)
+            return;
+
+        var images = new DownloadableImage[gbImages.Length];
+        var imagesSpan = new SpanList<DownloadableImage>(images);
+        var thumbsSpan = new DownloadableImageThumbnail[GameBananaPreviewImage.MaxThumbnailCount];
+
+        foreach (var gbImage in gbImages)
+        {
+            var baseUri = new Uri(gbImage.BaseUrl);
+            var image = new DownloadableImage()
+            {
+                Uri = baseUri,
+                Caption = gbImage.Caption
+            };
+
+            var thumbs = new SpanList<DownloadableImageThumbnail>(thumbsSpan);
+            if (!string.IsNullOrEmpty(gbImage.FileWidth100))
+                thumbs.Add(new DownloadableImageThumbnail(new Uri(baseUri, gbImage.FileWidth100), 100));
+
+            if (!string.IsNullOrEmpty(gbImage.FileWidth220))
+                thumbs.Add(new DownloadableImageThumbnail(new Uri(baseUri, gbImage.FileWidth220), 220));
+
+            if (!string.IsNullOrEmpty(gbImage.FileWidth530))
+                thumbs.Add(new DownloadableImageThumbnail(new Uri(baseUri, gbImage.FileWidth530), 530));
+
+            if (thumbs.Length > 0)
+                image.Thumbnails = thumbs.AsSpan.ToArray();
+
+            imagesSpan.Add(image);
+        }
+
+        package.Images = images;
+    }
+
+    private static void GameBananaAddSubmitter(GameBananaMod result, WebDownloadablePackage package)
+    {
+        var gbSubmitter = result.Submitter;
+        var pkgSubmitter = new Submitter
+        {
+            UserName = gbSubmitter.Name!,
+            JoinDate = gbSubmitter.JoinDate,
+            ProfileUrl = new Uri(gbSubmitter.ProfileUrl)
+        };
+
+        if (gbSubmitter.AvatarUrl != null)
+            pkgSubmitter.AvatarUrl = new Uri(gbSubmitter.AvatarUrl);
+
+        package.Submitter = pkgSubmitter;
+    }
+
+    private static void GameBananaAddAuthors(GameBananaMod result, WebDownloadablePackage package)
     {
         if (result.Credits == null)
-            return "";
+            return;
 
         var authors = new List<string>();
         foreach (var creditCategory in result.Credits)
@@ -261,6 +265,6 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                 authors.Add(credit.Name);
         }
 
-        return string.Join(", ", authors);
+        package.Authors = string.Join(", ", authors);
     }
 }

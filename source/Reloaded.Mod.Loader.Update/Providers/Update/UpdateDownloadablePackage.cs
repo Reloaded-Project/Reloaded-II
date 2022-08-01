@@ -53,6 +53,9 @@ public class UpdateDownloadablePackage : IDownloadablePackage
     /// </summary>
     public DownloadableImage[]? Images { get; set; } = null;
 
+    /// <inheritdoc />
+    public Uri? ProjectUri { get; set; } = null;
+
     private async Task GetPackageDetailsAsync()
     {
         var versions      = await PackageResolver.GetPackageVersionsAsync();

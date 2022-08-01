@@ -19,9 +19,7 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public string Authors => _package.Authors;
 
-    /// <summary>
-    /// The submitter to use for this package.
-    /// </summary>
+    /// <inheritdoc />
     public Submitter Submitter => new Submitter() { UserName = _package.Authors };
 
     /// <inheritdoc />
@@ -32,6 +30,12 @@ public class NuGetDownloadablePackage : IDownloadablePackage
 
     /// <inheritdoc />
     public NuGetVersion Version => _package.Identity.Version;
+
+    /// <inheritdoc />
+    public Uri? ProjectUri => _package.ProjectUrl;
+
+    /// <inheritdoc />
+    public Uri? SourceUri => null; // not supported, usually linked by ProjectUri
 
     /// <inheritdoc />
     [DoNotNotify]
