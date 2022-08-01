@@ -41,6 +41,7 @@ public partial class SplashPage : ReloadedIIPage
             _ = Task.WhenAll(_backgroundTasks).ContinueWith(task =>
             {
                 App.StopProfileOptimization();
+                GC.Collect(int.MaxValue, GCCollectionMode.Optimized, true, true);
                 App.EmptyWorkingSet();
             });
 
