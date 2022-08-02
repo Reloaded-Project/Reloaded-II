@@ -49,6 +49,15 @@ public class WebDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public Uri? ProjectUri { get; set; } = null;
 
+    /// <inheritdoc />
+    public long? LikeCount { get; set; } = null;
+
+    /// <inheritdoc />
+    public long? ViewCount { get; set; } = null;
+
+    /// <inheritdoc />
+    public long? DownloadCount { get; set; } = null;
+
     private Uri _url;
 
     /// <summary>

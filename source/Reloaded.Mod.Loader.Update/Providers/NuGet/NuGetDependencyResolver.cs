@@ -23,7 +23,7 @@ public class NuGetDependencyResolver : IDependencyResolver
         {
             var package    = dependency.Generic;
             var repository = dependency.Repository;
-            result.FoundDependencies.Add(new NuGetDownloadablePackage(package, repository));
+            result.FoundDependencies.Add(new NuGetDownloadablePackage(package, repository, await package.GetVersionsAsync()));
         }
 
         foreach (var notFound in searchResult.PackagesNotFound)

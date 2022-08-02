@@ -66,7 +66,22 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     /// The URL of the web page of the project.
     /// </summary>
     public Uri? ProjectUri { get; }
-    
+
+    /// <summary>
+    /// Number of likes/upvotes for this package.
+    /// </summary>
+    public long? LikeCount { get; }
+
+    /// <summary>
+    /// Number of views for this package.
+    /// </summary>
+    public long? ViewCount { get; }
+
+    /// <summary>
+    /// Number of downloads for this package.
+    /// </summary>
+    public long? DownloadCount { get; }
+
     /// <summary>
     /// Downloads the package in question asynchronously.
     /// </summary>

@@ -23,6 +23,9 @@ public class DummyDownloadablePackage : IDownloadablePackage
     public string MarkdownReadme { get; } = null;
     public DownloadableImage[]? Images { get; set; }
     public Uri ProjectUri { get; set; } = null;
+    public long? LikeCount { get; } = null;
+    public long? ViewCount { get; } = null;
+    public long? DownloadCount { get; } = null;
 
     public Task<string> DownloadAsync(string packageFolder, IProgress<double> progress, CancellationToken token = default)
     {

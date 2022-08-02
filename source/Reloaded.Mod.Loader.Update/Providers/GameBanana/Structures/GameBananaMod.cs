@@ -32,6 +32,15 @@ public class GameBananaMod
     [JsonPropertyName("_aSubmitter")]
     public GameBananaSubmitter Submitter { get; set; } = new GameBananaSubmitter();
 
+    [JsonPropertyName("_nDownloadCount")]
+    public long DownloadCount { get; set; }
+
+    [JsonPropertyName("_nViewCount")]
+    public long ViewCount { get; set; }
+
+    [JsonPropertyName("_nLikeCount")]
+    public long LikeCount { get; set; }
+
     [JsonConverter(typeof(GameBananaManagerIntegrationConverter))]
     [JsonPropertyName("_aModManagerIntegrations")]
     public Dictionary<string, GameBananaManagerIntegration[]>? ManagerIntegrations { get; set; }

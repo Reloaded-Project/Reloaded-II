@@ -190,6 +190,9 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         package.Source = SourceName;
         package.FileSize = file.FileSize.GetValueOrDefault();
         package.ProjectUri = new Uri(modItem.LinkToModPage);
+        package.LikeCount = modItem.LikeCount;
+        package.ViewCount = modItem.ViewCount;
+        package.DownloadCount = modItem.DownloadCount;
         GameBananaAddAuthors(modItem, package);
         GameBananaAddSubmitter(modItem, package);
         GameBananaAddImages(modItem, package);

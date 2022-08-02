@@ -35,7 +35,13 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     public Uri? ProjectUri => _package.ProjectUrl;
 
     /// <inheritdoc />
-    public Uri? SourceUri => null; // not supported, usually linked by ProjectUri
+    public long? LikeCount => null;
+
+    /// <inheritdoc />
+    public long? ViewCount => null;
+
+    /// <inheritdoc />
+    public long? DownloadCount { get; private set; }
 
     /// <inheritdoc />
     [DoNotNotify]
@@ -69,13 +75,21 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     private Lazy<NuGetUpdateResolver> _resolver;
 
     /// <summary/>
-    public NuGetDownloadablePackage(IPackageSearchMetadata package, INugetRepository repository)
+    public NuGetDownloadablePackage(IPackageSearchMetadata package, INugetRepository repository, IEnumerable<VersionInfo>? versions = null)
     {
         _package    = package;
         _repository = repository;
         _resolver   = new Lazy<NuGetUpdateResolver>(GetResolver, true);
         if (_package.IconUrl != null)
             Images = new[] { new DownloadableImage() { Uri = _package.IconUrl } };
+
+        // Calculate downloads of package.
+        long downloadCount = 0;
+        foreach (var version in versions)
+            downloadCount += version.DownloadCount.GetValueOrDefault(0);
+
+        if (downloadCount > 0)
+            DownloadCount = downloadCount;
     }
 
     /// <inheritdoc />

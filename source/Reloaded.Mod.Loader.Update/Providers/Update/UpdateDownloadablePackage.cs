@@ -8,7 +8,7 @@ namespace Reloaded.Mod.Loader.Update.Providers.Update;
 public class UpdateDownloadablePackage : IDownloadablePackage
 {
     /// <summary>
-    /// The package resovler tied to this package.
+    /// The package resolver tied to this package.
     /// </summary>
     public IPackageResolver PackageResolver { get; private set; }
 
@@ -55,6 +55,15 @@ public class UpdateDownloadablePackage : IDownloadablePackage
 
     /// <inheritdoc />
     public Uri? ProjectUri { get; set; } = null;
+
+    /// <inheritdoc />
+    public long? LikeCount { get; set; } = null;
+
+    /// <inheritdoc />
+    public long? ViewCount { get; set; } = null;
+
+    /// <inheritdoc />
+    public long? DownloadCount { get; set; } = null;
 
     private async Task GetPackageDetailsAsync()
     {
