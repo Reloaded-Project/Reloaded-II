@@ -68,7 +68,7 @@ public class GameBananaMod
                 urlString = $"https://gamebanana.com/apiv7/Mod/ByName?" +
                             $"_nPerpage={take}&" +
                             $"_nPage={page}&" +
-                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter&" +
+                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter,_sProfileUrl,_nViewCount,_nLikeCount,_nDownloadCount&" +
                             $"_sName={searchText}&" +
                             $"_idGameRow={gameId}";
             }
@@ -77,7 +77,7 @@ public class GameBananaMod
                 urlString = $"https://gamebanana.com/apiv7/Mod/ByGame?" +
                             $"_nPerpage={take}&" +
                             $"_nPage={page}&" +
-                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter&" +
+                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter,_sProfileUrl,_nViewCount,_nLikeCount,_nDownloadCount&" +
                             $"_aGameRowIds[]={gameId}";
             }
 
