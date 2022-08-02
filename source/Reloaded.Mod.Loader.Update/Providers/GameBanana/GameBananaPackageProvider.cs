@@ -193,6 +193,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         package.LikeCount = modItem.LikeCount;
         package.ViewCount = modItem.ViewCount;
         package.DownloadCount = modItem.DownloadCount;
+        package.Published = file.DateAdded;
         GameBananaAddAuthors(modItem, package);
         GameBananaAddSubmitter(modItem, package);
         GameBananaAddImages(modItem, package);

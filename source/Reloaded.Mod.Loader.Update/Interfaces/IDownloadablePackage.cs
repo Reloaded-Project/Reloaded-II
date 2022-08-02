@@ -83,6 +83,12 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     public long? DownloadCount { get; }
 
     /// <summary>
+    /// Time when this package was published.
+    /// In UTC.
+    /// </summary>
+    public DateTime? Published { get; }
+
+    /// <summary>
     /// Downloads the package in question asynchronously.
     /// </summary>
     /// <param name="packageFolder">The folder containing all the packages.</param>
@@ -158,6 +164,7 @@ public struct Submitter
 
     /// <summary>
     /// Date of when the user has joined.
+    /// In UTC.
     /// </summary>
     public DateTime? JoinDate { get; set; } = null;
 

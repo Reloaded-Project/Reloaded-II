@@ -44,6 +44,9 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     public long? DownloadCount { get; private set; }
 
     /// <inheritdoc />
+    public DateTime? Published { get; private set; }
+
+    /// <inheritdoc />
     [DoNotNotify]
     public long? FileSize
     {
@@ -84,15 +87,18 @@ public class NuGetDownloadablePackage : IDownloadablePackage
             Images = new[] { new DownloadableImage() { Uri = _package.IconUrl } };
 
         // Calculate downloads of package.
-        if (versions == null) 
-            return;
+        if (versions != null)
+        {
+            long downloadCount = 0;
+            foreach (var version in versions)
+                downloadCount += version.DownloadCount.GetValueOrDefault(0);
 
-        long downloadCount = 0;
-        foreach (var version in versions)
-            downloadCount += version.DownloadCount.GetValueOrDefault(0);
+            if (downloadCount > 0)
+                DownloadCount = downloadCount;
+        }
 
-        if (downloadCount > 0)
-            DownloadCount = downloadCount;
+        if (package.Published != null)
+            Published = package.Published.Value.UtcDateTime;
     }
 
     /// <inheritdoc />

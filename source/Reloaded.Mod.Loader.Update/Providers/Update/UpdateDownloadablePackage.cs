@@ -65,6 +65,9 @@ public class UpdateDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public long? DownloadCount { get; set; } = null;
 
+    /// <inheritdoc />
+    public DateTime? Published { get; set; } = null!;
+
     private async Task GetPackageDetailsAsync()
     {
         var versions      = await PackageResolver.GetPackageVersionsAsync();
@@ -89,7 +92,7 @@ public class UpdateDownloadablePackage : IDownloadablePackage
 
         // Download Package
         var downloadSlice = progressSlicer.Slice(0.9f);
-        await PackageResolver.DownloadPackageAsync(Version, tempDownloadPath, new ReleaseMetadataVerificationInfo() { FolderPath = tempDownloadPath }, downloadSlice, token);
+        await PackageResolver.DownloadPackageAsync(Version!, tempDownloadPath, new ReleaseMetadataVerificationInfo() { FolderPath = tempDownloadPath }, downloadSlice, token);
 
         // Extract package.
         var extractSlice = progressSlicer.Slice(0.1f);

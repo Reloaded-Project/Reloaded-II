@@ -26,6 +26,7 @@ public class DummyDownloadablePackage : IDownloadablePackage
     public long? LikeCount { get; } = null;
     public long? ViewCount { get; } = null;
     public long? DownloadCount { get; } = null;
+    public DateTime? Published { get; set; } = null!;
 
     public Task<string> DownloadAsync(string packageFolder, IProgress<double> progress, CancellationToken token = default)
     {
