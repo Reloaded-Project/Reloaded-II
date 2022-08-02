@@ -6,30 +6,9 @@ namespace Reloaded.Mod.Loader.Update.Interfaces;
 public interface IDownloadablePackage : INotifyPropertyChanged
 {
     /// <summary>
-    /// Id of the mod to be downloaded.
-    /// </summary>
-    public string Id { get; }
-
-    /// <summary>
     /// Name of the mod to be downloaded.
     /// </summary>
     public string Name { get; }
-
-    /// <summary>
-    /// The mod authors. As displayed in launcher.
-    /// Used for credits.
-    /// </summary>
-    public string Authors { get; }
-
-    /// <summary>
-    /// Contains information about the person who uploaded this item.
-    /// </summary>
-    public Submitter Submitter { get; }
-
-    /// <summary>
-    /// Short description of the mod, as seen in mod config menu.
-    /// </summary>
-    public string Description { get; }
 
     /// <summary>
     /// Source of the package.
@@ -38,14 +17,35 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     public string Source { get; }
 
     /// <summary>
+    /// Id of the mod to be downloaded.
+    /// </summary>
+    public string? Id { get; }
+
+    /// <summary>
+    /// The mod authors. As displayed in launcher.
+    /// Used for credits.
+    /// </summary>
+    public string? Authors { get; }
+
+    /// <summary>
+    /// Contains information about the person who uploaded this item.
+    /// </summary>
+    public Submitter? Submitter { get; }
+
+    /// <summary>
+    /// Short description of the mod, as seen in mod config menu.
+    /// </summary>
+    public string? Description { get; }
+
+    /// <summary>
     /// Version of the mod to download.
     /// </summary>
-    public NuGetVersion Version { get; }
+    public NuGetVersion? Version { get; }
 
     /// <summary>
     /// File size in bytes of the item to be downloaded.
     /// </summary>
-    public long FileSize { get; }
+    public long? FileSize { get; }
 
     /// <summary>
     /// Provides a human readable readme file, in markdown format.
@@ -55,7 +55,7 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     /// <summary>
     /// Long description of the mod.
     /// </summary>
-    public string LongDescription => MarkdownReadme ?? Description;
+    public string? LongDescription => MarkdownReadme ?? Description;
 
     /// <summary>
     /// Provides a list of images for this package.

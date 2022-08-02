@@ -32,6 +32,9 @@ public class AggregateDependencyResolver : IDependencyResolver
             // Merge found dependencies
             foreach (var dependency in task.Result.FoundDependencies)
             {
+                if (dependency.Id == null)
+                    continue;
+
                 if (!packageToVersionMap.TryGetValue(dependency.Id, out var existing))
                 {
                     packageToVersionMap[dependency.Id] = dependency;

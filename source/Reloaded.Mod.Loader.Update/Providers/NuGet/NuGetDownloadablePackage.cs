@@ -11,25 +11,25 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     private static NuGetPackageExtractor _extractor = new();
 
     /// <inheritdoc />
-    public string Id => _package.Identity.Id;
-
-    /// <inheritdoc />
     public string Name => !string.IsNullOrEmpty(_package.Title) ? _package.Title : _package.Identity.Id;
-
-    /// <inheritdoc />
-    public string Authors => _package.Authors;
-
-    /// <inheritdoc />
-    public Submitter Submitter => new Submitter() { UserName = _package.Authors };
-
-    /// <inheritdoc />
-    public string Description => _package.Description;
 
     /// <inheritdoc />
     public string Source => _repository.FriendlyName;
 
     /// <inheritdoc />
-    public NuGetVersion Version => _package.Identity.Version;
+    public string? Id => _package.Identity.Id;
+
+    /// <inheritdoc />
+    public string? Authors => _package.Authors;
+
+    /// <inheritdoc />
+    public Submitter? Submitter => new Submitter() { UserName = _package.Authors };
+
+    /// <inheritdoc />
+    public string? Description => _package.Description;
+
+    /// <inheritdoc />
+    public NuGetVersion? Version => _package.Identity.Version;
 
     /// <inheritdoc />
     public Uri? ProjectUri => _package.ProjectUrl;
@@ -45,7 +45,7 @@ public class NuGetDownloadablePackage : IDownloadablePackage
 
     /// <inheritdoc />
     [DoNotNotify]
-    public long FileSize
+    public long? FileSize
     {
         get
         {
@@ -84,6 +84,9 @@ public class NuGetDownloadablePackage : IDownloadablePackage
             Images = new[] { new DownloadableImage() { Uri = _package.IconUrl } };
 
         // Calculate downloads of package.
+        if (versions == null) 
+            return;
+
         long downloadCount = 0;
         foreach (var version in versions)
             downloadCount += version.DownloadCount.GetValueOrDefault(0);

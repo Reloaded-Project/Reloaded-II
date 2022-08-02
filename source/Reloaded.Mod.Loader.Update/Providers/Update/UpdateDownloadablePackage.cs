@@ -22,28 +22,28 @@ public class UpdateDownloadablePackage : IDownloadablePackage
     }
 
     /// <inheritdoc />
-    public string Id { get; set; } = "";
-
-    /// <inheritdoc />
     public string Name { get; set; } = "Unknown Package";
-
-    /// <inheritdoc />
-    public string Authors { get; set; } = "Unknown Author";
-
-    /// <inheritdoc />
-    public Submitter Submitter { get; set; } = new() { UserName = "Unknown Submitter" };
-
-    /// <inheritdoc />
-    public string Description { get; set; } = "No Description";
 
     /// <inheritdoc />
     public string Source { get; internal set; } = null!;
 
     /// <inheritdoc />
-    public NuGetVersion Version { get; internal set; } = null!;
+    public string? Id { get; set; }
 
     /// <inheritdoc />
-    public long FileSize { get; internal set; }
+    public string? Authors { get; set; }
+
+    /// <inheritdoc />
+    public Submitter? Submitter { get; set; }
+
+    /// <inheritdoc />
+    public string? Description { get; set; }
+
+    /// <inheritdoc />
+    public NuGetVersion? Version { get; internal set; }
+
+    /// <inheritdoc />
+    public long? FileSize { get; internal set; }
 
     /// <inheritdoc />
     public string? MarkdownReadme { get; } = null!;

@@ -43,6 +43,9 @@ public class ModDependencyResolveResult
         {
             foreach (var found in result.FoundDependencies)
             {
+                if (found.Id == null)
+                    continue;
+
                 if (idToNewestVersion.TryGetValue(found.Id, out var existing))
                 {
                     if (existing.Version < found.Version)

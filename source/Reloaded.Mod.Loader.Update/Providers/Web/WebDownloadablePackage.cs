@@ -13,30 +13,30 @@ public class WebDownloadablePackage : IDownloadablePackage
 #pragma warning restore CS0067 // Event never used
 
     /// <inheritdoc />
-    public string Id { get; set; } = "Unknown Package Id";
-
-    /// <inheritdoc />
     public string Name { get; set; } = "Unknown Package Name";
-
-    /// <inheritdoc />
-    public string Authors { get; set; } = "Unknown";
-
-    /// <inheritdoc />
-    public Submitter Submitter { get; set; } = new() { UserName = "Unknown" };
-
-    /// <inheritdoc />
-    public string Description { get; set; } = "Unknown Package. Comes from the web.";
 
     /// <inheritdoc />
     public string Source { get; set; } = "Web URL";
 
     /// <inheritdoc />
-    public NuGetVersion Version { get; set; } = NuGetVersion.Parse("0.0.0");
+    public string? Id { get; set; } = null;
+
+    /// <inheritdoc />
+    public string? Authors { get; set; } = null!;
+
+    /// <inheritdoc />
+    public Submitter? Submitter { get; set; }
+
+    /// <inheritdoc />
+    public string? Description { get; set; } 
+
+    /// <inheritdoc />
+    public NuGetVersion? Version { get; set; }
 
     /// <summary>
     /// Size of the file to be downloaded.
     /// </summary>
-    public long FileSize { get; set; }
+    public long? FileSize { get; set; }
 
     /// <inheritdoc />
     public string? MarkdownReadme { get; set; }

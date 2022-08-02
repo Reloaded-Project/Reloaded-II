@@ -15,11 +15,11 @@ public class DummyDownloadablePackage : IDownloadablePackage
     public string Id { get; set; } = "";
     public string Name { get; set; } = "";
     public string Authors { get; set; } = "";
-    public Submitter Submitter { get; set; } = new() { UserName = "" };
+    public Submitter? Submitter { get; set; } = new() { UserName = "" };
     public string Description { get; set; } = "";
     public string Source { get; set; } = "";
     public NuGetVersion Version { get; set; } = new NuGetVersion("1.0.0");
-    public long FileSize { get; } = 0;
+    public long? FileSize { get; } = 0;
     public string MarkdownReadme { get; } = null;
     public DownloadableImage[]? Images { get; set; }
     public Uri ProjectUri { get; set; } = null;
