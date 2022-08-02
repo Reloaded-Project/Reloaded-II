@@ -58,8 +58,7 @@ public class GameBananaMod
         try
         {
             // Note: Page is 1 indexed.
-            // TODO: Compression support
-            using var client = new WebClient();
+            using var client = new WebClientWithCompression();
             string urlString = "";
 
             // Transform search text to include wildcards.
