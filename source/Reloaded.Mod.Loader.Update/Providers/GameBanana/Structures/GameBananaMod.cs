@@ -309,10 +309,10 @@ public class GameBananaSubmitter
 public class GameBananaModFile
 {
     [JsonPropertyName("_idRow")]
-    public string? Id { get; set; }
+    public string Id { get; set; } = null!;
 
     [JsonPropertyName("_sFile")]
-    public string? FileName { get; set; }
+    public string FileName { get; set; } = null!;
 
     [JsonPropertyName("_nFilesize")]
     public long? FileSize { get; set; }

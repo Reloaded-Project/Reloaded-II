@@ -48,12 +48,11 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                 continue;
 
             // Check manager integrations.
-            int counter = 0;
+            var hasMultipleReloadedFiles = CheckIfHasMultipleReloadedFiles(result.ManagerIntegrations);
             foreach (var integratedFile in result.ManagerIntegrations)
             {
                 var fileId = integratedFile.Key;
                 var integrations = integratedFile.Value;
-                var file = result.Files.First(x => x.Id == fileId);
 
                 // Build items.
                 foreach (var integration in integrations)
@@ -62,25 +61,23 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                         continue;
 
                     var url = new Uri(integration.GetReloadedDownloadUrl());
-                    var downloadFileName = !string.IsNullOrEmpty(file.Description) ? file.Description : file.FileName;
+                    var file = result.Files.First(x => x.Id == fileId);
                     var fileName = "";
-                    var textDesc = "";
-                    if (counter > 0)
+                    if (hasMultipleReloadedFiles)
                     {
-                        fileName = $"{result.Name!} [{counter++}]";
-                        textDesc = $"[{downloadFileName}] {textDesc}";
+                        fileName = !string.IsNullOrEmpty(file.Description) ? 
+                            $"{result.Name!}: {file.Description}" : 
+                            $"{result.Name!}: {file.FileName}";
                     }
                     else
                     {
                         fileName = $"{result.Name!}";
-                        textDesc = HtmlUtilities.ConvertToPlainText(result.Description);
-                        counter++;
                     }
 
                     var package = new WebDownloadablePackage(url, false)
                     {
                         Name = fileName,
-                        Description = textDesc,
+                        Description = HtmlUtilities.ConvertToPlainText(result.Description),
                         MarkdownReadme = Singleton<Converter>.Instance.Convert(result.Description)
                     };
 
@@ -89,6 +86,31 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Checks if the submission has multiple raw files that belong to Reloaded.
+    /// </summary>
+    /// <param name="managerIntegrations">List of manager integrations.</param>
+    /// <returns>True or false.</returns>
+    private static bool CheckIfHasMultipleReloadedFiles(Dictionary<string, GameBananaManagerIntegration[]> managerIntegrations)
+    {
+        int counter = 0;
+        foreach (var integratedFile in managerIntegrations)
+        {
+            var integrations = integratedFile.Value;
+            foreach (var integration in integrations)
+            {
+                if (!integration.IsReloadedDownloadUrl().GetValueOrDefault())
+                    continue;
+                
+                counter++;
+                if (counter > 1)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     private static async Task<bool> TryAddResultsFromReleaseMetadataAsync(List<GameBananaMod> gbApiItems, List<IDownloadablePackage> results)
