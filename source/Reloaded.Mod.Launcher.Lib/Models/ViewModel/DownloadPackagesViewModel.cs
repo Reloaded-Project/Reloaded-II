@@ -103,7 +103,8 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         _tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
         
         var searchTuples = await CurrentPackageProvider.SearchAsync(SearchQuery, _paginationHelper.Skip, _paginationHelper.Take, _tokenSource.Token);
-        Collections.ModifyObservableCollection(SearchResult, searchTuples);
+        if (!_tokenSource.IsCancellationRequested)
+            Collections.ModifyObservableCollection(SearchResult, searchTuples);
     }
 
     /// <summary>
