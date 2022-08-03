@@ -7,5 +7,6 @@ internal class ModuleInitialiser
     {
         // Raise maximum number of WebRequest connections
         ServicePointManager.DefaultConnectionLimit = int.MaxValue;
+        Task.Run(WebRequest.GetSystemWebProxy);
     }
 }
