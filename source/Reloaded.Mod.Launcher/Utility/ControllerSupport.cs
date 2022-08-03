@@ -12,7 +12,8 @@ public static class ControllerSupport
 
     public static Navigator Navigator { get; private set; } = null!;
 
-    public static event ProcessCustomInputsDelegate OnProcessCustomInputs = (in ControllerState state) => { };
+    private static List<ProcessCustomInputsRoutedDelegate> _processCustomInputsPreview = new();
+    private static List<ProcessCustomInputsRoutedDelegate> _processCustomInputs = new();
 
     public static void Init()
     {
@@ -32,6 +33,12 @@ public static class ControllerSupport
             Platform.ProcessCustomInputs += ProcessCustomInputs;
         });
     }
+
+    // Subscriptions for events handling custom preview.
+    public static void SubscribePreviewCustomInputs(ProcessCustomInputsRoutedDelegate processEvents) => _processCustomInputsPreview.Add(processEvents);
+    public static void UnsubscribePreviewCustomInputs(ProcessCustomInputsRoutedDelegate processEvents) => _processCustomInputsPreview.Remove(processEvents);
+    public static void SubscribeCustomInputs(ProcessCustomInputsRoutedDelegate processEvents) => _processCustomInputs.Add(processEvents);
+    public static void UnsubscribeCustomInputs(ProcessCustomInputsRoutedDelegate processEvents) => _processCustomInputs.Remove(processEvents);
 
     /// <summary>
     /// Tries to get the page scroll direction based on input.
@@ -78,7 +85,22 @@ public static class ControllerSupport
     private static void ProcessCustomInputs(in ControllerState state)
     {
         ProcessCustomControls(state);
-        OnProcessCustomInputs(state);
+
+        // Send out preview event.
+        bool isHandled = false;
+        foreach (var previewEvent in _processCustomInputsPreview)
+        {
+            previewEvent(state, ref isHandled);
+            if (isHandled)
+                return;
+        }
+
+        foreach (var bubbleUpEvent in _processCustomInputs)
+        {
+            bubbleUpEvent(state, ref isHandled);
+            if (isHandled)
+                return;
+        }
     }
 
     private static void ProcessCustomControls(in ControllerState state)
@@ -136,4 +158,8 @@ public static class ControllerSupport
         if (state.IsButtonPressed(Decrement) || (state.IsButtonHeld(Modifier) && state.IsButtonPressed(Up | Left)))
             DecrementValue();
     }
+    
+    /// <param name="state">The current state of the controller.</param>
+    /// <param name="handled">Whether the event has been handled. If handled state is signaled, no further events will be called.</param>
+    public delegate void ProcessCustomInputsRoutedDelegate(in ControllerState state, ref bool handled);
 }

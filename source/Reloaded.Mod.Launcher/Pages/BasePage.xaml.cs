@@ -26,7 +26,7 @@ public partial class BasePage : ReloadedIIPage, IDisposable
     {
         _owner = Window.GetWindow(this);
         _owner!.KeyDown += TrySwitchPage;
-        ControllerSupport.OnProcessCustomInputs += ProcessCustomInputs;
+        ControllerSupport.SubscribeCustomInputs(ProcessCustomInputs);
     }
 
     ~BasePage() => Dispose();
@@ -34,7 +34,7 @@ public partial class BasePage : ReloadedIIPage, IDisposable
     public void Dispose()
     {
         _owner!.KeyDown -= TrySwitchPage;
-        ControllerSupport.OnProcessCustomInputs -= ProcessCustomInputs;
+        ControllerSupport.UnsubscribeCustomInputs(ProcessCustomInputs);
         GC.SuppressFinalize(this);
     }
 
@@ -71,7 +71,7 @@ public partial class BasePage : ReloadedIIPage, IDisposable
         ViewModel.SwitchToApplication(tuple);
     }
 
-    private void ProcessCustomInputs(in ControllerState state)
+    private void ProcessCustomInputs(in ControllerState state, ref bool handled)
     {
         if (!Window.GetWindow(this)!.IsActive)
             return;

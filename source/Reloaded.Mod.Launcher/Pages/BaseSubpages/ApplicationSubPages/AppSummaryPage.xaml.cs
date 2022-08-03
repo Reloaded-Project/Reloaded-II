@@ -16,7 +16,7 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
         InitializeComponent();
         ViewModel = Lib.IoC.Get<ConfigureModsViewModel>();
 
-        ControllerSupport.OnProcessCustomInputs += OnProcessCustomInputs;
+        ControllerSupport.SubscribeCustomInputs(OnProcessCustomInputs);
         _manipulator    = new DictionaryResourceManipulator(this.Contents.Resources);
         _modsViewSource = _manipulator.Get<CollectionViewSource>("FilteredMods");
         _modsViewSource.Filter += ModsViewSourceOnFilter;
@@ -27,7 +27,7 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
 
     public void Dispose()
     {
-        ControllerSupport.OnProcessCustomInputs -= OnProcessCustomInputs;
+        ControllerSupport.UnsubscribeCustomInputs(OnProcessCustomInputs);
         ViewModel?.Dispose();
         GC.SuppressFinalize(this);
     }
@@ -75,7 +75,7 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
 
     #region Controller Controls
 
-    private void OnProcessCustomInputs(in ControllerState state)
+    private void OnProcessCustomInputs(in ControllerState state, ref bool handled)
     {
         if (!WpfUtilities.TryGetFocusedElementAndWindow(out var window, out var focused))
             return;
