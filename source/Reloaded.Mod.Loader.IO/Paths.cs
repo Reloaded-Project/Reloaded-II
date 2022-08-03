@@ -41,6 +41,25 @@ public class Paths
     /// </summary>
     public static readonly string ArchivedLogPath = Path.Combine(LogPath, "OldLogs.zip");
 
+    // MACHINE SPECIFIC DATA //
+
+    /// <summary>
+    /// Gets the path of the Reloaded folder in AppData where Reloaded configuration and user data reside.
+    /// </summary>
+    public static string ConfigFolderLocalPC { get; } = Path.Combine(GetFolderPath(SpecialFolder.LocalApplicationData), "Reloaded-Mod-Loader-II"); // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
+
+    /// <summary>
+    /// Location of the cache folder, used to cache external resources.
+    /// </summary>
+    public static readonly string CachePath = Path.Combine(ConfigFolderLocalPC, "Cache");
+
+    /// <summary>
+    /// Location of the cache folder, used to cache loader logs.
+    /// </summary>
+    public static readonly string ImageCachePath = Path.Combine(CachePath, "Image");
+
+    // UTILITY METHODS //
+
     /// <summary>
     /// Gets the name of the Kernel32 Address Dumper; a tool which extracts the address of Kernel32 and shares it using mapped files.
     /// </summary>

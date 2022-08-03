@@ -539,4 +539,7 @@
     <sys:String x:Key="PublishSelectMarkdownTitle">Select a Markdown File (*.md).</sys:String>
     <sys:String x:Key="PublishSelectMarkdownTypeName">Markdown File</sys:String>
 
+    <!-- Update 1.20.0: Revamped Downloads Menu -->
+    <sys:String x:Key="DownloadsMenuNuGetButton">NuGet</sys:String>
+
 </ResourceDictionary>

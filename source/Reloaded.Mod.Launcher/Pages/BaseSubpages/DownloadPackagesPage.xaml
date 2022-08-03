@@ -7,10 +7,12 @@
       xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
       xmlns:misc="clr-namespace:Reloaded.Mod.Launcher.Misc"
       xmlns:download="clr-namespace:Reloaded.Mod.Launcher.Lib.Commands.Download;assembly=Reloaded.Mod.Launcher.Lib"
+      xmlns:utility="clr-namespace:Reloaded.Mod.Launcher.Utility"
+      xmlns:properties="clr-namespace:Reloaded.Mod.Launcher.Controls.Properties"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="756"
       Title="{DynamicResource TitleDownloadMods}">
-    <Grid Margin="{DynamicResource PageMargin}" x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+    <Grid x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
         <Grid.Resources>
             <download:CheckForUpdatesAndDependenciesCommand x:Key="CheckForUpdatesAndDependenciesCommand"/>
@@ -19,8 +21,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Search -->
@@ -30,8 +30,15 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+
+            <!-- Source -->
             <ComboBox Grid.Column="0"
                       Margin="{DynamicResource CommonItemHorizontalMarginSmaller}"
                       IsSynchronizedWithCurrentItem="True"
@@ -41,11 +48,12 @@
                       Width="150" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding FriendlyName}"/>
+                        <TextBlock Text="{Binding FriendlyName}" FontSize="{DynamicResource FontSizeLarger}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
+            <!-- Search -->
             <TextBox 
                 x:Name="TextBox"
                 Grid.Column="1"
@@ -53,84 +61,177 @@
                 Tag="{DynamicResource ModManagerSearchMods}"
                 Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Margin="{DynamicResource CommonItemHorizontalMarginSmaller}"
+                FontSize="{DynamicResource FontSizeLarger}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch" />
 
-            <Button Content="{DynamicResource FirstLaunchExAddModExtractPrev}" 
-                    Style="{DynamicResource DefaultButton}" 
-                    Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+            <!-- NuGet -->
+            <Button Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+                    Command="{Binding ConfigureNuGetSourcesCommand}"
                     Grid.Column="2"
-                    Click="Last_Click"
-                    Visibility="{Binding CanGoToLastPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"/>
+                    VerticalAlignment="Stretch">
 
-            <Button Content="{DynamicResource FirstLaunchExAddModExtractNext}" 
-                    Style="{DynamicResource DefaultButton}" 
-                    Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+                <StackPanel Orientation="Horizontal" Margin="0,-50">
+                    <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=NuGetBtnText, Path=ActualHeight}">
+                        <Canvas Width="24" Height="24">
+                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryConfig}" />
+                        </Canvas>
+                    </Viewbox>
+                    <TextBlock Text="{DynamicResource DownloadsMenuNuGetButton}" 
+                               Name="NuGetBtnText"
+                               FontSize="{DynamicResource FontSizeLarger}"
+                               Style="{DynamicResource DefaultTextBlock}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <!-- Download -->
+            <Button Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+                    Command="{Binding DownloadModCommand, UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="3"
+                    VerticalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal" Margin="0,-50">
+                    <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadBtnText, Path=ActualHeight}">
+                        <Canvas Width="24" Height="24">
+                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryDownload}" />
+                        </Canvas>
+                    </Viewbox>
+
+                    <TextBlock Text="{Binding DownloadPackageStatus, Converter={x:Static converters:DownloadModStatusToString.Instance}, FallbackValue='Download'}" 
+                               Name="DownloadBtnText"
+                               FontSize="{DynamicResource FontSizeLarger}"
+                               Style="{DynamicResource DefaultTextBlock}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <!-- Prev/Next -->
+            <!-- Icons sourced from https://materialdesignicons.com, under MIT -->
+            <!-- Note: VS Preview doesn't get height right for these buttons, it's ok at runtime, dw -->
+            <Button Style="{DynamicResource UnpaddedButton}" Height="Auto"
+                    Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+                    Grid.Column="4"
+                    Click="Last_Click"
+                    Visibility="{Binding CanGoToLastPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"
+                    VerticalContentAlignment="Center">
+                <Viewbox>
+                    <Canvas Width="24" Height="24">
+                        <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryPrevious}" />
+                    </Canvas>
+                </Viewbox>
+            </Button>
+
+            <Button Style="{DynamicResource UnpaddedButton}" Height="Auto"
+                    Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+                    Grid.Column="5"
                     Click="Next_Click"
-                    Visibility="{Binding CanGoToNextPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"/>
+                    Visibility="{Binding CanGoToNextPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"
+                    VerticalContentAlignment="Center">
+                <Viewbox>
+                    <Canvas Width="24" Height="24">
+                        <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryNext}" />
+                    </Canvas>
+                </Viewbox>
+            </Button>
 
         </Grid>
 
         <!-- List -->
-        <DataGrid
-            Grid.Row="1"
-            HorizontalAlignment="Stretch"
-            ItemsSource="{Binding SearchResult, UpdateSourceTrigger=PropertyChanged}"
-            SelectedValue="{Binding SelectedResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            misc:FixDataGridColumnWidths.Value="true"
-            VerticalAlignment="Stretch"
-            VerticalContentAlignment="Top"
-            
-            SelectionMode="Single"
-            SelectionUnit="FullRow"
-            
-            CanUserResizeColumns="False"
-            CanUserResizeRows="False"
-            CanUserAddRows="False"
-            CanUserDeleteRows="False"
-            CanUserSortColumns="False"
-            CanUserReorderColumns="False"
+        <ListView Focusable="False"
+                  Grid.Row="1"
+                  HorizontalAlignment="Stretch"
+                  ItemsSource="{Binding SearchResult, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  VerticalAlignment="Stretch"
+                  VerticalContentAlignment="Top"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  VirtualizingStackPanel.VirtualizationMode="Recycling" 
+                  IsSynchronizedWithCurrentItem="True">
 
-            IsReadOnly="True"
-            AutoGenerateColumns="False"
+            <!-- Wrap all the elementssss -->
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid properties:AutoAdjustColumnCount.Value="300" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
 
-            Margin="{DynamicResource CommonItemVerticalMargin}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name, NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
-                <DataGridTextColumn Header="{DynamicResource CreateModDialogAuthor}" Binding="{Binding Authors, NotifyOnTargetUpdated=True}" Width="Auto" MaxWidth="250" IsReadOnly="True" />
-                <!-- <DataGridTextColumn Header="{DynamicResource CreateModDialogVersion}" Binding="{Binding Version, NotifyOnTargetUpdated=True}" Width="Auto" IsReadOnly="True"/> -->
-                <DataGridTextColumn Header="{DynamicResource DownloadPackagesSource}" Binding="{Binding Source, NotifyOnTargetUpdated=True}" Width="Auto" IsReadOnly="True"/>
-            </DataGrid.Columns>
-        </DataGrid>
+            <ListView.ItemTemplate>
 
-        <!-- Full Description -->
-        <ScrollViewer Grid.Row="2" MaxHeight="180">
-            <TextBlock 
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
-                Text="{Binding SelectedResult.Description, UpdateSourceTrigger=PropertyChanged}"
-                Style="{DynamicResource RIIDefaultTextBlock}"
-                TextWrapping="Wrap"/>
-        </ScrollViewer>
+                <DataTemplate>
 
-        <!-- Actions -->
-        <StackPanel Grid.Row="4"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal" 
-                    Margin="{DynamicResource CommonItemVerticalMarginSmall}">
-            <Button Content="{DynamicResource ConfigNuGetFeedsButton}"
-                    Margin="{DynamicResource CommonItemHorizontalMargin}" 
-                    Command="{Binding ConfigureNuGetSourcesCommand}"/>
+                    <!-- Template for a Card -->
+                    <Grid>
 
-            <Button Content="{DynamicResource DownloadModsCheckUpdatesAndDependencies}"
-                    Margin="{DynamicResource CommonItemHorizontalMargin}" 
-                    Command="{DynamicResource CheckForUpdatesAndDependenciesCommand}"/>
+                        <Image Style="{DynamicResource HighQualityImage}" Width="300" Height="225" Panel.ZIndex="0" Loaded="OnPreviewImageLoaded" />
 
-            <Button Content="{Binding DownloadPackageStatus, Converter={x:Static converters:DownloadModStatusToString.Instance}, FallbackValue='Download Mod'}" 
-                    Margin="{DynamicResource CommonItemHorizontalMargin}" 
-                    Command="{Binding DownloadModCommand, UpdateSourceTrigger=PropertyChanged}"
-            />
-        </StackPanel>
+                        <!-- Info Overlay: Top -->
+                        <StackPanel Orientation="Vertical" Panel.ZIndex="1" VerticalAlignment="Top" 
+                                    Background="{DynamicResource TooltipBackgroundColorBrush}">
+
+                            <!-- Name -->
+                            <TextBlock Text="{Binding Name}" Style="{DynamicResource DownloadModTitleTextBlock}" 
+                                       HorizontalAlignment="Center" TextWrapping="WrapWithOverflow"/>
+                        </StackPanel>
+
+                        <!-- Info Overlay: Bottom -->
+                        <StackPanel Name="BottomInfoPanel" Orientation="Vertical" Panel.ZIndex="1" VerticalAlignment="Bottom" Background="{DynamicResource TooltipBackgroundColorBrush}">
+
+                            <!-- Avatar & Author -->
+                            <Grid HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Viewbox Grid.Column="0" MaxHeight="{Binding ElementName=AuthorBtnText, Path=ActualHeight}">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryAuthor}" />
+                                    </Canvas>
+                                </Viewbox>
+
+                                <TextBlock Text="{Binding Submitter.UserName}" Grid.Column="1"
+                                           Visibility="{Binding Submitter, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
+                                           Style="{DynamicResource DownloadModTitleTextBlock}" 
+                                           TextTrimming="CharacterEllipsis" 
+                                           Name="AuthorBtnText"/>
+                            </Grid>
+
+                            <!-- Stats -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                    utility:MarginSetter.Enable="True" utility:MarginSetter.Margin="{DynamicResource DownloadMenuHorizontalItemMargin}" utility:MarginSetter.LastItemMargin="0">
+
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding DownloadCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}">
+                                    <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryDownload}" />
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Name="DownloadCountText" Text="{Binding DownloadCount}" Style="{DynamicResource DownloadModTitleTextBlock}" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding ViewCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}">
+                                    <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryView}" />
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="{Binding ViewCount}"
+                                               Style="{DynamicResource DownloadModTitleTextBlock}" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding LikeCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}">
+                                    <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryLike}" />
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="{Binding LikeCount}" Style="{DynamicResource DownloadModTitleTextBlock}" />
+                                </StackPanel>
+                            </StackPanel>
+
+
+                        </StackPanel>
+
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </pages:ReloadedIIPage>

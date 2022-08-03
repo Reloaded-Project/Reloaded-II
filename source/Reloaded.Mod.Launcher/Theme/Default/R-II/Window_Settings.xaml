@@ -57,4 +57,10 @@
     <sys:Double x:Key="PopupLabelExitFadeAnimationDuration">0.666</sys:Double>    <!-- Length of the fade out part of the animation in Milliseconds -->
     <sys:Double x:Key="PopupLabelExitFadeOpacityEnd">0.0</sys:Double>             <!-- The opacity to fade out to (from 1.0). -->
 
+    <!-- Download Menu Stuff Properties -->
+    <Thickness x:Key="DownloadMenuHorizontalItemMargin">0,0,10,0</Thickness>
+
+    <!-- SVG Icon Related Properties -->
+    <Thickness x:Key="SVGIconToTextMargin">0,0,5,0</Thickness>
+
 </ResourceDictionary>

@@ -256,4 +256,12 @@
 
     </Style>
 
+    <!-- Download Menu Title -->
+    <Style x:Key="DownloadModTitleTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource RIIDefaultTextBlock}">
+
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontBold}"/>
+
+    </Style>
+
 </ResourceDictionary>

@@ -24,7 +24,7 @@ public class NuGetPackageProvider : IDownloadablePackageProvider
             var packages    = tuple.Generic;
             var repository  = tuple.Repository;
             foreach (var package in packages)
-                result.Add(new NuGetDownloadablePackage(package, repository, await package.GetVersionsAsync()));
+                result.Add(new NuGetDownloadablePackage(package, repository));
         }
 
         return result;

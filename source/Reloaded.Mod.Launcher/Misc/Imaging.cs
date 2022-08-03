@@ -5,10 +5,22 @@ namespace Reloaded.Mod.Launcher.Misc;
 
 public class Imaging
 {
+    /// <summary>
+    /// Converts a WPF URI into a image.
+    /// </summary>
     public static BitmapImage BitmapFromUri(Uri source)
     {
         string uri = source.OriginalString.Replace("pack://siteoforigin:,,,", Constants.ApplicationDirectory);
         using var stream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.Read);
+        var bitmapImage = BitmapFromStream(stream);
+        return bitmapImage;
+    }
+
+    /// <summary>
+    /// Loads an image from a given stream.
+    /// </summary>
+    public static BitmapImage BitmapFromStream(Stream stream)
+    {
         var bitmapImage = new BitmapImage();
         bitmapImage.BeginInit();
         bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
@@ -16,6 +28,17 @@ public class Imaging
         bitmapImage.EndInit();
         bitmapImage.Freeze();
         return bitmapImage;
+    }
+
+    /// <summary>
+    /// Gets the icon used for placeholders in Reloaded.
+    /// </summary>
+    public static BitmapImage GetPlaceholderIcon()
+    {
+        var img = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.RelativeOrAbsolute));
+        img.CacheOption = BitmapCacheOption.OnLoad;
+        img.Freeze();
+        return img;
     }
 
     public static Image ImageFromUri(Uri source)

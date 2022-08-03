@@ -1,3 +1,5 @@
+using NuGet.Protocol.Core.Types;
+
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
 
 /// <summary>
@@ -50,6 +52,14 @@ public interface INugetRepository
     /// <param name="token">A cancellation token to allow cancellation of the task.</param>
     /// <returns>Return contains an array of versions for this package.</returns>
     Task<IEnumerable<IPackageSearchMetadata>> GetPackageDetails(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default);
+
+    /// <summary>
+    /// Retrieves the details of an individual package.
+    /// </summary>
+    /// <param name="identity">Contains the identity of the package (specific details)</param>
+    /// <param name="token">A cancellation token to allow cancellation of the task.</param>
+    /// <returns>Return contains an array of versions for this package.</returns>
+    Task<IPackageSearchMetadata?> GetPackageDetails(PackageIdentity identity, CancellationToken token = default);
 
     /// <summary>
     /// Finds all of the dependencies of a given package, including dependencies not available in the target repository.

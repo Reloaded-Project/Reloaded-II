@@ -68,6 +68,7 @@
     <PackageReference Include="Sewer56.UI.Controller.Core" Version="1.0.1" />
     <PackageReference Include="Sewer56.UI.Controller.ReloadedInput.Configurator" Version="1.2.0" />
     <PackageReference Include="Sewer56.UI.Controller.WPF" Version="1.0.1" />
+    <PackageReference Include="SharpVectors" Version="1.8.0" />
   </ItemGroup>
 
   <ItemGroup>

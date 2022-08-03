@@ -43,27 +43,17 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public long? DownloadCount { get; private set; }
 
-    /// <inheritdoc />
-    public DateTime? Published { get; private set; }
-
-    /// <inheritdoc />
+    /// <summary>
+    /// Obtained asynchronously, please wait for PropertyChanged event.
+    /// </summary>
     [DoNotNotify]
-    public long? FileSize
-    {
-        get
-        {
-            // Delay file size acquisition.
-            if (_fileSize == null)
-            {
-                var resolver = _resolver.Value;
-                _fileSize = resolver.GetDownloadFileSizeAsync(_package.Identity.Version, new ReleaseMetadataVerificationInfo(), CancellationToken.None).GetAwaiter().GetResult();
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FileSize)));
-            }
+    public DateTime? Published { get; set; }
 
-            return _fileSize.GetValueOrDefault();
-        }
-        set => _fileSize = value;
-    }
+    /// <summary>
+    /// Obtained asynchronously, please wait for PropertyChanged event.
+    /// </summary>
+    [DoNotNotify]
+    public long? FileSize { get; set; }
 
     /// <inheritdoc />
     [DoNotNotify]
@@ -74,31 +64,46 @@ public class NuGetDownloadablePackage : IDownloadablePackage
 
     private readonly IPackageSearchMetadata _package;
     private readonly INugetRepository _repository;
-    private long? _fileSize;
     private Lazy<NuGetUpdateResolver> _resolver;
 
     /// <summary/>
-    public NuGetDownloadablePackage(IPackageSearchMetadata package, INugetRepository repository, IEnumerable<VersionInfo>? versions = null)
+    public NuGetDownloadablePackage(IPackageSearchMetadata package, INugetRepository repository)
     {
         _package    = package;
         _repository = repository;
         _resolver   = new Lazy<NuGetUpdateResolver>(GetResolver, true);
         if (_package.IconUrl != null)
             Images = new[] { new DownloadableImage() { Uri = _package.IconUrl } };
+        
+        DownloadCount = package.DownloadCount;
+        _ = InitAsyncData();
+    }
 
-        // Calculate downloads of package.
-        if (versions != null)
+    /// <summary>
+    /// Tries to initialise additional async data.
+    /// </summary>
+    private async Task InitAsyncData()
+    {
+        await Task.WhenAll(new []
         {
-            long downloadCount = 0;
-            foreach (var version in versions)
-                downloadCount += version.DownloadCount.GetValueOrDefault(0);
+            InitPublishedAsync(),
+            InitFileSizeAsync()
+        });
+    }
 
-            if (downloadCount > 0)
-                DownloadCount = downloadCount;
-        }
+    private async Task InitFileSizeAsync()
+    {
+        var resolver = _resolver.Value;
+        var fileSize = await resolver.GetDownloadFileSizeAsync(_package.Identity.Version,
+            new ReleaseMetadataVerificationInfo(), CancellationToken.None);
+        FileSize = fileSize;
+    }
 
-        if (package.Published != null)
-            Published = package.Published.Value.UtcDateTime;
+    private async Task InitPublishedAsync()
+    {
+        var details = await _repository.GetPackageDetails(_package.Identity);
+        if (details != null)
+            Published = details.Published.GetValueOrDefault().UtcDateTime;
     }
 
     /// <inheritdoc />

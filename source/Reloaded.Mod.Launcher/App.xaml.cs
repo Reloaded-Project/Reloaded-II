@@ -119,4 +119,16 @@ public partial class App : Application
 
     [DllImport("psapi")]
     private static extern bool EmptyWorkingSet(IntPtr hProcess);
+
+    /// <summary>
+    /// Ran upon exiting the application.
+    /// </summary>
+    protected override void OnExit(ExitEventArgs e)
+    {
+        base.OnExit(e);
+
+        // Flush image cache on exit.
+        if (Lib.IoC.IsExplicitlyBound<ImageCacheService>())
+            Lib.IoC.GetConstant<ImageCacheService>().Shutdown();
+    }
 }

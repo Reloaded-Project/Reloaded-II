@@ -45,7 +45,7 @@ public class NugetRepository : INugetRepository
         try
         {
             var searchResource = await _packageSearchResource;
-            return await searchResource.SearchAsync(searchString, new SearchFilter(includePrereleases), skip, results, _nullLogger, token);
+            return await searchResource.SearchAsync(searchString, new SearchFilter(includePrereleases), skip, results, _nullLogger, token).ConfigureAwait(false);
         }
         catch (Exception) { return Array.Empty<IPackageSearchMetadata>(); }
     }
@@ -57,7 +57,7 @@ public class NugetRepository : INugetRepository
         {
             var package = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
             if (package.Any())
-                return await DownloadPackageAsync(package.Last(), token);
+                return await DownloadPackageAsync(package.Last(), token).ConfigureAwait(false);
 
             return new DownloadResourceResult(DownloadResourceResultStatus.NotFound);
         }
@@ -76,7 +76,7 @@ public class NugetRepository : INugetRepository
         try
         {
             var downloadResource = await _downloadResource;
-            return await downloadResource.GetDownloadResourceResultAsync(packageIdentity, downloadContext, Path.GetTempPath(), _nullLogger, token);
+            return await downloadResource.GetDownloadResourceResultAsync(packageIdentity, downloadContext, Path.GetTempPath(), _nullLogger, token).ConfigureAwait(false);
         }
         catch (Exception)
         {
@@ -90,9 +90,20 @@ public class NugetRepository : INugetRepository
         try
         {
             var metadataResource = await _packageMetadataResource;
-            return await metadataResource.GetMetadataAsync(packageId, includePrerelease, includeUnlisted, _sourceCacheContext, _nullLogger, token);
+            return await metadataResource.GetMetadataAsync(packageId, includePrerelease, includeUnlisted, _sourceCacheContext, _nullLogger, token).ConfigureAwait(false);
         }
         catch (Exception) { return Array.Empty<IPackageSearchMetadata>(); }
+    }
+
+    /// <inheritdoc />
+    public async Task<IPackageSearchMetadata?> GetPackageDetails(PackageIdentity identity, CancellationToken token = default)
+    {
+        try
+        {
+            var metadataResource = await _packageMetadataResource;
+            return await metadataResource.GetMetadataAsync(identity, _sourceCacheContext, _nullLogger, token).ConfigureAwait(false);
+        }
+        catch (Exception) { return null; }
     }
 
     /// <inheritdoc />
@@ -101,7 +112,7 @@ public class NugetRepository : INugetRepository
         try
         {
             var packages = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
-            return await FindDependencies(Nuget.GetNewestVersion(packages), includePrerelease, includeUnlisted, token);
+            return await FindDependencies(Nuget.GetNewestVersion(packages), includePrerelease, includeUnlisted, token).ConfigureAwait(false);
         }
         catch (Exception)
         {
@@ -118,7 +129,7 @@ public class NugetRepository : INugetRepository
 
         try
         {
-            await FindDependenciesRecursiveAsync(packageSearchMetadata, includePrerelease, includeUnlisted, result.Dependencies, result.PackagesNotFound, token);
+            await FindDependenciesRecursiveAsync(packageSearchMetadata, includePrerelease, includeUnlisted, result.Dependencies, result.PackagesNotFound, token).ConfigureAwait(false);
             return result;
         }
         catch (Exception)
@@ -147,7 +158,7 @@ public class NugetRepository : INugetRepository
         {
             foreach (var package in dependencySet.Packages)
             {
-                var metadata = (await GetPackageDetails(package.Id, includePrerelease, includeUnlisted, token)).ToArray();
+                var metadata = (await GetPackageDetails(package.Id, includePrerelease, includeUnlisted, token).ConfigureAwait(false)).ToArray();
                 if (metadata.Any())
                 {
                     var lastVersion = Nuget.GetNewestVersion(metadata)!;
@@ -155,7 +166,7 @@ public class NugetRepository : INugetRepository
                         continue;
 
                     dependenciesAccumulator.Add(lastVersion);
-                    await FindDependenciesRecursiveAsync(lastVersion, includePrerelease, includeUnlisted, dependenciesAccumulator, packagesNotFoundAccumulator, token);
+                    await FindDependenciesRecursiveAsync(lastVersion, includePrerelease, includeUnlisted, dependenciesAccumulator, packagesNotFoundAccumulator, token).ConfigureAwait(false);
                 }
                 else
                 {

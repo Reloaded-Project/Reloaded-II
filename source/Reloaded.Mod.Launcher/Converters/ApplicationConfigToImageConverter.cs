@@ -51,9 +51,6 @@ public class ApplicationPathTupleToImageConverter : IMultiValueConverter
             }
         }
 
-        var image = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.RelativeOrAbsolute));
-        image.Freeze();
-
-        return image;
+        return Misc.Imaging.GetPlaceholderIcon();
     }
 }

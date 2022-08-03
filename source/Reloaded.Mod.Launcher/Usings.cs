@@ -55,6 +55,7 @@ global using System.Drawing.Imaging;
 global using System.Drawing;
 global using System.Globalization;
 global using System.IO;
+global using System.Net;
 global using System.Runtime.CompilerServices;
 global using System.Windows.Controls.Primitives;
 global using System.Windows.Controls;

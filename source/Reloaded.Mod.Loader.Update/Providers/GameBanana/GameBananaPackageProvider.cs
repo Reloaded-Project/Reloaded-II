@@ -214,10 +214,10 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
 
         foreach (var gbImage in gbImages)
         {
-            var baseUri = new Uri(gbImage.BaseUrl);
+            var baseUri = new Uri($"{gbImage.BaseUrl}/", UriKind.Absolute);
             var image = new DownloadableImage()
             {
-                Uri = baseUri,
+                Uri = new Uri(baseUri, gbImage.File),
                 Caption = gbImage.Caption
             };
 
