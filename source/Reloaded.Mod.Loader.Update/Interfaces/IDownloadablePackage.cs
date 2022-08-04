@@ -89,6 +89,11 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     public DateTime? Published { get; }
 
     /// <summary>
+    /// Changelog for this package.
+    /// </summary>
+    public string? Changelog { get; }
+
+    /// <summary>
     /// Downloads the package in question asynchronously.
     /// </summary>
     /// <param name="packageFolder">The folder containing all the packages.</param>

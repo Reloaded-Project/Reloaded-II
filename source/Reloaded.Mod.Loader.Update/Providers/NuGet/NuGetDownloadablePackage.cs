@@ -50,6 +50,11 @@ public class NuGetDownloadablePackage : IDownloadablePackage
     public DateTime? Published { get; set; }
 
     /// <summary>
+    /// Unsupported. Can technically be supported but requires download of .nuspec and manual parsing.
+    /// </summary>
+    public string? Changelog { get; }
+
+    /// <summary>
     /// Obtained asynchronously, please wait for PropertyChanged event.
     /// </summary>
     [DoNotNotify]

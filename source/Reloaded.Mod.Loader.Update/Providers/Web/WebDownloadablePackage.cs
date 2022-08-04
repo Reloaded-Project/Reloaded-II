@@ -61,6 +61,9 @@ public class WebDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public DateTime? Published { get; set; } = null!;
 
+    /// <inheritdoc />
+    public string? Changelog { get; set; } = null!;
+
     private Uri _url;
 
     /// <summary>

@@ -68,6 +68,9 @@ public class UpdateDownloadablePackage : IDownloadablePackage
     /// <inheritdoc />
     public DateTime? Published { get; set; } = null!;
 
+    /// <inheritdoc />
+    public string? Changelog { get; }
+
     private async Task GetPackageDetailsAsync()
     {
         var versions      = await PackageResolver.GetPackageVersionsAsync();

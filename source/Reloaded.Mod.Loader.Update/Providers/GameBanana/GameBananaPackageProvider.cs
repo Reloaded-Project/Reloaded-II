@@ -181,6 +181,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                     ? extraData.ModDescription
                     : package.Name;
                 package.MarkdownReadme = extraData.Readme;
+                package.Changelog = extraData.Changelog;
             }
 
             // Set enhanced readme if possible.
