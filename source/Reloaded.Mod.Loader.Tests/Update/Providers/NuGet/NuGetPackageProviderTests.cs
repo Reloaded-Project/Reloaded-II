@@ -24,7 +24,7 @@ public class NuGetPackageProviderTests
         var packages = await provider.SearchAsync("");
 
         // Assert
-        Assert.True(packages.Count > 0);
+        Assert.True(packages.Any());
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class NuGetPackageProviderTests
         var packages = await provider.SearchAsync("Hooks");
 
         // Assert
-        Assert.True(packages.Count > 0);
+        Assert.True(packages.Any());
         Assert.Contains(packages, package => package.Id.Equals("reloaded.sharedlib.hooks", StringComparison.OrdinalIgnoreCase));
     }
 

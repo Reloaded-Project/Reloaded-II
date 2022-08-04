@@ -20,7 +20,7 @@ public class GameBananaPackageProviderTests
         var packages = await provider.SearchAsync("");
 
         // Assert
-        Assert.True(packages.Count > 0);
+        Assert.True(packages.Any());
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public class GameBananaPackageProviderTests
         var packages = await provider.SearchAsync("Update Lib. Test");
 
         // Assert
-        Assert.True(packages.Count > 0);
+        Assert.True(packages.Any());
         //Assert.Contains(packages, package => package.Id.Equals("reloaded.sharedlib.hooks", StringComparison.OrdinalIgnoreCase));
     }
 

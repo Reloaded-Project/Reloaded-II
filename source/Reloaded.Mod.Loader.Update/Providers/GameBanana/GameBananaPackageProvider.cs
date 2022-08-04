@@ -22,68 +22,73 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
     }
 
     /// <inheritdoc />
-    public async Task<List<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default)
+    public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default)
     {
         // TODO: Potential bug if no manager integrated mods are returned but there are still more items to take.
         // We ignore it for now but it's best revisited in the future.
 
         int page       = (skip / take) + 1;
         var gbApiItems = await GameBananaMod.GetByNameAsync(text, GameId, page, take);
-        var results    = new List<IDownloadablePackage>();
+        var results    = new ConcurrentBag<IDownloadablePackage>();
 
         if (gbApiItems == null)
             return results;
 
-        if (!(await TryAddResultsFromReleaseMetadataAsync(gbApiItems, results)))
-            AddResultsFromRawFiles(gbApiItems, results);
+        var getExtraDataTasks = new Task[gbApiItems.Count];
+        for (var x = 0; x < gbApiItems.Count; x++)
+            getExtraDataTasks[x] = AddResultsForApiResult(gbApiItems[x], results);
 
+        await Task.WhenAll(getExtraDataTasks);
         return results;
     }
 
-    private static void AddResultsFromRawFiles(List<GameBananaMod> gbApiItems, List<IDownloadablePackage> results)
+    private async Task AddResultsForApiResult(GameBananaMod gbApiItem, ConcurrentBag<IDownloadablePackage> results)
     {
-        foreach (var result in gbApiItems)
+        if (!(await TryAddResultsFromReleaseMetadataAsync(gbApiItem, results)))
+            AddResultsFromRawFiles(gbApiItem, results);
+    }
+
+    private static void AddResultsFromRawFiles(GameBananaMod gbApiItem, ConcurrentBag<IDownloadablePackage> results)
+    {
+        if (gbApiItem.ManagerIntegrations == null || gbApiItem.Files == null)
+            return;
+
+        // Check manager integrations.
+        var hasMultipleReloadedFiles = CheckIfHasMultipleReloadedFiles(gbApiItem.ManagerIntegrations);
+        foreach (var integratedFile in gbApiItem.ManagerIntegrations)
         {
-            if (result.ManagerIntegrations == null || result.Files == null)
-                continue;
+            var fileId = integratedFile.Key;
+            var integrations = integratedFile.Value;
 
-            // Check manager integrations.
-            var hasMultipleReloadedFiles = CheckIfHasMultipleReloadedFiles(result.ManagerIntegrations);
-            foreach (var integratedFile in result.ManagerIntegrations)
+            // Build items.
+            foreach (var integration in integrations)
             {
-                var fileId = integratedFile.Key;
-                var integrations = integratedFile.Value;
+                if (!integration.IsReloadedDownloadUrl().GetValueOrDefault())
+                    continue;
 
-                // Build items.
-                foreach (var integration in integrations)
+                var url = new Uri(integration.GetReloadedDownloadUrl());
+                var file = gbApiItem.Files.First(x => x.Id == fileId);
+                var fileName = "";
+                if (hasMultipleReloadedFiles)
                 {
-                    if (!integration.IsReloadedDownloadUrl().GetValueOrDefault())
-                        continue;
-
-                    var url = new Uri(integration.GetReloadedDownloadUrl());
-                    var file = result.Files.First(x => x.Id == fileId);
-                    var fileName = "";
-                    if (hasMultipleReloadedFiles)
-                    {
-                        fileName = !string.IsNullOrEmpty(file.Description) ? 
-                            $"{result.Name!}: {file.Description}" : 
-                            $"{result.Name!}: {file.FileName}";
-                    }
-                    else
-                    {
-                        fileName = $"{result.Name!}";
-                    }
-
-                    var package = new WebDownloadablePackage(url, false)
-                    {
-                        Name = fileName,
-                        Description = HtmlUtilities.ConvertToPlainText(result.Description),
-                        MarkdownReadme = Singleton<Converter>.Instance.Convert(result.Description)
-                    };
-
-                    GameBananaAddCommon(result, file, package);
-                    results.Add(package);
+                    fileName = !string.IsNullOrEmpty(file.Description) ?
+                        $"{gbApiItem.Name!}: {file.Description}" :
+                        $"{gbApiItem.Name!}: {file.FileName}";
                 }
+                else
+                {
+                    fileName = $"{gbApiItem.Name!}";
+                }
+
+                var package = new WebDownloadablePackage(url, false)
+                {
+                    Name = fileName,
+                    Description = HtmlUtilities.ConvertToPlainText(gbApiItem.Description),
+                    MarkdownReadme = Singleton<Converter>.Instance.Convert(gbApiItem.Description)
+                };
+
+                GameBananaAddCommon(gbApiItem, file, package);
+                results.Add(package);
             }
         }
     }
@@ -113,70 +118,78 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         return false;
     }
 
-    private static async Task<bool> TryAddResultsFromReleaseMetadataAsync(List<GameBananaMod> gbApiItems, List<IDownloadablePackage> results)
+    private static async Task<bool> TryAddResultsFromReleaseMetadataAsync(GameBananaMod gbApiItem, ConcurrentBag<IDownloadablePackage> results)
     {
         const string metadataExtension = ".json";
         const int maxFileSize = 512 * 1024; // 512KB. To prevent abuse of large JSON files.
-
-        int resultCount = results.Count;
         using var client = new WebClient();
 
-        foreach (var item in gbApiItems)
+        if (gbApiItem.Files == null)
+            return false;
+
+        int numAddedItems = 0;
+        foreach (var file in gbApiItem.Files)
         {
-            if (item.Files == null)
+            if (!file.FileName.EndsWith(metadataExtension) || file.FileSize > maxFileSize || string.IsNullOrEmpty(file.DownloadUrl))
                 continue;
 
-            foreach (var file in item.Files)
-            {
-                if (file.FileName == null || !file.FileName.EndsWith(metadataExtension) || file.FileSize > maxFileSize || string.IsNullOrEmpty(file.DownloadUrl))
-                    continue;
-
-                // Try download metadata file.
-                var metadata = await client.DownloadDataTaskAsync(new Uri(file.DownloadUrl!));
-                try
-                {
-                    // Get metadata & filter potentially invalid file.
-                    var releaseMetadata = await Singleton<ReleaseMetadata>.Instance.ReadFromDataAsync(metadata);
-                    if (releaseMetadata.ExtraData == null || releaseMetadata.Releases.Count <= 0)
-                        continue;
-
-                    // Get the highest version of release.
-                    var highestVersion = releaseMetadata.Releases.OrderByDescending(x => new NuGetVersion(x.Version)).First();
-                    var newestRelease = releaseMetadata.GetRelease(highestVersion.Version, new ReleaseMetadataVerificationInfo());
-                    if (newestRelease == null)
-                        continue;
-
-                    var url = GetDownloadUrlForFileName(newestRelease.FileName, item.Files, out var modFile);
-                    if (string.IsNullOrEmpty(url))
-                        continue;
-
-                    var package = new WebDownloadablePackage(new Uri(url), false)
-                    {
-                        Name = item.Name!,
-                        Description = HtmlUtilities.ConvertToPlainText(item.Description)
-                    };
-
-                    // Get better details from extra data.
-                    if (TryGetExtraData(releaseMetadata, out var extraData))
-                    {
-                        package.Id = !string.IsNullOrEmpty(extraData!.ModId) ? extraData.ModId : package.Name;
-                        package.Name = !string.IsNullOrEmpty(extraData.ModName) ? extraData.ModName : package.Name;
-                        package.Description = !string.IsNullOrEmpty(extraData.ModDescription) ? extraData.ModDescription : package.Name;
-                        package.MarkdownReadme = extraData.Readme;
-                    }
-
-                    // Set enhanced readme if possible.
-                    if (string.IsNullOrEmpty(package.MarkdownReadme))
-                        package.MarkdownReadme = Singleton<Converter>.Instance.Convert(item.Description);
-
-                    GameBananaAddCommon(item, modFile!, package);
-                    results.Add(package);
-                }
-                catch (Exception) { /* Suppress */ }
-            }
+            // Try download metadata file.
+            numAddedItems += await TryAddResultFromReleaseMetadataFile(results, client, file, gbApiItem);
         }
 
-        return results.Count > resultCount;
+        return numAddedItems > 0;
+    }
+
+    private static async Task<int> TryAddResultFromReleaseMetadataFile(ConcurrentBag<IDownloadablePackage> results, WebClient client, GameBananaModFile file, GameBananaMod item)
+    {
+        var metadata = await client.DownloadDataTaskAsync(new Uri(file.DownloadUrl!));
+        try
+        {
+            // Get metadata & filter potentially invalid file.
+            var releaseMetadata = await Singleton<ReleaseMetadata>.Instance.ReadFromDataAsync(metadata);
+            if (releaseMetadata.ExtraData == null || releaseMetadata.Releases.Count <= 0)
+                return 0;
+
+            // Get the highest version of release.
+            var highestVersion = releaseMetadata.Releases.OrderByDescending(x => new NuGetVersion(x.Version)).First();
+            var newestRelease = releaseMetadata.GetRelease(highestVersion.Version, new ReleaseMetadataVerificationInfo());
+            if (newestRelease == null)
+                return 0;
+
+            var url = GetDownloadUrlForFileName(newestRelease.FileName, item.Files, out var modFile);
+            if (string.IsNullOrEmpty(url))
+                return 0;
+
+            var package = new WebDownloadablePackage(new Uri(url), false)
+            {
+                Name = item.Name!,
+                Description = HtmlUtilities.ConvertToPlainText(item.Description)
+            };
+
+            // Get better details from extra data.
+            if (TryGetExtraData(releaseMetadata, out var extraData))
+            {
+                package.Id = !string.IsNullOrEmpty(extraData!.ModId) ? extraData.ModId : package.Name;
+                package.Name = !string.IsNullOrEmpty(extraData.ModName) ? extraData.ModName : package.Name;
+                package.Description = !string.IsNullOrEmpty(extraData.ModDescription)
+                    ? extraData.ModDescription
+                    : package.Name;
+                package.MarkdownReadme = extraData.Readme;
+            }
+
+            // Set enhanced readme if possible.
+            if (string.IsNullOrEmpty(package.MarkdownReadme))
+                package.MarkdownReadme = Singleton<Converter>.Instance.Convert(item.Description);
+
+            GameBananaAddCommon(item, modFile!, package);
+            results.Add(package);
+            return 1;
+        }
+        catch (Exception)
+        {
+            // Suppress
+            return 0;
+        }
     }
 
     private static string? GetDownloadUrlForFileName(string fileName, List<GameBananaModFile> files, out GameBananaModFile? file)

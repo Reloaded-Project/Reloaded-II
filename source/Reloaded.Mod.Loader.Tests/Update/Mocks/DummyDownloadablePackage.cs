@@ -21,7 +21,7 @@ public class DummyDownloadablePackage : IDownloadablePackage
     public NuGetVersion Version { get; set; } = new NuGetVersion("1.0.0");
     public long? FileSize { get; } = 0;
     public string MarkdownReadme { get; } = null;
-    public DownloadableImage[]? Images { get; set; }
+    public DownloadableImage[] Images { get; set; }
     public Uri ProjectUri { get; set; } = null;
     public long? LikeCount { get; } = null;
     public long? ViewCount { get; } = null;
