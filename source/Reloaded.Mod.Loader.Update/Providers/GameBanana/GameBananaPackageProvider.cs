@@ -70,7 +70,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
 
                 var url = new Uri(integration.GetReloadedDownloadUrl());
                 var file = gbApiItem.Files.First(x => x.Id == fileId);
-                var fileName = "";
+                string fileName;
                 if (hasMultipleReloadedFiles)
                 {
                     fileName = !string.IsNullOrEmpty(file.Description) ?
@@ -162,7 +162,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
             if (newestRelease == null)
                 return 0;
 
-            var url = GetDownloadUrlForFileName(newestRelease.FileName, item.Files, out var modFile);
+            var url = GetDownloadUrlForFileName(newestRelease.FileName, item.Files!, out var modFile);
             if (string.IsNullOrEmpty(url))
                 return 0;
 
@@ -204,7 +204,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         file = default;
         foreach (var expectedFileName in expectedFileNames)
         {
-            file = files.FirstOrDefault(x => x.FileName!.StartsWith(expectedFileName, StringComparison.OrdinalIgnoreCase));
+            file = files.FirstOrDefault(x => x.FileName.StartsWith(expectedFileName, StringComparison.OrdinalIgnoreCase));
             if (file != null)
                 return file.DownloadUrl;
         }
@@ -286,7 +286,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         var gbSubmitter = result.Submitter;
         var pkgSubmitter = new Submitter
         {
-            UserName = gbSubmitter.Name!,
+            UserName = gbSubmitter.Name,
             JoinDate = gbSubmitter.JoinDate,
             ProfileUrl = new Uri(gbSubmitter.ProfileUrl)
         };
