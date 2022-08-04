@@ -41,7 +41,7 @@ public static class Setup
             SetupViewModels();
 
             updateText(Resources.SplashRunningSanityChecks.Get());
-            DoSanityTests();
+            backgroundTasks.Add(DoSanityTests());
             backgroundTasks.Add(Task.Run(CompressOldLogs));
 
             // Wait until splash screen time.
@@ -130,51 +130,60 @@ public static class Setup
     /// <summary>
     /// Tests possible error cases.
     /// </summary>
-    private static void DoSanityTests()
+    private static Task DoSanityTests()
     {
         // Needs to be ran after SetupViewModelsAsync
         var apps = IoC.GetConstant<ApplicationConfigService>().Items;
         var mods = IoC.GetConstant<ModConfigService>().Items.ToArray();
-        var updatedBootstrappers = new List<string>();
 
+        // Enforce compatibility non-async, since this is unlikely to do anything.
         foreach (var app in apps)
-        {
-            // Incompatible Mods
             EnforceModCompatibility(app, mods);
 
-            // Bootstrapper Update
-            try
+        // Checking bootstrappers could add I/O overhead on cold boot, delegate to threadpool.
+        void UpdateBootstrappers()
+        {
+            var updatedBootstrappers = new List<string>();
+            foreach (var app in apps)
             {
-                var deployer = new AsiLoaderDeployer(app);
-                var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
-                if (!File.Exists(bootstrapperInstallPath))
-                    continue;
-
-                var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
                 try
                 {
-                    if (!updater.NeedsUpdate())
+                    var deployer = new AsiLoaderDeployer(app);
+                    var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
+                    if (!File.Exists(bootstrapperInstallPath)) 
                         continue;
+
+                    var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
+                    try
+                    {
+                        if (!updater.NeedsUpdate()) 
+                            continue;
+                    }
+                    catch (Exception) { /* ignored */ }
+
+                    var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
+                    try
+                    {
+                        File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
+                        updatedBootstrappers.Add(app.Config.AppName);
+                    }
+                    catch (Exception) { /* ignored */ }
                 }
                 catch (Exception) { /* ignored */ }
-
-                var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
-                try
-                {
-                    File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
-                    updatedBootstrappers.Add(app.Config.AppName);
-                }
-                catch (Exception) { /* ignored */  }
             }
-            catch (Exception) { /* ignored */ }
+
+            if (updatedBootstrappers.Count <= 0) 
+                return;
+
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+            {
+                var title = Resources.BootstrapperUpdateTitle.Get();
+                var description = string.Format(Resources.BootstrapperUpdateDescription.Get(), String.Join('\n', updatedBootstrappers));
+                Actions.DisplayMessagebox.Invoke(title, description);
+            });
         }
 
-        if (updatedBootstrappers.Count <= 0)
-            return;
-
-        var title = Resources.BootstrapperUpdateTitle.Get();
-        var description = string.Format(Resources.BootstrapperUpdateDescription.Get(), String.Join('\n', updatedBootstrappers));
-        Actions.DisplayMessagebox.Invoke(title, description);
+        return Task.Run(UpdateBootstrappers);
     }
 
     private static void RegisterReloadedProtocol()
