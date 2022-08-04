@@ -14,14 +14,13 @@
       Title="{DynamicResource TitleDownloadMods}">
     <Grid x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
-        <Grid.Resources>
-            <download:CheckForUpdatesAndDependenciesCommand x:Key="CheckForUpdatesAndDependenciesCommand"/>
-        </Grid.Resources>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <!-- Current Item Overlay -->
+        
 
         <!-- Search -->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{DynamicResource CommonItemVerticalMarginSmall}">

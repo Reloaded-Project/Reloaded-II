@@ -15,6 +15,8 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
     /// </summary>
     public int GameId { get; private set; }
 
+    private string _dummyFolderForReleaseVerification = Path.GetTempPath();
+
     /// <summary/>
     public GameBananaPackageProvider(int gameId)
     {
@@ -118,7 +120,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         return false;
     }
 
-    private static async Task<bool> TryAddResultsFromReleaseMetadataAsync(GameBananaMod gbApiItem, ConcurrentBag<IDownloadablePackage> results)
+    private async Task<bool> TryAddResultsFromReleaseMetadataAsync(GameBananaMod gbApiItem, ConcurrentBag<IDownloadablePackage> results)
     {
         const string metadataExtension = ".json";
         const int maxFileSize = 512 * 1024; // 512KB. To prevent abuse of large JSON files.
@@ -140,7 +142,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         return numAddedItems > 0;
     }
 
-    private static async Task<int> TryAddResultFromReleaseMetadataFile(ConcurrentBag<IDownloadablePackage> results, WebClient client, GameBananaModFile file, GameBananaMod item)
+    private async Task<int> TryAddResultFromReleaseMetadataFile(ConcurrentBag<IDownloadablePackage> results, WebClient client, GameBananaModFile file, GameBananaMod item)
     {
         var metadata = await client.DownloadDataTaskAsync(new Uri(file.DownloadUrl!));
         try
@@ -152,7 +154,11 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
 
             // Get the highest version of release.
             var highestVersion = releaseMetadata.Releases.OrderByDescending(x => new NuGetVersion(x.Version)).First();
-            var newestRelease = releaseMetadata.GetRelease(highestVersion.Version, new ReleaseMetadataVerificationInfo());
+            var newestRelease = releaseMetadata.GetRelease(highestVersion.Version, new ReleaseMetadataVerificationInfo()
+            {
+                FolderPath = _dummyFolderForReleaseVerification
+            });
+
             if (newestRelease == null)
                 return 0;
 
