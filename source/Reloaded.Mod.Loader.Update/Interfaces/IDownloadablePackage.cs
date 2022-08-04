@@ -117,6 +117,27 @@ public struct DownloadableImage
     /// Provides additional thumbnails for this image.
     /// </summary>
     public DownloadableImageThumbnail[]? Thumbnails { get; set; }
+
+    /// <summary>
+    /// Selects an image to display based on a width hint.
+    /// </summary>
+    /// <param name="width">Default value of max will pick the highest quality.</param>
+    public Uri SelectBasedOnWidth(int width = int.MaxValue)
+    {
+        if (width == int.MaxValue || Thumbnails == null || Thumbnails.Length == 0)
+            return Uri;
+
+        foreach (var thumbnail in Thumbnails)
+        {
+            if (thumbnail.WidthHint == null)
+                continue;
+
+            if (thumbnail.WidthHint > width)
+                return thumbnail.Uri;
+        }
+
+        return Uri;
+    }
 }
 
 /// <summary>

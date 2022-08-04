@@ -1,4 +1,5 @@
-﻿using Reloaded.Mod.Loader.Update.Interfaces;
+﻿using System.Numerics;
+using Reloaded.Mod.Loader.Update.Interfaces;
 using Image = System.Windows.Controls.Image;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
@@ -31,13 +32,18 @@ public partial class DownloadPackagesPage : ReloadedIIPage
         var image = (Image)sender;
         image.Source = Imaging.GetPlaceholderIcon();
 
-        // Now download the new imag async.
+        // Now download the new image async.
         var package = image.DataContext as IDownloadablePackage;
         if (package?.Images == null || package.Images.Length <= 0)
             return;
 
-        var uri = package.Images.First().Uri;
+        // Calculate actual rendered size.
+        var dpiScale = VisualTreeHelper.GetDpi(image);
+        var desiredWidth = (int)(image.DesiredSize.Width * dpiScale.DpiScaleX);
+
+        // Select and decode appropriate image.
+        var uri = package.Images[0].SelectBasedOnWidth(desiredWidth);
         await using var memoryStream = new MemoryStream(await _cacheService.GetImage(uri, _cacheService.ModPreviewExpiration));
-        image.Source = Imaging.BitmapFromStream(memoryStream);
+        image.Source = Imaging.BitmapFromStream(memoryStream, desiredWidth);
     }
 }

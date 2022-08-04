@@ -19,12 +19,19 @@ public class Imaging
     /// <summary>
     /// Loads an image from a given stream.
     /// </summary>
-    public static BitmapImage BitmapFromStream(Stream stream)
+    public static BitmapImage BitmapFromStream(Stream stream, int? decodePixelWidth = null, int? decodePixelHeight = null)
     {
         var bitmapImage = new BitmapImage();
         bitmapImage.BeginInit();
         bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
         bitmapImage.StreamSource = stream;
+        
+        if (decodePixelHeight.HasValue)
+            bitmapImage.DecodePixelHeight = decodePixelHeight.Value;
+
+        if (decodePixelWidth.HasValue)
+            bitmapImage.DecodePixelWidth = decodePixelWidth.Value;
+
         bitmapImage.EndInit();
         bitmapImage.Freeze();
         return bitmapImage;
