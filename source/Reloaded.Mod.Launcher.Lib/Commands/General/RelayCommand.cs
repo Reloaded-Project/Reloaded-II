@@ -8,6 +8,11 @@ namespace Reloaded.Mod.Launcher.Lib.Commands.General;
 /// </summary>
 public class RelayCommand : ICommand
 {
+    /// <summary>
+    /// Executed after the execute method is ran.
+    /// </summary>
+    public event Action<object?>? AfterExecute; 
+
     #region Private members
     /// <summary>
     /// Creates a new command that can always execute.
@@ -61,5 +66,9 @@ public class RelayCommand : ICommand
     /// <param name="parameter">
     /// Data used by the command. If the command does not require data to be passed, this object can be set to null.
     /// </param>
-    public void Execute(object? parameter) => _execute!(parameter);
+    public void Execute(object? parameter)
+    {
+        _execute!(parameter);
+        AfterExecute?.Invoke(parameter);
+    }
 }

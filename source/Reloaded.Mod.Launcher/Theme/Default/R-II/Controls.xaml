@@ -258,10 +258,13 @@
 
     <!-- Download Menu Title -->
     <Style x:Key="DownloadModTitleTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource RIIDefaultTextBlock}">
-
         <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
         <Setter Property="FontFamily" Value="{DynamicResource FontBold}"/>
+    </Style>
 
+    <!-- Package Preview Page Title -->
+    <Style x:Key="PackagePreviewModTitleTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DownloadModTitleTextBlock}">
+        <Setter Property="FontSize" Value="32"/>
     </Style>
 
 </ResourceDictionary>

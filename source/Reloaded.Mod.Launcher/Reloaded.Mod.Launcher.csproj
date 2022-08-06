@@ -56,8 +56,9 @@
 
   <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="3.1.1" />
-    <PackageReference Include="HandyControl" Version="3.2.0-propertygrid" />
+    <PackageReference Include="HandyControl" Version="3.2.0-reloaded-1.1.0" />
     <PackageReference Include="HandyControl.Lang.en" Version="3.3.0" />
+    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="Markdig.Wpf" Version="0.5.0.1" />
     <PackageReference Include="Ninject" Version="3.3.6" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
@@ -67,7 +68,7 @@
     <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.1.2" />
     <PackageReference Include="Sewer56.UI.Controller.Core" Version="1.1.0" />
     <PackageReference Include="Sewer56.UI.Controller.ReloadedInput.Configurator" Version="1.2.0" />
-    <PackageReference Include="Sewer56.UI.Controller.WPF" Version="1.0.2" />
+    <PackageReference Include="Sewer56.UI.Controller.WPF" Version="1.1.0" />
     <PackageReference Include="SharpVectors" Version="1.8.0" />
   </ItemGroup>
 

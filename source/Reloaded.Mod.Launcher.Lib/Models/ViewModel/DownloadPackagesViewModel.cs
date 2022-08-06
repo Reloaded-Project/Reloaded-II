@@ -55,6 +55,16 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// </summary>
     public AggregatePackageProvider CurrentPackageProvider { get; set; }
 
+    /// <summary>
+    /// Selects the next package for viewing.
+    /// </summary>
+    public RelayCommand SelectNextItem { get; set; }
+
+    /// <summary>
+    /// Selects the previous package for viewing.
+    /// </summary>
+    public RelayCommand SelectLastItem { get; set; }
+
     private CancellationTokenSource? _tokenSource;
 
     private PaginationHelper _paginationHelper = PaginationHelper.Default;
@@ -81,10 +91,15 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         // Setup other viewmodel elements.
         ConfigureNuGetSourcesCommand = new ConfigureNuGetSourcesCommand(RefreshOnSourceChange);
         PropertyChanged += OnAnyPropChanged;
+        SelectLastItem = new RelayCommand(SelectLastResult, CanSelectLastResult);
+        SelectNextItem = new RelayCommand(SelectNextResult, CanSelectNextResult);
         UpdateCommands();
 
         // React to search results and pagination stuff.
         SearchResult.CollectionChanged += SetCanGoToNextPageOnSearchResultsChanged;
+
+        // Bind to this for children.
+        IoC.RebindToConstant(this);
 
         // Perform Initial Search.
         _paginationHelper.ItemsPerPage = 10;
@@ -126,6 +141,42 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         _paginationHelper.PreviousPage();
         CanGoToLastPage = _paginationHelper.Page > 0;
         await GetSearchResults();
+    }
+
+    /// <summary>
+    /// Returns true if next result in the list can be selected.
+    /// </summary>
+    public bool CanSelectNextResult(object? unused = null)
+    {
+        var index = SearchResult.IndexOf(SelectedResult);
+        return index < SearchResult.Count - 1;
+    }
+
+    /// <summary>
+    /// Returns true if next result in the list can be selected.
+    /// </summary>
+    public bool CanSelectLastResult(object? unused = null)
+    {
+        var index = SearchResult.IndexOf(SelectedResult);
+        return index > 0;
+    }
+
+    /// <summary>
+    /// Selects the next result in the list.
+    /// </summary>
+    public void SelectLastResult(object? unused = null)
+    {
+        var index = SearchResult.IndexOf(SelectedResult);
+        SelectedResult = SearchResult[index - 1];
+    }
+
+    /// <summary>
+    /// Selects the next result in the list.
+    /// </summary>
+    public void SelectNextResult(object? unused = null)
+    {
+        var index = SearchResult.IndexOf(SelectedResult);
+        SelectedResult = SearchResult[index + 1];
     }
 
     [SuppressPropertyChangedWarnings]

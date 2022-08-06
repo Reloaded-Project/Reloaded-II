@@ -55,7 +55,7 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     /// <summary>
     /// Long description of the mod.
     /// </summary>
-    public string? LongDescription => MarkdownReadme ?? Description;
+    public string? LongDescription  => !string.IsNullOrEmpty(MarkdownReadme) ? MarkdownReadme : Description;
 
     /// <summary>
     /// Provides a list of images for this package.

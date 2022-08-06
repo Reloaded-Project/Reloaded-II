@@ -13,30 +13,28 @@
     <!-- Document styles -->
     <Style TargetType="{x:Type FlowDocument}" x:Key="{x:Static markdig:Styles.DocumentStyleKey}">
         <Setter Property="ScrollViewer.Visibility" Value="Hidden"/>
-        <Setter Property="Background" Value="{DynamicResource BackgroundColorBrush}"/>
-        <Setter Property="FontFamily" Value="{DynamicResource FontLight}" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeSmaller}" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontRegular}" />
         <Setter Property="Foreground" Value="{StaticResource TextColorBrush}"/>
         <Setter Property="LineHeight" Value="{DynamicResource FontSizeSmaller}"/>
     </Style>
  
     <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.Heading1StyleKey}">
-        <Setter Property="FontFamily" Value="{DynamicResource FontThin}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSizeLargest}" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontRegular}" />
     </Style>
 
     <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.Heading2StyleKey}">
-        <Setter Property="FontFamily" Value="{DynamicResource FontThin}" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontRegular}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSizeLarger}" />
     </Style>
 
     <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.Heading3StyleKey}">
-        <Setter Property="FontFamily" Value="{DynamicResource FontThin}" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontRegular}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSizeRegular}" />
     </Style>
 
     <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.Heading4StyleKey}">
-        <Setter Property="FontFamily" Value="{DynamicResource FontThin}" />
+        <Setter Property="FontFamily" Value="{DynamicResource FontRegular}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSizeSmall}" />
     </Style>
 
@@ -55,12 +53,11 @@
     </Style>
 
     <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.CodeBlockStyleKey}">
-        <Setter Property="FontFamily" Value="Consolas, Lucida Sans Typewriter, Courier New" />
-        <Setter Property="Background" Value="{DynamicResource BorderColorDarkBrush}"/>    
+        <Setter Property="Background" Value="Transparent"/>    
     </Style>
 
     <Style TargetType="{x:Type Run}" x:Key="{x:Static markdig:Styles.CodeStyleKey}">
-        <Setter Property="FontFamily" Value="Consolas, Lucida Sans Typewriter, Courier New" />
+        <Setter Property="Background" Value="Transparent"/>
     </Style>
 
     <Style TargetType="{x:Type Section}" x:Key="{x:Static markdig:Styles.QuoteBlockStyleKey}">
@@ -108,6 +105,41 @@
                 <ControlTemplate TargetType="markdig:MarkdownViewer">
                     <FlowDocumentScrollViewer Document="{TemplateBinding Document}"
                                               ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!-- MarkdownViewer Text Only Template-->
+    <Style x:Key="FlowDocumentScrollViewerTextOnlyStyle" TargetType="{x:Type FlowDocumentScrollViewer}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="Local"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource AccentColorBrushDark}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type FlowDocumentScrollViewer}">
+                    <ScrollViewer x:Name="PART_ContentHost" 
+                                  IsHitTestVisible="True" 
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MarkdownViewerTextOnly" TargetType="markdig:MarkdownViewer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="markdig:MarkdownViewer">
+                    <FlowDocumentScrollViewer Document="{TemplateBinding Document}"
+                                              Background="Transparent"
+                                              HorizontalScrollBarVisibility="Disabled"
+                                              Style="{DynamicResource FlowDocumentScrollViewerTextOnlyStyle}">
+                        
+                    </FlowDocumentScrollViewer>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -542,4 +542,8 @@
     <!-- Update 1.20.0: Revamped Downloads Menu -->
     <sys:String x:Key="DownloadsMenuNuGetButton">NuGet</sys:String>
 
+    <sys:String x:Key="DownloadsPackagePreviewProjectUrl">Project Site</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewClose">Close</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewLastUpdated">Last Updated: </sys:String> <!-- Followed by date -->
+
 </ResourceDictionary>

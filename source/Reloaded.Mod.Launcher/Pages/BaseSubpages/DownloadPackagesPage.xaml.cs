@@ -1,5 +1,8 @@
-﻿using System.Numerics;
+﻿using NuGet.Protocol.Plugins;
+using Reloaded.Mod.Launcher.Lib.Models.ViewModel.DownloadPackages;
+using Reloaded.Mod.Launcher.Pages.BaseSubpages.DownloadPackagesPages;
 using Reloaded.Mod.Loader.Update.Interfaces;
+using Button = Sewer56.UI.Controller.Core.Enums.Button;
 using Image = System.Windows.Controls.Image;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
@@ -7,19 +10,39 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 /// <summary>
 /// Interaction logic for DownloadModsPage.xaml
 /// </summary>
-public partial class DownloadPackagesPage : ReloadedIIPage
+public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
 {
     public DownloadPackagesViewModel ViewModel { get; set; }
 
     private ImageCacheService _cacheService;
+    private bool _disposed;
 
     public DownloadPackagesPage()
     {
         InitializeComponent();
         _cacheService = Lib.IoC.GetConstant<ImageCacheService>();
         ViewModel = Lib.IoC.Get<DownloadPackagesViewModel>();
+        ViewModel.SelectNextItem.AfterExecute += o => OpenPackagePreviewPage(SlideDirection.Right, SlideDirection.Left);
+        ViewModel.SelectLastItem.AfterExecute += o => OpenPackagePreviewPage(SlideDirection.Left, SlideDirection.Right);
+        this.AnimateOutStarted += OnAnimateOutStarted;
+        ControllerSupport.SubscribeCustomInputs(ProcessEvents);
     }
-    
+
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        ControllerSupport.UnsubscribeCustomInputs(ProcessEvents);
+        ViewModel.Dispose();
+        _disposed = true;
+    }
+
+    private void OnAnimateOutStarted()
+    {
+        this.AnimateOutStarted -= OnAnimateOutStarted;
+    }
+
     private async void Last_Click(object sender, RoutedEventArgs e) => await ViewModel.GoToLastPage();
     private async void Next_Click(object sender, RoutedEventArgs e) => await ViewModel.GoToNextPage();
 
@@ -45,5 +68,60 @@ public partial class DownloadPackagesPage : ReloadedIIPage
         var uri = package.Images[0].SelectBasedOnWidth(desiredWidth);
         await using var memoryStream = new MemoryStream(await _cacheService.GetImage(uri, _cacheService.ModPreviewExpiration));
         image.Source = Imaging.BitmapFromStream(memoryStream, desiredWidth);
+    }
+
+    private void OnClickCard(object sender, MouseButtonEventArgs e)
+    {
+        // Note: This event is fired before SelectedItem, so we will set the current item ourselves in the meantime.
+        HandleCardSelect((IDownloadablePackage)((FrameworkElement)sender).DataContext);
+    }
+
+    private void OnPressKeyInListView(object sender, KeyEventArgs e)
+    {
+        if (e.Key is Key.Space or Key.Enter)
+        {
+            var selectedItem = ((ListView)sender).SelectedItem;
+            if (selectedItem != null)
+                HandleCardSelect((IDownloadablePackage)selectedItem);
+
+            e.Handled = true;
+        }
+    }
+
+    private void ProcessEvents(in ControllerState state, ref bool handled)
+    {
+        if (!state.IsButtonPressed(Button.Accept))
+            return;
+
+        if (!WpfUtilities.TryGetFocusedElementAndWindow(out var window, out var element)) 
+            return;
+
+        if (element is ListViewItem listViewItem)
+        {
+            HandleCardSelect((IDownloadablePackage)(listViewItem.DataContext));
+            handled = true;
+        }
+    }
+
+
+    private void HandleCardSelect(IDownloadablePackage package)
+    {
+        ViewModel.SelectedResult = package;
+        OpenPackagePreviewPage(SlideDirection.Top, SlideDirection.Bottom);
+    }
+
+
+    private void OpenPackagePreviewPage(SlideDirection newPageEnterDirection, SlideDirection oldPageLeaveDirection)
+    {
+        if (CurrentModPageHost.CurrentPage is PackagePreviewPage oldPage)
+        {
+            oldPage.SetExitDirection(oldPageLeaveDirection);
+            oldPage.Dispose();
+        }
+
+        CurrentModPageHost.CurrentPage = new PackagePreviewPage(
+            Lib.IoC.Get<DownloadPackagePreviewViewModel>(),
+            () => { CurrentModPageHost.CurrentPage = null; },
+            newPageEnterDirection);
     }
 }

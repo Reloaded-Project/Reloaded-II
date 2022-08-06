@@ -87,17 +87,18 @@ public static class ControllerSupport
         ProcessCustomControls(state);
 
         // Send out preview event.
+        // Don't change to `foreach`, collection may change during iteration.
         bool isHandled = false;
-        foreach (var previewEvent in _processCustomInputsPreview)
+        for (var x = 0; x < _processCustomInputsPreview.Count; x++)
         {
-            previewEvent(state, ref isHandled);
+            _processCustomInputsPreview[x](state, ref isHandled);
             if (isHandled)
                 return;
         }
 
-        foreach (var bubbleUpEvent in _processCustomInputs)
+        for (var x = _processCustomInputs.Count - 1; x >= 0; x--)
         {
-            bubbleUpEvent(state, ref isHandled);
+            _processCustomInputs[x](state, ref isHandled);
             if (isHandled)
                 return;
         }
