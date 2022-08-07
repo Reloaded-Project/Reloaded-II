@@ -3,18 +3,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.BaseSubpages.DownloadPackagesPages"
       xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
-      xmlns:hc="https://handyorg.github.io/handycontrol"
       xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
       xmlns:wpf="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="560" d:DesignWidth="950"
       Title="PackagePreviewPage"
       Hyperlink.Click="Page_Click"
-      xmlns:langs="clr-namespace:HandyControl.Properties.Langs;assembly=HandyControl"
       xmlns:utility="clr-namespace:Reloaded.Mod.Launcher.Utility"
-    xmlns:interactivity="clr-namespace:HandyControl.Interactivity;assembly=HandyControl">
+      xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl"
+      xmlns:interactivity="clr-namespace:HandyControl.Interactivity;assembly=HandyControl">
 
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}" Background="{DynamicResource TooltipBackgroundColorBrush}">
 
@@ -121,7 +119,7 @@
                 <!-- Images -->
                 <!-- Using the viewbox to add stretch support to carousel. -->
                 <Viewbox>
-                    <hc:Carousel Width="640" Height="360" Loaded="OnCarouselLoaded" IsCenter="True" ExtendWidth="0" x:Name="PreviewCarousel" Focusable="False" />
+                    <hc:Carousel Style="{DynamicResource ReloadedCarousel}" Width="640" Height="360" Loaded="OnCarouselLoaded" IsCenter="True" ExtendWidth="0" x:Name="PreviewCarousel" Focusable="False" />
                 </Viewbox>
 
                 <!-- Caption -->
