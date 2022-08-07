@@ -7,10 +7,10 @@ public partial class NonReloadedProcessPage : ApplicationSubPage
 {
     public NonReloadedPageViewModel ViewModel { get; set; }
 
-    public NonReloadedProcessPage()
+    public NonReloadedProcessPage(ApplicationViewModel appViewModel)
     {
         InitializeComponent();
-        ViewModel = Lib.IoC.Get<NonReloadedPageViewModel>();
+        ViewModel = new NonReloadedPageViewModel(appViewModel);
     }
 
     private void Button_Click(object sender, System.Windows.RoutedEventArgs e)

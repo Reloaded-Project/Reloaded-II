@@ -20,13 +20,13 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
 
     public PackagePreviewPage(DownloadPackagePreviewViewModel viewModel, Action close, SlideDirection entryDirection)
     {
+        this.AnimateOutStarted += Dispose;
         ViewModel = viewModel;
         _entryDirection = entryDirection;
         _close = close;
         InitializeComponent();
         this.AnimateInFinished -= OnAnimateInFinished;
         PreviewCarousel.OnPageIndexChanged += OnPageIndexChanged;
-        this.AnimateOutStarted += Dispose;
         ControllerSupport.SubscribePreviewCustomInputs(SubscribePreviewCustomInputs);
         
         // We need to explicitly set focus in case person changes page on controller without 

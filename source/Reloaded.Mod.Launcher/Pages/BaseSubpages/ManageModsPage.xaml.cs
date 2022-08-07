@@ -13,10 +13,10 @@ public partial class ManageModsPage : ReloadedIIPage
 
     public ManageModsPage() : base()
     {
+        this.AnimateOutStarted += SaveCurrentMod;
         InitializeComponent();
         ViewModel = Lib.IoC.GetConstant<ManageModsViewModel>();
         this.DataContext = ViewModel;
-        this.AnimateOutStarted += SaveCurrentMod;
         Lib.IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
 
         // Setup filters

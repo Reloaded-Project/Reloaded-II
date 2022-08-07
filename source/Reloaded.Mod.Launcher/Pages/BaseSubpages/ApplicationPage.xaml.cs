@@ -13,9 +13,17 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
 
     public ApplicationPage()
     {
+        this.AnimateOutStarted += Dispose;
         InitializeComponent();
         ViewModel = new ApplicationViewModel(Lib.IoC.Get<MainPageViewModel>().SelectedApplication!, Lib.IoC.Get<ModConfigService>(), Lib.IoC.Get<ModUserConfigService>(), Lib.IoC.Get<LoaderConfig>());
-        this.AnimateOutStarted += Dispose;
+        ViewModel.PropertyChanged += OnPageChanged;
+        ViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
+    }
+
+    private void OnPageChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModel.Page))
+            SwitchPage(ViewModel.Page);
     }
 
     ~ApplicationPage()
@@ -96,5 +104,19 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
     {
         if (!String.IsNullOrEmpty(this.Title))
             Lib.IoC.Get<WindowViewModel>().WindowTitle = $"{this.Title}: {ViewModel.ApplicationTuple.Config.AppName}";
+    }
+
+    // Switch to new page.
+    private void SwitchPage(ApplicationSubPage page)
+    {
+        PageHost.CurrentPage = page switch
+        {
+            ApplicationSubPage.Null => null,
+            ApplicationSubPage.NonReloadedProcess => new NonReloadedProcessPage(ViewModel),
+            ApplicationSubPage.ReloadedProcess => new ReloadedProcessPage(ViewModel),
+            ApplicationSubPage.ApplicationSummary => new AppSummaryPage(ViewModel),
+            ApplicationSubPage.EditApplication => new EditAppPage(ViewModel),
+            _ => throw new ArgumentOutOfRangeException(nameof(page), page, null)
+        };
     }
 }

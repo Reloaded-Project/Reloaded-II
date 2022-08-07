@@ -78,8 +78,6 @@ public class ApplicationViewModel : ObservableObject, IDisposable
         UpdateReloadedProcesses();
         GetModsForThisApp();
         _refreshProcessesWithLoaderTimer = new Timer(RefreshTimerCallback, null, 500, loaderConfig.ProcessRefreshInterval);
-        Page = ApplicationSubPage.ApplicationSummary;
-        IoC.RebindToConstant(this);
     }
 
     /// <inheritdoc />
@@ -93,10 +91,13 @@ public class ApplicationViewModel : ObservableObject, IDisposable
     {
         _initialiseTokenSrc.Cancel();
         _modConfigService.Items.CollectionChanged -= OnGetModifications;
-        _instanceTracker.OnProcessesChanged -= OnProcessesChanged;
-
         _refreshProcessesWithLoaderTimer?.Dispose();
-        _instanceTracker?.Dispose();
+        if (_instanceTracker != null!)
+        {
+            _instanceTracker.OnProcessesChanged -= OnProcessesChanged;
+            _instanceTracker?.Dispose();
+        }
+        
         GC.SuppressFinalize(this);
     }
 

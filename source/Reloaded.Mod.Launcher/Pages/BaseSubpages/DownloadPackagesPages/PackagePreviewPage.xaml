@@ -146,7 +146,6 @@
                     <!-- Prev/Next -->
                     <Button Command="{Binding Path=SelectLastItem}"
                             Style="{DynamicResource UnpaddedButton}" Height="{Binding ElementName=DownloadBtn, Path=ActualHeight}"
-                            Visibility="{Binding CanGoToLastPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"
                             VerticalContentAlignment="Center">
                         <Viewbox>
                             <Canvas Width="24" Height="24">
@@ -157,7 +156,6 @@
 
                     <Button Command="{Binding Path=SelectNextItem}"
                             Style="{DynamicResource UnpaddedButton}" Height="{Binding ElementName=DownloadBtn, Path=ActualHeight}"
-                            Visibility="{Binding CanGoToNextPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"
                             VerticalContentAlignment="Center">
                         <Viewbox>
                             <Canvas Width="24" Height="24">

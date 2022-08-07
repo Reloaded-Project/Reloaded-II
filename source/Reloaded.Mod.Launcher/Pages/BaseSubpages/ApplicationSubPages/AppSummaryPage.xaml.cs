@@ -11,10 +11,10 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
     private readonly DictionaryResourceManipulator _manipulator;
     private readonly CollectionViewSource _modsViewSource;
 
-    public AppSummaryPage()
+    public AppSummaryPage(ApplicationViewModel appViewModel)
     {
         InitializeComponent();
-        ViewModel = Lib.IoC.Get<ConfigureModsViewModel>();
+        ViewModel = new ConfigureModsViewModel(appViewModel, Lib.IoC.Get<ModUserConfigService>());
 
         ControllerSupport.SubscribeCustomInputs(OnProcessCustomInputs);
         _manipulator    = new DictionaryResourceManipulator(this.Contents.Resources);

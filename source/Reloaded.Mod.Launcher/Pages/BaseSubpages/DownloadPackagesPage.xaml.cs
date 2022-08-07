@@ -16,15 +16,15 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
 
     private ImageCacheService _cacheService;
     private bool _disposed;
-
+    
     public DownloadPackagesPage()
     {
+        this.AnimateOutStarted += OnAnimateOutStarted;
         InitializeComponent();
         _cacheService = Lib.IoC.GetConstant<ImageCacheService>();
         ViewModel = Lib.IoC.Get<DownloadPackagesViewModel>();
         ViewModel.SelectNextItem.AfterExecute += o => OpenPackagePreviewPage(SlideDirection.Right, SlideDirection.Left);
         ViewModel.SelectLastItem.AfterExecute += o => OpenPackagePreviewPage(SlideDirection.Left, SlideDirection.Right);
-        this.AnimateOutStarted += OnAnimateOutStarted;
         ControllerSupport.SubscribeCustomInputs(ProcessEvents);
     }
 
@@ -41,6 +41,7 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
     private void OnAnimateOutStarted()
     {
         this.AnimateOutStarted -= OnAnimateOutStarted;
+        Dispose();
     }
 
     private async void Last_Click(object sender, RoutedEventArgs e) => await ViewModel.GoToLastPage();
@@ -120,7 +121,7 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
         }
 
         CurrentModPageHost.CurrentPage = new PackagePreviewPage(
-            Lib.IoC.Get<DownloadPackagePreviewViewModel>(),
+            new DownloadPackagePreviewViewModel(ViewModel),
             () => { CurrentModPageHost.CurrentPage = null; },
             newPageEnterDirection);
     }

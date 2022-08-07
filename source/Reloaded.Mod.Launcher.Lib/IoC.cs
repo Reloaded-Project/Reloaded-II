@@ -81,6 +81,7 @@ public static class IoC
 
     /// <summary>
     /// Re-binds the given type to a constant value.
+    /// Use with singleton dialogs only. Remember to unbind.
     /// </summary>
     /// <typeparam name="T">The type of the value to bind.</typeparam>
     /// <param name="item">The item to set.</param>
@@ -99,6 +100,11 @@ public static class IoC
         if (TypeToTokenMap.Remove(typeof(T), out var token))
             token.Dispose();
     }
+
+    /// <summary>
+    /// Unbinds a specified type.
+    /// </summary>
+    public static void Unbind<T>(T value) => Unbind<T>();
 
     /// <summary>
     /// Retrieves a constant service/class.

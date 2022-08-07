@@ -11,9 +11,9 @@ public partial class SettingsPage : ReloadedIIPage
 
     public SettingsPage()
     {
+        this.AnimateOutStarted += OnLeavingPage;
         InitializeComponent();
         ViewModel = Lib.IoC.GetConstant<SettingsPageViewModel>();
-        this.AnimateOutStarted += OnLeavingPage;
         Lib.IoC.Get<MainWindow>().Closing += OnMainWindowExit;
     }
 

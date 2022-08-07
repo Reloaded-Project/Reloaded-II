@@ -3,7 +3,7 @@ namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 /// <summary>
 /// The ViewModel for a dialog which allows us to edit the details of an individual mod.
 /// </summary>
-public class EditModDialogViewModel : ObservableObject
+public class EditModDialogViewModel : ObservableObject, IDisposable
 {
     /// <summary>
     /// The individual mod configuration to be edited.
@@ -95,6 +95,11 @@ public class EditModDialogViewModel : ObservableObject
         IoC.RebindToConstant(this);
         PropertyChanged += OnPageChanged;
     }
+
+    /// <summary>
+    /// Disposes resources of this window.
+    /// </summary>
+    public void Dispose() => IoC.Unbind(this);
 
     /// <summary>
     /// Initializes the window with an action to close it.

@@ -7,23 +7,23 @@ public partial class EditAppPage : ReloadedIIPage, IDisposable
 {
     public EditAppViewModel ViewModel { get; set; }
 
-    public EditAppPage() : base()
-    {  
+    public EditAppPage(ApplicationViewModel applicationViewModel) : base()
+    {
+        this.AnimateOutStarted += SaveSelectedItemOnAnimateOut;
+        this.AnimateOutStarted += Dispose;
         InitializeComponent();
 
         // Setup ViewModel
-        ViewModel = Lib.IoC.Get<EditAppViewModel>();
+        ViewModel = new EditAppViewModel(Lib.IoC.Get<ApplicationConfigService>(), applicationViewModel);
         this.DataContext = ViewModel;
-        this.AnimateOutStarted += SaveSelectedItemOnAnimateOut;
-        this.AnimateOutStarted += Dispose;
         Lib.IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
-
         DataObject.AddPastingHandler(ApplicationPathTextbox, HandleSymlinkOnPaste);
     }
 
     public void Dispose()
     {
         Lib.IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
+        DataObject.RemovePastingHandler(ApplicationPathTextbox, HandleSymlinkOnPaste);
     }
 
     private async void SaveSelectedItemOnAnimateOut() => await ViewModel.SaveSelectedItemAsync();

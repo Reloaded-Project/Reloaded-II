@@ -9,9 +9,9 @@ public partial class ReloadedProcessPage : ApplicationSubPage
 
     public ReloadedProcessPage(ApplicationViewModel model)
     {
+        this.AnimateOutStarted += Dispose;
         InitializeComponent();
         ViewModel = new ReloadedAppViewModel(model);
-        this.AnimateOutStarted += Dispose;
     }
 
     private void Dispose()

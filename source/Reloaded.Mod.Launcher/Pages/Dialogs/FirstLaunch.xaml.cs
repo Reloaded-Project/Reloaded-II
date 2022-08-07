@@ -11,7 +11,6 @@ public partial class FirstLaunch : ReloadedWindow
     {
         InitializeComponent();
             
-        Lib.IoC.Unbind<FirstLaunchViewModel>();
         ViewModel = Lib.IoC.Get<FirstLaunchViewModel>();
         
         // Disable Original Button Visibility
@@ -21,5 +20,6 @@ public partial class FirstLaunch : ReloadedWindow
 
         // Init Events
         ViewModel.Initialize(() => ActionWrappers.ExecuteWithApplicationDispatcher(this.Close));
+        this.Closing += (sender, args) => ViewModel.Dispose();
     }
 }

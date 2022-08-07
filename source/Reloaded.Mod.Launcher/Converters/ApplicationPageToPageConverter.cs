@@ -12,9 +12,9 @@ public class ApplicationPageToPageConverter : IValueConverter
         switch ((Page) value)
         {
             case Page.ManageMods:
-                return Lib.IoC.GetConstant<ManageModsPage>();
+                return Lib.IoC.Get<ManageModsPage>();
             case Page.SettingsPage:
-                return Lib.IoC.GetConstant<SettingsPage>();
+                return Lib.IoC.Get<SettingsPage>();
             case Page.Application:
                 return Lib.IoC.Get<ApplicationPage>();
             case Page.DownloadMods:

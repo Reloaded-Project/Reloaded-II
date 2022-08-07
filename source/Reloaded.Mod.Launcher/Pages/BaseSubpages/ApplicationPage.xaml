@@ -216,7 +216,7 @@
         </ScrollViewer>
 
         <!-- Right Side -->
-        <reloadedWpfControls:PageHost x:Name="PageHost" Grid.Column="1" CurrentPage="{Binding Page, Converter={x:Static converters:ApplicationSubPageToPageConverter.Instance}}" />
+        <reloadedWpfControls:PageHost x:Name="PageHost" Grid.Column="1" />
 
     </Grid>
 </pages:ReloadedIIPage>

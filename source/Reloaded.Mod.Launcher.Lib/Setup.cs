@@ -218,12 +218,12 @@ public static class Setup
         var config = IoC.Get<LoaderConfig>();
         var synchronizationContext = Actions.SynchronizationContext;
 
-        IoC.RebindToConstant(IProcessWatcher.Get());
-        IoC.RebindToConstant(new ApplicationConfigService(config, synchronizationContext));
+        IoC.BindToConstant(IProcessWatcher.Get());
+        IoC.BindToConstant(new ApplicationConfigService(config, synchronizationContext));
         
         var modConfigService = new ModConfigService(config, synchronizationContext);
-        IoC.RebindToConstant(modConfigService);
-        IoC.RebindToConstant(new ModUserConfigService(config, modConfigService, synchronizationContext));
+        IoC.BindToConstant(modConfigService);
+        IoC.BindToConstant(new ModUserConfigService(config, modConfigService, synchronizationContext));
     }
 
     /// <summary>
@@ -236,7 +236,7 @@ public static class Setup
 
         try
         {
-            IoC.RebindToConstant(new AggregateNugetRepository(config.NuGetFeeds));
+            IoC.BindToConstant(new AggregateNugetRepository(config.NuGetFeeds));
         }
         catch (Exception)
         {

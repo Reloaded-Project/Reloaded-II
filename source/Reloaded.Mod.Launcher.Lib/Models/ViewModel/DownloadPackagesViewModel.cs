@@ -97,16 +97,16 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
 
         // React to search results and pagination stuff.
         SearchResult.CollectionChanged += SetCanGoToNextPageOnSearchResultsChanged;
-
-        // Bind to this for children.
-        IoC.RebindToConstant(this);
-
+        
         // Perform Initial Search.
         _paginationHelper.ItemsPerPage = 10;
 #pragma warning disable CS4014
         GetSearchResults();
 #pragma warning restore CS4014
     }
+
+    /// <inheritdoc />
+    public void Dispose() => _tokenSource?.Dispose();
 
     /// <summary>
     /// Gets the search results for the current search term.
@@ -208,12 +208,6 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     private void SetCanGoToNextPageOnSearchResultsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         CanGoToNextPage = SearchResult.Count >= _paginationHelper.ItemsPerPage;
-    }
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        _tokenSource?.Dispose();
     }
 
     private async void RefreshOnSourceChange() => await GetSearchResults();

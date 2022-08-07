@@ -3,7 +3,7 @@ namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 /// <summary>
 /// ViewModel used to display the First Launch Window
 /// </summary>
-public class FirstLaunchViewModel : ObservableObject
+public class FirstLaunchViewModel : ObservableObject, IDisposable
 {
     /// <summary>
     /// The current page of the first launch Window to display.
@@ -17,6 +17,11 @@ public class FirstLaunchViewModel : ObservableObject
     {
         IoC.RebindToConstant(this);
     }
+
+    /// <summary>
+    /// Disposes resources of this window.
+    /// </summary>
+    public void Dispose() => IoC.Unbind(this);
 
     /// <summary>
     /// Initializes the first launch ViewModel.

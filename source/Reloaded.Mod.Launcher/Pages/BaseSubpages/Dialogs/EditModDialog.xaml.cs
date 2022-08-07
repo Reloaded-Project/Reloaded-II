@@ -7,7 +7,6 @@ public partial class EditModDialog : ReloadedWindow
 {
     public EditModDialogViewModel RealViewModel  { get; set; }
 
-
     public EditModDialog(EditModDialogViewModel viewModel)
     {
         InitializeComponent();
@@ -17,7 +16,11 @@ public partial class EditModDialog : ReloadedWindow
         this.Closing += OnClosing;
     }
 
-    private void OnClosing(object sender, CancelEventArgs e) => RealViewModel.Save();
+    private void OnClosing(object sender, CancelEventArgs e)
+    {
+        RealViewModel.Save();
+        RealViewModel.Dispose(); // Unbind Constant.
+    }
 
     private void Last_Click(object sender, System.Windows.RoutedEventArgs e)
     {
