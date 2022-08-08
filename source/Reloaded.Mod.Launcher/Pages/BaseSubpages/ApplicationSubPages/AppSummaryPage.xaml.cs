@@ -1,4 +1,5 @@
-﻿using Button = Sewer56.UI.Controller.Core.Enums.Button;
+﻿using Reloaded.WPF.Controls;
+using Button = Sewer56.UI.Controller.Core.Enums.Button;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 
@@ -10,23 +11,28 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
     public ConfigureModsViewModel ViewModel { get; set; }
     private readonly DictionaryResourceManipulator _manipulator;
     private readonly CollectionViewSource _modsViewSource;
+    private bool _disposed;
 
     public AppSummaryPage(ApplicationViewModel appViewModel)
     {
         InitializeComponent();
         ViewModel = new ConfigureModsViewModel(appViewModel, Lib.IoC.Get<ModUserConfigService>());
-
+        
         ControllerSupport.SubscribeCustomInputs(OnProcessCustomInputs);
         _manipulator    = new DictionaryResourceManipulator(this.Contents.Resources);
         _modsViewSource = _manipulator.Get<CollectionViewSource>("FilteredMods");
         _modsViewSource.Filter += ModsViewSourceOnFilter;
-        Unloaded += (sender, args) => Dispose();
+        SwappedOut += Dispose;
     }
 
     ~AppSummaryPage() => Dispose();
 
     public void Dispose()
     {
+        if (_disposed)
+            return;
+
+        _disposed = true;
         ControllerSupport.UnsubscribeCustomInputs(OnProcessCustomInputs);
         ViewModel?.Dispose();
         GC.SuppressFinalize(this);

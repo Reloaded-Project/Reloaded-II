@@ -6,11 +6,16 @@
 public partial class EditAppPage : ReloadedIIPage, IDisposable
 {
     public EditAppViewModel ViewModel { get; set; }
+    private bool _disposed;
 
     public EditAppPage(ApplicationViewModel applicationViewModel) : base()
     {
-        this.AnimateOutStarted += SaveSelectedItemOnAnimateOut;
-        this.AnimateOutStarted += Dispose;
+        SwappedOut += () =>
+        {
+            SaveSelectedItemOnAnimateOut();
+            Dispose();
+        };
+
         InitializeComponent();
 
         // Setup ViewModel
@@ -22,6 +27,10 @@ public partial class EditAppPage : ReloadedIIPage, IDisposable
 
     public void Dispose()
     {
+        if (_disposed)
+            return;
+
+        _disposed = true;
         Lib.IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
         DataObject.RemovePastingHandler(ApplicationPathTextbox, HandleSymlinkOnPaste);
     }

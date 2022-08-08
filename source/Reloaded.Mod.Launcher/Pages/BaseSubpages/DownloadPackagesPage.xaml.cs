@@ -19,7 +19,7 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
     
     public DownloadPackagesPage()
     {
-        this.AnimateOutStarted += OnAnimateOutStarted;
+        SwappedOut += Dispose;
         InitializeComponent();
         _cacheService = Lib.IoC.GetConstant<ImageCacheService>();
         ViewModel = Lib.IoC.Get<DownloadPackagesViewModel>();
@@ -33,17 +33,11 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
         if (_disposed)
             return;
 
+        _disposed = true;
         ControllerSupport.UnsubscribeCustomInputs(ProcessEvents);
         ViewModel.Dispose();
-        _disposed = true;
     }
-
-    private void OnAnimateOutStarted()
-    {
-        this.AnimateOutStarted -= OnAnimateOutStarted;
-        Dispose();
-    }
-
+    
     private async void Last_Click(object sender, RoutedEventArgs e) => await ViewModel.GoToLastPage();
     private async void Next_Click(object sender, RoutedEventArgs e) => await ViewModel.GoToNextPage();
 

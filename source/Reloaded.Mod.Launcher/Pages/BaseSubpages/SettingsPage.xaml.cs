@@ -5,19 +5,30 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 /// <summary>
 /// Interaction logic for SettingsPage.xaml
 /// </summary>
-public partial class SettingsPage : ReloadedIIPage
+public partial class SettingsPage : ReloadedIIPage, IDisposable
 {
     public SettingsPageViewModel ViewModel { get; set; }
+    private bool _disposed;
 
     public SettingsPage()
     {
-        this.AnimateOutStarted += OnLeavingPage;
+        SwappedOut += Dispose;
         InitializeComponent();
         ViewModel = Lib.IoC.GetConstant<SettingsPageViewModel>();
         Lib.IoC.Get<MainWindow>().Closing += OnMainWindowExit;
     }
 
-    private void OnMainWindowExit(object sender, CancelEventArgs e) => OnLeavingPage();
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        _disposed = true;
+        OnLeavingPage();
+        Lib.IoC.Get<MainWindow>().Closing -= OnMainWindowExit;
+    }
+
+    private void OnMainWindowExit(object sender, CancelEventArgs e) => Dispose();
     private async void OnLeavingPage() => await ViewModel.SaveConfigAsync();
 
     private void Documents_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => new OpenDocumentationCommand().Execute(null);

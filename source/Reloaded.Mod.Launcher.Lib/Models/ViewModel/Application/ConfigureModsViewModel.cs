@@ -69,6 +69,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     {
         _applicationViewModel.OnLoadModSet -= BuildModList;
         _applicationViewModel.OnGetModsForThisApp -= BuildModList;
+        _saveToken?.Dispose();
         GC.SuppressFinalize(this);
     }
 

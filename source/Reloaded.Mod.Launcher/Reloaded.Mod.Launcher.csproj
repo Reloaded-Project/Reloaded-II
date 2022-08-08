@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -65,11 +65,11 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
+    <PackageReference Include="Reloaded.WPF" Version="3.3.0" />
     <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.1.2" />
     <PackageReference Include="Sewer56.UI.Controller.Core" Version="1.1.0" />
     <PackageReference Include="Sewer56.UI.Controller.ReloadedInput.Configurator" Version="1.2.0" />
     <PackageReference Include="Sewer56.UI.Controller.WPF" Version="1.1.0" />
-    <PackageReference Include="SharpVectors" Version="1.8.0" />
   </ItemGroup>
 
   <ItemGroup>

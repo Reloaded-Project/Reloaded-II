@@ -6,17 +6,21 @@
 public partial class ReloadedProcessPage : ApplicationSubPage
 {
     public ReloadedAppViewModel ViewModel { get; set; }
+    private bool _disposed;
 
     public ReloadedProcessPage(ApplicationViewModel model)
     {
-        this.AnimateOutStarted += Dispose;
+        SwappedOut += Dispose;
         InitializeComponent();
         ViewModel = new ReloadedAppViewModel(model);
     }
 
     private void Dispose()
     {
-        this.AnimateOutStarted -= Dispose;
+        if (_disposed)
+            return;
+
+        _disposed = true;
         ViewModel.Dispose();
     }
 

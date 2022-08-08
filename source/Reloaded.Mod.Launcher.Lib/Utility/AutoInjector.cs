@@ -14,7 +14,7 @@ public class AutoInjector
     public AutoInjector(ApplicationConfigService configService)
     {
         _configService  = configService;
-        _processWatcher = IoC.Get<IProcessWatcher>();
+        _processWatcher = IoC.GetConstant<IProcessWatcher>();
         _processWatcher.OnNewProcess += ProcessWatcherOnOnNewProcess;
     }
 

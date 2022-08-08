@@ -30,6 +30,9 @@ public class ProcessWatcher : ObservableObject, IProcessWatcher
         _timer = new Timer(Tick, null, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(interval));
     }
 
+    /// <inheritdoc />
+    public void Dispose() => _timer.Dispose();
+
     private void Tick(object? state)
     {
         lock (_lock)

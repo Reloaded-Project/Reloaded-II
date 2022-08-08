@@ -86,6 +86,9 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
     {
         if (Client != null)
             Client.OnReceiveException -= ClientOnReceiveException;
+
+        if (ApplicationViewModel.SelectedProcess != null)
+            ApplicationViewModel.SelectedProcess.Exited -= SelectedProcessOnExited;
         
         _cancellationTokenSource?.Cancel();
         _refreshTimer?.Dispose();

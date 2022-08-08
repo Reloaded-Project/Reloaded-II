@@ -30,7 +30,7 @@ public class ApplicationInstanceTracker : IDisposable
         if (token.IsCancellationRequested) 
             return;
 
-        _processWatcher = IoC.Get<IProcessWatcher>();
+        _processWatcher = IoC.GetConstant<IProcessWatcher>();
         _processWatcher.OnNewProcess += ProcessWatcherOnOnNewProcess;
         _processWatcher.OnRemovedProcess += ProcessWatcherOnOnRemovedProcess;
     }
@@ -41,6 +41,12 @@ public class ApplicationInstanceTracker : IDisposable
     /// <inheritdoc />
     public void Dispose()
     {
+        if (_processWatcher != null)
+        {
+            _processWatcher.OnNewProcess -= ProcessWatcherOnOnNewProcess;
+            _processWatcher.OnRemovedProcess -= ProcessWatcherOnOnRemovedProcess;
+        }
+
         GC.SuppressFinalize(this);
     }
 

@@ -11,15 +11,17 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
 {
     public ApplicationViewModel ViewModel { get; set; }
 
+    private bool _disposed;
+
     public ApplicationPage()
     {
-        this.AnimateOutStarted += Dispose;
+        SwappedOut += Dispose;
         InitializeComponent();
         ViewModel = new ApplicationViewModel(Lib.IoC.Get<MainPageViewModel>().SelectedApplication!, Lib.IoC.Get<ModConfigService>(), Lib.IoC.Get<ModUserConfigService>(), Lib.IoC.Get<LoaderConfig>());
         ViewModel.PropertyChanged += OnPageChanged;
         ViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
     }
-
+    
     private void OnPageChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(ViewModel.Page))
@@ -33,8 +35,18 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
 
     public void Dispose()
     {
-        this.AnimateOutStarted -= Dispose;
-        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() => PageHost.CurrentPage?.AnimateOut());
+        if (_disposed)
+            return;
+
+        _disposed = true;
+        ViewModel.PropertyChanged -= OnPageChanged;
+        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
+        {
+            if (PageHost.CurrentPage is IDisposable disposable)
+                disposable.Dispose();
+
+            PageHost.CurrentPage?.AnimateOut();
+        });
         ViewModel?.Dispose();
         GC.SuppressFinalize(this);
     }

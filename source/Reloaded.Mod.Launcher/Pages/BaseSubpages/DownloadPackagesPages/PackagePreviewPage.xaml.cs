@@ -1,5 +1,4 @@
 ﻿using Reloaded.Mod.Launcher.Lib.Models.ViewModel.DownloadPackages;
-using SharpVectors.Dom;
 using Button = Sewer56.UI.Controller.Core.Enums.Button;
 using Image = System.Windows.Controls.Image;
 
@@ -20,7 +19,7 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
 
     public PackagePreviewPage(DownloadPackagePreviewViewModel viewModel, Action close, SlideDirection entryDirection)
     {
-        this.AnimateOutStarted += Dispose;
+        SwappedOut += Dispose;
         ViewModel = viewModel;
         _entryDirection = entryDirection;
         _close = close;
@@ -36,6 +35,7 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
+        this.Loaded -= OnLoaded;
         var focusVisualSetting = KeyboardNav.AlwaysShowFocusVisual;
         try
         {
@@ -53,10 +53,9 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
         if (_isDisposed)
             return;
 
+        _isDisposed = true;
         ControllerSupport.UnsubscribePreviewCustomInputs(SubscribePreviewCustomInputs);
         PreviewCarousel?.Dispose();
-        this.AnimateOutStarted -= Dispose;
-        _isDisposed = true;
     }
 
     /// <summary>

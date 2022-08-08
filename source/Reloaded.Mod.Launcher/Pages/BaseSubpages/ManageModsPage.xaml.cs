@@ -5,15 +5,16 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 /// <summary>
 /// The main page of the application.
 /// </summary>
-public partial class ManageModsPage : ReloadedIIPage
+public partial class ManageModsPage : ReloadedIIPage, IDisposable
 {
     public ManageModsViewModel ViewModel { get; set; }
     private readonly CollectionViewSource _modsViewSource;
     private readonly CollectionViewSource _appsViewSource;
+    private bool _disposed;
 
     public ManageModsPage() : base()
     {
-        this.AnimateOutStarted += SaveCurrentMod;
+        SwappedOut += Dispose;
         InitializeComponent();
         ViewModel = Lib.IoC.GetConstant<ManageModsViewModel>();
         this.DataContext = ViewModel;
@@ -27,7 +28,17 @@ public partial class ManageModsPage : ReloadedIIPage
         _appsViewSource.Filter += AppsViewSourceOnFilter;
     }
 
-    private void OnMainWindowClosing(object sender, CancelEventArgs e) => SaveCurrentMod();
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        _disposed = true;
+        SaveCurrentMod();
+        Lib.IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
+    }
+
+    private void OnMainWindowClosing(object sender, CancelEventArgs e) => Dispose();
 
     private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _modsViewSource.View.Refresh();
     private void AppsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _appsViewSource.View.Refresh();
@@ -74,4 +85,5 @@ public partial class ManageModsPage : ReloadedIIPage
         ViewModel.SetNewImage();
         e.Handled = true;
     }
+
 }

@@ -27,6 +27,7 @@ public partial class BasePage : ReloadedIIPage, IDisposable
         _owner = Window.GetWindow(this);
         _owner!.KeyDown += TrySwitchPage;
         ControllerSupport.SubscribeCustomInputs(ProcessCustomInputs);
+        this.Loaded -= OnLoaded;
     }
 
     ~BasePage() => Dispose();

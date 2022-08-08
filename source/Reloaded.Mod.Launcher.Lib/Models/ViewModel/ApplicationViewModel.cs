@@ -54,7 +54,7 @@ public class ApplicationViewModel : ObservableObject, IDisposable
     /// </summary>
     public MakeShortcutCommand MakeShortcutCommand { get; set; } = null!;
 
-    private Timer _refreshProcessesWithLoaderTimer = null!;
+    private Timer? _refreshProcessesWithLoaderTimer = null;
     private ModConfigService _modConfigService;
     private ApplicationInstanceTracker _instanceTracker;
     private ModUserConfigService _modUserConfigService;
@@ -66,8 +66,8 @@ public class ApplicationViewModel : ObservableObject, IDisposable
         ApplicationTuple    = tuple;
         _modConfigService    = modConfigService;
         _modUserConfigService = modUserConfigService;
-
         _instanceTracker = new ApplicationInstanceTracker(ApplicationConfig.GetAbsoluteAppLocation(tuple), _initialiseTokenSrc.Token);
+
         if (_initialiseTokenSrc.IsCancellationRequested)
             return;
 
@@ -92,12 +92,8 @@ public class ApplicationViewModel : ObservableObject, IDisposable
         _initialiseTokenSrc.Cancel();
         _modConfigService.Items.CollectionChanged -= OnGetModifications;
         _refreshProcessesWithLoaderTimer?.Dispose();
-        if (_instanceTracker != null!)
-        {
-            _instanceTracker.OnProcessesChanged -= OnProcessesChanged;
-            _instanceTracker?.Dispose();
-        }
-        
+        _instanceTracker.OnProcessesChanged -= OnProcessesChanged;
+        _instanceTracker.Dispose();
         GC.SuppressFinalize(this);
     }
 
@@ -132,7 +128,7 @@ public class ApplicationViewModel : ObservableObject, IDisposable
             if (!deps.AllAvailable)
             {
                 try { await Update.ResolveMissingPackagesAsync(); }
-                catch (Exception) { }
+                catch (Exception) { /* ignored */ }
             }
 
             EnforceModCompatibility();
