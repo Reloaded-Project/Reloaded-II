@@ -1,9 +1,11 @@
+using Reloaded.Mod.Loader.IO.Utility;
+
 namespace Reloaded.Mod.Loader.Update.Structures;
 
 /// <summary>
 /// Represents an individual mod update to be performed.
 /// </summary>
-public class ModUpdate
+public class ModUpdate : ObservableObject
 {
     /// <summary>
     /// Id of the mod to be updated.

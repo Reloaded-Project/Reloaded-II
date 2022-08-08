@@ -1,10 +1,12 @@
+using System.ComponentModel;
+
 namespace Reloaded.Mod.Loader.Server.Messages.Structures;
 
 /// <summary>
 /// Contains the information about a loaded-in mod.
 /// </summary>
 [Equals(DoNotAddEqualityOperators = true)]
-public class ServerModInfo
+public class ServerModInfo : INotifyPropertyChanged
 {
     /// <summary>
     /// Gets the current ID of the mod.
@@ -61,4 +63,8 @@ public class ServerModInfo
     /// Returns true if the client can send a resume command for this mod.
     /// </summary>
     public bool CanSendResume => State == ModState.Suspended && CanSuspend;
+
+    // Only because we data bind to this, don't wanna cause mem leak.
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 }

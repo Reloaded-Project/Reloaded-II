@@ -112,7 +112,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
-                                        <CheckBox Content="{Binding Factory.FriendlyName}" IsChecked="{Binding IsEnabled}" 
+                                        <CheckBox Content="{Binding Factory.FriendlyName, Mode=OneTime}" IsChecked="{Binding IsEnabled}" 
                                                   Style="{DynamicResource DefaultCheckBox}"
                                                   HorizontalAlignment="Center" Margin="{DynamicResource CommonItemVerticalMargin}" />
 

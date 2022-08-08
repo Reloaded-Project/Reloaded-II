@@ -29,6 +29,9 @@
     <PackageReference Include="Equals.Fody" Version="4.0.2">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Reloaded.Messaging" Version="2.0.1" />
     <PackageReference Include="Reloaded.Messaging.Extras.Runtime" Version="2.0.0" />
     <PackageReference Include="Reloaded.Messaging.Host.LiteNetLib" Version="2.0.0" />

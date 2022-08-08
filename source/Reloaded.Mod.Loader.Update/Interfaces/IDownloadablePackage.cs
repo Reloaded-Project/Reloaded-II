@@ -106,7 +106,7 @@ public interface IDownloadablePackage : INotifyPropertyChanged
 /// <summary>
 /// Represents an image that can be downloaded from the web for this package.
 /// </summary>
-public struct DownloadableImage
+public struct DownloadableImage : INotifyPropertyChanged
 {
     /// <summary>
     /// Provides an URL to the image.
@@ -143,12 +143,16 @@ public struct DownloadableImage
 
         return Uri;
     }
+
+    // Binding
+    /// <inheritdoc />
+    public event PropertyChangedEventHandler? PropertyChanged;
 }
 
 /// <summary>
 /// Represents a thumbnail for downloadable image.
 /// </summary>
-public struct DownloadableImageThumbnail
+public struct DownloadableImageThumbnail : INotifyPropertyChanged
 {
     /// <summary>
     /// Represents a thumbnail for a downloadable image.
@@ -171,12 +175,16 @@ public struct DownloadableImageThumbnail
     /// Used for picking images without downloading them.
     /// </summary>
     public short? WidthHint { get; set; }
+
+    // Binding
+    /// <inheritdoc />
+    public event PropertyChangedEventHandler? PropertyChanged;
 }
 
 /// <summary>
 /// Represents the submitter of the downloadable item, i.e. the person that uploaded it.
 /// </summary>
-public struct Submitter
+public struct Submitter : INotifyPropertyChanged
 {
     /// <summary>
     /// Name of the submitter.
@@ -201,4 +209,8 @@ public struct Submitter
 
     /// <summary/>
     public Submitter() { }
+
+    // For binding
+    /// <inheritdoc />
+    public event PropertyChangedEventHandler? PropertyChanged;
 }

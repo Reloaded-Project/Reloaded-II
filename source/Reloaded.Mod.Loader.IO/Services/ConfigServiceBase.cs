@@ -2,7 +2,7 @@ using static Reloaded.Mod.Loader.IO.Utility.FileSystemWatcherFactory;
 
 namespace Reloaded.Mod.Loader.IO.Services;
 
-public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig<TConfigType>, new()
+public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TConfigType : IConfig<TConfigType>, new()
 {
     /// <summary>
     /// Current up to date list of all items.

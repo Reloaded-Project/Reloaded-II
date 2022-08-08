@@ -5,7 +5,7 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Dialog;
 /// <summary>
 /// Represents an individual missing dependency to be downloaded and/or installed.
 /// </summary>
-public class MissingDependency
+public class MissingDependency : ObservableObject
 {
     /// <summary>
     /// Name of the dependency in question.
@@ -20,7 +20,7 @@ public class MissingDependency
     /// <summary>
     /// The dependency in question.
     /// </summary>
-    public IDependency Dependency;
+    public IDependency Dependency { get; set; }
 
     /// <summary/>
     public MissingDependency(IDependency dependency)

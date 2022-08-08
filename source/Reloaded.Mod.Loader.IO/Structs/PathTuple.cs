@@ -4,7 +4,7 @@ namespace Reloaded.Mod.Loader.IO.Structs;
 /// A tuple class which stores a string and a config type.
 /// </summary>
 [DebuggerDisplay("{Config}")]
-public class PathTuple<TGeneric> where TGeneric : IConfig<TGeneric>, new()
+public class PathTuple<TGeneric> : ObservableObject where TGeneric : IConfig<TGeneric>, new()
 {
     /// <summary>
     /// The file path to the object.
