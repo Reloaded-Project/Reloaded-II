@@ -11,6 +11,7 @@ public partial class ManageModsPage : ReloadedIIPage, IDisposable
     private readonly CollectionViewSource _modsViewSource;
     private readonly CollectionViewSource _appsViewSource;
     private bool _disposed;
+    private MainWindow _mainWindow;
 
     public ManageModsPage() : base()
     {
@@ -18,7 +19,8 @@ public partial class ManageModsPage : ReloadedIIPage, IDisposable
         InitializeComponent();
         ViewModel = Lib.IoC.GetConstant<ManageModsViewModel>();
         this.DataContext = ViewModel;
-        Lib.IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
+        _mainWindow = Lib.IoC.GetConstant<MainWindow>();
+        _mainWindow.Closing += OnMainWindowClosing;
 
         // Setup filters
         var manipulator = new DictionaryResourceManipulator(this.Contents.Resources);
@@ -35,7 +37,9 @@ public partial class ManageModsPage : ReloadedIIPage, IDisposable
 
         _disposed = true;
         SaveCurrentMod();
-        Lib.IoC.Get<MainWindow>().Closing -= OnMainWindowClosing;
+        _modsViewSource.Filter -= ModsViewSourceOnFilter;
+        _appsViewSource.Filter -= AppsViewSourceOnFilter;
+        _mainWindow.Closing -= OnMainWindowClosing;
     }
 
     private void OnMainWindowClosing(object sender, CancelEventArgs e) => Dispose();

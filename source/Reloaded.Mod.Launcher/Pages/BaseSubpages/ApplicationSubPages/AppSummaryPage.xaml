@@ -57,7 +57,8 @@
                 ToolTipService.InitialShowDelay="250"
                 VerticalAlignment="Stretch"
                 VerticalContentAlignment="Top"
-                VirtualizingStackPanel.VirtualizationMode="Recycling"
+                VirtualizingPanel.IsVirtualizing="True"
+                VirtualizingPanel.VirtualizationMode="Recycling"
                 PreviewKeyDown="KeyboardControls_KeyDown"
                 dd:DragDrop.IsDragSource="True"
                 dd:DragDrop.IsDropTarget="True">

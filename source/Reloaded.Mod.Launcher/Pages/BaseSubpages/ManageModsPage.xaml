@@ -45,7 +45,7 @@
                 <StackPanel>
 
                     <!-- Application Image -->
-                    <Border x:Name="BannerImage" BorderBrush="{DynamicResource BorderColorBrush}" Background="Transparent" BorderThickness="1">
+                    <Border BorderBrush="{DynamicResource BorderColorBrush}" Background="Transparent" BorderThickness="1">
                         <Viewbox>
                             <Image ToolTip="{DynamicResource AddAppImageTooltip}"
                                    ToolTipService.InitialShowDelay="0"
@@ -170,7 +170,6 @@
                     <!-- List of Mods -->
                     <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="{DynamicResource PanelMargin}">
                         <ListView 
-                            x:Name="ModListView"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding Source={StaticResource SortedMods}}"
                             SelectedItem="{Binding SelectedModTuple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 

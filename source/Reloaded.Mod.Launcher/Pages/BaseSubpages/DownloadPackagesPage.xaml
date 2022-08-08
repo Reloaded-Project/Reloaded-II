@@ -138,7 +138,8 @@
                   VerticalAlignment="Stretch"
                   VerticalContentAlignment="Top"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                  VirtualizingStackPanel.VirtualizationMode="Recycling" 
+                  VirtualizingPanel.IsVirtualizing="True"
+                  VirtualizingPanel.VirtualizationMode="Recycling"
                   PreviewKeyDown="OnPressKeyInListView"
                   IsSynchronizedWithCurrentItem="True">
 
