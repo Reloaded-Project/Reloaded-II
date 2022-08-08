@@ -205,7 +205,7 @@
                                    Style="{DynamicResource RIIDefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
-                            <TextBlock Text="{Binding ModsForThisApp.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
+                            <TextBlock Text="{Binding NumModsForThisApp, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
                                    Style="{DynamicResource RIIDefaultTextBlock}"
                                    VerticalAlignment="Center"/>

@@ -54,6 +54,11 @@ public class ApplicationViewModel : ObservableObject, IDisposable
     /// </summary>
     public MakeShortcutCommand MakeShortcutCommand { get; set; } = null!;
 
+    /// <summary>
+    /// The number of mods available for this app.
+    /// </summary>
+    public int NumModsForThisApp { get; set; }
+
     private Timer? _refreshProcessesWithLoaderTimer = null;
     private ModConfigService _modConfigService;
     private ApplicationInstanceTracker _instanceTracker;
@@ -195,6 +200,7 @@ public class ApplicationViewModel : ObservableObject, IDisposable
                 return;
 
             Collections.ModifyObservableCollection(ModsForThisApp, newMods);
+            NumModsForThisApp = ModsForThisApp.Count;
             OnGetModsForThisApp();
         });
     }
