@@ -74,7 +74,6 @@ public partial class PopupLabel : UserControl
         InitializeComponent();
 
         // Merge application resource dictionary (necessary to access XAML settings)
-        this.Resources.MergedDictionaries.Add(Application.Current.Resources);
         SetupXamlResources();
 
         // Update text and whether content is visible on load.
