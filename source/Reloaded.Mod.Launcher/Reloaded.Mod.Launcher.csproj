@@ -18,6 +18,7 @@
     <Nullable>enable</Nullable>
     <Deterministic>true</Deterministic>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>CS0067</NoWarn>
   </PropertyGroup>
 	
   <ItemGroup>
