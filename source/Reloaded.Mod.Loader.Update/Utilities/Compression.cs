@@ -1,6 +1,6 @@
 using System.IO.Compression;
 
-namespace Reloaded.Mod.Loader.Update.Index.Utility;
+namespace Reloaded.Mod.Loader.Update.Utilities;
 
 /// <summary>
 /// Compresses arbitrary files using the brotli compression algorithm.
@@ -38,20 +38,31 @@ public static class Compression
     public static Memory<byte> Decompress(byte[] input)
     {
         using var inputStream = new MemoryStream(input);
-        return Decompress(inputStream);
+        return DecompressToMemory(inputStream);
     }
 
     /// <summary>
     /// Decompresses a given stream of bytes.
     /// </summary>
     /// <param name="input">The data to decompress.</param>
-    public static Memory<byte> Decompress(Stream input)
+    public static Memory<byte> DecompressToMemory(Stream input)
+    {
+        using var result = DecompressToStream(input);
+        return result.GetBuffer().AsMemory(0, (int)result.Length);
+    }
+
+    /// <summary>
+    /// Decompresses a given stream of bytes.
+    /// </summary>
+    /// <param name="input">The data to decompress.</param>
+    /// <returns>Stream with the decompressed data. Pointing to said data.</returns>
+    public static MemoryStream DecompressToStream(Stream input)
     {
         var decompressor = new BrotliStream(input, CompressionMode.Decompress);
-        using var output = new MemoryStream();
+        var output = new MemoryStream();
         decompressor.CopyTo(output);
         decompressor.Dispose();
-
-        return output.GetBuffer().AsMemory(0, (int) output.Length);
+        output.Position = 0;
+        return output;
     }
 }

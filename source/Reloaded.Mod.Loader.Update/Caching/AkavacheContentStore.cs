@@ -58,7 +58,8 @@ internal class AkavacheWebCacheStore : ICacheStore
         if (buffer != null!)
         {
             await using var memoryStream = new MemoryStream(buffer);
-            return await _messageSerializer.DeserializeToResponseAsync(memoryStream).ConfigureAwait(false);
+            await using var memory = Compression.DecompressToStream(memoryStream);
+            return await _messageSerializer.DeserializeToResponseAsync(memory).ConfigureAwait(false);
         }
 
         return null;
@@ -76,7 +77,9 @@ internal class AkavacheWebCacheStore : ICacheStore
         var minExpiry = DateTimeOffset.UtcNow.Add(MinExpiration);
         var suggestedExpiry = response.GetExpiry() ?? minExpiry;
         var optimalExpiry = (suggestedExpiry > minExpiry) ? suggestedExpiry : minExpiry;
-        await _cache.Insert(key.ToString(), memoryStream.ToArray(), optimalExpiry);
+        memoryStream.Position = 0;
+        var compressed = Compression.Compress(memoryStream);
+        await _cache.Insert(key.ToString(), compressed, optimalExpiry);
     }
 
     public async Task<bool> TryRemoveAsync(CacheKey key)

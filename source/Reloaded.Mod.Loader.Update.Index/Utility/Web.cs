@@ -16,7 +16,7 @@ public static class Web
     /// <returns>The downloaded contents.</returns>
     public static async Task<T?> DownloadAndDeserialize<T>(Uri uri)
     {
-        var bytes = Compression.Decompress(await SharedHttpClient.Cached.GetStreamAsync(uri));
+        var bytes = Compression.DecompressToMemory(await SharedHttpClient.Cached.GetStreamAsync(uri));
         return JsonSerializer.Deserialize<T>(bytes.Span);
     }
 }
