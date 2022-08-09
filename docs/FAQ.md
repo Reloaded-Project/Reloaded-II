@@ -36,9 +36,9 @@ There are multiple ways to do so, but the two recommended ones are:
 - Add Reloaded Shortcut to Steam
 - Load Reloaded via a DLL replacement based code loader (e.g. Ultimate ASI Loader)
 
-For the first option, simply create a shortcut from within the Reloaded launcher and add it to Steam, then copy the `Target` from your shortcut properties into Steam's own `Target` field.
+For the first option, simply create a shortcut from within the Reloaded launcher and add it to Steam, then copy the entirety of the `--launch "PathToGame\Game.exe"` argument within the `Target` field from your shortcut properties into Steam's own `Launch Options` field. Remember that the `--launch` argument comes **after** the path to your Reloaded-II installation, and not to include the preceeding space.
 
-![Example](https://cdn.discordapp.com/attachments/745941458686705767/746954484990607450/90083094-8855f400-dd09-11ea-9e6b-494f6977c327.png)
+![Example](./Images/SteamShortcutSimple.png)
 
 The second option can now also be automated from the launcher, by expanding the `Advanced` section of `Add/Edit Application Menu`. Simply press the `Deploy ASI Loader` button and voila!
 
