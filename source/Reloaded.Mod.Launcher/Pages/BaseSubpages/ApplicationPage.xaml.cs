@@ -18,11 +18,11 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
         SwappedOut += Dispose;
         InitializeComponent();
         ViewModel = new ApplicationViewModel(Lib.IoC.Get<MainPageViewModel>().SelectedApplication!, Lib.IoC.Get<ModConfigService>(), Lib.IoC.Get<ModUserConfigService>(), Lib.IoC.Get<LoaderConfig>());
-        ViewModel.PropertyChanged += OnPageChanged;
+        ViewModel.PropertyChanged += WhenPageChanged;
         ViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
     }
     
-    private void OnPageChanged(object? sender, PropertyChangedEventArgs e)
+    private void WhenPageChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(ViewModel.Page))
             SwitchPage(ViewModel.Page);
@@ -39,7 +39,7 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
             return;
 
         _disposed = true;
-        ViewModel.PropertyChanged -= OnPageChanged;
+        ViewModel.PropertyChanged -= WhenPageChanged;
         ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
         {
             if (PageHost.CurrentPage is IDisposable disposable)

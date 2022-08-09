@@ -7,6 +7,7 @@
     <LangVersion>preview</LangVersion>
     <OutputPath>..\Output\Tests\</OutputPath>
     <Nullable>disable</Nullable>
+    <NoWarn>$(NoWarn);NU1605;NU1701;MSB3270</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

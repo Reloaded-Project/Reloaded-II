@@ -10,7 +10,7 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <NoWarn>$(NoWarn);NU1605</NoWarn>
+    <NoWarn>$(NoWarn);NU1605;NU1701</NoWarn>
 	  <Version>1.19.2</Version>
     <Platforms>x86;x64</Platforms>
     <Deterministic>true</Deterministic>

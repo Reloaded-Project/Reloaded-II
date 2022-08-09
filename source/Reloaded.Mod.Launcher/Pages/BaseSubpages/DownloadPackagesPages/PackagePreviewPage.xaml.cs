@@ -25,7 +25,7 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
         _close = close;
         InitializeComponent();
         this.AnimateInFinished -= OnAnimateInFinished;
-        PreviewCarousel.OnPageIndexChanged += OnPageIndexChanged;
+        PreviewCarousel.OnPageIndexChanged += WhenPageIndexChanged;
         ControllerSupport.SubscribePreviewCustomInputs(SubscribePreviewCustomInputs);
         
         // We need to explicitly set focus in case person changes page on controller without 
@@ -211,7 +211,7 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
     // Don't navigate hyperlinks in our markdown, thanks!
     private void Page_Click(object sender, RoutedEventArgs e) => e.Handled = true;
 
-    private void OnPageIndexChanged(int pageIndex)
+    private void WhenPageIndexChanged(int pageIndex)
     {
         if (ViewModel.Package.Images != null)
             ViewModel.SelectedImage = ViewModel.Package.Images[pageIndex];

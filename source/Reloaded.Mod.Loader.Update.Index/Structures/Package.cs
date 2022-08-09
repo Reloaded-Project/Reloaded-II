@@ -10,7 +10,9 @@ namespace Reloaded.Mod.Loader.Update.Index.Structures;
 [Equals(DoNotAddEqualityOperators = true)]
 public class Package : IDownloadablePackage
 {
+#pragma warning disable CS0067
     public event PropertyChangedEventHandler? PropertyChanged;
+#pragma warning restore CS0067
 
     /// <inheritdoc />
     public string Name { get; set; } = "";
