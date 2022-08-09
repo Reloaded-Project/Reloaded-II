@@ -54,14 +54,19 @@ public class Paths
     public static readonly string CachePath = Path.Combine(ConfigFolderLocalPC, "Cache");
 
     /// <summary>
-    /// Location of the cache folder, used to cache images.
+    /// Location of the cache file, used to cache images.
     /// </summary>
-    public static readonly string ImageCachePath = Path.Combine(CachePath, "Image");
+    public static readonly string ImageCachePath = Path.Combine(CachePath, "Image.db");
 
     /// <summary>
-    /// Location of the cache folder, used to cache web requests.
+    /// Location of the cache file, used to cache web requests.
     /// </summary>
-    public static readonly string WebCachePath = Path.Combine(CachePath, "Web");
+    public static readonly string WebCachePath = Path.Combine(CachePath, "Web.db");
+
+    /// <summary>
+    /// Location of the cache file, used to cache GameBanana mod manifests.
+    /// </summary>
+    public static readonly string GameBananaManifestCachePath = Path.Combine(CachePath, "GameBananaReleaseManifests.db");
 
     // UTILITY METHODS //
 

@@ -39,6 +39,16 @@ public static class Compression
     {
         using var inputStream = new MemoryStream(input);
         return DecompressToMemory(inputStream);
+    }    
+    
+    /// <summary>
+    /// Decompresses a given stream of bytes.
+    /// </summary>
+    /// <param name="input">The data to decompress.</param>
+    public static byte[] DecompressToArray(byte[] input)
+    {
+        using var inputStream = new MemoryStream(input);
+        return DecompressToArray(inputStream);
     }
 
     /// <summary>
@@ -49,6 +59,16 @@ public static class Compression
     {
         using var result = DecompressToStream(input);
         return result.GetBuffer().AsMemory(0, (int)result.Length);
+    }
+
+    /// <summary>
+    /// Decompresses a given stream of bytes.
+    /// </summary>
+    /// <param name="input">The data to decompress.</param>
+    public static byte[] DecompressToArray(Stream input)
+    {
+        using var result = DecompressToStream(input);
+        return result.ToArray();
     }
 
     /// <summary>

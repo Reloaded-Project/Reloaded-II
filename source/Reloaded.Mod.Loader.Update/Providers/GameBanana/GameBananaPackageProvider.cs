@@ -1,3 +1,4 @@
+using Reloaded.Mod.Loader.Update.Caching;
 using ReverseMarkdown;
 
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
@@ -142,7 +143,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
 
     private async Task<int> TryAddResultFromReleaseMetadataFile(ConcurrentBag<IDownloadablePackage> results, GameBananaModFile file, GameBananaMod item)
     {
-        var metadata = await SharedHttpClient.CachedAndCompressed.GetByteArrayAsync(new Uri(file.DownloadUrl!));
+        var metadata = await Caches.GameBananaFiles.GetOrDownloadFileFromUrlBrotli(new Uri(file.DownloadUrl!), file.Id, Caches.ReleaseMetadataExpiration, true);
         try
         {
             // Get metadata & filter potentially invalid file.

@@ -62,6 +62,6 @@ public class DownloadPackagePreviewViewModel : ObservableObject
     /// <returns>Bytes of the image.</returns>
     public async ValueTask<byte[]> DownloadImage(Uri uri)
     {
-        return await _cacheService.GetImage(uri, _cacheService.ModPreviewExpiration);
+        return await _cacheService.GetOrDownloadFileFromUrl(uri, _cacheService.ModPreviewExpiration);
     }
 }

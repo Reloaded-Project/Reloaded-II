@@ -311,8 +311,9 @@ public class GameBananaSubmitter
 [ExcludeFromCodeCoverage]
 public class GameBananaModFile
 {
+    // Note: This is a number in apiv8
     [JsonPropertyName("_idRow")]
-    public string Id { get; set; } = null!;
+    public string Id { get; set; } = "";
 
     [JsonPropertyName("_sFile")]
     public string FileName { get; set; } = null!;

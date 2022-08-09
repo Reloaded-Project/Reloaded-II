@@ -131,5 +131,7 @@ public partial class App : Application
         // Flush image cache on exit.
         if (Lib.IoC.IsExplicitlyBound<ImageCacheService>())
             Lib.IoC.GetConstant<ImageCacheService>().Shutdown();
+
+        Caches.Shutdown();
     }
 }
