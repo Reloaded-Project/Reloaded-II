@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Version>1.0.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>preview</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>CS1591</NoWarn>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Sewer56</Authors>
+    <Company />
+    <Description>API for Reloaded II's Update Index available at https://github.com/Reloaded-Project/Reloaded-II.Index. For usage instructions please see the Programmers' section in Reloaded wiki.</Description>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Nullable>enable</Nullable>
+    <Deterministic>true</Deterministic>
+    <PackageIcon>NuGet-Icon.png</PackageIcon>
+    <Title>Reloaded II Update Index API</Title>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\NuGet-Icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Equals.Fody" Version="4.0.2" PrivateAssets="All" />
+    <PackageReference Include="Mapster" Version="7.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -49,6 +49,7 @@
     <ProjectReference Include="..\Mods\Reloaded.Utils.Server\Reloaded.Utils.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Community\Reloaded.Mod.Loader.Community.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
+    <ProjectReference Include="..\Reloaded.Mod.Loader.Update.Index\Reloaded.Mod.Loader.Update.Index.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader\Reloaded.Mod.Loader.csproj" />
     <ProjectReference Include="..\Testing\Mods\TestModA\TestModA.csproj" />

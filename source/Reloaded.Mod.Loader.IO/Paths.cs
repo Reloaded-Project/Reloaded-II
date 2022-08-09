@@ -54,9 +54,14 @@ public class Paths
     public static readonly string CachePath = Path.Combine(ConfigFolderLocalPC, "Cache");
 
     /// <summary>
-    /// Location of the cache folder, used to cache loader logs.
+    /// Location of the cache folder, used to cache images.
     /// </summary>
     public static readonly string ImageCachePath = Path.Combine(CachePath, "Image");
+
+    /// <summary>
+    /// Location of the cache folder, used to cache web requests.
+    /// </summary>
+    public static readonly string WebCachePath = Path.Combine(CachePath, "Web");
 
     // UTILITY METHODS //
 

@@ -1,5 +1,6 @@
 ﻿using System.Runtime;
 using System.Runtime.InteropServices;
+using Reloaded.Mod.Loader.Update.Caching;
 using Reloaded.Mod.Shared;
 using static System.Environment;
 using Environment = Reloaded.Mod.Shared.Environment;

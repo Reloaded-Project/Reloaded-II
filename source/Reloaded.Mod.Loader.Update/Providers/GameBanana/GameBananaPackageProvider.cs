@@ -1,5 +1,4 @@
 using ReverseMarkdown;
-using static Akavache.Sqlite3.Internal.SQLite3;
 
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
@@ -124,7 +123,6 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
     {
         const string metadataExtension = ".json";
         const int maxFileSize = 512 * 1024; // 512KB. To prevent abuse of large JSON files.
-        using var client = new WebClient();
 
         if (gbApiItem.Files == null)
             return false;
@@ -136,15 +134,15 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                 continue;
 
             // Try download metadata file.
-            numAddedItems += await TryAddResultFromReleaseMetadataFile(results, client, file, gbApiItem);
+            numAddedItems += await TryAddResultFromReleaseMetadataFile(results, file, gbApiItem);
         }
 
         return numAddedItems > 0;
     }
 
-    private async Task<int> TryAddResultFromReleaseMetadataFile(ConcurrentBag<IDownloadablePackage> results, WebClient client, GameBananaModFile file, GameBananaMod item)
+    private async Task<int> TryAddResultFromReleaseMetadataFile(ConcurrentBag<IDownloadablePackage> results, GameBananaModFile file, GameBananaMod item)
     {
-        var metadata = await client.DownloadDataTaskAsync(new Uri(file.DownloadUrl!));
+        var metadata = await SharedHttpClient.CachedAndCompressed.GetByteArrayAsync(new Uri(file.DownloadUrl!));
         try
         {
             // Get metadata & filter potentially invalid file.

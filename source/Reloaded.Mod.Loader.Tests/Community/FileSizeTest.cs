@@ -32,7 +32,7 @@ public class FileSizeTest
         var hashes = GetHashFaker().Generate(numApplications);
         var ids = GetIdFaker().Generate(numApplications);
 
-        var index = new Index();
+        var index = new Mod.Loader.Community.Config.Index();
         for (int x = 0; x < applications.Count; x++)
         {
             index.IdToApps[ids[x]] = new List<IndexAppEntry>() { applications[x] };

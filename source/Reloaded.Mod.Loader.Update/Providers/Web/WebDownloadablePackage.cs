@@ -1,3 +1,4 @@
+using Reloaded.Mod.Loader.Update.Interfaces.Extensions;
 using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
 
 namespace Reloaded.Mod.Loader.Update.Providers.Web;
@@ -5,7 +6,7 @@ namespace Reloaded.Mod.Loader.Update.Providers.Web;
 /// <summary>
 /// Can be used to create a downloadable package using a web URL.
 /// </summary>
-public class WebDownloadablePackage : IDownloadablePackage
+public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackageGetDownloadUrl
 {
 #pragma warning disable CS0067 // Event never used
     /// <inheritdoc />
@@ -106,6 +107,9 @@ public class WebDownloadablePackage : IDownloadablePackage
         /* Get name of package. */
         return CopyPackagesFromExtractFolderToTargetDir(packageFolder, tempExtractDirectory.FolderPath, token);
     }
+
+    /// <inheritdoc />
+    public ValueTask<string?> GetDownloadUrlAsync() => ValueTask.FromResult(_url.ToString())!;
 
     /// <summary>
     /// Finds all mods in <paramref name="tempExtractDir"/> and copies them to appropriate subfolders in <paramref name="packageFolder"/>.

@@ -1,3 +1,4 @@
+using Reloaded.Mod.Loader.Update.Interfaces.Extensions;
 using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
 using NugetRepository = Sewer56.Update.Resolvers.NuGet.Utilities.NugetRepository;
 
@@ -6,7 +7,7 @@ namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 /// <summary>
 /// Represents an individual NuGet package that can be downloaded.
 /// </summary>
-public class NuGetDownloadablePackage : IDownloadablePackage
+public class NuGetDownloadablePackage : IDownloadablePackage, IDownloadablePackageGetDownloadUrl
 {
     private static NuGetPackageExtractor _extractor = new();
 
@@ -109,6 +110,13 @@ public class NuGetDownloadablePackage : IDownloadablePackage
         var details = await _repository.GetPackageDetails(_package.Identity);
         if (details != null)
             Published = details.Published.GetValueOrDefault().UtcDateTime;
+    }
+
+    /// <inheritdoc />
+    public async ValueTask<string?> GetDownloadUrlAsync()
+    {
+        var resolver = _resolver.Value;
+        return await resolver.GetDownloadUrlAsync(_package.Identity.Version, new ReleaseMetadataVerificationInfo(), CancellationToken.None);
     }
 
     /// <inheritdoc />

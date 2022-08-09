@@ -1,3 +1,7 @@
+using System.Net.Http;
+using CacheCow.Client;
+using Reloaded.Mod.Loader.Update.Caching;
+
 #pragma warning disable CS1591
 
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana.Structures;
@@ -58,7 +62,6 @@ public class GameBananaMod
         try
         {
             // Note: Page is 1 indexed.
-            using var client = new WebClientWithCompression();
             string urlString = "";
 
             // Transform search text to include wildcards.
@@ -81,7 +84,7 @@ public class GameBananaMod
                             $"_aGameRowIds[]={gameId}";
             }
 
-            string response = await client.DownloadStringTaskAsync(urlString);
+            string response = await SharedHttpClient.UncachedAndCompressed.GetStringAsync(urlString);
             return JsonSerializer.Deserialize<List<GameBananaMod>>(response, new JsonSerializerOptions()
             {
                 Converters = { GameBananaCredit.GameBananaCreditJsonConverter.Instance }

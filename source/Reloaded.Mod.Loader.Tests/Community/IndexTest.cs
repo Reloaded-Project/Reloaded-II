@@ -102,7 +102,7 @@ public class IndexTest
         Assert.True(!string.IsNullOrEmpty(application.Hash));
     }
 
-    private static Index BuildIndex(int numItems, string sourceDir, string targetDir)
+    private static Mod.Loader.Community.Config.Index BuildIndex(int numItems, string sourceDir, string targetDir)
     {
         // Arrange: Write Applications
         var entries = GetGameEntryFaker().Generate(numItems);
@@ -116,7 +116,7 @@ public class IndexTest
         }
 
         // Act
-        return Index.Build(sourceDir, targetDir);
+        return Mod.Loader.Community.Config.Index.Build(sourceDir, targetDir);
     }
 
     private static Faker<AppItem> GetGameEntryFaker()
