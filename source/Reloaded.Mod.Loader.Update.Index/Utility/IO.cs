@@ -7,13 +7,6 @@ namespace Reloaded.Mod.Loader.Update.Index.Utility;
 public class IO
 {
     /// <summary>
-    /// Retrieves a relative path for a file given a folder name.
-    /// </summary>
-    /// <param name="fullPath">Full path for the file.</param>
-    /// <param name="folderPath">The folder to get the path relative to.</param>
-    public static string GetRelativePath(string fullPath, string folderPath) => fullPath.Substring(folderPath.Length + 1);
-
-    /// <summary>
     /// Sanitizes a file or path name to not contain invalid chars.
     /// </summary>
     /// <returns>Sanitized file name.</returns>

@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets.cs" />
     <Content Include="HeroesControllerPostProcess.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -33,6 +34,13 @@
     <Content Include="xunit.runner.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Assets\Assets.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,11 +75,6 @@
     <None Update="HelloWorld64.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Assets\Index\" />
-    <Folder Include="Update\Utilities\" />
   </ItemGroup>
 
 </Project>

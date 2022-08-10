@@ -186,29 +186,28 @@ public struct DownloadableImageThumbnail : INotifyPropertyChanged
 /// </summary>
 public struct Submitter : INotifyPropertyChanged
 {
+    // TODO: [NET7] Restore constructor with guarantee of non-null username. Right now we can't because it breaks built-in System.Text.Json. This is fixed in newer versions.
+
     /// <summary>
     /// Name of the submitter.
     /// </summary>
-    public string UserName { get; set; } = "";
+    public string UserName { get; set; }
 
     /// <summary>
     /// Provides an URL to the user's avatar.
     /// </summary>
-    public Uri? AvatarUrl { get; set; } = null;
+    public Uri? AvatarUrl { get; set; }
 
     /// <summary>
     /// Date of when the user has joined.
     /// In UTC.
     /// </summary>
-    public DateTime? JoinDate { get; set; } = null;
+    public DateTime? JoinDate { get; set; }
 
     /// <summary>
     /// URL of the user created profile.
     /// </summary>
-    public Uri? ProfileUrl { get; set; } = null;
-
-    /// <summary/>
-    public Submitter() { }
+    public Uri? ProfileUrl { get; set; }
 
     // For binding
     /// <inheritdoc />

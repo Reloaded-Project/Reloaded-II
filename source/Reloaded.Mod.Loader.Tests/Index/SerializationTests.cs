@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using NuGet.Versioning;
-using Reloaded.Mod.Loader.Update.Index.Structures.Config;
 using Reloaded.Mod.Loader.Update.Index.Utility;
 using Xunit;
 

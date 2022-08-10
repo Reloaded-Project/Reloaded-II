@@ -26,7 +26,7 @@ public class Index
     /// <param name="url">URL to the NuGet repository.</param>
     public async ValueTask<(bool result, PackageList list)> TryGetNuGetPackageList(string url)
     {
-        if (TryGetNuGetSourcePath(url, out var sourcePath))
+        if (!TryGetNuGetSourcePath(url, out var sourcePath))
             return (false, default);
 
         return (true, await Web.DownloadAndDeserialize<PackageList>(new Uri(BaseUrl, sourcePath)));
@@ -38,7 +38,7 @@ public class Index
     /// <param name="appId">The GameBanana application ID.</param>
     public async ValueTask<(bool result, PackageList list)> TryGetGameBananaPackageList(long appId)
     {
-        if (TryGetGameBananaSourcePath(appId, out var sourcePath))
+        if (!TryGetGameBananaSourcePath(appId, out var sourcePath))
             return (false, default);
 
         return (true, await Web.DownloadAndDeserialize<PackageList>(new Uri(BaseUrl, sourcePath)));

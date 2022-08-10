@@ -31,10 +31,22 @@ public class IndexBuilder
     /// <returns>A copy of the newly created index.</returns>
     public async Task<Structures.Index> BuildAsync(string outputFolder)
     {
-        outputFolder = Path.GetFullPath(outputFolder);
+        outputFolder  = Path.GetFullPath(outputFolder);
         Directory.CreateDirectory(outputFolder);
+        var index     = new Structures.Index();
+        index.BaseUrl = new Uri($"{outputFolder}/");
+        return await UpdateAsync(index);
+    }
 
-        var index = new Structures.Index();
+    /// <summary>
+    /// Updates an existing index instance, by overwriting the data for the configured sources.
+    /// </summary>
+    /// <param name="index">Existing index instance to be updated.</param>
+    /// <returns>Updated index.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public async Task<Structures.Index> UpdateAsync(Structures.Index index)
+    {
+        var outputFolder = index.BaseUrl.LocalPath;
         var tasks = new Task[Sources.Count];
         for (var x = 0; x < Sources.Count; x++)
         {
@@ -55,6 +67,7 @@ public class IndexBuilder
         await Task.WhenAll(tasks);
         var compressedIndex = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(index, Serializer.Options));
         await File.WriteAllBytesAsync(Path.Combine(outputFolder, Routes.Index), compressedIndex);
+        index.BaseUrl = new Uri(outputFolder, UriKind.Absolute);
         return index;
     }
 
@@ -69,14 +82,15 @@ public class IndexBuilder
             new NugetFeed("Cool Feed", indexSourceEntry.NuGetUrl!)
         }));
 
-        var packagesList = new PackageList();
+        var packagesList = PackageList.Create();
         await SearchForAllResults(Take, provider, packagesList);
 
-        var path = Path.Combine(outputFolder, Routes.Build.GetNuGetPackageListPath(indexSourceEntry.NuGetUrl!));
+        var relativePath = Routes.Build.GetNuGetPackageListPath(indexSourceEntry.NuGetUrl!);
+        var path = Path.Combine(outputFolder, relativePath);
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         var bytes = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(packagesList, Serializer.Options));
         await File.WriteAllBytesAsync(path, bytes);
-        index.Sources[Routes.Source.GetNuGetIndexKey(indexSourceEntry.NuGetUrl!)] = path;
+        index.Sources[Routes.Source.GetNuGetIndexKey(indexSourceEntry.NuGetUrl!)] = relativePath;
     }
 
     private static async Task SearchForAllResults(int Take, IDownloadablePackageProvider provider, PackageList packagesList)
@@ -102,13 +116,14 @@ public class IndexBuilder
         const int Take = 50;
         var provider = new GameBananaPackageProvider((int)indexSourceEntry.GameBananaId!.Value);
 
-        var packagesList = new PackageList();
+        var packagesList = PackageList.Create();
         await SearchForAllResults(Take, provider, packagesList);
-        
-        var path = Path.Combine(outputFolder, Routes.Build.GetGameBananaPackageListPath(indexSourceEntry.GameBananaId!.Value));
-        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+
+        var relativePath = Routes.Build.GetGameBananaPackageListPath(indexSourceEntry.GameBananaId!.Value);
+        var fullPath = Path.Combine(outputFolder, relativePath);
+        Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
         var bytes = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(packagesList, Serializer.Options));
-        await File.WriteAllBytesAsync(path, bytes);
-        index.Sources[Routes.Source.GetGameBananaIndex(indexSourceEntry.GameBananaId!.Value)] = path;
+        await File.WriteAllBytesAsync(fullPath, bytes);
+        index.Sources[Routes.Source.GetGameBananaIndex(indexSourceEntry.GameBananaId!.Value)] = relativePath;
     }
 }
