@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Security.Policy;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Reloaded.Mod.Loader.IO.Config.Structs;
 using Reloaded.Mod.Loader.Update.Index.Structures;
 using Reloaded.Mod.Loader.Update.Index.Structures.Config;
@@ -93,31 +90,14 @@ public class IndexBuilder
         index.Sources[Routes.Source.GetNuGetIndexKey(indexSourceEntry.NuGetUrl!)] = relativePath;
     }
 
-    private static async Task SearchForAllResults(int Take, IDownloadablePackageProvider provider, PackageList packagesList)
-    {
-        var paginationHelper = new PaginationHelper();
-        paginationHelper.ItemsPerPage = Take;
-
-        IDownloadablePackage[] resultsArray;
-
-        do
-        {
-            resultsArray = (await provider.SearchAsync("", paginationHelper.Skip, paginationHelper.Take)).ToArray();
-            foreach (var result in resultsArray)
-                packagesList.Packages.Add(await Package.CreateAsync(result));
-
-            paginationHelper.NextPage();
-        } while (resultsArray.Length > 0);
-    }
-
     private async Task BuildGameBananaSourceAsync(Structures.Index index, IndexSourceEntry indexSourceEntry, string outputFolder)
     {
         // Max for GameBanana
-        const int Take = 50;
+        const int take = 50;
         var provider = new GameBananaPackageProvider((int)indexSourceEntry.GameBananaId!.Value);
 
         var packagesList = PackageList.Create();
-        await SearchForAllResults(Take, provider, packagesList);
+        await SearchForAllResults(take, provider, packagesList, 8);
 
         var relativePath = Routes.Build.GetGameBananaPackageListPath(indexSourceEntry.GameBananaId!.Value);
         var fullPath = Path.Combine(outputFolder, relativePath);
@@ -125,5 +105,46 @@ public class IndexBuilder
         var bytes = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(packagesList, Serializer.Options));
         await File.WriteAllBytesAsync(fullPath, bytes);
         index.Sources[Routes.Source.GetGameBananaIndex(indexSourceEntry.GameBananaId!.Value)] = relativePath;
+    }
+
+    private static async Task SearchForAllResults(int itemsPerPage, IDownloadablePackageProvider provider, PackageList packagesList, int numConnections = 1)
+    {
+        var paginationHelper = new PaginationHelper();
+        paginationHelper.ItemsPerPage = itemsPerPage;
+
+        int numResults;
+        var searchResults = new Task<IEnumerable<IDownloadablePackage>>[numConnections];
+
+        do
+        {
+            numResults = 0;
+            for (int x = 0; x < searchResults.Length; x++)
+                searchResults[x] = TrySearch(provider, paginationHelper + x);
+
+            await Task.WhenAll(searchResults);
+
+            // Flatten results.
+            foreach (var searchResult in searchResults)
+            foreach (var downloadablePackage in searchResult.Result)
+            {
+                numResults += 1;
+                packagesList.Packages.Add(await Package.CreateAsync(downloadablePackage));
+            }
+
+            paginationHelper.NextPage(numConnections);
+        } while (numResults > 0);
+    }
+
+    private static async Task<IEnumerable<IDownloadablePackage>> TrySearch(IDownloadablePackageProvider provider, PaginationHelper paginationHelper)
+    {
+        try
+        {
+            return await provider.SearchAsync("", paginationHelper.Skip, paginationHelper.Take);
+        }
+        catch (Exception e)
+        {
+            // TODO: Log error
+            return Array.Empty<IDownloadablePackage>();
+        }
     }
 }
