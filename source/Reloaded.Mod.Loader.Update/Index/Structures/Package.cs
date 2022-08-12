@@ -1,16 +1,14 @@
-﻿using System.ComponentModel;
-using Mapster;
-using NuGet.Versioning;
-using Reloaded.Mod.Loader.Update.Interfaces;
+﻿using Mapster;
 using Reloaded.Mod.Loader.Update.Interfaces.Extensions;
-using Reloaded.Mod.Loader.Update.Providers.Web;
 
 namespace Reloaded.Mod.Loader.Update.Index.Structures;
 
+/// <inheritdoc />
 [Equals(DoNotAddEqualityOperators = true)]
 public class Package : IDownloadablePackage
 {
 #pragma warning disable CS0067
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore CS0067
 

@@ -20,7 +20,7 @@ public class IndexApi
     ///     URL of the website/host storing the files.
     ///     Should end on forward slash.
     /// </param>
-    public IndexApi(string indexUrl = "https://reloaded-project.github.io/Reloaded-II.SearchIndex/")
+    public IndexApi(string indexUrl = "https://reloaded-project.github.io/Reloaded-II.Index/")
     {
         IndexUrl = new Uri(indexUrl);
     }

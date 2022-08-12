@@ -85,9 +85,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Reloaded.Mod.Loader.IPC", "
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Reloaded.Mod.Shared", "Reloaded.Mod.Shared\Reloaded.Mod.Shared.shproj", "{D322E71A-F32E-42E9-8340-C747D3D9028C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.Mod.Loader.Update.Index", "Reloaded.Mod.Loader.Update.Index\Reloaded.Mod.Loader.Update.Index.csproj", "{021BE568-5B0D-47B3-B39A-3B5A1903D578}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.AutoIndexBuilder", "Tools\Reloaded.AutoIndexBuilder\Reloaded.AutoIndexBuilder.csproj", "{2A15B427-2008-40C4-9D45-A536AC67D433}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.AutoIndexBuilder", "Tools\Reloaded.AutoIndexBuilder\Reloaded.AutoIndexBuilder.csproj", "{2A15B427-2008-40C4-9D45-A536AC67D433}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -517,22 +515,6 @@ Global
 		{EFEE7C5A-A1E7-44E8-9640-B0194146501C}.Release-ModLoaderOnly|Any CPU.ActiveCfg = Release|Any CPU
 		{EFEE7C5A-A1E7-44E8-9640-B0194146501C}.Release-ModLoaderOnly|Any CPU.Build.0 = Release|Any CPU
 		{EFEE7C5A-A1E7-44E8-9640-B0194146501C}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Debug|X64+X86.ActiveCfg = Debug|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Debug|X64+X86.Build.0 = Debug|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Debug-ModLoaderOnly|Any CPU.ActiveCfg = Debug|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Debug-ModLoaderOnly|Any CPU.Build.0 = Debug|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Debug-ModLoaderOnly|X64+X86.ActiveCfg = Debug|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Debug-ModLoaderOnly|X64+X86.Build.0 = Debug|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Release|Any CPU.Build.0 = Release|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Release|X64+X86.ActiveCfg = Release|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Release|X64+X86.Build.0 = Release|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Release-ModLoaderOnly|Any CPU.ActiveCfg = Release|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Release-ModLoaderOnly|Any CPU.Build.0 = Release|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
-		{021BE568-5B0D-47B3-B39A-3B5A1903D578}.Release-ModLoaderOnly|X64+X86.Build.0 = Release|Any CPU
 		{2A15B427-2008-40C4-9D45-A536AC67D433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2A15B427-2008-40C4-9D45-A536AC67D433}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A15B427-2008-40C4-9D45-A536AC67D433}.Debug|X64+X86.ActiveCfg = Debug|Any CPU

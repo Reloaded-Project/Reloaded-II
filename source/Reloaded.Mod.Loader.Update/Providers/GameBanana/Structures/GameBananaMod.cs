@@ -1,7 +1,3 @@
-using System.Net.Http;
-using CacheCow.Client;
-using Reloaded.Mod.Loader.Update.Caching;
-
 #pragma warning disable CS1591
 
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana.Structures;

@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Reloaded.Mod.Loader.Update.Index.Utility;
+﻿using Reloaded.Mod.Loader.Update.Index.Utility;
 
 namespace Reloaded.Mod.Loader.Update.Index.Structures;
 

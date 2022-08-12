@@ -1,7 +1,4 @@
-﻿using System.Text.Json;
-using Reloaded.Mod.Loader.Update.Utilities;
-
-namespace Reloaded.Mod.Loader.Update.Index.Utility;
+﻿namespace Reloaded.Mod.Loader.Update.Index.Utility;
 
 /// <summary>
 /// Utility class for making web requests.

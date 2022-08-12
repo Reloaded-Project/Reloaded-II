@@ -1,8 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using NuGet.Versioning;
-
-namespace Reloaded.Mod.Loader.Update.Index.Utility;
+﻿namespace Reloaded.Mod.Loader.Update.Index.Utility;
 
 /// <summary>
 /// Contains common serializer settings.
@@ -19,8 +15,10 @@ public static class Serializer
         Converters = { new NuGetVersionJsonConverter() }
     };
 
+    /// <inheritdoc />
     public class NuGetVersionJsonConverter : JsonConverter<NuGetVersion>
     {
+        /// <inheritdoc />
         public override NuGetVersion? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType == JsonTokenType.Null)
@@ -29,6 +27,7 @@ public static class Serializer
             return NuGetVersion.Parse(reader.GetString()!);
         }
 
+        /// <inheritdoc />
         public override void Write(Utf8JsonWriter writer, NuGetVersion? version, JsonSerializerOptions options)
         {
             if (version == null)

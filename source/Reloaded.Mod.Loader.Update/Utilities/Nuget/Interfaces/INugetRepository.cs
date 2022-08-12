@@ -1,5 +1,3 @@
-using NuGet.Protocol.Core.Types;
-
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
 
 /// <summary>

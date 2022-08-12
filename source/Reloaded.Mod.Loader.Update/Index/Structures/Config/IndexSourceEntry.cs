@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Reloaded.Mod.Loader.Update.Index.Structures.Config;
+﻿namespace Reloaded.Mod.Loader.Update.Index.Structures.Config;
 
 /// <summary>
 /// Contains an individual entry used by the source builder to.
@@ -60,7 +58,9 @@ public class IndexSourceEntry
 /// </summary>
 public enum IndexType
 {
+#pragma warning disable CS1591
     Unknown,
     GameBanana,
     NuGet
+#pragma warning restore CS1591
 }

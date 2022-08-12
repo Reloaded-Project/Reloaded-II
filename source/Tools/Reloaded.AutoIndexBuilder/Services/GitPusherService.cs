@@ -1,6 +1,4 @@
 ﻿using LibGit2Sharp;
-using LibGit2Sharp.Handlers;
-using Octokit;
 using Reloaded.AutoIndexBuilder.Config;
 using Serilog.Core;
 using Credentials = LibGit2Sharp.Credentials;

@@ -1,3 +1,5 @@
+using Reloaded.Mod.Loader.Update.Index.Provider;
+
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
 /// <inheritdoc />
@@ -15,7 +17,7 @@ public class GameBananaPackageProviderFactory : IPackageProviderFactory
         if (!this.TryGetConfiguration<GameBananaProviderConfig>(mod, out var gbConfig))
             return null;
 
-        return new GameBananaPackageProvider(gbConfig!.GameId);
+        return new IndexedGameBananaPackageProvider(gbConfig!.GameId);
     }
 
     /// <inheritdoc />

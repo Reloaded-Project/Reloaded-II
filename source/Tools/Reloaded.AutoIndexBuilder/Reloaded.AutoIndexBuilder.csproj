@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Reloaded.Mod.Loader.Update.Index\Reloaded.Mod.Loader.Update.Index.csproj" />
+    <ProjectReference Include="..\..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
   </ItemGroup>
 
 </Project>
