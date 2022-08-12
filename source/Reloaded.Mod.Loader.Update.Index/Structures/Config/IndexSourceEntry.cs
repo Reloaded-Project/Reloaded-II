@@ -24,6 +24,11 @@ public class IndexSourceEntry
     public string? NuGetUrl { get; set; }
 
     /// <summary>
+    /// Serialization only.
+    /// </summary>
+    public IndexSourceEntry() {}
+
+    /// <summary>
     /// Creates a source entry given a GameBanana application id.
     /// </summary>
     /// <param name="appId">Application id.</param>

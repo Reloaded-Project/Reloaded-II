@@ -23,10 +23,8 @@ internal class AkavacheWebCacheStore : ICacheStore
     /// <summary/>
     public AkavacheWebCacheStore()
     {
-        var directory = Paths.WebCachePath;
-        Directory.CreateDirectory(directory);
-        var filePath = Path.Combine(directory, "Web.db");
-        _cache = new SqlRawPersistentBlobCache(filePath);
+        Directory.CreateDirectory(Path.GetDirectoryName(Paths.WebCachePath)!);
+        _cache = new SqlRawPersistentBlobCache(Paths.WebCachePath);
         CleanupAsync();
     }
 

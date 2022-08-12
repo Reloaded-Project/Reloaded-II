@@ -188,7 +188,10 @@ public class GameBananaCredit
 
         public override void Write(Utf8JsonWriter writer, GameBananaCredit value, JsonSerializerOptions options)
         {
-            throw new Exception("Not Supported");
+            writer.WriteStartArray();
+            writer.WriteStringValue(value.Name);
+            writer.WriteStringValue(value.Role);
+            writer.WriteEndArray();
         }
     }
 }
@@ -348,6 +351,11 @@ public class GameBananaModFile
 
 public class GameBananaManagerIntegrationConverter : JsonConverter<Dictionary<string, GameBananaManagerIntegration[]>>
 {
+    private JsonSerializerOptions _options = new()
+    {
+        WriteIndented = true
+    };
+
     public override Dictionary<string, GameBananaManagerIntegration[]>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.StartArray)
@@ -360,5 +368,8 @@ public class GameBananaManagerIntegrationConverter : JsonConverter<Dictionary<st
         return JsonSerializer.Deserialize<Dictionary<string, GameBananaManagerIntegration[]>>(ref reader);
     }
 
-    public override void Write(Utf8JsonWriter writer, Dictionary<string, GameBananaManagerIntegration[]> value, JsonSerializerOptions options) => throw new NotImplementedException();
+    public override void Write(Utf8JsonWriter writer, Dictionary<string, GameBananaManagerIntegration[]> value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(writer, value, _options);
+    }
 }

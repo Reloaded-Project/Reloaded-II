@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Force.DeepCloner;
 using Reloaded.Mod.Loader.IO.Config.Structs;
 using Reloaded.Mod.Loader.Update.Index.Structures;
 using Reloaded.Mod.Loader.Update.Index.Structures.Config;
@@ -25,8 +26,9 @@ public class IndexBuilder
     /// Builds a game index given a source folder and outputs it to a given directory.
     /// </summary>
     /// <param name="outputFolder">Folder where to place the output result.</param>
+    /// <param name="writeToFile">Set to true if you wish for the index to be written to file.</param>
     /// <returns>A copy of the newly created index.</returns>
-    public async Task<Structures.Index> BuildAsync(string outputFolder)
+    public async Task<Structures.Index> BuildAsync(string outputFolder, bool writeToFile = true)
     {
         outputFolder  = Path.GetFullPath(outputFolder);
         Directory.CreateDirectory(outputFolder);
@@ -36,12 +38,45 @@ public class IndexBuilder
     }
 
     /// <summary>
+    /// Removes sources that are not specified in builder.
+    /// </summary>
+    public Structures.Index RemoveNotInBuilder(Structures.Index index)
+    {
+        var indexSources = index.Sources.DeepClone();
+        
+        foreach (var source in Sources)
+        {
+            switch (source.Type)
+            {
+                case IndexType.GameBanana:
+                    indexSources.Remove(Routes.Source.GetGameBananaIndex(source.GameBananaId!.Value));
+                    break;
+                case IndexType.NuGet:
+                    indexSources.Remove(Routes.Source.GetNuGetIndexKey(source.NuGetUrl!));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        foreach (var source in indexSources)
+        {
+            index.Sources.Remove(source.Key);
+            var directory = Path.Combine(index.BaseUrl.LocalPath, Path.GetDirectoryName(source.Value)!);
+            Directory.Delete(directory, true);
+        }
+
+        return index;
+    }
+
+    /// <summary>
     /// Updates an existing index instance, by overwriting the data for the configured sources.
     /// </summary>
     /// <param name="index">Existing index instance to be updated.</param>
+    /// <param name="writeToFile">Set to true if you wish for the index to be written to file.</param>
     /// <returns>Updated index.</returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public async Task<Structures.Index> UpdateAsync(Structures.Index index)
+    public async Task<Structures.Index> UpdateAsync(Structures.Index index, bool writeToFile = true)
     {
         var outputFolder = index.BaseUrl.LocalPath;
         var tasks = new Task[Sources.Count];
@@ -62,10 +97,21 @@ public class IndexBuilder
         }
 
         await Task.WhenAll(tasks);
-        var compressedIndex = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(index, Serializer.Options));
-        await File.WriteAllBytesAsync(Path.Combine(outputFolder, Routes.Index), compressedIndex);
+        if (writeToFile)
+            await WriteToDiskAsync(index);
+
         index.BaseUrl = new Uri(outputFolder, UriKind.Absolute);
         return index;
+    }
+
+    /// <summary>
+    /// Writes an existing index to disk, in a specified folder.
+    /// </summary>
+    /// <param name="index">The index to write.</param>
+    public async Task WriteToDiskAsync(Structures.Index index)
+    {
+        var compressedIndex = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(index, Serializer.Options));
+        await File.WriteAllBytesAsync(Path.Combine(index.BaseUrl.LocalPath, Routes.Index), compressedIndex);
     }
 
     private async Task BuildNuGetSourceAsync(Structures.Index index, IndexSourceEntry indexSourceEntry,

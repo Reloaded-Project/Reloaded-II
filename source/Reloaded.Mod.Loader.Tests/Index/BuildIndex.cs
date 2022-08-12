@@ -1,7 +1,9 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Reloaded.Mod.Loader.Update.Index;
 using Reloaded.Mod.Loader.Update.Index.Structures.Config;
+using Sewer56.DeltaPatchGenerator.Lib.Utility;
 using Xunit;
 
 namespace Reloaded.Mod.Loader.Tests.Index;
@@ -69,7 +71,10 @@ public class IndexBuildTests : IndexTestCommon
         const int heroesGameId = 6061;
 
         // Arrange
-        var api = new IndexApi($"{Assets.GameBananaIndexAssetsFolder}/");
+        using var tempFolder = new TemporaryFolderAllocation();
+        IOEx.CopyDirectory(Assets.GameBananaIndexAssetsFolder, tempFolder.FolderPath);
+
+        var api = new IndexApi($"{tempFolder.FolderPath}/");
         var index = await api.GetIndexAsync();
 
         var builder = new IndexBuilder();
@@ -82,5 +87,32 @@ public class IndexBuildTests : IndexTestCommon
         Assert.True(index.TryGetNuGetSourcePath(TestNuGetFeedUrl, out _));
         Assert.True(index.TryGetGameBananaSourcePath(heroesGameId, out _));
         Assert.True(Directory.Exists(index.BaseUrl.LocalPath));
+    }
+
+    [Fact]
+    public async Task RemoveItemFromIndex()
+    {
+        // Arrange
+        using var tempFolder = new TemporaryFolderAllocation();
+        IOEx.CopyDirectory(Assets.SampleIndexAssetsFolder, tempFolder.FolderPath);
+
+        var api = new IndexApi($"{tempFolder.FolderPath}/");
+        var index = await api.GetIndexAsync();
+
+        var builder = new IndexBuilder();
+        builder.Sources.Add(new IndexSourceEntry(TestNuGetFeedUrl));
+        var gbIndex = index.Sources.First(x => x.Key.StartsWith(Routes.Source.IdentifierGameBanana)); // This will be removed.
+        var nugetIndex = index.Sources.First(x => x.Key.StartsWith(Routes.Source.IdentifierNuGet));   // This will be preserved.
+
+        // Act
+        index = builder.RemoveNotInBuilder(index);
+
+        // Assert
+        Assert.Null(index.Sources.FirstOrDefault(x => x.Key.StartsWith(Routes.Source.IdentifierGameBanana)).Value);
+
+        var oldNuGetFolder = Path.Combine(tempFolder.FolderPath, Path.GetDirectoryName(nugetIndex.Value));
+        var oldGbFolder = Path.Combine(tempFolder.FolderPath, Path.GetDirectoryName(gbIndex.Value));
+        Assert.True(Directory.Exists(oldNuGetFolder));
+        Assert.False(Directory.Exists(oldGbFolder));
     }
 }

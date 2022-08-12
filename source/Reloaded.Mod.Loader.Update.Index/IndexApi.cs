@@ -39,3 +39,24 @@ public class IndexApi
         return index;
     }
 }
+
+/// <summary>
+/// Extensions for the Index API.
+/// </summary>
+public static class IndexApiExtensions
+{
+    /// <summary>
+    /// Gets an index from local folder, or returns a dummy.
+    /// </summary>
+    public static async Task<Structures.Index> GetOrCreateLocalIndexAsync(this IndexApi api)
+    {
+        var uri = new Uri(api.IndexUrl, Routes.Index);
+        if (!uri.IsFile)
+            throw new ArgumentException("The index API was created with a non-local path.");
+
+        if (!File.Exists(uri.LocalPath))
+            return new Structures.Index() { BaseUrl = api.IndexUrl };
+
+        return await api.GetIndexAsync();
+    }
+}
