@@ -118,7 +118,7 @@ public class IndexBuilderService : IJob
     private async Task ExecuteInternal(IJobExecutionContext context)
     {
         // Pull from Git
-        _gitPusherService.Pull();
+        _gitPusherService.ResetToRemote();
 
         // Build
         var watch = Stopwatch.StartNew();

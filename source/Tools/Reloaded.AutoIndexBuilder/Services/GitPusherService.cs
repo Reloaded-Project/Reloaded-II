@@ -1,4 +1,5 @@
 ﻿using LibGit2Sharp;
+using LibGit2Sharp.Handlers;
 using Reloaded.AutoIndexBuilder.Config;
 using Serilog.Core;
 using Credentials = LibGit2Sharp.Credentials;
@@ -34,16 +35,21 @@ public class GitPusherService
     /// <summary>
     /// Pulls the current changes from git.
     /// </summary>
-    public void Pull()
+    public void ResetToRemote()
     {
         using var repo = Repository;
 
-        // Pull
-        var pullOptions = new PullOptions();
-        pullOptions.FetchOptions = new FetchOptions();
-        pullOptions.MergeOptions = new MergeOptions();
-        pullOptions.FetchOptions.CredentialsProvider = GetCredentials;
-        LibGit2Sharp.Commands.Pull(repo, Signature, pullOptions);
+        // Fetch All
+        var options = new FetchOptions() { CredentialsProvider = GetCredentials };
+        foreach (Remote remote in repo.Network.Remotes)
+        {
+            var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
+            LibGit2Sharp.Commands.Fetch(repo, remote.Name, refSpecs, options, "");
+        }
+        
+        // Reset
+        var trackedBranch = repo.Head.TrackedBranch;
+        repo.Reset(ResetMode.Hard, trackedBranch.Commits.OrderByDescending(x => x.Committer.When).First());
     }
 
     /// <summary>
