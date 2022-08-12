@@ -38,10 +38,7 @@ public class AddSourceCommand : InteractionModuleBase<SocketInteractionContext>
         
         try
         {
-            var provider = new NuGetPackageProvider(new AggregateNugetRepository(new[]
-            {
-                new NugetFeed("Cool Feed", nugetUrl)
-            }));
+            var provider = new NuGetPackageProvider(NugetRepository.FromSourceUrl(nugetUrl));
 
             var results = await provider.SearchAsync("", 0, 10);
             await AddSourceCommon(new SourceEntry(nugetUrl), friendlyName, durationMinutes!.Value);

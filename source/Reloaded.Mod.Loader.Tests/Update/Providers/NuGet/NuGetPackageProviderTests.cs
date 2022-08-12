@@ -18,7 +18,7 @@ public class NuGetPackageProviderTests
     {
         // Arrange
         var repository = NugetRepository.FromSourceUrl(NugetRepositoryTests.TestNugetFeed);
-        var provider   = new NuGetPackageProvider(new AggregateNugetRepository(new []{ repository }));
+        var provider   = new NuGetPackageProvider(repository);
 
         // Act
         var packages = await provider.SearchAsync("");
@@ -32,7 +32,7 @@ public class NuGetPackageProviderTests
     {
         // Arrange
         var repository = NugetRepository.FromSourceUrl(NugetRepositoryTests.TestNugetFeed);
-        var provider = new NuGetPackageProvider(new AggregateNugetRepository(new[] { repository }));
+        var provider = new NuGetPackageProvider(repository);
 
         // Act
         var packages = await provider.SearchAsync("Hooks");
@@ -47,7 +47,7 @@ public class NuGetPackageProviderTests
     {
         // Arrange
         var repository = NugetRepository.FromSourceUrl(NugetRepositoryTests.TestNugetFeed);
-        var provider   = new NuGetPackageProvider(new AggregateNugetRepository(new[] { repository }));
+        var provider   = new NuGetPackageProvider(repository);
 
         // Act
         using var outputDirectory = new TemporaryFolderAllocation();

@@ -5,10 +5,10 @@ namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 /// </summary>
 public class NuGetPackageProvider : IDownloadablePackageProvider
 {
-    private readonly AggregateNugetRepository _repository;
+    private readonly INugetRepository _repository;
 
     /// <summary/>
-    public NuGetPackageProvider(AggregateNugetRepository repository)
+    public NuGetPackageProvider(INugetRepository repository)
     {
         _repository = repository;
     }
@@ -16,16 +16,11 @@ public class NuGetPackageProvider : IDownloadablePackageProvider
     /// <inheritdoc />
     public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default)
     {
-        var searchTuples = await _repository.Search(text, false, skip, take, token);
+        var searchResults = await _repository.Search(text, false, skip, take, token);
         var result = new List<IDownloadablePackage>();
 
-        foreach (var tuple in searchTuples)
-        {
-            var packages    = tuple.Generic;
-            var repository  = tuple.Repository;
-            foreach (var package in packages)
-                result.Add(new NuGetDownloadablePackage(package, repository));
-        }
+        foreach (var res in searchResults)
+            result.Add(new NuGetDownloadablePackage(res, _repository));
 
         return result;
     }

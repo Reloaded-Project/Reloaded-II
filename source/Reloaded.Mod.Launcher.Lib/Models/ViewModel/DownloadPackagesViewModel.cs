@@ -1,3 +1,5 @@
+using Reloaded.Mod.Loader.Update.Index.Provider;
+
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
 /// <summary>
@@ -83,7 +85,9 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         }
 
         // Get package provider for all packages.
-        PackageProviders.Add(new AggregatePackageProvider(new IDownloadablePackageProvider[] { new NuGetPackageProvider(nugetRepository) }, "NuGet"));
+        foreach (var nugetSource in nugetRepository.Sources)
+            PackageProviders.Add(new AggregatePackageProvider(new []{ new IndexedNuGetPackageProvider(nugetSource) }, $"NuGet: {nugetSource.FriendlyName}"));
+
         var allPackageProvider = new AggregatePackageProvider(PackageProviders.Select(x => (IDownloadablePackageProvider)x).ToArray(), Resources.DownloadPackagesAll.Get());
         PackageProviders.Add(allPackageProvider);
         CurrentPackageProvider = allPackageProvider;
