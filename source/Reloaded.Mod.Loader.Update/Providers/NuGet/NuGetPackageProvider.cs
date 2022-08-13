@@ -20,7 +20,7 @@ public class NuGetPackageProvider : IDownloadablePackageProvider
         var result = new List<IDownloadablePackage>();
 
         foreach (var res in searchResults)
-            result.Add(new NuGetDownloadablePackage(res, _repository));
+            result.Add(await WebDownloadablePackage.FromNuGetAsync(res, _repository));
 
         return result;
     }
