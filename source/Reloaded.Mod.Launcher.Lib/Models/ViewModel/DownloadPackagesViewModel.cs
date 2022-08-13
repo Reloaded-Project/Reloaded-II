@@ -67,7 +67,10 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// </summary>
     public RelayCommand SelectLastItem { get; set; }
 
-    private CancellationTokenSource? _tokenSource;
+    /// <summary>
+    /// Source for current search' cancellationtoken.
+    /// </summary>
+    public CancellationTokenSource CurrentSearchTokenSource { get; set; } = new ();
 
     private PaginationHelper _paginationHelper = PaginationHelper.Default;
 
@@ -110,7 +113,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     }
 
     /// <inheritdoc />
-    public void Dispose() => _tokenSource?.Dispose();
+    public void Dispose() => CurrentSearchTokenSource?.Dispose();
 
     /// <summary>
     /// Gets the search results for the current search term.
@@ -118,9 +121,9 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// <returns></returns>
     public async Task GetSearchResults()
     {
-        _tokenSource?.Cancel();
-        _tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-        var localTokenSource = _tokenSource;
+        CurrentSearchTokenSource?.Cancel();
+        CurrentSearchTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+        var localTokenSource = CurrentSearchTokenSource;
         var searchTuples = await CurrentPackageProvider.SearchAsync(SearchQuery, _paginationHelper.Skip, _paginationHelper.Take, localTokenSource.Token);
         if (!localTokenSource.IsCancellationRequested)
             Collections.ModifyObservableCollection(SearchResult, searchTuples);

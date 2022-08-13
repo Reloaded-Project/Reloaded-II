@@ -46,25 +46,36 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
     /// </summary>
     private async void OnPreviewImageLoaded(object sender, RoutedEventArgs e)
     {
-        // Set our temporary placeholder first
-        var image = (Image)sender;
-        image.Source = Imaging.GetPlaceholderIcon();
+        try
+        {
+            // Set our temporary placeholder first
+            var image = (Image)sender;
+            image.Source = Imaging.GetPlaceholderIcon();
 
-        // Now download the new image async.
-        var package = image.DataContext as IDownloadablePackage;
-        if (package?.Images == null || package.Images.Length <= 0)
-            return;
+            // Now download the new image async.
+            var package = image.DataContext as IDownloadablePackage;
+            if (package?.Images == null || package.Images.Length <= 0)
+                return;
 
-        // Calculate actual rendered size.
-        var dpiScale = VisualTreeHelper.GetDpi(image);
-        var desiredWidth = (int)(image.DesiredSize.Width * dpiScale.DpiScaleX);
+            // Calculate actual rendered size.
+            var tokenSource = new CancellationTokenSource();
+            image.Unloaded += (o, args) => tokenSource.Cancel();
+            var dpiScale = VisualTreeHelper.GetDpi(image);
+            var desiredWidth = (int)(image.DesiredSize.Width * dpiScale.DpiScaleX);
 
-        // Select and decode appropriate image.
-        var uri = package.Images[0].SelectBasedOnWidth(desiredWidth);
-        await using var memoryStream = new MemoryStream(await _cacheService.GetOrDownloadFileFromUrl(uri, _cacheService.ModPreviewExpiration));
-        image.Source = Imaging.BitmapFromStream(memoryStream, desiredWidth);
+            // Select and decode appropriate image.
+            var uri = package.Images[0].SelectBasedOnWidth(desiredWidth);
+            await using var memoryStream = new MemoryStream(await _cacheService.GetOrDownloadFileFromUrl(uri, _cacheService.ModPreviewExpiration, false, tokenSource.Token));
+
+            if (!tokenSource.IsCancellationRequested)
+                image.Source = Imaging.BitmapFromStream(memoryStream, desiredWidth);
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
     }
-
+    
     private void OnClickCard(object sender, MouseButtonEventArgs e)
     {
         // Note: This event is fired before SelectedItem, so we will set the current item ourselves in the meantime.

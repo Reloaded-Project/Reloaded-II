@@ -58,9 +58,12 @@ public class AkavacheCache
 
             return file;
         }
+        
         // Get it, and put into cache.
         var data = await SharedHttpClient.UncachedAndCompressed.GetByteArrayAsync(uri, token);
-        _ = _cache.Insert(key, data, expiration);
+        if (!token.IsCancellationRequested)
+            _ = _cache.Insert(key, data, expiration);
+        
         return data;
     }
 
@@ -96,8 +99,10 @@ public class AkavacheCache
         }
 
         // Get it, and put into cache.
-        var data = Compression.Compress(await SharedHttpClient.UncachedAndCompressed.GetByteArrayAsync(uri, token));
-        _ = _cache.Insert(key, data, expiration);
+        var data = Compression.Compress(await SharedHttpClient.UncachedAndCompressed.GetByteArrayAsync(uri, token)); 
+        if (!token.IsCancellationRequested)
+            _ = _cache.Insert(key, data, expiration);
+
         return data;
     }
 
