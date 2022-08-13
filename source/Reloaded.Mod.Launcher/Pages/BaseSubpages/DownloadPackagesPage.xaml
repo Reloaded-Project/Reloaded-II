@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
 
         <!-- Search -->
-        <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{DynamicResource CommonItemVerticalMarginSmall}">
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{StaticResource CommonItemVerticalMarginSmall}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -153,7 +153,7 @@
             <!-- Redefine the container for our cards. Helps with theme backwards compatibility. -->
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
+                    <Setter Property="FocusVisualStyle" Value="{StaticResource ReloadedFocusVisual}"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -170,10 +170,10 @@
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{DynamicResource BackgroundFadeBackgroundToBorderDark}"/>
+                                <BeginStoryboard Storyboard="{StaticResource BackgroundFadeBackgroundToBorderDark}"/>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{DynamicResource BackgroundFadeBorderDarkToBackground}"/>
+                                <BeginStoryboard Storyboard="{StaticResource BackgroundFadeBorderDarkToBackground}"/>
                             </Trigger.ExitActions>
                         </Trigger>
                     </Style.Triggers>
@@ -184,71 +184,72 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <!-- Template for a Card -->
-                    <Grid MouseDown="OnClickCard">
-                        <Image Style="{DynamicResource HighQualityImage}" Width="300" Height="225" Panel.ZIndex="0" Loaded="OnPreviewImageLoaded" />
+                    <Grid MouseDown="OnClickCard" Style="{x:Null}" OverridesDefaultStyle="True">
+                        <Image RenderOptions.BitmapScalingMode="LowQuality" Style="{x:Null}" OverridesDefaultStyle="True"
+                               Width="300" Height="225" Panel.ZIndex="0" Loaded="OnPreviewImageLoaded" />
 
                         <!-- Info Overlay: Top -->
-                        <StackPanel Orientation="Vertical" Panel.ZIndex="1" VerticalAlignment="Top" 
-                                    Background="{DynamicResource TooltipBackgroundColorBrush}">
+                        <StackPanel Orientation="Vertical" Panel.ZIndex="1" VerticalAlignment="Top" Style="{x:Null}" OverridesDefaultStyle="True"
+                                    Background="{StaticResource TooltipBackgroundColorBrush}">
 
                             <!-- Name -->
-                            <TextBlock Text="{Binding Name}" Style="{DynamicResource DownloadModTitleTextBlock}" 
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"
                                        HorizontalAlignment="Center" TextWrapping="WrapWithOverflow"/>
                         </StackPanel>
 
                         <!-- Info Overlay: Bottom -->
-                        <StackPanel Name="BottomInfoPanel" Orientation="Vertical" Panel.ZIndex="1" VerticalAlignment="Bottom" Background="{DynamicResource TooltipBackgroundColorBrush}">
+                        <StackPanel Name="BottomInfoPanel" Orientation="Vertical" Panel.ZIndex="1" VerticalAlignment="Bottom" Background="{StaticResource TooltipBackgroundColorBrush}" Style="{x:Null}" OverridesDefaultStyle="True">
 
                             <!-- Avatar & Author -->
-                            <Grid HorizontalAlignment="Center">
+                            <Grid HorizontalAlignment="Center" Style="{x:Null}" OverridesDefaultStyle="True">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Viewbox Grid.Column="0" MaxHeight="{Binding ElementName=AuthorBtnText, Path=ActualHeight}">
-                                    <Canvas Width="24" Height="24">
-                                        <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryAuthor}" />
+                                <Viewbox Grid.Column="0" MaxHeight="{Binding ElementName=AuthorBtnText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                    <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
+                                        <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryAuthor}" Style="{x:Null}" OverridesDefaultStyle="True"/>
                                     </Canvas>
                                 </Viewbox>
 
                                 <TextBlock Text="{Binding Submitter.UserName}" Grid.Column="1"
                                            Visibility="{Binding Submitter, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
-                                           Style="{DynamicResource DownloadModTitleTextBlock}" 
+                                           Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"
                                            TextTrimming="CharacterEllipsis" 
                                            Name="AuthorBtnText"/>
                             </Grid>
 
                             <!-- Stats -->
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                                    utility:MarginSetter.Enable="True" utility:MarginSetter.Margin="{DynamicResource DownloadMenuHorizontalItemMargin}" utility:MarginSetter.LastItemMargin="0">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Style="{x:Null}" OverridesDefaultStyle="True"
+                                    utility:MarginSetter.Enable="True" utility:MarginSetter.Margin="{StaticResource DownloadMenuHorizontalItemMargin}" utility:MarginSetter.LastItemMargin="0">
 
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding DownloadCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}">
-                                    <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
-                                        <Canvas Width="24" Height="24">
-                                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryDownload}" />
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding DownloadCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                    <Viewbox Margin="{StaticResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                        <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
+                                            <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryDownload}" Style="{x:Null}" OverridesDefaultStyle="True"/>
                                         </Canvas>
                                     </Viewbox>
-                                    <TextBlock Name="DownloadCountText" Text="{Binding DownloadCount}" Style="{DynamicResource DownloadModTitleTextBlock}" />
+                                    <TextBlock Name="DownloadCountText" Text="{Binding DownloadCount}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"/>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding ViewCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}">
-                                    <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
-                                        <Canvas Width="24" Height="24">
-                                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryView}" />
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding ViewCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                    <Viewbox Margin="{StaticResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                        <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
+                                            <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryView}" Style="{x:Null}" OverridesDefaultStyle="True"/>
                                         </Canvas>
                                     </Viewbox>
                                     <TextBlock Text="{Binding ViewCount}"
-                                               Style="{DynamicResource DownloadModTitleTextBlock}" />
+                                               Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True" />
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding LikeCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}">
-                                    <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
-                                        <Canvas Width="24" Height="24">
-                                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryLike}" />
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding LikeCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                    <Viewbox Margin="{StaticResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                        <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
+                                            <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryLike}" Style="{x:Null}" OverridesDefaultStyle="True"/>
                                         </Canvas>
                                     </Viewbox>
-                                    <TextBlock Text="{Binding LikeCount}" Style="{DynamicResource DownloadModTitleTextBlock}" />
+                                    <TextBlock Text="{Binding LikeCount}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"/>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
