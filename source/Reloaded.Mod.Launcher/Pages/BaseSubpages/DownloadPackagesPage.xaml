@@ -149,7 +149,7 @@
             <!-- Wrap all the elementssss -->
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid properties:AutoAdjustColumnCount.Value="300" />
+                    <panels:VirtualizedCardPanel ColumnWidth="300" ItemWidth="300" ItemHeight="225" />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
 
