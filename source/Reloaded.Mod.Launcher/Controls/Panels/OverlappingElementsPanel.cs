@@ -2,6 +2,9 @@
 
 namespace Reloaded.Mod.Launcher.Controls.Panels;
 
+/// <summary>
+/// Panel that draws all controls in an overlapping fashion, like a Grid when no columns or rows are specified.
+/// </summary>
 public class OverlappingElementsPanel : Panel
 {
     protected override Size ArrangeOverride(Size arrangeSize)

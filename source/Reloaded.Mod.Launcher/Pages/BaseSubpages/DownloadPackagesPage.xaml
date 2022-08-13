@@ -12,11 +12,12 @@
       xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
       xmlns:controls1="clr-namespace:Reloaded.Mod.Launcher.Controls"
       xmlns:panels="clr-namespace:Reloaded.Mod.Launcher.Controls.Panels"
+      xmlns:selectors="clr-namespace:Reloaded.Mod.Launcher.Controls.Selectors"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="756"
       Title="{DynamicResource TitleDownloadMods}">
     <Grid x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
-
+        <!-- Actual Grid -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -158,12 +159,77 @@
                     <Setter Property="FocusVisualStyle" Value="{StaticResource ReloadedFocusVisual}"/>
                     <Setter Property="Template">
                         <Setter.Value>
+                            <!-- This is not clear XAML but we have to try really hard to optimise for perf here. -->
                             <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                <panels:OverlappingElementsPanel>
-                                    <!-- Margin of 1 prevents listbox item from overlapping with border. -->
+                                <panels:OverlappingElementsPanel MouseDown="OnClickCard">
+                                    <!-- Background -->
                                     <Rectangle Fill="{TemplateBinding Background}"/>
-                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    
+                                    <!-- Image -->
+                                    <Image RenderOptions.BitmapScalingMode="HighQuality" Style="{x:Null}" OverridesDefaultStyle="True"
+                                           Width="300" Height="225" Panel.ZIndex="0" Loaded="OnPreviewImageLoaded" />
+
+                                    <!-- Info Overlay: Top -->
+                                    <Border Panel.ZIndex="1" VerticalAlignment="Top" Style="{x:Null}" OverridesDefaultStyle="True"
+                                            Background="{StaticResource TooltipBackgroundColorBrush}">
+                                        <!-- Name -->
+                                        <TextBlock Text="{Binding Name}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"
+                                                   HorizontalAlignment="Center" TextWrapping="WrapWithOverflow"/>
+                                    </Border>
+
+                                    <!-- Info Overlay: Bottom -->
+                                    <StackPanel Name="BottomInfoPanel" Orientation="Vertical" Panel.ZIndex="1" VerticalAlignment="Bottom" Background="{StaticResource TooltipBackgroundColorBrush}" Style="{x:Null}" OverridesDefaultStyle="True">
+
+                                        <!-- Avatar & Author -->
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding DownloadCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                            <Viewbox Grid.Column="0" MaxHeight="{Binding ElementName=AuthorBtnText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                    <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryAuthor}" Style="{x:Null}" OverridesDefaultStyle="True"/>
+                                                </Canvas>
+                                            </Viewbox>
+
+                                            <TextBlock Text="{Binding Submitter.UserName}" Grid.Column="1"
+                                                       Visibility="{Binding Submitter, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
+                                                       Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"
+                                                       TextTrimming="CharacterEllipsis" 
+                                                       Name="AuthorBtnText"/>
+                                        </StackPanel>
+
+                                        <!-- Stats -->
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Style="{x:Null}" OverridesDefaultStyle="True"
+                                                    utility:MarginSetter.Enable="True" utility:MarginSetter.Margin="{StaticResource DownloadMenuHorizontalItemMargin}" utility:MarginSetter.LastItemMargin="0">
+
+                                            <!-- Download -->
+                                            <StackPanel Orientation="Horizontal" Visibility="{Binding DownloadCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                <Viewbox Margin="{StaticResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                    <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                        <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryDownload}" Style="{x:Null}" OverridesDefaultStyle="True"/>
+                                                    </Canvas>
+                                                </Viewbox>
+                                                <TextBlock Name="DownloadCountText" Text="{Binding DownloadCount}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"/>
+                                            </StackPanel>
+
+                                            <!-- View -->
+                                            <StackPanel Orientation="Horizontal" Visibility="{Binding ViewCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                <Viewbox Margin="{StaticResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                    <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                        <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryView}" Style="{x:Null}" OverridesDefaultStyle="True"/>
+                                                    </Canvas>
+                                                </Viewbox>
+                                                <TextBlock Text="{Binding ViewCount}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True" />
+                                            </StackPanel>
+
+                                            <!-- Like -->
+                                            <StackPanel Orientation="Horizontal" Visibility="{Binding LikeCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                <Viewbox Margin="{StaticResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                    <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
+                                                        <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryLike}" Style="{x:Null}" OverridesDefaultStyle="True"/>
+                                                    </Canvas>
+                                                </Viewbox>
+                                                <TextBlock Text="{Binding LikeCount}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
                                 </panels:OverlappingElementsPanel>
                             </ControlTemplate>
                         </Setter.Value>
@@ -181,83 +247,6 @@
                     </Style.Triggers>
                 </Style>
             </ListView.ItemContainerStyle>
-
-            <!-- Card Contents -->
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <!-- Template for a Card -->
-                    <panels:OverlappingElementsPanel MouseDown="OnClickCard">
-                        <Image RenderOptions.BitmapScalingMode="HighQuality" Style="{x:Null}" OverridesDefaultStyle="True"
-                               Width="300" Height="225" Panel.ZIndex="0" Loaded="OnPreviewImageLoaded" />
-
-                        <!-- Info Overlay: Top -->
-                        <StackPanel Orientation="Vertical" Panel.ZIndex="1" VerticalAlignment="Top" Style="{x:Null}" OverridesDefaultStyle="True"
-                                    Background="{StaticResource TooltipBackgroundColorBrush}">
-
-                            <!-- Name -->
-                            <TextBlock Text="{Binding Name}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"
-                                       HorizontalAlignment="Center" TextWrapping="WrapWithOverflow"/>
-                        </StackPanel>
-
-                        <!-- Info Overlay: Bottom -->
-                        <StackPanel Name="BottomInfoPanel" Orientation="Vertical" Panel.ZIndex="1" VerticalAlignment="Bottom" Background="{StaticResource TooltipBackgroundColorBrush}" Style="{x:Null}" OverridesDefaultStyle="True">
-
-                            <!-- Avatar & Author -->
-                            <Grid HorizontalAlignment="Center" Style="{x:Null}" OverridesDefaultStyle="True">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Viewbox Grid.Column="0" MaxHeight="{Binding ElementName=AuthorBtnText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
-                                    <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
-                                        <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryAuthor}" Style="{x:Null}" OverridesDefaultStyle="True"/>
-                                    </Canvas>
-                                </Viewbox>
-
-                                <TextBlock Text="{Binding Submitter.UserName}" Grid.Column="1"
-                                           Visibility="{Binding Submitter, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
-                                           Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"
-                                           TextTrimming="CharacterEllipsis" 
-                                           Name="AuthorBtnText"/>
-                            </Grid>
-
-                            <!-- Stats -->
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Style="{x:Null}" OverridesDefaultStyle="True"
-                                    utility:MarginSetter.Enable="True" utility:MarginSetter.Margin="{StaticResource DownloadMenuHorizontalItemMargin}" utility:MarginSetter.LastItemMargin="0">
-
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding DownloadCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" Style="{x:Null}" OverridesDefaultStyle="True">
-                                    <Viewbox Margin="{StaticResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
-                                        <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
-                                            <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryDownload}" Style="{x:Null}" OverridesDefaultStyle="True"/>
-                                        </Canvas>
-                                    </Viewbox>
-                                    <TextBlock Name="DownloadCountText" Text="{Binding DownloadCount}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"/>
-                                </StackPanel>
-
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding ViewCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" Style="{x:Null}" OverridesDefaultStyle="True">
-                                    <Viewbox Margin="{StaticResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
-                                        <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
-                                            <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryView}" Style="{x:Null}" OverridesDefaultStyle="True"/>
-                                        </Canvas>
-                                    </Viewbox>
-                                    <TextBlock Text="{Binding ViewCount}"
-                                               Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True" />
-                                </StackPanel>
-
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding LikeCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" Style="{x:Null}" OverridesDefaultStyle="True">
-                                    <Viewbox Margin="{StaticResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}" Style="{x:Null}" OverridesDefaultStyle="True">
-                                        <Canvas Width="24" Height="24" Style="{x:Null}" OverridesDefaultStyle="True">
-                                            <Path Fill="{StaticResource TextColorBrush}" Data="{StaticResource IconGeometryLike}" Style="{x:Null}" OverridesDefaultStyle="True"/>
-                                        </Canvas>
-                                    </Viewbox>
-                                    <TextBlock Text="{Binding LikeCount}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-                    </panels:OverlappingElementsPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
         </ListView>
 
         <!-- Current Item Overlay -->
