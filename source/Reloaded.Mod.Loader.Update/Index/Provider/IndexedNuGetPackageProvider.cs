@@ -10,6 +10,11 @@ public class IndexedNuGetPackageProvider : IDownloadablePackageProvider
     /// </summary>
     public string SourceUrl { get; private set; }
 
+    /// <summary>
+    /// Friendly name for this package provider.
+    /// </summary>
+    public string FriendlyName { get; private set; }
+
     private bool _initializedApi;
     private IndexPackageProvider _indexPackageProvider;
     private NuGetPackageProvider _fallback;
@@ -18,6 +23,7 @@ public class IndexedNuGetPackageProvider : IDownloadablePackageProvider
     public IndexedNuGetPackageProvider(INugetRepository nugetRepository)
     {
         SourceUrl = nugetRepository.SourceUrl;
+        FriendlyName = nugetRepository.FriendlyName;
         _fallback = new NuGetPackageProvider(nugetRepository);
 
         _ = InitializeApiAsync();

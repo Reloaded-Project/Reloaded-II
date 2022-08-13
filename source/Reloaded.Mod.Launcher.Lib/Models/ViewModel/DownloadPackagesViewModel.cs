@@ -50,12 +50,12 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// <summary>
     /// List of all available package providers.
     /// </summary>
-    public ObservableCollection<AggregatePackageProvider> PackageProviders { get; set; } = new();
+    public ObservableCollection<IDownloadablePackageProvider> PackageProviders { get; set; } = new();
 
     /// <summary>
     /// The currently used package provider.
     /// </summary>
-    public AggregatePackageProvider CurrentPackageProvider { get; set; }
+    public IDownloadablePackageProvider CurrentPackageProvider { get; set; }
 
     /// <summary>
     /// Selects the next package for viewing.
@@ -89,9 +89,9 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
 
         // Get package provider for all packages.
         foreach (var nugetSource in nugetRepository.Sources)
-            PackageProviders.Add(new AggregatePackageProvider(new []{ new IndexedNuGetPackageProvider(nugetSource) }, $"NuGet: {nugetSource.FriendlyName}"));
+            PackageProviders.Add(new IndexedNuGetPackageProvider(nugetSource));
 
-        var allPackageProvider = new AggregatePackageProvider(PackageProviders.Select(x => (IDownloadablePackageProvider)x).ToArray(), Resources.DownloadPackagesAll.Get());
+        var allPackageProvider = new AggregatePackageProvider(PackageProviders.Select(x => x).ToArray(), Resources.DownloadPackagesAll.Get());
         PackageProviders.Add(allPackageProvider);
         CurrentPackageProvider = allPackageProvider;
 
@@ -106,7 +106,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         SearchResult.CollectionChanged += SetCanGoToNextPageOnSearchResultsChanged;
         
         // Perform Initial Search.
-        _paginationHelper.ItemsPerPage = 15;
+        _paginationHelper.ItemsPerPage = 35;
 #pragma warning disable CS4014
         GetSearchResults();
 #pragma warning restore CS4014

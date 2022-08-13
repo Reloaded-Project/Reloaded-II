@@ -45,7 +45,7 @@
                       Width="150" >
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding FriendlyName}" FontSize="{DynamicResource FontSizeLarger}"/>
+                        <TextBlock Text="{Binding FriendlyName, Mode=OneTime}" FontSize="{DynamicResource FontSizeLarger}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
