@@ -20,4 +20,6 @@ public partial class MainWindow : ReloadedWindow
         Lib.IoC.BindToConstant((WPF.Theme.Default.WindowViewModel)DataContext);// Controls window properties.
         Lib.IoC.BindToConstant(this);
     }
+
+    protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer() => new EmptyAutomationPeer(this);
 }
