@@ -15,7 +15,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// <summary>
     /// List of potential packages to download.
     /// </summary>
-    public ObservableCollection<IDownloadablePackage> SearchResult  { get; set; } = new();
+    public BatchObservableCollection<IDownloadablePackage> SearchResult  { get; set; } = new();
 
     /// <summary>
     /// The currently selected package.
