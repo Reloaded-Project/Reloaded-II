@@ -104,7 +104,7 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
         RealizeItems(startVisible, endVisible, children, itemWidth, itemHeight);
 
         // Calculate scroll data [for internal scroll viewer]
-        CalculateScrollviewerInfo(availableSize, rowCount);
+        CalculateScrollviewerInfo(availableSize, rowCount, true);
 
         // Measure size of first child.
         return new Size(availableSize.Width, availableSize.Height);
@@ -307,10 +307,8 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
     }
 
     [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
-    private void CalculateScrollviewerInfo(Size availableSize, int rowCount)
+    private void CalculateScrollviewerInfo(Size availableSize, int rowCount, bool setExtent = false)
     {
-        var extentHeight = rowCount * ItemHeight;
-        var extentWidth = availableSize.Width;
         bool invalidateScrollInfo = false;
 
         if (ViewportWidth != availableSize.Width || ViewportHeight != availableSize.Height)
@@ -320,12 +318,19 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
             invalidateScrollInfo = true;
         }
 
-        if (ExtentHeight != extentHeight || ExtentWidth != extentWidth)
+        if (setExtent)
         {
-            ExtentHeight = extentHeight;
-            ExtentWidth = extentWidth;
-            invalidateScrollInfo = true;
+            var extentHeight = rowCount * ItemHeight;
+            var extentWidth = availableSize.Width; 
+            
+            if (ExtentHeight != extentHeight || ExtentWidth != extentWidth)
+            {
+                ExtentHeight = extentHeight;
+                ExtentWidth = extentWidth;
+                invalidateScrollInfo = true;
+            }
         }
+
 
         if (invalidateScrollInfo)
             ScrollOwner?.InvalidateScrollInfo();
