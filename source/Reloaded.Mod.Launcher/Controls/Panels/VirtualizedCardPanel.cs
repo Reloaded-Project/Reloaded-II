@@ -68,7 +68,8 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
         // Update Scrollviewer
         var generator = this.ItemContainerGenerator;
         CalculateScrollviewerInfo(finalSize, rowCount);
-        
+        EnsureNoOverscroll();
+
         for (int x = 0; x < childrenCount; x++)
         {
             var row       = x / columnCount;
@@ -99,12 +100,13 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
         var itemHeight = ItemHeight;
         var itemWidth  = ItemWidth;
 
+        // Calculate scroll data [for internal scroll viewer]
+        CalculateScrollviewerInfo(availableSize, rowCount, true);
+        EnsureNoOverscroll();
+
         // Virtualization Shenanigans
         DetermineVisibleItems(columnCount, children.Count - 1, out var startVisible, out int endVisible);
         RealizeItems(startVisible, endVisible, children, itemWidth, itemHeight);
-
-        // Calculate scroll data [for internal scroll viewer]
-        CalculateScrollviewerInfo(availableSize, rowCount, true);
 
         // Measure size of first child.
         return new Size(availableSize.Width, availableSize.Height);
@@ -184,34 +186,19 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
 
         // Calculate first visible row.
         var firstVisibleRow = (int)(viewOffset / itemHeight);
-        startVisible = firstVisibleRow * columnCount;
+        startVisible = (firstVisibleRow) * columnCount;
+        if (startVisible < 0)
+            startVisible = 0;
 
         // Calculate last visible row.
         var lastVisibleRow = (int)((viewOffset + viewHeight) / itemHeight);
 
         // we must go to next row, because last columnCount items are visible!
-        endVisible = lastVisibleRow * (columnCount + 1);
+        endVisible = (lastVisibleRow + 1) * (columnCount);
         if (endVisible > maxItemIndex)
             endVisible = maxItemIndex;
     }
-
-    // This is optional.
-    private void CleanUpItems(int startVisible, int endVisible)
-    {
-        var children = InternalChildren;
-        var generator = ItemContainerGenerator;
-        for (int x = children.Count - 1; x >= 0; x--)
-        {
-            // Map a child index to an item index by going through a generator position
-            var childGeneratorPos = new GeneratorPosition(x, 0);
-            int itemIndex = generator.IndexFromGeneratorPosition(childGeneratorPos);
-            if (itemIndex < startVisible || itemIndex > endVisible)
-            {
-                generator.Remove(childGeneratorPos, 1);
-                RemoveInternalChildRange(x, 1);
-            }
-        }
-    }
+    
     #endregion
 
 
@@ -262,6 +249,8 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
 
     public void PageRight() => SetHorizontalOffset(HorizontalOffset + ViewportWidth);
 
+    private bool _dirtyScrollInfo;
+
     /// <summary>
     /// Forces an item defined by visual to be visible.
     /// </summary>
@@ -298,12 +287,10 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
         if (VerticalOffset != offset)
         {
             VerticalOffset = offset;
-            InvalidateArrange();
-            ScrollOwner?.InvalidateScrollInfo();
-            // Required for virtualization, else 0 items.
             InvalidateMeasure();
+            InvalidateArrange();
+            _dirtyScrollInfo = true;
         }
-
     }
 
     [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
@@ -318,6 +305,7 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
             invalidateScrollInfo = true;
         }
 
+        // Ensure not scrolled past end.
         if (setExtent)
         {
             var extentHeight = rowCount * ItemHeight;
@@ -331,9 +319,22 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
             }
         }
 
-
-        if (invalidateScrollInfo)
+        if (invalidateScrollInfo || _dirtyScrollInfo)
+        {
             ScrollOwner?.InvalidateScrollInfo();
+            _dirtyScrollInfo = false;
+        }
+    }
+
+    private void EnsureNoOverscroll()
+    {
+        var verticalOffset = VerticalOffset;
+        var offset = Math.Max(0, Math.Min(verticalOffset, ExtentHeight - ViewportHeight));
+        if (verticalOffset != offset)
+        {
+            VerticalOffset = offset;
+            _dirtyScrollInfo = true;
+        }
     }
     #endregion
 }
