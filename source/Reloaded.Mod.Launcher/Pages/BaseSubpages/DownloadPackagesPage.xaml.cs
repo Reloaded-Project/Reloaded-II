@@ -70,10 +70,18 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
 
             // Select and decode appropriate image.
             var uri = package.Images[0].SelectBasedOnWidth(desiredWidth);
-            await using var memoryStream = new MemoryStream(await _cacheService.GetOrDownloadFileFromUrl(uri, _cacheService.ModPreviewExpiration, false, tokenSource.Token));
+            BitmapImage? result = await Task.Run(async () =>
+            {
+                await using var memoryStream = new MemoryStream(await _cacheService.GetOrDownloadFileFromUrl(uri, _cacheService.ModPreviewExpiration, false, tokenSource.Token));
 
+                if (!tokenSource.IsCancellationRequested)
+                    return Imaging.BitmapFromStream(memoryStream, desiredWidth);
+
+                return null;
+            }, tokenSource.Token);
+            
             if (!tokenSource.IsCancellationRequested)
-                image.Source = Imaging.BitmapFromStream(memoryStream, desiredWidth);
+                image.Source = result;
         }
         catch (Exception)
         {
