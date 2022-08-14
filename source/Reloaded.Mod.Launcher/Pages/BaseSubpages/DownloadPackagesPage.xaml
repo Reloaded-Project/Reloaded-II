@@ -136,20 +136,19 @@
         <ListView Focusable="False"
                   Grid.Row="1"
                   HorizontalAlignment="Stretch"
-                  ItemsSource="{Binding SearchResult, UpdateSourceTrigger=PropertyChanged}"
+                  ItemsSource="{Binding SearchResult, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                   SelectedItem="{Binding SelectedResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   VerticalAlignment="Stretch"
                   VerticalContentAlignment="Top"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                  VirtualizingPanel.IsVirtualizing="True"
-                  VirtualizingPanel.VirtualizationMode="Recycling"
                   PreviewKeyDown="OnPressKeyInListView"
                   IsSynchronizedWithCurrentItem="True">
 
             <!-- Wrap all the elementssss -->
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <panels:VirtualizedCardPanel ColumnWidth="300" ItemWidth="300" ItemHeight="225" />
+                    <panels:VirtualizedCardPanel ColumnWidth="300" ItemWidth="300" ItemHeight="225"
+                                                 IsVirtualizing="True" VirtualizationMode="Recycling"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
 
