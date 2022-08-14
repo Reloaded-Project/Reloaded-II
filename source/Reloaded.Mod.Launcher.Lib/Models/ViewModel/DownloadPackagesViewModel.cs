@@ -106,7 +106,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         SearchResult.CollectionChanged += SetCanGoToNextPageOnSearchResultsChanged;
         
         // Perform Initial Search.
-        _paginationHelper.ItemsPerPage = 35;
+        _paginationHelper.ItemsPerPage = 500;
 #pragma warning disable CS4014
         GetSearchResults();
 #pragma warning restore CS4014

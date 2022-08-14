@@ -13,6 +13,7 @@ public class IndexedGameBananaPackageProvider : IDownloadablePackageProvider
     private bool _initializedApi;
     private IndexPackageProvider _indexPackageProvider;
     private GameBananaPackageProvider _fallback;
+    private bool _initializeComplete;
 
     /// <summary/>
     public IndexedGameBananaPackageProvider(int gameId)
@@ -37,11 +38,16 @@ public class IndexedGameBananaPackageProvider : IDownloadablePackageProvider
             }
         }
         catch (Exception) { /* ignored */ }
+
+        _initializeComplete = true;
     }
 
     /// <inheritdoc />
     public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default)
     {
+        while (!_initializeComplete)
+            await Task.Delay(1);
+
         if (!_initializedApi)
             return await _fallback.SearchAsync(text, skip, take, token);
 
