@@ -59,7 +59,12 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
 
             // Calculate actual rendered size.
             var tokenSource = new CancellationTokenSource();
-            image.Unloaded += (o, args) => tokenSource.Cancel();
+            image.Unloaded += (o, args) =>
+            {
+                image.Loaded -= OnPreviewImageLoaded;
+                tokenSource.Cancel();
+            };
+
             var dpiScale = VisualTreeHelper.GetDpi(image);
             var desiredWidth = (int)(image.DesiredSize.Width * dpiScale.DpiScaleX);
 
