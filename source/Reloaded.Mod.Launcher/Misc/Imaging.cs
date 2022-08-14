@@ -5,6 +5,8 @@ namespace Reloaded.Mod.Launcher.Misc;
 
 public class Imaging
 {
+    private static BitmapImage? _placeholderIcon;
+
     /// <summary>
     /// Converts a WPF URI into a image.
     /// </summary>
@@ -42,9 +44,14 @@ public class Imaging
     /// </summary>
     public static BitmapImage GetPlaceholderIcon()
     {
+        if (_placeholderIcon != null)
+            return _placeholderIcon;
+
         var img = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.RelativeOrAbsolute));
         img.CacheOption = BitmapCacheOption.OnLoad;
         img.Freeze();
+
+        _placeholderIcon = img;
         return img;
     }
 
