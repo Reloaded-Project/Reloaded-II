@@ -76,7 +76,11 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
             var itemIndex = generator.IndexFromGeneratorPosition(new GeneratorPosition(x, 0));
 
             var pos = new Point(remainder * childSize.Width, (row * childSize.Height) - VerticalOffset);
-            internalChildren[itemIndex].Arrange(new Rect(pos, childSize));
+            if (itemIndex < childrenCount)
+            {
+                // On some edge cases involving removing items, this can go out of bounds.
+                internalChildren[itemIndex].Arrange(new Rect(pos, childSize));
+            }
         }
 
         return new Size(finalSize.Width, finalSize.Height);
