@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -65,6 +65,7 @@
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Reloaded.Input" Version="2.0.1" />
     <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
     <PackageReference Include="Reloaded.WPF" Version="3.3.0" />
     <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.1.2" />
