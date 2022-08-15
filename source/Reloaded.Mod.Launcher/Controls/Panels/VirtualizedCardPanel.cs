@@ -1,4 +1,4 @@
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using static Akavache.Sqlite3.Internal.TableMapping;
 using Point = System.Windows.Point;
@@ -86,16 +86,13 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
 
         for (int x = 0; x < childrenCount; x++)
         {
-            var row       = x / columnCount;
-            var remainder = x % columnCount;
             var itemIndex = generator.IndexFromGeneratorPosition(new GeneratorPosition(x, 0));
+            var row       = itemIndex / columnCount;
+            var remainder = itemIndex % columnCount;
 
+            // On some edge cases involving removing items, this can go out of bounds.
             var pos = new Point(remainder * childSize.Width, (row * childSize.Height) - VerticalOffset);
-            if (itemIndex < childrenCount)
-            {
-                // On some edge cases involving removing items, this can go out of bounds.
-                internalChildren[itemIndex].Arrange(new Rect(pos, childSize));
-            }
+            internalChildren[x].Arrange(new Rect(pos, childSize));
         }
 
         return new Size(finalSize.Width, finalSize.Height);
@@ -180,17 +177,34 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
 
                 generator.PrepareItemContainer(child);
             }
-            else
-            {
-                // The child has already been created, let's be sure it's in the right spot
-                //Debug.Assert(child == children[childIndex], "Wrong child was generated");
-            }
 
             // Measurements will depend on layout algorithm
             if (measureChildren)
                 child!.Measure(new Size(itemWidth, itemHeight));
         }
+
+        CleanUpItems(startVisible, endVisible);
     }
+
+    private void CleanUpItems(int firstVisibleItemIndex, int lastVisibleItemIndex)
+    {
+        var children = InternalChildren;
+        var generator = ItemContainerGenerator;
+
+        for (int i = children.Count - 1; i >= 0; i--)
+        {
+            // Map a child index to an item index by going through a generator position
+            var childGeneratorPos = new GeneratorPosition(i, 0);
+            int itemIndex = generator.IndexFromGeneratorPosition(childGeneratorPos);
+
+            if (itemIndex < firstVisibleItemIndex || itemIndex > lastVisibleItemIndex)
+            {
+                generator.Remove(childGeneratorPos, 1);
+                RemoveInternalChildRange(i, 1);
+            }
+        }
+    }
+
 
     // Determine Visible Items
     private void DetermineVisibleItems(int columnCount, int maxItemIndex, out int startVisible, out int endVisible)
