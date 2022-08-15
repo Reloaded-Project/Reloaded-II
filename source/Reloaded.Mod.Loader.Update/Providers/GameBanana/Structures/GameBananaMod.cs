@@ -8,6 +8,9 @@ namespace Reloaded.Mod.Loader.Update.Providers.GameBanana.Structures;
 
 public class GameBananaMod
 {
+    public const string CategoryMod = "Mod";
+    public const string CategorySound = "Sound";
+
     [JsonPropertyName("_idRow")]
     public long Id { get; set; }
 
@@ -53,43 +56,77 @@ public class GameBananaMod
     /// <param name="gameId">Game identifier.</param>
     /// <param name="page">Page (for pagination). ONE INDEXED</param>
     /// <param name="take">Number of items to take.</param>
-    public static async Task<List<GameBananaMod>?> GetByNameAsync(string? searchText, int gameId, int page, int take)
+    public static async Task<List<GameBananaMod>> GetByNameAllCategoriesAsync(string? searchText, int gameId, int page, int take)
+    {
+        var tasks = new Task<List<GameBananaMod>>[2];
+        tasks[0] = GetByNameAsync(searchText, gameId, page, take, CategoryMod);
+        tasks[1] = GetByNameAsync(searchText, gameId, page, take, CategorySound);
+        await Task.WhenAll(tasks);
+
+        var result = tasks[1].Result;
+        result.AddRange(tasks[0].Result);
+        return result;
+    }
+
+    /// <summary>
+    /// Makes a web request to get mod details given a set of different details.
+    /// Uses APIv7.
+    /// </summary>
+    /// <param name="searchText">The text to search.</param>
+    /// <param name="gameId">Game identifier.</param>
+    /// <param name="page">Page (for pagination). ONE INDEXED</param>
+    /// <param name="take">Number of items to take.</param>
+    /// <param name="category">Declares the category of items to search. Categories can be found as constants of this class.</param>
+    public static async Task<List<GameBananaMod>> GetByNameAsync(string? searchText, int gameId, int page, int take, string category = CategoryMod)
     {
         try
         {
             // Note: Page is 1 indexed.
-            string urlString = "";
+            string urlString;
 
             // Transform search text to include wildcards.
             if (searchText != null && searchText.Trim().Length >= 1)
             {
                 searchText = $"*{searchText}*";
-                urlString = $"https://gamebanana.com/apiv7/Mod/ByName?" +
-                            $"_nPerpage={take}&" +
-                            $"_nPage={page}&" +
-                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter,_sProfileUrl,_nViewCount,_nLikeCount,_nDownloadCount&" +
-                            $"_sName={searchText}&" +
-                            $"_idGameRow={gameId}";
+                urlString = GetByNameUrl(searchText, gameId, page, take, category);
             }
             else
             {
-                urlString = $"https://gamebanana.com/apiv7/Mod/ByGame?" +
-                            $"_nPerpage={take}&" +
-                            $"_nPage={page}&" +
-                            $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter,_sProfileUrl,_nViewCount,_nLikeCount,_nDownloadCount&" +
-                            $"_aGameRowIds[]={gameId}";
+                urlString = GetByGameUrl(gameId, page, take, category);
             }
 
             string response = await SharedHttpClient.UncachedAndCompressed.GetStringAsync(urlString);
             return JsonSerializer.Deserialize<List<GameBananaMod>>(response, new JsonSerializerOptions()
             {
                 Converters = { GameBananaCredit.GameBananaCreditJsonConverter.Instance }
-            });
+            })!;
         }
         catch
         {
-            return null;
+            // This is exceptional enough that storing an empty collection permanently is not necessary.
+            // Also list is mutable.
+            return new List<GameBananaMod>();
         }
+    }
+
+    // Category also supports sound.
+    private static string GetByNameUrl(string searchText, int gameId, int page, int take, string categoryType = CategoryMod)
+    {
+        return $"https://gamebanana.com/apiv7/{categoryType}/ByName?" +
+               $"_nPerpage={take}&" +
+               $"_nPage={page}&" +
+               $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter,_sProfileUrl,_nViewCount,_nLikeCount,_nDownloadCount&" +
+               $"_sName={searchText}&" +
+               $"_idGameRow={gameId}";
+    }
+
+    private static string GetByGameUrl(int gameId, int page, int take, string categoryType = CategoryMod)
+    {
+        return $"https://gamebanana.com/apiv7/{categoryType}/ByGame?" +
+               $"_nPerpage={take}&" +
+               $"_nPage={page}&" +
+               $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter,_sProfileUrl,_nViewCount,_nLikeCount,_nDownloadCount&" +
+               $"_aGameRowIds[]={gameId}";
     }
 }
 

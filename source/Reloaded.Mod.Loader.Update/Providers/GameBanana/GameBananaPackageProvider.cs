@@ -33,7 +33,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         int page       = (skip / take) + 1;
         var gbApiItems = take > MaxItemsPerApiRequest ? 
             await GetMoreThenMaxAsync(text, take, page) :
-            await GameBananaMod.GetByNameAsync(text, GameId, page, take);
+            await GameBananaMod.GetByNameAllCategoriesAsync(text, GameId, page, take);
         
         var results    = new ConcurrentBag<IDownloadablePackage>();
 
@@ -52,7 +52,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
     {
         var asyncPulls = new Task<List<GameBananaMod>?>[(take / MaxItemsPerApiRequest) + 1];
         for (int x = 0; x < asyncPulls.Length; x++)
-            asyncPulls[x] = GameBananaMod.GetByNameAsync(text, GameId, page + x, MaxItemsPerApiRequest);
+            asyncPulls[x] = GameBananaMod.GetByNameAllCategoriesAsync(text, GameId, page + x, MaxItemsPerApiRequest);
 
         await Task.WhenAll(asyncPulls);
 
