@@ -30,12 +30,12 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
         
         // We need to explicitly set focus in case person changes page on controller without 
         // moving the cursor, otherwise ListViewItem under this page might be re-selected, funny issue.
-        this.Loaded += OnLoaded;
+        this.AnimateInStarted += OnAnimateInStarted;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnAnimateInStarted()
     {
-        this.Loaded -= OnLoaded;
+        this.AnimateInStarted -= OnAnimateInStarted;
         var focusVisualSetting = KeyboardNav.AlwaysShowFocusVisual;
         try
         {
