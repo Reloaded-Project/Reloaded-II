@@ -1,3 +1,4 @@
+using System.Net.Http;
 using Reloaded.Mod.Loader.Update.Interfaces.Extensions;
 using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
 
@@ -98,14 +99,14 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
         var progressSlicer              = new ProgressSlicer(progress);
 
         // Start the modification download.
-        using WebClient client = new WebClient();
+        using var httpClient = new HttpClient();
         var downloadProgress = progressSlicer.Slice(0.9);
-        client.DownloadProgressChanged += (sender, args) =>
-        {
-            downloadProgress.Report((double)args.BytesReceived / args.TotalBytesToReceive);
-        };
 
-        await client.DownloadFileTaskAsync(_url, tempFilePath).ConfigureAwait(false);
+        await using var fileStream = new FileStream(tempFilePath, FileMode.OpenOrCreate);
+        var archiveStream = await httpClient.GetStreamAsync(_url, token).ConfigureAwait(false);
+        await archiveStream.CopyToAsyncEx(fileStream, 262144, downloadProgress, FileSize.GetValueOrDefault(1), token);
+        if (token.IsCancellationRequested)
+            return string.Empty;
 
         /* Extract to Temp Directory */
         var archiveExtractor = new SevenZipSharpExtractor();

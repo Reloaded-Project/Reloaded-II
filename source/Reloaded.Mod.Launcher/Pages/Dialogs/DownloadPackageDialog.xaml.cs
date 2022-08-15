@@ -25,7 +25,11 @@ public partial class DownloadPackageDialog : ReloadedWindow
 
             Button.IsEnabled = false;
         }
+
+        Closed += OnClosed;
     }
+
+    private void OnClosed(object? sender, EventArgs e) => ViewModel.DownloadToken.Cancel();
 
     private async void Download_Click(object sender, System.Windows.RoutedEventArgs e)
     {
