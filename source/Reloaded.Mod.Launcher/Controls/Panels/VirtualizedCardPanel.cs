@@ -296,7 +296,9 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
 
             // Found the visual! Let's scroll it into view.
             var columnCount = ColumnCount(RenderSize);
-            var row = x / columnCount;
+            var position = ItemContainerGenerator.IndexFromGeneratorPosition(new GeneratorPosition(x, 0));
+
+            var row = position / columnCount;
             var itemHeight = ItemHeight;
             SetVerticalOffset((itemHeight * row) - (itemHeight / 4));
             return rectangle;
