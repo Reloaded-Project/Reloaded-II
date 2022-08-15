@@ -191,16 +191,16 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
         var children = InternalChildren;
         var generator = ItemContainerGenerator;
 
-        for (int i = children.Count - 1; i >= 0; i--)
+        for (int x = children.Count - 1; x >= 0; x--)
         {
             // Map a child index to an item index by going through a generator position
-            var childGeneratorPos = new GeneratorPosition(i, 0);
+            var childGeneratorPos = new GeneratorPosition(x, 0);
             int itemIndex = generator.IndexFromGeneratorPosition(childGeneratorPos);
 
             if (itemIndex < firstVisibleItemIndex || itemIndex > lastVisibleItemIndex)
             {
                 generator.Remove(childGeneratorPos, 1);
-                RemoveInternalChildRange(i, 1);
+                RemoveInternalChildRange(x, 1);
             }
         }
     }
