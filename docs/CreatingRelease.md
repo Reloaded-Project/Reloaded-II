@@ -56,6 +56,42 @@ To create a delta update, do the following:
 
     If you have an unpacked version of your previous mod, i.e. as a raw folder; you can add that in the `Delta Update` tab instead.  
 
+## Adding Changelog, Readme & Other Details
+
+!!! info "About Markdown"
+
+    Reloaded uses Markdown [(tutorial)](https://commonmark.org/help/tutorial/index.html) for its text documents.  
+    If you ever use *italics* and **bolds** in your Discord/Reddit posts, you're probably familiar with a small bit of Markdown.  
+    Markdown files use the file extension `.md` and can be saved/opened with any text editor.  
+
+!!! tip
+
+    Markdown editors such as [Dilinger](https://dillinger.io) and [Typora](https://typora.io) allow you to preview your formatted text in real time.  
+
+You can add changelogs and readme files during the publish step by clicking the `Set Readme File` and `Set Changelog File` buttons respectively.  
+
+![](./Images/PublishChangelog.png)  
+
+In the selection dialog, select the file (`.md`) containing the text to be included; e.g. `Readme.md` for the Readme and `Changelog.md` for the Changelog.  
+
+### Automatic Inference
+
+!!! info
+
+    Reloaded tries to make the experience consistent, even with old mods that don't have a `.json` file with extra info.  
+    When possible, Reloaded will try to guess unknown details such as readme, changelog and mod title automatically if they are not available.  
+    
+Here is an example:  
+
+![](./Images/DownloadPackages-IncompleteMetadata-1.png)
+
+The description was automatically copied from GameBanana's description on their site:  
+
+![](./Images/DownloadPackages-IncompleteMetadata-3.png)
+
+The mod name is a combination of the page name on GameBanana `HD Rings` and the description of the file `HD Rings`, hence `HD Rings: HD Rings`:  
+
+![](./Images/DownloadPackages-IncompleteMetadata-2.png)
 
 ## Uploading to NuGet
 
