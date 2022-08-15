@@ -95,7 +95,7 @@
             </TextBlock>
 
             <!-- Description -->
-            <wpf:MarkdownViewer Markdown="{Binding Package, FallbackValue='No Description', Converter={x:Static converters:PackageToDescriptionConverter.Instance}}" Style="{DynamicResource MarkdownViewerTextOnly}" >
+            <wpf:MarkdownViewer Focusable="False" Markdown="{Binding Package, FallbackValue='No Description', Converter={x:Static converters:PackageToDescriptionConverter.Instance}}" Style="{DynamicResource MarkdownViewerTextOnly}" >
                 <wpf:MarkdownViewer.CommandBindings>
                     <CommandBinding Command="{x:Static wpf:Commands.Hyperlink}" Executed="OpenHyperlink" />
                 </wpf:MarkdownViewer.CommandBindings>
@@ -131,7 +131,7 @@
             </StackPanel>
 
             <!-- Changelog -->
-            <wpf:MarkdownViewer Grid.Row="1" Markdown="{Binding Package.Changelog, FallbackValue='No Changelog'}" Style="{DynamicResource MarkdownViewerTextOnly}" >
+            <wpf:MarkdownViewer Focusable="False" Grid.Row="1" Markdown="{Binding Package.Changelog, FallbackValue='No Changelog'}" Style="{DynamicResource MarkdownViewerTextOnly}" >
                 <wpf:MarkdownViewer.CommandBindings>
                     <CommandBinding Command="{x:Static wpf:Commands.Hyperlink}" Executed="OpenHyperlink" />
                 </wpf:MarkdownViewer.CommandBindings>
