@@ -1,4 +1,4 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using static Akavache.Sqlite3.Internal.TableMapping;
 using Point = System.Windows.Point;
@@ -210,7 +210,7 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
         var lastVisibleRow = (int)((viewOffset + viewHeight) / itemHeight);
 
         // we must go to next row, because last columnCount items are visible!
-        endVisible = (lastVisibleRow + 1) * (columnCount);
+        endVisible = ((lastVisibleRow + 1) * (columnCount) - 1); // -1 for max index rather than max count.
         if (endVisible > maxItemIndex)
             endVisible = maxItemIndex;
     }
