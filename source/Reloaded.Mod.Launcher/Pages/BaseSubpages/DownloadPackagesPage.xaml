@@ -148,7 +148,8 @@
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <panels:VirtualizedCardPanel ColumnWidth="300" ItemWidth="300" ItemHeight="225"
-                                                 IsVirtualizing="True" VirtualizationMode="Recycling"/>
+                                                 IsVirtualizing="True" VirtualizationMode="Recycling"
+                                                 CallMeasureOnChildren="False" />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
 

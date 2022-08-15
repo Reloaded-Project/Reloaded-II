@@ -25,6 +25,10 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
     public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register(
         nameof(ItemHeight), typeof(double), typeof(VirtualizedCardPanel), new PropertyMetadata(default(double)));
 
+    /// <summary/>
+    public static readonly DependencyProperty CallMeasureOnChildrenProperty = DependencyProperty.Register(
+        nameof(CallMeasureOnChildren), typeof(bool), typeof(VirtualizedCardPanel), new PropertyMetadata(default(bool)));
+
     /// <summary>
     /// Sets the height of each individual child item.
     /// </summary>
@@ -50,6 +54,16 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
     {
         get => (double)GetValue(ColumnWidthProperty);
         set => SetValue(ColumnWidthProperty, value);
+    }
+
+    /// <summary>
+    /// Declares whether Measure should be called on child elements.
+    /// Might be necessary for some entirely custom controls but usually can be skipped as we don't need this info.
+    /// </summary>
+    public bool CallMeasureOnChildren
+    {
+        get => (bool)GetValue(CallMeasureOnChildrenProperty);
+        set => SetValue(CallMeasureOnChildrenProperty, value);
     }
 
     // Position child element, return actual used size.
@@ -140,7 +154,8 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
             return;
 
         // Create visible items.
-        var generator = this.ItemContainerGenerator;
+        var measureChildren = CallMeasureOnChildren;
+        var generator = ItemContainerGenerator;
 
         // Get the generator position of the first visible data item
         var startPos = generator.GeneratorPositionFromIndex(startVisible);
@@ -172,7 +187,8 @@ public class VirtualizedCardPanel : VirtualizingPanel, IScrollInfo
             }
 
             // Measurements will depend on layout algorithm
-            child!.Measure(new Size(itemWidth, itemHeight));
+            if (measureChildren)
+                child!.Measure(new Size(itemWidth, itemHeight));
         }
     }
 
