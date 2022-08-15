@@ -1,4 +1,4 @@
-﻿using Complete = Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages.Complete;
+using Complete = Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages.Complete;
 
 namespace Reloaded.Mod.Launcher.Converters;
 

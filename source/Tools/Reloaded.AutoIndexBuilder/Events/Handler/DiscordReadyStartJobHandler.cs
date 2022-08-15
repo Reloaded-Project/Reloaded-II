@@ -1,12 +1,3 @@
-﻿using Discord;
-using Discord.WebSocket;
-using MediatR;
-using Reloaded.AutoIndexBuilder.Config;
-using Reloaded.AutoIndexBuilder.Events.Notification;
-using Reloaded.AutoIndexBuilder.Services;
-using Reloaded.AutoIndexBuilder.Utilities;
-using Serilog.Core;
-
 namespace Reloaded.AutoIndexBuilder.Events.Handler;
 
 internal class DiscordReadyStartJobHandler : INotificationHandler<DiscordReadyNotification>

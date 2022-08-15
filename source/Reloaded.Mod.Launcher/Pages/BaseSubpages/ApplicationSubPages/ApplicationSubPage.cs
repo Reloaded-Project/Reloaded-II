@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
+namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 
 /// <summary>
 /// Base class with animation set for sub-pages of <see cref="ApplicationPage"/>

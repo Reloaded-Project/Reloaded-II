@@ -1,15 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Tests.SETUP;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana;
-using Reloaded.Mod.Loader.Update.Providers.NuGet;
-using Reloaded.Mod.Loader.Update.Structures;
-using Sewer56.Update.Structures;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Resolvers;
 
 public class GameBananaResolverFactoryTests : IDisposable

@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Update.Index.Provider;
+namespace Reloaded.Mod.Loader.Update.Index.Provider;
 
 /// <summary>
 /// Package provider for NuGet that redirects requests through the index (if possible).
@@ -54,4 +54,3 @@ public class IndexedNuGetPackageProvider : IDownloadablePackageProvider
         return await _indexPackageProvider.SearchAsync(text, skip, take, token);
     }
 }
-

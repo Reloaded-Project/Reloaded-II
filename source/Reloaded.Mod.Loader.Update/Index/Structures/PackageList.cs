@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Update.Index.Structures;
+namespace Reloaded.Mod.Loader.Update.Index.Structures;
 
 /// <summary>
 /// Exposes a collection of packages for serialization.

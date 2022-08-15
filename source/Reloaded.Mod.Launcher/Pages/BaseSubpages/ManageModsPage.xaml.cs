@@ -1,4 +1,4 @@
-﻿using Window = System.Windows.Window;
+using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 

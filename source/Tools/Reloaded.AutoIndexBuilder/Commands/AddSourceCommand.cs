@@ -1,15 +1,3 @@
-﻿using Discord;
-using Discord.Interactions;
-using Reloaded.AutoIndexBuilder.Config;
-using Reloaded.AutoIndexBuilder.Config.Structures;
-using Reloaded.AutoIndexBuilder.Services;
-using Reloaded.AutoIndexBuilder.Utilities;
-using Reloaded.Mod.Loader.IO.Config.Structs;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana;
-using Reloaded.Mod.Loader.Update.Providers.NuGet;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-using Serilog.Core;
-
 namespace Reloaded.AutoIndexBuilder.Commands;
 
 public class AddSourceCommand : InteractionModuleBase<SocketInteractionContext>

@@ -1,4 +1,4 @@
-﻿using static Reloaded.Mod.Loader.IO.Utility.FileSystemWatcherFactory.FileSystemWatcherEvents;
+using static Reloaded.Mod.Loader.IO.Utility.FileSystemWatcherFactory.FileSystemWatcherEvents;
 
 namespace Reloaded.Mod.Launcher.Utility;
 

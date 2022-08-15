@@ -1,6 +1,3 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-
 namespace Reloaded.AutoIndexBuilder.Config;
 
 public class Stats

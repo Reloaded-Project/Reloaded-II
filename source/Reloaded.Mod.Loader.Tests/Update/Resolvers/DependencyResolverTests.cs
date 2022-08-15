@@ -1,8 +1,3 @@
-﻿using NuGet.Versioning;
-using Reloaded.Mod.Loader.Tests.Update.Mocks;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Resolvers;
 
 public class DependencyResolverTests

@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Update.Utilities;
+namespace Reloaded.Mod.Loader.Update.Utilities;
 
 /// <summary>
 /// Represents a span with list-like addition semantics.

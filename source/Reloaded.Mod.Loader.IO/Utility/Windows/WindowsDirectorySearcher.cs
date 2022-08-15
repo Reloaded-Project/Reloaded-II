@@ -1,6 +1,5 @@
 // ReSharper disable InconsistentNaming
 
-using System.Collections.Concurrent;
 
 namespace Reloaded.Mod.Loader.IO.Utility.Windows;
 

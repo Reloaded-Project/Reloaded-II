@@ -1,7 +1,3 @@
-﻿using System.Reactive.Linq;
-using Akavache;
-using Akavache.Sqlite3;
-
 namespace Reloaded.Mod.Loader.Update.Caching;
 
 /// <summary>

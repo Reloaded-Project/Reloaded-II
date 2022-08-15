@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Installer;
+namespace Reloaded.Mod.Installer;
 
 internal class NativeImports
 {

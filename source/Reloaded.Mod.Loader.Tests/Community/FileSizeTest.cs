@@ -1,11 +1,3 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
-using Bogus;
-using Reloaded.Mod.Loader.Community.Config;
-using Xunit;
-using Xunit.Abstractions;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Reloaded.Mod.Loader.Tests.Community;

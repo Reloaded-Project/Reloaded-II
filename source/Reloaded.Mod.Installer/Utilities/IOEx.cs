@@ -1,3 +1,5 @@
+using Path = System.IO.Path;
+
 namespace Reloaded.Mod.Installer.Utilities
 {
     // ReSharper disable once InconsistentNaming

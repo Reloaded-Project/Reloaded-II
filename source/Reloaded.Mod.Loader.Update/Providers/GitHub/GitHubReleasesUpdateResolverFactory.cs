@@ -1,3 +1,4 @@
+using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
 using IPackageResolver = Sewer56.Update.Interfaces.IPackageResolver;
 
 namespace Reloaded.Mod.Loader.Update.Providers.GitHub;

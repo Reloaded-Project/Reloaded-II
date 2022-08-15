@@ -1,6 +1,3 @@
-﻿using FluentValidation;
-using Reloaded.AutoIndexBuilder.Config;
-
 namespace Reloaded.AutoIndexBuilder.Validation;
 
 internal class SettingsValidator : AbstractValidator<Settings>

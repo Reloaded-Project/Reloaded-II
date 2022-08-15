@@ -1,4 +1,4 @@
-﻿using Button = Sewer56.UI.Controller.Core.Enums.Button;
+using Button = Sewer56.UI.Controller.Core.Enums.Button;
 using ILocalizationProvider = Sewer56.UI.Controller.ReloadedInput.Configurator.ILocalizationProvider;
 
 namespace Reloaded.Mod.Launcher.Utility;

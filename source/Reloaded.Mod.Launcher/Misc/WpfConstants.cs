@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Misc;
+namespace Reloaded.Mod.Launcher.Misc;
 public static class WpfConstants
 {
     public static Uri PlaceholderImagePath

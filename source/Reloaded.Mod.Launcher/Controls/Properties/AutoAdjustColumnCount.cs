@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Controls.Properties;
+namespace Reloaded.Mod.Launcher.Controls.Properties;
 
 /// <summary>
 /// An attached WPF property that auto adjusts column count of a uniform grid based on a min width.

@@ -1,5 +1,6 @@
 using static Reloaded.Mod.Installer.DependencyInstaller.DependencyInstaller;
 using MessageBox = System.Windows.MessageBox;
+using Path = System.IO.Path;
 
 namespace Reloaded.Mod.Installer;
 

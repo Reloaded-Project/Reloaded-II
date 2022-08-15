@@ -1,5 +1,3 @@
-﻿using TestInterfaces;
-
 namespace TestModA
 {
     public class TestModAPlugin : ITestModAPlugin

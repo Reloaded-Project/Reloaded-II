@@ -1,3 +1,5 @@
+using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
+
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget;
 
 /// <summary>

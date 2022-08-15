@@ -1,7 +1,3 @@
-﻿using NuGet.Protocol.Plugins;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.DownloadPackages;
-using Reloaded.Mod.Launcher.Pages.BaseSubpages.DownloadPackagesPages;
-using Reloaded.Mod.Loader.Update.Interfaces;
 using Button = Sewer56.UI.Controller.Core.Enums.Button;
 using Image = System.Windows.Controls.Image;
 

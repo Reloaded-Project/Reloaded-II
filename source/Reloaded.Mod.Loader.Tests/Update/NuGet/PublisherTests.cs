@@ -1,12 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Update.Packaging;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Sewer56.Update.Packaging.Enums;
-using Sewer56.Update.Packaging.Extractors;
-using Xunit;
+using PackageType = Sewer56.Update.Packaging.Enums.PackageType;
 
 namespace Reloaded.Mod.Loader.Tests.Update.NuGet;
 

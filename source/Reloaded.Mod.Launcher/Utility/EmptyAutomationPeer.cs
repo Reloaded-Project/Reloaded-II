@@ -1,5 +1,3 @@
-﻿using System.Windows.Automation.Peers;
-
 namespace Reloaded.Mod.Launcher.Utility;
 
 /// <summary>

@@ -1,4 +1,4 @@
-﻿using Paths = Reloaded.Mod.Loader.IO.Paths;
+using Paths = Reloaded.Mod.Loader.IO.Paths;
 
 namespace Reloaded.Mod.Loader.Update.Caching;
 

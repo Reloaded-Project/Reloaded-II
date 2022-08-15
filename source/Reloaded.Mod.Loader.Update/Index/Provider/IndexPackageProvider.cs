@@ -1,5 +1,3 @@
-﻿using Reloaded.Mod.Loader.Update.Index.Structures;
-
 namespace Reloaded.Mod.Loader.Update.Index.Provider;
 
 /// <summary>

@@ -240,4 +240,3 @@ public static class Publisher
         GameBanana,
     }
 }
-

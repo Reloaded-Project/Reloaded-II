@@ -1,4 +1,4 @@
-﻿using IconConverter = Reloaded.Mod.Launcher.Interop.IconConverter;
+using IconConverter = Reloaded.Mod.Launcher.Interop.IconConverter;
 using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher;

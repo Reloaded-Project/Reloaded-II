@@ -1,11 +1,3 @@
-﻿using Discord;
-using Discord.Interactions;
-using Discord.WebSocket;
-using MediatR;
-using Reloaded.AutoIndexBuilder.Config;
-using Reloaded.AutoIndexBuilder.Events.Notification;
-using Serilog.Core;
-
 namespace Reloaded.AutoIndexBuilder.Mixin;
 
 /// <summary>

@@ -1,5 +1,3 @@
-using System.IO;
-
 namespace Reloaded.Mod.Loader.Community.Utility;
 
 /// <summary>

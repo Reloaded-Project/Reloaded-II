@@ -1,4 +1,3 @@
-using Reloaded.Mod.Loader.IPC;
 using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader;

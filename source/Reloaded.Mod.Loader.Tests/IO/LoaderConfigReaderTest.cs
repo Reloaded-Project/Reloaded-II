@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Tests.SETUP;
-using Xunit;
+using Paths = Reloaded.Mod.Loader.IO.Paths;
 
 namespace Reloaded.Mod.Loader.Tests.IO;
 

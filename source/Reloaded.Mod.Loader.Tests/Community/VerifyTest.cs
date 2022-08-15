@@ -1,9 +1,3 @@
-﻿using System;
-using System.IO;
-using Reloaded.Mod.Loader.Community.Config;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Standart.Hash.xxHash;
-using Xunit;
 using Hashing = Reloaded.Mod.Loader.Community.Utility.Hashing;
 
 namespace Reloaded.Mod.Loader.Tests.Community;

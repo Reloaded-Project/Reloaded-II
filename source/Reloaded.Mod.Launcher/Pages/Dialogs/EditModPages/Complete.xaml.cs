@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages;
+namespace Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages;
 
 /// <summary>
 /// Interaction logic for Special.xaml

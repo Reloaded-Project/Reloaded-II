@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Interop;
+namespace Reloaded.Mod.Launcher.Interop;
 
 /// <summary>
 /// Represents an individual XAML resource sourced from a WPF application.

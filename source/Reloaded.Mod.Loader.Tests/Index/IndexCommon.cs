@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Tests.Index;
+namespace Reloaded.Mod.Loader.Tests.Index;
 
 public class IndexTestCommon
 {

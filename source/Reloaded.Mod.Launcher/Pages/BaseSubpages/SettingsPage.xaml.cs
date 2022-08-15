@@ -1,5 +1,3 @@
-﻿using System.Diagnostics.Tracing;
-using Vortice;
 using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;

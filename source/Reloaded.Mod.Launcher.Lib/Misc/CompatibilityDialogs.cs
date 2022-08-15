@@ -1,5 +1,3 @@
-using Reloaded.Mod.Loader.IO.Config;
-
 namespace Reloaded.Mod.Launcher.Lib.Misc;
 
 /// <summary>

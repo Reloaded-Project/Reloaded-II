@@ -1,5 +1,3 @@
-using static Akavache.Sqlite3.Internal.SQLite3;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Application;
 
 /// <summary>

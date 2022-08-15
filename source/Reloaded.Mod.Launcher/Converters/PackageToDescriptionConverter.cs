@@ -1,5 +1,3 @@
-﻿using Reloaded.Mod.Loader.Update.Interfaces;
-
 namespace Reloaded.Mod.Launcher.Converters;
 
 public class PackageToDescriptionConverter : IValueConverter

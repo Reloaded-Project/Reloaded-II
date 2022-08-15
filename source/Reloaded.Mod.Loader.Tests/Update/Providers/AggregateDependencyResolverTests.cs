@@ -1,11 +1,3 @@
-﻿using System.Threading.Tasks;
-using Moq;
-using NuGet.Versioning;
-using Reloaded.Mod.Loader.Tests.Update.Mocks;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Providers;
 
 public class AggregateDependencyResolverTests

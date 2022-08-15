@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Converters;
+namespace Reloaded.Mod.Launcher.Converters;
 
 [ValueConversion(typeof(bool), typeof(Visibility))]
 public class BooleanToVisibilityConverter : IValueConverter

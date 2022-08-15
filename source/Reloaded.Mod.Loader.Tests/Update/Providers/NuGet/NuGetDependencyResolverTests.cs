@@ -1,9 +1,3 @@
-﻿using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Tests.Update.NuGet;
-using Reloaded.Mod.Loader.Update.Providers.NuGet;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Providers.NuGet;
 
 /// <summary>

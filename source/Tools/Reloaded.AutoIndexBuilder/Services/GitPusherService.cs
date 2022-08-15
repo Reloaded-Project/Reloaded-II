@@ -1,7 +1,3 @@
-﻿using LibGit2Sharp;
-using LibGit2Sharp.Handlers;
-using Reloaded.AutoIndexBuilder.Config;
-using Serilog.Core;
 using Credentials = LibGit2Sharp.Credentials;
 using Repository = LibGit2Sharp.Repository;
 using Signature = LibGit2Sharp.Signature;

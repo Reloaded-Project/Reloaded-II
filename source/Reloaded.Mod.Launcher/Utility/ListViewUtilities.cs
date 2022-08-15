@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Utility;
+namespace Reloaded.Mod.Launcher.Utility;
 
 internal static class ListViewUtilities
 {

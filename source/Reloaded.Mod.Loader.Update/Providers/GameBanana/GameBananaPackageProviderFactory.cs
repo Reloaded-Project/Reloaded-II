@@ -1,5 +1,3 @@
-using Reloaded.Mod.Loader.Update.Index.Provider;
-
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
 /// <inheritdoc />

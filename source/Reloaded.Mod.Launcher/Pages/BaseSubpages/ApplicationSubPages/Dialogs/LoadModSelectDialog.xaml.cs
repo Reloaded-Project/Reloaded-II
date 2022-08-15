@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs;
+namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs;
 
 /// <summary>
 /// Interaction logic for ModSelectDialog.xaml

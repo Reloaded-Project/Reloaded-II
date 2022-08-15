@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Pages.Dialogs;
+namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
 /// <summary>
 /// Interaction logic for AddAppHashMismatchDialog.xaml

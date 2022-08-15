@@ -1,6 +1,3 @@
-﻿using Reloaded.Mod.Loader.Update.Utilities;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Utilities;
 
 public class PaginationHelperTests

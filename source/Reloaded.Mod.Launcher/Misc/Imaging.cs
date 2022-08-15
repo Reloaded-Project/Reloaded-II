@@ -1,4 +1,4 @@
-﻿using Image = System.Drawing.Image;
+using Image = System.Drawing.Image;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace Reloaded.Mod.Launcher.Misc;

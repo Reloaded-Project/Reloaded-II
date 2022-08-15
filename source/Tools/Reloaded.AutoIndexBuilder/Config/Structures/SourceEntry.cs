@@ -1,5 +1,3 @@
-﻿using Reloaded.Mod.Loader.Update.Index.Structures.Config;
-
 namespace Reloaded.AutoIndexBuilder.Config.Structures;
 
 public class SourceEntry : IndexSourceEntry

@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Update.Index.Utility;
+namespace Reloaded.Mod.Loader.Update.Index.Utility;
 
 /// <summary>
 /// Utility class for making web requests.

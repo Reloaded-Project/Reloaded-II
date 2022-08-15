@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
 using Environment = Reloaded.Mod.Shared.Environment;
+using Paths = Reloaded.Mod.Loader.IO.Paths;
 
 namespace Reloaded.Mod.Loader.Tests.SETUP;
 

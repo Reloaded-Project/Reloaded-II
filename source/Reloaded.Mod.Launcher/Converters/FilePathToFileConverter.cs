@@ -1,4 +1,6 @@
-﻿namespace Reloaded.Mod.Launcher.Converters;
+using Path = System.IO.Path;
+
+namespace Reloaded.Mod.Launcher.Converters;
 
 public class FilePathToFileConverter : IValueConverter
 {

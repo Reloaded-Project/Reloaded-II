@@ -1,6 +1,3 @@
-﻿using MediatR;
-using Reloaded.AutoIndexBuilder.Config.Structures;
-
 namespace Reloaded.AutoIndexBuilder.Events.Notification;
 
 /// <summary>

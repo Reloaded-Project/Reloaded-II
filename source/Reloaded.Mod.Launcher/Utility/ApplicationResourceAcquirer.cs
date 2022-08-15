@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Utility;
+namespace Reloaded.Mod.Launcher.Utility;
 
 /// <summary>
 /// A safer resource acquirer for the current application instance.

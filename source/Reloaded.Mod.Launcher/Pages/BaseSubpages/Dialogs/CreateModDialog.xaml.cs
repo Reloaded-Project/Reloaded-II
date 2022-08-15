@@ -1,4 +1,4 @@
-﻿using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
+using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;

@@ -1,8 +1,3 @@
-﻿using System;
-using System.IO.MemoryMappedFiles;
-using System.Runtime.InteropServices;
-using Reloaded.Mod.Shared;
-
 namespace Reloaded.Mod.Launcher.Kernel32AddressDumper
 {
     static class Program

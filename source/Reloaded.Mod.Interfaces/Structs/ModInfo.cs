@@ -1,5 +1,3 @@
-﻿using Reloaded.Mod.Interfaces.Structs.Enums;
-
 namespace Reloaded.Mod.Interfaces.Structs;
 
 /// <summary>

@@ -1,14 +1,3 @@
-﻿using Discord.WebSocket;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using Quartz;
-using Reloaded.AutoIndexBuilder.Config;
-using Reloaded.AutoIndexBuilder.Mixin;
-using Reloaded.AutoIndexBuilder.Services;
-using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-
 namespace Reloaded.AutoIndexBuilder;
 
 internal class Program

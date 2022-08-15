@@ -1,4 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
 using FileMode = System.IO.FileMode;
 
 namespace Reloaded.Mod.Launcher.Lib.Utility;

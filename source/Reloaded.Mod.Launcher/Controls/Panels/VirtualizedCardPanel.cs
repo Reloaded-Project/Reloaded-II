@@ -1,8 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Diagnostics.CodeAnalysis;
-using static Akavache.Sqlite3.Internal.TableMapping;
 using Point = System.Windows.Point;
-using PropertyItem = HandyControl.Controls.PropertyItem;
 using ScrollViewer = System.Windows.Controls.ScrollViewer;
 using Size = System.Windows.Size;
 

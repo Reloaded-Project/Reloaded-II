@@ -1,5 +1,3 @@
-using Reloaded.Mod.Loader.IPC;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>

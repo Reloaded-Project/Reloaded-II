@@ -1,7 +1,3 @@
-﻿using System.IO;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.NuGet;
 
 public class NugetRepositoryTests

@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
+namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 
 /// <summary>
 /// Interaction logic for CreateModDialog.xaml

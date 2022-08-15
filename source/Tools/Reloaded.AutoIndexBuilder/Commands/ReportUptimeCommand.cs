@@ -1,7 +1,3 @@
-﻿using Discord.Interactions;
-using Reloaded.AutoIndexBuilder.Config;
-using Reloaded.AutoIndexBuilder.Utilities;
-
 namespace Reloaded.AutoIndexBuilder.Commands;
 
 public class ReportUptimeCommand : InteractionModuleBase<SocketInteractionContext>

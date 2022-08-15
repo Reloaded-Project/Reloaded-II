@@ -1,6 +1,3 @@
-﻿using Mapster;
-using Reloaded.Mod.Loader.Update.Interfaces.Extensions;
-
 namespace Reloaded.Mod.Loader.Update.Index.Structures;
 
 /// <inheritdoc />

@@ -1,7 +1,3 @@
-﻿using Reloaded.Mod.Loader.Update.Caching;
-using System.Net.Http;
-using CacheCow.Client;
-
 namespace Reloaded.Mod.Loader.Update.Utilities;
 
 /// <summary>

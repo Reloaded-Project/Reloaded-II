@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Interfaces.Internal;
+namespace Reloaded.Mod.Interfaces.Internal;
 
 public interface IModLoaderV3 : IModLoaderV2
 {

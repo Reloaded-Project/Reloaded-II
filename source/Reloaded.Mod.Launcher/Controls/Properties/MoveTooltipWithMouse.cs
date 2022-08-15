@@ -1,4 +1,4 @@
-﻿using Point = System.Windows.Point;
+using Point = System.Windows.Point;
 
 namespace Reloaded.Mod.Launcher.Controls.Properties;
 

@@ -1,4 +1,4 @@
-﻿using WindowViewModel = Reloaded.WPF.Theme.Default.WindowViewModel;
+using WindowViewModel = Reloaded.WPF.Theme.Default.WindowViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 

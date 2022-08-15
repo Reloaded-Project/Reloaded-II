@@ -1,11 +1,3 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Versioning;
-using Reloaded.Mod.Loader.Update.Interfaces;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Mocks;
 
 [ExcludeFromCodeCoverage]

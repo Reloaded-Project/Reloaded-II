@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Utility;
+namespace Reloaded.Mod.Launcher.Utility;
 
 // Adapted from, https://gist.github.com/angularsen/90040fb174f71c5ab3ad, originally MIT licensed.
 // Improved to support non-visible items.

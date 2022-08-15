@@ -1,9 +1,3 @@
-﻿using System;
-using System.Text.Json;
-using NuGet.Versioning;
-using Reloaded.Mod.Loader.Update.Index.Utility;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Index;
 
 /// <summary>

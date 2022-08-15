@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Misc;
+namespace Reloaded.Mod.Launcher.Misc;
 
 /// <summary>
 /// Allows for automatic updating of Data Grid column widths where certain widths are set to Auto and certain widths have a star in place.

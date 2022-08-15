@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.DownloadPackages;
+namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.DownloadPackages;
 
 /// <summary>
 /// Viewmodel for previewing of a downloaded package.

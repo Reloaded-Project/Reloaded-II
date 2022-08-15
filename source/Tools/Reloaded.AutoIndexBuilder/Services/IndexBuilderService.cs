@@ -1,14 +1,3 @@
-﻿using System.Diagnostics;
-using MediatR;
-using Quartz;
-using Quartz.Impl.Matchers;
-using Reloaded.AutoIndexBuilder.Config;
-using Reloaded.AutoIndexBuilder.Config.Structures;
-using Serilog.Core;
-using Reloaded.AutoIndexBuilder.Events.Notification;
-using Reloaded.Mod.Loader.Update.Index;
-using System.ComponentModel;
-
 namespace Reloaded.AutoIndexBuilder.Services;
 
 /// <summary>

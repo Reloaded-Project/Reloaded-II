@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Update.Index.Provider;
+namespace Reloaded.Mod.Loader.Update.Index.Provider;
 
 /// <summary>
 /// Package provider for GameBanana that redirects requests through the index (if possible).

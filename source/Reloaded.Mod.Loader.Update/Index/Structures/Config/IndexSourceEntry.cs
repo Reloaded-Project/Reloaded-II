@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Update.Index.Structures.Config;
+namespace Reloaded.Mod.Loader.Update.Index.Structures.Config;
 
 /// <summary>
 /// Contains an individual entry used by the source builder to.

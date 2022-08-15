@@ -1,8 +1,3 @@
-﻿using System.Text.Json;
-using FluentValidation;
-using Reloaded.AutoIndexBuilder.Config.Structures;
-using Reloaded.AutoIndexBuilder.Validation;
-
 namespace Reloaded.AutoIndexBuilder.Config;
 
 public class Settings

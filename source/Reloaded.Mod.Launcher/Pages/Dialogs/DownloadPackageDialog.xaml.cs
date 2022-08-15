@@ -1,4 +1,4 @@
-﻿using Button = System.Windows.Controls.Button;
+using Button = System.Windows.Controls.Button;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 

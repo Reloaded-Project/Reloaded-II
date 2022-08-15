@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Drawing;
-
 namespace Reloaded.Mod.Loader.IO.Utility;
 
 /// <summary>

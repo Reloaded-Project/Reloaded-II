@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
 namespace Reloaded.Mod.Interfaces.Internal;
 
 public interface IApplicationConfigV2 : IApplicationConfigV1

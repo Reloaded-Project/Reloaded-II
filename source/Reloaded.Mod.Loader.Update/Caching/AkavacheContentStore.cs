@@ -1,10 +1,3 @@
-﻿using System.Net.Http;
-using System.Reactive;
-using System.Reactive.Linq;
-using Akavache.Sqlite3;
-using CacheCow.Client;
-using CacheCow.Common;
-using CacheCow.Common.Helpers;
 using Paths = Reloaded.Mod.Loader.IO.Paths;
 
 namespace Reloaded.Mod.Loader.Update.Caching;

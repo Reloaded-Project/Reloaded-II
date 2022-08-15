@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
+namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 
 /// <summary>
 /// Interaction logic for NonReloadedProcessPage.xaml

@@ -1,4 +1,4 @@
-﻿using Page = Reloaded.Mod.Launcher.Lib.Models.Model.Pages.Page;
+using Page = Reloaded.Mod.Launcher.Lib.Models.Model.Pages.Page;
 
 namespace Reloaded.Mod.Launcher.Converters;
 

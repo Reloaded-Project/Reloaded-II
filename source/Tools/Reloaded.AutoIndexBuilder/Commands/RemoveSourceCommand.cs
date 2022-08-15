@@ -1,10 +1,3 @@
-﻿using Discord;
-using Discord.Interactions;
-using Microsoft.Extensions.DependencyInjection;
-using Reloaded.AutoIndexBuilder.Config;
-using Reloaded.AutoIndexBuilder.Services;
-using Reloaded.AutoIndexBuilder.Utilities;
-
 namespace Reloaded.AutoIndexBuilder.Commands;
 
 public class RemoveSourceCommand : InteractionModuleBase<SocketInteractionContext>

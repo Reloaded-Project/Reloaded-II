@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Converters;
+namespace Reloaded.Mod.Launcher.Converters;
 
 [ValueConversion(typeof(FirstLaunchPage), typeof(ReloadedPage))]
 public class FirstLaunchPageToIntConverter : IValueConverter

@@ -1,4 +1,4 @@
-﻿using Color = System.Windows.Media.Color;
+using Color = System.Windows.Media.Color;
 using PropertyItem = HandyControl.Controls.PropertyItem;
 using TextBox = System.Windows.Controls.TextBox;
 

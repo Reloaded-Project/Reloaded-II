@@ -1,8 +1,3 @@
-﻿using Discord;
-using Discord.Interactions;
-using Reloaded.AutoIndexBuilder.Services;
-using Reloaded.AutoIndexBuilder.Utilities;
-
 namespace Reloaded.AutoIndexBuilder.Commands;
 
 public class ForceRunCommand : InteractionModuleBase<SocketInteractionContext>

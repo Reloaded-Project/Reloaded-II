@@ -1,5 +1,3 @@
-﻿using Reloaded.Mod.Interfaces.Structs;
-
 namespace Reloaded.Mod.Interfaces.Internal;
 
 public interface IModLoaderV4 : IModLoaderV3

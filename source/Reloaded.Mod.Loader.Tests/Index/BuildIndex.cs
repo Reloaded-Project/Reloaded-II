@@ -1,10 +1,6 @@
-﻿using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Update.Index;
-using Reloaded.Mod.Loader.Update.Index.Structures.Config;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Xunit;
+using IndexApi = Reloaded.Mod.Loader.Update.Index.IndexApi;
+using IOEx = Sewer56.DeltaPatchGenerator.Lib.Utility.IOEx;
+using Routes = Reloaded.Mod.Loader.Update.Index.Routes;
 
 namespace Reloaded.Mod.Loader.Tests.Index;
 

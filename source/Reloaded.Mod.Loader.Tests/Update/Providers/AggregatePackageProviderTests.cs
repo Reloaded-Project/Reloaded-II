@@ -1,12 +1,3 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Moq;
-using Reloaded.Mod.Loader.Tests.Update.Mocks;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Providers;
 
 public class AggregatePackageProviderTests

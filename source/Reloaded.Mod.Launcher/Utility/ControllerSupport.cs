@@ -1,6 +1,6 @@
-﻿using static Sewer56.UI.Controller.Core.Enums.Button;
-using static Sewer56.UI.Controller.WPF.WpfPlatform;
+using static Sewer56.UI.Controller.Core.Enums.Button;
 using Image = System.Windows.Controls.Image;
+using Path = System.IO.Path;
 
 namespace Reloaded.Mod.Launcher.Utility;
 

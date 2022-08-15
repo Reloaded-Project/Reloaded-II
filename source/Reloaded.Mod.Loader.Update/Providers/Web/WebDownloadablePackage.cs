@@ -1,5 +1,3 @@
-using System.Net.Http;
-using Reloaded.Mod.Loader.Update.Interfaces.Extensions;
 using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
 
 namespace Reloaded.Mod.Loader.Update.Providers.Web;

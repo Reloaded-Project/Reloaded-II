@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
+namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
 
 public class VideoTutorialPage : ReloadedPage
 {

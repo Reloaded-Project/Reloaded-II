@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Tests.SETUP;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.IO.Config;
 
 public class ModConfigTest : IDisposable

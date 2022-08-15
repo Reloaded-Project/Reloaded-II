@@ -1,4 +1,4 @@
-﻿using WindowViewModel = Reloaded.Mod.Launcher.Lib.Models.ViewModel.WindowViewModel;
+using WindowViewModel = Reloaded.Mod.Launcher.Lib.Models.ViewModel.WindowViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages;
 

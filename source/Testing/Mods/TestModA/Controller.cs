@@ -1,5 +1,3 @@
-﻿using TestInterfaces;
-
 namespace TestModA
 {
     class Controller : IController

@@ -1,4 +1,4 @@
-﻿using Size = System.Windows.Size;
+using Size = System.Windows.Size;
 
 namespace Reloaded.Mod.Launcher.Controls.Panels;
 

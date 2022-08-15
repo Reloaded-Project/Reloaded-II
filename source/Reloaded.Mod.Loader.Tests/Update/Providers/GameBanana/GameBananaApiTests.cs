@@ -1,8 +1,3 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana.Structures;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Providers.GameBanana;
 
 public class GameBananaApiTests

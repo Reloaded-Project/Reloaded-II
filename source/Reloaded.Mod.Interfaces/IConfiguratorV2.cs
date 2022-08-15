@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Interfaces;
+namespace Reloaded.Mod.Interfaces;
 
 /// <summary>
 /// Version 2 of the configurator.

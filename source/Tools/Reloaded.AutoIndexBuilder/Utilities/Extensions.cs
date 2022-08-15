@@ -1,9 +1,3 @@
-﻿using Discord;
-using Discord.WebSocket;
-using Reloaded.AutoIndexBuilder.Config;
-using Reloaded.AutoIndexBuilder.Events.Handler;
-using Serilog.Core;
-
 namespace Reloaded.AutoIndexBuilder.Utilities;
 
 public static class Extensions

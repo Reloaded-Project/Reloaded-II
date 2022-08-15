@@ -1,4 +1,4 @@
-﻿using ConsoleProgressBar;
+using ProgressBar = ConsoleProgressBar.ProgressBar;
 
 namespace Reloaded.Mod.Installer;
 

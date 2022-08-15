@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Converters;
+namespace Reloaded.Mod.Launcher.Converters;
 
 public class DownloadModStatusToString : IValueConverter
 {

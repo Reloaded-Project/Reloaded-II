@@ -1,4 +1,4 @@
-﻿using Imaging = System.Windows.Interop.Imaging;
+using Imaging = System.Windows.Interop.Imaging;
 
 namespace Reloaded.Mod.Launcher.Converters;
 

@@ -1,4 +1,3 @@
-﻿
 namespace Reloaded.Mod.Launcher;
 
 /// <summary>

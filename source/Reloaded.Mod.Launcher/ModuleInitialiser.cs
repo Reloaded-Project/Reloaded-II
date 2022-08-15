@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher;
+namespace Reloaded.Mod.Launcher;
 
 internal class ModuleInitialiser
 {

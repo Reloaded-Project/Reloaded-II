@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Interfaces.Structs.Enums;
+namespace Reloaded.Mod.Interfaces.Structs.Enums;
 
 /// <summary>
 /// Contains the current state of a mod.

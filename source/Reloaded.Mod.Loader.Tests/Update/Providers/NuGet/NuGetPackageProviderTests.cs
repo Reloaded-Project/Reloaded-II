@@ -1,14 +1,3 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Tests.Update.NuGet;
-using Reloaded.Mod.Loader.Update.Providers.NuGet;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Providers.NuGet;
 
 public class NuGetPackageProviderTests

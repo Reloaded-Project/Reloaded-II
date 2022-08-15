@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Controls;
+namespace Reloaded.Mod.Launcher.Controls;
 
 /// <summary>
 /// Interaction logic for PopupLabel.xaml

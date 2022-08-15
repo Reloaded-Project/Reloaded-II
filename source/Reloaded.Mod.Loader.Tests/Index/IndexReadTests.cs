@@ -1,5 +1,4 @@
-﻿using Reloaded.Mod.Loader.Update.Index;
-using Xunit;
+using IndexApi = Reloaded.Mod.Loader.Update.Index.IndexApi;
 
 namespace Reloaded.Mod.Loader.Tests.Index;
 

@@ -1,4 +1,3 @@
-﻿using System.Runtime.InteropServices;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 using Paths = Reloaded.Mod.Loader.IO.Paths;
 using Window = System.Windows.Window;

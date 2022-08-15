@@ -1,4 +1,4 @@
-﻿namespace TestAppA
+namespace TestAppA
 {
     public class Class1
     {

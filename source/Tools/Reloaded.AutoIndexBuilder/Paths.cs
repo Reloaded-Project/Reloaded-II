@@ -1,4 +1,4 @@
-﻿namespace Reloaded.AutoIndexBuilder;
+namespace Reloaded.AutoIndexBuilder;
 
 internal class Paths
 {

@@ -1,4 +1,4 @@
-﻿namespace TestInterfaces
+namespace TestInterfaces
 {
     public interface ITestModAPlugin
     {

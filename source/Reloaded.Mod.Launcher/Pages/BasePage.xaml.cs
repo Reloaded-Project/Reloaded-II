@@ -1,4 +1,4 @@
-﻿using Page = Reloaded.Mod.Launcher.Lib.Models.Model.Pages.Page;
+using Page = Reloaded.Mod.Launcher.Lib.Models.Model.Pages.Page;
 using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher.Pages;

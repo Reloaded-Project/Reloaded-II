@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Loader.Update.Interfaces.Extensions;
+namespace Reloaded.Mod.Loader.Update.Interfaces.Extensions;
 
 /// <summary>
 /// Extension for <see cref="IDownloadablePackage"/> instances that allows for retrieving a URL to a given.

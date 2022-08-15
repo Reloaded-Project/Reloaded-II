@@ -1,5 +1,3 @@
-﻿using Reloaded.Mod.Loader.Update.Caching;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>

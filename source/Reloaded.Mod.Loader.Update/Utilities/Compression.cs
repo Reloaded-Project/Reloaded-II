@@ -1,5 +1,3 @@
-using System.IO.Compression;
-
 namespace Reloaded.Mod.Loader.Update.Utilities;
 
 /// <summary>
