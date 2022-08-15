@@ -137,6 +137,7 @@
                     <FlowDocumentScrollViewer Document="{TemplateBinding Document}"
                                               Background="Transparent"
                                               HorizontalScrollBarVisibility="Disabled"
+                                              Focusable="False"
                                               Style="{DynamicResource FlowDocumentScrollViewerTextOnlyStyle}">
                         
                     </FlowDocumentScrollViewer>
