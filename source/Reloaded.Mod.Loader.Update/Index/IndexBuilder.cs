@@ -176,7 +176,7 @@ public class IndexBuilder
         {
             return await provider.SearchAsync("", paginationHelper.Skip, paginationHelper.Take);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             // TODO: Log error
             return Array.Empty<IDownloadablePackage>();

@@ -36,8 +36,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
             await GameBananaMod.GetByNameAllCategoriesAsync(text, GameId, page, take);
         
         var results    = new ConcurrentBag<IDownloadablePackage>();
-
-        if (gbApiItems == null)
+        if (gbApiItems.Count <= 0)
             return results;
 
         var getExtraDataTasks = new Task[gbApiItems.Count];
@@ -50,7 +49,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
 
     private async Task<List<GameBananaMod>> GetMoreThenMaxAsync(string text, int take, int page)
     {
-        var asyncPulls = new Task<List<GameBananaMod>?>[(take / MaxItemsPerApiRequest) + 1];
+        var asyncPulls = new Task<List<GameBananaMod>>[(take / MaxItemsPerApiRequest) + 1];
         for (int x = 0; x < asyncPulls.Length; x++)
             asyncPulls[x] = GameBananaMod.GetByNameAllCategoriesAsync(text, GameId, page + x, MaxItemsPerApiRequest);
 
@@ -58,13 +57,9 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
 
         // Note: Due to site bugs with uploaded files, can't trust GameBanana with not returning empty or null.
         // Merge
-        var result = asyncPulls[0].Result ?? new List<GameBananaMod>();
+        var result = asyncPulls[0].Result;
         for (int x = 1; x < asyncPulls.Length; x++)
-        {
-            var taskRes = asyncPulls[x].Result!;
-            if (taskRes != null)
-                result.AddRange(taskRes);
-        }
+            result.AddRange(asyncPulls[x].Result);
 
         return result;
     }
