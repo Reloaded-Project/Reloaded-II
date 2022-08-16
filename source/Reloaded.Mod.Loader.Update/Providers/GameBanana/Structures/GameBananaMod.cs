@@ -44,6 +44,9 @@ public class GameBananaMod
     [JsonPropertyName("_nLikeCount")]
     public long LikeCount { get; set; }
 
+    [JsonPropertyName("_aLatestUpdates")]
+    public List<GameBananaModUpdate>? Updates { get; set; }
+
     [JsonConverter(typeof(GameBananaManagerIntegrationConverter))]
     [JsonPropertyName("_aModManagerIntegrations")]
     public Dictionary<string, GameBananaManagerIntegration[]>? ManagerIntegrations { get; set; }
@@ -115,7 +118,7 @@ public class GameBananaMod
         return $"https://gamebanana.com/apiv7/{categoryType}/ByName?" +
                $"_nPerpage={take}&" +
                $"_nPage={page}&" +
-               $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter,_sProfileUrl,_nViewCount,_nLikeCount,_nDownloadCount&" +
+               $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter,_sProfileUrl,_nViewCount,_nLikeCount,_nDownloadCount,_aLatestUpdates&" +
                $"_sName={searchText}&" +
                $"_idGameRow={gameId}";
     }
@@ -125,9 +128,54 @@ public class GameBananaMod
         return $"https://gamebanana.com/apiv7/{categoryType}/ByGame?" +
                $"_nPerpage={take}&" +
                $"_nPage={page}&" +
-               $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter,_sProfileUrl,_nViewCount,_nLikeCount,_nDownloadCount&" +
+               $"_csvProperties=_idRow,_sName,_aFiles,_aCredits,_aModManagerIntegrations,_sText,_aPreviewMedia,_aSubmitter,_sProfileUrl,_nViewCount,_nLikeCount,_nDownloadCount,_aLatestUpdates&" +
                $"_aGameRowIds[]={gameId}";
     }
+}
+
+/// <summary>
+/// Includes the details of an individual mod update.
+/// </summary>
+[ExcludeFromCodeCoverage]
+public class GameBananaModUpdate
+{
+    /// <summary> e.g. 'Sewer Text Fix' </summary>
+    [JsonPropertyName("_sTitle")]
+    public string Title { get; set; } = null!;
+
+    /// <summary> e.g. 'List of changes, by category' </summary>
+    [JsonPropertyName("_aChangeLog")]
+    public List<GameBananaChangelogItem>? ChangelogItems { get; set; } = null;
+
+    /// <summary> Description of the changes, in HTML. </summary>
+    [JsonPropertyName("_sText")]
+    public string Description { get; set; } = string.Empty;
+
+    /// <summary> Date the update was added. </summary>
+    [JsonPropertyName("_tsDateAdded")]
+    public long DateAddedLong { get; set; }
+
+    /// <summary> Description of the mod. </summary>
+    [JsonPropertyName("_sVersion")]
+    public string? Version { get; set; } = null!;
+
+    [JsonIgnore]
+    public DateTime DateAdded => DateTime.UnixEpoch.AddSeconds(DateAddedLong);
+}
+
+/// <summary>
+/// Includes the details of an individual mod update.
+/// </summary>
+[ExcludeFromCodeCoverage]
+public class GameBananaChangelogItem
+{
+    /// <summary> e.g. 'Bugfix' </summary>
+    [JsonPropertyName("cat")]
+    public string Category { get; set; } = string.Empty;
+
+    /// <summary> e.g. 'Fixed a buggy mess where navigator...' </summary>
+    [JsonPropertyName("text")]
+    public string Text { get; set; } = string.Empty;
 }
 
 /// <summary>

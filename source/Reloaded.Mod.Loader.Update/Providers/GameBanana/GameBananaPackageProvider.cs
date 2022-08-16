@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
 /// <summary>
@@ -255,6 +257,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         GameBananaAddAuthors(modItem, package);
         GameBananaAddSubmitter(modItem, package);
         GameBananaAddImages(modItem, package);
+        GameBananaAddChangelog(modItem, package);
     }
 
     private static void GameBananaAddImages(GameBananaMod file, WebDownloadablePackage package)
@@ -328,5 +331,46 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
         }
 
         package.Authors = string.Join(", ", authors);
+    }
+
+    private static void GameBananaAddChangelog(GameBananaMod modItem, WebDownloadablePackage package)
+    {
+        if (!string.IsNullOrEmpty(package.Changelog))
+            return;
+
+        var updates = modItem.Updates;
+        if (updates is not { Count: > 0 })
+            return;
+
+        // Create Update Changelog
+        var changelog = new StringBuilder();
+        foreach (var update in updates)
+        {
+            // Add title.
+            if (!string.IsNullOrEmpty(update.Version))
+                changelog.Append($"## [{update.Version}] {update.Title} - {update.DateAdded:yyyy-MM-dd}  \n\n");
+            else
+                changelog.Append($"## {update.Title} - {update.DateAdded:yyyy-MM-dd}  \n\n");
+
+            changelog.Append($"{Singleton<Converter>.Instance.Convert(update.Description)}  \n\n");
+
+            var changelogItems = update.ChangelogItems;
+            if (changelogItems is not { Count: > 0 }) 
+                continue;
+
+            changelog.Append($"### Changes  \n");
+            foreach (var item in changelogItems!)
+            {
+                // - is used for null category in older entries.
+                if (string.IsNullOrEmpty(item.Category) || item.Category == "-")
+                    changelog.Append($"- {item.Text}  \n");
+                else
+                    changelog.Append($"- {item.Category}: {item.Text}  \n");
+            }
+
+            changelog.Append($"\n\n");
+        }
+
+        package.Changelog = changelog.ToString();
     }
 }
