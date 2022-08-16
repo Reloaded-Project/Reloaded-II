@@ -34,6 +34,11 @@ You can add changelogs and readme files during the publish step by clicking the 
 
 In the selection dialog, select the file (`.md`) containing the text to be included; e.g. `Readme.md` for the Readme and `Changelog.md` for the Changelog.  
 
+!!! note
+
+    GameBanana Descriptions and Updates are auto-converted to Readme and Changelogs.  
+    If your mod page only hosts 1 mod; then it is acceptable to use those instead.  
+
 ### Add Delta Update
 
 !!! info "About Delta Updates"
