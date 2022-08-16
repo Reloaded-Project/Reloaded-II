@@ -38,9 +38,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed: Hiding exit button in dialogue boxes will no longer hide exit button in main window.  
 - Fixed: GitHub resolver not being used while searching for dependencies (oops!).  
-- Fixed: Bug where a searching for mods returns the result of previous search when typing fast.  
+- Fixed: Bug where a searching for mods returns the result of previous search when typing fast.    
 - Fixed: A questionable 'by-design' WPF memory leak.  
 - Fixed: Empty strings in some parts of the UI should no longer unintentionally leave reserved space.
+- Fixed: Bug where downloads still kept running in the background if user exited the download dialog.  
 
 - Changed: *Reloaded Process Menu* (click on process in processes list) now displays user friendly Mod Name instead of Mod Id.  
 - Changed: Ninject to IoC.Container to improve performance in launcher when loading new pages.  
