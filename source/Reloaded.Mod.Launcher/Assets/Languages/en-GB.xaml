@@ -534,7 +534,9 @@
     <!-- Update 1.20.0: Extended Publish Options -->
     <sys:String x:Key="PublishModReadmeSectionTitle">Readme &amp; Changelog</sys:String>
     <sys:String x:Key="PublishModReadmeSet">Set Readme File</sys:String>
+    <sys:String x:Key="PublishModReadmeTooltip">Allows you to specify a readme file.&#x0a;Readme files are used for the description in Download Mods menu.&#x0a;Uses Markdown. Refer to the wiki for more information.</sys:String> <!-- Displays on Hover -->
     <sys:String x:Key="PublishModChangelogSet">Set Changelog File</sys:String>
+    <sys:String x:Key="PublishModChangelogTooltip">Allows you to specify a changelog file.&#x0a;Changelogs are used in Download Mods menu and in the update dialog.&#x0a;Uses Markdown. Refer to the wiki for more information.</sys:String>
 
     <sys:String x:Key="PublishSelectMarkdownTitle">Select a Markdown File (*.md).</sys:String>
     <sys:String x:Key="PublishSelectMarkdownTypeName">Markdown File</sys:String>

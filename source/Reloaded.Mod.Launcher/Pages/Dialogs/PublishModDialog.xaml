@@ -177,7 +177,6 @@
                 </controls:PopupLabel.HiddenContent>
             </controls:PopupLabel>
 
-
             <!-- Compression -->
             <controls:PopupLabel ButtonText="{DynamicResource PublishModCompSettings}" IsOpen="False" HiddenVisibilityType="Collapsed"
                                  FontSize="{DynamicResource FontSizeRegular}"
@@ -272,6 +271,8 @@
                                 Click="SetChangelogPath_Click"
                                 Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
                                 Style="{DynamicResource DefaultButton}"
+                                ToolTip="{DynamicResource PublishModChangelogTooltip}"
+                                ToolTipService.InitialShowDelay="0"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Stretch"
                                 Grid.Column="1"
@@ -281,6 +282,8 @@
                                 Click="SetReadmePath_Click"
                                 Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
                                 Style="{DynamicResource DefaultButton}"
+                                ToolTip="{DynamicResource PublishModReadmeTooltip}"
+                                ToolTipService.InitialShowDelay="0"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 Grid.Column="1"
