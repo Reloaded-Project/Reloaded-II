@@ -16,6 +16,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource FontRegular}" />
         <Setter Property="Foreground" Value="{StaticResource TextColorBrush}"/>
         <Setter Property="LineHeight" Value="{DynamicResource FontSizeSmaller}"/>
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
     </Style>
  
     <Style TargetType="{x:Type Paragraph}" x:Key="{x:Static markdig:Styles.Heading1StyleKey}">
