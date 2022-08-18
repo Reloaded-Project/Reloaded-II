@@ -13,20 +13,20 @@ public class DependencyChecker
     /// <summary>
     /// List of all dependencies consumed by the project.
     /// </summary>
-    public IDependency[] Dependencies { get; }
+    public IDependency[] Dependencies { get; private set; } = null!;
 
     /// <summary/>
-    public DependencyChecker(LoaderConfig config, bool is64Bit)
+    public DependencyChecker(string loaderPath32, string loaderPath64,  bool is64Bit)
     {
         var deps = new List<IDependency>();
 
-        var core32 = GetRuntimeOptionsForDll(config.LoaderPath32);
+        var core32 = GetRuntimeOptionsForDll(loaderPath32);
         deps.Add(new NetCoreDependency($".NET Core {core32.GetAllFrameworks()[0].Version} x86", ResolveCore(core32, false), Architecture.x86));
         deps.Add(new RedistributableDependency("Visual C++ Redistributable x86", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x86), Architecture.x86));
 
         if (is64Bit)
         {
-            var core64 = GetRuntimeOptionsForDll(config.LoaderPath64);
+            var core64 = GetRuntimeOptionsForDll(loaderPath64);
             deps.Add(new NetCoreDependency($".NET Core {core64.GetAllFrameworks()[0].Version} x64", ResolveCore(core64, true), Architecture.Amd64));
             deps.Add(new RedistributableDependency("Visual C++ Redistributable x64", RedistributablePackage.IsInstalled(RedistributablePackageVersion.VC2015to2019x64), Architecture.Amd64));
         }
@@ -34,6 +34,9 @@ public class DependencyChecker
         Dependencies = deps.ToArray();
     }
 
+    /// <summary/>
+    public DependencyChecker(LoaderConfig config, bool is64Bit) : this(config.LoaderPath32, config.LoaderPath64, is64Bit) { }
+    
     /// <summary>
     /// Attempts to get the runtime options for a DLL or EXE by finding a runtime configuration file.
     /// </summary>
