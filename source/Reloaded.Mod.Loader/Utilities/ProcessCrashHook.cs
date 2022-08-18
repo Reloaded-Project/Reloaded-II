@@ -16,6 +16,7 @@ public unsafe class ProcessCrashHook
         if (_initialized)
             return;
 
+        _initialized = true;
         _handleCrash = handler;
         var kernel32 = Kernel32.GetModuleHandle("kernel32.dll");
         var unhandledAddr = Kernel32.GetProcAddress(kernel32, "UnhandledExceptionFilter");
