@@ -37,6 +37,11 @@ public class Paths
     public static readonly string LogPath = Path.Combine(ConfigFolder, "Logs");
 
     /// <summary>
+    /// Location of the crash dump folder, used to store crash data.
+    /// </summary>
+    public static readonly string CrashDumpPath = Path.Combine(ConfigFolder, "CrashDumps");
+
+    /// <summary>
     /// Location of the logs archive, used to store old loader logs.
     /// </summary>
     public static readonly string ArchivedLogPath = Path.Combine(LogPath, "OldLogs.zip");

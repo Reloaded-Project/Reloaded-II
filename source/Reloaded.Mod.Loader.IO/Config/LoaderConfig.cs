@@ -111,6 +111,11 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     public int LogFileDeleteHours { get; set; } = 336;
 
     /// <summary>
+    /// Amount after which leftover crash dumps are deleted.
+    /// </summary>
+    public int CrashDumpDeleteHours { get; set; } = 24;
+
+    /// <summary>
     /// A list of all available NuGet feeds from which mod packages might be obtained.
     /// </summary>
     public NugetFeed[] NuGetFeeds { get; set; } = DefaultFeeds;
