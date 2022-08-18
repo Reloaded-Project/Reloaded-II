@@ -32,6 +32,10 @@
     Full or relative path to a file containing the changelog for the mod.
     The changelog should be written in Markdown format.
 
+.PARAMETER ReadmePath
+    Full or relative path to a file containing the changelog for the mod.
+    The changelog should be written in Markdown format.
+
 .PARAMETER IsPrerelease
     Default: $False
 
@@ -146,6 +150,7 @@ param (
     $IsPrerelease=$False, 
     $MakeDelta=$False, 
     $ChangelogPath="",
+    $ReadmePath="",
     $Build=$True,
     $BuildR2R=$False,
     $RemoveExe = $True,
@@ -194,6 +199,7 @@ $updateToolsPath   = "./Publish/Tools/Update-Tools"      # Used to check if upda
 $reloadedToolPath = "$reloadedToolsPath/Reloaded.Publisher.exe"  # Path to Reloaded publishing tool.
 $updateToolPath   = "$updateToolsPath/Sewer56.Update.Tool.dll" # Path to Update tool.
 $changelogFullPath = [System.IO.Path]::GetFullPath($ChangelogPath)
+$readmeFullPath = [System.IO.Path]::GetFullPath($ReadmePath)
 
 ## => Script <= ##
 # Set Working Directory
@@ -301,6 +307,10 @@ function Get-Common-Publish-Args {
 	$arguments = "--modfolder `"$publishBuildDirectory`" --packagename `"$PackageName`""
 	if ($ChangelogPath) {
         $arguments += " --changelogpath `"$changelogFullPath`""
+	}
+
+    if ($ReadmePath) {
+        $arguments += " --readmepath `"$readmeFullPath`""
 	}
 	
 	if ($AllowDeltas -and $MakeDelta) {
