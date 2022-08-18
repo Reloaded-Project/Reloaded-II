@@ -91,5 +91,10 @@ public class LogWriter : IDisposable
     }
 
     /// <inheritdoc />
-    public void Dispose() => _logger.OnPrintMessage -= OnPrintMessage;
+    public void Dispose()
+    {
+        _logger.OnPrintMessage -= OnPrintMessage;
+        _autoFlushThread.Dispose();
+        _textStream.Dispose();
+    }
 }

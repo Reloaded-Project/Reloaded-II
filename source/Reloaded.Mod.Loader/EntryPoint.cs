@@ -1,3 +1,8 @@
+using Reloaded.Memory.Pointers;
+using System.Security.Policy;
+using System.Text.Json.Serialization;
+using static Reloaded.Mod.Loader.Utilities.Native.Kernel32;
+using Console = System.Console;
 using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader;
@@ -16,6 +21,7 @@ public static class EntryPoint
     private static Process _process = Process.GetCurrentProcess();
     private static SteamHook _steamHook;
     private static ProcessExitHook _exitHook;
+    private static ProcessCrashHook _crashHook;
     private static EntryPointParameters _parameters;
 
     private static Logger Logger => _loader?.Logger;
@@ -47,8 +53,8 @@ public static class EntryPoint
 
             AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
             ExecuteTimed("Create Loader", CreateLoader);
-            InitialiseParameters(parameters);
             var setupHooksTask = Task.Run(() => ExecuteTimed("Setting Up Hooks (Async)", SetupHooks));
+            InitialiseParameters(parameters);
             ExecuteTimed("Loading Mods (Total)", LoadMods);
 
             setupHooksTask.Wait();
@@ -57,7 +63,7 @@ public static class EntryPoint
         }
         catch (Exception ex)
         {
-            HandleException(ex);
+            HandleLoadError(ex);
         }
     }
 
@@ -77,10 +83,11 @@ public static class EntryPoint
         }
     }
 
-    private static void SetupHooks()
+    private static unsafe void SetupHooks()
     {
         // Hook ExitProcess to ensure log save on process exit.
         _exitHook = new ProcessExitHook(SaveAndFlushLog);
+        _crashHook = new ProcessCrashHook(&HandleCrash);
 
         // Hook Console Close
         if (_loader.Console != null)
@@ -149,7 +156,7 @@ public static class EntryPoint
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static void HandleException(Exception ex)
+    private static void HandleLoadError(Exception ex)
     {
         // This method is singled out to avoid loading System.Windows.Forms at startup; because it is lazy loaded.
         var errorMessage = $"Failed to Load Reloaded-II.\n{ex.Message}\n{ex.StackTrace}\nA log is available at: {_loader?.LogWriter?.FlushPath}";
@@ -165,6 +172,71 @@ public static class EntryPoint
         Logger?.LogWriteLine(errorMessage, Logger.ColorError);
         _loader?.LogWriter?.Flush();
         User32.MessageBox(0, errorMessage, "Oh Noes!", 0);
+    }
+    
+    private static unsafe int HandleCrash(IntPtr exceptionPtrs)
+    {
+        var exceptionPointers = (EXCEPTION_POINTERS*)exceptionPtrs;
+
+        try
+        {
+            var currentLogPath = _loader.LogWriter.FlushPath;
+
+            // Determine Paths
+            var logFolderName = Path.GetFileNameWithoutExtension(currentLogPath);
+            var dumpFolder = Path.Combine(Paths.CrashDumpPath, logFolderName!);
+            var dumpPath = Path.Combine(dumpFolder, "dump.dmp");
+            var logPath = Path.Combine(dumpFolder, Path.GetFileName(currentLogPath)!);
+            var infoPath = Path.Combine(dumpFolder, "info.json"!);
+            Directory.CreateDirectory(dumpFolder);
+
+            // Flush log.
+            Logger?.LogWriteLine("Crashed. Generating Crash Dump. Might take a while.", Logger.ColorError);
+            Logger?.Shutdown();
+            _loader.LogWriter.Flush();
+            _loader.LogWriter.Dispose();
+
+            File.Copy(currentLogPath, logPath, true);
+
+            // Let's create our crash dump.
+            using var crashDumpFile = new FileStream(dumpPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            var exceptionInfo = new Kernel32.MinidumpExceptionInformation()
+            {
+                ThreadId = Kernel32.GetCurrentThread(),
+                ExceptionPointers = (IntPtr)exceptionPointers,
+                ClientPointers = true
+            };
+
+            // 289 is the default for Minidumps made by Windows Error Reporting.
+            // Figured this out by opening one in hex editor.
+            Kernel32.MiniDumpWriteDump(_process.Handle, (uint)_process.Id, crashDumpFile.SafeFileHandle, (MinidumpType)289, ref exceptionInfo, IntPtr.Zero, IntPtr.Zero);
+
+            // Inform the user.
+            var info = new CrashDumpInfo(_loader, exceptionPointers);
+            File.WriteAllText(infoPath, JsonSerializer.Serialize(info, new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                Converters = { new JsonStringEnumConverter() }
+            }));
+            User32.MessageBox(0, $"Crash information saved. If you believe this crash is mod related, ask for mod author(s) support. Otherwise, delete the generated files.\n\n" +
+                                 $"Info for nerds:\n" +
+                                 $"Crash Address: {info.CrashAddress}\n" +
+                                 $"Faulting Module: {info.FaultingModulePath}", "Shit! Program Crashed in Application Code!", 0);
+            
+            Process.Start(new ProcessStartInfo("cmd", $"/c start explorer \"{dumpFolder}\"")
+            {
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            });
+            return (int)Kernel32.EXCEPTION_FLAG.EXCEPTION_EXECUTE_HANDLER;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Epic Fail! Failed to create crash dump.\n" +
+                              $"{e.Message}\n" +
+                              $"{e.StackTrace}");
+            return 0;
+        }
     }
 }
 

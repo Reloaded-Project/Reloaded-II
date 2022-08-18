@@ -42,7 +42,7 @@ public static class Setup
 
             updateText(Resources.SplashRunningSanityChecks.Get());
             backgroundTasks.Add(DoSanityTests());
-            backgroundTasks.Add(Task.Run(CompressOldLogs));
+            backgroundTasks.Add(Task.Run(HandleLogsAndCrashdumps));
 
             // Wait until splash screen time.
             updateText($"{Resources.SplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");
@@ -57,12 +57,24 @@ public static class Setup
     /// <summary>
     /// Compresses old loader log files into a zip archive.
     /// </summary>
-    private static void CompressOldLogs()
+    private static void HandleLogsAndCrashdumps()
     {
-        using var logCompressor = new LogFileCompressor(Paths.ArchivedLogPath);
         var loaderConfig = IoC.Get<LoaderConfig>();
+
+        // Logs (delete & compress)
+        using var logCompressor = new LogFileCompressor(Paths.ArchivedLogPath);
         logCompressor.AddFiles(Paths.LogPath, TimeSpan.FromHours(loaderConfig.LogFileCompressTimeHours));
         logCompressor.DeleteOldFiles(TimeSpan.FromHours(loaderConfig.LogFileDeleteHours));
+
+        // Crashdumps (delete)
+        var dumpFolders = Directory.GetDirectories(Paths.CrashDumpPath);
+        var now = DateTime.UtcNow;
+        foreach (var folder in dumpFolders)
+        {
+            var timeElapsed = now - Directory.GetLastWriteTimeUtc(folder);
+            if (timeElapsed.TotalHours > loaderConfig.CrashDumpDeleteHours)
+                IOEx.TryDeleteDirectory(folder);
+        }
     }
 
     /// <summary>
