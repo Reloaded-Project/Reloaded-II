@@ -114,6 +114,15 @@
 
     <!-- MarkdownViewer Text Only Template-->
     <Style x:Key="FlowDocumentScrollViewerTextOnlyStyle" TargetType="{x:Type FlowDocumentScrollViewer}">
+        <Style.Resources>
+            <Style TargetType="{x:Type FlowDocument}" x:Key="{x:Static markdig:Styles.DocumentStyleKey}">
+                <Setter Property="ScrollViewer.Visibility" Value="Hidden"/>
+                <Setter Property="FontFamily" Value="{DynamicResource FontRegular}" />
+                <Setter Property="Foreground" Value="{StaticResource TextColorBrush}"/>
+                <Setter Property="LineHeight" Value="{DynamicResource FontSizeSmaller}"/>
+            </Style>
+        </Style.Resources>
+
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
