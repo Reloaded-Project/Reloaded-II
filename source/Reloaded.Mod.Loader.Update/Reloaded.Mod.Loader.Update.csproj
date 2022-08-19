@@ -40,6 +40,7 @@
     </PackageReference>
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
     <PackageReference Include="ReverseMarkdown" Version="3.23.1" />
+    <PackageReference Include="Sewer56.Update" Version="3.2.0" />
     <PackageReference Include="Sewer56.Update.Misc" Version="1.1.0" />
     <PackageReference Include="Sewer56.Update.Resolvers.GitHub" Version="1.4.0" />
   </ItemGroup>

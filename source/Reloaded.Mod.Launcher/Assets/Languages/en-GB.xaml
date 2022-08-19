@@ -548,4 +548,8 @@
     <sys:String x:Key="DownloadsPackagePreviewClose">Close</sys:String>
     <sys:String x:Key="DownloadsPackagePreviewLastUpdated">Last Updated: </sys:String> <!-- Followed by date -->
 
+    <!-- Update 1.20.0: Self Runtime Update -->
+    <sys:String x:Key="RuntimeUpdateRequiredTitle">Runtime Update Required</sys:String>
+    <sys:String x:Key="RuntimeUpdateRequiredDescription">A .NET runtime update is required for the new version of reloaded.&#x0a;Download will start after closing this box.&#x0a;Please click 'yes' if any User Account Control dialogs show.</sys:String>
+
 </ResourceDictionary>

@@ -1,4 +1,3 @@
-global using CliWrap;
 global using NetCoreInstallChecker;
 global using NetCoreInstallChecker.Structs.Config;
 global using NetCoreInstallChecker.Structs.Config.Enum;

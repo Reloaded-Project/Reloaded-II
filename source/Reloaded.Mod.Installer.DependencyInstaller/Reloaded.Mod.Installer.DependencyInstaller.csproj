@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CliWrap" Version="3.4.4" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.0" />
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
   </ItemGroup>

@@ -1,3 +1,5 @@
+using Reloaded.Mod.Installer.DependencyInstaller;
+using Reloaded.Mod.Installer.DependencyInstaller.IO;
 using Environment = System.Environment;
 using Version = Reloaded.Mod.Launcher.Lib.Utility.Version;
 
@@ -79,10 +81,29 @@ public class ModLoaderUpdateDialogViewModel : ObservableObject
         }
         else
         {
+            _manager.OnApplySelfUpdate += OnApplySelfUpdate;
             await _manager.PrepareUpdateAsync(_targetVersion, new Progress<double>(d => { Progress = d * 100; }));
             await _manager.StartUpdateAsync(_targetVersion, new OutOfProcessOptions() { Restart = true }, new UpdateOptions() { CleanupAfterUpdate = true });
             Environment.Exit(0);
         }
+    }
+
+    private void OnApplySelfUpdate(string newUpdateDir)
+    {
+        var updates = Task.Run(() => DependencyInstaller.GetMissingRuntimeUrls(newUpdateDir)).GetAwaiter().GetResult();
+        if (updates.Count <= 0)
+            return;
+
+        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+        {
+            // Install Updates
+            using var tempFolder = new TemporaryFolderAllocation();
+
+            // Display runtime invoke info.
+            Actions.DisplayMessagebox.Invoke(Resources.RuntimeUpdateRequiredTitle.Get(), Resources.RuntimeUpdateRequiredDescription.Get(), new Actions.DisplayMessageBoxParams { StartupLocation = Actions.WindowStartupLocation.CenterScreen });
+
+            Task.Run(() => DependencyInstaller.DownloadAndInstallRuntimesAsync(updates, tempFolder.FolderPath, null, null)).Wait();
+        });
     }
 
     /// <summary>
