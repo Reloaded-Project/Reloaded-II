@@ -79,6 +79,18 @@ public static class Publisher
                         });
                     }
 
+                    // Add icon
+                    if (args.ModTuple.Config.TryGetIconPath(args.ModTuple.Path, out var iconToPack))
+                    {
+                        const string iconFilePath = "icon.png";
+                        packageBuilder.Icon = iconFilePath;
+                        packageBuilder.Files.Add(new PhysicalPackageFile()
+                        {
+                            SourcePath = iconToPack,
+                            TargetPath = iconFilePath
+                        });
+                    }
+
                     // Add changelog
                     if (!string.IsNullOrEmpty(args.ChangelogPath))
                         packageBuilder.ReleaseNotes = File.ReadAllText(args.ChangelogPath);
