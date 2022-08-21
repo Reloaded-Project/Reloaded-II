@@ -1,3 +1,4 @@
+using NuGet.Protocol;
 using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
 
 namespace Reloaded.Mod.Loader.Update.Providers.Web;
@@ -161,12 +162,15 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
     }
 
     #region NuGet
+
     /// <summary>
     /// Creates a web downloadable package from a NuGet source.
     /// </summary>
     /// <param name="pkg">The search result.</param>
     /// <param name="repository">The NuGet repository to use.</param>
-    public static async Task<WebDownloadablePackage> FromNuGetAsync(IPackageSearchMetadata pkg, INugetRepository repository)
+    /// <param name="getReadme">If true, tries to pull readme from the server.</param>
+    /// <param name="getReleaseNotes">If true, tries to pull release notes from the server.</param>
+    public static async Task<WebDownloadablePackage> FromNuGetAsync(IPackageSearchMetadata pkg, INugetRepository repository, bool getReadme = false, bool getReleaseNotes = false)
     {
         var result = new WebDownloadablePackage()
         {
@@ -178,12 +182,13 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
             Description = pkg.Description,
             Version = pkg.Identity.Version,
             ProjectUri = pkg.ProjectUrl,
-            DownloadCount = pkg.DownloadCount
+            DownloadCount = pkg.DownloadCount,
+            Changelog = pkg.Summary
         };
 
         var resolver = GetNuGetUpdateResolver(pkg, repository);
         result._url = new Uri((await resolver.GetDownloadUrlAsync(pkg.Identity.Version, new ReleaseMetadataVerificationInfo(), CancellationToken.None))!);
-        _ = InitNuGetAsyncData(result, pkg, repository, resolver);
+        _ = InitNuGetAsyncData(result, pkg, repository, resolver, getReadme, getReleaseNotes);
 
         if (pkg.IconUrl != null)
             result.Images = new[] { new DownloadableImage() { Uri = pkg.IconUrl } };
@@ -191,10 +196,31 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
         return result;
     }
 
-    private static async Task InitNuGetAsyncData(WebDownloadablePackage package, IPackageSearchMetadata pkg, INugetRepository repository, NuGetUpdateResolver updateResolver)
+    [SuppressMessage("ReSharper", "AsyncVoidLambda")]
+    private static async Task InitNuGetAsyncData(WebDownloadablePackage package, IPackageSearchMetadata pkg,
+        INugetRepository repository, NuGetUpdateResolver updateResolver, bool getReadme, bool getReleaseNotes)
     {
-        package.Published = await InitNuGetPublishedAsync(pkg, repository);
-        package.FileSize  = await InitNuGetFileSizeAsync(updateResolver, pkg);
+        var tasks = new Task[4];
+        tasks[0] = Task.Run(async () => package.Published = await InitNuGetPublishedAsync(pkg, repository));
+        tasks[1] = Task.Run(async () => package.FileSize = await InitNuGetFileSizeAsync(updateResolver, pkg));
+        if (getReadme && pkg.ReadmeUrl != null)
+            tasks[2] = Task.Run(async () => package.MarkdownReadme = await SharedHttpClient.CachedAndCompressed.GetStringAsync(pkg.ReadmeUrl));
+
+        if (getReleaseNotes)
+            tasks[3] = Task.Run(async () => package.Changelog = await InitNuGetReleaseNotes(pkg, repository));
+
+        await Task.WhenAll(tasks);
+    }
+    
+    private static async Task<string?> InitNuGetReleaseNotes(IPackageSearchMetadata packageSearchMetadata,
+        INugetRepository repository)
+    {
+        var nuspec = await repository.DownloadNuspecAsync(packageSearchMetadata.Identity, default);
+        if (nuspec == null)
+            return null;
+
+        var reader = new NuspecReader(new MemoryStream(nuspec));
+        return reader.GetReleaseNotes();
     }
 
     private static async Task<long> InitNuGetFileSizeAsync(NuGetUpdateResolver resolver, IPackageSearchMetadata res)

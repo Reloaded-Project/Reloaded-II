@@ -42,6 +42,13 @@ public interface INugetRepository
     Task<DownloadResourceResult> DownloadPackageAsync(IPackageSearchMetadata packageMetadata, CancellationToken token = default);
 
     /// <summary>
+    /// Downloads a specified NuGet .nuspec.
+    /// </summary>
+    /// <param name="identity">The package identity to use.</param>
+    /// <param name="token">A cancellation token to allow cancellation of the task.</param>
+    Task<byte[]?> DownloadNuspecAsync(PackageIdentity identity, CancellationToken token = default);
+
+    /// <summary>
     /// Retrieves the details of an individual package.
     /// </summary>
     /// <param name="includeUnlisted">Include unlisted packages.</param>

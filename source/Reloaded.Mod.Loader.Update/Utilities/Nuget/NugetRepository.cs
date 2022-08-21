@@ -1,3 +1,6 @@
+using NuGet.Protocol.Core.Types;
+using System.Reflection;
+
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget;
 
 /// <summary>
@@ -20,6 +23,7 @@ public class NugetRepository : INugetRepository
     private AsyncLazy<DownloadResource>        _downloadResource = null!;
     private AsyncLazy<PackageMetadataResource> _packageMetadataResource = null!;
     private AsyncLazy<PackageSearchResource>   _packageSearchResource = null!;
+    private string? _downloadResourceUrl;
 
     private NugetRepository(string sourceUrl) => SourceUrl = sourceUrl;
 
@@ -31,12 +35,26 @@ public class NugetRepository : INugetRepository
         nugetHelper.FriendlyName        = name;
         nugetHelper._packageSource      = new PackageSource(nugetSourceUrl);
         nugetHelper._sourceRepository   = new SourceRepository(nugetHelper._packageSource, Repository.Provider.GetCoreV3());
-
+        
         nugetHelper._downloadResource        = new AsyncLazy<DownloadResource>(async () => await nugetHelper._sourceRepository.GetResourceAsync<DownloadResource>());
         nugetHelper._packageMetadataResource = new AsyncLazy<PackageMetadataResource>(async () => await nugetHelper._sourceRepository.GetResourceAsync<PackageMetadataResource>());
         nugetHelper._packageSearchResource   = new AsyncLazy<PackageSearchResource>(async () => await nugetHelper._sourceRepository.GetResourceAsync<PackageSearchResource>());
 
         return nugetHelper;
+    }
+
+    /// <inheritdoc />
+    public async Task<byte[]?> DownloadNuspecAsync(PackageIdentity identity, CancellationToken token = default)
+    {
+        var resourceUrl = await GetDownloadResourceUrl();
+        if (string.IsNullOrEmpty(resourceUrl))
+            return null;
+
+        var baseUrl = new Uri(resourceUrl);
+        var idLowercase = identity.Id.ToLower();
+        var versionLower = identity.Version.ToString().ToLower();
+        var url = new Uri(baseUrl, $"/{idLowercase}/{versionLower}/{idLowercase}.nuspec");
+        return await SharedHttpClient.CachedAndCompressed.GetByteArrayAsync(url, token); 
     }
 
     /// <inheritdoc />
@@ -173,6 +191,29 @@ public class NugetRepository : INugetRepository
                     packagesNotFoundAccumulator.Add(package.Id);
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// [WARNING: REFLECTION]
+    /// </summary>
+    private async ValueTask<string?> GetDownloadResourceUrl()
+    {
+        if (!string.IsNullOrEmpty(_downloadResourceUrl))
+            return _downloadResourceUrl;
+
+        try
+        {
+            var downloadResource = await _downloadResource;
+
+            // No public API for this, ah shit, here we go again.
+            var dynMethod = downloadResource.GetType().GetField("_packageBaseAddressUrl", BindingFlags.NonPublic | BindingFlags.Instance);
+            _downloadResourceUrl = (string?)dynMethod!.GetValue(downloadResource)!;
+            return _downloadResourceUrl;
+        }
+        catch (Exception)
+        {
+            return null;
         }
     }
 }

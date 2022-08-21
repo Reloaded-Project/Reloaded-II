@@ -67,6 +67,22 @@ public static class Publisher
                 {
                     packageBuilder.Title = args.ModTuple.Config.ModName;
 
+                    // Add readme
+                    if (!string.IsNullOrEmpty(args.ReadmePath))
+                    {
+                        const string readmeFilePath = "README.md";
+                        packageBuilder.Readme = readmeFilePath;
+                        packageBuilder.Files.Add(new PhysicalPackageFile()
+                        {
+                            SourcePath = args.ReadmePath,
+                            TargetPath = readmeFilePath
+                        });
+                    }
+
+                    // Add changelog
+                    if (!string.IsNullOrEmpty(args.ChangelogPath))
+                        packageBuilder.ReleaseNotes = File.ReadAllText(args.ChangelogPath);
+
                     var mods = args.ModTuple.Config.ModDependencies.Select(x => new PackageDependency(x, VersionRange.All));
                     packageBuilder.DependencyGroups.Add(new PackageDependencyGroup(NuGetFramework.AnyFramework, mods));
                 } 

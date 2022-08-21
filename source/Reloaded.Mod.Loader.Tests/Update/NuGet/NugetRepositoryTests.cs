@@ -43,4 +43,11 @@ public class NugetRepositoryTests
 
         Directory.Delete(tempLocation.FullName, true);
     }
+
+    [Fact]
+    public void DownloadNuSpec()
+    {
+        var nuspec = _nugetRepository.DownloadNuspecAsync(new PackageIdentity(TestPackageName, new NuGetVersion("1.0.0"))).Result;
+        Assert.NotNull(nuspec);
+    }
 }
