@@ -85,14 +85,35 @@
             </Grid>
 
             <!-- Last Updated -->
-            <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" 
-                       Visibility="{Binding Package.Published, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
-                       Style="{DynamicResource DownloadModTitleTextBlock}">
-                
-                <Run Text="{DynamicResource DownloadsPackagePreviewLastUpdated}"/>
-                <Run Text="{Binding Package.Published, Converter={x:Static converters:DateTimeToHumanConverter.Instance}}"/>
+            <Grid Margin="{DynamicResource CommonItemHorizontalMargin}" DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            </TextBlock>
+                <Viewbox Grid.Column="0" MaxHeight="{Binding ElementName=PublishedDateText, Path=ActualHeight}">
+                    <Canvas Width="24" Height="24">
+                        <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryTime}" />
+                    </Canvas>
+                </Viewbox>
+
+                <TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" x:Name="PublishedDateText"
+                           Visibility="{Binding Package.Published, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
+                           Style="{DynamicResource DownloadModTitleTextBlock}">
+                
+                    <Run Text="{DynamicResource DownloadsPackagePreviewLastUpdated}"/>
+                    <Run Text="{Binding Package.Published, Converter={x:Static converters:DateTimeToHumanConverter.Instance}}"/>
+
+                </TextBlock>
+
+                <!-- Image -->
+                <Image Grid.Column="2" Style="{DynamicResource HighQualityImage}" 
+                       HorizontalAlignment="Right" OverridesDefaultStyle="True" 
+                       Width="Auto" MaxHeight="{Binding ElementName=PublishedDateText, Path=ActualHeight}" 
+                       Loaded="OnSourceImageLoaded" />
+
+            </Grid>
 
             <!-- Description -->
             <wpf:MarkdownViewer Focusable="False" Markdown="{Binding Package, FallbackValue='No Description', Converter={x:Static converters:PackageToDescriptionConverter.Instance}}" Style="{DynamicResource MarkdownViewerTextOnly}" >

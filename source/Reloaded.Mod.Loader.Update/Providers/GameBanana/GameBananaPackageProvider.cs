@@ -7,7 +7,10 @@ namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 /// </summary>
 public class GameBananaPackageProvider : IDownloadablePackageProvider
 {
-    private const string SourceName = "GameBanana";
+    /// <summary>
+    /// Source name for this package source.
+    /// </summary>
+    public const string SourceName = "GameBanana";
     private const int MaxItemsPerApiRequest = 50;
 
     /// <summary>

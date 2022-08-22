@@ -1,3 +1,4 @@
+using Reloaded.Mod.Loader.Update.Providers.GameBanana;
 using Button = Sewer56.UI.Controller.Core.Enums.Button;
 using Image = System.Windows.Controls.Image;
 
@@ -271,6 +272,24 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
     {
         Dispose();
         _close();
+    }
+
+    // Show appropriate source image.
+    private void OnSourceImageLoaded(object sender, RoutedEventArgs e)
+    {
+        var source = ViewModel.Package.Source;
+        var image = (Image)sender;
+        
+        switch (source)
+        {
+            case GameBananaPackageProvider.SourceName:
+                image.Source = (ImageSource)FindResource("IconSourceGameBanana");
+                break;
+
+            default:
+                image.Source = Imaging.BitmapFromUri(WpfConstants.PlaceholderImagePath);
+                break;
+        }
     }
 }
 
