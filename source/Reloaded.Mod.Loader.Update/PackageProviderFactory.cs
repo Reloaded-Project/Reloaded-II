@@ -18,8 +18,9 @@ public static class PackageProviderFactory
     /// Returns the first appropriate provider that can handle fetching packages for a game.
     /// </summary>
     /// <param name="application">The application in question.</param>
+    /// <param name="nugetRepositories">[Optional] NuGet repositories to use.</param>
     /// <returns>A resolver that can handle the mod, else null.</returns>
-    public static AggregatePackageProvider? GetProvider(PathTuple<ApplicationConfig> application)
+    public static AggregatePackageProvider? GetProvider(PathTuple<ApplicationConfig> application, IEnumerable<INugetRepository>? nugetRepositories = null)
     {
         // Create resolvers.
         var providers = new List<IDownloadablePackageProvider>();
@@ -29,6 +30,11 @@ public static class PackageProviderFactory
             if (provider != null)
                 providers.Add(provider);
         }
+
+        // Add NuGets.
+        if (nugetRepositories != null)
+            foreach (var nugetRepo in nugetRepositories)
+                providers.Add(new IndexedNuGetPackageProvider(nugetRepo, application.Config.AppId));
 
         return providers.Count > 0 ? new AggregatePackageProvider(providers.ToArray(), application.Config.AppName) : null;
     }

@@ -20,16 +20,16 @@ public class IndexedNuGetPackageProvider : IDownloadablePackageProvider
     private NuGetPackageProvider _fallback;
 
     /// <summary/>
-    public IndexedNuGetPackageProvider(INugetRepository nugetRepository)
+    public IndexedNuGetPackageProvider(INugetRepository nugetRepository, string? appId = null)
     {
         SourceUrl = nugetRepository.SourceUrl;
         FriendlyName = nugetRepository.FriendlyName;
-        _fallback = new NuGetPackageProvider(nugetRepository);
+        _fallback = new NuGetPackageProvider(nugetRepository, appId);
 
-        _ = InitializeApiAsync();
+        _ = InitializeApiAsync(appId);
     }
 
-    private async Task InitializeApiAsync()
+    private async Task InitializeApiAsync(string? appId)
     {
         try
         {
@@ -38,6 +38,10 @@ public class IndexedNuGetPackageProvider : IDownloadablePackageProvider
             var packages = await index.TryGetNuGetPackageList(SourceUrl);
             if (packages.result)
             {
+                // Filter out by tag if app requested
+                if (!string.IsNullOrEmpty(appId))
+                    packages.list.Packages = packages.list.Packages.Where(x => x.Tags != null && x.Tags.Contains(appId, StringComparer.OrdinalIgnoreCase)).ToList();
+
                 _indexPackageProvider = new IndexPackageProvider(packages.list);
                 _initializedApi = true;
             }

@@ -95,6 +95,10 @@ public static class Publisher
                     if (!string.IsNullOrEmpty(args.ChangelogPath))
                         packageBuilder.ReleaseNotes = File.ReadAllText(args.ChangelogPath);
 
+                    // Add supported games to packages.
+                    foreach (var supportedGame in args.ModTuple.Config.SupportedAppId)
+                        packageBuilder.Tags.Add(supportedGame);
+
                     var mods = args.ModTuple.Config.ModDependencies.Select(x => new PackageDependency(x, VersionRange.All));
                     packageBuilder.DependencyGroups.Add(new PackageDependencyGroup(NuGetFramework.AnyFramework, mods));
                 } 

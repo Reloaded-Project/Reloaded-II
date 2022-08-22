@@ -65,6 +65,9 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
     /// <inheritdoc />
     public string? Changelog { get; set; } = null!;
 
+    /// <inheritdoc />
+    public string[]? Tags { get; set; }
+
     private Uri _url;
 
     /// <summary>
@@ -183,7 +186,8 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
             Version = pkg.Identity.Version,
             ProjectUri = pkg.ProjectUrl,
             DownloadCount = pkg.DownloadCount,
-            Changelog = pkg.Summary
+            Changelog = pkg.Summary,
+            Tags = pkg.Tags?.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
         };
 
         var resolver = GetNuGetUpdateResolver(pkg, repository);

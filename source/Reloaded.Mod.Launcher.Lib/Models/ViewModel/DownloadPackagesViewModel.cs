@@ -80,7 +80,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         // Get package provider for individual games.
         foreach (var appConfig in appConfigService.Items.ToArray())
         {
-            var provider = PackageProviderFactory.GetProvider(appConfig);
+            var provider = PackageProviderFactory.GetProvider(appConfig, nugetRepository.Sources);
             if (provider != null)
                 PackageProviders.Add(provider);
         }

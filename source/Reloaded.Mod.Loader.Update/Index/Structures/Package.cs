@@ -57,6 +57,9 @@ public class Package : IDownloadablePackage
     /// <inheritdoc />
     public string? Changelog { get; set; }
 
+    /// <inheritdoc />
+    public string[]? Tags { get; set; }
+
     /// <summary>
     /// URL needed to download this package.
     /// </summary>

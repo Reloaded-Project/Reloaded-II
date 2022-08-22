@@ -94,6 +94,14 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     public string? Changelog { get; }
 
     /// <summary>
+    /// Collection of tags related to this package.
+    /// Tags are optional and their usage depends on implementation.
+    ///
+    /// For example NuGet uses tags to filter games.
+    /// </summary>
+    public string[]? Tags { get; set; }
+
+    /// <summary>
     /// Downloads the package in question asynchronously.
     /// </summary>
     /// <param name="packageFolder">The folder containing all the packages.</param>
