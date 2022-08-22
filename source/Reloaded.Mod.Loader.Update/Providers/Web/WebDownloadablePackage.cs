@@ -186,7 +186,6 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
             Version = pkg.Identity.Version,
             ProjectUri = pkg.ProjectUrl,
             DownloadCount = pkg.DownloadCount,
-            Changelog = pkg.Summary,
             Tags = pkg.Tags?.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
         };
 
