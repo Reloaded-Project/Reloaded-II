@@ -12,18 +12,18 @@
   -->
 
   <ItemDefinitionGroup>
-    <RobustLinkRoots>
+    <ReloadedLinkRoots>
       <Visible>false</Visible>
-    </RobustLinkRoots>
-    <RobustLinkAssemblies>
+    </ReloadedLinkRoots>
+    <ReloadedLinkAssemblies>
       <Visible>false</Visible>
-    </RobustLinkAssemblies>
+    </ReloadedLinkAssemblies>
   </ItemDefinitionGroup>
 
-  <Target Name="RobustILLink"
+  <Target Name="ReloadedILLink"
           BeforeTargets="ILLink"
           Condition="'$(PublishTrimmed)' != 'true' And
-                       '$(RobustILLink)' == 'true'"
+                       '$(ReloadedILLink)' == 'true'"
           DependsOnTargets="_ComputeAssembliesToPostprocessOnPublish">
 
     <!-- Original Target: ComputeManagedAssemblyToLink -->
@@ -60,10 +60,10 @@
     </PropertyGroup>
 
     <!-- SetIsTrimmable for any assemblies listed in TrimmableAssembly.
-         TrimmableAssembly -> RobustLinkAssemblies
+         TrimmableAssembly -> ReloadedLinkAssemblies
      -->
     <JoinItems Left="@(ManagedAssemblyToLink)" LeftKey="FileName" LeftMetadata="*"
-               Right="@(RobustLinkAssemblies)"
+               Right="@(ReloadedLinkAssemblies)"
                ItemSpecToUse="Left">
       <Output TaskParameter="JoinResult" ItemName="_TrimmableManagedAssemblyToLink" />
     </JoinItems>
@@ -75,7 +75,7 @@
 
     <!-- Root the main assembly, whether or not it has IsTrimmable set. -->
     <ItemGroup>
-      <RobustLinkRoots Include="@(IntermediateAssembly)" />
+      <ReloadedLinkRoots Include="@(IntermediateAssembly)" />
     </ItemGroup>
 
     <!-- In .NET6+, set the action explicitly for any with IsTrimmable MSBuild metadata -->
@@ -92,7 +92,7 @@
     <Delete Files="@(_LinkedResolvedFileToPublishCandidate)" />
     <ILLink AssemblyPaths="@(ManagedAssemblyToLink)"
             ReferenceAssemblyPaths="@(ReferencePath)"
-            RootAssemblyNames="@(RobustLinkRoots)"
+            RootAssemblyNames="@(ReloadedLinkRoots)"
             TrimMode="$(TrimMode)"
             DefaultAction="$(TrimmerDefaultAction)"
             RemoveSymbols="false"
