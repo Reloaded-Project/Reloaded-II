@@ -72,6 +72,7 @@
                             <MenuItem Header="{DynamicResource ModManagerContextOpenFolder}" Command="{Binding OpenUserConfigFolderCommand}" />
                         </MenuItem>
                         <MenuItem Header="{DynamicResource ModManagerContextConfigure}" Command="{Binding ConfigureModCommand}" />
+                        <MenuItem Header="{DynamicResource ModManagerContextVisitWebsite}" Command="{Binding VisitModProjectUrlCommand}" />
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.ItemTemplate>

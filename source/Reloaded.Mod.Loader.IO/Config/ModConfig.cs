@@ -41,6 +41,7 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public string[] ModDependencies         { get; set; } = Array.Empty<string>();
     public string[] OptionalDependencies    { get; set; } = Array.Empty<string>();
     public string[] SupportedAppId          { get; set; } = Array.Empty<string>();
+    public string ProjectUrl { get; set; } = String.Empty;
 
     /*
        ---------------

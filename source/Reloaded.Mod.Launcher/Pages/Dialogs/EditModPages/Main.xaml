@@ -33,6 +33,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Application Image -->
@@ -113,6 +114,22 @@
                  TextWrapping="Wrap"
                  HorizontalAlignment="Stretch"
                  Grid.Column="2" Grid.Row="4"
+                 VerticalAlignment="Center"/>
+
+        <!-- Project URL -->
+        <Label Content="{DynamicResource CreateModDialogProjectUrl}" VerticalAlignment="Center" 
+               Grid.Column="0" Grid.Row="5" HorizontalAlignment="Center" />
+
+        <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+                 Text="{Binding Config.ProjectUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Tag="{DynamicResource CreateModDialogProjectUrlPlaceholder}" 
+                 ToolTip="{DynamicResource CreateModDialogProjectUrlPlaceholder}"
+                 Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
+                 MinWidth="{StaticResource DetailsColumnWidth}"
+                 Width="{Binding Path=ActualWidth, ElementName=VersionBox}"
+                 TextWrapping="Wrap"
+                 HorizontalAlignment="Stretch"
+                 Grid.Column="2" Grid.Row="5"
                  VerticalAlignment="Center"/>
 
     </Grid>

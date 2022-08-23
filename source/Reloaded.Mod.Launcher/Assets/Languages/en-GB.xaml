@@ -562,4 +562,9 @@
     <sys:String x:Key="UpdateModModName">Mod Name</sys:String>
     <sys:String x:Key="UpdateModModEnabled">Update?</sys:String>
 
+    <!-- Update 1.20.0: Adding Project URL -->
+    <sys:String x:Key="CreateModDialogProjectUrl">Website</sys:String>
+    <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">Full HTTP(s) link to your website.</sys:String> <!-- Shown as a placeholder -->
+    <sys:String x:Key="ModManagerContextVisitWebsite">Visit Website</sys:String>
+
 </ResourceDictionary>

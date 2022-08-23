@@ -27,6 +27,9 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     public ConfigureModCommand ConfigureModCommand { get; set; } = null!;
 
     /// <summary/>
+    public VisitModProjectUrlCommand VisitModProjectUrlCommand { get; set; } = null!;
+
+    /// <summary/>
     public EditModCommand EditModCommand { get; set; } = null!;
 
     /// <summary/>
@@ -160,6 +163,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         OpenModFolderCommand = new OpenModFolderCommand(SelectedMod.Tuple);
         EditModCommand = new EditModCommand(SelectedMod.Tuple, null);
         PublishModCommand = new PublishModCommand(SelectedMod.Tuple);
+        VisitModProjectUrlCommand = new VisitModProjectUrlCommand(SelectedMod.Tuple);
 
         var userConfig = _userConfigService.ItemsById.GetValueOrDefault(SelectedMod.Tuple.Config.ModId);
         EditModUserConfigCommand = new EditModUserConfigCommand(userConfig);
