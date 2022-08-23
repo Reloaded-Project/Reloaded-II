@@ -30,6 +30,8 @@ public class PublishModCommand : WithCanExecuteChanged, ICommand
         if (!PackageResolverFactory.HasAnyConfiguredResolver(_modTuple))
             Actions.DisplayMessagebox(Resources.PublishModWarningTitle.Get(), Resources.PublishModWarningDescription.Get());
 
+        // Save just in case it was modified by source UI.
+        _modTuple.Save();
         Actions.PublishModDialog(new PublishModDialogViewModel(_modTuple!));
     }
 }
