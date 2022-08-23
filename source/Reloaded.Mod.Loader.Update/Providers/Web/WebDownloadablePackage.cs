@@ -203,14 +203,18 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
     private static async Task InitNuGetAsyncData(WebDownloadablePackage package, IPackageSearchMetadata pkg,
         INugetRepository repository, NuGetUpdateResolver updateResolver, bool getReadme, bool getReleaseNotes)
     {
-        var tasks = new Task[4];
-        tasks[0] = Task.Run(async () => package.Published = await InitNuGetPublishedAsync(pkg, repository));
-        tasks[1] = Task.Run(async () => package.FileSize = await InitNuGetFileSizeAsync(updateResolver, pkg));
-        if (getReadme && pkg.ReadmeUrl != null)
-            tasks[2] = Task.Run(async () => package.MarkdownReadme = await SharedHttpClient.CachedAndCompressed.GetStringAsync(pkg.ReadmeUrl));
+        bool canGetReadme = getReadme && pkg.ReadmeUrl != null;
+
+        var tasks = new Task[2 + Convert.ToInt32(canGetReadme) + Convert.ToInt32(getReleaseNotes)];
+        int currentTask = 0;
+
+        tasks[currentTask++] = Task.Run(async () => package.Published = await InitNuGetPublishedAsync(pkg, repository));
+        tasks[currentTask++] = Task.Run(async () => package.FileSize = await InitNuGetFileSizeAsync(updateResolver, pkg));
+        if (canGetReadme)
+            tasks[currentTask++] = Task.Run(async () => package.MarkdownReadme = await SharedHttpClient.CachedAndCompressed.GetStringAsync(pkg.ReadmeUrl));
 
         if (getReleaseNotes)
-            tasks[3] = Task.Run(async () => package.Changelog = await InitNuGetReleaseNotes(pkg, repository));
+            tasks[currentTask++] = Task.Run(async () => package.Changelog = await InitNuGetReleaseNotes(pkg, repository));
 
         await Task.WhenAll(tasks);
     }

@@ -50,10 +50,10 @@ public class NugetRepository : INugetRepository
         if (string.IsNullOrEmpty(resourceUrl))
             return null;
 
-        var baseUrl = new Uri(resourceUrl);
+        var baseUrl = new Uri($"{resourceUrl}/");
         var idLowercase = identity.Id.ToLower();
         var versionLower = identity.Version.ToString().ToLower();
-        var url = new Uri(baseUrl, $"/{idLowercase}/{versionLower}/{idLowercase}.nuspec");
+        var url = new Uri(baseUrl, $"{idLowercase}/{versionLower}/{idLowercase}.nuspec");
         return await SharedHttpClient.CachedAndCompressed.GetByteArrayAsync(url, token); 
     }
 
