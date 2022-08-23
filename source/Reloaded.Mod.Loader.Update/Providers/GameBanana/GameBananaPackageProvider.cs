@@ -29,9 +29,6 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
     /// <inheritdoc />
     public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default)
     {
-        // TODO: Potential bug if no manager integrated mods are returned but there are still more items to take.
-        // We ignore it for now but it's best revisited in the future.
-
         int page       = (skip / take) + 1;
         var gbApiItems = take > MaxItemsPerApiRequest ? 
             await GetMoreThenMaxAsync(text, take, page) :

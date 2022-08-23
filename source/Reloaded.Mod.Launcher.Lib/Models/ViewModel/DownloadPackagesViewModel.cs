@@ -273,8 +273,6 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
             _canExecute = false;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             
-            // TODO: Download Packages Async
-            // Update.DownloadNuGetPackagesAsync()
             ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 var viewModel = new DownloadPackageViewModel(_package!, IoC.Get<LoaderConfig>());
