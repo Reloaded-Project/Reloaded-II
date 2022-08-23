@@ -54,6 +54,10 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
+	
+  <ItemGroup>
+    <Page Remove="Theme\Default\R-II\Colours.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="3.1.1" />

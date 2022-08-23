@@ -55,6 +55,14 @@
         <Setter Property="Focusable" Value="False" />
     </Style>
 
+    <Style x:Key="VerticalSeparator" TargetType="{x:Type Separator}" BasedOn="{StaticResource DefaultSeparatorStyle}">
+        <Setter Property="LayoutTransform">
+            <Setter.Value>
+                <RotateTransform Angle="90"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Default Styles xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Style Bindings xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
 

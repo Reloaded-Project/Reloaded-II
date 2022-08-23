@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF">
+
+    <!-- For IntelliSense. -->
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Colours.xaml"/>
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Fonts.xaml"/>
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Settings.xaml"/>
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+
+
+    <!-- For pages that overlay main screen e.g. package preview -->
+    <SolidColorBrush x:Key="PageOverlayBackgroundBrush" Color="{DynamicResource TooltipBackgroundColor}" Opacity="0.9"/>
+    <SolidColorBrush x:Key="SeparatorOnOverlayBrush" Color="{DynamicResource BorderColorLight}"/>
+
+</ResourceDictionary>

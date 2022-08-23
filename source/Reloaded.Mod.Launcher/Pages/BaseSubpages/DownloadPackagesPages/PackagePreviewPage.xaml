@@ -14,10 +14,11 @@
       xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl"
       xmlns:interactivity="clr-namespace:HandyControl.Interactivity;assembly=HandyControl">
 
-    <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}" Background="{DynamicResource TooltipBackgroundColorBrush}">
+    <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}" Background="{DynamicResource PageOverlayBackgroundBrush}">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -124,6 +125,12 @@
 
             </Grid>
 
+            <!-- Divider -->
+            <Separator DockPanel.Dock="Top" 
+                       Background="{DynamicResource SeparatorOnOverlayBrush}"
+                       RenderOptions.EdgeMode="Aliased" 
+                       Margin="{DynamicResource CommonItemCombinedMargin}" />
+
             <!-- Description -->
             <wpf:MarkdownViewer Focusable="False" 
                                 Markdown="{Binding Package, FallbackValue='No Description', Converter={x:Static converters:PackageToDescriptionConverter.Instance}}" 
@@ -135,9 +142,15 @@
 
         </DockPanel>
 
+        <!-- Middle Separator -->
+        <Separator Grid.Column="1" Margin="{DynamicResource CommonItemCombinedMargin}" 
+                   Style="{DynamicResource VerticalSeparator}" 
+                   Background="{DynamicResource SeparatorOnOverlayBrush}"
+                   Opacity="0.25"
+                   RenderOptions.EdgeMode="Aliased" />
 
         <!-- Right Panel -->
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="2">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
