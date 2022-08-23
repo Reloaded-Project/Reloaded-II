@@ -9,7 +9,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="560" d:DesignWidth="950"
       Title="PackagePreviewPage"
-      Hyperlink.Click="Page_Click"
+      Hyperlink.RequestNavigate="Page_RequestNavigate"
       xmlns:utility="clr-namespace:Reloaded.Mod.Launcher.Utility"
       xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl"
       xmlns:interactivity="clr-namespace:HandyControl.Interactivity;assembly=HandyControl">
@@ -116,7 +116,9 @@
             </Grid>
 
             <!-- Description -->
-            <wpf:MarkdownViewer Focusable="False" Markdown="{Binding Package, FallbackValue='No Description', Converter={x:Static converters:PackageToDescriptionConverter.Instance}}" Style="{DynamicResource MarkdownViewerTextOnly}" >
+            <wpf:MarkdownViewer Focusable="False" 
+                                Markdown="{Binding Package, FallbackValue='No Description', Converter={x:Static converters:PackageToDescriptionConverter.Instance}}" 
+                                Style="{DynamicResource MarkdownViewerTextOnly}">
                 <wpf:MarkdownViewer.CommandBindings>
                     <CommandBinding Command="{x:Static wpf:Commands.Hyperlink}" Executed="OpenHyperlink" />
                 </wpf:MarkdownViewer.CommandBindings>
@@ -152,7 +154,9 @@
             </StackPanel>
 
             <!-- Changelog -->
-            <wpf:MarkdownViewer Focusable="False" Grid.Row="1" Markdown="{Binding Package.Changelog, FallbackValue='No Changelog'}" Style="{DynamicResource MarkdownViewerTextOnly}" >
+            <wpf:MarkdownViewer Focusable="False" 
+                                Grid.Row="1"
+                                Markdown="{Binding Package.Changelog, FallbackValue='No Changelog'}" Style="{DynamicResource MarkdownViewerTextOnly}" >
                 <wpf:MarkdownViewer.CommandBindings>
                     <CommandBinding Command="{x:Static wpf:Commands.Hyperlink}" Executed="OpenHyperlink" />
                 </wpf:MarkdownViewer.CommandBindings>

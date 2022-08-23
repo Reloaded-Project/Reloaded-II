@@ -206,10 +206,14 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
         }
     }
     
-    private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e) => ProcessExtensions.OpenFileWithDefaultProgram(e.Parameter.ToString()!);
-    
+    private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e)
+    {
+        ProcessExtensions.OpenFileWithDefaultProgram(e.Parameter.ToString()!);
+        e.Handled = true;
+    }
+
     // Don't navigate hyperlinks in our markdown, thanks!
-    private void Page_Click(object sender, RoutedEventArgs e) => e.Handled = true;
+    private void Page_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) => e.Handled = true;
 
     private void WhenPageIndexChanged(int pageIndex)
     {
