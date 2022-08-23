@@ -295,6 +295,9 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
                 image.Source = Imaging.BitmapFromUri(WpfConstants.PlaceholderImagePath);
                 break;
         }
+
+        image.ToolTip = $"{FindResource("DownloadsPackageSourceTooltip")}{source}";
+        ToolTipService.SetInitialShowDelay(image, 0);
     }
 }
 
