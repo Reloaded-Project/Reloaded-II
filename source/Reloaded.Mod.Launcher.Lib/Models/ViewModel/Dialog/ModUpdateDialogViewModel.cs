@@ -21,6 +21,11 @@ public class ModUpdateDialogViewModel : ObservableObject
     public ModUpdate[] UpdateInfo { get; set; }
 
     /// <summary>
+    /// Contains information about the currently selected update.
+    /// </summary>
+    public ModUpdate SelectedUpdate { get; set; }
+
+    /// <summary>
     /// Total size of all mods to be downloaded.
     /// </summary>
     public long TotalSize { get; set; }
@@ -31,6 +36,11 @@ public class ModUpdateDialogViewModel : ObservableObject
     /// </summary>
     public double Progress { get; set; }
 
+    /// <summary>
+    /// True if user can press download button, else false.
+    /// </summary>
+    public bool CanDownload { get; set; }
+
     /// <summary/>
     public ModUpdateDialogViewModel(Updater updater, ModUpdateSummary summary)
     {
@@ -38,6 +48,8 @@ public class ModUpdateDialogViewModel : ObservableObject
         Summary = summary;
         UpdateInfo = Summary.GetUpdateInfo();
         TotalSize = UpdateInfo.Sum(x => x.UpdateSize);
+        SelectedUpdate = UpdateInfo[0];
+        CanDownload = true;
     }
 
     /// <summary>
@@ -55,6 +67,11 @@ public class ModUpdateDialogViewModel : ObservableObject
             Actions.DisplayMessagebox.Invoke(Resources.ErrorUpdateModInUseTitle.Get(), Resources.ErrorUpdateModInUse.Get(), new Actions.DisplayMessageBoxParams() { StartupLocation = Actions.WindowStartupLocation.CenterScreen, Type = Actions.MessageBoxType.Ok });
             return false;
         }
+
+        // Remove disabled items from summary.
+        CanDownload = false;
+        var disabledModIds = UpdateInfo.Where(x => !x.Enabled).Select(x => x.ModId);
+        Summary.RemoveByModId(disabledModIds);
 
         await Updater.Update(Summary, new Progress<double>(d =>
         {

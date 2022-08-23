@@ -6,6 +6,11 @@ namespace Reloaded.Mod.Loader.Update.Structures;
 public class ModUpdate : ObservableObject
 {
     /// <summary>
+    /// True if the mod is to be downloaded, else false.
+    /// </summary>
+    public bool Enabled { get; set; }
+
+    /// <summary>
     /// Id of the mod to be updated.
     /// </summary>
     public string   ModId { get; set; }
@@ -34,6 +39,7 @@ public class ModUpdate : ObservableObject
     /// <summary/>
     public ModUpdate(string modId, NuGetVersion oldVersion, NuGetVersion newVersion, long updateSize)
     {
+        Enabled = true;
         ModId = modId;
         OldVersion = oldVersion;
         NewVersion = newVersion;

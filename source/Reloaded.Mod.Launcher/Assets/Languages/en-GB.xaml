@@ -558,4 +558,7 @@
     <sys:String x:Key="RuntimeUpdateRequiredTitle">Runtime Update Required</sys:String>
     <sys:String x:Key="RuntimeUpdateRequiredDescription">A .NET runtime update is required for the new version of reloaded.&#x0a;Download will start after closing this box.&#x0a;Please click 'yes' if any User Account Control dialogs show.</sys:String>
 
+    <!-- Update 1.20.0: Extended Mod Update Dialog -->
+    <sys:String x:Key="UpdateModModEnabled">Update?</sys:String>
+
 </ResourceDictionary>

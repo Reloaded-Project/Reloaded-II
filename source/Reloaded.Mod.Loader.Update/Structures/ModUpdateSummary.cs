@@ -64,4 +64,17 @@ public class ModUpdateSummary
 
         return _updates;
     }
+
+    /// <summary>
+    /// Removes items to be updated by mod id.
+    /// </summary>
+    /// <param name="disabledModIds">IDs of mods to not update.</param>
+    public void RemoveByModId(IEnumerable<string> disabledModIds)
+    {
+        var idToItemDict = ManagerModResultPairs.ToDictionary(pair => pair.ModTuple.Config.ModId);
+        foreach (var disabledId in disabledModIds)
+            idToItemDict.Remove(disabledId);
+
+        ManagerModResultPairs = idToItemDict.Values.ToList();
+    }
 }

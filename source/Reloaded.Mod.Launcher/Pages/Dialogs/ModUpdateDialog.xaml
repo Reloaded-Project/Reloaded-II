@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
         xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+        xmlns:attachedProperties="clr-namespace:Reloaded.WPF.Theme.Default.AttachedProperties;assembly=Reloaded.WPF.Theme.Default"
         mc:Ignorable="d"
         MinHeight="10"
         MinWidth="10"
@@ -25,6 +26,7 @@
                   Grid.Row="0">
             <DataGrid 
                     ItemsSource="{Binding UpdateInfo, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding SelectedUpdate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     VerticalContentAlignment="Top"
             
                     CanUserResizeColumns="False"
@@ -33,11 +35,13 @@
                     CanUserDeleteRows="False"
                     CanUserSortColumns="False"
                     CanUserReorderColumns="False"
+                    attachedProperties:FixDataGridAutoGeneratingColumnStyle.Value="True"
 
                     IsReadOnly="True"
                     AutoGenerateColumns="False">
 
                 <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="{DynamicResource UpdateModModEnabled}" Binding="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto" />
                     <DataGridTextColumn Header="{DynamicResource UpdateModModId}" Binding="{Binding ModId}" Width="Auto" IsReadOnly="True" />
                     <DataGridTextColumn Header="{DynamicResource UpdateModOldVersion}" Binding="{Binding OldVersion}" Width="Auto" IsReadOnly="True" />
                     <DataGridTextColumn Header="{DynamicResource UpdateModNewVersion}" Binding="{Binding NewVersion}" Width="Auto" IsReadOnly="True" />
@@ -60,6 +64,7 @@
 
             <Button Grid.Column="2" Content="{DynamicResource UpdateModDownload}" 
                     x:Name="Button"
+                    IsEnabled="{Binding CanDownload}"
                     Click="Button_Click"/>
         </Grid>
     </Grid>
