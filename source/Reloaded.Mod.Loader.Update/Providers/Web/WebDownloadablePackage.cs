@@ -222,12 +222,8 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
     private static async Task<string?> InitNuGetReleaseNotes(IPackageSearchMetadata packageSearchMetadata,
         INugetRepository repository)
     {
-        var nuspec = await repository.DownloadNuspecAsync(packageSearchMetadata.Identity, default);
-        if (nuspec == null)
-            return null;
-
-        var reader = new NuspecReader(new MemoryStream(nuspec));
-        return reader.GetReleaseNotes();
+        var reader = await repository.DownloadNuspecReaderAsync(packageSearchMetadata.Identity);
+        return reader?.GetReleaseNotes();
     }
 
     private static async Task<long> InitNuGetFileSizeAsync(NuGetUpdateResolver resolver, IPackageSearchMetadata res)

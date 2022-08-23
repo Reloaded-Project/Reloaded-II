@@ -1,3 +1,5 @@
+using System.Windows.Navigation;
+
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
 /// <summary>
@@ -18,4 +20,14 @@ public partial class ModUpdateDialog : ReloadedWindow
         if (await ViewModel.Update())
             this.Close();
     }
+
+    private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e)
+    {
+        ProcessExtensions.OpenHyperlink(e.Parameter.ToString()!);
+        e.Handled = true;
+    }
+
+    // Don't navigate hyperlinks in our markdown, thanks!
+    // Not sure if this is needed on non Page items, but just in case.
+    private void RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) => e.Handled = true;
 }
