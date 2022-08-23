@@ -109,6 +109,20 @@ public static unsafe class ProcessExtensions
     }
 
     /// <summary>
+    /// Opens an URL in browser.
+    /// </summary>
+    public static void OpenHyperlink(string url)
+    {
+        // Some links without full http(s) prefix might start with
+        // / after markdown conversion. Need to fix those.
+        url = url.TrimStart('/');
+        if (!url.StartsWith("http") || !url.StartsWith("https"))
+            url = $"http://{url}";
+
+        OpenFileWithDefaultProgram(url);
+    }
+
+    /// <summary>
     /// Opens an URL with default associated program.
     /// </summary>
     public static void OpenFileWithDefaultProgram(string url)

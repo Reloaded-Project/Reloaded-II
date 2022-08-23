@@ -32,28 +32,33 @@
             <!-- Avatar & Author -->
             <Grid DockPanel.Dock="Top" Margin="{DynamicResource CommonItemHorizontalMargin}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Viewbox Grid.Column="0" MaxHeight="{Binding ElementName=AuthorBtnText, Path=ActualHeight}">
-                    <Canvas Width="24" Height="24">
-                        <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryAuthor}" />
-                    </Canvas>
-                </Viewbox>
+                <!-- Transparent background allows for hit testing empty space for thumbnails -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Background="Transparent"
+                            ToolTip="{DynamicResource DownloadsPackagePreviewModAuthorTooltip}" ToolTipService.InitialShowDelay="0">
+                    <Viewbox MaxHeight="{Binding ElementName=AuthorBtnText, Path=ActualHeight}">
+                        <Canvas Width="24" Height="24">
+                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryAuthor}" />
+                        </Canvas>
+                    </Viewbox>
 
-                <TextBlock Text="{Binding Package.Submitter.UserName, FallbackValue='Author'}" Grid.Column="1"
-                           Visibility="{Binding Package.Submitter, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
-                           Style="{DynamicResource DownloadModTitleTextBlock}" 
-                           TextTrimming="CharacterEllipsis" 
-                           Name="AuthorBtnText"/>
+                    <TextBlock Text="{Binding Package.Submitter.UserName, FallbackValue='Author'}" Grid.Column="1"
+                               Visibility="{Binding Package.Submitter, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
+                               Style="{DynamicResource DownloadModTitleTextBlock}" 
+                               TextTrimming="CharacterEllipsis" 
+                               Name="AuthorBtnText"/>
+                </StackPanel>
 
                 <!-- Stats -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="3"
                             utility:MarginSetter.Enable="True" utility:MarginSetter.Margin="{DynamicResource DownloadMenuHorizontalItemMargin}" utility:MarginSetter.LastItemMargin="0">
 
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding Package.DownloadCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}">
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Package.DownloadCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}"
+                                ToolTip="{DynamicResource DownloadsPackagePreviewDownloadCountTooltip}" ToolTipService.InitialShowDelay="0"
+                                Background="Transparent">
                         <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
                             <Canvas Width="24" Height="24">
                                 <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryDownload}" />
@@ -62,7 +67,9 @@
                         <TextBlock Name="DownloadCountText" Text="{Binding Package.DownloadCount, FallbackValue='0'}" Style="{DynamicResource DownloadModTitleTextBlock}" />
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding Package.ViewCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}">
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Package.ViewCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}"
+                                ToolTip="{DynamicResource DownloadsPackagePreviewViewCountTooltip}" ToolTipService.InitialShowDelay="0"
+                                Background="Transparent">
                         <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
                             <Canvas Width="24" Height="24">
                                 <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryView}" />
@@ -72,7 +79,9 @@
                                    Style="{DynamicResource DownloadModTitleTextBlock}" />
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding Package.LikeCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}">
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Package.LikeCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}"
+                                ToolTip="{DynamicResource DownloadsPackagePreviewLikeCountTooltip}" ToolTipService.InitialShowDelay="0"
+                                Background="Transparent">
                         <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
                             <Canvas Width="24" Height="24">
                                 <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryLike}" />
@@ -89,26 +98,26 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Viewbox Grid.Column="0" MaxHeight="{Binding ElementName=PublishedDateText, Path=ActualHeight}">
-                    <Canvas Width="24" Height="24">
-                        <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryTime}" />
-                    </Canvas>
-                </Viewbox>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Background="Transparent"
+                            ToolTip="{DynamicResource DownloadsPackagePreviewPublishDateTooltip}" ToolTipService.InitialShowDelay="0">
 
-                <TextBlock Grid.Column="1" TextTrimming="CharacterEllipsis" x:Name="PublishedDateText"
-                           Visibility="{Binding Package.Published, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
-                           Style="{DynamicResource DownloadModTitleTextBlock}">
-                
-                    <Run Text="{DynamicResource DownloadsPackagePreviewLastUpdated}"/>
-                    <Run Text="{Binding Package.Published, Converter={x:Static converters:DateTimeToHumanConverter.Instance}}"/>
+                    <Viewbox MaxHeight="{Binding ElementName=PublishedDateText, Path=ActualHeight}">
+                        <Canvas Width="24" Height="24">
+                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryTime}" />
+                        </Canvas>
+                    </Viewbox>
 
-                </TextBlock>
+                    <TextBlock TextTrimming="CharacterEllipsis" x:Name="PublishedDateText"
+                               Visibility="{Binding Package.Published, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
+                               Style="{DynamicResource DownloadModTitleTextBlock}" 
+                               Text="{Binding Package.Published, Converter={x:Static converters:DateTimeToHumanConverter.Instance}}"/>
+
+                </StackPanel>
 
                 <!-- Image -->
-                <Image Grid.Column="2" Style="{DynamicResource HighQualityImage}" 
+                <Image Grid.Column="1" Style="{DynamicResource HighQualityImage}" 
                        HorizontalAlignment="Right" OverridesDefaultStyle="True" 
                        Width="Auto" MaxHeight="{Binding ElementName=PublishedDateText, Path=ActualHeight}" 
                        Loaded="OnSourceImageLoaded" />

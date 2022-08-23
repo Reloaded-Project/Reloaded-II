@@ -208,7 +208,8 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
     
     private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e)
     {
-        ProcessExtensions.OpenFileWithDefaultProgram(e.Parameter.ToString()!);
+        // Some links start with 
+        ProcessExtensions.OpenHyperlink(e.Parameter.ToString()!);
         e.Handled = true;
     }
 
