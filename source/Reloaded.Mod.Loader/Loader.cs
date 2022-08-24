@@ -49,7 +49,7 @@ public class Loader : IDisposable
     public void Dispose()
     {
         Manager?.Dispose();
-        LogWriter.Dispose();
+        LogWriter?.Dispose();
         GC.SuppressFinalize(this);
     }
 
