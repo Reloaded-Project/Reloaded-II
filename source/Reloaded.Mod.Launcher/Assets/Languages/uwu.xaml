@@ -19,7 +19,7 @@
     <!-- Splash Screen: Progress Messages -->
     <sys:String x:Key="SplashCreatingDefaultConfig">Cweating UwU D-Defauwt Config</sys:String>
     <sys:String x:Key="SplashCleaningConfigurations">Cweanying App/Woadew/Mod Configuwations</sys:String>
-    <sys:String x:Key="SplashPreparingResources">Setting up Wesouwces</sys:String>
+    <sys:String x:Key="SplashPreparingResources">Setting upw Wesouwces</sys:String>
     <sys:String x:Key="SplashLoadCompleteIn">Woad Compwete in:</sys:String>
     <sys:String x:Key="SplashCreatingTemplates">Cweating Tempwates</sys:String> <!-- Unused as of 1.8.0 -->
     <sys:String x:Key="SplashCheckingForUpdates">Checking f-fow Updates</sys:String>
@@ -488,8 +488,8 @@ This &gt;_&lt; w-window wiww automaticawwy c-cwose in a f-few seconds.</sys:Stri
 
     <!-- Update 1.18.0: Application Menu Tooltips -->
     <sys:String x:Key="ApplicationTooltipCreateShortcutDescription">Saves a showtcut t-that can OwO b-be u-used to waunch t-the app modded without Wewoaded Waunchew.</sys:String>
-    <sys:String x:Key="ApplicationTooltipLoadModSet">Woad Mod Set</sys:String>
-    <sys:String x:Key="ApplicationTooltipSaveModSet">Saves t-the cuwwent wist o-of enyabwed mods.</sys:String>
+    <sys:String x:Key="ApplicationTooltipLoadModSet">Woads a wist o-of enyabwed mods.</sys:String>
+    <sys:String x:Key="ApplicationTooltipSaveModSet">S-Save Mod Set</sys:String>
     <sys:String x:Key="ApplicationTooltipProcessSysDescription">Y-You can use me to woad Wewoaded i-into this pwogwam.</sys:String>
     <sys:String x:Key="ApplicationTooltipProcessRldDescription">Y-You can use me to manyage cuwwentwy w-woaded mods.</sys:String>
 
@@ -560,7 +560,7 @@ W-Wight cwick cweaws t-the xDD m-mapping!
 D-Downwoad it fwom &apos;Downwoad M-Mods&apos; menyu.</sys:String>
     <sys:String x:Key="ReloadedProcessState">S-State</sys:String> <!-- Is the mod running or paused? -->
 
-    <!-- Update 1.20.0: New Run Dialog -->
+    <!-- Update 1.20.0: New Wine Run Dialog -->
     <sys:String x:Key="WineCompatibilityNoticeTitleNew">Waunching fwom Winye</sys:String>
     <sys:String x:Key="WineCompatibilityNoticeHeader_1">Y-You awe wunnying Wewoaded inside Winye, p-pwease nyote t-the fowwowing:</sys:String>
     
@@ -579,5 +579,47 @@ D-Downwoad it fwom &apos;Downwoad M-Mods&apos; menyu.</sys:String>
     <sys:String x:Key="WineCompatibilityNoticeFooter_4">waise an i-issue on GitHub.</sys:String>  <!-- Hyperlink. (Continues from previous entry.) -->
 
     <sys:String x:Key="WineCompatibilityNoticeOkNew">:33 S-Stawt Appwication</sys:String>
+
+    <!-- Update 1.20.0: Extended Publish Options -->
+    <sys:String x:Key="PublishModReadmeSectionTitle">Weadme &amp; C-Changewog</sys:String>
+    <sys:String x:Key="PublishModReadmeSet">Set Weadme Fiwe</sys:String>
+    <sys:String x:Key="PublishModReadmeTooltip">Awwows y-you to specify a weadme fiwe.
+Weadme fiwes awe u-used f-fow t-the descwiption in D-Downwoad M-Mods menyu.
+U-Uses Mawkdown. Wefew to t-the wiki f-fow &gt;_&gt; m-mowe i-infowmation.</sys:String> <!-- Displays on Hover -->
+    <sys:String x:Key="PublishModChangelogSet">Set C-Changewog Fiwe</sys:String>
+    <sys:String x:Key="PublishModChangelogTooltip">Awwows y-you to specify a changewog fiwe.
+Changewogs awe u-used in D-Downwoad M-Mods menyu and in t-the update diawog.
+U-Uses Mawkdown. Wefew to t-the wiki f-fow &gt;_&gt; m-mowe i-infowmation.</sys:String>
+
+    <sys:String x:Key="PublishSelectMarkdownTitle">Sewect a M-Mawkdown Fiwe (*.md).</sys:String>
+    <sys:String x:Key="PublishSelectMarkdownTypeName">M-Mawkdown Fiwe</sys:String>
+
+    <!-- Update 1.20.0: Revamped Downloads Menu -->
+    <sys:String x:Key="DownloadsMenuNuGetButton">NyuGet</sys:String>
+
+    <sys:String x:Key="DownloadsPackagePreviewProjectUrl">Pwoject Site</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewClose">Cwose</sys:String>
+
+    <sys:String x:Key="DownloadsPackageSourceTooltip">Mod f-fwom:</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewModAuthorTooltip">Mod Authow</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewLikeCountTooltip">Wike Count</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewDownloadCountTooltip">D-Downwoad Count</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewViewCountTooltip">View Count</sys:String> <!-- Number of Views -->
+    <sys:String x:Key="DownloadsPackagePreviewPublishDateTooltip">Wast Updated</sys:String> <!-- Shows on hover -->
+
+    <!-- Update 1.20.0: Self Runtime Update -->
+    <sys:String x:Key="RuntimeUpdateRequiredTitle">Wuntime Update Wequiwed</sys:String>
+    <sys:String x:Key="RuntimeUpdateRequiredDescription">A .NyET w-wuntime update is wequiwed f-fow t-the nyew vewsion o-of wewoaded.
+D-Downwoad wiww stawt aftew cwosing this b-box.
+x3 P-Pwease cwick &apos;yes&apos; if a-any Usew Account Contwow diawogs show.</sys:String>
+
+    <!-- Update 1.20.0: Extended Mod Update Dialog -->
+    <sys:String x:Key="UpdateModModName">Mod Nyame</sys:String>
+    <sys:String x:Key="UpdateModModEnabled">Update?</sys:String>
+
+    <!-- Update 1.20.0: Adding Project URL -->
+    <sys:String x:Key="CreateModDialogProjectUrl">Website</sys:String>
+    <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">Fuww HTTP(s) wink to youw website.</sys:String> <!-- Shown as a placeholder -->
+    <sys:String x:Key="ModManagerContextVisitWebsite">Visit Website</sys:String>
 
 </ResourceDictionary>
