@@ -22,7 +22,7 @@
     <!-- <ReloadedLinkAssemblies Include="Reloaded.Memory" /> -->
   </ItemGroup>
 
-  <Import Project="ReloadedReloaded.Trimming.targets" />
+  <Import Project="Reloaded.Trimming.targets" />
 
   <ItemGroup>
     <None Remove="ModConfig.json" />

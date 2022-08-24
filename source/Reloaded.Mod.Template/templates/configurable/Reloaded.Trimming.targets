@@ -89,6 +89,17 @@
       </ManagedAssemblyToLink>
     </ItemGroup>
 
+
+    <!-- Custom: Print assemblies for trimming. -->
+    <ItemGroup>
+      <TrimmingItemsToPrint Include="@(ManagedAssemblyToLink)">
+        <Text>Input Assembly: %(filename) [Mode: $(TrimMode)]</Text>
+      </TrimmingItemsToPrint>
+    </ItemGroup>
+
+    <Message Text="%(TrimmingItemsToPrint.Text)" Importance="high" />
+
+    <!-- Do the trimming. -->
     <Delete Files="@(_LinkedResolvedFileToPublishCandidate)" />
     <ILLink AssemblyPaths="@(ManagedAssemblyToLink)"
             ReferenceAssemblyPaths="@(ReferencePath)"

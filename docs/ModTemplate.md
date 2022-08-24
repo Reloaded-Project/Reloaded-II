@@ -1,5 +1,16 @@
 # Mod Template Features
 
+!!! note
+
+    Some features are only available on newer versions of the template.  
+
+    Templates in existing mods can be updated by:  
+    - Updating template with `dotnet new update`.  
+    - Creating new mod with same name using new template.   
+    - Overwriting the files in your mod.  
+
+    If you edited the template files in your mod, you may need to replicate your changes.  
+    
 ## Publish Script
 
 This template features a built-in publish script that can be used to create releases of your mod.  
@@ -55,6 +66,91 @@ You can read more about R2R in the following web resources:
 
 - [Conversation about ReadyToRun](https://devblogs.microsoft.com/dotnet/conversation-about-ready-to-run/)  
 - [ReadyToRun Compilation](https://docs.microsoft.com/en-us/dotnet/core/deploying/ready-to-run)  
+
+## Assembly Trimming Support  
+
+!!! note
+
+    Trimming framework-dependent code is *not an officially supported .NET feature*.  
+    Trimming in Reloaded is a custom feature that uses existing .NET SDK components under the hood.  
+
+!!! danger
+
+    Incorrect use of trimming *can* and *will* break your mods. When using trimming you should test your mods thoroughly.  
+
+*Assembly trimming* allows you to remove unused code from your mods (and their dependencies), often significantly shrinking the size of the generated DLLs. This in turn improves load times, download size and runtime memory use. At the time of writing, the Reloaded Loader itself and most official & creator made mods use trimming.
+
+### Testing Trimming
+
+Testing trimming is performed with included `BuildLinked.ps1` in the mod template.  
+This script will fully wipe the mod output folder and build with trimming.  
+When the build is done, go test your mod.  
+
+Sample output:  
+```
+Input Assembly: Reloaded.Hooks.Definitions [Mode: link]
+Input Assembly: Reloaded.Mod.Interfaces [Mode: link]
+Input Assembly: Reloaded.Hooks.ReloadedII.Interfaces [Mode: link]
+Input Assembly: Reloaded.Mod.Template [Mode: link]
+```
+
+`link` indicates the assembly is being trimmed.  
+
+### Configuring Trimming
+
+Trimming can be configured by modifying your `.csproj` file. The following properties can be used to control the trimming process.  
+
+| Reloaded Property      | Purpose                                                    | Replacement for.      |
+|------------------------|------------------------------------------------------------|-----------------------|
+| ReloadedILLink         | Enables trimming at publish time.                          | PublishTrimmed        |
+| ReloadedLinkRoots      | Specifies a DLL/Assembly to be preserved in its entirety.  | TrimmerRootAssembly   |
+| ReloadedLinkAssemblies | Specifies a DLL/Assembly to be force trimmed.              | ManagedAssemblyToLink |
+
+Other officially supported properties can be used. For example you could supply an [XML Root Descriptor](https://github.com/dotnet/linker/blob/main/docs/data-formats.md#descriptor-format) with `TrimmerRootDescriptor` for more granular control.  
+
+### Default Trimming Behaviour
+
+The default trimming behaviour used in Reloaded mods replicates the behaviour from .NET 6 (not .NET 7+).  
+The following general rules apply:  
+
+- Only assemblies marked `IsTrimmable` are trimmed by default.  
+- Default trimming mode (`TrimMode`) is `link` (remove unused assemblies + code).  
+
+### General Trimming Guidance
+
+!!! tip
+
+    This is general guidance from personal experience with developing Reloaded.  
+
+Doing the following steps is advised for enabling trimming:  
+
+- Build with `BuildLinked.ps1`.  
+- Add all assemblies with trim warnings to `ReloadedLinkAssemblies`.  
+- Build again and test.  
+
+!!! note
+
+    If you have marked an assembly to not be trimmed with `ReloadedLinkAssemblies`, but it still displays a trim warning, feel free to ignore the warning.
+
+Basic trimming now works. 
+
+#### Trimming the Remainder
+
+To further optimise your mod, you can now force trimming on individual libraries.  
+To do so, perform the following.  
+
+- Inspect the build output:  
+```
+# Sample Output
+Input Assembly: Reloaded.Hooks.Definitions [Mode: link]
+Input Assembly: Reloaded.Mod.Interfaces [Mode: link]
+Input Assembly: Deez.Nutz.Library [Mode: copy]
+```
+
+- For each library where `Mode != link`.  
+  - Enable trimming for library (using `ReloadedLinkAssemblies`).  
+  - Build and test the mod.  
+  - If the mod does not run correctly, remove library from `ReloadedLinkAssemblies`.  
 
 ## Automated Builds  
 

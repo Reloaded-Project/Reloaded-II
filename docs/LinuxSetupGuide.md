@@ -31,7 +31,11 @@ You can then download the Reloaded Installer (`Setup.exe`) [from the downloads p
     If the window does not render; don't worry the installer will still automatically complete.  
     This process usually downloads ~120MB of data and takes 30-60 seconds for most people.  
 
-Once install completes, Reloaded will be on your desktop. If you cannot see it there, check Wine's Desktop folder (usually located in `<your_home_dir>/.wine/drive_c/users/<username>/Desktop/`).  
+!!! tip
+
+    If the installer has issues, you can try running it without GUI `wine Setup.exe --nogui`.  
+
+If install is successful, Reloaded's launcher will boot and a shortcut will be created on your desktop. If you cannot see it there, check Wine's Desktop folder (usually located in `<your_home_dir>/.wine/drive_c/users/<username>/Desktop/`).  
 
 ![Reloaded on HoloISO](./Images/Wine-HoloISO.png)
 
@@ -113,11 +117,6 @@ You can now start Reloaded with `Reloaded-II.exe`.
 
     The following instructions will allow you to setup Reloaded to run inside your game's Proton configuration.  
     This section assumes [you have already setup Reloaded using Wine](#wine).  
-
-!!! caution
-
-    This guide uses new flag `--dependenciesOnly` in installer for Reloaded 1.20.0 and above which is *not yet released*.  
-    In the meantime, [please use this installer binary](https://cdn.discordapp.com/attachments/746431668058849280/1002228585458843779/Setup.exe).  
 
 When you use Proton, Steam creates a 'clean slate' (`WINEPREFIX`) for each game; meaning that the dependencies for Reloaded wouldn't be installed when you run from Proton. We will use the Reloaded Installer (`Setup.exe`) to manually install the dependencies for Reloaded inside your game's WINEPREFIX and then setup Reloaded to run when you boot the game from Steam.  
 
