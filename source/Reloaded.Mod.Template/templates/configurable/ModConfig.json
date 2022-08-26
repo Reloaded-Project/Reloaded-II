@@ -16,5 +16,6 @@
   "IsUniversalMod": false,
   "ModDependencies": [ "reloaded.sharedlib.hooks" ],
   "OptionalDependencies": [],
-  "SupportedAppId": []
+  "SupportedAppId": [],
+  "ProjectUrl": ""
 }

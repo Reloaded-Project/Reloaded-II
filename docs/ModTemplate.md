@@ -1,15 +1,8 @@
 # Mod Template Features
 
-!!! note
+!!! tip
 
     Some features are only available on newer versions of the template.  
-
-    Templates in existing mods can be updated by:  
-    - Updating template with `dotnet new update`.  
-    - Creating new mod with same name using new template.   
-    - Overwriting the files in your mod.  
-
-    If you edited the template files in your mod, you may need to replicate your changes.  
     
 ## Publish Script
 
@@ -228,3 +221,86 @@ Example repositories with this setup:
 - [Heroes.Controller.Hook](https://github.com/Sewer56/Heroes.Controller.Hook.ReloadedII)  
 - [Riders.Controller.Hook](https://github.com/Sewer56/Riders.Controller.Hook)  
 
+## Updating the Mod Template
+
+!!! tip
+
+    To update the template, you can run the command [dotnet new update](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new-update).  
+
+!!! info
+
+    If your mod was created using a template older than August 2022, [consider using the following guidance.] (#updating-from-old-template-layout).  
+
+To update the mod template, do the following actions:  
+- Create a new dummy mod (using the same project name as your existing mod).  
+- Copy all files that aren't `Mod.cs` and `Config.json` to your existing mod.  
+- [Optional] Look inside `ModConfig.json` and `.csproj` for new fields/properties (for example, `ProjectUrl` was added in August 2022). 
+
+You are done. 
+
+### Updating from Old Template Layout
+
+!!! info
+
+    Older versions of the mod template (pre Sep. 2022) encouraged editing of the template directly, newer templates take a different approach. Templates can now be swapped out and new features can be applied in `Mod.cs` and `Config.cs`.  
+    While not exhaustive, the following guidance can be used to help migrate to the new template format.  
+
+#### Check Default IMod (Program.cs) Settings
+
+!!! info
+
+    Older versions of the mod template (pre Sep. 2022) encouraged editing of the template directly, newer templates take a different approach. Templates can now be swapped out and new features can be applied in `Mod.cs` and `Config.cs`.  
+    While not exhaustive, the following guidance can be used to help migrate to the new template format.  
+
+Old Defaults:  
+- `CanSuspend`: false  
+- `CanUnload`: false  
+- `Suspend()`, `Unload()`, `Resume()`, `Disposing()`: Empty.  
+- `OnConfigurationUpdated()`: Prints to console and assigns to field.  
+
+If any of these are non-default in the old `IMod` implementation (`Program.cs`), you should move the non-default values to `Mod.cs` in the new template.  
+Mod.cs inherits from `ModBase` which exposes the old methods as overridable virtual functions.  
+
+```csharp
+// Add to Mod.cs to override old CanSuspend.
+public override bool CanSuspend() => true;
+```
+
+#### Move User Code from IMod (Program.cs)
+
+The old layout suggested placing custom code under the line which reads:  
+
+```csharp
+// Please put your mod code (in the class) below
+```
+
+If you encounter this line, move the code below this line into the constructor of `Mod.cs` in the new template.  
+
+### Configuration Migration
+
+!!! info
+
+    If your mod was created before 2022, you will need to migrate where your configurations are stored when using the newer templates.
+
+Previously mods would store configurations in their own folders, however in newer versions a separate dedicated folder is now used.  
+(You can find it in a mod's right click menu in the launcher).  
+
+To migrate your configurations, locate the `ConfiguratorMixin` class (usually in `Config.cs`), and add the following method.
+
+```csharp
+public override void Migrate(string oldDirectory, string newDirectory)
+{
+    // Replace Config.json with your original config file name.
+    TryMoveFile("Config.json");
+
+#pragma warning disable CS8321
+    void TryMoveFile(string fileName)
+    {
+        try { File.Move(Path.Combine(oldDirectory, fileName), Path.Combine(newDirectory, fileName)); }
+        catch (Exception) { /* Ignored */ }
+    }
+#pragma warning restore CS8321
+}
+```
+
+This process can also be used to handle migration for other config modifications such as when `TryRunCustomConfiguration() == true`.  

@@ -42,6 +42,13 @@
             "replaces": "ModAuthorValue",
             "defaultValue": "Me"
         },
+        "IncludeConfig": {
+            "type": "parameter",
+            "displayName": "Add Mod Configuration Support",
+            "dataType": "bool",
+            "defaultValue": "true"
+        }
+        ,
         "AddGitHubActions": {
             "type": "parameter",
             "displayName": "Add GitHub Actions",
@@ -56,6 +63,13 @@
                     "condition": "(!AddGitHubActions)",
                     "exclude": [
                         ".github/workflows/reloaded.yml"
+                    ]
+                },
+                {
+                    "condition": "(!IncludeConfig)",
+                    "exclude": [
+                        "Config.cs",
+                        "Template/Configuration/**"
                     ]
                 }
             ]
