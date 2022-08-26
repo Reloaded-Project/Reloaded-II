@@ -8,6 +8,7 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 #if (IncludeConfig)
 using Reloaded.Mod.Template.Template.Configuration;
+using Reloaded.Mod.Template.Configuration;
 #endif
 
 namespace Reloaded.Mod.Template.Template;

@@ -1,5 +1,6 @@
 ﻿#if (IncludeConfig)
 using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Template.Configuration;
 
 namespace Reloaded.Mod.Template.Template.Configuration;
 

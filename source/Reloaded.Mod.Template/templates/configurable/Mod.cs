@@ -2,7 +2,7 @@
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Template.Template;
 #if (IncludeConfig)
-using Reloaded.Mod.Template.Template.Configuration;
+using Reloaded.Mod.Template.Configuration;
 #endif
 #if DEBUG
 using System.Diagnostics;

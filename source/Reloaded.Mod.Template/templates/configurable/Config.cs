@@ -1,8 +1,8 @@
 ﻿#if (IncludeConfig)
 using System.ComponentModel;
-using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Template.Template.Configuration;
 
-namespace Reloaded.Mod.Template.Template.Configuration;
+namespace Reloaded.Mod.Template.Configuration;
 
 public class Config : Configurable<Config>
 {

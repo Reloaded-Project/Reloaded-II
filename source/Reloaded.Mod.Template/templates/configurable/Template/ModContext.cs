@@ -1,7 +1,7 @@
 ﻿using Reloaded.Mod.Interfaces;
 using IReloadedHooks = Reloaded.Hooks.ReloadedII.Interfaces.IReloadedHooks;
 #if (IncludeConfig)
-using Reloaded.Mod.Template.Template.Configuration;
+using Reloaded.Mod.Template.Configuration;
 #endif
 
 namespace Reloaded.Mod.Template.Template;
