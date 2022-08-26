@@ -51,7 +51,7 @@ dotnet $toolPath CreateCopyPackage --folderpath "$CurrentVersionPath" --version 
 
 ## Uncomment for 2nd update and above
 Write-Host "Creating Deltas"
-dotnet $toolPath AutoCreateDelta --outputpath "$PackagesPath" --source GitHub --folderpath "$CurrentVersionPath" --version "$Version" --githubusername "Reloaded-Project" --githubrepositoryname "Reloaded-II" --githublegacyfallbackpattern "Release.zip" --numreleases $NumberOfDeltaReleases --noprogressbar | Out-File -FilePath "$PackagesListPath" -Encoding utf8 -Append 
+dotnet $toolPath AutoCreateDelta --outputpath "$PackagesPath" --source GitHub --folderpath "$CurrentVersionPath" --version "$Version" --githubusername "Reloaded-Project" --githubrepositoryname "Reloaded-II" --githublegacyfallbackpattern "Release.zip" --numreleases $NumberOfDeltaReleases --ignoreregexespath "$IgnoreRegexesPath" --includeregexespath "$IncludeRegexesPath" --noprogressbar | Out-File -FilePath "$PackagesListPath" -Encoding utf8 -Append 
 
 ## Create Release
 Write-Host "Creating Release"
