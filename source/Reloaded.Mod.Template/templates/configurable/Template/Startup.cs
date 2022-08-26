@@ -75,6 +75,7 @@ public class Startup : IMod
             Hooks = _hooks,
             ModLoader = _modLoader,
             ModConfig = _modConfig,
+            Owner = this,
 #if (IncludeConfig)
             Configuration = _configuration,
 #endif

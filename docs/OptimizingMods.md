@@ -10,7 +10,7 @@ Focusing mainly on techniques which may not be immediately obvious, the main goa
 
 Lazy loading is simply the process of deferring initialization of an object/thing until the point at which it is needed.
 
-Sometimes in your `Start()` entry point, you might not need to necessarily need to initialize everything related to your mod immediately.
+Sometimes in your `Mod.cs` entry point, you might not need to necessarily need to initialize everything related to your mod immediately.
 
 For example, if you need to make a connection to a server which will be used later in execution (say you are interacting with a chatroom in a mod etc.), the initial startup of the mod does not have to be halted until this connection is made. You can make the connection in the background and any code depending on the connection can wait for the connection task to finish.
 
@@ -49,7 +49,7 @@ Consider creating a connection to a server.
 // Inside class fields.
 private Task _connectToServerTask;
 
-// Inside Start()
+// Inside Mod.cs Constructor
 _connectToServerTask = Task.Run(() => { /* Code to Connect to a Server */ });
 
 // Somewhere else in code that needs the server to be created.

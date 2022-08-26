@@ -114,7 +114,7 @@ public class Exports : IExports
 
 ### Share it with Mod Loader
 
-During initialization (`Start()`), register your interface with the Mod Loader using the `IModLoader` instance.  
+During initialization (`Mod.cs`), register your interface with the Mod Loader using the `IModLoader` instance.  
 
 ```csharp
 void PublishInterface() 

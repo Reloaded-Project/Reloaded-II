@@ -31,6 +31,11 @@ public class Mod : ModBase // <= Do not Remove.
     /// </summary>
     private readonly ILogger _logger;
 
+    /// <summary>
+    /// Entry point into the mod, instance that created this class.
+    /// </summary>
+    private readonly IMod _owner;
+
 #if (IncludeConfig)
     /// <summary>
     /// Provides access to this mod's configuration.
@@ -48,6 +53,7 @@ public class Mod : ModBase // <= Do not Remove.
         _modLoader = context.ModLoader;
         _hooks = context.Hooks;
         _logger = context.Logger;
+        _owner = context.Owner;
 #if (IncludeConfig)
         _configuration = context.Configuration;
 #endif

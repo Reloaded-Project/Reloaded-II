@@ -37,4 +37,9 @@ public class ModContext
     /// Configuration of this mod.
     /// </summary>
     public IModConfig ModConfig { get; set; } = null!;
+
+    /// <summary>
+    /// Instance of the IMod interface that created this mod instance.
+    /// </summary>
+    public IMod Owner { get; set; } = null!;
 }
