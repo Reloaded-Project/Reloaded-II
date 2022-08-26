@@ -234,6 +234,7 @@ Example repositories with this setup:
 To update the mod template, do the following actions:  
 - Create a new dummy mod (using the same project name as your existing mod).  
 - Copy all files that aren't `Mod.cs` and `Config.json` to your existing mod.  
+- Update `Reloaded.Mod.Interfaces` NuGet Package.  
 - [Optional] Look inside `ModConfig.json` and `.csproj` for new fields/properties (for example, `ProjectUrl` was added in August 2022). 
 
 You are done. 
