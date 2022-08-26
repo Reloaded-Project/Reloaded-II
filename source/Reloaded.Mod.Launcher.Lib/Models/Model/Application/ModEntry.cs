@@ -56,7 +56,7 @@ public class ModEntry : ObservableObject, IEquatable<ModEntry>
     /// <inheritdoc/>
     public override int GetHashCode()
     {
-        return HashCode.Combine(Enabled, IsEditable, Tuple);
+        return Tuple.GetHashCode();
     }
     #endregion
 }
