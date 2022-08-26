@@ -75,7 +75,7 @@
     <PackageReference Include="Reloaded.WPF.Theme.Default" Version="3.1.2" />
     <PackageReference Include="Sewer56.UI.Controller.Core" Version="1.1.0" />
     <PackageReference Include="Sewer56.UI.Controller.ReloadedInput.Configurator" Version="1.2.0" />
-    <PackageReference Include="Sewer56.UI.Controller.WPF" Version="1.1.1" />
+    <PackageReference Include="Sewer56.UI.Controller.WPF" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>
