@@ -115,7 +115,7 @@
     <!-- Non-Reloaded Process -->
     <sys:String x:Key="TitleNonReloadedProcess">Proceso ajeno a Reloaded</sys:String>
     <sys:String x:Key="NonReloadedProcessMessageOne">Reloaded no está administrando este proceso concreto.</sys:String>
-    <sys:String x:Key="NonReloadedProcessMessageTwo">Puedes cargar Reloaded si pulsas el siguiente botón.</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageTwo">Puede cargar Reloaded si haces clic en el siguiente botón.</sys:String>
     <sys:String x:Key="NonReloadedProcessInject">Inyectar</sys:String>
     <sys:String x:Key="NonReloadedProcessInjectWarning">Advertencia: puede que no todos los mods funcionen como deberían si se cargan mientras la aplicación ya esté en funcionamiento. No informes de cualquier fallo que ocurra con aquellos mods que no funcionen con esta característica.</sys:String>
 
@@ -139,7 +139,7 @@
     <!-- Obsolete as of 1.12.0 onwards -->
     <sys:String x:Key="LoadModSetIncompatibleTitle">Alerta de compatibilidad</sys:String>
     <sys:String x:Key="LoadModSetIncompatibleMessage">Tienes activados mods que no están marcados como compatibles con tu aplicación:</sys:String>
-    <sys:String x:Key="LoadModSetIncompatibleMessage2">Si pulsas Aceptar activarás estos mods para tu aplicación. Si pulsas Cancelar, se desactivarán.</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage2">Si haces clic en Aceptar activarás estos mods para tu aplicación. Si haces clic en Cancelar, se desactivarán.</sys:String>
 
     <!-- Reloaded Process -->
     <sys:String x:Key="ReloadedProcessResume">Reanudar</sys:String>
@@ -188,12 +188,12 @@
     <!-- Fetch Nuget Dialog | Obsolete since 1.12.0 but some strings still used. -->
     <sys:String x:Key="FetchNugetTitle">Descargar paquetes</sys:String>
     <sys:String x:Key="FetchNugetMessage">Se descargarán los siguientes paquetes:</sys:String>
-    <sys:String x:Key="FetchNugetNotFoundMessage">No se han encontrado los siguientes paquetes:</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundMessage">No se encontraron los siguientes paquetes:</sys:String>
     <sys:String x:Key="FetchNugetNotFoundAdvice">Tendrás que conseguirlos por tu cuenta. :/</sys:String>
 
     <!-- Startup Failure -->
     <sys:String x:Key="FailedToLaunchTitle">¡Uf!</sys:String>
-    <sys:String x:Key="FailedToLaunchMessage">Se ha producido un error al cargar Reloaded-II.</sys:String>
+    <sys:String x:Key="FailedToLaunchMessage">Se produjo un error al cargar Reloaded-II.</sys:String>
 
     <!-- Download Mod Archive -->
     <sys:String x:Key="DownloadModArchiveTitle">Descargar archivo del mod</sys:String>
@@ -212,12 +212,12 @@
     <sys:String x:Key="ErrorPathNullOrEmpty">La ruta de esta aplicación es nula o vacía. Tienes que corregir la ubicación.</sys:String>
     <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">Error al buscar la carpeta del mod a eliminar.</sys:String>
     <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">Error al buscar la carpeta de la aplicación a eliminar.</sys:String>
-    <sys:String x:Key="ErrorLoaderNotFound">no ha sido encontrado. Tal vez un antivirus haya eliminado archivos o se hayan producido cambios disruptivos en el repositorio de GitHub.</sys:String> <!-- Loader DLL Name displays before this message -->
-    <sys:String x:Key="ErrorFailedToStartProcess">No se ha podido iniciar el proceso. Esto suele pasar por uno de los siguientes casos:&#x0a;- La ruta al archivo «.exe» no es correcta (¿has cambiado la aplicación de sitio?).&#x0a;- El programa está configurado para ejecutarse en modo administrador (clic derecho -> Propiedades) pero Reloaded se está ejecutando en modo usuario.&#x0a;- Por culpa de interferencias ajenas, por ejemplo, de un antivirus. Revisa los registros.&#x0a;Este es el error que muestra Windows: </sys:String>
+    <sys:String x:Key="ErrorLoaderNotFound">no fue encontrado. Tal vez un antivirus eliminó archivos o se produjeron cambios disruptivos en el repositorio de GitHub.</sys:String> <!-- Loader DLL Name displays before this message -->
+    <sys:String x:Key="ErrorFailedToStartProcess">No se pudo iniciar el proceso. Esto suele pasar por uno de los siguientes casos:&#x0a;- La ruta al archivo «.exe» no es correcta (¿cambiaste la aplicación de sitio?).&#x0a;- El programa está configurado para ejecutarse en modo administrador (clic derecho -> Propiedades) pero Reloaded se está ejecutando en modo usuario.&#x0a;- Por culpa de interferencias ajenas, por ejemplo, de un antivirus. Revisa los registros.&#x0a;Este es el error que muestra Windows: </sys:String>
     <sys:String x:Key="ErrorDllInjectionFailed">Error al inyectar el archivo DLL en el proceso de la aplicación.</sys:String>
     <sys:String x:Key="ErrorPathToApplicationInvalid">La ruta de la aplicación a iniciar no es válida. Revisa la configuración de la aplicación.</sys:String>
-    <sys:String x:Key="ErrorCheckUpdatesFailed">No se han podido buscar actualizaciones. O GitHub está limitando nuestras conexiones, o no estás conectado a Internet.</sys:String>
-    <sys:String x:Key="ErrorGetProcAddress32Failed">Advertencia: es probable que no tengas instalada la versión x86 de .NET Core, por lo que las aplicaciones de 32 bits no funcionarán.&#x0a;Revisa la lista de requisitos en la página de descarga.&#x0a;Error real: No se ha podido obtener la dirección de GetProcAddress para un formato x86.</sys:String>
+    <sys:String x:Key="ErrorCheckUpdatesFailed">No se pudieron buscar actualizaciones. O GitHub está limitando nuestras conexiones, o no estás conectado a Internet.</sys:String>
+    <sys:String x:Key="ErrorGetProcAddress32Failed">Advertencia: es probable que no tengas instalada la versión x86 de .NET Core, por lo que las aplicaciones de 32 bits no funcionarán.&#x0a;Revisa la lista de requisitos en la página de descarga.&#x0a;Error real: No se pudo obtener la dirección de GetProcAddress para un formato x86.</sys:String>
 
     <!-- Asi Loader -->
     <sys:String x:Key="AsiLoaderInstall">Implementar cargador ASI</sys:String>
@@ -225,11 +225,11 @@
     <sys:String x:Key="AsiLoaderDialogDescription">Si quieres que Reloaded se ejecute automáticamente, sin iniciadores ni accesos directos, se puede implementar el Ultimate ASI Loader de ThirteenAG (un cargador de DLL de terceros). ¿Te gustaría implementar este cargador?</sys:String>
     <sys:String x:Key="AsiLoaderDialogLoaderDeployed">Cargador ASI implementado con éxito en: </sys:String>
     <sys:String x:Key="AsiLoaderDialogBootstrapperDeployed">Programa de arranque de Reloaded implementado en: </sys:String>
-    <sys:String x:Key="ErrorAsiNotSupported">No se ha encontrado un nombre de DLL compatible donde agregar el Ultimate ASI Loader.</sys:String> <!-- Unused at the moment, may be used in the future. -->
+    <sys:String x:Key="ErrorAsiNotSupported">No se encontró un nombre de DLL compatible donde agregar el Ultimate ASI Loader.</sys:String> <!-- Unused at the moment, may be used in the future. -->
 
     <!-- Missing Dependencies Dialog -->
     <sys:String x:Key="MissingDependenciesTitle">Faltan dependencias</sys:String>
-    <sys:String x:Key="MissingDependenciesText">Parece ser que faltan en tu sistema ciertas dependencias necesarias para ejecutar Reloaded. El iniciador ha descubierto que falta lo siguiente:</sys:String>
+    <sys:String x:Key="MissingDependenciesText">Parece ser que faltan en tu sistema ciertas dependencias necesarias para ejecutar Reloaded. El iniciador descubrió que falta lo siguiente:</sys:String>
     <sys:String x:Key="MissingDependenciesText2">Debes descargar los componentes indicados y cerrar la ventana.</sys:String>
 
     <!-- Categories: Main Menu Screen -->
@@ -265,11 +265,11 @@
     <sys:String x:Key="LoaderSettingsConfigFile">Abrir archivo de configuración</sys:String>
 
     <!-- Update 1.8.0: Extra Error(s) -->
-    <sys:String x:Key="ErrorFailedToObtainPort">La aplicación se ha bloqueado, Reloaded no se ha cargado correctamente o Reloaded no se ha inicializado dentro de un límite de tiempo.&#x0a;&#x0a;Estas operaciones podrían ser de ayuda:&#x0a;- Cierra esta ventana de error, espera unos segundos y vuelve a intentarlo.&#x0a;- Cierra otras copias de la aplicación que estén ejecutándose (con el administrador de tareas).&#x0a;- Reinicia tu equipo.&#x0a;&#x0a;Este mensaje es solo de advertencia: si tu aplicación funciona correctamente, puedes ignorar este mensaje.&#x0a;&#x0a;Error real:&#x0a;Error al obtener el puerto de la instancia de Reloaded que se ejecuta dentro del proceso.</sys:String>
+    <sys:String x:Key="ErrorFailedToObtainPort">La aplicación se bloqueó, Reloaded no se cargó correctamente o Reloaded no se inicializó dentro de un límite de tiempo.&#x0a;&#x0a;Estas operaciones podrían ser de ayuda:&#x0a;- Cierra esta ventana de error, espera unos segundos y vuelve a intentarlo.&#x0a;- Cierra otras copias de la aplicación que estén ejecutándose (con el administrador de tareas).&#x0a;- Reinicia tu equipo.&#x0a;&#x0a;Este mensaje es solo de advertencia: si tu aplicación funciona correctamente, puedes ignorar este mensaje.&#x0a;&#x0a;Error real:&#x0a;Error al obtener el puerto de la instancia de Reloaded que se ejecuta dentro del proceso.</sys:String>
 
     <!-- Update 1.10.0: Reloaded Bootstrapper Update -->
     <sys:String x:Key="BootstrapperUpdateTitle">Programa de arranque actualizado</sys:String>
-    <sys:String x:Key="BootstrapperUpdateDescription">Se ha actualizado automáticamente el programa de arranque de Reloaded en los siguientes programas:&#x0a;{0}</sys:String>
+    <sys:String x:Key="BootstrapperUpdateDescription">Se actualizó automáticamente el programa de arranque de Reloaded en los siguientes programas:&#x0a;{0}</sys:String>
 
     <!-- Update 1.10.1: Reloaded Bootstrapper Hotfix -->
     <sys:String x:Key="BootstrapperCreateDirectoryError">Error al crear el directorio en el que implementar el programa de arranque. Deberías ejecutar Reloaded como administrador.&#x0a;Error real: {0}</sys:String>
@@ -294,7 +294,7 @@
     <sys:String x:Key="FirstLaunchExAddModExtractPrev">Anterior</sys:String>
     <sys:String x:Key="FirstLaunchExAddModExtractNext">Siguiente</sys:String>
 
-    <sys:String x:Key="FirstLaunchExConfigureModDescription1">Algunos mods podrían incluir configuraciones adicionales con las que puedas hacer algunos cambios.</sys:String>
+    <sys:String x:Key="FirstLaunchExConfigureModDescription1">Algunos mods podrían incluir configuraciones adicionales con las que hacer algunos cambios.</sys:String>
     <sys:String x:Key="FirstLaunchExConfigureModDescription2">Si el botón Configurar mod se muestra de color rojo mientras el mod esté seleccionado, es que se puede configurar.</sys:String>
 
     <sys:String x:Key="FirstLaunchExEnableModDescription1">Haz clic en la casilla rectangular para activar un mod.</sys:String>
@@ -316,7 +316,7 @@
     <sys:String x:Key="TitleEditModDialog">Editar mod</sys:String>
 
     <!-- Update 1.12.0: Additional Errors -->
-    <sys:String x:Key="ErrorUnableDetermineVersion">Error: no se ha podido determinar la versión de Reloaded II</sys:String>
+    <sys:String x:Key="ErrorUnableDetermineVersion">Error: no se pudo determinar la versión de Reloaded II</sys:String>
     <sys:String x:Key="ErrorUpdateModInUseTitle">Mod(s) usado(s)</sys:String>
     <sys:String x:Key="ErrorUpdateModInUse">Actualmente hay aplicaciones que están ejecutándose con Reloaded.&#x0a;Las actualizaciones se descargarán, pero no se aplicarán hasta que todas las aplicaciones sean cerradas.</sys:String>
     <sys:String x:Key="ErrorMissingDependency">Faltan dependencias</sys:String>
@@ -397,7 +397,7 @@
     <sys:String x:Key="PublishAutoDeltaDescription">Crea automáticamente un paquete con compresión delta a partir de la versión anterior.&#x0a;No olvides indicar como ruta de salida una versión ya existente.</sys:String>
 
     <sys:String x:Key="PublishAutoDeltaWarningTitle">Advertencia automática de deltas</sys:String>
-    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat">No se ha encontrado el archivo de metadatos de la versión en la carpeta de salida. Tal vez deberías cambiar el nombre del archivo si es necesario.&#x0a;Nombre de archivo esperado: {0}.</sys:String>
+    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat">No se encontró el archivo de metadatos de la versión en la carpeta de salida. Tal vez deberías cambiar el nombre del archivo si es necesario.&#x0a;Nombre de archivo esperado: {0}.</sys:String>
 
     <sys:String x:Key="PublishFileNameTooltip">Nombre del archivo contenedor .7z generado</sys:String>
 
@@ -412,7 +412,7 @@
 
     <!-- Update 1.12.0: Fast Package Download Experience -->
     <sys:String x:Key="PackageDownloaderDownloadCompleteTitle">Descarga completada</sys:String>
-    <sys:String x:Key="PackageDownloaderDownloadCompleteDescription">La descarga ha finalizado.&#x0a;Esta ventana se cerrará automáticamente dentro de unos segundos.</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadCompleteDescription">Descarga finalizada.&#x0a;Esta ventana se cerrará automáticamente dentro de unos segundos.</sys:String>
     <sys:String x:Key="PackageDownloaderDownloadingDependencies">Descargando dependencias</sys:String>
 
     <!-- Update 1.12.0: Extended Download Mods Menu -->
@@ -427,14 +427,14 @@
     <sys:String x:Key="AddAppRepoBadHashTitle">Suma de verificación errónea</sys:String>
     <sys:String x:Key="AddAppRepoWarningTitle">Advertencia</sys:String>
 
-    <sys:String x:Key="AddAppRepoBadHashDesc1">El ejecutable principal (archivo «.exe») de la aplicación ha sido modificado o es una versión diferente a la esperada.</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashDesc1">El ejecutable principal (archivo «.exe») de la aplicación fue modificado o es una versión diferente a la esperada.</sys:String>
     <sys:String x:Key="AddAppRepoBadHashDesc2">Ten en cuenta que no todos los mods funcionarán como se espera. Sigue cualquier indicación (si existe) del mensaje que aparece encima de este.</sys:String>
 
-    <sys:String x:Key="AddAppRepoWarningDesc1">Una búsqueda rápida del directorio del juego ha producido las siguientes advertencias:</sys:String>
+    <sys:String x:Key="AddAppRepoWarningDesc1">Una búsqueda rápida del directorio del juego produjo las siguientes advertencias:</sys:String>
     <sys:String x:Key="AddAppRepoWarningDesc2">Ten en cuenta que no todos los mods funcionarán como se espera. Sigue cualquier indicación (si existe) del mensaje que aparece encima de este.</sys:String>
 
     <sys:String x:Key="AddAppRepoSelectGameDialogTitle">Selecciona un juego</sys:String>
-    <sys:String x:Key="AddAppRepoSelectGameDialogDesc1">Selecciona el juego que te interese de la siguiente lista y después pulsa en Aceptar.</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc1">Selecciona el juego que te interese de la siguiente lista y después haz clic en Aceptar.</sys:String>
     <sys:String x:Key="AddAppRepoSelectGameDialogDesc2">Si tu juego no aparece en la lista, selecciona «Otro juego».</sys:String>
     <sys:String x:Key="AddAppRepoSelectGameDialogOtherGame">Otro juego</sys:String>
 
@@ -456,7 +456,7 @@
     <sys:String x:Key="ConfigureModDialogResetDescription">Reinicia la configuración a sus valores predeterminados.&#x0a;[Nota: no funciona si el mod no es compatible con esta función, contacta con el autor si es así]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
-    <sys:String x:Key="LoaderSettingsControllerBtn">Configuración de mandos [Beta]</sys:String>
+    <sys:String x:Key="LoaderSettingsControllerBtn">Configuración de controladores [Beta]</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneName">Nada</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneDescription">No hace nada.</sys:String>
 
@@ -501,8 +501,8 @@
 
     <sys:String x:Key="ConfiguratorCustomStringMainConfig">Configuración principal</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
     <sys:String x:Key="ConfiguratorCustomStringTrigger">Gatillo</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
-    <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Usa esta opción para asignar el gatillo de un mando</sys:String> <!-- Displays in description of trigger bindings. -->
-    <sys:String x:Key="ConfiguratorCustomStringWindowName">Configuración de mandos para Reloaded [Beta]</sys:String> <!-- Name of the input configurator window. -->
+    <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Usa esta opción para asignar el gatillo de un controlador</sys:String> <!-- Displays in description of trigger bindings. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Configuración de controladores para Reloaded [Beta]</sys:String> <!-- Name of the input configurator window. -->
 
     <sys:String x:Key="ConfiguratorLibCustomStringNew">Nueva</sys:String> <!-- "New" Used for button that adds values. -->
     <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Haz clic izquierdo para crear una asignación nueva.&#x0a;Haz clic central para invertir el valor.&#x0a;Haz clic derecho para eliminar la asignación.&#x0a;«!» indica que el valor está invertido.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
