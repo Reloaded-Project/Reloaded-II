@@ -72,6 +72,7 @@ public class Mod : ModBase // <= Do not Remove.
 
         // TODO: Implement some mod logic
     }
+
 #if (IncludeConfig)
     #region Standard Overrides
     public override void ConfigurationUpdated(Config configuration)
@@ -83,4 +84,10 @@ public class Mod : ModBase // <= Do not Remove.
     }
     #endregion
 #endif
+
+    #region For Exports, Serialization etc.
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public Mod() { }
+#pragma warning restore CS8618
+    #endregion
 }

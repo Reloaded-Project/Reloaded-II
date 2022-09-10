@@ -47,7 +47,7 @@ public class Startup : IMod
     /// <summary>
     /// Encapsulates your mod logic.
     /// </summary>
-    private ModBase _mod = null!;
+    private ModBase _mod = new Mod();
 
     /// <summary>
     /// Entry point for your mod.
