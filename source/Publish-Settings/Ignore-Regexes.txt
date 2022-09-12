@@ -5,3 +5,5 @@
 ^User
 ^Theme
 ^Assets[\\\/]Languages
+^portable\.txt
+^Portable\.txt
