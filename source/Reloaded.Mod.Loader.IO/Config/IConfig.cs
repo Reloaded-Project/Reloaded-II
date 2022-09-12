@@ -20,12 +20,29 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
     /// <param name="filePath">The absolute file path of the config file.</param>
     public static TType FromPath(string filePath)
     {
-        using var stream = IOEx.OpenFile(filePath, FileMode.Open, FileAccess.Read);
-        using var textReader = new StreamReader(stream);
-        string jsonFile = textReader.ReadToEnd();
-        var result = JsonSerializer.Deserialize<TType>(jsonFile, _options);
-        result.SanitizeConfig();
-        return result;
+        int numAttempts = 0;
+        int sleepTime = 32;
+        while (true)
+        {
+            try
+            {
+                using var stream = IOEx.OpenFile(filePath, FileMode.Open, FileAccess.Read);
+                using var textReader = new StreamReader(stream);
+                string jsonFile = textReader.ReadToEnd();
+                var result = JsonSerializer.Deserialize<TType>(jsonFile, _options);
+                result.SanitizeConfig();
+                return result;
+            }
+            catch (Exception)
+            {
+                if (numAttempts >= 3)
+                    throw;
+
+                numAttempts++;
+                Thread.Sleep(sleepTime);
+                sleepTime *= 4;
+            }
+        }
     }
 
     /// <summary>
@@ -49,10 +66,28 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
     /// <param name="token">Token that can be used to cancel deserialization</param>
     public static async Task<TType> FromPathAsync(string filePath, CancellationToken token = default)
     {
-        await using var stream = await IOEx.OpenFileAsync(filePath, FileMode.Open, FileAccess.Read, token);
-        var result = await JsonSerializer.DeserializeAsync<TType>(stream, _options, token);
-        result.SanitizeConfig();
-        return result;
+        int numAttempts = 0;
+        int sleepTime = 32;
+
+        while (true)
+        {
+            try
+            {
+                await using var stream = await IOEx.OpenFileAsync(filePath, FileMode.Open, FileAccess.Read, token);
+                var result = await JsonSerializer.DeserializeAsync<TType>(stream, _options, token);
+                result.SanitizeConfig();
+                return result;
+            }
+            catch (Exception)
+            {
+                if (numAttempts >= 3)
+                    throw;
+
+                numAttempts++;
+                await Task.Delay(sleepTime, token);
+                sleepTime *= 4;
+            }
+        }
     }
 
     /// <summary>
