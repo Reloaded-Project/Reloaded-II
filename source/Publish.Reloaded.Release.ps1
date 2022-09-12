@@ -21,7 +21,7 @@ param (
     $Version = "1.0.0",
     $CurrentVersionPath = "./CurrentVersion",
     $ReleasePath = "./Publish/Release",
-    $NumberOfDeltaReleases = 1
+    $NumberOfDeltaReleases = 2
 )
 
 $PackagesPath = "./Publish/Packages"
