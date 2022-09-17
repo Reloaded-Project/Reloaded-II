@@ -1,4 +1,4 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <!--
       Originally inspired by https://github.com/space-wizards/RobustToolbox , under the MIT License
       Modified by Sewer56 to include support for .NET6 IsTrimmable property.
@@ -93,7 +93,7 @@
     <!-- Custom: Print assemblies for trimming. -->
     <ItemGroup>
       <TrimmingItemsToPrint Include="@(ManagedAssemblyToLink)">
-        <Text>Input Assembly: %(filename) [Mode: $(TrimMode)]</Text>
+        <Text>Input Assembly: %(filename) [Mode: %(ManagedAssemblyToLink.TrimMode)]</Text>
       </TrimmingItemsToPrint>
     </ItemGroup>
 
