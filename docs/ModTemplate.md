@@ -88,6 +88,7 @@ Input Assembly: Reloaded.Mod.Template [Mode: link]
 ```
 
 `link` indicates the assembly is being trimmed.  
+`` (empty) means trim if `IsTrimmable` == true, else use default trimmer setting [copy].  
 
 ### Configuring Trimming
 
