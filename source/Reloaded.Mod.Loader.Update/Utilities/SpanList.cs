@@ -30,5 +30,5 @@ public ref struct SpanList<T>
     /// Adds an item onto this span list.
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveOptimization | MethodImplOptions.AggressiveInlining)]
-    public void Add(in T item) => _items[Length++] = item;
+    public void Add(scoped in T item) => _items[Length++] = item;
 }
