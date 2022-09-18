@@ -30,5 +30,11 @@ public class NonReloadedPageViewModel : ObservableObject, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private void SelectedProcessOnExited(object? sender, EventArgs e) => ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
+    private void SelectedProcessOnExited(object? sender, EventArgs e)
+    {
+        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
+        {
+            ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
+        });
+    }
 }

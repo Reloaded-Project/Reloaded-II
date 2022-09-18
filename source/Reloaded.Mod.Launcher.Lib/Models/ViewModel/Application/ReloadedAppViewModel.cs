@@ -94,7 +94,10 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
     private void SelectedProcessOnExited(object? sender, EventArgs e)
     {
         ApplicationViewModel.SelectedProcess!.Exited -= SelectedProcessOnExited;
-        ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
+        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
+        {
+            ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
+        });
     }
 
     private void ClientOnReceiveException(AcknowledgementOrExceptionResponse obj) => Errors.HandleException(new Exception(obj.Message));
