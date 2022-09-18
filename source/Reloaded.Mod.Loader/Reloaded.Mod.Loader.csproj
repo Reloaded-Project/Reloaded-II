@@ -80,11 +80,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
-    <ProjectReference Include="..\Submodules\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.5" />
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="2.0.0-beta.0" />
     <PackageReference Include="Reloaded.Hooks" Version="4.2.0" />
   </ItemGroup>
   <ItemGroup>
