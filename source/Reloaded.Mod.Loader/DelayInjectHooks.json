@@ -958,5 +958,11 @@
       "_radfree@4",
       "_radmalloc@4"
     ]
+  },
+  {
+    "Name": "steam_api64",
+    "Functions": [
+      "SteamAPI_Init"
+    ]
   }
 ]
