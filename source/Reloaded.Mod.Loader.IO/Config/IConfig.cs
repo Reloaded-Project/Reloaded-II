@@ -35,12 +35,12 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
             }
             catch (Exception)
             {
-                if (numAttempts >= 3)
+                if (numAttempts >= 6)
                     throw;
 
                 numAttempts++;
                 Thread.Sleep(sleepTime);
-                sleepTime *= 4;
+                sleepTime *= 2;
             }
         }
     }
@@ -80,12 +80,12 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
             }
             catch (Exception)
             {
-                if (numAttempts >= 3)
+                if (numAttempts >= 6)
                     throw;
 
                 numAttempts++;
                 await Task.Delay(sleepTime, token);
-                sleepTime *= 4;
+                sleepTime *= 2;
             }
         }
     }
