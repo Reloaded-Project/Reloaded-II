@@ -13,20 +13,17 @@ public partial class App : Application
     /// <summary>
     /// Entry point for the application.
     /// </summary>
-    public App()
+    public App() => this.Startup += OnStartup;
+
+    private void OnStartup(object sender, StartupEventArgs e)
     {
-        // Update handler
+        // Run update handler.
         if (Sewer56.Update.Hooks.Startup.HandleCommandLineArgs(GetCommandLineArgs()))
         {
             Application.Current.Shutdown(0);
             return;
         }
-
-        this.Startup += OnStartup;
-    }
-
-    private void OnStartup(object sender, StartupEventArgs e)
-    {
+        
         SetupResources();
 
         // Common Commandline Argument Handler
