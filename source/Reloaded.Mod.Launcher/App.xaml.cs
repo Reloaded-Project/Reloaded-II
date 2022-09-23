@@ -37,6 +37,7 @@ public partial class App : Application
 
         Application.Current.ShutdownMode = originalMode;
         StartProfileOptimization();
+        PrepareWebRequests();
     }
 
     private void SetupResources()
@@ -102,6 +103,16 @@ public partial class App : Application
     public static void StopProfileOptimization()
     {
         ProfileOptimization.StartProfile(null!);
+    }
+    
+    private void PrepareWebRequests()
+    {        
+        // Raise maximum number of WebRequest connections
+        ServicePointManager.DefaultConnectionLimit = int.MaxValue;
+        
+        // When .NET makes first HTTP request, it takes some time to resolve proxy settings.
+        // We can speed this up by resolving the proxy ourselves.
+        Task.Run(WebRequest.GetSystemWebProxy);
     }
 
     /// <summary>
