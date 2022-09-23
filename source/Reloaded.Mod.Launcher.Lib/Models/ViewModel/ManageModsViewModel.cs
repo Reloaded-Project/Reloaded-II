@@ -54,8 +54,12 @@ public class ManageModsViewModel : ObservableObject
     public void SetNewMod(PathTuple<ModConfig>? oldModTuple, PathTuple<ModConfig>? newModTuple)
     {
         // Save old collection.
-        if (oldModTuple != null && !oldModTuple.Config.Equals(_configCopy) && ModConfigService.ItemsById.ContainsKey(oldModTuple.Config.ModId))
-            SaveMod(oldModTuple);
+        if (oldModTuple != null)
+        {
+            oldModTuple.Config.SupportedAppId = EnabledAppIds.Where(x => x.Enabled).Select(x => x.Generic.AppId).ToArray();
+            if (!oldModTuple.Config.Equals(_configCopy) && oldModTuple.Config.ModId == _configCopy.ModId && ModConfigService.ItemsById.ContainsKey(oldModTuple.Config.ModId))
+                SaveMod(oldModTuple);
+        }
 
         // Make new collection.
         if (newModTuple == null) 
@@ -75,7 +79,6 @@ public class ManageModsViewModel : ObservableObject
         if (oldModTuple == null) 
             return;
 
-        oldModTuple.Config.SupportedAppId = EnabledAppIds.Where(x => x.Enabled).Select(x => x.Generic.AppId).ToArray();
         oldModTuple.SaveAsync();
     }
         
