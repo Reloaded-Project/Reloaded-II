@@ -77,6 +77,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Assets\R2Pack" />
     <Folder Include="Utility\" />
   </ItemGroup>
 
