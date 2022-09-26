@@ -40,6 +40,35 @@ public static class PackageProviderFactory
     }
 
     /// <summary>
+    /// Gets all possible providers for downloadable packages.
+    /// </summary>
+    /// <param name="applications">Applications for which to get provider for.</param>
+    /// <param name="repositories">Repositories which to include.</param>
+    /// <returns>List of providers of downloadable packages.</returns>
+    public static List<IDownloadablePackageProvider> GetAllProviders(IEnumerable<PathTuple<ApplicationConfig>> applications, IEnumerable<INugetRepository>? repositories = null)
+    {
+        var providers = new List<IDownloadablePackageProvider>();
+        
+        // Get package provider for individual games.
+        var repos = new List<INugetRepository>();
+        if (repositories != null)
+            repos.AddRange(repositories);
+        
+        foreach (var appConfig in applications)
+        {
+            var provider = GetProvider(appConfig, repos);
+            if (provider != null)
+                providers.Add(provider);
+        }
+
+        // Get package provider for all packages.
+        foreach (var nugetSource in repos)
+            providers.Add(new IndexedNuGetPackageProvider(nugetSource));
+
+        return providers;
+    }
+
+    /// <summary>
     /// TEST USE ONLY.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
