@@ -14,3 +14,83 @@ public interface IDownloadablePackageProvider
     /// <param name="token">The token used to cancel the operation.</param>
     public Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default);
 }
+
+/// <summary>
+/// Extensions related to downloadable package providers.
+/// </summary>
+public static class DownloadablePackageProviderExtensions
+{
+    /// <summary>
+    /// Tries to find a package with a matching mod ID.
+    /// </summary>
+    /// <param name="provider">The package provider to search all items inside.</param>
+    /// <param name="modId">The mod ID to search for.</param>
+    /// <param name="modName">Name of the mod to search; used when finding by ID does not find wanted package.</param>
+    /// <param name="take">The number of items to take in single connection request.</param>
+    /// <param name="numConnections">Number of concurrent connections to use.</param>
+    /// <param name="alwaysSearchByName">If true, mod will always be searched by name as well as ID, even if ID search returned items.</param>
+    /// <param name="token">The token used to cancel the operation.</param>
+    public static async Task<List<IDownloadablePackage>> SearchForModAsync(this IDownloadablePackageProvider provider, string modId, string modName, int take = 50, int numConnections = 1, bool alwaysSearchByName = false, CancellationToken token = default)
+    {
+        var resultsById = await SearchAllAsync(provider, modId, take, numConnections, token);
+        var result = resultsById.Where(x => modId.Equals(x.Id)).ToList();
+        if (!alwaysSearchByName && result.Count > 0)
+            return result;
+
+        var resultsByName = await SearchAllAsync(provider, modName, take, numConnections, token);
+        result.AddRange(resultsByName.Where(x => modId.Equals(x.Id)));
+        return result;
+    }
+    
+    /// <summary>
+    /// Retrieves all packages matching a given term.
+    /// </summary>
+    /// <param name="provider">The package provider to search all items inside.</param>
+    /// <param name="text">The text to search.</param>
+    /// <param name="take">The number of items to take in single connection request.</param>
+    /// <param name="numConnections">Number of concurrent connections to use.</param>
+    /// <param name="token">The token used to cancel the operation.</param>
+    public static async Task<IEnumerable<IDownloadablePackage>> SearchAllAsync(this IDownloadablePackageProvider provider, string text, int take = 50, int numConnections = 1, CancellationToken token = default)
+    {
+        var results = new List<IDownloadablePackage>();
+        var paginationHelper = new PaginationHelper();
+        paginationHelper.ItemsPerPage = take;
+        
+        int numResults;
+        var searchResults = new Task<IEnumerable<IDownloadablePackage>>[numConnections];
+        
+        do
+        {
+            numResults = 0;
+            for (int x = 0; x < searchResults.Length; x++)
+                searchResults[x] = TrySearch(text, provider, paginationHelper + x);
+
+            await Task.WhenAll(searchResults);
+
+            // Flatten results.
+            foreach (var searchResult in searchResults)
+            foreach (var downloadablePackage in searchResult.Result)
+            {
+                numResults += 1;
+                results.Add(downloadablePackage);
+            }
+
+            paginationHelper.NextPage(numConnections);
+        } 
+        while (numResults > 0);
+        
+        return results;
+    }
+    
+    private static async Task<IEnumerable<IDownloadablePackage>> TrySearch(string text, IDownloadablePackageProvider provider, PaginationHelper paginationHelper)
+    {
+        try
+        {
+            return await provider.SearchAsync(text, paginationHelper.Skip, paginationHelper.Take);
+        }
+        catch (Exception)
+        {
+            return Array.Empty<IDownloadablePackage>();
+        }
+    }
+}
