@@ -1,4 +1,6 @@
-namespace Reloaded.Mod.Launcher.Lib.Utility;
+﻿using Paths = Reloaded.Mod.Loader.IO.Paths;
+
+namespace Reloaded.Mod.Loader.Update.Utilities;
 
 /// <summary>
 /// Service that provides caching support for fetching images via URL.
