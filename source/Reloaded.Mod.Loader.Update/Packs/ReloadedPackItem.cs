@@ -25,7 +25,7 @@ public class ReloadedPackItem
 
     /// <summary>
     /// List of preview image files belonging to this item.
-    /// May be PNG, JPEG & JXL (JPEG XL).
+    /// May be PNG, JPEG and JXL (JPEG XL).
     /// </summary>
     public List<ReloadedPackImage> ImageFiles { get; set; } = new();
 

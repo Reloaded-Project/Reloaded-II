@@ -6,10 +6,10 @@
 public class ReloadedPackItemBuilder
 {
     private string _modId;
-    private string _name;
-    private string _readme;
-    private Dictionary<string, object> _pluginData;
-    private List<(Stream stream, string name, string cap)> _images = new();
+    private string _name = string.Empty;
+    private string _readme = string.Empty;
+    private Dictionary<string, object> _pluginData = new();
+    private List<(Stream stream, string name, string? cap)> _images = new();
     private int _imageIndex = 0;
     
     /// <summary>

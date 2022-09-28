@@ -18,7 +18,7 @@ public class ReloadedPack : IConfig
 
     /// <summary>
     /// List of preview image files belonging to the pack.
-    /// May be PNG, JPEG & JXL (JPEG XL).
+    /// May be PNG, JPEG and JXL (JPEG XL).
     /// </summary>
     public List<ReloadedPackImage> ImageFiles { get; set; } = new();
     

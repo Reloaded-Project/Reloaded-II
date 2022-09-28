@@ -16,5 +16,5 @@ public struct ReloadedPackImage
     /// <summary>
     /// Caption of the image.
     /// </summary>
-    public string Caption { get; set; }
+    public string? Caption { get; set; }
 }

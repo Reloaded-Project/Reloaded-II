@@ -6,9 +6,9 @@
 /// </summary>
 public class ReloadedPackBuilder
 {
-    private string _name;
-    private string _readme;
-    private List<(Stream stream, string name, string cap)> _images = new();
+    private string _name = string.Empty;
+    private string _readme = string.Empty;
+    private List<(Stream stream, string name, string? cap)> _images = new();
     private int _imageIndex = 0;
     private List<ReloadedPackItemBuilder> _itemBuilders = new();
 
