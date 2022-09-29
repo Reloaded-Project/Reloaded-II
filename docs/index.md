@@ -151,7 +151,7 @@ It is an ***extensible*** and ***modular*** framework that allows you to create 
 		<hr class="pillarseparator" />
         <p>
 			Debug &amp; Profile your code in Visual Studio<br/> 
-			Including Edit &amp; Support<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>.
+			Including Edit &amp; Continue Support<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>.
 		</p>
     </div>
 
