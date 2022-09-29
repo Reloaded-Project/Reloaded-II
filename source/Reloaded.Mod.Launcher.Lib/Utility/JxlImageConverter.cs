@@ -16,7 +16,7 @@ public class JxlImageConverter : IImageConverter
     }
     
     /// <inheritdoc />
-    public MemoryStream Convert(Span<byte> source, out string extension)
+    public MemoryStream Convert(Span<byte> source, string extension, out string newExtension)
     {        
         var settings = new ProcessImageSettings();
         settings.TrySetEncoderFormat(ImageMimeTypes.Jxl);
@@ -26,7 +26,7 @@ public class JxlImageConverter : IImageConverter
         MagicImageProcessor.ProcessImage(source, output, settings);
         
         output.Position = 0;
-        extension = ".jxl";
+        newExtension = extension;
         return output;
     }
 }

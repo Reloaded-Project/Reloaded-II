@@ -52,7 +52,7 @@ public static class AutoPackCreator
                 foreach (var image in bestPkg.images)
                 {
                     var file = await imageDownloader.GetOrDownloadFileFromUrl(image.Uri, imageDownloader.ModPreviewExpiration, false, token);
-                    var converted = imageConverter.Convert(file, out string ext);
+                    var converted = imageConverter.Convert(file, Path.GetExtension(image.Uri.ToString()), out string ext);
                     itemBuilder.AddImage(converted, ext, image.Caption);
                 }
             }

@@ -2,9 +2,9 @@
 
 public class DummyImageConverter : IImageConverter
 {
-    public MemoryStream Convert(Span<byte> source, out string extension)
+    public MemoryStream Convert(Span<byte> source, string extension, out string newExtension)
     {
-        extension = ".org";
+        newExtension = extension;
         return new MemoryStream(source.ToArray());
     }
 }
