@@ -41,7 +41,6 @@ public class Updater
         using var concurrencySemaphore = new SemaphoreSlim(32);
         var allTasks = new List<Task>();
 
-        //var taskFunctions = ;
         foreach (var resolverTuple in resolverTuples)
         {
             await concurrencySemaphore.WaitAsync();

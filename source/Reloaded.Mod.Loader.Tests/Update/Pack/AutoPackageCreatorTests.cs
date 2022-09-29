@@ -50,6 +50,29 @@ public class AutoPackageCreatorTests
         Assert.True(package.Items[0].ImageFiles.Count > 1);
     }
     
+    [Fact]
+    public async Task AutoPackCreator_CanDownloadMod()
+    {
+        // Arrange
+        using var tempMod = new TemporaryFolderAllocation();
+        var modConf = CreateTestConfig(tempMod.FolderPath);
+        AddGitHubUpdateResolver(modConf);
+
+        var provider = GetGameBananaPackageProvider();
+        
+        // Act
+        var pack = await AutoPackCreator.CreateAsync(new ModConfig[] { modConf.Config }, 
+            new DummyImageConverter(), new List<IDownloadablePackageProvider>() { provider});
+        var built = pack.Build(out var package);
+
+        var faulted = new List<ReloadedPack.TryDownloadResultForItem>();
+        var success = await package.TryDownloadAsync(tempMod.FolderPath, faulted, new UpdaterData(new List<string>(), new CommonPackageResolverSettings()), null, default);
+        
+        // Assert
+        Assert.True(success);
+        Assert.NotEmpty(Directory.GetFiles(tempMod.FolderPath, "*.*", SearchOption.AllDirectories));
+    }
+    
     private PathTuple<ModConfig> CreateTestConfig(string folder)
     {
         return new PathTuple<ModConfig>(Path.Combine(folder, ModConfig.ConfigFileName), new ModConfig()
