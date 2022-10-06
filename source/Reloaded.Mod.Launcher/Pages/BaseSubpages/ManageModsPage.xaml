@@ -75,6 +75,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <Button Grid.Column="0"
@@ -104,6 +105,14 @@
                                 Content="{DynamicResource ModManagerContextPublish}" 
                                 Margin="0"
                                 Command="{Binding PublishModCommand}"/>
+                        
+                        <Button Grid.Row="2"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Style="{DynamicResource UnpaddedStretchedButton}"
+                                Content="{DynamicResource CreateModPackTitle}" 
+                                Margin="0"
+                                Command="{Binding CreateModPackCommand}"/>
                     </Grid>
 
                     <!-- Mod Properties -->
@@ -120,11 +129,6 @@
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogVersion}"
-                         HorizontalAlignment="Stretch" />
-
-                    <TextBox Text="{Binding Path=SelectedModTuple.Config.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         Margin="{DynamicResource CommonItemVerticalMarginTop}" 
-                         ToolTip="{DynamicResource CreateModDialogDescription}"
                          HorizontalAlignment="Stretch" />
 
                 </StackPanel>

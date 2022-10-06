@@ -50,6 +50,7 @@ public static class Lib
     /// <param name="showAddAppMismatchDialog">Shows a dialog that shows information to the user regarding an application hash mismatch.</param>
     /// <param name="showApplicationWarningDialog">Shows a dialog that displays warnings about a recently added application.</param>
     /// <param name="showRunAppViaWineDialog">Shows a dialog that displays information about running a given application on WINE.</param>
+    /// <param name="showEditPackDialog">Shows a dialog that allows the user to edit an individual mod pack.</param>
     public static void Init(IDictionaryResourceProvider provider, SynchronizationContext context, IIconConverter iconConverter, 
         IResourceFileSelector? languageSelector, IResourceFileSelector? themeSelector,
         Actions.CreateResourceFileSelectorDelegate createResourceFileSelector,
@@ -61,7 +62,8 @@ public static class Lib
         Actions.EditModDialogDelegate editModDialog, Actions.PublishModDialogDelegate publishModDialog,
         Actions.ShowEditModUserConfigDialogDelegate showEditModUserConfig, Actions.ShowFetchPackageDialogDelegate showFetchPackageDialog,
         Actions.ShowSelectAddedGameDialogDelegate showSelectAddedGameDialog, Actions.ShowAddAppHashMismatchDialogDelegate showAddAppMismatchDialog,
-        Actions.ShowApplicationWarningDialogDelegate showApplicationWarningDialog, Actions.ShowRunAppViaWineDialogDelegate showRunAppViaWineDialog)
+        Actions.ShowApplicationWarningDialogDelegate showApplicationWarningDialog, Actions.ShowRunAppViaWineDialogDelegate showRunAppViaWineDialog,
+        Actions.ShowEditPackDialogDelegate showEditPackDialog)
     {
         Resources.Init(provider);
         IconConverter = iconConverter;
@@ -85,5 +87,6 @@ public static class Lib
         Actions.ShowAddAppHashMismatchDialog = showAddAppMismatchDialog;
         Actions.ShowApplicationWarningDialog = showApplicationWarningDialog;
         Actions.ShowRunAppViaWineDialog = showRunAppViaWineDialog;
+        Actions.ShowEditPackDialog = showEditPackDialog;
     }
 }

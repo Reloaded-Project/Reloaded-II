@@ -16,12 +16,19 @@ public static class AutoPackCreator
         incompatibleMods = new List<PathTuple<ModConfig>>();
         foreach (var config in configurations)
         {
-            if (!PackageResolverFactory.HasAnyConfiguredResolver(config))
+            if (!ValidateCanCreate(config))
                 incompatibleMods.Add(config);
         }
 
         return incompatibleMods.Count <= 0;
     }
+
+    /// <summary>
+    /// Checks if mod can be used in the pack by verifying they have enabled updates.
+    /// </summary>
+    /// <param name="configuration">The mod to check.</param>
+    /// <returns>True if mods can be packed, else false.</returns>
+    public static bool ValidateCanCreate(PathTuple<ModConfig> configuration) => PackageResolverFactory.HasAnyConfiguredResolver(configuration);
 
     /// <summary>
     /// Automatically creates a package.
@@ -51,7 +58,7 @@ public static class AutoPackCreator
     /// <param name="imageConverter">Image converter used to create the contained images.</param>
     /// <param name="packageProviders">Providers used to resolve the extra package details like id and logo.</param>
     /// <param name="token">Cancellation token.</param>
-    public static async Task CreateMod(ReloadedPackBuilder builder, ModConfig config, IImageConverter imageConverter, 
+    public static async Task<ReloadedPackItemBuilder> CreateMod(ReloadedPackBuilder builder, ModConfig config, IImageConverter imageConverter, 
         IList<IDownloadablePackageProvider> packageProviders, CancellationToken token)
     {
         var imageDownloader = new ImageCacheService();
@@ -62,9 +69,9 @@ public static class AutoPackCreator
         var bestPkg = await GetBestPackageForTemplateAsync(config.ModId, config.ModName, packageProviders, token);
 
         // Add images if possible
-        if (bestPkg.images != null)
+        if (bestPkg.Images != null)
         {
-            foreach (var image in bestPkg.images)
+            foreach (var image in bestPkg.Images)
             {
                 var file = await imageDownloader.GetOrDownloadFileFromUrl(image.Uri, imageDownloader.ModPreviewExpiration, false, token);
                 var converted = imageConverter.Convert(file, Path.GetExtension(image.Uri.ToString()), out string ext);
@@ -73,8 +80,14 @@ public static class AutoPackCreator
         }
 
         // Add readme if possible
-        if (!string.IsNullOrEmpty(bestPkg.markdownReadme))
-            itemBuilder.SetReadme(bestPkg.markdownReadme);
+        if (!string.IsNullOrEmpty(bestPkg.MarkdownReadme))
+            itemBuilder.SetReadme(bestPkg.MarkdownReadme);
+        
+        // Add summary if possible
+        if (!string.IsNullOrEmpty(bestPkg.Summary))
+            itemBuilder.SetSummary(bestPkg.Summary);
+
+        return itemBuilder;
     }
 
     /// <summary>
@@ -85,10 +98,10 @@ public static class AutoPackCreator
     /// <param name="downloadablePackageProviders">Providers that can be used to download the package.</param>
     /// <param name="cancellationToken">Token used to cancel the package.</param>
     /// <returns>Tuple of images and readme for the given item.</returns>
-    public static async Task<(DownloadableImage[]? images, string markdownReadme)> GetBestPackageForTemplateAsync(string modId, string modName,
+    public static async Task<GetBestPackageForTemplateResult> GetBestPackageForTemplateAsync(string modId, string modName,
         IList<IDownloadablePackageProvider> downloadablePackageProviders, CancellationToken cancellationToken)
     {
-        (DownloadableImage[]? images, string markdownReadme) result = new();
+        GetBestPackageForTemplateResult result = new();
         
         // We will get all packages with highest version and copy images & readme down the road.
         NuGetVersion? highestVersion = null;
@@ -124,16 +137,16 @@ public static class AutoPackCreator
                 if (candidate.Images != null)
                 {
                     // Assign images if unassigned
-                    result.images ??= candidate.Images;
+                    result.Images ??= candidate.Images;
 
                     // Prefer source with more images.
-                    if (candidate.Images.Length > result.images.Length)
-                        result.images = candidate.Images;
+                    if (candidate.Images.Length > result.Images.Length)
+                        result.Images = candidate.Images;
                 }
                     
                 // Set description if unassigned.
                 if (candidate.MarkdownReadme != null)
-                    result.markdownReadme ??= candidate.MarkdownReadme;
+                    result.MarkdownReadme ??= candidate.MarkdownReadme;
             }
         }
         
@@ -142,14 +155,26 @@ public static class AutoPackCreator
         {
             // Set description if unassigned.
             if (item.MarkdownReadme != null)
-                result.markdownReadme = item.MarkdownReadme;
-         
+                result.MarkdownReadme = item.MarkdownReadme;
+
+            // Set description if unassigned.
+            if (item.Description != null)
+                result.Summary = item.Description;
+
             // Set images to ones from newest version in case older version had more images.
             // But only if more than 1 image. We want to filter out entries with only thumbnail.
             if (item.Images is { Length: > 1 })
-                result.images = item.Images;
+                result.Images = item.Images;
         }
         
         return result;
     }
+    
+    /// <summary>
+    /// Represents the result of trying to obtain the best package for template.
+    /// </summary>
+    /// <param name="Images">Images for the mod.</param>
+    /// <param name="MarkdownReadme">Full readme (in markdown) for this mod.</param>
+    /// <param name="Summary">Short summary of the mod.</param>
+    public record struct GetBestPackageForTemplateResult(DownloadableImage[]? Images, string? MarkdownReadme, string? Summary);
 }

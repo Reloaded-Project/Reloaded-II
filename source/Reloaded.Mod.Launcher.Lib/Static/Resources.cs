@@ -168,4 +168,13 @@ public static class Resources
     // Update 1.20.0: Runtime Update
     public static IDictionaryResource<string> RuntimeUpdateRequiredTitle { get; set; }
     public static IDictionaryResource<string> RuntimeUpdateRequiredDescription { get; set; }
+
+    // Update 1.21.0: Mod Packs
+    public static IDictionaryResource<string> ModPackSelectExistingTitle { get; set; }
+    public static IDictionaryResource<string> ModPackSelectExistingTypeName { get; set; }
+    public static IDictionaryResource<string> ErrorFailedToSaveModPack { get; set; }
+
+    // Update 1.21.0: Generic Image Selector
+    public static IDictionaryResource<string> ImageSelectorTitle { get; set; }
+    public static IDictionaryResource<string> ImageSelectorFilter { get; set; }
 }

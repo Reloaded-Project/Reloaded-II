@@ -21,6 +21,25 @@ public class Imaging
     /// <summary>
     /// Loads an image from a given stream.
     /// </summary>
+    public static BitmapImage BitmapFromStreamViaPhotoSauce(Stream stream, int? decodePixelWidth = null, int? decodePixelHeight = null)
+    {
+        var origPosition = stream.Position;
+        try
+        {
+            var data = GC.AllocateUninitializedArray<byte>((int)stream.Length);
+            stream.CopyTo(new MemoryStream(data));
+            var memStream = BmpImageConverter.Instance.Convert(data, "", out _);
+            return BitmapFromStream(memStream, decodePixelWidth, decodePixelHeight);
+        }
+        finally
+        {
+            stream.Position = origPosition;
+        }
+    }
+
+    /// <summary>
+    /// Loads an image from a given stream.
+    /// </summary>
     public static BitmapImage BitmapFromStream(Stream stream, int? decodePixelWidth = null, int? decodePixelHeight = null)
     {
         var bitmapImage = new BitmapImage();

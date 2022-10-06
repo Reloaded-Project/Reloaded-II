@@ -13,6 +13,11 @@ public class ImageCacheService : AkavacheCache
     /// </summary>
     public TimeSpan ModPreviewExpiration => TimeSpan.FromDays(14);
 
+    /// <summary>
+    /// Gets the time a an image should expire by default.
+    /// </summary>
+    public TimeSpan DefaultExpiration => TimeSpan.FromDays(14);
+
     /// <summary/>
     public ImageCacheService() : base(Path.Combine(Paths.ImageCachePath)) { }
 }

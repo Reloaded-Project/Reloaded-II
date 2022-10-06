@@ -28,6 +28,9 @@ public class ManageModsViewModel : ObservableObject
 
     /// <summary/>
     public PublishModCommand PublishModCommand { get; set; } = null!;
+    
+    /// <summary/>
+    public CreateModPackCommand CreateModPackCommand { get; set; } = new();
 
     /* If false, events to reload mod list are not sent. */
     private ApplicationConfigService _appConfigService;

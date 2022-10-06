@@ -77,46 +77,13 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
         var carousel = (Carousel)sender;
         if (package.Images is not { Length: > 0 })
         {
-            AddImageFromBitmap(carousel, Imaging.GetPlaceholderIcon());
+            carousel.AddImageFromBitmap(Imaging.GetPlaceholderIcon());
             return;
         }
 
         var images = package.Images;
         for (int x = 0; x < images.Length; x++)
-            await AddImageFromUri(carousel, images[x].Uri);
-    }
-
-    /// <summary>
-    /// Downloads an image from a given URI and adds it to the carousel
-    /// </summary>
-    /// <param name="carousel">The carousel to add image to.</param>
-    /// <param name="uri">Uri to download images from.</param>
-    private async Task AddImageFromUri(Carousel carousel, Uri uri)
-    {
-        // We're using ConfigureAwait(false) to allow other threads to pick this up.
-        // Helps prevent potential stutters when converting image.
-        var data = await ViewModel.DownloadImage(uri).ConfigureAwait(false);
-        await using var memoryStream = new MemoryStream(data);
-        var image = Imaging.BitmapFromStream(memoryStream); // Costly!
-        AddImageFromBitmap(carousel, image);
-    }
-
-    /// <summary>
-    /// Adds an image to the carousel based on bitmap.
-    /// </summary>
-    /// <param name="carousel">The carousel to add image to.</param>
-    /// <param name="bitmap">The image to apply to the bitmap.</param>
-    private void AddImageFromBitmap(Carousel carousel, BitmapImage bitmap)
-    {
-        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
-        {
-            var image = new Image();
-            image.Source = bitmap;
-            image.Height = carousel.Height;
-            image.Width = carousel.Width;
-            carousel.Items.Add(image);
-            carousel.UpdatePageButtons();
-        });
+            await carousel.AddImageFromUri(images[x].Uri, ViewModel.CacheService);
     }
 
     /// <summary>
@@ -257,19 +224,7 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
             return;
         }
 
-        if (state.IsButtonPressed(Button.Decrement))
-        {
-            handled = true;
-            PreviewCarousel.PageIndex -= 1;
-            return;
-        }
-
-        if (state.IsButtonPressed(Button.Increment))
-        {
-            handled = true;
-            PreviewCarousel.PageIndex += 1;
-            return;
-        }
+        PreviewCarousel.HandleCarouselImageScrollOnController(state, ref handled);
     }
 
     private void Close()

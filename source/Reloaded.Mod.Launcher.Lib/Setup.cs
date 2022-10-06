@@ -245,6 +245,7 @@ public static class Setup
     {
         var config = IoC.Get<LoaderConfig>();
         IoC.GetConstant<MainPageViewModel>();
+        IoC.BindToConstant<IImageConverter>(new JxlImageConverter());
 
         try
         {

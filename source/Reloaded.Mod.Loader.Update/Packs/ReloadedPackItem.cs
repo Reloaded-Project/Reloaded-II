@@ -21,6 +21,11 @@ public class ReloadedPackItem
     public string ModId { get; set; } = String.Empty;
     
     /// <summary>
+    /// Short description of the mod. 1 sentence.
+    /// </summary>
+    public string Summary { get; set; } = String.Empty;
+    
+    /// <summary>
     /// Readme for this mod, in markdown format.
     /// </summary>
     public string Readme { get; set; } = String.Empty;

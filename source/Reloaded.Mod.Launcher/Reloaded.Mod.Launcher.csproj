@@ -97,4 +97,10 @@
     </ApplicationDefinition>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Pages\Dialogs\EditModPackPages\EditModPackDetailsPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

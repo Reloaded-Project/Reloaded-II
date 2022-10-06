@@ -5,11 +5,36 @@
 /// </summary>
 public class ReloadedPackItemBuilder
 {
-    private string _modId;
-    private string _name = string.Empty;
-    private string _readme = string.Empty;
-    private Dictionary<string, object> _pluginData = new();
-    private List<(Stream stream, string name, string? cap)> _images = new();
+    /// <summary>
+    /// ID of the mod.
+    /// </summary>
+    public string ModId { get; }
+
+    /// <summary>
+    /// Name of the mod.
+    /// </summary>
+    public string Name { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// Readme of the mod.
+    /// </summary>
+    public string Readme { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// Short summary of the mod.
+    /// </summary>
+    public string Summary { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// List of images held by this item builder.
+    /// </summary>
+    public Dictionary<string, object> PluginData { get; private set; } = new();
+    
+    /// <summary>
+    /// List of images held by this item builder.
+    /// </summary>
+    public List<(Stream stream, string name, string? cap)> Images { get; private set; } = new();
+
     private int _imageIndex = 0;
     
     /// <summary>
@@ -18,7 +43,7 @@ public class ReloadedPackItemBuilder
     /// <param name="modId">ID of the mod in question.</param>
     public ReloadedPackItemBuilder(string modId)
     {
-        _modId = modId;
+        ModId = modId;
     }
 
     /// <summary>
@@ -26,7 +51,7 @@ public class ReloadedPackItemBuilder
     /// </summary>
     public ReloadedPackItemBuilder SetName(string name)
     {
-        _name = name;
+        Name = name;
         return this;
     }
     
@@ -35,7 +60,16 @@ public class ReloadedPackItemBuilder
     /// </summary>
     public ReloadedPackItemBuilder SetReadme(string readme)
     {
-        _readme = readme;
+        Readme = readme;
+        return this;
+    }
+    
+    /// <summary>
+    /// Sets the summary (1 line) for this pack item.
+    /// </summary>
+    public ReloadedPackItemBuilder SetSummary(string summary)
+    {
+        Summary = summary;
         return this;
     }
     
@@ -45,7 +79,7 @@ public class ReloadedPackItemBuilder
     /// </summary>
     public ReloadedPackItemBuilder SetPluginData(Dictionary<string, object> pluginData)
     {
-        _pluginData = pluginData;
+        PluginData = pluginData;
         return this;
     }
 
@@ -57,7 +91,7 @@ public class ReloadedPackItemBuilder
     /// <param name="caption">Caption for the image.</param>
     public ReloadedPackItemBuilder AddImage(Stream imageData, string extension, string? caption)
     {
-        _images.Add((imageData, $"{_modId}_{_imageIndex++}{extension}", caption));
+        Images.Add((imageData, $"{ModId}_{_imageIndex++}{extension}", caption));
         return this;
     }
 
@@ -65,13 +99,14 @@ public class ReloadedPackItemBuilder
     {
         var item = new ReloadedPackItem();
 
-        item.Name = _name;
-        item.Readme = _readme;
-        item.ModId = _modId;
-        item.PluginData = _pluginData;
+        item.Name = Name;
+        item.Readme = Readme;
+        item.ModId = ModId;
+        item.Summary = Summary;
+        item.PluginData = PluginData;
         
         // Pack images.
-        foreach (var image in _images)
+        foreach (var image in Images)
         {
             item.ImageFiles.Add(new ReloadedPackImage()
             {

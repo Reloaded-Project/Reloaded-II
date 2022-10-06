@@ -4,11 +4,16 @@ using PhotoSauce.NativeCodecs.Libjxl;
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
-/// Converts image to JPEG XL format.
+/// Converts images to JPEG XL format.
 /// </summary>
 public class JxlImageConverter : IImageConverter
 {
-    private static readonly IEncoderOptions EncoderOptions = new JxlLosslessEncoderOptions(JxlEncodeSpeed.Squirrel, JxlDecodeSpeed.Slowest);
+    /// <summary>
+    /// Static instance of the class.
+    /// </summary>
+    public static JxlImageConverter Instance => new();
+
+    private static readonly IEncoderOptions EncoderOptions = new JxlLossyEncoderOptions(1.0f, JxlEncodeSpeed.Squirrel, JxlDecodeSpeed.Slowest);
     
     static JxlImageConverter()
     {
@@ -26,7 +31,7 @@ public class JxlImageConverter : IImageConverter
         MagicImageProcessor.ProcessImage(source, output, settings);
         
         output.Position = 0;
-        newExtension = extension;
+        newExtension = ".jxl";
         return output;
     }
 }
