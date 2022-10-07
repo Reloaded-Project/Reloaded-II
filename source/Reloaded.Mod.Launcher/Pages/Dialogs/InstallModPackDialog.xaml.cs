@@ -17,6 +17,13 @@ public partial class InstallModPackDialog : ReloadedWindow
         InitializeComponent();
         InitInitialPage();
         ViewModel.PropertyChanged += OnPageIndexPropertyChanged;
+        this.Closing += OnClosing;
+    }
+
+    private void OnClosing(object sender, CancelEventArgs e)
+    {
+        if (PageHost.CurrentPage is IDisposable disposable)
+            disposable.Dispose();
     }
 
     private void OnPageIndexPropertyChanged(object? sender, PropertyChangedEventArgs e)
