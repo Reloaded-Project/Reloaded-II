@@ -31,7 +31,8 @@ public static class LibraryBindings
             showAddAppMismatchDialog: ShowAddAppMismatchDialog,
             showApplicationWarningDialog: ShowApplicationWarningDialog,
             showRunAppViaWineDialog: ShowRunAppViaWineDialog,
-            showEditPackDialog: ShowEditPackDialog
+            showEditPackDialog: ShowEditPackDialog,
+            showInstallModPackDialog: ShowInstallModPackDialog
         );
     }
 
@@ -106,6 +107,7 @@ public static class LibraryBindings
     private static bool ShowFetchPackageDialog(DownloadPackageViewModel viewmodel) => ShowDialogAndGetResult(new DownloadPackageDialog(viewmodel));
     private static bool ShowAddAppMismatchDialog(AddAppHashMismatchDialogViewModel viewmodel) => ShowDialogAndGetResult(new AddAppHashMismatchDialog(viewmodel));
     private static bool ShowApplicationWarningDialog(AddApplicationWarningDialogViewModel viewmodel) => ShowDialogAndGetResult(new ShowApplicationWarningDialog(viewmodel));
+    private static bool ShowInstallModPackDialog(InstallModPackDialogViewModel viewmodel) => ShowDialogAndGetResult(new InstallModPackDialog(viewmodel));
     private static bool ShowRunAppViaWineDialog() => ShowDialogAndGetResult(new RunAppViaWineDialog());
 
     private static bool ShowEditPackDialog(EditModPackDialogViewModel viewmodel) => ShowDialogAndGetResult(new EditModPackDialog(viewmodel));

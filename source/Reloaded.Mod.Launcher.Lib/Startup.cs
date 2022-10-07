@@ -1,4 +1,7 @@
+using Reloaded.Mod.Loader.Update.Packs;
+using Constants = Reloaded.Mod.Launcher.Lib.Misc.Constants;
 using Environment = System.Environment;
+using FileMode = System.IO.FileMode;
 
 namespace Reloaded.Mod.Launcher.Lib;
 
@@ -33,6 +36,13 @@ public static class Startup
         if (_commandLineArguments.TryGetValue(Constants.ParameterDownload, out string? downloadUrl))
         {
             DownloadModAndExit(downloadUrl);
+            result = true;
+        }
+
+        // Check if Reloaded 2 Pack
+        if (_commandLineArguments.TryGetValue(Constants.ParameterR2Pack, out string? r2PackLocation))
+        {
+            OpenPackAndExit(r2PackLocation);
             result = true;
         }
 
@@ -95,6 +105,13 @@ public static class Startup
             StartupLocation = Actions.WindowStartupLocation.CenterScreen,
             Timeout = TimeSpan.FromSeconds(8)
         });
+    }
+
+    private static void OpenPackAndExit(string r2PackLocation)
+    {
+        var reader = new ReloadedPackReader(new FileStream(r2PackLocation, FileMode.Open));
+        var config = IoC.Get<LoaderConfig>();
+        Actions.ShowInstallModPackDialog(new InstallModPackDialogViewModel(reader, config, new AggregateNugetRepository(config.NuGetFeeds)));
     }
 
     private static void StartGame(string applicationToLaunch, string arguments)

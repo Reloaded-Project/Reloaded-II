@@ -11,6 +11,8 @@ public partial class InstallModPackDialog : ReloadedWindow
 
     public InstallModPackDialog(InstallModPackDialogViewModel viewModel)
     {
+        // To register the codec.
+        _ = JxlImageConverter.Instance;
         ViewModel = viewModel;
         InitializeComponent();
         InitInitialPage();

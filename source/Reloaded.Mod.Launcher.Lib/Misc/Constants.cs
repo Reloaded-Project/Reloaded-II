@@ -10,6 +10,7 @@ public static class Constants
     public const string ParameterLaunch = "--launch";
     public const string ParameterArguments = "--arguments";
     public const string ParameterDownload  = "--download";
+    public const string ParameterR2Pack = "--r2pack";
 
     public const string GitRepositoryAccount = "Reloaded-Project";
     public const string GitRepositoryName = "Reloaded-II";
