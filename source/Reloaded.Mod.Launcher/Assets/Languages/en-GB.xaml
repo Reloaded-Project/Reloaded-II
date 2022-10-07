@@ -590,7 +590,7 @@
     <sys:String x:Key="ModPackRemoveImage">Remove Image</sys:String>
     <sys:String x:Key="ModPackLoadExisting">Load Existing Pack</sys:String>
     <sys:String x:Key="ModPackSavePack">Save Pack</sys:String>
-    <sys:String x:Key="ModPackPreviewPack">Preview Pack</sys:String>
+    <sys:String x:Key="ModPackPreviewPack">Test Pack</sys:String>
 
     <sys:String x:Key="ModPackPackNameTooltip">Name of the pack, as displayed during install.</sys:String>
     <sys:String x:Key="ModPackModNameTooltip">Name of the mod, as displayed during install.</sys:String>
@@ -607,7 +607,16 @@
     <!-- Update 1.21.0: Mod Packs: Installer -->
     <sys:String x:Key="InstallModPackTitle">Install Mod Pack</sys:String>
 
+    <sys:String x:Key="InstallModPackEnableHeader">Download?</sys:String>
+    <sys:String x:Key="InstallModPackErrorDownloadFail">Some Mods Failed to Download</sys:String>
+
+    <sys:String x:Key="InstallModPackConfirmTitle">Confirm Mods To Download</sys:String>
+    <sys:String x:Key="InstallModPackConfirmDescription">Once you have doublechecked what you want, start the download.</sys:String>
+
+    <sys:String x:Key="InstallModPackDownloading">Downloading {0}...</sys:String> <!-- {0} is replaced by mod name -->
+    <sys:String x:Key="InstallModPackStart">Start</sys:String> <!-- Sets Page Backwards -->
     <sys:String x:Key="InstallModPackPrevious">Go Back</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackStartDownload">Start Downloading</sys:String> <!-- Sets Page Backwards -->
     <sys:String x:Key="InstallModPackInstall">Install This Mod</sys:String> <!-- Advances Page -->
     <sys:String x:Key="InstallModPackSkip">Skip This Mod</sys:String> <!-- Advances Page -->
 

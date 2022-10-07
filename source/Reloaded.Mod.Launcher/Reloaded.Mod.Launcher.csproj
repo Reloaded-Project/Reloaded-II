@@ -49,10 +49,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
+	  <Content Include="Utility\ThemeHelpers.cs" />
     <Content Include="Assets\DefaultSettings\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Compile Remove="Theme\Helpers\ThemeHelpers.cs" />
   </ItemGroup>
 	
   <ItemGroup>

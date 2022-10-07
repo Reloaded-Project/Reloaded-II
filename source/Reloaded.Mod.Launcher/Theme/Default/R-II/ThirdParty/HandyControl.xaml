@@ -2,7 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl"
                     xmlns:interactivity="clr-namespace:HandyControl.Interactivity;assembly=HandyControl"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:panels="clr-namespace:Reloaded.Mod.Launcher.Controls.Panels;assembly=Reloaded-II"
+                    xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters;assembly=Reloaded-II">
 
     <Color x:Key="LightPrimaryColor">#793939</Color>
     <Color x:Key="PrimaryColor">#B66363</Color>
@@ -142,6 +144,70 @@
                             </Button>
                         </hc:SimplePanel>
                         <StackPanel Name="PART_PanelPage" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                    </hc:SimplePanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Uses CaptionedCarouselItem as values. -->
+    <Style x:Key="ReloadedCarouselWithCaptions" TargetType="hc:Carousel" BasedOn="{StaticResource ReloadedCarousel}">
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <panels:OverlappingElementsPanel Width="{Binding Path=Width, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type hc:Carousel}}, Mode=OneWay}">
+
+                        <!-- Image -->
+                        <Image Source="{Binding BitmapImage}" />
+
+                        <!-- Caption -->
+                        <Border Panel.ZIndex="1" VerticalAlignment="Bottom" Style="{x:Null}" OverridesDefaultStyle="True" Background="{StaticResource TooltipBackgroundColorBrush}"
+                                Visibility="{Binding Caption, Converter={x:Static converters:StringToVisibilityConverter.Instance}}">
+                            <TextBlock Text="{Binding Caption}" Style="{StaticResource DownloadModTitleTextBlock}" OverridesDefaultStyle="True"
+                                       HorizontalAlignment="Center" TextWrapping="WrapWithOverflow"/>
+                        </Border>
+                    </panels:OverlappingElementsPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="hc:Carousel">
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="GridTop" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:.1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="FrameworkElement.MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="GridTop" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:.1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                    <hc:SimplePanel ClipToBounds="True">
+                        <StackPanel x:Name="PART_Panel" Orientation="Horizontal"/>
+                        <!--<ItemsPresenter x:Name="PART_ItemsControl" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Left"/>-->
+                        <hc:SimplePanel x:Name="GridTop" Opacity="0">
+                            <Button Command="interactivity:ControlCommands.Prev" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0" 
+                                    Style="{StaticResource ButtonCustom}" FocusVisualStyle="{DynamicResource ReloadedFocusVisual}">
+                                <Border Width="50" Height="100" Background="{DynamicResource DarkOpacityBrush}" CornerRadius="4">
+                                    <Path Margin="16" Fill="White" Style="{StaticResource LeftPathStyle}"/>
+                                </Border>
+                            </Button>
+                            <Button Command="interactivity:ControlCommands.Next" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,0" 
+                                    Style="{StaticResource ButtonCustom}" FocusVisualStyle="{DynamicResource ReloadedFocusVisual}">
+                                <Border Width="50" Height="100" Background="{DynamicResource DarkOpacityBrush}" CornerRadius="4">
+                                    <Path Margin="16" Fill="White" Style="{StaticResource RightPathStyle}"/>
+                                </Border>
+                            </Button>
+                        </hc:SimplePanel>
+                        <StackPanel Name="PART_PanelPage" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,30"/>
                     </hc:SimplePanel>
                 </ControlTemplate>
             </Setter.Value>

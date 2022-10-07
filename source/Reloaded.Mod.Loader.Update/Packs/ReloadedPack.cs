@@ -33,21 +33,24 @@ public class ReloadedPack : IConfig
     /// Tries to download this item to a given output folder.
     /// </summary>
     /// <param name="outFolder">The folder to download files inside. Each mod will be placed in a subfolder of this folder.</param>
+    /// <param name="items">The items that should be downloaded.</param>
     /// <param name="faultedItems">The list to receive that includes mods that didn't download quite right.</param>
     /// <param name="updaterData">Extra data used by the updater.</param>
     /// <param name="progress">Reports the download progress from 0 to 1.0.</param>
+    /// <param name="currentItemCallback">Reports back the current item.</param>
     /// <param name="token">This token can be used to cancel the download progress.</param>
     /// <returns>True if succeeded, else false.</returns>
-    public async Task<bool> TryDownloadAsync(string outFolder, List<TryDownloadResultForItem> faultedItems, UpdaterData updaterData, IProgress<double>? progress, CancellationToken token = default)
+    public async Task<bool> TryDownloadAsync(string outFolder, List<ReloadedPackItem> items, List<TryDownloadResultForItem> faultedItems, UpdaterData updaterData, IProgress<double>? progress, Action<ReloadedPackItem> currentItemCallback, CancellationToken token = default)
     {
         var slicer = new ProgressSlicer(progress);
-        var singleItemProgress = 1.0 / Items.Count;
+        var singleItemProgress = 1.0 / items.Count;
         Directory.CreateDirectory(outFolder);
         
-        for (var x = 0; x < Items.Count; x++)
+        for (var x = 0; x < items.Count; x++)
         {
-            var item  = Items[x];
+            var item  = items[x];
             var slice = slicer.Slice(singleItemProgress);
+            currentItemCallback?.Invoke(item);
             var downloadResult = await item.TryDownloadAsync(Path.Combine(outFolder, item.ModId), updaterData, slice, token);
             
             if (!downloadResult.Success)
@@ -57,7 +60,19 @@ public class ReloadedPack : IConfig
         progress?.Report(1);
         return faultedItems.Count <= 0;
     }
-    
+
+    /// <summary>
+    /// Tries to download this item to a given output folder.
+    /// </summary>
+    /// <param name="outFolder">The folder to download files inside. Each mod will be placed in a subfolder of this folder.</param>
+    /// <param name="faultedItems">The list to receive that includes mods that didn't download quite right.</param>
+    /// <param name="updaterData">Extra data used by the updater.</param>
+    /// <param name="progress">Reports the download progress from 0 to 1.0.</param>
+    /// <param name="currentItemCallback">Reports back the current item.</param>
+    /// <param name="token">This token can be used to cancel the download progress.</param>
+    /// <returns>True if succeeded, else false.</returns>
+    public async Task<bool> TryDownloadAsync(string outFolder, List<TryDownloadResultForItem> faultedItems, UpdaterData updaterData, IProgress<double>? progress, Action<ReloadedPackItem> currentItemCallback, CancellationToken token = default) => await TryDownloadAsync(outFolder, Items, faultedItems, updaterData, progress, currentItemCallback, token);
+
     /// <summary>
     /// The result of trying to download a specific item.
     /// </summary>

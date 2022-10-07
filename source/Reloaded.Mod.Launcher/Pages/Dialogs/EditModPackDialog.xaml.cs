@@ -1,5 +1,6 @@
 ﻿using Reloaded.Mod.Launcher.Pages.Dialogs.EditModPackPages;
 using Reloaded.Mod.Loader.Update.Packs;
+using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
@@ -60,8 +61,11 @@ public partial class EditModPackDialog : ReloadedWindow
 
     private void SavePack(object sender, RoutedEventArgs e) => Task.Run(() => ViewModel.SavePack());
 
-    private void PreviewPack(object sender, RoutedEventArgs e)
+    private async void PreviewPack(object sender, RoutedEventArgs e)
     {
-
+        var pack = await Task.Run(() => ViewModel.BuildPack(BmpImageConverter.Instance));
+        var reader = new ReloadedPackReader(pack);
+        var dialog = new InstallModPackDialog(new InstallModPackDialogViewModel(reader, Lib.IoC.Get<LoaderConfig>(), Lib.IoC.Get<AggregateNugetRepository>()));
+        dialog.ShowDialog();
     }
 }

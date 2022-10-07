@@ -70,7 +70,7 @@ public class ReloadedPackItem
             var updateResult = await manager.CheckForUpdatesAsync(token);
 
             if (updateResult.LastVersion == null)
-                return Fail("Could not determine last version. Were updates removed?", null);
+                return Fail("Could not determine last version. Did mod author remove updates?", null);
 
             if (updateResult.CanUpdate)
             {

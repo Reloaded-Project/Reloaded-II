@@ -85,9 +85,7 @@ public class EditModPackDialogViewModel : ObservableObject
             if (string.IsNullOrEmpty(filePath))
                 return;
 
-            var builder = new ReloadedPackBuilder();
-            Pack.ToBuilder(builder, JxlImageConverter.Instance);
-            var built = builder.Build(out _);
+            var built = BuildPack(JxlImageConverter.Instance);
             using var file = File.Open(filePath, FileMode.Create);
             built.Position = 0;
             built.CopyTo(file);
@@ -97,6 +95,18 @@ public class EditModPackDialogViewModel : ObservableObject
         {
             Errors.HandleException(e, Resources.ErrorFailedToSaveModPack.Get());
         }
+    }
+
+    /// <summary>
+    /// Builds the pack stored behind this ViewModel.
+    /// </summary>
+    /// <returns>The built pack.</returns>
+    public MemoryStream BuildPack(IImageConverter converter)
+    {
+        var builder = new ReloadedPackBuilder();
+        Pack.ToBuilder(builder, converter);
+        var built = builder.Build(out _);
+        return built;
     }
 
     /// <summary>

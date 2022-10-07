@@ -3,7 +3,7 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 /// <summary>
 /// Interaction logic for RunningProcessPage.xaml
 /// </summary>
-public partial class ReloadedProcessPage : ApplicationSubPage
+public partial class ReloadedProcessPage : ApplicationSubPage, IDisposable
 {
     public ReloadedAppViewModel ViewModel { get; set; }
     private bool _disposed;
@@ -15,7 +15,7 @@ public partial class ReloadedProcessPage : ApplicationSubPage
         ViewModel = new ReloadedAppViewModel(model);
     }
 
-    private void Dispose()
+    public void Dispose()
     {
         if (_disposed)
             return;

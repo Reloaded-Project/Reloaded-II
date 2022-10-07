@@ -5,7 +5,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs.EditModPackPages;
 /// <summary>
 /// Interaction logic for EditMainPackDetailsPage.xaml
 /// </summary>
-public partial class EditMainPackDetailsPage : ReloadedIIPage
+public partial class EditMainPackDetailsPage : ReloadedIIPage, IDisposable
 {
     public EditMainPackDetailsPageViewModel ViewModel { get; set; }
 
@@ -33,11 +33,7 @@ public partial class EditMainPackDetailsPage : ReloadedIIPage
         PreviewCarousel.HandleCarouselImageScrollOnController(state, ref handled);
     }
 
-    private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e)
-    {
-        ProcessExtensions.OpenHyperlink(e.Parameter.ToString()!);
-        e.Handled = true;
-    }
+    private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e) => ThemeHelpers.OpenHyperlink(sender, e);
 
     private void SetReadme_Click(object sender, RoutedEventArgs e) => ViewModel.SetReadme();
 
@@ -50,17 +46,6 @@ public partial class EditMainPackDetailsPage : ReloadedIIPage
     private async void AddImage_Click(object sender, RoutedEventArgs e)
     {
         ViewModel.AddImage();
-
-        // Scroll after delay.
-        // This works around a bug (for now) where it doesn't scroll the item to center when an item is added
-        // to the carousel. Should fix the carousel sometime though.
-        await Task.Delay(333);
-        var newIndex = ViewModel.Pack.Images.Count - 1;
-        if (newIndex == PreviewCarousel.PageIndex)
-            PreviewCarousel.PageIndex = -1;
-
-        PreviewCarousel.PageIndex = newIndex;
+        await PreviewCarousel.ForceUpdateCarouselIndex(ViewModel.Pack.Images.Count - 1);
     }
-
-    private void Page_RequestNavigate(object sender, RequestNavigateEventArgs e) => e.Handled = true;
 }

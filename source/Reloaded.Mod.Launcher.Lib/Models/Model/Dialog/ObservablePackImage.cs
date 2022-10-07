@@ -32,9 +32,17 @@ public class ObservablePackImage : ObservableObject
     public byte[] ToArray()
     {
         // Read Image
-        Image.Position = 0;
-        var result = GC.AllocateUninitializedArray<byte>((int)Image.Length);
-        Image.CopyTo(new MemoryStream(result));
-        return result;
+        var originalPos = Image.Position;
+        try
+        {
+            Image.Position = 0;
+            var result = GC.AllocateUninitializedArray<byte>((int)Image.Length);
+            Image.CopyTo(new MemoryStream(result));
+            return result;
+        }
+        finally
+        {
+            Image.Position = originalPos;
+        }
     }
 }

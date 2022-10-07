@@ -96,7 +96,7 @@ public static class FileSelectors
     {
         var dialog = new VistaSaveFileDialog();
         dialog.Title = Resources.ModPackSelectExistingTitle.Get();
-        dialog.Filter = $"{Resources.ModPackSelectExistingTypeName.Get()}|{PackConstants.Extension}";
+        dialog.Filter = $"{Resources.ModPackSelectExistingTypeName.Get()}|*{PackConstants.Extension}";
         if ((bool)dialog.ShowDialog()!)
         {
             if (!dialog.FileName.EndsWith(PackConstants.Extension))

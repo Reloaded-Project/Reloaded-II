@@ -5,7 +5,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs.EditModPackPages;
 /// <summary>
 /// Interaction logic for EditMainPackDetailsPage.xaml
 /// </summary>
-public partial class EditModPackDetailsPage : ReloadedIIPage
+public partial class EditModPackDetailsPage : ReloadedIIPage, IDisposable
 {
     public EditModPackDetailsPageViewModel ViewModel { get; set; }
 
@@ -63,7 +63,4 @@ public partial class EditModPackDetailsPage : ReloadedIIPage
 
         PreviewCarousel.PageIndex = newIndex;
     }
-
-    // TODO: Maybe deduplicate these.
-    private void Page_RequestNavigate(object sender, RequestNavigateEventArgs e) => e.Handled = true;
 }

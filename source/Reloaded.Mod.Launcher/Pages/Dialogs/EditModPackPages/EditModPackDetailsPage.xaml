@@ -8,7 +8,6 @@
                       xmlns:wpf="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
                       xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
                       mc:Ignorable="d" 
-                      Hyperlink.RequestNavigate="Page_RequestNavigate"
                       d:DesignHeight="704" 
                       d:DesignWidth="760">
 

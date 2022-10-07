@@ -177,4 +177,8 @@ public static class Resources
     // Update 1.21.0: Generic Image Selector
     public static IDictionaryResource<string> ImageSelectorTitle { get; set; }
     public static IDictionaryResource<string> ImageSelectorFilter { get; set; }
+
+    // Update 1.21.0: Mod Packs Install
+    public static IDictionaryResource<string> InstallModPackDownloading { get; set; }
+    public static IDictionaryResource<string> InstallModPackErrorDownloadFail { get; set; }
 }

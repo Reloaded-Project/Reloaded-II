@@ -21,11 +21,7 @@ public partial class ModUpdateDialog : ReloadedWindow
             this.Close();
     }
 
-    private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e)
-    {
-        ProcessExtensions.OpenHyperlink(e.Parameter.ToString()!);
-        e.Handled = true;
-    }
+    private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e) => ThemeHelpers.OpenHyperlink(sender, e);
 
     // Don't navigate hyperlinks in our markdown, thanks!
     // Not sure if this is needed on non Page items, but just in case.

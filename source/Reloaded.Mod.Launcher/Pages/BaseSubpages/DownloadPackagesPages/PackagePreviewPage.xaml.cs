@@ -172,15 +172,8 @@ public partial class PackagePreviewPage : ReloadedIIPage, IDisposable
                 };
         }
     }
-    
-    private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e)
-    {
-        ProcessExtensions.OpenHyperlink(e.Parameter.ToString()!);
-        e.Handled = true;
-    }
 
-    // Don't navigate hyperlinks in our markdown, thanks!
-    private void Page_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) => e.Handled = true;
+    private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e) => ThemeHelpers.OpenHyperlink(sender, e);
 
     private void WhenPageIndexChanged(int pageIndex)
     {
