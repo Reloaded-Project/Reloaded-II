@@ -40,6 +40,14 @@ public static class Startup
             result = true;
         }
 
+        // Check if Reloaded 2 Pack Download
+        if (_commandLineArguments.TryGetValue(Constants.ParameterR2PackDownload, out string? r2PackDlUrl))
+        {
+            InitControllerSupport();
+            DownloadAndOpenPackAndExit(r2PackDlUrl);
+            result = true;
+        }
+
         // Check if Reloaded 2 Pack
         if (_commandLineArguments.TryGetValue(Constants.ParameterR2Pack, out string? r2PackLocation))
         {
@@ -109,6 +117,19 @@ public static class Startup
         });
     }
 
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void DownloadAndOpenPackAndExit(string downloadUrl)
+    {
+        if (downloadUrl.StartsWith($"{Constants.ReloadedPackProtocol}:", StringComparison.InvariantCultureIgnoreCase))
+            downloadUrl = downloadUrl.Substring(Constants.ReloadedPackProtocol.Length + 1);
+
+        using var httpClient = new HttpClient();
+        var file = new MemoryStream(Task.Run(() => httpClient.GetByteArrayAsync(downloadUrl)).Result);
+        var config = IoC.Get<LoaderConfig>();
+        Actions.ShowInstallModPackDialog(new InstallModPackDialogViewModel(new ReloadedPackReader(file), config, new AggregateNugetRepository(config.NuGetFeeds)));
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
     private static void OpenPackAndExit(string r2PackLocation)
     {
         var reader = new ReloadedPackReader(new FileStream(r2PackLocation, FileMode.Open));

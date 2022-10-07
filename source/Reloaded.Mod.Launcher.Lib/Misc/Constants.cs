@@ -11,12 +11,14 @@ public static class Constants
     public const string ParameterArguments = "--arguments";
     public const string ParameterDownload  = "--download";
     public const string ParameterR2Pack = "--r2pack";
+    public const string ParameterR2PackDownload = "--r2packdl";
 
     public const string GitRepositoryAccount = "Reloaded-Project";
     public const string GitRepositoryName = "Reloaded-II";
     public const string GitRepositoryReleaseName = "Release.zip";
 
     public const string ReloadedProtocol = "R2";
+    public const string ReloadedPackProtocol = "R2Pack";
 
     public static readonly string ApplicationPath      = Process.GetCurrentProcess().MainModule!.FileName!;
     public static readonly string ApplicationDirectory = Path.GetDirectoryName(ApplicationPath)!;
