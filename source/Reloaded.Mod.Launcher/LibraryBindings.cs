@@ -32,7 +32,8 @@ public static class LibraryBindings
             showApplicationWarningDialog: ShowApplicationWarningDialog,
             showRunAppViaWineDialog: ShowRunAppViaWineDialog,
             showEditPackDialog: ShowEditPackDialog,
-            showInstallModPackDialog: ShowInstallModPackDialog
+            showInstallModPackDialog: ShowInstallModPackDialog,
+            initControllerSupport: ControllerSupport.Init
         );
     }
 

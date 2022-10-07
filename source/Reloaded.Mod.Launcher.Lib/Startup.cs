@@ -35,6 +35,7 @@ public static class Startup
         // Check if Download Mod
         if (_commandLineArguments.TryGetValue(Constants.ParameterDownload, out string? downloadUrl))
         {
+            InitControllerSupport();
             DownloadModAndExit(downloadUrl);
             result = true;
         }
@@ -42,6 +43,7 @@ public static class Startup
         // Check if Reloaded 2 Pack
         if (_commandLineArguments.TryGetValue(Constants.ParameterR2Pack, out string? r2PackLocation))
         {
+            InitControllerSupport();
             OpenPackAndExit(r2PackLocation);
             result = true;
         }
@@ -113,6 +115,8 @@ public static class Startup
         var config = IoC.Get<LoaderConfig>();
         Actions.ShowInstallModPackDialog(new InstallModPackDialogViewModel(reader, config, new AggregateNugetRepository(config.NuGetFeeds)));
     }
+
+    private static void InitControllerSupport() => Actions.InitControllerSupport();
 
     private static void StartGame(string applicationToLaunch, string arguments)
     {

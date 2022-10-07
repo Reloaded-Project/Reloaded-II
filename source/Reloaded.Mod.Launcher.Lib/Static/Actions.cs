@@ -108,6 +108,11 @@ public static class Actions
     public static ShowInstallModPackDialogDelegate ShowInstallModPackDialog { get; set; } = null!;
 
     /// <summary>
+    /// Initializes controller support.
+    /// </summary>
+    public static Action InitControllerSupport { get; set; } = null!;
+
+    /// <summary>
     /// Delegate used to display a message to user's screen.
     /// </summary>
     /// <param name="title">Title of the error.</param>
