@@ -38,6 +38,9 @@ public partial class App : Application
         Application.Current.ShutdownMode = originalMode;
         StartProfileOptimization();
         PrepareWebRequests();
+
+        var window = new MainWindow();
+        window.ShowDialog();
     }
 
     private void SetupResources()
