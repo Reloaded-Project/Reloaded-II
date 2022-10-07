@@ -45,5 +45,6 @@ public partial class InstallModDownloadPage : ReloadedIIPage
         var carousel = (Carousel)PreviewCarousel;
         await carousel.AddCaptionedImages(images, ViewModel.Reader);
         await PreviewCarousel.ForceUpdateCarouselIndex(0);
+        PreviewCarousel.AutoRun = true;
     }
 }

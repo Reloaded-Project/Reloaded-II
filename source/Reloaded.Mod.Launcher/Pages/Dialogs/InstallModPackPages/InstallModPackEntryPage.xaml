@@ -31,8 +31,7 @@
 
         <!-- Carousel -->
         <Viewbox Grid.Row="1" Width="650" Margin="{DynamicResource CommonItemVerticalMargin}">
-            <hc:Carousel Style="{DynamicResource ReloadedCarouselWithCaptions}" AutoRun="True"
-                         Width="640" Height="360" Loaded="OnCarouselLoaded" IsCenter="True" ExtendWidth="0" x:Name="PreviewCarousel" Focusable="False" />
+            <hc:Carousel Style="{DynamicResource ReloadedCarouselWithCaptions}" Width="640" Height="360" Loaded="OnCarouselLoaded" IsCenter="True" ExtendWidth="0" x:Name="PreviewCarousel" Focusable="False" />
 
         </Viewbox>
 

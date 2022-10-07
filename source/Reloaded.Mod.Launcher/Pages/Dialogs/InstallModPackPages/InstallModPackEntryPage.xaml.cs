@@ -1,4 +1,5 @@
 ﻿using System.Windows.Navigation;
+using ReverseMarkdown.Converters;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs.InstallModPackPages;
 
@@ -41,6 +42,7 @@ public partial class InstallModPackEntryPage : ReloadedIIPage, IDisposable
         var images = package.ImageFiles;
         await carousel.AddCaptionedImages(images, ViewModel.Owner.Reader);
         await PreviewCarousel.ForceUpdateCarouselIndex(0);
+        PreviewCarousel.AutoRun = true;
     }
 
     private void SubscribePreviewCustomInputs(in ControllerState state, ref bool handled) => PreviewCarousel.HandleCarouselImageScrollOnController(state, ref handled);
