@@ -30,6 +30,7 @@ public static class Setup
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             var setupServicesTask = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, SetupServices);
             RegisterReloadedProtocol();
+            RegisterR2Pack();
 
             updateText(Resources.SplashCreatingDefaultConfig.Get());
             backgroundTasks.Add(UpdateDefaultConfig()); // Fire and forget.
@@ -204,10 +205,20 @@ public static class Setup
         var classesSubKey = Registry.CurrentUser.OpenSubKey("Software", true)?.OpenSubKey("Classes", true);
 
         // Add a Reloaded Key.
-        RegistryKey reloadedProtocolKey = classesSubKey?.CreateSubKey($"{Constants.ReloadedProtocol}")!;
+        var reloadedProtocolKey = classesSubKey?.CreateSubKey($"{Constants.ReloadedProtocol}")!;
         reloadedProtocolKey?.SetValue("", $"URL:{Constants.ReloadedProtocol}");
         reloadedProtocolKey?.SetValue("URL Protocol", "");
         reloadedProtocolKey?.CreateSubKey(@"shell\open\command")?.SetValue("", $"\"{Path.ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe")}\" {Constants.ParameterDownload} %1");
+    }
+
+    private static void RegisterR2Pack()
+    {
+        // Get the user classes subkey.
+        var classesKey = Registry.CurrentUser.OpenSubKey("Software", true)?.OpenSubKey("Classes", true);
+
+        // Add an R2 Key.
+        var reloadedPackKey = classesKey?.CreateSubKey(Loader.Update.Packs.Constants.Extension);
+        reloadedPackKey?.CreateSubKey(@"shell\open\command")?.SetValue("", $"\"{Path.ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe")}\" {Constants.ParameterR2Pack} \"%1\"");
     }
 
     private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e) => Errors.HandleException((Exception) e.ExceptionObject);
