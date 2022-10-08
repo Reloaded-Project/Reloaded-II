@@ -83,6 +83,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Reloaded.Mod.Shared", "Relo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloaded.AutoIndexBuilder", "Tools\Reloaded.AutoIndexBuilder\Reloaded.AutoIndexBuilder.csproj", "{2A15B427-2008-40C4-9D45-A536AC67D433}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameBananaFixer", "Tools\GameBananaFixer\GameBananaFixer.csproj", "{F2C3D462-938F-4FD2-84B1-78FDD20439B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -511,6 +513,22 @@ Global
 		{2A15B427-2008-40C4-9D45-A536AC67D433}.Release-ModLoaderOnly|Any CPU.Build.0 = Release|Any CPU
 		{2A15B427-2008-40C4-9D45-A536AC67D433}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
 		{2A15B427-2008-40C4-9D45-A536AC67D433}.Release-ModLoaderOnly|X64+X86.Build.0 = Release|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Debug|X64+X86.ActiveCfg = Debug|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Debug|X64+X86.Build.0 = Debug|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Debug-ModLoaderOnly|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Debug-ModLoaderOnly|Any CPU.Build.0 = Debug|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Debug-ModLoaderOnly|X64+X86.ActiveCfg = Debug|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Debug-ModLoaderOnly|X64+X86.Build.0 = Debug|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Release|X64+X86.ActiveCfg = Release|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Release|X64+X86.Build.0 = Release|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Release-ModLoaderOnly|Any CPU.ActiveCfg = Release|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Release-ModLoaderOnly|Any CPU.Build.0 = Release|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2}.Release-ModLoaderOnly|X64+X86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -533,6 +551,7 @@ Global
 		{229E092C-5309-4077-9A09-70A5ADA3816D} = {D61BEC35-E70A-4C4D-B398-7D3E1A29D03B}
 		{EFEE7C5A-A1E7-44E8-9640-B0194146501C} = {197F0BD0-0209-48C4-BB46-B853A4BFA132}
 		{2A15B427-2008-40C4-9D45-A536AC67D433} = {E74AA64B-677C-4C35-8599-03B59982FDFC}
+		{F2C3D462-938F-4FD2-84B1-78FDD20439B2} = {E74AA64B-677C-4C35-8599-03B59982FDFC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {29C01A02-5EA4-442B-92BD-67EC119B4356}

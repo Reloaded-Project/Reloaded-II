@@ -67,6 +67,8 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
     {
         if (!(await TryAddResultsFromReleaseMetadataAsync(gbApiItem, results)))
             AddResultsFromRawFiles(gbApiItem, results);
+
+
     }
 
     private static void AddResultsFromRawFiles(GameBananaMod gbApiItem, ConcurrentBag<IDownloadablePackage> results)
@@ -109,6 +111,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                 };
 
                 GameBananaAddCommon(gbApiItem, file, package);
+                package.ExtraData = gbApiItem;
                 results.Add(package);
             }
         }
@@ -207,6 +210,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
                 package.MarkdownReadme = Singleton<Converter>.Instance.Convert(item.Description);
 
             GameBananaAddCommon(item, modFile!, package);
+            package.ExtraData = item;
             results.Add(package);
             return 1;
         }

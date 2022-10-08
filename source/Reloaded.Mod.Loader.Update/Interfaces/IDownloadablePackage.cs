@@ -102,6 +102,11 @@ public interface IDownloadablePackage : INotifyPropertyChanged
     public string[]? Tags { get; set; }
 
     /// <summary>
+    /// Extra data tied to this object.
+    /// </summary>
+    public object ExtraData { get; set; }
+
+    /// <summary>
     /// Downloads the package in question asynchronously.
     /// </summary>
     /// <param name="packageFolder">The folder containing all the packages.</param>

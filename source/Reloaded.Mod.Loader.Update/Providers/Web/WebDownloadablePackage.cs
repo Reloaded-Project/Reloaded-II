@@ -68,6 +68,9 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
     /// <inheritdoc />
     public string[]? Tags { get; set; }
 
+    /// <inheritdoc />
+    public object ExtraData { get; set; }
+
     private Uri _url;
 
     /// <summary>
@@ -103,7 +106,6 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
         // Start the modification download.
         using var httpClient = new HttpClient();
         var downloadProgress = progressSlicer.Slice(0.9);
-
 
         await using (var fileStream = new FileStream(tempFilePath, FileMode.OpenOrCreate))
         {

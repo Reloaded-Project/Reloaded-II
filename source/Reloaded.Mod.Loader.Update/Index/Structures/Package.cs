@@ -60,6 +60,9 @@ public class Package : IDownloadablePackage
     /// <inheritdoc />
     public string[]? Tags { get; set; }
 
+    /// <inheritdoc />
+    public object ExtraData { get; set; }
+
     /// <summary>
     /// URL needed to download this package.
     /// </summary>
