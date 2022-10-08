@@ -9,7 +9,6 @@
       mc:Ignorable="d" 
       d:DesignHeight="560" d:DesignWidth="950"
       Title="PackagePreviewPage"
-      Hyperlink.RequestNavigate="Page_RequestNavigate"
       xmlns:utility="clr-namespace:Reloaded.Mod.Launcher.Utility"
       xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl"
       xmlns:interactivity="clr-namespace:HandyControl.Interactivity;assembly=HandyControl">

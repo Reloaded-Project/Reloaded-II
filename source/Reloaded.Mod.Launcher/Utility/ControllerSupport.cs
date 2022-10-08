@@ -14,9 +14,14 @@ public static class ControllerSupport
 
     private static List<ProcessCustomInputsRoutedDelegate> _processCustomInputsPreview = new();
     private static List<ProcessCustomInputsRoutedDelegate> _processCustomInputs = new();
+    private static bool _isInit = false;
 
     public static void Init()
     {
+        if (_isInit)
+            return;
+
+        _isInit = true;
         var miscConfDir = Lib.IoC.Get<LoaderConfig>().GetMiscConfigDirectory();
         var savePath    = Path.Combine(miscConfDir, "Controller.json");
 

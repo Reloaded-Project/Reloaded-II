@@ -567,4 +567,61 @@
     <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">Full HTTP(s) link to your website.</sys:String> <!-- Shown as a placeholder -->
     <sys:String x:Key="ModManagerContextVisitWebsite">Visit Website</sys:String>
 
+    <!-- Update 1.21.0: Mod Packs: Dialog -->
+    <sys:String x:Key="CreateModPackTitle">Create Mod Pack</sys:String>
+
+    <sys:String x:Key="CreateModPackNote1">Only Eligible Mods are Shown.</sys:String>
+    <sys:String x:Key="CreateModPackNote2">Mods Must Support Updates to be Eligible.</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <!-- Update 1.21.0: Mod Packs: Editor -->
+    <sys:String x:Key="EditModPackTitle">Edit Mod Pack</sys:String>
+
+    <sys:String x:Key="ModPackImageTooltip">Note: Images in this carousel will be properly sized during install.&#x0a;You can ignore any aspect issues.</sys:String>
+    <sys:String x:Key="ModPackImageCaption">Image Caption</sys:String>
+
+    <sys:String x:Key="ModPackClickToEdit">Click To Edit</sys:String>
+    <sys:String x:Key="ModPackAddMod">Add Mod</sys:String>
+    <sys:String x:Key="ModPackAddModTooltip">Adds a mod to this pack.&#x0a;Note: This might take a while if a lot of images are present.</sys:String>
+    <sys:String x:Key="ModPackRemoveMod">Remove Mod</sys:String>
+    <sys:String x:Key="ModPackRemoveModTooltip">Removes last selected mod from this pack.</sys:String>
+    <sys:String x:Key="ModPackSaveReadme">Save Readme</sys:String>
+    <sys:String x:Key="ModPackSetReadme">Set Readme</sys:String>
+    <sys:String x:Key="ModPackAddImage">Add Image</sys:String>
+    <sys:String x:Key="ModPackRemoveImage">Remove Image</sys:String>
+    <sys:String x:Key="ModPackLoadExisting">Load Existing Pack</sys:String>
+    <sys:String x:Key="ModPackSavePack">Save Pack</sys:String>
+    <sys:String x:Key="ModPackPreviewPack">Test Pack</sys:String>
+
+    <sys:String x:Key="ModPackPackNameTooltip">Name of the pack, as displayed during install.</sys:String>
+    <sys:String x:Key="ModPackModNameTooltip">Name of the mod, as displayed during install.</sys:String>
+    <sys:String x:Key="ModPackImageAddTooltip">Adds a new image to the pack/mod.</sys:String>
+    <sys:String x:Key="ModPackImageRemoveTooltip">Removes the currently visible image.</sys:String>
+    <sys:String x:Key="ModPackDescriptionTooltip">Short description of the mod. 1 Line. User can expand to reveal full readme during install.</sys:String>
+    <sys:String x:Key="ModPackSetReadmeTooltip">Updates the full readme of the mod/pack. Readme uses Markdown (.md) format.</sys:String>
+    <sys:String x:Key="ModPackSaveReadmeTooltip">Saves the readme back to disk for editing in an external editor.</sys:String>
+
+    <sys:String x:Key="ModPackSelectExistingTitle">Select a Mod Pack (*.r2pack).</sys:String>
+    <sys:String x:Key="ModPackSelectExistingTypeName">R2 Mod Package</sys:String>
+    <sys:String x:Key="ErrorFailedToSaveModPack">Failed to Save Mod Pack</sys:String>
+
+    <!-- Update 1.21.0: Mod Packs: Installer -->
+    <sys:String x:Key="InstallModPackTitle">Install Mod Pack</sys:String>
+
+    <sys:String x:Key="InstallModPackEnableHeader">Download?</sys:String>
+    <sys:String x:Key="InstallModPackErrorDownloadFail">Some Mods Failed to Download</sys:String>
+
+    <sys:String x:Key="InstallModPackConfirmTitle">Confirm Mods To Download</sys:String>
+    <sys:String x:Key="InstallModPackConfirmDescription">Once you have doublechecked what you want, start the download.</sys:String>
+
+    <sys:String x:Key="InstallModPackDownloading">Downloading {0}...</sys:String> <!-- {0} is replaced by mod name -->
+    <sys:String x:Key="InstallModPackStart">Start</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackPrevious">Go Back</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackStartDownload">Start Downloading</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackInstall">Install This Mod</sys:String> <!-- Advances Page -->
+    <sys:String x:Key="InstallModPackSkip">Skip This Mod</sys:String> <!-- Advances Page -->
+
+    <!-- Update 1.21.0: Generic Image Selector -->
+    <sys:String x:Key="ImageSelectorTitle">Select an image.</sys:String>
+    <sys:String x:Key="ImageSelectorFilter">Image</sys:String>
+
 </ResourceDictionary>

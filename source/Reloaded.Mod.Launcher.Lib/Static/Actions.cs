@@ -98,6 +98,21 @@ public static class Actions
     public static ShowRunAppViaWineDialogDelegate ShowRunAppViaWineDialog { get; set; } = null!;
 
     /// <summary>
+    /// Shows a dialog that allows the user to edit an individual mod pack.
+    /// </summary>
+    public static ShowEditPackDialogDelegate ShowEditPackDialog { get; set; } = null!;
+
+    /// <summary>
+    /// Shows a dialog that allows the user to install an individual mod pack.
+    /// </summary>
+    public static ShowInstallModPackDialogDelegate ShowInstallModPackDialog { get; set; } = null!;
+
+    /// <summary>
+    /// Initializes controller support.
+    /// </summary>
+    public static Action InitControllerSupport { get; set; } = null!;
+
+    /// <summary>
     /// Delegate used to display a message to user's screen.
     /// </summary>
     /// <param name="title">Title of the error.</param>
@@ -256,9 +271,21 @@ public static class Actions
     /// </summary>
     /// <param name="viewModel">The ViewModel used for showing warnings about the application.</param>
     public delegate bool ShowApplicationWarningDialogDelegate(AddApplicationWarningDialogViewModel viewModel);
+    
+    /// <summary>
+    /// Shows a dialog that allows the user to edit an individual mod pack.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for editing the individual mod pack.</param>
+    public delegate bool ShowEditPackDialogDelegate(EditModPackDialogViewModel viewModel);
 
     /// <summary>
     /// Shows a dialog that displays information about running an application using Reloaded on Wine.
     /// </summary>
     public delegate bool ShowRunAppViaWineDialogDelegate();
+
+    /// <summary>
+    /// Shows a dialog that allows the user to install an individual mod pack.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for installing a mod pack.</param>
+    public delegate bool ShowInstallModPackDialogDelegate(InstallModPackDialogViewModel viewModel);
 }

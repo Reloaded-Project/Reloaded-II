@@ -35,7 +35,10 @@ public class DownloadPackagePreviewViewModel : ObservableObject
     /// </summary>
     public RelayCommand SelectLastItem { get; set; }
 
-    private ImageCacheService _cacheService;
+    /// <summary>
+    /// Provides access to the image caching service.
+    /// </summary>
+    public ImageCacheService CacheService { get; }
 
     /// <summary>
     /// Creates a viewmodel used to download a package.
@@ -48,20 +51,10 @@ public class DownloadPackagePreviewViewModel : ObservableObject
         DownloadModCommand = parent.DownloadModCommand;
         SelectNextItem = parent.SelectNextItem;
         SelectLastItem = parent.SelectLastItem;
-        _cacheService = IoC.GetConstant<ImageCacheService>();
+        CacheService = IoC.GetConstant<ImageCacheService>();
 
         // Select default image
         if (Package.Images is { Length: > 0 })
             SelectedImage = Package.Images[0];
-    }
-
-    /// <summary>
-    /// Downloads an image from given URI.
-    /// </summary>
-    /// <param name="uri">The URL to get the image from.</param>
-    /// <returns>Bytes of the image.</returns>
-    public async ValueTask<byte[]> DownloadImage(Uri uri)
-    {
-        return await _cacheService.GetOrDownloadFileFromUrl(uri, _cacheService.ModPreviewExpiration);
     }
 }

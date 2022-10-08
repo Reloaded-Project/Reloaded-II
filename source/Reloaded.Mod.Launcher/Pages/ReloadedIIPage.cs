@@ -1,3 +1,5 @@
+using System.Windows.Documents;
+using System.Windows.Navigation;
 using WindowViewModel = Reloaded.Mod.Launcher.Lib.Models.ViewModel.WindowViewModel;
 
 namespace Reloaded.Mod.Launcher.Pages;
@@ -12,6 +14,7 @@ public class ReloadedIIPage : ReloadedPage, INotifyPropertyChanged
     public ReloadedIIPage()
     {
         this.AnimateInFinished += OnAnimateInFinished;
+        this.AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(Page_RequestNavigate));
     }
 
     protected virtual void OnAnimateInFinished()
@@ -23,4 +26,6 @@ public class ReloadedIIPage : ReloadedPage, INotifyPropertyChanged
 
     // For automatic implementation via Fody.
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void Page_RequestNavigate(object sender, RequestNavigateEventArgs e) => e.Handled = true;
 }

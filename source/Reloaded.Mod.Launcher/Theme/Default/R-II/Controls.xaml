@@ -267,4 +267,16 @@
         <Setter Property="FontSize" Value="32"/>
     </Style>
 
+    <!-- Download Menu Title -->
+    <Style x:Key="ModPackTitleTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource RIIDefaultTextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLargest}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontBold}"/>
+    </Style>
+
+    <Style x:Key="ModPackSummaryTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource RIIDefaultTextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarger}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
 </ResourceDictionary>

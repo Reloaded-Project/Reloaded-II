@@ -1,0 +1,123 @@
+﻿<pages:ReloadedIIPage x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.EditModPackPages.EditModPackDetailsPage"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                      xmlns:hc="https://handyorg.github.io/handycontrol"
+                      xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
+                      xmlns:wpf="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
+                      xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+                      mc:Ignorable="d" 
+                      d:DesignHeight="704" 
+                      d:DesignWidth="760">
+
+    <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}" 
+          Margin="{DynamicResource PageMargin}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Preview -->
+        <Viewbox Grid.Row="0" MaxWidth="550">
+            <hc:Carousel Style="{DynamicResource ReloadedCarousel}" 
+                         ItemsSource="{Binding PackItem.Images, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="600" Height="360" 
+                         IsCenter="True" ExtendWidth="0" x:Name="PreviewCarousel" Focusable="False" 
+                         ToolTip="{DynamicResource ModPackImageTooltip}" ToolTipService.InitialShowDelay="0">
+                <hc:Carousel.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="600">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBox Grid.Row="0"
+                                     Style="{DynamicResource TextboxWithPlaceholder}" 
+                                     Tag="{DynamicResource ModPackImageCaption}"
+                                     Text="{Binding Caption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                                     VerticalAlignment="Stretch"/>
+
+                            <Image Source="{Binding ., Converter={x:Static converters:ObservablePackImageToBitmapConverter.Instance}}"
+                                   Grid.Row="1" />
+
+                        </Grid>
+                    </DataTemplate>
+                </hc:Carousel.ItemTemplate>
+            </hc:Carousel>
+        </Viewbox>
+
+        <!-- Readme -->
+        <wpf:MarkdownViewer Focusable="False" Grid.Row="1" 
+                            Markdown="{Binding PackItem.Readme, FallbackValue='No Description'}" Style="{DynamicResource MarkdownViewerTextOnly}">
+            <wpf:MarkdownViewer.CommandBindings>
+                <CommandBinding Command="{x:Static wpf:Commands.Hyperlink}" Executed="OpenHyperlink" />
+            </wpf:MarkdownViewer.CommandBindings>
+        </wpf:MarkdownViewer>
+
+        <!-- Settings -->
+        <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Grid.Row="2">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+                     Tag="{DynamicResource CreateModDialogDescription}"
+                     Text="{Binding PackItem.Summary, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                     ToolTip="{DynamicResource ModPackDescriptionTooltip}" ToolTipService.InitialShowDelay="0"
+                     VerticalAlignment="Center" Grid.ColumnSpan="5" Grid.Column="0" Grid.Row="0" />
+
+            <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+                     Tag="{DynamicResource CreateModDialogName}"
+                     Text="{Binding PackItem.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                     ToolTip="{DynamicResource ModPackModNameTooltip}" ToolTipService.InitialShowDelay="0"
+                     VerticalAlignment="Center"
+                     Grid.Column="0" Grid.Row="1" />
+
+            <Button Content="{DynamicResource ModPackSaveReadme}" 
+                    Style="{DynamicResource DefaultButton}" 
+                    Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                    ToolTip="{DynamicResource ModPackSaveReadmeTooltip}" ToolTipService.InitialShowDelay="0"
+                    Click="SaveReadme_Click" 
+                    Grid.Column="1" Grid.Row="1" />
+
+            <Button Content="{DynamicResource ModPackSetReadme}" 
+                    Style="{DynamicResource DefaultButton}" 
+                    Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                    ToolTip="{DynamicResource ModPackSetReadmeTooltip}" ToolTipService.InitialShowDelay="0"
+                    Click="SetReadme_Click" 
+                    Grid.Column="2" Grid.Row="1" />
+
+            <Button Content="{DynamicResource ModPackRemoveImage}" 
+                    Style="{DynamicResource DefaultButton}" 
+                    Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                    ToolTip="{DynamicResource ModPackImageRemoveTooltip}" ToolTipService.InitialShowDelay="0"
+                    Click="RemoveImage_Click" 
+                    Grid.Column="3" Grid.Row="1" />
+
+            <Button Content="{DynamicResource ModPackAddImage}" 
+                    Style="{DynamicResource DefaultButton}" 
+                    Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                    ToolTip="{DynamicResource ModPackImageAddTooltip}" ToolTipService.InitialShowDelay="0"
+                    Click="AddImage_Click"
+                    Grid.Column="4" Grid.Row="1" />
+
+        </Grid>
+    </Grid>
+
+</pages:ReloadedIIPage>

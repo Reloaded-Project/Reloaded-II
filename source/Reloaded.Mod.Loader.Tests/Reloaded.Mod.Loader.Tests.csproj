@@ -56,6 +56,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mods\Reloaded.Utils.Server\Reloaded.Utils.Server.csproj" />
+    <ProjectReference Include="..\Reloaded.Mod.Launcher.Lib\Reloaded.Mod.Launcher.Lib.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Community\Reloaded.Mod.Loader.Community.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
@@ -77,6 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Assets\R2Pack" />
     <Folder Include="Utility\" />
   </ItemGroup>
 

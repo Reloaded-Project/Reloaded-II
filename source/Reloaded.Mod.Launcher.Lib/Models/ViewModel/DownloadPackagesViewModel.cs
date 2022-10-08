@@ -77,17 +77,8 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// <inheritdoc />
     public DownloadPackagesViewModel(AggregateNugetRepository nugetRepository, ApplicationConfigService appConfigService)
     {
-        // Get package provider for individual games.
-        foreach (var appConfig in appConfigService.Items.ToArray())
-        {
-            var provider = PackageProviderFactory.GetProvider(appConfig, nugetRepository.Sources);
-            if (provider != null)
-                PackageProviders.Add(provider);
-        }
-
-        // Get package provider for all packages.
-        foreach (var nugetSource in nugetRepository.Sources)
-            PackageProviders.Add(new IndexedNuGetPackageProvider(nugetSource));
+        // Get providers for all games.
+        PackageProviders.AddRange(PackageProviderFactory.GetAllProviders(appConfigService.Items.ToArray(), nugetRepository.Sources));
 
         var allPackageProvider = new AggregatePackageProvider(PackageProviders.Select(x => x).ToArray(), Resources.DownloadPackagesAll.Get());
         PackageProviders.Add(allPackageProvider);

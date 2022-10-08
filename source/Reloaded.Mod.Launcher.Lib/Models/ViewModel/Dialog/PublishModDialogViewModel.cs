@@ -182,7 +182,7 @@ public class PublishModDialogViewModel : ObservableObject
     /// </summary>
     public void AddNewVersionFolder()
     {
-        var configFilePath = SelectConfigFile();
+        var configFilePath = FileSelectors.SelectModConfigFile();
         if (string.IsNullOrEmpty(configFilePath))
             return;
 
@@ -279,37 +279,15 @@ public class PublishModDialogViewModel : ObservableObject
     /// <summary>
     /// Lets the user select a new changelog path.
     /// </summary>
-    public void SetChangelogPath() => ChangelogPath = SelectMarkdownFile();
+    public void SetChangelogPath() => ChangelogPath = FileSelectors.SelectMarkdownFile();
 
     /// <summary>
     /// Lets the user select a new readme path.
     /// </summary>
-    public void SetReadmePath() => ReadmePath = SelectMarkdownFile();
+    public void SetReadmePath() => ReadmePath = FileSelectors.SelectMarkdownFile();
 
     private string GetModFolder() => Path.GetDirectoryName(_modTuple.Path)!;
     
-    private string SelectConfigFile()
-    {
-        var dialog = new VistaOpenFileDialog();
-        dialog.Title = Resources.PublishSelectConfigTitle.Get();
-        dialog.FileName = ModConfig.ConfigFileName;
-        dialog.Filter = $"{Resources.PublishSelectConfigFileTypeName.Get()}|ModConfig.json";
-        if ((bool)dialog.ShowDialog()!)
-            return dialog.FileName;
-
-        return "";
-    }
-
-    private string SelectMarkdownFile()
-    {
-        var dialog = new VistaOpenFileDialog();
-        dialog.Title = Resources.PublishSelectMarkdownTitle.Get();
-        dialog.Filter = $"{Resources.PublishSelectMarkdownTypeName.Get()}|*.md";
-        if ((bool)dialog.ShowDialog()!)
-            return dialog.FileName;
-
-        return "";
-    }
 
     private void RemoveSelectedOrLastItem(StringWrapper? item, ObservableCollection<StringWrapper> allItems)
     {

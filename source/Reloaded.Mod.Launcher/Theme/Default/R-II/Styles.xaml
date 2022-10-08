@@ -69,5 +69,44 @@
     <!-- The following styles will be automatically applied to new controls. -->
 
     <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource DefaultToolTip}"/>
+    
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Transitions xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+    
+    <!-- Border <==> Accent Dark Color -->
+    <Storyboard x:Key="BackgroundFadeBorderToAccentDark"
+                Storyboard.TargetProperty="Background.Color">
+        <ColorAnimation
+            From="{StaticResource BorderColor}"
+            To="{StaticResource AccentColorDark}"
+            Duration="{StaticResource ColorTransitionDuration}"
+        />
+    </Storyboard>
 
+    <Storyboard x:Key="BackgroundFadeAccentDarkToBorder"
+                Storyboard.TargetProperty="Background.Color">
+        <ColorAnimation
+            From="{StaticResource AccentColorDark}"
+            To="{StaticResource BorderColor}"
+            Duration="{StaticResource ColorTransitionDuration}"
+        />
+    </Storyboard>
+    
+    <Storyboard x:Key="BackgroundFadeBorderToAccentDarker"
+                Storyboard.TargetProperty="Background.Color">
+        <ColorAnimation
+            From="{StaticResource BorderColor}"
+            To="{StaticResource AccentColorDarker}"
+            Duration="{StaticResource ColorTransitionDuration}"
+        />
+    </Storyboard>
+
+    <Storyboard x:Key="BackgroundFadeAccentDarkerToBorder"
+                Storyboard.TargetProperty="Background.Color">
+        <ColorAnimation
+            From="{StaticResource AccentColorDarker}"
+            To="{StaticResource BorderColor}"
+            Duration="{StaticResource ColorTransitionDuration}"
+        />
+    </Storyboard>
+    
 </ResourceDictionary>

@@ -63,4 +63,7 @@
     <!-- SVG Icon Related Properties -->
     <Thickness x:Key="SVGIconToTextMargin">0,0,5,0</Thickness>
 
+    <!-- Create Pack Menu -->
+    <GridLength x:Key="PackEditorBarWidth">240</GridLength>
+
 </ResourceDictionary>

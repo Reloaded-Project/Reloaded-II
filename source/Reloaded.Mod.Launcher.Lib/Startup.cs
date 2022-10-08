@@ -1,4 +1,7 @@
+using Reloaded.Mod.Loader.Update.Packs;
+using Constants = Reloaded.Mod.Launcher.Lib.Misc.Constants;
 using Environment = System.Environment;
+using FileMode = System.IO.FileMode;
 
 namespace Reloaded.Mod.Launcher.Lib;
 
@@ -32,7 +35,24 @@ public static class Startup
         // Check if Download Mod
         if (_commandLineArguments.TryGetValue(Constants.ParameterDownload, out string? downloadUrl))
         {
+            InitControllerSupport();
             DownloadModAndExit(downloadUrl);
+            result = true;
+        }
+
+        // Check if Reloaded 2 Pack Download
+        if (_commandLineArguments.TryGetValue(Constants.ParameterR2PackDownload, out string? r2PackDlUrl))
+        {
+            InitControllerSupport();
+            DownloadAndOpenPackAndExit(r2PackDlUrl);
+            result = true;
+        }
+
+        // Check if Reloaded 2 Pack
+        if (_commandLineArguments.TryGetValue(Constants.ParameterR2Pack, out string? r2PackLocation))
+        {
+            InitControllerSupport();
+            OpenPackAndExit(r2PackLocation);
             result = true;
         }
 
@@ -96,6 +116,28 @@ public static class Startup
             Timeout = TimeSpan.FromSeconds(8)
         });
     }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void DownloadAndOpenPackAndExit(string downloadUrl)
+    {
+        if (downloadUrl.StartsWith($"{Constants.ReloadedPackProtocol}:", StringComparison.InvariantCultureIgnoreCase))
+            downloadUrl = downloadUrl.Substring(Constants.ReloadedPackProtocol.Length + 1);
+
+        using var httpClient = new HttpClient();
+        var file = new MemoryStream(Task.Run(() => httpClient.GetByteArrayAsync(downloadUrl)).Result);
+        var config = IoC.Get<LoaderConfig>();
+        Actions.ShowInstallModPackDialog(new InstallModPackDialogViewModel(new ReloadedPackReader(file), config, new AggregateNugetRepository(config.NuGetFeeds)));
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void OpenPackAndExit(string r2PackLocation)
+    {
+        var reader = new ReloadedPackReader(new FileStream(r2PackLocation, FileMode.Open));
+        var config = IoC.Get<LoaderConfig>();
+        Actions.ShowInstallModPackDialog(new InstallModPackDialogViewModel(reader, config, new AggregateNugetRepository(config.NuGetFeeds)));
+    }
+
+    private static void InitControllerSupport() => Actions.InitControllerSupport();
 
     private static void StartGame(string applicationToLaunch, string arguments)
     {
