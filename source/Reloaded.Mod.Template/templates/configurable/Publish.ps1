@@ -211,6 +211,7 @@ if ($ReadmePath) { $readmeFullPath = [System.IO.Path]::GetFullPath($ReadmePath) 
 
 ## => Script <= ##
 # Set Working Directory
+$UseScriptDirectory = [bool]::Parse($UseScriptDirectory)
 if ($UseScriptDirectory) {
     Split-Path $MyInvocation.MyCommand.Path | Push-Location
     [Environment]::CurrentDirectory = $PWD
