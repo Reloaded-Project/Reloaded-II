@@ -18,6 +18,36 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- Settings Popup -->
+        <Popup IsOpen="{Binding IsChecked, ElementName=SettingsBtn}" x:Name="OptionsPopup" StaysOpen="False" 
+               AllowsTransparency="True"
+               PlacementTarget="{Binding ElementName=SettingsBtn}"
+               Placement="Left"
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Top"
+               Panel.ZIndex="9999">
+            <Border Background="{DynamicResource TooltipBackgroundColorBrush}">
+
+                <!-- NuGet -->
+                <Button Margin="{DynamicResource CommonItemCombinedMargin}" 
+                        Command="{Binding ConfigureNuGetSourcesCommand}"
+                        VerticalAlignment="Stretch">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=NuGetBtnText, Path=ActualHeight}">
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryConfig}" />
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Text="{DynamicResource DownloadsMenuNuGetButton}" 
+                                   Name="NuGetBtnText"
+                                   FontSize="{DynamicResource FontSizeLarger}"
+                                   Style="{DynamicResource DefaultTextBlock}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+            </Border>
+        </Popup>
+
         <!-- Search -->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="{StaticResource CommonItemVerticalMarginSmall}">
             <Grid.ColumnDefinitions>
@@ -59,29 +89,10 @@
                 FontSize="{DynamicResource FontSizeLarger}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch" />
 
-            <!-- NuGet -->
-            <Button Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
-                    Command="{Binding ConfigureNuGetSourcesCommand}"
-                    Grid.Column="2"
-                    VerticalAlignment="Stretch">
-
-                <StackPanel Orientation="Horizontal" Margin="0,-50">
-                    <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=NuGetBtnText, Path=ActualHeight}">
-                        <Canvas Width="24" Height="24">
-                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryConfig}" />
-                        </Canvas>
-                    </Viewbox>
-                    <TextBlock Text="{DynamicResource DownloadsMenuNuGetButton}" 
-                               Name="NuGetBtnText"
-                               FontSize="{DynamicResource FontSizeLarger}"
-                               Style="{DynamicResource DefaultTextBlock}" VerticalAlignment="Center" />
-                </StackPanel>
-            </Button>
-
             <!-- Download -->
             <Button Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
                     Command="{Binding DownloadModCommand, UpdateSourceTrigger=PropertyChanged}"
-                    Grid.Column="3"
+                    Grid.Column="2"
                     VerticalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal" Margin="0,-50">
                     <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadBtnText, Path=ActualHeight}">
@@ -96,6 +107,18 @@
                                Style="{DynamicResource DefaultTextBlock}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
+
+            <!-- Settings Popup -->
+            <ToggleButton Grid.Column="3" x:Name="SettingsBtn"
+                          Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+                          IsHitTestVisible="{Binding ElementName=OptionsPopup, Path=IsOpen, Mode=OneWay, Converter={x:Static converters:BooleanInverterConverter.Instance}}"
+                          Style="{DynamicResource PopupToggleButton}">
+                <Viewbox>
+                    <Canvas Width="24" Height="24">
+                        <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryConfig}" />
+                    </Canvas>
+                </Viewbox>
+            </ToggleButton>
 
             <!-- Prev/Next -->
             <!-- Icons sourced from https://materialdesignicons.com, under MIT -->
