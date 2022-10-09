@@ -27,10 +27,11 @@ public unsafe class ProcessCrashHook
     [UnmanagedCallersOnly(CallConvs = new []{ typeof(CallConvStdcall) })]
     private static int CrashHandlerImpl(IntPtr exceptionPointers)
     {
+        var result = _unhandledExceptionFilterHook.OriginalFunction.Value.Invoke(exceptionPointers);
         _handleCrash(exceptionPointers);
-        return _unhandledExceptionFilterHook.OriginalFunction.Value.Invoke(exceptionPointers);
+        return result;
     }
-    
+
     [Hooks.Definitions.X64.Function(Hooks.Definitions.X64.CallingConventions.Microsoft)]
     [Hooks.Definitions.X86.Function(Hooks.Definitions.X86.CallingConventions.Stdcall)]
     public struct UnhandledExceptionFilterFuncPtr { public FuncPtr<IntPtr, int> Value; }
