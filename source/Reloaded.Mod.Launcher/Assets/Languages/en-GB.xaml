@@ -624,4 +624,8 @@
     <sys:String x:Key="ImageSelectorTitle">Select an image.</sys:String>
     <sys:String x:Key="ImageSelectorFilter">Image</sys:String>
 
+    <!-- Update 1.22.0: Download Package Settings -->
+    <sys:String x:Key="DownloadPackagesSettingHide">Hide Installed</sys:String>
+    <sys:String x:Key="DownloadPackagesSettingHideTooltip">Hides already installed mods where possible.&#x0a;(Supports NuGet &amp; 'Publish' exported mods.)</sys:String>
+
 </ResourceDictionary>

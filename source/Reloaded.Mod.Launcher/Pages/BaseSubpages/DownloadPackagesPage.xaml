@@ -8,10 +8,16 @@
       xmlns:utility="clr-namespace:Reloaded.Mod.Launcher.Utility"
       xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
       xmlns:panels="clr-namespace:Reloaded.Mod.Launcher.Controls.Panels"
+      xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="756"
       Title="{DynamicResource TitleDownloadMods}">
     <Grid x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+
+        <Grid.Resources>
+            <CollectionViewSource x:Key="FilteredPackages" Source="{Binding SearchResult, UpdateSourceTrigger=PropertyChanged}" IsLiveFilteringRequested="True"/>
+        </Grid.Resources>
+
         <!-- Actual Grid -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -26,25 +32,34 @@
                HorizontalAlignment="Right" 
                VerticalAlignment="Top"
                Panel.ZIndex="9999">
-            <Border Background="{DynamicResource TooltipBackgroundColorBrush}">
+            <Border Background="{DynamicResource TooltipBackgroundColorBrush}" Padding="{DynamicResource TooltipPaddingSize}" CornerRadius="{DynamicResource TooltipCornerRadius}">
 
-                <!-- NuGet -->
-                <Button Margin="{DynamicResource CommonItemCombinedMargin}" 
-                        Command="{Binding ConfigureNuGetSourcesCommand}"
-                        VerticalAlignment="Stretch">
+                <!-- Hide Installed Toggle -->
+                <StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=NuGetBtnText, Path=ActualHeight}">
-                            <Canvas Width="24" Height="24">
-                                <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryConfig}" />
-                            </Canvas>
-                        </Viewbox>
-                        <TextBlock Text="{DynamicResource DownloadsMenuNuGetButton}" 
-                                   Name="NuGetBtnText"
-                                   FontSize="{DynamicResource FontSizeLarger}"
-                                   Style="{DynamicResource DefaultTextBlock}" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Button>
+                    <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
+                              Content="{DynamicResource DownloadPackagesSettingHide}"
+                              IsChecked="{Binding HideInstalled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              ToolTip="{DynamicResource DownloadPackagesSettingHideTooltip}" ToolTipService.InitialShowDelay="0"/>
+
+                    <!-- NuGet -->
+                    <Button Margin="{DynamicResource CommonItemCombinedMargin}" 
+                            Command="{Binding ConfigureNuGetSourcesCommand}"
+                            VerticalAlignment="Stretch">
+
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=NuGetBtnText, Path=ActualHeight}">
+                                <Canvas Width="24" Height="24">
+                                    <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryConfig}" />
+                                </Canvas>
+                            </Viewbox>
+                            <TextBlock Text="{DynamicResource DownloadsMenuNuGetButton}" 
+                                       Name="NuGetBtnText"
+                                       FontSize="{DynamicResource FontSizeLarger}"
+                                       Style="{DynamicResource DefaultTextBlock}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </Border>
         </Popup>
 
@@ -154,7 +169,7 @@
         <ListView Focusable="False"
                   Grid.Row="1"
                   HorizontalAlignment="Stretch"
-                  ItemsSource="{Binding SearchResult, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                  ItemsSource="{Binding Source={StaticResource FilteredPackages}}"
                   SelectedItem="{Binding SelectedResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   VerticalAlignment="Stretch"
                   VerticalContentAlignment="Top"

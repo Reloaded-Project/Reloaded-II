@@ -12,16 +12,25 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
 
     private ImageCacheService _cacheService;
     private bool _disposed;
-    
-    public DownloadPackagesPage()
+    private CollectionViewSource _packageViewSource;
+    private ModConfigService _modConfService;
+
+    public DownloadPackagesPage(ModConfigService modConfService)
     {
         SwappedOut += Dispose;
+        _modConfService = modConfService;
         InitializeComponent();
+
+        var manipulator = new DictionaryResourceManipulator(this.Contents.Resources);
+        _packageViewSource = manipulator.Get<CollectionViewSource>("FilteredPackages");
+        _packageViewSource.Filter += FilterDisplayedPackages;
+
         _cacheService = Lib.IoC.GetConstant<ImageCacheService>();
         ViewModel = Lib.IoC.Get<DownloadPackagesViewModel>();
         ViewModel.SelectNextItem.AfterExecute += o => OpenPackagePreviewPage(SlideDirection.Right, SlideDirection.Left);
         ViewModel.SelectLastItem.AfterExecute += o => OpenPackagePreviewPage(SlideDirection.Left, SlideDirection.Right);
         ControllerSupport.SubscribeCustomInputs(ProcessEvents);
+        ViewModel.PropertyChanged += OnFilterPropertiesChanged;
     }
 
     public void Dispose()
@@ -36,6 +45,25 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
     
     private async void Last_Click(object sender, RoutedEventArgs e) => await ViewModel.GoToLastPage();
     private async void Next_Click(object sender, RoutedEventArgs e) => await ViewModel.GoToNextPage();
+
+    private void FilterDisplayedPackages(object sender, FilterEventArgs e)
+    {
+        var item = (IDownloadablePackage)e.Item;
+        e.Accepted = true;
+
+        // Filter by ID
+        if (ViewModel.HideInstalled && !string.IsNullOrEmpty(item.Id))
+        {
+            if (_modConfService.ItemsById.ContainsKey(item.Id))
+                e.Accepted = false;
+        }
+    }
+
+    private void OnFilterPropertiesChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModel.HideInstalled))
+            _packageViewSource.View.Refresh();
+    }
 
     /// <summary>
     /// Asynchronously loads the image for this control.
@@ -118,13 +146,11 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
         }
     }
 
-
     private void HandleCardSelect(IDownloadablePackage package)
     {
         ViewModel.SelectedResult = package;
         OpenPackagePreviewPage(SlideDirection.Top, SlideDirection.Bottom);
     }
-
 
     private void OpenPackagePreviewPage(SlideDirection newPageEnterDirection, SlideDirection oldPageLeaveDirection)
     {

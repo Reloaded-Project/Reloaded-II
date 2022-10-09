@@ -46,6 +46,11 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     public bool CanGoToNextPage { get; set; } = true;
 
     /// <summary>
+    /// Hide already installed mods.
+    /// </summary>
+    public bool HideInstalled { get; set; } = false;
+
+    /// <summary>
     /// List of all available package providers.
     /// </summary>
     public ObservableCollection<IDownloadablePackageProvider> PackageProviders { get; set; } = new();
