@@ -30,7 +30,7 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
         ViewModel.SelectNextItem.AfterExecute += o => OpenPackagePreviewPage(SlideDirection.Right, SlideDirection.Left);
         ViewModel.SelectLastItem.AfterExecute += o => OpenPackagePreviewPage(SlideDirection.Left, SlideDirection.Right);
         ControllerSupport.SubscribeCustomInputs(ProcessEvents);
-        ViewModel.PropertyChanged += OnFilterPropertiesChanged;
+        ViewModel.PropertyChanged += WhenFilterPropertiesChanged;
     }
 
     public void Dispose()
@@ -59,7 +59,7 @@ public partial class DownloadPackagesPage : ReloadedIIPage, IDisposable
         }
     }
 
-    private void OnFilterPropertiesChanged(object? sender, PropertyChangedEventArgs e)
+    private void WhenFilterPropertiesChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(ViewModel.HideInstalled))
             _packageViewSource.View.Refresh();

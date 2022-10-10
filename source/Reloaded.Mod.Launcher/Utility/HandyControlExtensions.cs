@@ -133,6 +133,6 @@ public static class HandyControlExtensions
 /// </summary>
 public class CaptionedCarouselItem
 {
-    public BitmapImage BitmapImage { get; set; }
+    public BitmapImage BitmapImage { get; set; } = null!;
     public string? Caption { get; set; }
 }
