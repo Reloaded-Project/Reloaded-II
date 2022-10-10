@@ -20,10 +20,16 @@ public class NuGetPackageProvider : IDownloadablePackageProvider
     /// <inheritdoc />
     public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default)
     {
-        var searchResults = await GetSearchResults(text, skip, take, token);
+        var searchResults = (await GetSearchResults(text, skip, take, token)).ToArray();
         var result = new List<IDownloadablePackage>();
-        foreach (var res in searchResults)
-            result.Add(await WebDownloadablePackage.FromNuGetAsync(res, _repository, true, true));
+        var tasks = new Task<WebDownloadablePackage>[searchResults.Length];
+
+        for (var x = 0; x < searchResults.Length; x++)
+            tasks[x] = WebDownloadablePackage.FromNuGetAsync(searchResults[x], _repository, true, true);
+
+        await Task.WhenAll(tasks);
+        foreach (var task in tasks)
+            result.Add(task.Result);
 
         return result;
     }

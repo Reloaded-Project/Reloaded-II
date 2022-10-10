@@ -194,7 +194,7 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
 
         var resolver = GetNuGetUpdateResolver(pkg, repository);
         result._url = new Uri((await resolver.GetDownloadUrlAsync(pkg.Identity.Version, new ReleaseMetadataVerificationInfo(), CancellationToken.None))!);
-        _ = InitNuGetAsyncData(result, pkg, repository, resolver, getReadme, getReleaseNotes);
+        await InitNuGetAsyncData(result, pkg, repository, resolver, getReadme, getReleaseNotes);
 
         if (pkg.IconUrl != null)
             result.Images = new[] { new DownloadableImage() { Uri = pkg.IconUrl } };
