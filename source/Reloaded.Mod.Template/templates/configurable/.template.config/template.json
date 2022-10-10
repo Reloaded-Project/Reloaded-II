@@ -71,6 +71,11 @@
                         "Config.cs",
                         "Template/Configuration/**"
                     ]
+                },
+                {
+                    "copyOnly": [
+                        "Reloaded.Trimming.targets"
+                    ]
                 }
             ]
         }
