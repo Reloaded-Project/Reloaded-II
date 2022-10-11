@@ -31,7 +31,7 @@
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.0" />
     <PackageReference Include="NuGet.Packaging" Version="6.3.0" />
     <PackageReference Include="NuGet.Packaging.Core" Version="6.3.0" />
-    <PackageReference Include="NuGet.Protocol" Version="6.3.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.3.1" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
