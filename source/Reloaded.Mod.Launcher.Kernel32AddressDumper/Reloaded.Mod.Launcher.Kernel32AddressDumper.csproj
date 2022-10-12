@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <LangVersion>preview</LangVersion>
     <AssemblyName>Kernel32AddressDumper</AssemblyName>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>..\Output\Launcher\Loader\</OutputPath>
     <AssemblyTitle>Reloaded.Mod.Launcher.Kernel32AddressDumper</AssemblyTitle>

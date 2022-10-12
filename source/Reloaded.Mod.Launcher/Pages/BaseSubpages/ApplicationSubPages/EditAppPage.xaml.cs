@@ -37,7 +37,7 @@ public partial class EditAppPage : ReloadedIIPage, IDisposable
 
     private async void SaveSelectedItemOnAnimateOut() => await ViewModel.SaveSelectedItemAsync();
 
-    private async void OnMainWindowClosing(object sender, CancelEventArgs e) => await ViewModel.SaveSelectedItemAsync();
+    private async void OnMainWindowClosing(object? sender, CancelEventArgs e) => await ViewModel.SaveSelectedItemAsync();
 
     private void Image_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => ViewModel.SetAppImage();
 

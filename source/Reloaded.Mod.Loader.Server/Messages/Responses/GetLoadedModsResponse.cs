@@ -37,5 +37,6 @@ public struct GetLoadedModsResponse : IMessage<GetLoadedModsResponse, MessagePac
     public GetLoadedModsResponse() 
     {
         Mods = Array.Empty<ServerModInfo>();
+        Key = new MessageKey();
     }
 }

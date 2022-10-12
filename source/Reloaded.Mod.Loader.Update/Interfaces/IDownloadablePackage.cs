@@ -155,6 +155,8 @@ public struct DownloadableImage : INotifyPropertyChanged
     // Binding
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
+    
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
 /// <summary>
@@ -187,6 +189,8 @@ public struct DownloadableImageThumbnail : INotifyPropertyChanged
     // Binding
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
+    
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
 /// <summary>
@@ -220,4 +224,5 @@ public struct Submitter : INotifyPropertyChanged
     // For binding
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

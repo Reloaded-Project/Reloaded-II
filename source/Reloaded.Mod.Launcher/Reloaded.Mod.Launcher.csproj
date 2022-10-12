@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
-      <LangVersion>preview</LangVersion>
+    <TargetFramework>net7.0-windows</TargetFramework>
+	  <LangVersion>preview</LangVersion>
 	  <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
@@ -14,7 +14,6 @@
 	  <OutputPath>..\Output\Launcher\</OutputPath>
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	  <RuntimeFrameworkVersion>5.0.1</RuntimeFrameworkVersion>
     <Nullable>enable</Nullable>
     <Deterministic>true</Deterministic>
     <ImplicitUsings>enable</ImplicitUsings>

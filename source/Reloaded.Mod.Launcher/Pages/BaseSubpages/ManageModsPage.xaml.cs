@@ -42,7 +42,7 @@ public partial class ManageModsPage : ReloadedIIPage, IDisposable
         _mainWindow.Closing -= OnMainWindowClosing;
     }
 
-    private void OnMainWindowClosing(object sender, CancelEventArgs e) => Dispose();
+    private void OnMainWindowClosing(object? sender, CancelEventArgs e) => Dispose();
 
     private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _modsViewSource.View.Refresh();
     private void AppsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _appsViewSource.View.Refresh();

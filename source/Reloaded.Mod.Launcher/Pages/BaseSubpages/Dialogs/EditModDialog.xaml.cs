@@ -16,7 +16,7 @@ public partial class EditModDialog : ReloadedWindow
         this.Closing += OnClosing;
     }
 
-    private void OnClosing(object sender, CancelEventArgs e)
+    private void OnClosing(object? sender, CancelEventArgs e)
     {
         RealViewModel.Save();
         RealViewModel.Dispose(); // Unbind Constant.

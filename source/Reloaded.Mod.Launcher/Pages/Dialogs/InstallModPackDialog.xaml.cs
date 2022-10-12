@@ -20,7 +20,7 @@ public partial class InstallModPackDialog : ReloadedWindow
         this.Closing += OnClosing;
     }
 
-    private void OnClosing(object sender, CancelEventArgs e)
+    private void OnClosing(object? sender, CancelEventArgs e)
     {
         if (PageHost.CurrentPage is IDisposable disposable)
             disposable.Dispose();

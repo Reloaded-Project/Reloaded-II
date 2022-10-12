@@ -14,5 +14,5 @@ public partial class EditModUserConfigDialog : ReloadedWindow
         this.Closing += OnClosing;
     }
 
-    private async void OnClosing(object sender, CancelEventArgs e) => await RealViewModel.SaveAsync();
+    private async void OnClosing(object? sender, CancelEventArgs e) => await RealViewModel.SaveAsync();
 }
