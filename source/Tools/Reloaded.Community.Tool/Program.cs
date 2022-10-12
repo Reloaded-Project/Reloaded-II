@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+using Reloaded.Community.Tool.Serialization;
 using Index = Reloaded.Mod.Loader.Community.Config.Index;
 
 namespace Reloaded.Community.Tool;
@@ -91,7 +93,7 @@ public class Program
         Console.WriteLine(JsonSerializer.Serialize(item, new JsonSerializerOptions()
         {
             WriteIndented = true,
-            IgnoreNullValues = false
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
         }));
     }
 
@@ -127,10 +129,5 @@ public class Program
         {
             return new GameBananaProviderConfig();
         }
-    }
-
-    private class GameBananaProviderConfig : IConfig<GameBananaProviderConfig>
-    {
-        public int GameId { get; set; } = 0;
     }
 }

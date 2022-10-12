@@ -53,4 +53,11 @@ public class ModUserConfig : ObservableObject, IConfig<ModUserConfig>, IModUserC
     /// <param name="modId">Id for the mod to get the user config for.</param>
     /// <param name="configDirectory">The directory containing the user configurations.</param>
     public static string GetUserConfigPathForMod(string modId, string configDirectory = null) => Path.Combine(GetUserConfigFolderForMod(modId, configDirectory), ConfigFileName);
+
+    // Reflection-less JSON
+    public static JsonTypeInfo<ModUserConfig> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = true;
+        return ModUserConfigContext.Default.ModUserConfig;
+    }
 }

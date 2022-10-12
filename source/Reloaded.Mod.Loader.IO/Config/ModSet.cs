@@ -29,4 +29,11 @@ public class ModSet : ObservableObject, IConfig<ModSet>
     {
         EnabledMods ??= EmptyArray<string>.Instance;
     }
+
+    // Reflection-less JSON
+    public static JsonTypeInfo<ModSet> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = true;
+        return ModSetContext.Default.ModSet;
+    }
 }

@@ -40,5 +40,17 @@ public class GameBananaPackageProviderFactory : IPackageProviderFactory
         [Description("Id of the game on GameBanana, this is the last number in the URL to the game page.\n" +
                      "e.g. 6061 if your game URL is https://gamebanana.com/games/6061.")]
         public int GameId { get; set; } = 0;
+
+        // Reflection-less JSON
+        /// <inheritdoc />
+        public static JsonTypeInfo<GameBananaProviderConfig> GetJsonTypeInfo(out bool supportsSerialize)
+        {
+            supportsSerialize = true;
+            return GameBananaProviderConfigContext.Default.GameBananaProviderConfig;
+        }
     }
 }
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(GameBananaPackageProviderFactory.GameBananaProviderConfig))]
+internal partial class GameBananaProviderConfigContext : JsonSerializerContext { }

@@ -73,6 +73,14 @@ public class DependencyResolverMetadata<TConfig> : IConfig<DependencyResolverMet
     /// Maps a list of individual ids to configurations.
     /// </summary>
     public Dictionary<string, DependencyResolverItem<TConfig>> IdToConfigMap { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+
+    // Reflection-less JSON
+    /// <inheritdoc />
+    public static JsonTypeInfo<DependencyResolverMetadata<TConfig>> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = false;
+        return null!;
+    }
 }
 
 /// <summary/>

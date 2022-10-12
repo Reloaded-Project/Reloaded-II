@@ -130,6 +130,14 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
                      "e.g. *update.zip will look for any file ending with 'update.zip'\n" +
                      "For backwards compatibility only. Do not use with new mods.")]
         public string AssetFileName { get; set; } = "Mod.zip";
+
+        // Reflection-free JSON
+        /// <inheritdoc />
+        public static JsonTypeInfo<GitHubConfig> GetJsonTypeInfo(out bool supportsSerialize)
+        {
+            supportsSerialize = true;
+            return GitHubConfigContext.Default.GitHubConfig;
+        }
     }
         
     /// <summary>
@@ -147,5 +155,22 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
         /// Overrides the global setting to enable or disable prereleases.
         /// </summary>
         public bool EnablePrereleases { get; set; } = false;
+
+        // Reflection-free JSON
+        /// <inheritdoc />
+        public static JsonTypeInfo<GitHubUserConfig> GetJsonTypeInfo(out bool supportsSerialize)
+        {
+            supportsSerialize = true;
+            return GitHubUserConfigContext.Default.GitHubUserConfig;
+        }
     }
 }
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(GitHubReleasesUpdateResolverFactory.GitHubConfig))]
+internal partial class GitHubConfigContext : JsonSerializerContext { }
+
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(GitHubReleasesUpdateResolverFactory.GitHubUserConfig))]
+internal partial class GitHubUserConfigContext : JsonSerializerContext { }

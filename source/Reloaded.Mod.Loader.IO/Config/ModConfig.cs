@@ -419,6 +419,13 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
         SupportedAppId ??= EmptyArray<string>.Instance;
     }
 
+    // Reflection-less JSON
+    public static JsonTypeInfo<ModConfig> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = false;   
+        return ModConfigContext.Default.ModConfig;
+    }
+
     /*
        ---------
        Overrides

@@ -145,6 +145,14 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
         [Description("URL to the NuGet repositories to use to check for updates for this mod.\n" +
                      "Right click to add and remove items.")]
         public ObservableCollection<StringWrapper> DefaultRepositoryUrls { get; set; } = new ObservableCollection<StringWrapper>();
+
+        // Reflection-less serialization.
+        /// <inheritdoc />
+        public static JsonTypeInfo<NuGetConfig> GetJsonTypeInfo(out bool supportsSerialize)
+        {
+            supportsSerialize = true;
+            return NuGetConfigContext.Default.NuGetConfig;
+        }
     }
 
     /// <summary>
@@ -153,3 +161,7 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static void SetNowTime(DateTime newNowTime) => Now = newNowTime;
 }
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(NuGetUpdateResolverFactory.NuGetConfig))]
+internal partial class NuGetConfigContext : JsonSerializerContext { }

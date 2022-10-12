@@ -93,5 +93,17 @@ public class GameBananaUpdateResolverFactory : IUpdateResolverFactory
                      "e.g. 150115 if your mod URL is https://gamebanana.com/mods/150115.\n" +
                      "To get the URL to your mod page, you might need to upload your mod first as private.")]
         public long ItemId { get; set; }
+
+        // Reflection-less JSON
+        /// <inheritdoc />
+        public static JsonTypeInfo<GameBananaConfig> GetJsonTypeInfo(out bool supportsSerialize)
+        {
+            supportsSerialize = true;
+            return GameBananaConfigContext.Default.GameBananaConfig;
+        }
     }
 }
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(GameBananaUpdateResolverFactory.GameBananaConfig))]
+internal partial class GameBananaConfigContext : JsonSerializerContext { }
