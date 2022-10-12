@@ -1,4 +1,3 @@
-using NuGet.Protocol.Core.Types;
 using System.Reflection;
 
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget;
@@ -74,8 +73,9 @@ public class NugetRepository : INugetRepository
         try
         {
             var package = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
-            if (package.Any())
-                return await DownloadPackageAsync(package.Last(), token).ConfigureAwait(false);
+            var last = package.LastOrDefault();
+            if (last != null)
+                return await DownloadPackageAsync(last, token).ConfigureAwait(false);
 
             return new DownloadResourceResult(DownloadResourceResultStatus.NotFound);
         }
