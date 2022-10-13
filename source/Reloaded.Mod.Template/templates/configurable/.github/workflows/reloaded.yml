@@ -31,6 +31,8 @@ env:
   
   PUBLISH_CHANGELOG_PATH: ./Publish/Changelog.md
   PUBLISH_PATH: ./Publish
+  
+  RELOADEDIIMODS: .
 
   # Default value is official Reloaded package server.  
   NUGET_URL: http://packages.sewer56.moe:5000/v3/index.json
