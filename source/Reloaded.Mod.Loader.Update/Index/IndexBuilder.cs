@@ -108,7 +108,7 @@ public class IndexBuilder
         // Number of items to grab at once.
         const int Take = 500;
 
-        var provider = new NuGetPackageProvider(NugetRepository.FromSourceUrl(indexSourceEntry.NuGetUrl!));
+        var provider = new NuGetPackageProvider(NugetRepository.FromSourceUrl(indexSourceEntry.NuGetUrl!), null, false);
 
         var packagesList = PackageList.Create();
         await SearchForAllResults(Take, provider, packagesList);

@@ -7,12 +7,14 @@ public class NuGetPackageProvider : IDownloadablePackageProvider
 {
     private readonly INugetRepository _repository;
     private readonly string? _appId;
+    private readonly bool _getExtraDataAsync;
 
     private List<IPackageSearchMetadata>? _itemsForThisAppId;
 
     /// <summary/>
-    public NuGetPackageProvider(INugetRepository repository, string? appId = null)
+    public NuGetPackageProvider(INugetRepository repository, string? appId = null, bool getExtraDataAsync = true)
     {
+        _getExtraDataAsync = getExtraDataAsync;
         _repository = repository;
         _appId = appId;
     }
@@ -25,7 +27,7 @@ public class NuGetPackageProvider : IDownloadablePackageProvider
         var tasks = new Task<WebDownloadablePackage>[searchResults.Length];
 
         for (var x = 0; x < searchResults.Length; x++)
-            tasks[x] = WebDownloadablePackage.FromNuGetAsync(searchResults[x], _repository, true, true);
+            tasks[x] = WebDownloadablePackage.FromNuGetAsync(searchResults[x], _repository, true, true, _getExtraDataAsync);
 
         await Task.WhenAll(tasks);
         foreach (var task in tasks)

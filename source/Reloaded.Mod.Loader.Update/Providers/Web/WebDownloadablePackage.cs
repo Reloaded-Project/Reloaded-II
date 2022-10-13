@@ -176,7 +176,9 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
     /// <param name="repository">The NuGet repository to use.</param>
     /// <param name="getReadme">If true, tries to pull readme from the server.</param>
     /// <param name="getReleaseNotes">If true, tries to pull release notes from the server.</param>
-    public static async Task<WebDownloadablePackage> FromNuGetAsync(IPackageSearchMetadata pkg, INugetRepository repository, bool getReadme = false, bool getReleaseNotes = false)
+    /// <param name="getExtraDataAsync">Gets the publish time, size, release notes and readme without blocking.</param>
+    public static async Task<WebDownloadablePackage> FromNuGetAsync(IPackageSearchMetadata pkg,
+        INugetRepository repository, bool getReadme = false, bool getReleaseNotes = false, bool getExtraDataAsync = false)
     {
         var result = new WebDownloadablePackage()
         {
@@ -194,7 +196,10 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
 
         var resolver = GetNuGetUpdateResolver(pkg, repository);
         result._url = new Uri((await resolver.GetDownloadUrlAsync(pkg.Identity.Version, new ReleaseMetadataVerificationInfo(), CancellationToken.None))!);
-        await InitNuGetAsyncData(result, pkg, repository, resolver, getReadme, getReleaseNotes);
+        
+        var extraDataTask = InitNuGetAsyncData(result, pkg, repository, resolver, getReadme, getReleaseNotes);
+        if (!getExtraDataAsync)
+            await extraDataTask;
 
         if (pkg.IconUrl != null)
             result.Images = new[] { new DownloadableImage() { Uri = pkg.IconUrl } };
