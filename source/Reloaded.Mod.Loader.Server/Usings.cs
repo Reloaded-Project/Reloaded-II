@@ -1,5 +1,4 @@
 global using AnyOfTypes;
-global using FastExpressionCompiler;
 global using LiteNetLib;
 global using Mapster;
 global using Reloaded.Messaging;
