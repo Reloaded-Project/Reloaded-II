@@ -13,6 +13,7 @@ public partial class EditModPackDetailsPage : ReloadedIIPage, IDisposable
 
     public EditModPackDetailsPage(EditModPackDetailsPageViewModel viewModel)
     {
+        SwappedOut += Dispose;
         ViewModel = viewModel;
         InitializeComponent();
         ControllerSupport.SubscribePreviewCustomInputs(SubscribePreviewCustomInputs);

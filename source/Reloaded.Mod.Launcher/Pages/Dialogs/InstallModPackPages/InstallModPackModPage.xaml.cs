@@ -12,6 +12,7 @@ public partial class InstallModPackModPage : ReloadedIIPage, IDisposable
 
     public InstallModPackModPage(InstallModPackModPageViewModel viewModel)
     {
+        SwappedOut += Dispose;
         ViewModel = viewModel;
         InitializeComponent();
         ControllerSupport.SubscribePreviewCustomInputs(SubscribePreviewCustomInputs);
