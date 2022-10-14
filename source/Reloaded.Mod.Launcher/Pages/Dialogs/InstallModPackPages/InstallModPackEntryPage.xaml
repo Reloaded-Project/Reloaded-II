@@ -10,8 +10,8 @@
       xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
       xmlns:panels="clr-namespace:Reloaded.Mod.Launcher.Controls.Panels"
       mc:Ignorable="d" 
-      d:DesignHeight="680"
-      d:DesignWidth="1000"
+      d:DesignHeight="720"
+      d:DesignWidth="1366"
       Title="{DynamicResource InstallModPackTitle}">
 
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Page}}}">

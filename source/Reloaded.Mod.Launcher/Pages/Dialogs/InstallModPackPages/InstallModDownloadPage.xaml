@@ -10,8 +10,8 @@
                 xmlns:attachedProperties="clr-namespace:Reloaded.WPF.Theme.Default.AttachedProperties;assembly=Reloaded.WPF.Theme.Default"
                 xmlns:misc="clr-namespace:Reloaded.Mod.Launcher.Misc"
                 mc:Ignorable="d" 
-                d:DesignHeight="680"
-                d:DesignWidth="1000"
+                d:DesignHeight="720"
+                d:DesignWidth="1366"
                 Title="{DynamicResource InstallModPackTitle}">
 
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Page}}}">
@@ -75,28 +75,29 @@
         </Grid>
 
         <!-- Download Items -->
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center"
-                    Visibility="{Binding IsDownloading, FallbackValue=Collapsed, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}">
-            <!-- Carousel -->
-            <Viewbox Width="650" Margin="{DynamicResource CommonItemVerticalMargin}">
-                <hc:Carousel Style="{DynamicResource ReloadedCarouselWithCaptions}"
-                             Width="640" Height="360" IsCenter="True" ExtendWidth="0" x:Name="PreviewCarousel" Focusable="False" />
+        <Viewbox Visibility="{Binding IsDownloading, FallbackValue=Collapsed, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="{DynamicResource PageMargin}">
+                <!-- Carousel -->
+                <Viewbox Width="650" Margin="{DynamicResource CommonItemVerticalMargin}">
+                    <hc:Carousel Style="{DynamicResource ReloadedCarouselWithCaptions}"
+                                 Width="640" Height="360" IsCenter="True" ExtendWidth="0" x:Name="PreviewCarousel" Focusable="False" />
 
-            </Viewbox>
+                </Viewbox>
 
-            <TextBlock
-                HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                FontSize="{DynamicResource SplashFontSize}"
-                Text="{Binding DownloadingText, FallbackValue='Downloading Heroes Graphics Essentials...'}" 
-                Style="{DynamicResource RIIDefaultTextBlock}"
-                Margin="{DynamicResource CommonItemVerticalMargin}"/>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    FontSize="{DynamicResource SplashFontSize}"
+                    Text="{Binding DownloadingText, FallbackValue='Downloading Heroes Graphics Essentials...'}" 
+                    Style="{DynamicResource RIIDefaultTextBlock}"
+                    Margin="{DynamicResource CommonItemVerticalMargin}"/>
 
-            <ProgressBar Height="32" Width="650"
-                         Value="{Binding Progress, FallbackValue=0.5, UpdateSourceTrigger=PropertyChanged}" 
-                         Maximum="1" />
+                <ProgressBar Height="32" Width="650"
+                             Value="{Binding Progress, FallbackValue=0.5, UpdateSourceTrigger=PropertyChanged}" 
+                             Maximum="1" />
 
-        </StackPanel>
+            </StackPanel>
+        </Viewbox>
 
     </Grid>
 

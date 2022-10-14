@@ -28,6 +28,7 @@ public partial class InstallModDownloadPage : ReloadedIIPage
         if (ViewModel.FaultedItems.Count > 0)
         {
             var messageBox = new MessageBox(Lib.Static.Resources.InstallModPackErrorDownloadFail.Get(), ViewModel.FormatError(ViewModel.FaultedItems));
+            messageBox.Owner = Window.GetWindow(this);
             messageBox.ShowDialog();
         }
 

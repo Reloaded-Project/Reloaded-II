@@ -9,8 +9,9 @@
                 xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
                 mc:Ignorable="d"
                 Title="{DynamicResource InstallModPackTitle}" 
+                Width="1280"
                 Height="720"
-                Width="1000"
+                WindowStartupLocation="CenterScreen"
                 Style="{DynamicResource ReloadedWindow}">
 
     <!-- Child Page -->

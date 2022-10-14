@@ -10,13 +10,12 @@
                 xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
                 xmlns:panels="clr-namespace:Reloaded.Mod.Launcher.Controls.Panels"
                 mc:Ignorable="d" 
-                d:DesignHeight="680"
-                d:DesignWidth="1000"
+                d:DesignHeight="720"
+                d:DesignWidth="1366"
                 Title="{DynamicResource InstallModPackTitle}">
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Page}}}">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -36,39 +35,55 @@
                        TextWrapping="Wrap"
                        Grid.Row="1" />
 
-        <!-- Carousel -->
-        <Viewbox Grid.Row="2" Width="650" Margin="{DynamicResource CommonItemVerticalMargin}">
-            <hc:Carousel Style="{DynamicResource ReloadedCarouselWithCaptions}" 
-                         Width="640" Height="360" Loaded="OnCarouselLoaded" IsCenter="True" ExtendWidth="0" x:Name="PreviewCarousel" Focusable="False" />
-            
-        </Viewbox>
+        <!-- Grid -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Readme -->
-        <wpf:MarkdownViewer Grid.Row="3" Focusable="False" Markdown="{Binding Item.Generic.Readme, FallbackValue='No Description'}" Style="{DynamicResource MarkdownViewerTextOnly}"
-                            Visibility="{Binding Item.Generic.Readme, Converter={x:Static converters:StringToVisibilityConverter.Instance}}">
-            <wpf:MarkdownViewer.CommandBindings>
-                <CommandBinding Command="{x:Static wpf:Commands.Hyperlink}" Executed="OpenHyperlink" />
-            </wpf:MarkdownViewer.CommandBindings>
-        </wpf:MarkdownViewer>
+            <!-- Carousel -->
+            <Viewbox Grid.Column="0" Margin="{DynamicResource CommonItemVerticalMargin}">
+                <hc:Carousel Style="{DynamicResource ReloadedCarouselWithCaptions}" 
+                             Width="640" Height="360" Loaded="OnCarouselLoaded" IsCenter="True" ExtendWidth="0" x:Name="PreviewCarousel" Focusable="False" />
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="4" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
+            </Viewbox>
 
-            <Button Content="{DynamicResource InstallModPackPrevious}" 
-                        Style="{DynamicResource DefaultButton}" 
-                        Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
-                        Click="Click_GoBack" />
+            <!-- Readme -->
+            <Grid Grid.Column="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <Button Content="{DynamicResource InstallModPackSkip}" 
-                        Style="{DynamicResource DefaultButton}" 
-                        Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
-                        Click="Click_SkipMod" />
 
-            <Button Content="{DynamicResource InstallModPackInstall}" 
-                        Style="{DynamicResource DefaultButton}" 
-                        Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
-                        Click="Click_AddMod" />
+                <wpf:MarkdownViewer Grid.Row="0" Focusable="False" Markdown="{Binding Item.Generic.Readme, FallbackValue='No Description'}" Style="{DynamicResource MarkdownViewerTextOnly}"
+                                    Visibility="{Binding Item.Generic.Readme, Converter={x:Static converters:StringToVisibilityConverter.Instance}}">
+                    <wpf:MarkdownViewer.CommandBindings>
+                        <CommandBinding Command="{x:Static wpf:Commands.Hyperlink}" Executed="OpenHyperlink" />
+                    </wpf:MarkdownViewer.CommandBindings>
+                </wpf:MarkdownViewer>
 
-        </StackPanel>
+
+                <StackPanel Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
+
+                    <Button Content="{DynamicResource InstallModPackPrevious}" 
+                            Style="{DynamicResource DefaultButton}" 
+                            Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                            Click="Click_GoBack" />
+
+                    <Button Content="{DynamicResource InstallModPackSkip}" 
+                            Style="{DynamicResource DefaultButton}" 
+                            Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                            Click="Click_SkipMod" />
+
+                    <Button Content="{DynamicResource InstallModPackInstall}" 
+                            Style="{DynamicResource DefaultButton}" 
+                            Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                            Click="Click_AddMod" />
+
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </pages:ReloadedIIPage>
