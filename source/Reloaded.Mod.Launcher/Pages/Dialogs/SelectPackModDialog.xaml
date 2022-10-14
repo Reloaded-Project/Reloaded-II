@@ -6,9 +6,9 @@
       xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
       xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
       mc:Ignorable="d" 
-      Title="ModSelectDialog"
       Height="550" 
       Width="700"
+      Title="{DynamicResource ModPackAddMod}"
       Style="{DynamicResource ReloadedWindow}">
 
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
