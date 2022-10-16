@@ -1,9 +1,9 @@
 ﻿namespace Reloaded.Mod.Loader.Update.Interfaces;
 
 /// <summary>
-/// Interface that can be used to provide support for converting images.
+/// Interface that can be used to provide support for converting images for the mod pack.
 /// </summary>
-public interface IImageConverter
+public interface IModPackImageConverter
 {
      /// <summary>
      /// Converts the image to new format.

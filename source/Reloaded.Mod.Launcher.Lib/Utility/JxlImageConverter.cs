@@ -6,7 +6,7 @@ namespace Reloaded.Mod.Launcher.Lib.Utility;
 /// <summary>
 /// Converts images to JPEG XL format.
 /// </summary>
-public class JxlImageConverter : IImageConverter
+public class JxlImageConverter : IModPackImageConverter
 {
     /// <summary>
     /// Static instance of the class.

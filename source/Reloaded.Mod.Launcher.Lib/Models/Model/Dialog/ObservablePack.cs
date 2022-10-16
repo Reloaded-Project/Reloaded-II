@@ -70,7 +70,7 @@ public class ObservablePack : ObservableObject
     /// </summary>
     /// <param name="packBuilder">The item builder used to build items.</param>
     /// <param name="converter">The converter used to compress images.</param>
-    public void ToBuilder(ReloadedPackBuilder packBuilder, IImageConverter converter)
+    public void ToBuilder(ReloadedPackBuilder packBuilder, IModPackImageConverter converter)
     {
         packBuilder.SetName(Name);
         packBuilder.SetReadme(Readme);

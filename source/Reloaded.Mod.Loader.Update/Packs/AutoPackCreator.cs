@@ -37,7 +37,7 @@ public static class AutoPackCreator
     /// <param name="imageConverter">Used for converting images.</param>
     /// <param name="packageProviders">Providers that can be used to search for packages.</param>
     /// <param name="token">Token to cancel the operation.</param>
-    public static async Task<ReloadedPackBuilder> CreateAsync(IEnumerable<ModConfig> configurations, IImageConverter imageConverter, IList<IDownloadablePackageProvider> packageProviders, CancellationToken token = default)
+    public static async Task<ReloadedPackBuilder> CreateAsync(IEnumerable<ModConfig> configurations, IModPackImageConverter imageConverter, IList<IDownloadablePackageProvider> packageProviders, CancellationToken token = default)
     {
         var builder = new ReloadedPackBuilder();
         
@@ -58,7 +58,7 @@ public static class AutoPackCreator
     /// <param name="imageConverter">Image converter used to create the contained images.</param>
     /// <param name="packageProviders">Providers used to resolve the extra package details like id and logo.</param>
     /// <param name="token">Cancellation token.</param>
-    public static async Task<ReloadedPackItemBuilder> CreateMod(ReloadedPackBuilder builder, ModConfig config, IImageConverter imageConverter, 
+    public static async Task<ReloadedPackItemBuilder> CreateMod(ReloadedPackBuilder builder, ModConfig config, IModPackImageConverter imageConverter, 
         IList<IDownloadablePackageProvider> packageProviders, CancellationToken token)
     {
         var imageDownloader = new ImageCacheService();

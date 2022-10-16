@@ -5,7 +5,7 @@ namespace Reloaded.Mod.Launcher.Lib.Utility;
 /// <summary>
 /// Converts image to bitmap format.
 /// </summary>
-public class BmpImageConverter : IImageConverter
+public class BmpImageConverter : IModPackImageConverter
 {
     /// <summary>
     /// Static instance of the class.

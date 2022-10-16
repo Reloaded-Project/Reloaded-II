@@ -101,7 +101,7 @@ public class EditModPackDialogViewModel : ObservableObject
     /// Builds the pack stored behind this ViewModel.
     /// </summary>
     /// <returns>The built pack.</returns>
-    public MemoryStream BuildPack(IImageConverter converter)
+    public MemoryStream BuildPack(IModPackImageConverter converter)
     {
         var builder = new ReloadedPackBuilder();
         Pack.ToBuilder(builder, converter);
