@@ -95,11 +95,12 @@ public class AkavacheCache
         }
 
         // Get it, and put into cache.
-        var data = Compression.Compress(await SharedHttpClient.UncachedAndCompressed.GetByteArrayAsync(uri, token)); 
+        var uncompressedData = await SharedHttpClient.UncachedAndCompressed.GetByteArrayAsync(uri, token);
+        var data = Compression.Compress(uncompressedData); 
         if (!token.IsCancellationRequested)
             _ = _cache.Insert(key, data, expiration);
 
-        return data;
+        return uncompressedData;
     }
 
     /// <summary>
