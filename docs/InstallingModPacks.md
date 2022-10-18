@@ -1,9 +1,5 @@
 # Installing Mod Packs
 
-!!! info
-
-    Mod Packs are an upcoming Reloaded 1.21.0 feature. They are not yet available in the currently released version.
-
 Mod packs are a functionality which allows for fast installation of multiple mods at the same time. It is particularly helpful in helping new users get setup fast.  
 
 If you wish to know how to create mod packs, please see [Creating Mod Packs](./CreatingModPacks.md).
