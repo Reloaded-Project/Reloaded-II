@@ -5,7 +5,7 @@
     <NoWarn>1701;1702;CS1591;NU5104;CS0067</NoWarn>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Version>3.0.0</Version>
+    <Version>3.0.1</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Sewer56</Authors>

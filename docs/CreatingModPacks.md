@@ -1,9 +1,5 @@
 # Creating Mod Packs
 
-!!! info
-
-    Mod Packs are an upcoming Reloaded 1.21.0 feature. They are not yet available in the currently released version.
-
 For information on installing mod packs, please see [Installing Mod Packs](./InstallingModPacks.md).
 
 ## 1. Open Editor
