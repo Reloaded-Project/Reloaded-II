@@ -106,5 +106,10 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-
+    
+  <!-- Disable HTTP/3, as this has issues with Wine out of the box. -->
+  <ItemGroup>
+      <RuntimeHostConfigurationOption Include="System.Net.SocketsHttpHandler.Http3Support" Value="false" />
+  </ItemGroup>
+    
 </Project>

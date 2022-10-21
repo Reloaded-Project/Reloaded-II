@@ -64,6 +64,11 @@
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
   </ItemGroup>
 
+  <!-- Disable HTTP/3, as this has issues with Wine. -->
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.Net.SocketsHttpHandler.Http3Support" Value="false" />
+  </ItemGroup>
+  
   <!-- Build dual x86 & x64 -->
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <MSBuild Condition=" '$(Platform)' == 'x64' " Projects="$(MSBuildProjectFile)" Properties="Platform=x86;PlatFormTarget=x86" RunEachTargetSeparately="true" />
