@@ -88,7 +88,7 @@ public class LiteNetLibClient : ClientBase, ILiteNetLibRefAction<Acknowledgement
         const int reconnectSleepTimeMs = 500;
         OnTryReconnect?.Invoke(peer);
         var watch = Stopwatch.StartNew();
-        NetPeer? newPeer;
+        NetPeer? newPeer = null;
 
         while (true)
         {
@@ -105,6 +105,9 @@ public class LiteNetLibClient : ClientBase, ILiteNetLibRefAction<Acknowledgement
             }
 
             // Try reconnect.
+            if (port != -1)
+                break;
+                
             newPeer = Connect(password, port);
             if (newPeer != null)
                 break;
