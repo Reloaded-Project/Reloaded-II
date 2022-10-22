@@ -138,6 +138,8 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
             supportsSerialize = true;
             return GitHubConfigContext.Default.GitHubConfig;
         }
+        
+        public JsonTypeInfo<GitHubConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
         
     /// <summary>
@@ -163,6 +165,8 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
             supportsSerialize = true;
             return GitHubUserConfigContext.Default.GitHubUserConfig;
         }
+        
+        public JsonTypeInfo<GitHubUserConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
 }
 

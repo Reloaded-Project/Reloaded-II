@@ -153,6 +153,8 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
             supportsSerialize = true;
             return NuGetConfigContext.Default.NuGetConfig;
         }
+        
+        public JsonTypeInfo<NuGetConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
 
     /// <summary>

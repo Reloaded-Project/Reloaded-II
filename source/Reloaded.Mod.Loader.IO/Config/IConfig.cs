@@ -10,11 +10,32 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
     private static JsonSerializerOptions _options = new JsonSerializerOptions() { WriteIndented = true };
     private static Encoding _encoding = new UTF8Encoding(false);
 
+#if NET7_0_OR_GREATER
     /// <summary>
     /// Returns the JSON type info for reflection-less serialization.
     /// </summary>
     public static abstract JsonTypeInfo<TType> GetJsonTypeInfo(out bool supportsSerialize);
+#else
+    /// <summary>
+    /// Returns the JSON type info for reflection-less serialization.
+    /// </summary>
+    public abstract JsonTypeInfo<TType> GetJsonTypeInfoNet5(out bool supportsSerialize);
+#endif
 
+    /// <summary>
+    /// Returns the JSON type info for reflection-less serialization.
+    /// Wrapper that calls correct underlying method.
+    /// </summary>
+    public static JsonTypeInfo<TType> GetJsonTypeInfoHelper(out bool supportsSerialize)
+    {
+#if NET7_0_OR_GREATER
+        return TType.GetJsonTypeInfo(out supportsSerialize);
+#else
+        var instance = Activator.CreateInstance<TType>();
+        return instance.GetJsonTypeInfoNet5(out supportsSerialize);
+#endif
+    }
+    
     /// <summary>
     /// Writes a given mod configurations to an absolute file path.
     /// </summary>
@@ -36,7 +57,7 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
                 using var stream = IOEx.OpenFile(filePath, FileMode.Open, FileAccess.Read);
                 using var textReader = new StreamReader(stream);
                 string jsonFile = textReader.ReadToEnd();
-                var info = TType.GetJsonTypeInfo(out _);
+                var info = GetJsonTypeInfoHelper(out _);
                 var result = info != null ? JsonSerializer.Deserialize(jsonFile, info) 
                     : JsonSerializer.Deserialize<TType>(jsonFile, _options);
 
@@ -84,7 +105,7 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
             try
             {
                 await using var stream = await IOEx.OpenFileAsync(filePath, FileMode.Open, FileAccess.Read, token);
-                var info = TType.GetJsonTypeInfo(out _);
+                var info = GetJsonTypeInfoHelper(out _);
                 var result = info != null ? await JsonSerializer.DeserializeAsync(stream, info, token) :
                     await JsonSerializer.DeserializeAsync<TType>(stream, _options, token);
         
@@ -128,7 +149,7 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
         string fullPath = Path.GetFullPath(filePath);
         CreateDirectoryIfNotExist(Path.GetDirectoryName(fullPath));
 
-        var info = TType.GetJsonTypeInfo(out var serialize);
+        var info = GetJsonTypeInfoHelper(out var serialize);
         string jsonFile  = info != null && serialize 
             ? JsonSerializer.Serialize(config, info) 
             : JsonSerializer.Serialize(config, _options);
@@ -152,7 +173,7 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
     {
         string fullPath = Path.GetFullPath(filePath);
         CreateDirectoryIfNotExist(Path.GetDirectoryName(fullPath));
-        var info = TType.GetJsonTypeInfo(out bool serialize);
+        var info = GetJsonTypeInfoHelper(out bool serialize);
 
         var tempPath = $"{fullPath}.{Path.GetRandomFileName()}";
         try

@@ -60,4 +60,6 @@ public class ModUserConfig : ObservableObject, IConfig<ModUserConfig>, IModUserC
         supportsSerialize = true;
         return ModUserConfigContext.Default.ModUserConfig;
     }
+    
+    public JsonTypeInfo<ModUserConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 }

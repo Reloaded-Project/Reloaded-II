@@ -81,6 +81,8 @@ public class DependencyResolverMetadata<TConfig> : IConfig<DependencyResolverMet
         supportsSerialize = false;
         return null!;
     }
+    
+    public JsonTypeInfo<DependencyResolverMetadata<TConfig>> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 }
 
 /// <summary/>

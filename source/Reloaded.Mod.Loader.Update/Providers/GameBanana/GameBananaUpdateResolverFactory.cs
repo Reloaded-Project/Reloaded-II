@@ -101,6 +101,8 @@ public class GameBananaUpdateResolverFactory : IUpdateResolverFactory
             supportsSerialize = true;
             return GameBananaConfigContext.Default.GameBananaConfig;
         }
+        
+        public JsonTypeInfo<GameBananaConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
 }
 

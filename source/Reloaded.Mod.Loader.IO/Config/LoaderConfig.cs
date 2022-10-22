@@ -343,4 +343,6 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
         supportsSerialize = false;
         return LoaderConfigContext.Default.LoaderConfig;
     }
+    
+    public JsonTypeInfo<LoaderConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 }

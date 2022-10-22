@@ -36,4 +36,6 @@ public class ModSet : ObservableObject, IConfig<ModSet>
         supportsSerialize = true;
         return ModSetContext.Default.ModSet;
     }
+    
+    public JsonTypeInfo<ModSet> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 }

@@ -190,6 +190,8 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
         supportsSerialize = false;
         return ApplicationConfigContext.Default.ApplicationConfig;
     }
+    
+    public JsonTypeInfo<ApplicationConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 
     /*
         ---------
