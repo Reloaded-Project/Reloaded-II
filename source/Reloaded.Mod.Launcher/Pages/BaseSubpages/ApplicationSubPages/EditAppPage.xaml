@@ -118,6 +118,7 @@
 
                                         <controls:PropertyGridEx MinWidth="500" 
                                                                  Width="Auto"
+                                                                 MaxHeight="9999999"
                                                                  FlattenChildProperties="ParentNameAsCategory"
                                                                  Background="Transparent"
                                                                  SelectedObject="{Binding Configuration}"

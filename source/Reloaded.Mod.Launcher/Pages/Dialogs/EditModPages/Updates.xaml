@@ -26,6 +26,7 @@
                                       HorizontalAlignment="Center" Margin="{DynamicResource CommonItemVerticalMargin}" />
 
                             <controls:PropertyGridEx MinWidth="500" 
+                                                     MaxHeight="9999999"
                                                      Width="Auto"
                                                      FlattenChildProperties="ParentNameAsCategory"
                                                      Background="Transparent"
