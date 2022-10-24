@@ -15,7 +15,12 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
 
     public ApplicationPage()
     {
-        SwappedOut += Dispose;
+        SwappedOut += () =>
+        {
+            ViewModel.ChangeApplicationPage(ApplicationSubPage.Null); // make sure swappedout is triggered when switching tabs
+            Dispose();
+        };
+        
         InitializeComponent();
         ViewModel = new ApplicationViewModel(Lib.IoC.Get<MainPageViewModel>().SelectedApplication!, Lib.IoC.Get<ModConfigService>(), Lib.IoC.Get<ModUserConfigService>(), Lib.IoC.Get<LoaderConfig>());
         ViewModel.PropertyChanged += WhenPageChanged;
