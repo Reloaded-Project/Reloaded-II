@@ -45,9 +45,20 @@ public class AddApplicationCommand : ICommand
         }
 
         // Get file information and populate initial application details.
-        exePath = SymlinkResolver.GetFinalPathName(exePath);
-        var fileInfo = FileVersionInfo.GetVersionInfo(exePath);
-        var config = new ApplicationConfig(Path.GetFileName(fileInfo.FileName).ToLower(), fileInfo.ProductName, exePath);
+        static string GetProductName(string exePath)
+        {
+            try { return FileVersionInfo.GetVersionInfo(exePath).ProductName; }
+            catch (Exception e)
+            {
+                Errors.HandleException(e, Resources.ErrorAddApplicationGetVersionInfo.Get());
+                return Path.GetFileName(exePath);
+            }
+        }
+
+        try { exePath = SymlinkResolver.GetFinalPathName(exePath); }
+        catch (Exception e) { Errors.HandleException(e, Resources.ErrorAddApplicationCantReadSymlink.Get()); }
+        
+        var config = new ApplicationConfig(Path.GetFileName(exePath).ToLower(), GetProductName(exePath), exePath);
 
         // Set AppName if empty & Ensure no duplicate ID.
         if (string.IsNullOrEmpty(config.AppName))
@@ -83,7 +94,7 @@ public class AddApplicationCommand : ICommand
         // Set return value
         param.ResultCreatedApplication = true;
     }
-    
+
     private void ApplicationsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         var newConfig = _configService.Items.FirstOrDefault(x => x.Config.AppId == _newConfig?.AppId);
@@ -111,7 +122,8 @@ public class AddApplicationCommand : ICommand
     /// </summary>
     private string SelectEXEFile()
     {
-        var dialog = new VistaOpenFileDialog();
+        var dialog = new VistaSaveFileDialog();
+        dialog.OverwritePrompt = false;
         dialog.Title = Resources.AddAppExecutableTitle.Get();
         dialog.Filter = $"{Resources.AddAppExecutableFilter.Get()} (*.exe)|*.exe";
 

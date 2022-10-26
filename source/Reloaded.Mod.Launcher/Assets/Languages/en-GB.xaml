@@ -628,4 +628,33 @@
     <sys:String x:Key="DownloadPackagesSettingHide">Hide Installed</sys:String>
     <sys:String x:Key="DownloadPackagesSettingHideTooltip">Hides already installed mods where possible.&#x0a;(Supports NuGet &amp; 'Publish' exported mods.)</sys:String>
 
+    <!-- Update 1.22.6 -->
+    <sys:String x:Key="ErrorAddApplicationCantReadSymlink">Failed to resolve final path of file (symlink detection).
+You might run into an error due to DRM or some weird FileSystem shenanigans. If that happens, copy EXE path from loader log into Edit Application menu.</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGetVersionInfo">Failed to get file metadata/version info from disk. Will try our best to guess stuff.
+(Reportedly this can happen with some exotic network configurations [e.g. CIFS] if you don't run into any more issues you should be okay).</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGeneral">Errors occurred while adding application: Causes may include.
+- Uncommon FileSystem setup (application on network share etc.)
+- You don't have the right to access the file.
+- Microsoft DRM (MS Store/GamePass).</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFile">Failed to read EXE file. This might happen for a variety of reasons.
+- DRM (Microsoft Store/GamePass).
+- You don't have the right to access the EXE file.
+- The file has moved from its original location.
+
+If you are dealing with MS Store/GamePass, seek an external guide to get Reloaded working.  
+Chances are you will need to MANUALLY deploy ASI Loader and MIGHT need to change AppLocation to C:\Program Files\WindowsApps\&lt;GAME_PATH&gt; inside AppConfig.json
+Then launch program directly by EXE. If you're not following one, ask your game's community for guide/instructions/help.
+
+Don't we all LOVE DRM? 'You will own nothing and you will be happy.'
+</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">Failed to read EXE file for if can deploy ASI Loader. This might happen for a variety of reasons.
+- DRM (Microsoft Store/GamePass).
+- You don't have the right to access the EXE file.
+- The file has moved from its original location.</sys:String>
+
 </ResourceDictionary>

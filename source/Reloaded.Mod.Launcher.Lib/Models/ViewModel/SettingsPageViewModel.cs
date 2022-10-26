@@ -64,8 +64,15 @@ public class SettingsPageViewModel : ObservableObject
         AppConfigService.Items.CollectionChanged += MainPageViewModelOnApplicationsChanged;
         ModConfigService.Items.CollectionChanged += ManageModsViewModelOnModsChanged;
 
-        var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule!.FileName!);
-        Copyright = Regex.Replace(version.LegalCopyright!, @"\|.*", $"| {Version.GetReleaseVersion()!.ToNormalizedString()}");
+        string? copyRightStr = "Sewer56 ~ Unknown Date | Unknown Version";
+        try
+        {
+            var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule!.FileName!);
+            copyRightStr = version.LegalCopyright;
+        }
+        catch (Exception) { /* Non-critical, could happen on CIFS file share, we can ignore. */ }
+        
+        Copyright = Regex.Replace(copyRightStr, @"\|.*", $"| {Version.GetReleaseVersion()!.ToNormalizedString()}");
         RuntimeVersion = $"Core: {RuntimeInformation.FrameworkDescription}";
         ActionWrappers.ExecuteWithApplicationDispatcher(() =>
         {

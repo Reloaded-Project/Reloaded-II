@@ -181,4 +181,11 @@ public static class Resources
     // Update 1.21.0: Mod Packs Install
     public static IDictionaryResource<string> InstallModPackDownloading { get; set; }
     public static IDictionaryResource<string> InstallModPackErrorDownloadFail { get; set; }
+    
+    // Update 1.21.6: Mod Packs Install
+    public static IDictionaryResource<string> ErrorAddApplicationGeneral { get; set; }
+    public static IDictionaryResource<string> ErrorAddApplicationCantReadSymlink { get; set; }
+    public static IDictionaryResource<string> ErrorAddApplicationGetVersionInfo { get; set; }
+    public static IDictionaryResource<string> ErrorCantReadExeFile { get; set; }
+    public static IDictionaryResource<string> ErrorCantReadExeFileAsiLoaderDeploy { get; set; }
 }

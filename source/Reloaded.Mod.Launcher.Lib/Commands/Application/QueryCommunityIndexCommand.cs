@@ -28,12 +28,21 @@ public class QueryCommunityIndexCommand : ICommand
     public async Task ExecuteAsync()
     {
         var config = _application.Config;
-        await using var fileStream = new FileStream(ApplicationConfig.GetAbsoluteAppLocation(_application), FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 524288);
         var indexApi  = new IndexApi();
         var index = await indexApi.GetIndexAsync();
-        var hash = Hashing.ToString(await Hashing.FromStreamAsync(fileStream));
-        var applications = index.FindApplication(hash, config.AppId, out bool hashMatches);
 
+        string hash = "";
+        try
+        {
+            await using var fileStream = new FileStream(ApplicationConfig.GetAbsoluteAppLocation(_application), FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 524288);
+            hash = Hashing.ToString(await Hashing.FromStreamAsync(fileStream));
+        }
+        catch (Exception e)
+        {
+            Errors.HandleException(e, Resources.ErrorCantReadExeFile.Get());
+        }
+        
+        var applications = index.FindApplication(hash, config.AppId, out bool hashMatches);
         await await ActionWrappers.ExecuteWithApplicationDispatcherAsync(async () =>
         {
             if (applications.Count == 1 && hashMatches)

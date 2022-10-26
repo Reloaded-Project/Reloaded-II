@@ -51,7 +51,7 @@ public partial class EditAppPage : ReloadedIIPage, IDisposable
         var isText = sourceDataObject.GetDataPresent(typeof(string));
         if (!isText) 
             return;
-
+        
         var text = sourceDataObject.GetData(typeof(string)) as string;
         try
         {
