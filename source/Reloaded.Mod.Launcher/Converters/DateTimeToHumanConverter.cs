@@ -1,3 +1,5 @@
+using Environment = Reloaded.Mod.Shared.Environment;
+
 namespace Reloaded.Mod.Launcher.Converters;
 
 public class DateTimeToHumanConverter : IValueConverter
@@ -7,8 +9,12 @@ public class DateTimeToHumanConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (value is DateTime dateTime)
-            return dateTime.Humanize(null, null, CultureInfo.InvariantCulture);
-
+        {
+            return !Environment.IsWine ? 
+                dateTime.Humanize(null, null, CultureInfo.InvariantCulture) : 
+                dateTime.ToString();
+        }
+            
         return "";
     }
 
