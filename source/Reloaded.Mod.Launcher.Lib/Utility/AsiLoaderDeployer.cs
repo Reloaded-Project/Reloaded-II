@@ -42,18 +42,23 @@ public class AsiLoaderDeployer
         try
         {
             using var peParser = new BasicPeParser(appLocation);
-            try
-            {
-                return GetFirstSupportedDllFile(peParser) != null;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return GetSupportedDllFromParser(peParser);
         }
         catch (Exception e)
         {
             Errors.HandleException(e, Resources.ErrorCantReadExeFileAsiLoaderDeploy.Get());
+            return false;
+        }
+    }
+
+    private bool GetSupportedDllFromParser(BasicPeParser peParser)
+    {
+        try
+        {
+            return GetFirstSupportedDllFile(peParser) != null;
+        }
+        catch (Exception)
+        {
             return false;
         }
     }

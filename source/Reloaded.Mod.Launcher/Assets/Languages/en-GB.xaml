@@ -645,11 +645,10 @@ You might run into an error due to DRM or some weird FileSystem shenanigans. If 
 - You don't have the right to access the EXE file.
 - The file has moved from its original location.
 
-If you are dealing with MS Store/GamePass, seek an external guide to get Reloaded working.  
-Chances are you will need to MANUALLY deploy ASI Loader and MIGHT need to change AppLocation to C:\Program Files\WindowsApps\&lt;GAME_PATH&gt; inside AppConfig.json
-Then launch program directly by EXE. If you're not following one, ask your game's community for guide/instructions/help.
+If you are dealing with MS Store/GamePass, you will most likely need to DEPLOY ASI LOADER MANUALLY because of DRM (encryption!!) 
+and then launch program directly by EXE. Ask your community if you need more help.
 
-Don't we all LOVE DRM? 'You will own nothing and you will be happy.'
+DRM: 'You will own nothing and you will be happy.'
 </sys:String>
 
     <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">Failed to read EXE file for if can deploy ASI Loader. This might happen for a variety of reasons.

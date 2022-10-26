@@ -1,4 +1,7 @@
 // ReSharper disable InconsistentNaming
+
+using System.Xml;
+using System.Xml.Linq;
 using FileMode = System.IO.FileMode;
 
 namespace Reloaded.Mod.Launcher.Lib.Utility;
@@ -39,8 +42,22 @@ public static class SymlinkResolver
     /// Resolves a symbolic link and normalizes the path.
     /// </summary>
     /// <param name="path">The path to be resolved.</param>
-    public static string GetFinalPathName(string path)
+    /// <param name="allowUwp">Resolves UWP application paths.</param>
+    public static string GetFinalPathName(string path, bool allowUwp = true)
     {
+        // Special Case for UWP/MSStore.
+        if (allowUwp)
+        {
+            try
+            {
+                var folder = Path.GetDirectoryName(path);
+                var manifest = Path.Combine(folder, "appxmanifest.xml");
+                if (File.Exists(manifest))
+                    return TryGetFilePathFromUWPAppManifest(path, manifest);
+            }
+            catch (Exception) { }
+        }
+        
         var h = CreateFile(path, FILE_READ_EA, FileShare.ReadWrite | FileShare.Delete, IntPtr.Zero, FileMode.Open, FILE_FLAG_BACKUP_SEMANTICS, IntPtr.Zero);
         if (h == INVALID_HANDLE_VALUE)
             throw new Win32Exception();
@@ -59,6 +76,34 @@ public static class SymlinkResolver
         {
             CloseHandle(h);
         }
+    }
+
+    private static string TryGetFilePathFromUWPAppManifest(string path, string manifest)
+    {
+        var document = new XmlDocument();
+        document.Load(manifest);
+
+        var tag = document.GetElementsByTagName("Identity")[0];
+        var packageName = tag.Attributes["Name"].Value;
+
+        // I wish I could use WinRT APIs but support is removed from runtime and the official way cuts off support for Win7/8.1
+        var newFolder = GetPowershellPackageInstallLocation(packageName);
+        return Path.Combine(newFolder, Path.GetFileName(path));
+    }
+
+    private static string GetPowershellPackageInstallLocation(string packageName)
+    {
+        var processStartInfo = new ProcessStartInfo
+        {
+            FileName = @"powershell",
+            Arguments = $"(Get-AppxPackage {packageName}).InstallLocation",
+            RedirectStandardOutput = true,
+            CreateNoWindow = true
+        };
+        var process = Process.Start(processStartInfo);
+        process.WaitForExit();
+        var output = process.StandardOutput.ReadToEnd().TrimEnd();
+        return output;
     }
 
     private static string RemoveDevicePrefix(string path)
