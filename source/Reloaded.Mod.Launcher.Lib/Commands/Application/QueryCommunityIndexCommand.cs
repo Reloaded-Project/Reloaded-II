@@ -39,7 +39,7 @@ public class QueryCommunityIndexCommand : ICommand
         }
         catch (Exception e)
         {
-            Errors.HandleException(e, Resources.ErrorCantReadExeFile.Get());
+            Errors.HandleException(e, $"{Resources.ErrorCantReadExeFile.Get()}\n");
         }
         
         var applications = index.FindApplication(hash, config.AppId, out bool hashMatches);
