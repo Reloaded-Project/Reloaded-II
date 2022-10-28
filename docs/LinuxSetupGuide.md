@@ -34,6 +34,13 @@ You can then download the Reloaded Installer (`Setup.exe`) [from the downloads p
 !!! tip
 
     If the installer has issues, you can try running it without GUI `wine Setup.exe --nogui`.  
+    
+!!! note 
+
+    If you have the native version of .NET installed on your machine, it is possible that in some  
+    cases the native version might be executed by Wine as opposed to the installed Windows version.  
+    
+    [Using `DOTNET_ROOT= wine Reloaded-II.exe` to run Reloaded might help.](https://github.com/Reloaded-Project/Reloaded-II/issues/148)
 
 If install is successful, Reloaded's launcher will boot and a shortcut will be created on your desktop. If you cannot see it there, check Wine's Desktop folder (usually located in `<your_home_dir>/.wine/drive_c/users/<username>/Desktop/`).  
 
