@@ -17,6 +17,7 @@ public struct IndexPackageProvider : IDownloadablePackageProvider
     {
         const StringComparison stringComparison = StringComparison.OrdinalIgnoreCase;
         var result = new List<IDownloadablePackage>();
+        options ??= new SearchOptions();
 
         for (var x = skip; x < _packageList.Packages.Count; x++)
         {
@@ -26,9 +27,9 @@ public struct IndexPackageProvider : IDownloadablePackageProvider
                 result.Add(package);
 
             if (result.Count >= take)
-                return Task.FromResult<IEnumerable<IDownloadablePackage>>(result);
+                return Task.FromResult<IEnumerable<IDownloadablePackage>>(result.ApplyFilters(options.Sort, options.SortDescending));
         }
 
-        return Task.FromResult<IEnumerable<IDownloadablePackage>>(result);
+        return Task.FromResult<IEnumerable<IDownloadablePackage>>(result.ApplyFilters(options.Sort, options.SortDescending));
     }
 }

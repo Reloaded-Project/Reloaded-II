@@ -136,9 +136,15 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         CurrentSearchTokenSource?.Cancel();
         CurrentSearchTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
         var localTokenSource = CurrentSearchTokenSource;
-        var searchTuples = await CurrentPackageProvider.SearchAsync(SearchQuery, _paginationHelper.Skip, _paginationHelper.Take, localTokenSource.Token);
+        var searchTuples = await CurrentPackageProvider.SearchAsync(SearchQuery, _paginationHelper.Skip, _paginationHelper.Take, new SearchOptions()
+        {
+            Sort = SortingMode.SortingMode,
+            SortDescending = SortingMode.IsDescending
+        }, localTokenSource.Token);
+
+        // Ideally we would use ModifyObservableCollection but this is not possible when the results are sorted; as our view wouldn't reorder them.
         if (!localTokenSource.IsCancellationRequested)
-            Collections.ModifyObservableCollection(SearchResult, searchTuples);
+            SearchResult = new BatchObservableCollection<IDownloadablePackage>(searchTuples);
     }
 
     /// <summary>

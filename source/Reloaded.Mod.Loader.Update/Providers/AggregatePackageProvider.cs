@@ -28,6 +28,7 @@ public class AggregatePackageProvider : IDownloadablePackageProvider
             results[x] = _providers[x].SearchAsync(text, skip, take, options, token);
 
         await Task.WhenAll(results);
-        return results.SelectMany(x => x.Result).ToList();
+        options ??= new SearchOptions();
+        return results.SelectMany(x => x.Result).ApplyFilters(options.Sort, options.SortDescending);
     }
 }
