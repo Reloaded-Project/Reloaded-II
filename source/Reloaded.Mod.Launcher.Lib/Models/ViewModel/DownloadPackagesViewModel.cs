@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
 /// <summary>
@@ -75,6 +77,21 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// </summary>
     public CancellationTokenSource CurrentSearchTokenSource { get; set; } = new ();
 
+    /// <summary>
+    /// The available sorting strategies.
+    /// </summary>
+    public ObservableCollection<SearchSortingMode> SortingModes { get; set; } = new ObservableCollection<SearchSortingMode>();
+
+    /// <summary>
+    /// The current sorting strategy used.
+    /// </summary>
+    public SearchSortingMode SortingMode { get; set; } = new SearchSortingMode();
+
+    /// <summary>
+    /// Whether the search should work in descending order.
+    /// </summary>
+    public bool SortDescending { get; set; } = true;
+
     private PaginationHelper _paginationHelper = PaginationHelper.Default;
 
     /* Construction - Deconstruction */
@@ -101,6 +118,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         
         // Perform Initial Search.
         _paginationHelper.ItemsPerPage = 500;
+        SortingModes = new ObservableCollection<SearchSortingMode>(SearchSortingMode.GetAll());
 #pragma warning disable CS4014
         GetSearchResults();
 #pragma warning restore CS4014
@@ -188,6 +206,10 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
             ResetSearch();
         }
         else if (e.PropertyName == nameof(CurrentPackageProvider))
+        {
+            ResetSearch();
+        }
+        else if (e.PropertyName == nameof(SortingMode))
         {
             ResetSearch();
         }

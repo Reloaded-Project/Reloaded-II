@@ -35,9 +35,21 @@
                Panel.ZIndex="9999">
             <Border Background="{DynamicResource PopupBackgroundBrush}" Padding="{DynamicResource TooltipPaddingSize}" CornerRadius="{DynamicResource TooltipCornerRadius}">
 
-                <!-- Hide Installed Toggle -->
                 <StackPanel>
 
+                    <!-- Sorting Mode -->
+                    <ComboBox Margin="{DynamicResource CommonItemCombinedMargin}" 
+                              IsSynchronizedWithCurrentItem="True"
+                              SelectedItem="{Binding SortingMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              ItemsSource="{Binding SortingModes, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding FriendlyName, Mode=OneTime}" FontSize="{DynamicResource FontSizeLarger}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!-- Hide Installed Toggle -->
                     <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
                               Content="{DynamicResource DownloadPackagesSettingHide}"
                               IsChecked="{Binding HideInstalled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

@@ -11,7 +11,7 @@ public interface IDownloadablePackageProvider
     /// <param name="text">The text to search.</param>
     /// <param name="skip">The number of items to skip.</param>
     /// <param name="take">The number of items to take. This is a target. Depending on source, less or more items may be returned.</param>
-    /// <param name="options">The options to use in the search, not all options are supported by all providers.</param>
+    /// <param name="options">The options to use in the search, supporting these is opt in, so not all options are supported by all providers.</param>
     /// <param name="token">The token used to cancel the operation.</param>
     public Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, SearchOptions? options = null, CancellationToken token = default);
     
@@ -27,6 +27,7 @@ public interface IDownloadablePackageProvider
 
 /// <summary>
 /// Options used for searching.
+/// The options to use in the search, supporting these is opt in, so not all options are supported by all providers.
 /// </summary>
 public class SearchOptions
 {
