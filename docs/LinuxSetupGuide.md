@@ -34,6 +34,13 @@ You can then download the Reloaded Installer (`Setup.exe`) [from the downloads p
 !!! tip
 
     If the installer has issues, you can try running it without GUI `wine Setup.exe --nogui`.  
+    
+!!! note 
+
+    If you have the native version of .NET installed on your machine, it is possible that in some  
+    cases the native version might be executed by Wine as opposed to the installed Windows version.  
+    
+    [Using `DOTNET_ROOT= wine Reloaded-II.exe` to run Reloaded might help.](https://github.com/Reloaded-Project/Reloaded-II/issues/148)
 
 If install is successful, Reloaded's launcher will boot and a shortcut will be created on your desktop. If you cannot see it there, check Wine's Desktop folder (usually located in `<your_home_dir>/.wine/drive_c/users/<username>/Desktop/`).  
 
@@ -49,17 +56,9 @@ If install is successful, Reloaded's launcher will boot and a shortcut will be c
 
     Wine by default hides files and folders that start with a dot; which might make it difficult to navigate to Steam games. To fix this, run `winecfg` (Wine Configuration) and check `Show dot files` in the `drives` tab.  
 
-!!! warning
-
-    Reloaded does not yet currently know how to resolve symlinks or native paths.  
-    Don't paste the file path from your file explorer, instead use the wine's file picker dialog (`Update` button) to set the game path.  
-
 The easiest way to find your Steam games is simply right clicking the game, right click and clicking `Manage -> Browse local files`.  
 
-Then when adding the game in Reloaded, go to the folder opened by Steam inside the file picker.  
-The path is most likely to be of the format `Z:/home/<username>/.local/share/Steam/steamapps/common/<game>/`.  
-
-Your path should not start with `Z:/home/<username>/.steam/steam/`, that is a symlink.  
+Then when adding the game in Reloaded, go to the folder opened by Steam inside the file picker.   
 
 ### Using ASI Loader
 
