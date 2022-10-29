@@ -669,4 +669,10 @@ DRM: 'You will own nothing and you will be happy.'
     <sys:String x:Key="SearchOptionAscending">Ascending</sys:String> 
     <sys:String x:Key="SearchOptionDescending">Descending</sys:String> 
     
+    <sys:String x:Key="SearchOptionsTooltip">Please note some download sources might not support sorting/filtering.</sys:String> 
+    
+    <!-- Update 1.23.0: Publish Important Note -->
+    <sys:String x:Key="PublishModNotice">Upload ALL files as created by the publisher, do not rename any of them.
+For more info, refer to the tutorial. Don't forget to set correct Publish target.</sys:String> 
+    
 </ResourceDictionary>

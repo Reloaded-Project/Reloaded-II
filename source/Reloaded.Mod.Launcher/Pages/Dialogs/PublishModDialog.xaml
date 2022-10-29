@@ -334,6 +334,9 @@
 
             </StackPanel>
 
+            <TextBlock Text="{DynamicResource PublishModNotice}" Style="{DynamicResource DefaultTextBlock}"
+                       ToolTipService.InitialShowDelay="0" Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                       HorizontalAlignment="Center" />
 
         </StackPanel>
 

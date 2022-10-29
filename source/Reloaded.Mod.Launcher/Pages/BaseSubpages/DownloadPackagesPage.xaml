@@ -41,7 +41,9 @@
                     <ComboBox Margin="{DynamicResource CommonItemCombinedMargin}" 
                               IsSynchronizedWithCurrentItem="True"
                               SelectedItem="{Binding SortingMode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                              ItemsSource="{Binding SortingModes, UpdateSourceTrigger=PropertyChanged}">
+                              ItemsSource="{Binding SortingModes, UpdateSourceTrigger=PropertyChanged}"
+                              ToolTip="{DynamicResource SearchOptionsTooltip}"
+                              ToolTipService.InitialShowDelay="0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding FriendlyName, Mode=OneTime}" FontSize="{DynamicResource FontSizeLarger}"/>
