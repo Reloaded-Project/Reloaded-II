@@ -19,7 +19,7 @@
     <!-- Splash Screen: Progress Messages -->
     <sys:String x:Key="SplashCreatingDefaultConfig">Cweating UwU D-Defauwt Config</sys:String>
     <sys:String x:Key="SplashCleaningConfigurations">Cweanying App/Woadew/Mod Configuwations</sys:String>
-    <sys:String x:Key="SplashPreparingResources">Setting upw Wesouwces</sys:String>
+    <sys:String x:Key="SplashPreparingResources">Setting up Wesouwces</sys:String>
     <sys:String x:Key="SplashLoadCompleteIn">Woad Compwete in:</sys:String>
     <sys:String x:Key="SplashCreatingTemplates">Cweating Tempwates</sys:String> <!-- Unused as of 1.8.0 -->
     <sys:String x:Key="SplashCheckingForUpdates">Checking f-fow Updates</sys:String>
@@ -27,7 +27,7 @@
 
     <!-- Add Application Page -->
     <sys:String x:Key="AddAppImageTooltip">Cwick this image to i-impowt a custom wogo.</sys:String>
-    <sys:String x:Key="AddAppImageSelectorTitle">Sewect Image to use as icon.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Sewect an i-image.</sys:String>
     <sys:String x:Key="AddAppImageSelectorFilter">Image</sys:String>
 
     <sys:String x:Key="AddAppNewButton">Nyew</sys:String>
@@ -73,7 +73,7 @@ x3 P-Pwease do nyot submit bugs f-fow x3 m-mods t-that do nyot w-wowk using Auto
     <sys:String x:Key="CreateModDialogDescription">Showt Descwiption</sys:String>
     <sys:String x:Key="CreateModDialogDependencies">Mod Dependencies</sys:String>
 
-    <sys:String x:Key="CreateModDialogImageSelectorTitle">Sewect a custom wogo f-fow t-the mod.</sys:String>
+    <sys:String x:Key="CreateModDialogImageSelectorTitle">Sewect an i-image.</sys:String>
     <sys:String x:Key="CreateModDialogImageSelectorFilter">Image</sys:String>
 
     <sys:String x:Key="TitleCreateModNonUniqueId">N-Nyon-Unyique ID</sys:String>
@@ -622,4 +622,115 @@ x3 P-Pwease cwick &apos;yes&apos; if a-any Usew Account Contwow diawogs show.</s
     <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">Fuww HTTP(s) wink to youw website.</sys:String> <!-- Shown as a placeholder -->
     <sys:String x:Key="ModManagerContextVisitWebsite">Visit Website</sys:String>
 
+    <!-- Update 1.21.0: Mod Packs: Dialog -->
+    <sys:String x:Key="CreateModPackTitle">Cweate Mod P-Pack</sys:String>
+
+    <sys:String x:Key="CreateModPackNote1">Onwy Ewigibwe M-Mods awe Shown.</sys:String>
+    <sys:String x:Key="CreateModPackNote2">M-Mods Must S-Suppowt Updates to OwO b-be Ewigibwe.</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <!-- Update 1.21.0: Mod Packs: Editor -->
+    <sys:String x:Key="EditModPackTitle">Edit Mod P-Pack</sys:String>
+
+    <sys:String x:Key="ModPackImageTooltip">Nyote: Images in this cawousew wiww OwO b-be pwopewwy sized duwing i-instaww.
+Y-You can ignyowe a-any aspect issues.</sys:String>
+    <sys:String x:Key="ModPackImageCaption">Image Caption</sys:String>
+
+    <sys:String x:Key="ModPackClickToEdit">Cwick To Edit</sys:String>
+    <sys:String x:Key="ModPackAddMod">Add Mod</sys:String>
+    <sys:String x:Key="ModPackAddModTooltip">Adds a mod to this pack.
+Nyote: This might t-take a whiwe if a wot o-of i-images awe pwesent.</sys:String>
+    <sys:String x:Key="ModPackRemoveMod">^w^ W-Wemove Mod</sys:String>
+    <sys:String x:Key="ModPackRemoveModTooltip">W-Wemoves wast xDD s-sewected mod fwom this pack.</sys:String>
+    <sys:String x:Key="ModPackSaveReadme">S-Save Weadme</sys:String>
+    <sys:String x:Key="ModPackSetReadme">Set Weadme</sys:String>
+    <sys:String x:Key="ModPackAddImage">Add Image</sys:String>
+    <sys:String x:Key="ModPackRemoveImage">^w^ W-Wemove Image</sys:String>
+    <sys:String x:Key="ModPackLoadExisting">Woad Existing P-Pack</sys:String>
+    <sys:String x:Key="ModPackSavePack">S-Save P-Pack</sys:String>
+    <sys:String x:Key="ModPackPreviewPack">Test P-Pack</sys:String>
+
+    <sys:String x:Key="ModPackPackNameTooltip">Nyame o-of t-the pack, as d-dispwayed duwing i-instaww.</sys:String>
+    <sys:String x:Key="ModPackModNameTooltip">Nyame o-of t-the mod, as d-dispwayed duwing i-instaww.</sys:String>
+    <sys:String x:Key="ModPackImageAddTooltip">Adds a nyew image to t-the pack/mod.</sys:String>
+    <sys:String x:Key="ModPackImageRemoveTooltip">W-Wemoves t-the cuwwentwy visibwe i-image.</sys:String>
+    <sys:String x:Key="ModPackDescriptionTooltip">Showt descwiption o-of t-the mod. 1 Winye. Usew can expand to w-weveaw fuww weadme duwing i-instaww.</sys:String>
+    <sys:String x:Key="ModPackSetReadmeTooltip">Updates t-the fuww weadme o-of t-the mod/pack. Weadme uses M-Mawkdown (.md) fowmat.</sys:String>
+    <sys:String x:Key="ModPackSaveReadmeTooltip">Saves t-the weadme back to disk f-fow editing in an extewnyaw editow.</sys:String>
+
+    <sys:String x:Key="ModPackSelectExistingTitle">Sewect a Mod P-Pack (*.w2pack).</sys:String>
+    <sys:String x:Key="ModPackSelectExistingTypeName">W2 Mod Package</sys:String>
+    <sys:String x:Key="ErrorFailedToSaveModPack">Faiwed to S-Save Mod P-Pack</sys:String>
+
+    <!-- Update 1.21.0: Mod Packs: Installer -->
+    <sys:String x:Key="InstallModPackTitle">;;w;; I-Instaww Mod P-Pack</sys:String>
+
+    <sys:String x:Key="InstallModPackEnableHeader">Downwoad?</sys:String>
+    <sys:String x:Key="InstallModPackErrorDownloadFail">Some M-Mods Faiwed to D-Downwoad</sys:String>
+
+    <sys:String x:Key="InstallModPackConfirmTitle">Confiwm M-Mods To D-Downwoad</sys:String>
+    <sys:String x:Key="InstallModPackConfirmDescription">O-Once y-you have d-doubwechecked w-what y-you want, stawt t-the downwoad.</sys:String>
+
+    <sys:String x:Key="InstallModPackDownloading">Downwoading {0}...</sys:String> <!-- {0} is replaced by mod name -->
+    <sys:String x:Key="InstallModPackStart">:33 S-Stawt</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackPrevious">UwU G-Go Back</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackStartDownload">:33 S-Stawt Downwoading</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackInstall">;;w;; I-Instaww This Mod</sys:String> <!-- Advances Page -->
+    <sys:String x:Key="InstallModPackSkip">Skip This Mod</sys:String> <!-- Advances Page -->
+
+    <!-- Update 1.21.0: Generic Image Selector -->
+    <sys:String x:Key="ImageSelectorTitle">Sewect an i-image.</sys:String>
+    <sys:String x:Key="ImageSelectorFilter">Image</sys:String>
+
+    <!-- Update 1.22.0: Download Package Settings -->
+    <sys:String x:Key="DownloadPackagesSettingHide">Hide Instawwed</sys:String>
+    <sys:String x:Key="DownloadPackagesSettingHideTooltip">H-Hides awweady instawwed x3 m-mods whewe possibwe.
+(Suppowts NyuGet &amp; &apos;Pubwish&apos; expowted mods.)</sys:String>
+
+    <!-- Update 1.22.6: Errors -->
+    <sys:String x:Key="ErrorAddApplicationCantReadSymlink">Failed to resolve final path of file (symlink detection).
+You might run into an error due to DRM or some weird FileSystem shenanigans. If that happens, copy EXE path from loader log into Edit Application menu.</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGetVersionInfo">Failed to get file metadata/version info from disk. Will try our best to guess stuff.
+(Reportedly this can happen with some exotic network configurations [e.g. CIFS] if you don't run into any more issues you should be okay).</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGeneral">Errors occurred while adding application: Causes may include.
+- Uncommon FileSystem setup (application on network share etc.)
+- You don't have the right to access the file.
+- Microsoft DRM (MS Store/GamePass).</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFile">Failed to read EXE file. This might happen for a variety of reasons.
+- DRM (Microsoft Store/GamePass).
+- You don't have the right to access the EXE file.
+- The file has moved from its original location.
+
+If you are dealing with MS Store/GamePass, you will most likely need to DEPLOY ASI LOADER MANUALLY because of DRM (encryption!!) 
+and then launch program directly by EXE. Ask your community if you need more help.
+
+DRM: 'You will own nothing and you will be happy.'
+</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">Failed to read EXE file for if can deploy ASI Loader. This might happen for a variety of reasons.
+- DRM (Microsoft Store/GamePass).
+- You don't have the right to access the EXE file.
+- The file has moved from its original location.</sys:String>
+
+    <!-- Update 1.23.0: Mod Packs Extras -->
+    <sys:String x:Key="InstallModPackInstallAll">;;w;; I-Instaww OwO A-Aww M-Mods</sys:String> <!-- Click and it installs all. -->
+    
+    <!-- Update 1.23.0: Search Sorting Options -->
+    <sys:String x:Key="SearchOptionSortNone">N-Nyonye</sys:String> 
+    <sys:String x:Key="SearchOptionSortLastModified">Wast Modified</sys:String> 
+    <sys:String x:Key="SearchOptionSortDownloads">Downwoads</sys:String> 
+    <sys:String x:Key="SearchOptionSortLikes">Wikes</sys:String> 
+    <sys:String x:Key="SearchOptionSortViews">V-Views</sys:String> 
+    
+    <sys:String x:Key="SearchOptionAscending">Ascending</sys:String> 
+    <sys:String x:Key="SearchOptionDescending">Descending</sys:String> 
+    
+    <sys:String x:Key="SearchOptionsTooltip">x3 P-Pwease nyote some downwoad souwces might nyot :3 s-suppowt sowting/fiwtewing.</sys:String> 
+    
+    <!-- Update 1.23.0: Publish Important Note -->
+    <sys:String x:Key="PublishModNotice">Upload ALL files as created by the publisher, do not rename any of them.
+For more info, refer to the tutorial. Don't forget to set correct Publish target.</sys:String> 
+    
 </ResourceDictionary>
