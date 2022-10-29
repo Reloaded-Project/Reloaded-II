@@ -47,6 +47,11 @@
         <!-- Buttons -->
         <StackPanel Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal">
 
+            <Button Content="{DynamicResource InstallModPackInstallAll}" 
+                    Style="{DynamicResource DefaultButton}" 
+                    Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                    Click="InstallAll_Click"/>
+            
             <Button Content="{DynamicResource InstallModPackStart}" 
                     Style="{DynamicResource DefaultButton}" 
                     Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 

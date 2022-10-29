@@ -50,4 +50,12 @@ public partial class InstallModPackEntryPage : ReloadedIIPage, IDisposable
     private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e) => ThemeHelpers.OpenHyperlink(sender, e);
 
     private void Start_Click(object sender, RoutedEventArgs e) => ViewModel.SetPage(1);
+
+    private void InstallAll_Click(object sender, RoutedEventArgs e)
+    {
+        foreach (var item in ViewModel.Owner.Mods)
+            item.Enabled = true;
+
+        ViewModel.SetPage(ViewModel.Owner.Mods.Count + 1);
+    }
 }

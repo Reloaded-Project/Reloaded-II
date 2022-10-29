@@ -628,7 +628,7 @@
     <sys:String x:Key="DownloadPackagesSettingHide">Hide Installed</sys:String>
     <sys:String x:Key="DownloadPackagesSettingHideTooltip">Hides already installed mods where possible.&#x0a;(Supports NuGet &amp; 'Publish' exported mods.)</sys:String>
 
-    <!-- Update 1.22.6 -->
+    <!-- Update 1.22.6: Errors -->
     <sys:String x:Key="ErrorAddApplicationCantReadSymlink">Failed to resolve final path of file (symlink detection).
 You might run into an error due to DRM or some weird FileSystem shenanigans. If that happens, copy EXE path from loader log into Edit Application menu.</sys:String>
 
@@ -656,4 +656,6 @@ DRM: 'You will own nothing and you will be happy.'
 - You don't have the right to access the EXE file.
 - The file has moved from its original location.</sys:String>
 
+    <!-- Update 1.23.0: Mod Packs Extras -->
+    <sys:String x:Key="InstallModPackInstallAll">Install All Mods</sys:String> <!-- Click and it installs all. -->
 </ResourceDictionary>
