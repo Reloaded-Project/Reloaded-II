@@ -20,7 +20,7 @@ public class AggregatePackageProvider : IDownloadablePackageProvider
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip, int take, SearchOptions options = null, CancellationToken token = default)
+    public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip, int take, SearchOptions? options = null, CancellationToken token = default)
     {
         var results = new Task<IEnumerable<IDownloadablePackage>>[_providers.Length];
 

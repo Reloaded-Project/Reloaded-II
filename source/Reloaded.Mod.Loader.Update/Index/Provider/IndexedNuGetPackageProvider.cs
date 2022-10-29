@@ -50,7 +50,7 @@ public class IndexedNuGetPackageProvider : IDownloadablePackageProvider
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, SearchOptions options = null, CancellationToken token = default)
+    public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, SearchOptions? options = null, CancellationToken token = default)
     {
         if (!_initializedApi)
             return await _fallback.SearchAsync(text, skip, take, options, token);

@@ -22,6 +22,7 @@
     <LangVersion>preview</LangVersion>
     <Deterministic>true</Deterministic>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 
   <ItemGroup>

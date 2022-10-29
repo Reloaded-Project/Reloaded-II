@@ -13,7 +13,7 @@ public struct IndexPackageProvider : IDownloadablePackageProvider
     public IndexPackageProvider(PackageList packageList) => _packageList = packageList;
 
     /// <inheritdoc />
-    public Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, SearchOptions options = null, CancellationToken token = default)
+    public Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, SearchOptions? options = null, CancellationToken token = default)
     {
         const StringComparison stringComparison = StringComparison.OrdinalIgnoreCase;
         var result = new List<IDownloadablePackage>();

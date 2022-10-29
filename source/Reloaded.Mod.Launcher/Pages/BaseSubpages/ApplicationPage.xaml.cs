@@ -17,7 +17,7 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
     {
         SwappedOut += () =>
         {
-            ViewModel.ChangeApplicationPage(ApplicationSubPage.Null); // make sure swappedout is triggered when switching tabs
+            ViewModel?.ChangeApplicationPage(ApplicationSubPage.Null); // make sure swappedout is triggered when switching tabs
             Dispose();
         };
         

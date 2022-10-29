@@ -154,6 +154,7 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
             return NuGetConfigContext.Default.NuGetConfig;
         }
         
+        /// <inheritdoc />
         public JsonTypeInfo<NuGetConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
 

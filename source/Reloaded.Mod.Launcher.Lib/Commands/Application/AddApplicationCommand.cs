@@ -47,7 +47,11 @@ public class AddApplicationCommand : ICommand
         // Get file information and populate initial application details.
         static string GetProductName(string exePath)
         {
-            try { return FileVersionInfo.GetVersionInfo(exePath).ProductName; }
+            try
+            {
+                var name = FileVersionInfo.GetVersionInfo(exePath).ProductName;
+                return !string.IsNullOrEmpty(name) ? name! : Path.GetFileName(exePath)!;
+            }
             catch (Exception e)
             {
                 Errors.HandleException(e, Resources.ErrorAddApplicationGetVersionInfo.Get());
