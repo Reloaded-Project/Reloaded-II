@@ -108,5 +108,6 @@
             Duration="{StaticResource ColorTransitionDuration}"
         />
     </Storyboard>
-    
+
+    <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{DynamicResource TooltipBackgroundColor}" Opacity="0.9"/>
 </ResourceDictionary>

@@ -31,8 +31,9 @@
                Placement="Left"
                HorizontalAlignment="Right" 
                VerticalAlignment="Top"
+               Opened="OptionsPopup_Opened"
                Panel.ZIndex="9999">
-            <Border Background="{DynamicResource TooltipBackgroundColorBrush}" Padding="{DynamicResource TooltipPaddingSize}" CornerRadius="{DynamicResource TooltipCornerRadius}">
+            <Border Background="{DynamicResource PopupBackgroundBrush}" Padding="{DynamicResource TooltipPaddingSize}" CornerRadius="{DynamicResource TooltipCornerRadius}">
 
                 <!-- Hide Installed Toggle -->
                 <StackPanel>
@@ -40,7 +41,8 @@
                     <CheckBox Margin="{DynamicResource CommonItemCombinedMargin}" 
                               Content="{DynamicResource DownloadPackagesSettingHide}"
                               IsChecked="{Binding HideInstalled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ToolTip="{DynamicResource DownloadPackagesSettingHideTooltip}" ToolTipService.InitialShowDelay="0"/>
+                              ToolTip="{DynamicResource DownloadPackagesSettingHideTooltip}" ToolTipService.InitialShowDelay="0"
+                              x:Name="HideInstalledCheck"/>
 
                     <!-- NuGet -->
                     <Button Margin="{DynamicResource CommonItemCombinedMargin}" 
@@ -59,6 +61,12 @@
                                        Style="{DynamicResource DefaultTextBlock}" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
+
+                    <!-- Close -->
+                    <Button Margin="{DynamicResource CommonItemCombinedMargin}" 
+                            Content="{DynamicResource DownloadsPackagePreviewClose}"
+                            Click="CloseSettingsPopup" VerticalAlignment="Stretch"/>
+
                 </StackPanel>
             </Border>
         </Popup>
