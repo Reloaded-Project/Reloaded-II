@@ -274,7 +274,7 @@ public class PublishModDialogViewModel : ObservableObject
     /// <summary>
     /// Directs user to the page showing them how to publish mods.
     /// </summary>
-    public void ShowPublishTutorial() => ProcessExtensions.OpenFileWithDefaultProgram("https://reloaded-project.github.io/Reloaded-II/AddingUpdateSupport");
+    public void ShowPublishTutorial() => ProcessExtensions.OpenFileWithDefaultProgram("https://reloaded-project.github.io/Reloaded-II/CreatingRelease");
 
     /// <summary>
     /// Lets the user select a new changelog path.
