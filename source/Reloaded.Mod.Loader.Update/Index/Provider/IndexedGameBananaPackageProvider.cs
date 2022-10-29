@@ -43,14 +43,14 @@ public class IndexedGameBananaPackageProvider : IDownloadablePackageProvider
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default)
+    public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, SearchOptions options = null,CancellationToken token = default)
     {
         while (!_initializeComplete)
-            await Task.Delay(1);
+            await Task.Delay(1, token);
 
         if (!_initializedApi)
-            return await _fallback.SearchAsync(text, skip, take, token);
+            return await _fallback.SearchAsync(text, skip, take, options, token);
 
-        return await _indexPackageProvider.SearchAsync(text, skip, take, token);
+        return await _indexPackageProvider.SearchAsync(text, skip, take, options, token);
     }
 }

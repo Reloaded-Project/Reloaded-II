@@ -27,7 +27,7 @@ public class GameBananaPackageProvider : IDownloadablePackageProvider
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default)
+    public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, SearchOptions options = null, CancellationToken token = default)
     {
         int page       = (skip / take) + 1;
         var gbApiItems = take > MaxItemsPerApiRequest ? 

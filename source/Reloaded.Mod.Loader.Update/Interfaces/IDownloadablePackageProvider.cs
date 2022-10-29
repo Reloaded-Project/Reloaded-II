@@ -11,8 +11,65 @@ public interface IDownloadablePackageProvider
     /// <param name="text">The text to search.</param>
     /// <param name="skip">The number of items to skip.</param>
     /// <param name="take">The number of items to take. This is a target. Depending on source, less or more items may be returned.</param>
+    /// <param name="options">The options to use in the search, not all options are supported by all providers.</param>
     /// <param name="token">The token used to cancel the operation.</param>
-    public Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default);
+    public Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, SearchOptions options = null, CancellationToken token = default);
+    
+    /// <summary>
+    /// Searches for packages matching a given term.
+    /// </summary>
+    /// <param name="text">The text to search.</param>
+    /// <param name="skip">The number of items to skip.</param>
+    /// <param name="take">The number of items to take. This is a target. Depending on source, less or more items may be returned.</param>
+    /// <param name="token">The token used to cancel the operation.</param>
+    public Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip = 0, int take = 50, CancellationToken token = default) => SearchAsync(text, skip, take, new SearchOptions(), token);
+}
+
+/// <summary>
+/// Options used for searching.
+/// </summary>
+public class SearchOptions
+{
+    /// <summary>
+    /// Sorting method applied.
+    /// </summary>
+    public SearchSorting Sort = SearchSorting.None;
+
+    /// <summary>
+    /// Whether to sort in descending order.
+    /// </summary>
+    public bool SortDescending = true;
+}
+
+/// <summary>
+/// The sorting applied to the returned results.
+/// </summary>
+public enum SearchSorting
+{
+    /// <summary>
+    /// No sorting is applied.
+    /// </summary>
+    None,
+    
+    /// <summary>
+    /// Sort by last modified date.
+    /// </summary>
+    LastModified,
+    
+    /// <summary>
+    /// Sort by number of downloads.
+    /// </summary>
+    Downloads,
+    
+    /// <summary>
+    /// Sort by number of likes.
+    /// </summary>
+    Likes,
+    
+    /// <summary>
+    /// Sort by number of views.
+    /// </summary>
+    Views
 }
 
 /// <summary>
@@ -86,7 +143,7 @@ public static class DownloadablePackageProviderExtensions
     {
         try
         {
-            return await provider.SearchAsync(text, paginationHelper.Skip, paginationHelper.Take);
+            return await provider.SearchAsync(text, paginationHelper.Skip, paginationHelper.Take, null, default);
         }
         catch (Exception)
         {
