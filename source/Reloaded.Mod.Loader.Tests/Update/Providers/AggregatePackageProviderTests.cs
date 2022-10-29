@@ -7,7 +7,7 @@ public class AggregatePackageProviderTests
     {
         // Arrange
         var mockA = new Mock<IDownloadablePackageProvider>();
-        mockA.Setup(x => x.SearchAsync("", 0, 50, default)).ReturnsAsync(() => new List<IDownloadablePackage>()
+        mockA.Setup(x => x.SearchAsync("", 0, 50, It.IsAny<SearchOptions?>(), default)).ReturnsAsync(() => new List<IDownloadablePackage>()
         {
             new DummyDownloadablePackage()
             {
@@ -20,7 +20,7 @@ public class AggregatePackageProviderTests
         });
 
         var mockB = new Mock<IDownloadablePackageProvider>();
-        mockB.Setup(x => x.SearchAsync("", 0, 50, default)).ReturnsAsync(() => new List<IDownloadablePackage>()
+        mockB.Setup(x => x.SearchAsync("", 0, 50, It.IsAny<SearchOptions?>(), default)).ReturnsAsync(() => new List<IDownloadablePackage>()
         {
             new DummyDownloadablePackage()
             {
