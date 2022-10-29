@@ -139,6 +139,7 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
             return GitHubConfigContext.Default.GitHubConfig;
         }
         
+        /// <inheritdoc />
         public JsonTypeInfo<GitHubConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
         
@@ -166,6 +167,7 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
             return GitHubUserConfigContext.Default.GitHubUserConfig;
         }
         
+        /// <inheritdoc />
         public JsonTypeInfo<GitHubUserConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
 }

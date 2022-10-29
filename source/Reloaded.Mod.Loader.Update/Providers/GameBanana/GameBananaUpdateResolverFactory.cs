@@ -102,6 +102,7 @@ public class GameBananaUpdateResolverFactory : IUpdateResolverFactory
             return GameBananaConfigContext.Default.GameBananaConfig;
         }
         
+        /// <inheritdoc />
         public JsonTypeInfo<GameBananaConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
 }

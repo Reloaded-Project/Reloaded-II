@@ -188,4 +188,13 @@ public static class Resources
     public static IDictionaryResource<string> ErrorAddApplicationGetVersionInfo { get; set; }
     public static IDictionaryResource<string> ErrorCantReadExeFile { get; set; }
     public static IDictionaryResource<string> ErrorCantReadExeFileAsiLoaderDeploy { get; set; }
+
+    // Update 1.23.0: Search Options
+    public static IDictionaryResource<string> SearchOptionSortNone { get; set; }
+    public static IDictionaryResource<string> SearchOptionSortLastModified { get; set; }
+    public static IDictionaryResource<string> SearchOptionSortDownloads { get; set; }
+    public static IDictionaryResource<string> SearchOptionSortLikes { get; set; }
+    public static IDictionaryResource<string> SearchOptionSortViews { get; set; }
+    public static IDictionaryResource<string> SearchOptionAscending { get; set; }
+    public static IDictionaryResource<string> SearchOptionDescending { get; set; }
 }

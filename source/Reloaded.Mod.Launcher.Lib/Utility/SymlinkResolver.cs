@@ -50,7 +50,7 @@ public static class SymlinkResolver
         {
             try
             {
-                var folder = Path.GetDirectoryName(path);
+                var folder = Path.GetDirectoryName(path)!;
                 var manifest = Path.Combine(folder, "appxmanifest.xml");
                 if (File.Exists(manifest))
                     return TryGetFilePathFromUWPAppManifest(path, manifest);
@@ -83,11 +83,11 @@ public static class SymlinkResolver
         var document = new XmlDocument();
         document.Load(manifest);
 
-        var tag = document.GetElementsByTagName("Identity")[0];
-        var packageName = tag.Attributes["Name"].Value;
+        var tag = document.GetElementsByTagName("Identity")[0]!;
+        var packageName = tag!.Attributes!["Name"]!.Value;
 
         // I wish I could use WinRT APIs but support is removed from runtime and the official way cuts off support for Win7/8.1
-        var newFolder = GetPowershellPackageInstallLocation(packageName);
+        var newFolder = GetPowershellPackageInstallLocation(packageName!);
         return Path.Combine(newFolder, Path.GetFileName(path));
     }
 
@@ -101,8 +101,11 @@ public static class SymlinkResolver
             CreateNoWindow = true
         };
         var process = Process.Start(processStartInfo);
-        process.WaitForExit();
-        var output = process.StandardOutput.ReadToEnd().TrimEnd();
+        process?.WaitForExit();
+        var output = process?.StandardOutput.ReadToEnd().TrimEnd();
+        if (output == null)
+            throw new Exception("Failed to get Package Install location via PowerShell.");
+        
         return output;
     }
 

@@ -658,4 +658,15 @@ DRM: 'You will own nothing and you will be happy.'
 
     <!-- Update 1.23.0: Mod Packs Extras -->
     <sys:String x:Key="InstallModPackInstallAll">Install All Mods</sys:String> <!-- Click and it installs all. -->
+    
+    <!-- Update 1.23.0: Search Sorting Options -->
+    <sys:String x:Key="SearchOptionSortNone">None</sys:String> 
+    <sys:String x:Key="SearchOptionSortLastModified">Last Modified</sys:String> 
+    <sys:String x:Key="SearchOptionSortDownloads">Downloads</sys:String> 
+    <sys:String x:Key="SearchOptionSortLikes">Likes</sys:String> 
+    <sys:String x:Key="SearchOptionSortViews">Views</sys:String> 
+    
+    <sys:String x:Key="SearchOptionAscending">Ascending</sys:String> 
+    <sys:String x:Key="SearchOptionDescending">Descending</sys:String> 
+    
 </ResourceDictionary>

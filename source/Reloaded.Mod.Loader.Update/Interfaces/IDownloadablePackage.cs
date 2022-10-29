@@ -226,3 +226,46 @@ public struct Submitter : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
+
+/// <summary>
+/// Extensions for downloadable packages.
+/// </summary>
+public static class IDownloadablePackageExtensions 
+{
+    /// <summary>
+    /// Applies sorting filters to output packages.
+    /// </summary>
+    public static IEnumerable<IDownloadablePackage> ApplyFilters(this IEnumerable<IDownloadablePackage> items, SearchSorting sort, bool isDescending)
+    {
+        if (sort == SearchSorting.None)
+            return items;
+
+        switch (sort)
+        {
+            case SearchSorting.LastModified:
+                return isDescending
+                    ? items.OrderByDescending(x => x.Published)
+                    : items.OrderBy(x => x.Published);
+
+            case SearchSorting.Downloads:
+                return isDescending
+                    ? items.OrderByDescending(x => x.DownloadCount)
+                    : items.OrderBy(x => x.DownloadCount);
+
+            case SearchSorting.Likes:
+                return isDescending
+                    ? items.OrderByDescending(x => x.LikeCount)
+                    : items.OrderBy(x => x.LikeCount);
+
+            case SearchSorting.Views:
+                return isDescending
+                    ? items.OrderByDescending(x => x.ViewCount)
+                    : items.OrderBy(x => x.ViewCount);
+
+            case SearchSorting.None:
+                return items;
+        }
+
+        return items;
+    }
+}

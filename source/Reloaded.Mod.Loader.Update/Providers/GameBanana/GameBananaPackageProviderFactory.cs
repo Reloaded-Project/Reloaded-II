@@ -49,6 +49,7 @@ public class GameBananaPackageProviderFactory : IPackageProviderFactory
             return GameBananaProviderConfigContext.Default.GameBananaProviderConfig;
         }
         
+        /// <inheritdoc />
         public JsonTypeInfo<GameBananaProviderConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
 }

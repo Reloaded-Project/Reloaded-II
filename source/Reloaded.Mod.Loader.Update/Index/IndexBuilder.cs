@@ -170,7 +170,7 @@ public class IndexBuilder
     {
         try
         {
-            return await provider.SearchAsync("", paginationHelper.Skip, paginationHelper.Take);
+            return await provider.SearchAsync("", paginationHelper.Skip, paginationHelper.Take, null, default);
         }
         catch (Exception)
         {

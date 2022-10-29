@@ -64,11 +64,12 @@ public class SettingsPageViewModel : ObservableObject
         AppConfigService.Items.CollectionChanged += MainPageViewModelOnApplicationsChanged;
         ModConfigService.Items.CollectionChanged += ManageModsViewModelOnModsChanged;
 
-        string? copyRightStr = "Sewer56 ~ Unknown Date | Unknown Version";
+        string copyRightStr = "Sewer56 ~ Unknown Date | Unknown Version";
         try
         {
             var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule!.FileName!);
-            copyRightStr = version.LegalCopyright;
+            if (!string.IsNullOrEmpty(version.LegalCopyright))
+                copyRightStr = version.LegalCopyright;
         }
         catch (Exception) { /* Non-critical, could happen on CIFS file share, we can ignore. */ }
         
