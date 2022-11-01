@@ -73,9 +73,13 @@ public static class AutoPackCreator
         {
             foreach (var image in bestPkg.Images)
             {
-                var file = await imageDownloader.GetOrDownloadFileFromUrl(image.Uri, imageDownloader.ModPreviewExpiration, false, token);
-                var converted = imageConverter.Convert(file, Path.GetExtension(image.Uri.ToString()), out string ext);
-                itemBuilder.AddImage(converted, ext, image.Caption);
+                try
+                {
+                    var file = await imageDownloader.GetOrDownloadFileFromUrl(image.Uri, imageDownloader.ModPreviewExpiration, false, token);
+                    var converted = imageConverter.Convert(file, Path.GetExtension(image.Uri.ToString()), out string ext);
+                    itemBuilder.AddImage(converted, ext, image.Caption);
+                }
+                catch (Exception) { }
             }
         }
 

@@ -43,10 +43,18 @@ public static class HandyControlExtensions
     {
         // We're using ConfigureAwait(false) to allow other threads to pick this up.
         // Helps prevent potential stutters when converting image.
-        var data = await cacheService.GetOrDownloadFileFromUrl(uri, cacheService.DefaultExpiration).ConfigureAwait(false);
-        await using var memoryStream = new MemoryStream(data);
-        var image = Imaging.BitmapFromStream(memoryStream); // Costly!
-        AddImageFromBitmap(carousel, image);
+        try
+        {
+            var data = await cacheService.GetOrDownloadFileFromUrl(uri, cacheService.DefaultExpiration).ConfigureAwait(false);
+            await using var memoryStream = new MemoryStream(data);
+            var image = Imaging.BitmapFromStream(memoryStream); // Costly!
+            AddImageFromBitmap(carousel, image);
+        }
+        catch (Exception)
+        {
+            // Load default image just in case.
+            AddImageFromBitmap(carousel, Imaging.GetPlaceholderIcon());
+        }
     }
 
     /// <summary>
