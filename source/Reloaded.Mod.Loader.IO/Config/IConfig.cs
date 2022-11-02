@@ -7,7 +7,11 @@ namespace Reloaded.Mod.Loader.IO.Config;
 /// </summary>
 public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
 {
-    private static JsonSerializerOptions _options = new JsonSerializerOptions() { WriteIndented = true };
+    private static JsonSerializerOptions _options = new JsonSerializerOptions()
+    {
+        WriteIndented = true
+    };
+    
     private static Encoding _encoding = new UTF8Encoding(false);
 
 #if NET7_0_OR_GREATER

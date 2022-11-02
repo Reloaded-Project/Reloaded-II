@@ -24,7 +24,7 @@ public class GameBananaDependencyResolver : IDependencyResolver
         var resolver = new GameBananaUpdateResolver(new GameBananaResolverConfiguration()
         {
             ItemId = (int)gbConfig.Config.ItemId,
-            ModType = gbConfig.Config.ItemType
+            ModType = gbConfig.Config.ItemType.ToString()
         }, new CommonPackageResolverSettings() { MetadataFileName = gbConfig.ReleaseMetadataName });
 
         await resolver.InitializeAsync();

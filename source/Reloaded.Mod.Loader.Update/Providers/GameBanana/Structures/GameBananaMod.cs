@@ -10,6 +10,7 @@ public class GameBananaMod
 {
     public const string CategoryMod = "Mod";
     public const string CategorySound = "Sound";
+    public const string CategoryWip = "Wip";
 
     [JsonPropertyName("_idRow")]
     public long Id { get; set; }
@@ -61,9 +62,10 @@ public class GameBananaMod
     /// <param name="take">Number of items to take.</param>
     public static async Task<List<GameBananaMod>> GetByNameAllCategoriesAsync(string? searchText, int gameId, int page, int take)
     {
-        var tasks = new Task<List<GameBananaMod>>[2];
+        var tasks = new Task<List<GameBananaMod>>[3];
         tasks[0] = GetByNameAsync(searchText, gameId, page, take, CategoryMod);
         tasks[1] = GetByNameAsync(searchText, gameId, page, take, CategorySound);
+        tasks[2] = GetByNameAsync(searchText, gameId, page, take, CategoryWip);
         await Task.WhenAll(tasks);
 
         var result = tasks[1].Result;
@@ -453,4 +455,26 @@ public class GameBananaManagerIntegrationConverter : JsonConverter<Dictionary<st
     {
         JsonSerializer.Serialize(writer, value, _options);
     }
+}
+
+// DO NOT RENAME, THESE ARE SAME STRINGS AS USED IN API
+/// <summary>
+/// Type of GameBanana item.
+/// </summary>
+public enum GBItemType
+{
+    /// <summary>
+    /// For all mods.
+    /// </summary>
+    Mod,
+
+    /// <summary>
+    /// Because site staff is funny.
+    /// </summary>
+    Sound,
+    
+    /// <summary>
+    /// You can upload files here? Damn.
+    /// </summary>
+    Wip,
 }
