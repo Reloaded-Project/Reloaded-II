@@ -1,3 +1,4 @@
+using static Reloaded.Input.Implementations.Implementations;
 using static Sewer56.UI.Controller.Core.Enums.Button;
 using Image = System.Windows.Controls.Image;
 using Path = System.IO.Path;
@@ -22,14 +23,19 @@ public static class ControllerSupport
             return;
 
         _isInit = true;
-        var miscConfDir = Lib.IoC.Get<LoaderConfig>().GetMiscConfigDirectory();
+        var loaderConf  = Lib.IoC.Get<LoaderConfig>();
+        var miscConfDir = loaderConf.GetMiscConfigDirectory();
         var savePath    = Path.Combine(miscConfDir, "Controller.json");
 
         if (!File.Exists(savePath))
             File.Copy(Path.Combine(AppContext.BaseDirectory, "Assets\\DefaultSettings\\Controller.json"), savePath);
 
-        Controller = new ReloadedInputControllerWithConfigurator(savePath, new ReloadedInputLocalizationProvider());
-
+        var controllerSupport = XInput | DInput;
+        if (loaderConf.DisableDInput)
+            controllerSupport &= ~DInput;
+            
+        Controller = new ReloadedInputControllerWithConfigurator(savePath, new ReloadedInputLocalizationProvider(), controllerSupport);
+        
         // This code is invoked from non-primary thread; but we need to register for events on primary thread, so here we go.
         ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
         {

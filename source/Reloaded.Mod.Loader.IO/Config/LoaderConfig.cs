@@ -163,6 +163,11 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     /// Skips launch warnings related to WINE.
     /// </summary>
     public bool SkipWineLaunchWarning { get; set; }
+    
+    /// <summary>
+    /// Disables DirectInput support, used for people with input device issues.
+    /// </summary>
+    public bool DisableDInput { get; set; }
 
     private string _launcherFolder;
 
