@@ -68,7 +68,8 @@ public class GameBananaMod
         tasks[2] = GetByNameAsync(searchText, gameId, page, take, CategoryWip);
         await Task.WhenAll(tasks);
 
-        var result = tasks[1].Result;
+        var result = tasks[2].Result;
+        result.AddRange(tasks[1].Result);
         result.AddRange(tasks[0].Result);
         return result;
     }
@@ -477,4 +478,9 @@ public enum GBItemType
     /// You can upload files here? Damn.
     /// </summary>
     Wip,
+    
+    /// <summary>
+    /// You can upload files here? Damn.
+    /// </summary>
+    Gamefile,
 }

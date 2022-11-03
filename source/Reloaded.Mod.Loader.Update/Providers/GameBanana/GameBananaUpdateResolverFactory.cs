@@ -34,7 +34,7 @@ public class GameBananaUpdateResolverFactory : IUpdateResolverFactory
         return new GameBananaUpdateResolver(new GameBananaResolverConfiguration()
         {
             ItemId = (int) gbConfig!.ItemId,
-            ModType = gbConfig.ItemType.ToString()
+            ModType = gbConfig.ItemType
         }, data.CommonPackageResolverSettings);
     }
 
@@ -82,9 +82,10 @@ public class GameBananaUpdateResolverFactory : IUpdateResolverFactory
         /// Type of the item on GameBanana, typically 'Mod'
         /// </summary>
         [Category(DefaultCategory)]
-        [Description("Type of the item on GameBanana.")]
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public GBItemType ItemType { get; set; } = GBItemType.Mod;
+        [Description("Type of the item on GameBanana.\n" +
+                     "Valid values: 'Mod', 'Sound', 'Wip'.\n" +
+                     "#Must use exact same case!!")]
+        public string ItemType { get; set; } = "Mod";
 
         /// <summary>
         /// Id of the item on GameBanana, this is the last number in the URL to your mod page.
