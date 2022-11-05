@@ -29,6 +29,13 @@
     <!-- <RobustLinkAssemblies Include="Reloaded.Memory" /> -->
   </ItemGroup>
 
+  <ItemGroup>
+    <PublishReadyToRunExclude Include="MessagePack.dll" />
+    <PublishReadyToRunExclude Include="Mapster.dll" />
+    <PublishReadyToRunExclude Include="Mapster.Core.dll" />
+    <PublishReadyToRunExclude Include="Reloaded.Mod.Loader.Server.dll" />
+  </ItemGroup>
+
   <Import Project="Robust.Trimming.targets" />
 
   <ItemGroup>
