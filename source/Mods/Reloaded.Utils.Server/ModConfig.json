@@ -2,7 +2,7 @@
   "ModId": "reloaded.utils.server",
   "ModName": "Reloaded II Server",
   "ModAuthor": "Sewer56",
-  "ModVersion": "1.0.0",
+  "ModVersion": "1.0.1",
   "ModDescription": "Hosts a remote control server for Reloaded II; allowing for functionality such as remote mod loading/unloading.",
   "ModDll": "Reloaded.Utils.Server.dll",
   "ModIcon": "Preview.png",

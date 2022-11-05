@@ -43,8 +43,8 @@ public struct AcknowledgementOrExceptionResponse : IMessage<AcknowledgementOrExc
     public AcknowledgementOrExceptionResponse(MessageKey key = default)
     {
         Key = key;
-        Message = "";
-        StackTrace = "";
+        Message = null;
+        StackTrace = null;
     }
 
     /// <summary>
