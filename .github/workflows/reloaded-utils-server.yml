@@ -81,7 +81,7 @@ jobs:
         }
         
     - name: Build
-      run: ./source/Mods/Reloaded.Utils.Server/Publish.ps1 -ChangelogPath "$env:PUBLISH_CHANGELOG_PATH"
+      run: ./source/Mods/Reloaded.Utils.Server/Publish.ps1 -ChangelogPath "$env:PUBLISH_CHANGELOG_PATH" -BuildR2R true
       
     - name: Upload GitHub Release Artifact
       uses: actions/upload-artifact@v2.2.4
