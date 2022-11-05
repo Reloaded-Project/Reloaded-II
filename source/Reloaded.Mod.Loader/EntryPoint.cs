@@ -1,6 +1,7 @@
 using Reloaded.Memory.Pointers;
 using System.Security.Policy;
 using System.Text.Json.Serialization;
+using static Reloaded.Mod.Loader.Utilities.DRMHelper;
 using static Reloaded.Mod.Loader.Utilities.Native.Kernel32;
 using Console = System.Console;
 using Environment = Reloaded.Mod.Shared.Environment;
@@ -99,14 +100,20 @@ public static class EntryPoint
 
     private static void LoadMods()
     {
-        // Check for Known DRM and Workarounds.
-        var basicPeParser = new BasicPeParser(Environment.CurrentProcessLocation.Value);
-        var drmTypes = DRMHelper.CheckDrmAndNotify(basicPeParser, _loader.Logger, out bool requiresDelayStart);
-            
         // Note: If loaded externally, we assume another mod loader or DLL override took care of bypassing DRM.
         bool loadedFromExternalSource = (_parameters.Flags & EntryPointFlags.LoadedExternally) != 0;
+        bool requiresDelayStart = false;
+        DrmType drmTypes = DrmType.None;
+        
         if (loadedFromExternalSource)
+        {
             Logger?.LogWriteLineAsync($"Note: Reloaded is being loaded from an external source or mod loader.", Logger.ColorInformation);
+        }
+        else
+        {
+            var basicPeParser = new BasicPeParser(Environment.CurrentProcessLocation.Value);
+            drmTypes = CheckDrmAndNotify(basicPeParser, _loader.Logger, out requiresDelayStart);
+        }
 
         if (!requiresDelayStart || loadedFromExternalSource)
         {
