@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-
 namespace Reloaded.Mod.Loader.Server;
 
 internal class Init
@@ -7,6 +5,7 @@ internal class Init
     [ModuleInitializer]
     public static void Initialise()
     {
-        TypeAdapterConfig.GlobalSettings.Compiler = exp => exp.CompileWithDebugInfo();
+        // TODO: FEC is broken on .NET 7, will potentially be for a while.
+        TypeAdapterConfig.GlobalSettings.Compiler = exp => exp.Compile();
     }
 }
