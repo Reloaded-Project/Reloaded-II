@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <RobustLinkRoots Include="Reloaded.Utils.Server" />
-    <RobustLinkRoots Include="FastExpressionCompiler" />
     <RobustLinkRoots Include="MessagePack" />
     <RobustLinkRoots Include="Mapster" />
     <RobustLinkRoots Include="Mapster.Core" />
