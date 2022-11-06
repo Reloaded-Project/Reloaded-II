@@ -42,11 +42,11 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
         ApplicationViewModel.SelectedProcess.Exited += SelectedProcessOnExited;
 
         /* Try establish connection. */
-        if (!TryGetPort(out _port)) 
+        if (!TryGetPort(true, out _port)) 
             return;
 
         Client = new LiteNetLibClient(IPAddress.Loopback, "", _port, true);
-        Client.OnTryReconnect += (peer) => TryGetPort(out _port);
+        Client.OnTryReconnect += (peer) => TryGetPort(false, out _port);
         Client.OverrideDetailsOnReconnect += () => (null, _port);
         Client.OnReceiveException += ClientOnReceiveException;
 
@@ -60,7 +60,7 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
         _refreshTimer.Enabled = true;
     }
 
-    private bool TryGetPort(out int port)
+    private bool TryGetPort(bool throwOnFailure, out int port)
     {
         try
         {
@@ -70,7 +70,9 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
         catch (Exception ex)
         {
             port = -1;
-            Errors.HandleException(new Exception(Resources.ErrorFailedToObtainPort.Get(), ex));
+            if (throwOnFailure)
+                Errors.HandleException(new Exception(Resources.ErrorFailedToObtainPort.Get(), ex));
+            
             return false;
         }
     }
