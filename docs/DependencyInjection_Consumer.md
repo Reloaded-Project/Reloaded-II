@@ -1,5 +1,10 @@
 # How to Consume Dependencies
 
+!!! note
+
+    A specific mod load order is ***not*** required when consuming dependencies.  
+    Reloaded will automatically rearrange load order when required to ensure dependencies are loaded before their consumers without affecting the order of other mods.  
+    
 ## Set a Dependency on the Other Mod
 
 In your `ModConfig.json`, update the `ModDependencies` to include the id of the mod you are consuming.  
