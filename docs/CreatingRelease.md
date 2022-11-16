@@ -76,6 +76,10 @@ By the end of this guide, you should have successfully published your mod.
 
 If uploading to GameBanana (pictured above), a `1-Click Install` button should show up after 2-5 minutes.  
 
+!!! tip
+
+    You can make mods directly downloadable with 1 click by prefixing any `http(s)` link with `r2:`, e.g. [File Monitor 1 Click](r2:https://github.com/Reloaded-Project/reloaded.universal.redirector/releases/download/1.2.6/Reloaded.Universal.Monitor1.0.12.7z)
+
 Additional (Optional) Resources:  
 - [Missing 1 Click Install Button on GameBanana](./CreatingReleaseExtras.md#missing-1-click-install-on-gamebanana)  
 - [Publishing Mods from Commandline](./CreatingReleaseExtras.md#publishing-mods-from-commandline)  
