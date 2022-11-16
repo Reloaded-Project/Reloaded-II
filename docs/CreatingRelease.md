@@ -10,6 +10,21 @@ A `Release` consists of 2 files:
 - Compressed version of your mod.  
 - JSON text file containing update information.  
 
+## Note for Code Mods
+
+!!! info
+
+    If you're a programmer shipping a code mod with dependencies, do the following at least once:  
+    - Build your mod (if needed).  
+    - Restart the launcher.  
+    - Copy `ModConfig.json` back from mod folder to your code project.  
+
+This is important as [Reloaded copies update information from dependencies into your ModConfig](./Images/DependencyPropagation.png), allowing for automatic installation if the end user doesn't have the dependency.  
+
+!!! note 
+    
+    GitHub has a low limit of 60 requests/hour per IP for unauthenticated users. This gets exhausted fast. If you're publishing a mod that is likely to be a dependency of another, it's recommended to have an alternative update source if possible.  
+
 ## Create a Release
 
 In order to create a release for a mod, right click the mod and hit `Publish` in an individual application's main page.  
