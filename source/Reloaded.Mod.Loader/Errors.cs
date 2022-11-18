@@ -2,7 +2,11 @@ namespace Reloaded.Mod.Loader;
 
 public static class Errors
 {
-    public const string UnableToFindApplication = "Unable to find a configuration for the currently executing application.";
+    public const string UnableToFindApplication = "Unable to find an app configuration for the currently executing EXE.\n" +
+                                                  "Please go to `Edit Application` in Reloaded launcher and click `Update`.\n" +
+                                                  "Usually this can happen because:\n" +
+                                                  "- You moved your application folder.\n" + 
+                                                  "- App folder was moved after an update (can happen with GamePass/UWP).";
     public const string ModLoaderNotInitialized = "Mod loader has not been initialized.";
     public const string ModLoaderAlreadyInitialized = "Mod loader is already initialized.";
 

@@ -214,7 +214,11 @@
     <sys:String x:Key="ErrorLoaderNotFound">was not found. This may be caused by Antivirus software deleting and/or breaking changes in GitHub repository.</sys:String> <!-- Loader DLL Name displays before this message -->
     <sys:String x:Key="ErrorFailedToStartProcess">Failed to start the process. This generally happens due to one of the 3 issues:&#x0a;- Path to the EXE is incorrect (have you moved the application?)&#x0a;- The program is configured to run as administrator (right click -> properties) but Reloaded is running in user mode.&#x0a;- Interference from e.g. Antivirus software. Check your logs.&#x0a;Here is the error returned from Windows: </sys:String>
     <sys:String x:Key="ErrorDllInjectionFailed">Failed to DLL inject into application process.</sys:String>
-    <sys:String x:Key="ErrorPathToApplicationInvalid">The path to the application to be launched is invalid. Please re-check your application configuration.</sys:String>
+    <sys:String x:Key="ErrorPathToApplicationInvalid">Reloaded cannot find the EXE file for this program.
+Consider updating it in `Edit Application` -> `Update`.
+Usually this can happen because:
+- You moved your application folder.
+- App folder was moved after an update (can happen with GamePass/UWP).</sys:String>
     <sys:String x:Key="ErrorCheckUpdatesFailed">Failed to check for updates. We are either being rate limited by GitHub or not connected to the internet.</sys:String>
     <sys:String x:Key="ErrorGetProcAddress32Failed">Warning: You are probably missing the x86 version of .NET Core, 32-bit applications will not work.&#x0a;Please re-check the requirements listed on the download page.&#x0a;Actual Error: Failed to acquire address of GetProcAddress for x86.</sys:String>
 
@@ -675,4 +679,6 @@ DRM: 'You will own nothing and you will be happy.'
     <sys:String x:Key="PublishModNotice">Upload ALL files as created by the publisher, do not rename any of them.
 For more info, refer to the tutorial. Don't forget to set correct Publish target.</sys:String> 
     
+    <!-- Note for translators: Please update ErrorPathToApplicationInvalid if you get down this far, message was updated. -->
+
 </ResourceDictionary>

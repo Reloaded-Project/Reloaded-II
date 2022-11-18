@@ -27,7 +27,7 @@
 
     <!-- Add Application Page -->
     <sys:String x:Key="AddAppImageTooltip">Cwick this image to i-impowt a custom wogo.</sys:String>
-    <sys:String x:Key="AddAppImageSelectorTitle">Sewect an i-image.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Sewect Image to use as icon.</sys:String>
     <sys:String x:Key="AddAppImageSelectorFilter">Image</sys:String>
 
     <sys:String x:Key="AddAppNewButton">Nyew</sys:String>
@@ -227,7 +227,11 @@ Devewopews: Wun youw favouwite IDE ^w^ e-e.g. Visuaw Studio as A-Admin.</sys:Str
 - Intewfewence fwom ^w^ e-e.g. Antiviwus softwawe. Check youw wogs.
 H-Hewe is t-the &gt;w&lt; e-ewwow wetuwnyed fwom W-Windows:</sys:String>
     <sys:String x:Key="ErrorDllInjectionFailed">Faiwed to DWW inject i-into appwication pwocess.</sys:String>
-    <sys:String x:Key="ErrorPathToApplicationInvalid">The path to t-the appwication to OwO b-be w-waunched is invawid. x3 P-Pwease we-check youw appwication configuwation.</sys:String>
+    <sys:String x:Key="ErrorPathToApplicationInvalid">Reloaded cannot find the EXE file for this program.
+Consider updating it in `Edit Application` -> `Update`.
+Usually this can happen because:
+- You moved your application folder.
+- App folder was moved after an update (can happen with GamePass/UWP).</sys:String>
     <sys:String x:Key="ErrorCheckUpdatesFailed">Faiwed to check f-fow u-updates. We awe eithew being wate wimited by GitHub o-ow nyot connyected to t-the intewnyet.</sys:String>
     <sys:String x:Key="ErrorGetProcAddress32Failed">Wawnying: Y-You awe pwobabwy missing t-the x86 vewsion o-of .NyET Cowe, 32-bit appwications wiww nyot wowk.
 x3 P-Pwease we-check t-the wequiwements wisted on t-the downwoad page.
@@ -488,8 +492,8 @@ This &gt;_&lt; w-window wiww automaticawwy c-cwose in a f-few seconds.</sys:Stri
 
     <!-- Update 1.18.0: Application Menu Tooltips -->
     <sys:String x:Key="ApplicationTooltipCreateShortcutDescription">Saves a showtcut t-that can OwO b-be u-used to waunch t-the app modded without Wewoaded Waunchew.</sys:String>
-    <sys:String x:Key="ApplicationTooltipLoadModSet">Woads a wist o-of enyabwed mods.</sys:String>
-    <sys:String x:Key="ApplicationTooltipSaveModSet">S-Save Mod Set</sys:String>
+    <sys:String x:Key="ApplicationTooltipLoadModSet">Woad Mod Set</sys:String>
+    <sys:String x:Key="ApplicationTooltipSaveModSet">Saves t-the cuwwent wist o-of enyabwed mods.</sys:String>
     <sys:String x:Key="ApplicationTooltipProcessSysDescription">Y-You can use me to woad Wewoaded i-into this pwogwam.</sys:String>
     <sys:String x:Key="ApplicationTooltipProcessRldDescription">Y-You can use me to manyage cuwwentwy w-woaded mods.</sys:String>
 
@@ -733,4 +737,6 @@ DRM: 'You will own nothing and you will be happy.'
     <sys:String x:Key="PublishModNotice">Upload ALL files as created by the publisher, do not rename any of them.
 For more info, refer to the tutorial. Don't forget to set correct Publish target.</sys:String> 
     
+    <!-- Note for translators: Please update ErrorPathToApplicationInvalid if you get down this far, message was updated. -->
+
 </ResourceDictionary>

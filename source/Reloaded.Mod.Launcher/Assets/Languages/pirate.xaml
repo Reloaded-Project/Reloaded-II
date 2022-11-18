@@ -27,7 +27,7 @@
 
     <!-- Add Application Page -->
     <sys:String x:Key="AddAppImageTooltip">Click this image to import a custom logo.</sys:String>
-    <sys:String x:Key="AddAppImageSelectorTitle">Select an image.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Select image to use as icon.</sys:String>
     <sys:String x:Key="AddAppImageSelectorFilter">Image</sys:String>
 
     <sys:String x:Key="AddAppNewButton">New</sys:String>
@@ -40,11 +40,11 @@
     <sys:String x:Key="AddAppAdvancedOptions">Advanced tools &amp; options</sys:String>
     <sys:String x:Key="AddAppCreateShortcut">Create shortcut</sys:String>
     <sys:String x:Key="AddAppAutoInject">Auto-inject</sys:String>
-    <sys:String x:Key="AddAppAutoInjectMessage">Note: Auto-inject be provided but not recommended as nay guarantee can be made that mods will execute code before th&apos; application. Ye flounderin&apos; nincompoop. Sling yer hook!
-Please instead use regular &quot;launch application&quot; from reloaded or th&apos; &quot;dll loader&quot; method described in th&apos; github documentation. Sling yer hook!
+    <sys:String x:Key="AddAppAutoInjectMessage">Note: Auto-inject be provided but not recommended as nay guarantee can be made that mods will execute code before th&apos; application. Blisterin&apos; barnacles!
+Please instead use regular &quot;launch application&quot; from reloaded or th&apos; &quot;dll loader&quot; method described in th&apos; github documentation. Blimey!
 Please do not submit bugs for mods that do not work using auto-inject mode.</sys:String>
 
-    <sys:String x:Key="AddAppExecutableTitle">Select an application to create th&apos; configuration for.</sys:String>
+    <sys:String x:Key="AddAppExecutableTitle">Select an application to create th&apos; configuration for. Ye flounderin&apos; nincompoop.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">Application executable</sys:String>
 
     <sys:String x:Key="AddAppShortcutCreatedTitle">Shortcut created</sys:String>
@@ -78,19 +78,19 @@ Please do not submit bugs for mods that do not work using auto-inject mode.</sys
 
     <sys:String x:Key="TitleCreateModNonUniqueId">Non-unique id</sys:String>
     <sys:String x:Key="MessageCreateModNonUniqueId">Th&apos; modid for th&apos; mod ye are creating be not unique.
-Please make th&apos; modid unique. Weigh anchor and hoist the mizzen!</sys:String>
+Please make th&apos; modid unique.</sys:String>
 
     <!-- Mod Loader Settings -->
     <sys:String x:Key="LoaderSettingsCleanup">Cleanup configurations</sys:String>
     <sys:String x:Key="LoaderSettingsCleanupWarning">Th&apos; following operation performs housekeeping on various configurations (app, mod etc.).
-Housekeeping functions include things such as removing nonexisting mods from a mod&apos;s list of dependencies.
-Please be aware that if ye are missing any dependencies, supported applications etc. They will be removed from th&apos; configuration files.</sys:String>
+Housekeeping functions include things such as removing nonexisting mods from a mod&apos;s list of dependencies. Blimey!
+Please be aware that if ye are missing any dependencies, supported applications etc. They will be removed from th&apos; configuration files. Yo ho ho.</sys:String>
     <sys:String x:Key="LoaderSettingsCleanupComplete">Cleanup complete</sys:String>
 
     <sys:String x:Key="LoaderSettingsAppsInstalled">Applications installed:</sys:String>
-    <sys:String x:Key="LoaderSettingsModsInstalled">Mods installed: Yo ho ho.</sys:String>
+    <sys:String x:Key="LoaderSettingsModsInstalled">Mods installed:</sys:String>
     <sys:String x:Key="LoaderSettingsCompileDate">Compiled on:</sys:String>
-    <sys:String x:Key="LoaderSettingsAndDocumentation">User guide + docs. Savvy?</sys:String>
+    <sys:String x:Key="LoaderSettingsAndDocumentation">User guide + docs. Thar she blows!</sys:String>
     <sys:String x:Key="LoaderSettingsCopyright">Reloaded ii be free software licensed under gnu gpl v3</sys:String>
     <sys:String x:Key="LoaderSettingsEnableAutomaticUpdates">Automatic updates</sys:String>
     <sys:String x:Key="LoaderSettingsShowConsole">Show console</sys:String>
@@ -129,15 +129,15 @@ Please be aware that if ye are missing any dependencies, supported applications 
     <sys:String x:Key="TitleConfigureMods">Configure mods</sys:String>
     <sys:String x:Key="ApplicationLaunch">Launch application</sys:String>
 
-    <sys:String x:Key="ConfigureModsListItemTooltip">Drag and drop items to change th&apos; load order of mods. Blow me down! Dead men tell no tales. Cleave him to the brisket! Mods are loaded starting with top mod first and bottom mod last.</sys:String>
-    <sys:String x:Key="ConfigureModsDummyText">Uses reloaded to tell ye to get some mods. Reloaded-ii be cool! Cuteness be justice, its th&apos; law!.</sys:String> <!-- Unused for now, will be used down the road. -->
+    <sys:String x:Key="ConfigureModsListItemTooltip">Drag and drop items to change th&apos; load order of mods. Mods are loaded starting with top mod first and bottom mod last.</sys:String>
+    <sys:String x:Key="ConfigureModsDummyText">Uses reloaded to tell ye to get some mods. Sling yer hook! Reloaded-ii be cool! Cuteness be justice, its th&apos; law!.</sys:String> <!-- Unused for now, will be used down the road. -->
     <sys:String x:Key="ConfigureModsConfigure">Configure mod</sys:String>
     <sys:String x:Key="ConfigureModsOpenFolder">Open folder</sys:String>
 
     <sys:String x:Key="LoadModSet">Load mod set</sys:String>
     <sys:String x:Key="SaveModSet">Save mod set</sys:String>
     <sys:String x:Key="LoadModSetDialogTitle">Select file to load list of mods from.</sys:String>
-    <sys:String x:Key="SaveModSetDialogTitle">Select path to save list of mods to.</sys:String>
+    <sys:String x:Key="SaveModSetDialogTitle">Select path to save list of mods to. Weigh anchor and hoist the mizzen!</sys:String>
 
     <!-- Obsolete as of 1.12.0 onwards -->
     <sys:String x:Key="LoadModSetIncompatibleTitle">Compatibility alert</sys:String>
@@ -150,7 +150,7 @@ Please be aware that if ye are missing any dependencies, supported applications 
     <sys:String x:Key="ReloadedProcessUnload">Unload</sys:String>
     <sys:String x:Key="ReloadedProcessRefresh">Refresh</sys:String>
     <sys:String x:Key="ReloadedProcessLoadMod">Load mod</sys:String>
-    <sys:String x:Key="ReloadedProcessNotice">Note: This menu be primarily intended for use by developers.</sys:String>
+    <sys:String x:Key="ReloadedProcessNotice">Note: Thundering typhoons! Shiver me timbers! This menu be primarily intended for use by developers.</sys:String>
 
     <!-- Update Mod Dialog -->
     <sys:String x:Key="UpdateModTitle">Mod updates available</sys:String>
@@ -162,7 +162,7 @@ Please be aware that if ye are missing any dependencies, supported applications 
 
     <!-- Update Mod Confirmation Dialog -->
     <sys:String x:Key="UpdateModConfirmTitle">Applications running</sys:String>
-    <sys:String x:Key="UpdateModConfirmMessage">Ye have applications currently running reloaded. Thundering typhoons!
+    <sys:String x:Key="UpdateModConfirmMessage">Ye have applications currently running reloaded.
 Updates will download however will not be applied until all applications are closed.</sys:String>
 
     <!-- Update Loader Dialog -->
@@ -188,17 +188,17 @@ Update cannot be performed, please close all applications.</sys:String>
     <sys:String x:Key="DownloadModsCheckUpdatesAndDependencies">Check updates &amp; dependencies</sys:String>
 
     <!-- No Update Dialog -->
-    <sys:String x:Key="NoUpdateDialogTitle">Hooray!</sys:String>
-    <sys:String x:Key="NoUpdateDialogMessage">Nothing to do here. All mods in check!</sys:String>
+    <sys:String x:Key="NoUpdateDialogTitle">Hooray! Savvy?</sys:String>
+    <sys:String x:Key="NoUpdateDialogMessage">Nothing to do here. All mods in check! Sling yer hook! Weigh anchor and hoist the mizzen!</sys:String>
 
     <!-- Fetch Nuget Dialog | Obsolete since 1.12.0 but some strings still used. -->
     <sys:String x:Key="FetchNugetTitle">Download packages</sys:String>
-    <sys:String x:Key="FetchNugetMessage">Th&apos; following packages will be installed:</sys:String>
-    <sys:String x:Key="FetchNugetNotFoundMessage">Th&apos; following packages have not been found: Sling yer hook!</sys:String>
+    <sys:String x:Key="FetchNugetMessage">Th&apos; following packages will be installed: Shiver me timbers!</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundMessage">Th&apos; following packages have not been found:</sys:String>
     <sys:String x:Key="FetchNugetNotFoundAdvice">Ye will need to find them yourself :/</sys:String>
 
     <!-- Startup Failure -->
-    <sys:String x:Key="FailedToLaunchTitle">Oof! Yo ho ho.</sys:String>
+    <sys:String x:Key="FailedToLaunchTitle">Oof!</sys:String>
     <sys:String x:Key="FailedToLaunchMessage">An error occured while trying to load reloaded-ii.</sys:String>
 
     <!-- Download Mod Archive -->
@@ -208,7 +208,7 @@ Update cannot be performed, please close all applications.</sys:String>
     <!-- WMI Administrator Message -->
     <sys:String x:Key="RunAsAdminMessage">Ye need to run this application as administrator.
 Administrative privileges are needed to receive application launch/exit events from windows management instrumentation (wmi).
-Developers: Run your favourite ide e.g. Visual studio as admin.</sys:String>
+Developers: Run your favourite ide e.g. Weigh anchor and hoist the mizzen! Visual studio as admin.</sys:String>
 
     <!-- Configure Mod Dialog -->
     <sys:String x:Key="ConfigureModDialogTitle">Configure mod</sys:String>
@@ -220,32 +220,36 @@ Developers: Run your favourite ide e.g. Visual studio as admin.</sys:String>
     <sys:String x:Key="ErrorPathNullOrEmpty">Th&apos; path to this application be either null or empty. Please fix th&apos; path.</sys:String>
     <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">Failed to get directory of mod to delete.</sys:String>
     <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">Failed to get directory of application to delete.</sys:String>
-    <sys:String x:Key="ErrorLoaderNotFound">Was not found. This may be caused by antivirus software deleting and/or breaking changes in github repository.</sys:String> <!-- Loader DLL Name displays before this message -->
-    <sys:String x:Key="ErrorFailedToStartProcess">Failed to start th&apos; process. Thar she blows! This generally happens due to one of th&apos; 3 issues:
+    <sys:String x:Key="ErrorLoaderNotFound">Was not found. Avast ye! This may be caused by antivirus software deleting and/or breaking changes in github repository.</sys:String> <!-- Loader DLL Name displays before this message -->
+    <sys:String x:Key="ErrorFailedToStartProcess">Failed to start th&apos; process. This generally happens due to one of th&apos; 3 issues:
 - path to th&apos; exe be incorrect (have ye moved th&apos; application?)
-- th&apos; program be configured to run as administrator (right click -&gt; properties) but reloaded be running in user mode. Sling yer hook!
-- interference from e.g. Antivirus software. Check your logs. Thar she blows!
+- th&apos; program be configured to run as administrator (right click -&gt; properties) but reloaded be running in user mode.
+- interference from e.g. Antivirus software. Check your logs.
 Here be th&apos; error returned from windows:</sys:String>
     <sys:String x:Key="ErrorDllInjectionFailed">Failed to dll inject into application process.</sys:String>
-    <sys:String x:Key="ErrorPathToApplicationInvalid">Th&apos; path to th&apos; application to be launched be invalid. Thar she blows! Please re-check your application configuration.</sys:String>
-    <sys:String x:Key="ErrorCheckUpdatesFailed">Failed to check for updates. We are either being rate limited by github or not connected to th&apos; internet.</sys:String>
+    <sys:String x:Key="ErrorPathToApplicationInvalid">Reloaded cannot find the EXE file for this program.
+Consider updating it in `Edit Application` -> `Update`.
+Usually this can happen because:
+- You moved your application folder.
+- App folder was moved after an update (can happen with GamePass/UWP).</sys:String>
+    <sys:String x:Key="ErrorCheckUpdatesFailed">Failed to check for updates. Ye flounderin&apos; nincompoop. We are either being rate limited by github or not connected to th&apos; internet.</sys:String>
     <sys:String x:Key="ErrorGetProcAddress32Failed">Warning: Ye are probably missing th&apos; x86 version of .net core, 32-bit applications will not work.
 Please re-check th&apos; requirements listed on th&apos; download page.
-Actual error: Savvy? Failed to acquire address of getprocaddress for x86.</sys:String>
+Actual error: Failed to acquire address of getprocaddress for x86.</sys:String>
 
     <!-- Asi Loader -->
     <sys:String x:Key="AsiLoaderInstall">Deploy asi loader</sys:String>
     <sys:String x:Key="AsiLoaderDialogTitle">Asi loader deployment</sys:String>
     <sys:String x:Key="AsiLoaderDialogDescription">Thirteenag&apos;s ultimate asi loader (3rd party dll loader) can be deployed if ye would like for reloaded
-To be launched automatically without using a launcher or shortcut. Sling yer hook! Blisterin&apos; barnacles! Would ye like to deploy this loader? Blimey! Cleave him to the brisket! Ye flounderin&apos; nincompoop.</sys:String>
+To be launched automatically without using a launcher or shortcut. Would ye like to deploy this loader?</sys:String>
     <sys:String x:Key="AsiLoaderDialogLoaderDeployed">Asi loader successfully deployed to:</sys:String>
-    <sys:String x:Key="AsiLoaderDialogBootstrapperDeployed">Reloaded bootstrapper deployed to:</sys:String>
+    <sys:String x:Key="AsiLoaderDialogBootstrapperDeployed">Reloaded bootstrapper deployed to: Cleave him to the brisket!</sys:String>
     <sys:String x:Key="ErrorAsiNotSupported">Nay compatible dll name found to add ultimate asi loader.</sys:String> <!-- Unused at the moment, may be used in the future. -->
 
     <!-- Missing Dependencies Dialog -->
     <sys:String x:Key="MissingDependenciesTitle">Missing requirements</sys:String>
     <sys:String x:Key="MissingDependenciesText">It appears that certain requirements required to run reloaded are missing from your system. Th&apos; launcher has found th&apos; following missing requirements:</sys:String>
-    <sys:String x:Key="MissingDependenciesText2">Please download th&apos; requirements provided above and close th&apos; window.</sys:String>
+    <sys:String x:Key="MissingDependenciesText2">Please download th&apos; requirements provided above and close th&apos; window. Arrr!</sys:String>
 
     <!-- Categories: Main Menu Screen -->
     <sys:String x:Key="AppCategoryMain">Main</sys:String>
@@ -269,11 +273,11 @@ To be launched automatically without using a launcher or shortcut. Sling yer hoo
 
     <!-- Update 1.7.9: Wine Compatibility Notes -->
     <sys:String x:Key="WineCompatibilityNoticeTitle">Wine compatibility notice</sys:String>
-    <sys:String x:Key="WineCompatibilityNoticeText">It appears that ye are trying to run an application using th&apos; launcher from inside wine.
+    <sys:String x:Key="WineCompatibilityNoticeText">It appears that ye are trying to run an application using th&apos; launcher from inside wine. Blisterin&apos; barnacles!
 This operation be likely to fail, due to target application requiring special tricks to run or isolation (such as different wine prefix) preventing dll injection.
 
-To run under wine, it be recommended that ye deploy asi loader (see: Edit application menu) and run th&apos; game outside th&apos; launcher. Savvy?
-Please note that reloaded isn&apos;t frequently tested under wine.</sys:String>
+To run under wine, it be recommended that ye deploy asi loader (see: Edit application menu) and run th&apos; game outside th&apos; launcher.
+Please note that reloaded isn&apos;t frequently tested under wine. Weigh anchor and hoist the mizzen! Batten down the hatches! Ye flounderin&apos; nincompoop.</sys:String>
     <sys:String x:Key="WineCompatibilityNoticeOk">Try anyway</sys:String>
 
     <!-- Update 1.8.0: Configuration -->
@@ -284,17 +288,17 @@ Please note that reloaded isn&apos;t frequently tested under wine.</sys:String>
     <sys:String x:Key="LoaderSettingsConfigFile">Open config file</sys:String>
 
     <!-- Update 1.8.0: Extra Error(s) -->
-    <sys:String x:Key="ErrorFailedToObtainPort">Th&apos; application has either crashed, reloaded failed to load or reloaded has not initialized within th&apos; timeout limit. Shiver me timbers!
+    <sys:String x:Key="ErrorFailedToObtainPort">Th&apos; application has either crashed, reloaded failed to load or reloaded has not initialized within th&apos; timeout limit. Splice the mainbrace!
 
-Th&apos; following operations might help: Splice the mainbrace!
+Th&apos; following operations might help:
 - close this error, wait a few seconds, and try again.
 - close other copies of th&apos; application if they are already running. (use task manager)
-- reboot your machine. Cleave him to the brisket!
+- reboot your machine.
 
-This be a warning, if your application works as expected ye can ignore this message. Arrr!
+This be a warning, if your application works as expected ye can ignore this message.
 
 Actual error:
-Failed to obtain port for th&apos; reloaded instance running inside th&apos; process. Thundering typhoons!</sys:String>
+Failed to obtain port for th&apos; reloaded instance running inside th&apos; process. Dead men tell no tales.</sys:String>
 
     <!-- Update 1.10.0: Reloaded Bootstrapper Update -->
     <sys:String x:Key="BootstrapperUpdateTitle">Bootstrapper updated</sys:String>
@@ -302,8 +306,8 @@ Failed to obtain port for th&apos; reloaded instance running inside th&apos; pro
 {0}</sys:String>
 
     <!-- Update 1.10.1: Reloaded Bootstrapper Hotfix -->
-    <sys:String x:Key="BootstrapperCreateDirectoryError">Failed to create directory to deploy bootstrapper. Consider trying running reloaded as administrator.
-Actual error: Dead men tell no tales. {0}</sys:String>
+    <sys:String x:Key="BootstrapperCreateDirectoryError">Failed to create directory to deploy bootstrapper. Avast ye! Consider trying running reloaded as administrator.
+Actual error: {0}</sys:String>
 
     <!-- Update 1.12.0: New First Launch Experience -->
     <sys:String x:Key="TitleFirstLaunchEx">Reloaded ii tutorial</sys:String>
@@ -327,12 +331,12 @@ Actual error: Dead men tell no tales. {0}</sys:String>
     <sys:String x:Key="FirstLaunchExAddModExtractNext">Next</sys:String>
 
     <sys:String x:Key="FirstLaunchExConfigureModDescription1">Some mods might support additional configuration, allowing ye to tweak things.</sys:String>
-    <sys:String x:Key="FirstLaunchExConfigureModDescription2">If th&apos; &quot;configure mod&quot; be red when th&apos; mod be highlighted, it can be configured. Blimey!</sys:String>
+    <sys:String x:Key="FirstLaunchExConfigureModDescription2">If th&apos; &quot;configure mod&quot; be red when th&apos; mod be highlighted, it can be configured.</sys:String>
 
     <sys:String x:Key="FirstLaunchExEnableModDescription1">To enable mods, simply press th&apos; square checkbox.</sys:String>
-    <sys:String x:Key="FirstLaunchExEnableModDescription2">A mod be enabled if th&apos; checkbox be red, disabled if it be grey.</sys:String>
+    <sys:String x:Key="FirstLaunchExEnableModDescription2">A mod be enabled if th&apos; checkbox be red, disabled if it be grey. Blow me down!</sys:String>
 
-    <sys:String x:Key="FirstLaunchExCompleteDescription1">Thanks for trying reloaded ii. Savvy?</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription1">Thanks for trying reloaded ii.</sys:String>
     <sys:String x:Key="FirstLaunchExCompleteDescription2">Ye might also find th&apos; following links useful:</sys:String>
     <sys:String x:Key="FirstLaunchExCompleteDescription3">Ye can also find these links in [mod loader settings].</sys:String>
 
@@ -348,9 +352,9 @@ Actual error: Dead men tell no tales. {0}</sys:String>
     <sys:String x:Key="TitleEditModDialog">Edit mod</sys:String>
 
     <!-- Update 1.12.0: Additional Errors -->
-    <sys:String x:Key="ErrorUnableDetermineVersion">Error: Unable to determine reloaded ii version</sys:String>
+    <sys:String x:Key="ErrorUnableDetermineVersion">Error: Batten down the hatches! Unable to determine reloaded ii version</sys:String>
     <sys:String x:Key="ErrorUpdateModInUseTitle">Mod(s) in use</sys:String>
-    <sys:String x:Key="ErrorUpdateModInUse">Ye have applications currently running reloaded.
+    <sys:String x:Key="ErrorUpdateModInUse">Ye have applications currently running reloaded. Ye flounderin&apos; nincompoop.
 Updates will download however will not be applied until all applications are closed.</sys:String>
     <sys:String x:Key="ErrorMissingDependency">Missing dependencies</sys:String>
     <sys:String x:Key="ErrorInvalidSemanticVersionTitle">Invalid version number</sys:String>
@@ -369,37 +373,37 @@ Examples: `1.0.0`, `1.0`, `2.0-alpha`.</sys:String>
     <sys:String x:Key="EditModDependenciesDescription">If your mod requires another mod to be present, select it here.</sys:String>
 
     <sys:String x:Key="EditModUniversalMod">Universal mod</sys:String>
-    <sys:String x:Key="EditModUniversalModDescription">If enabled, th&apos; mod be visible by default in every application.</sys:String>
+    <sys:String x:Key="EditModUniversalModDescription">If enabled, th&apos; mod be visible by default in every application. Ye flounderin&apos; nincompoop.</sys:String>
 
     <sys:String x:Key="EditModLibrary">Library</sys:String>
-    <sys:String x:Key="EditModLibraryDescription">If enabled, th&apos; mod cannot be explicitly enabled by th&apos; user. Can only be enabled as a dependency.</sys:String>
+    <sys:String x:Key="EditModLibraryDescription">If enabled, th&apos; mod cannot be explicitly enabled by th&apos; user. Can only be enabled as a dependency. Shiver me timbers!</sys:String>
 
     <sys:String x:Key="EditModSave">Save</sys:String>
     <sys:String x:Key="EditModAppsDescription">Select applications th&apos; mod should be available for.</sys:String>
 
-    <sys:String x:Key="EditModMetadataNameTooltip">Name of th&apos; json metadata file.
-Change this only if ye are releasing multiple mods on th&apos; same page.</sys:String>
+    <sys:String x:Key="EditModMetadataNameTooltip">Name of th&apos; json metadata file. Thundering typhoons!
+Change this only if ye are releasing multiple mods on th&apos; same page. Blimey!</sys:String>
 
     <!-- Update 1.12.0: Extended Application Configuration -->
     <sys:String x:Key="ConfigureModsRightClickAdvice">Right click mod for more options</sys:String>
 
     <!-- Update 1.12.0: Create Mod Dialog -->
     <sys:String x:Key="CreateModDialogIdDesc1">Unique mod id</sys:String>
-    <sys:String x:Key="CreateModDialogIdDesc2">Please set a unique mod id in th&apos; format of &quot;game.type.name&quot;. For example: `sonicheroes.skins.seasidehillmidnight`. Ye flounderin&apos; nincompoop. Once th&apos; id be set, it cannot be changed. Savvy?</sys:String>
+    <sys:String x:Key="CreateModDialogIdDesc2">Please set a unique mod id in th&apos; format of &quot;game.type.name&quot;. For example: `sonicheroes.skins.seasidehillmidnight`. Once th&apos; id be set, it cannot be changed.</sys:String>
 
     <!-- Update 1.12.0: Edit Application Ex -->
     <sys:String x:Key="AddAppId">Application id</sys:String>
     <sys:String x:Key="AddAppUpdate">Update</sys:String>
 
     <sys:String x:Key="AddAppWarningTitle">Executable name warning</sys:String>
-    <sys:String x:Key="AddAppWarning">Th&apos; executable name of th&apos; application added be different from th&apos; original. Dead men tell no tales.
+    <sys:String x:Key="AddAppWarning">Th&apos; executable name of th&apos; application added be different from th&apos; original.
 If ye are adding another application, ye should add it as a new application.</sys:String>
 
     <!-- Update 1.12.0: Publish Mod Dialog -->
     <sys:String x:Key="TitlePublishModDialog">Publish mod</sys:String>
     <sys:String x:Key="PublishModTarget">Publish target</sys:String>
     <sys:String x:Key="PublishModTargetTooltip">Use default unless there&apos;s an option for th&apos; place(s) you&apos;re publishing to.
-Enables/disables certain behaviours. Shiver me timbers!</sys:String>
+Enables/disables certain behaviours.</sys:String>
 
     <sys:String x:Key="PublishModExcludeTitle">Exclude files</sys:String>
     <sys:String x:Key="PublishModIncludeTitle">Include files</sys:String>
@@ -433,10 +437,10 @@ Enables/disables certain behaviours. Shiver me timbers!</sys:String>
 
     <sys:String x:Key="PublishAutoDelta">Automatic delta</sys:String>
     <sys:String x:Key="PublishAutoDeltaDescription">Automatically creates a delta package from th&apos; last version.
-Don&apos;t forget to set th&apos; output path to that of an existing release. Blisterin&apos; barnacles!</sys:String>
+Don&apos;t forget to set th&apos; output path to that of an existing release.</sys:String>
 
     <sys:String x:Key="PublishAutoDeltaWarningTitle">Automatic delta warning</sys:String>
-    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat">Release metadata file not found in output folder. Dead men tell no tales. Consider renaming file if necessary.
+    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat">Release metadata file not found in output folder. Thundering typhoons! Consider renaming file if necessary.
 Expected filename: {0}.</sys:String>
 
     <sys:String x:Key="PublishFileNameTooltip">Name of th&apos; generated .7z package file</sys:String>
@@ -444,7 +448,7 @@ Expected filename: {0}.</sys:String>
     <sys:String x:Key="PublishModTutorial">Publishing tutorial</sys:String>
     <sys:String x:Key="PublishModWarningTitle">Update support warning</sys:String>
     <sys:String x:Key="PublishModWarningDescription">This mod has nay update settings configured, which means it wouldn&apos;t be able to receive automatic updates.
-Before publishing, please see `publishing tutorial` to find out how ye can set this up.</sys:String>
+Before publishing, please see `publishing tutorial` to find out how ye can set this up. Batten down the hatches! Thundering typhoons!</sys:String>
 
     <!-- Update 1.12.0: Edit Mod User Config -->
     <sys:String x:Key="TitleEditModUserConfig">Edit user config</sys:String>
@@ -469,14 +473,14 @@ This window will automatically close in a few seconds.</sys:String>
     <sys:String x:Key="AddAppRepoBadHashTitle">Mismatching hash</sys:String>
     <sys:String x:Key="AddAppRepoWarningTitle">Warning</sys:String>
 
-    <sys:String x:Key="AddAppRepoBadHashDesc1">Th&apos; main executable (exe) of th&apos; application be modified or of a different version than expected. Weigh anchor and hoist the mizzen!</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashDesc1">Th&apos; main executable (exe) of th&apos; application be modified or of a different version than expected.</sys:String>
     <sys:String x:Key="AddAppRepoBadHashDesc2">Please be aware that not all mods may behave as expected. Consider following th&apos; guidance (if any) presented in th&apos; message above.</sys:String>
 
-    <sys:String x:Key="AddAppRepoWarningDesc1">Quick scan of th&apos; game directory has produced th&apos; following warnings: Arrr!</sys:String>
+    <sys:String x:Key="AddAppRepoWarningDesc1">Quick scan of th&apos; game directory has produced th&apos; following warnings:</sys:String>
     <sys:String x:Key="AddAppRepoWarningDesc2">Please be aware that not all mods may behave as expected. Consider following th&apos; guidance (if any) presented in th&apos; warnings above.</sys:String>
 
     <sys:String x:Key="AddAppRepoSelectGameDialogTitle">Select game</sys:String>
-    <sys:String x:Key="AddAppRepoSelectGameDialogDesc1">Please select your desired game from th&apos; following list and press ok.</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc1">Please select your desired game from th&apos; following list and press ok. Weigh anchor and hoist the mizzen!</sys:String>
     <sys:String x:Key="AddAppRepoSelectGameDialogDesc2">If your game be not on th&apos; list, please select &apos;other game&apos;.</sys:String>
     <sys:String x:Key="AddAppRepoSelectGameDialogOtherGame">Other game</sys:String>
 
@@ -488,20 +492,20 @@ This window will automatically close in a few seconds.</sys:String>
 
     <!-- Update 1.18.0: Application Menu Tooltips -->
     <sys:String x:Key="ApplicationTooltipCreateShortcutDescription">Saves a shortcut that can be used to launch th&apos; app modded without reloaded launcher.</sys:String>
-    <sys:String x:Key="ApplicationTooltipLoadModSet">Loads a list of enabled mods.</sys:String>
-    <sys:String x:Key="ApplicationTooltipSaveModSet">Save mod set</sys:String>
-    <sys:String x:Key="ApplicationTooltipProcessSysDescription">Ye can use me to load reloaded into this program.</sys:String>
+    <sys:String x:Key="ApplicationTooltipLoadModSet">Load mod set</sys:String>
+    <sys:String x:Key="ApplicationTooltipSaveModSet">Saves th&apos; current list of enabled mods.</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessSysDescription">Ye can use me to load reloaded into this program. Thar she blows!</sys:String>
     <sys:String x:Key="ApplicationTooltipProcessRldDescription">Ye can use me to manage currently loaded mods.</sys:String>
 
     <!-- Update 1.19.0: Configure Mod Menu Reset -->
     <sys:String x:Key="ConfigureModDialogReset">Reset</sys:String>
-    <sys:String x:Key="ConfigureModDialogResetDescription">Resets th&apos; configuration values to their defaults.
+    <sys:String x:Key="ConfigureModDialogResetDescription">Resets th&apos; configuration values to their defaults. Weigh anchor and hoist the mizzen!
 [note: Requires mod support, contact author if doesn&apos;t work]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
     <sys:String x:Key="LoaderSettingsControllerBtn">Controller configuration [beta]</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneName">None</sys:String>
-    <sys:String x:Key="ConfiguratorBtnNoneDescription">Does nothing. Avast ye! Cleave him to the brisket! Ye flounderin&apos; nincompoop.</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneDescription">Does nothing.</sys:String>
 
     <sys:String x:Key="ConfiguratorBtnUpName">Up</sys:String>
     <sys:String x:Key="ConfiguratorBtnUpDescription">Navigates th&apos; menu up.</sys:String>
@@ -516,7 +520,7 @@ This window will automatically close in a few seconds.</sys:String>
     <sys:String x:Key="ConfiguratorBtnRightDescription">Navigates th&apos; menu right.</sys:String>
 
     <sys:String x:Key="ConfiguratorBtnAcceptName">Accept</sys:String>
-    <sys:String x:Key="ConfiguratorBtnAcceptDescription">Clicks a button. Blow me down!</sys:String>
+    <sys:String x:Key="ConfiguratorBtnAcceptDescription">Clicks a button. Sling yer hook!</sys:String>
 
     <sys:String x:Key="ConfiguratorBtnDeclineName">Decline</sys:String>
     <sys:String x:Key="ConfiguratorBtnDeclineDescription">Closes th&apos; current non-main window.</sys:String>
@@ -525,10 +529,10 @@ This window will automatically close in a few seconds.</sys:String>
     <sys:String x:Key="ConfiguratorBtnNextPageDescription">Navigates to th&apos; next page inside windows with multiple pages.</sys:String>
 
     <sys:String x:Key="ConfiguratorBtnLastPageName">Last page</sys:String>
-    <sys:String x:Key="ConfiguratorBtnLastPageDescription">Navigates to th&apos; previous page inside windows with multiple pages. Blimey!</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLastPageDescription">Navigates to th&apos; previous page inside windows with multiple pages.</sys:String>
 
     <sys:String x:Key="ConfiguratorBtnIncrementName">Increment</sys:String>
-    <sys:String x:Key="ConfiguratorBtnIncrementDescription">Adds +1 to th&apos; current value on a ui element.</sys:String>
+    <sys:String x:Key="ConfiguratorBtnIncrementDescription">Adds +1 to th&apos; current value on a ui element. Dead men tell no tales.</sys:String>
 
     <sys:String x:Key="ConfiguratorBtnDecrementName">Decrement</sys:String>
     <sys:String x:Key="ConfiguratorBtnDecrementDescription">Removes 1 from th&apos; current value on a ui element.</sys:String>
@@ -557,26 +561,26 @@ Right click clears th&apos; mapping!
 
     <!-- Update 1.20.0: Server as Separate Mod -->
     <sys:String x:Key="ReloadedProcessNoticeNew">Requires &apos;reloaded ii server&apos; mod to be enabled w/ litenetlib host.
-Download it from &apos;download mods&apos; menu.</sys:String>
+Download it from &apos;download mods&apos; menu. Batten down the hatches!</sys:String>
     <sys:String x:Key="ReloadedProcessState">State</sys:String> <!-- Is the mod running or paused? -->
 
     <!-- Update 1.20.0: New Wine Run Dialog -->
     <sys:String x:Key="WineCompatibilityNoticeTitleNew">Launching from wine</sys:String>
     <sys:String x:Key="WineCompatibilityNoticeHeader_1">Ye are running reloaded inside wine, please note th&apos; following:</sys:String>
     
-    <sys:String x:Key="WineCompatibilityNoticeList_1">- th&apos; game will launch using th&apos; same wine/proton configuration as this launcher.</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_1">- th&apos; game will launch using th&apos; same wine/proton configuration as this launcher. Thundering typhoons! Weigh anchor and hoist the mizzen!</sys:String>
 
     <sys:String x:Key="WineCompatibilityNoticeList_2_1">- if this be not desired</sys:String>
     <sys:String x:Key="WineCompatibilityNoticeList_2_2">Deploy asi loader</sys:String> <!-- Hyperlink-->
     <sys:String x:Key="WineCompatibilityNoticeList_2_3">And launch your game from outside th&apos; launcher.</sys:String>
 
     <sys:String x:Key="WineCompatibilityNoticeList_3_1">- running with proton requires some extra steps,</sys:String>
-    <sys:String x:Key="WineCompatibilityNoticeList_3_2">Please refer to th&apos; wiki.</sys:String> <!-- Hyperlink-->
+    <sys:String x:Key="WineCompatibilityNoticeList_3_2">Please refer to th&apos; wiki. Sling yer hook!</sys:String> <!-- Hyperlink-->
 
     <sys:String x:Key="WineCompatibilityNoticeFooter_1">For additional help, please</sys:String> <!-- Start of footer, continued below. -->
     <sys:String x:Key="WineCompatibilityNoticeFooter_2">Refer to th&apos; wiki</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
     <sys:String x:Key="WineCompatibilityNoticeFooter_3">Or</sys:String>
-    <sys:String x:Key="WineCompatibilityNoticeFooter_4">Raise an issue on github. Splice the mainbrace!</sys:String>  <!-- Hyperlink. (Continues from previous entry.) -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_4">Raise an issue on github.</sys:String>  <!-- Hyperlink. (Continues from previous entry.) -->
 
     <sys:String x:Key="WineCompatibilityNoticeOkNew">Start application</sys:String>
 
@@ -585,10 +589,10 @@ Download it from &apos;download mods&apos; menu.</sys:String>
     <sys:String x:Key="PublishModReadmeSet">Set readme file</sys:String>
     <sys:String x:Key="PublishModReadmeTooltip">Allows ye to specify a readme file.
 Readme files are used for th&apos; description in download mods menu.
-Uses markdown. Refer to th&apos; wiki for more information. Blimey!</sys:String> <!-- Displays on Hover -->
+Uses markdown. Blimey! Refer to th&apos; wiki for more information.</sys:String> <!-- Displays on Hover -->
     <sys:String x:Key="PublishModChangelogSet">Set changelog file</sys:String>
-    <sys:String x:Key="PublishModChangelogTooltip">Allows ye to specify a changelog file.
-Changelogs are used in download mods menu and in th&apos; update dialog.
+    <sys:String x:Key="PublishModChangelogTooltip">Allows ye to specify a changelog file. Ye flounderin&apos; nincompoop.
+Changelogs are used in download mods menu and in th&apos; update dialog. Shiver me timbers!
 Uses markdown. Refer to th&apos; wiki for more information.</sys:String>
 
     <sys:String x:Key="PublishSelectMarkdownTitle">Select a markdown file (*.md).</sys:String>
@@ -609,7 +613,7 @@ Uses markdown. Refer to th&apos; wiki for more information.</sys:String>
 
     <!-- Update 1.20.0: Self Runtime Update -->
     <sys:String x:Key="RuntimeUpdateRequiredTitle">Runtime update required</sys:String>
-    <sys:String x:Key="RuntimeUpdateRequiredDescription">A .net runtime update be required for th&apos; new version of reloaded.
+    <sys:String x:Key="RuntimeUpdateRequiredDescription">A .net runtime update be required for th&apos; new version of reloaded. Cleave him to the brisket!
 Download will start after closing this box.
 Please click &apos;yes&apos; if any user account control dialogs show.</sys:String>
 
@@ -619,20 +623,20 @@ Please click &apos;yes&apos; if any user account control dialogs show.</sys:Stri
 
     <!-- Update 1.20.0: Adding Project URL -->
     <sys:String x:Key="CreateModDialogProjectUrl">Website</sys:String>
-    <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">Full http(s) link to your website. Splice the mainbrace!</sys:String> <!-- Shown as a placeholder -->
+    <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">Full http(s) link to your website.</sys:String> <!-- Shown as a placeholder -->
     <sys:String x:Key="ModManagerContextVisitWebsite">Visit website</sys:String>
 
     <!-- Update 1.21.0: Mod Packs: Dialog -->
     <sys:String x:Key="CreateModPackTitle">Create mod pack</sys:String>
 
-    <sys:String x:Key="CreateModPackNote1">Only eligible mods are shown. Avast ye!</sys:String>
+    <sys:String x:Key="CreateModPackNote1">Only eligible mods are shown.</sys:String>
     <sys:String x:Key="CreateModPackNote2">Mods must support updates to be eligible.</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
 
     <!-- Update 1.21.0: Mod Packs: Editor -->
     <sys:String x:Key="EditModPackTitle">Edit mod pack</sys:String>
 
     <sys:String x:Key="ModPackImageTooltip">Note: Images in this carousel will be properly sized during install.
-Ye can ignore any aspect issues. Dead men tell no tales.</sys:String>
+Ye can ignore any aspect issues.</sys:String>
     <sys:String x:Key="ModPackImageCaption">Image caption</sys:String>
 
     <sys:String x:Key="ModPackClickToEdit">Click to edit</sys:String>
@@ -640,7 +644,7 @@ Ye can ignore any aspect issues. Dead men tell no tales.</sys:String>
     <sys:String x:Key="ModPackAddModTooltip">Adds a mod to this pack.
 Note: This might pillage a while if a lot of images are present.</sys:String>
     <sys:String x:Key="ModPackRemoveMod">Remove mod</sys:String>
-    <sys:String x:Key="ModPackRemoveModTooltip">Removes last selected mod from this pack.</sys:String>
+    <sys:String x:Key="ModPackRemoveModTooltip">Removes last selected mod from this pack. Ye flounderin&apos; nincompoop.</sys:String>
     <sys:String x:Key="ModPackSaveReadme">Save readme</sys:String>
     <sys:String x:Key="ModPackSetReadme">Set readme</sys:String>
     <sys:String x:Key="ModPackAddImage">Add image</sys:String>
@@ -650,12 +654,12 @@ Note: This might pillage a while if a lot of images are present.</sys:String>
     <sys:String x:Key="ModPackPreviewPack">Test pack</sys:String>
 
     <sys:String x:Key="ModPackPackNameTooltip">Name of th&apos; pack, as displayed during install.</sys:String>
-    <sys:String x:Key="ModPackModNameTooltip">Name of th&apos; mod, as displayed during install. Yo ho ho.</sys:String>
+    <sys:String x:Key="ModPackModNameTooltip">Name of th&apos; mod, as displayed during install.</sys:String>
     <sys:String x:Key="ModPackImageAddTooltip">Adds a new image to th&apos; pack/mod.</sys:String>
-    <sys:String x:Key="ModPackImageRemoveTooltip">Removes th&apos; currently visible image. Blow me down! Sling yer hook! Sling yer hook!</sys:String>
-    <sys:String x:Key="ModPackDescriptionTooltip">Short description of th&apos; mod. 1 line. User can expand to reveal full readme during install.</sys:String>
+    <sys:String x:Key="ModPackImageRemoveTooltip">Removes th&apos; currently visible image.</sys:String>
+    <sys:String x:Key="ModPackDescriptionTooltip">Short description of th&apos; mod. 1 line. User can expand to reveal full readme during install. Sling yer hook!</sys:String>
     <sys:String x:Key="ModPackSetReadmeTooltip">Updates th&apos; full readme of th&apos; mod/pack. Readme uses markdown (.md) format.</sys:String>
-    <sys:String x:Key="ModPackSaveReadmeTooltip">Saves th&apos; readme back to disk for editing in an external editor. Avast ye!</sys:String>
+    <sys:String x:Key="ModPackSaveReadmeTooltip">Saves th&apos; readme back to disk for editing in an external editor.</sys:String>
 
     <sys:String x:Key="ModPackSelectExistingTitle">Select a mod pack (*.r2pack).</sys:String>
     <sys:String x:Key="ModPackSelectExistingTypeName">R2 mod package</sys:String>
@@ -668,7 +672,7 @@ Note: This might pillage a while if a lot of images are present.</sys:String>
     <sys:String x:Key="InstallModPackErrorDownloadFail">Some mods failed to download</sys:String>
 
     <sys:String x:Key="InstallModPackConfirmTitle">Confirm mods to download</sys:String>
-    <sys:String x:Key="InstallModPackConfirmDescription">Once ye have doublechecked what ye want, start th&apos; download. Arrr! Cleave him to the brisket! Ye flounderin&apos; nincompoop.</sys:String>
+    <sys:String x:Key="InstallModPackConfirmDescription">Once ye have doublechecked what ye want, start th&apos; download.</sys:String>
 
     <sys:String x:Key="InstallModPackDownloading">Downloading {0}...</sys:String> <!-- {0} is replaced by mod name -->
     <sys:String x:Key="InstallModPackStart">Start</sys:String> <!-- Sets Page Backwards -->
@@ -683,7 +687,7 @@ Note: This might pillage a while if a lot of images are present.</sys:String>
 
     <!-- Update 1.22.0: Download Package Settings -->
     <sys:String x:Key="DownloadPackagesSettingHide">Hide installed</sys:String>
-    <sys:String x:Key="DownloadPackagesSettingHideTooltip">Hides already installed mods whar possible.
+    <sys:String x:Key="DownloadPackagesSettingHideTooltip">Hides already installed mods whar possible. Sling yer hook! Weigh anchor and hoist the mizzen!
 (supports nuget &amp; &apos;publish&apos; exported mods.)</sys:String>
 
     <!-- Update 1.22.6: Errors -->
@@ -733,4 +737,6 @@ DRM: 'You will own nothing and you will be happy.'
     <sys:String x:Key="PublishModNotice">Upload ALL files as created by the publisher, do not rename any of them.
 For more info, refer to the tutorial. Don't forget to set correct Publish target.</sys:String> 
     
+    <!-- Note for translators: Please update ErrorPathToApplicationInvalid if you get down this far, message was updated. -->
+
 </ResourceDictionary>

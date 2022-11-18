@@ -87,15 +87,23 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
 
     private async void LaunchApplication_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        await ViewModel.ApplicationTuple.SaveAsync();
-        ViewModel.EnforceModCompatibility();
-        await Setup.CheckForMissingModDependenciesAsync();
+        // Let's not crash when user has invalid path etc.
+        try
+        {
+            await ViewModel.ApplicationTuple.SaveAsync();
+            ViewModel.EnforceModCompatibility();
+            await Setup.CheckForMissingModDependenciesAsync();
 
-        var appTuple = ViewModel.ApplicationTuple;
-        var launcher  = ApplicationLauncher.FromApplicationConfig(appTuple);
+            var appTuple = ViewModel.ApplicationTuple;
+            var launcher  = ApplicationLauncher.FromApplicationConfig(appTuple);
 
-        if (!Environment.IsWine || (Environment.IsWine && CompatibilityDialogs.WineShowLaunchDialog()))
-            launcher.Start();
+            if (!Environment.IsWine || (Environment.IsWine && CompatibilityDialogs.WineShowLaunchDialog()))
+                launcher.Start();
+        }
+        catch (Exception ex)
+        {
+            Errors.HandleException(ex);
+        }
     }
 
     private void MakeShortcut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
