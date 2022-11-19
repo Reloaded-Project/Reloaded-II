@@ -7,7 +7,6 @@
     <NoWarn>CS0067</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
-    <Deterministic>true</Deterministic>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 

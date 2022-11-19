@@ -17,7 +17,6 @@
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Nullable>enable</Nullable>
-    <Deterministic>true</Deterministic>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
     <Title>Reloaded II Community API</Title>
   </PropertyGroup>

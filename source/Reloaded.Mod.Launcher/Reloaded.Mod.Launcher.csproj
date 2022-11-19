@@ -15,7 +15,6 @@
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
-    <Deterministic>true</Deterministic>
     <ImplicitUsings>enable</ImplicitUsings>
     <NoWarn>CS0067</NoWarn>
   </PropertyGroup>

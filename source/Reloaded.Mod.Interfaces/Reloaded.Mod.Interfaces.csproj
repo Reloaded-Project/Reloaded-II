@@ -18,7 +18,6 @@
     <Platforms>AnyCPU</Platforms>
     <NoWarn>1701;1702;1591</NoWarn>
     <LangVersion>preview</LangVersion>
-    <Deterministic>true</Deterministic>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
   </PropertyGroup>
 

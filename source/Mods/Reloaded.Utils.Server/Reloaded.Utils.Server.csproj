@@ -8,7 +8,6 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <OutputPath>$(RELOADEDIIMODS)/Reloaded.Utils.Server</OutputPath>
-    <Deterministic>true</Deterministic>
     <Nullable>enable</Nullable>
 
     <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License

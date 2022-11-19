@@ -9,7 +9,6 @@
     <AssemblyName>Setup</AssemblyName>
     <Nullable>enable</Nullable>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
-    <Deterministic>true</Deterministic>
     <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
     <StartupObject>Reloaded.Mod.Installer.Program</StartupObject>
   </PropertyGroup>
