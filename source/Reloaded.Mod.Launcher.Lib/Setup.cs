@@ -292,7 +292,19 @@ public static class Setup
         config.UpdatePaths(launcherDirectory, Resources.ErrorLoaderNotFound.Get());
         
         // Update Environment Variables
-        Task.Run(() => Environment.SetEnvironmentVariable("RELOADEDIIMODS", config.GetModConfigDirectory(), EnvironmentVariableTarget.User));
+        Task.Run(() =>
+        {
+            // DO NOT CHANGE, BREAKS BACKCOMPAT
+            Environment.SetEnvironmentVariable("RELOADEDIIMODS", config.GetModConfigDirectory(), EnvironmentVariableTarget.User);
+            Environment.SetEnvironmentVariable("RELOADEDII_LOADER64", config.LoaderPath64, EnvironmentVariableTarget.User);
+            Environment.SetEnvironmentVariable("RELOADEDII_LOADER32", config.LoaderPath32, EnvironmentVariableTarget.User);
+            Environment.SetEnvironmentVariable("RELOADEDII_LAUNCHER", config.LauncherPath, EnvironmentVariableTarget.User);
+            
+            // In case of first time use, so variables propagate to child processes.
+            Environment.SetEnvironmentVariable("RELOADEDII_LOADER64", config.LoaderPath64, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("RELOADEDII_LOADER32", config.LoaderPath32, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("RELOADEDII_LAUNCHER", config.LauncherPath, EnvironmentVariableTarget.Process);
+        });
     }
 
     /// <summary>
