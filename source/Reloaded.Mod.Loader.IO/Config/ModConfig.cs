@@ -21,13 +21,15 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public string ModVersion        { get; set; } = DefaultVersion;
     public string ModDescription    { get; set; } = DefaultDescription;
     public string ModDll            { get; set; } = String.Empty;
-
+    
     [DoNotCheckEquality]
     public string ModIcon           { get; set; } = String.Empty;
     public string ModR2RManagedDll32 { get; set; } = String.Empty;
     public string ModR2RManagedDll64 { get; set; } = String.Empty;
     public string ModNativeDll32    { get; set; } = String.Empty;
     public string ModNativeDll64    { get; set; } = String.Empty;
+    public bool?  CanUnload         { get; set; } = null;
+    public bool?  HasExports        { get; set; } = null;
     public bool   IsLibrary         { get; set; } = false;
     public string ReleaseMetadataFileName { get; set; } = "Sewer56.Update.ReleaseMetadata.json";
 

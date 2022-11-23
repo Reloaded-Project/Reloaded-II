@@ -1,19 +1,22 @@
+using Type = System.Type;
+
 namespace Reloaded.Mod.Loader.Mods;
 
+#nullable enable
 /// <summary>
 /// A general loader based on <see cref="McMaster.NETCore.Plugins"/> that loads individual mods as plugins.
 /// </summary>
 public class PluginManager : IDisposable
 {
     public LoaderAPI LoaderApi { get; }
-    private Logger Logger => _loader?.Logger;
+    private Logger Logger => _loader.Logger;
 
     private static readonly Type[] DefaultExportedTypes = new Type[0];
     private static readonly Type[] SharedTypes = { typeof(IModLoader), typeof(IMod) };
 
-    private readonly ConcurrentDictionary<string, ModInstance> _modifications = new ConcurrentDictionary<string, ModInstance>();
-    private readonly ConcurrentDictionary<string, ModAssemblyMetadata> _modIdToMetadata = new ConcurrentDictionary<string, ModAssemblyMetadata>();  
-    private readonly ConcurrentDictionary<string, string> _modIdToFolder  = new ConcurrentDictionary<string, string>(); // Maps Mod ID to folder containing mod.
+    private readonly Dictionary<string, ModInstance> _modifications = new();
+    private readonly Dictionary<string, Type[]> _modIdToExports = new();  
+    private readonly Dictionary<string, string> _modIdToFolder  = new(); // Maps Mod ID to folder containing mod.
 
     private LoadContext _sharedContext;
     private readonly Loader _loader;
@@ -23,7 +26,7 @@ public class PluginManager : IDisposable
     /// </summary>
     /// <param name="loader">Instance of the mod loader.</param>
     /// <param name="sharedContext">Used only for testing. Sets shared load context used for plugins.</param>
-    public PluginManager(Loader loader, LoadContext sharedContext = null)
+    public PluginManager(Loader loader, LoadContext? sharedContext = null)
     {
         _loader = loader;
         LoaderApi = new LoaderAPI(_loader);
@@ -68,39 +71,29 @@ public class PluginManager : IDisposable
     public void LoadMods(List<PathTuple<ModConfig>> modPaths)
     {
         /* Load mods. */
-        if (modPaths.Count > 0)
-        {
-            ExecuteWithStopwatch("Loading Assembly Metadata for Inter Mod Communication, Determining Unload Support etc.", PreloadAssemblyMetadata, modPaths);
-            var modInstances = ExecuteWithStopwatch($"Prepare All Mods (Total)", PrepareAllMods, modPaths);
-            ExecuteWithStopwatch($"Initialized All Mods (Total)", StartAllInstances, modInstances);
-        }
-    }
+        if (modPaths.Count <= 0) 
+            return;
 
-    private ModInstance[] PrepareAllMods(List<PathTuple<ModConfig>> modPaths)
-    {
-        var modInstances = new ModInstance[modPaths.Count];
-        if (_loader.LoaderConfig.LoadModsInParallel)
+        var watch = Stopwatch.StartNew();
+        foreach (var mod in modPaths)
         {
-            var partitioner = Partitioner.Create(0, modPaths.Count);
-            Parallel.ForEach(partitioner, (range, loopState) =>
-            {
-                for (int x = range.Item1; x < range.Item2; x++)
-                    modInstances[x] = ExecuteWithStopwatch($"Prepared Mod: {modPaths[x].Config.ModId}", GetModInstance, modPaths[x]);
-            });
-        }
-        else
-        {
-            for (int x = 0; x < modInstances.Length; x++)
-                modInstances[x] = ExecuteWithStopwatch($"Prepared Mod: {modPaths[x].Config.ModId}", GetModInstance, modPaths[x]);
-        }
+            watch.Restart();
             
-        return modInstances;
-    }
+            if (IsModLoaded(mod.Config.ModId))
+                throw new ReloadedException(Errors.ModAlreadyLoaded(mod.Config.ModId));
+            
+            // Native Mods use separate load logic.
+            ModInstance instance;
+            if (!mod.Config.HasDllPath())
+                instance = PrepareNonDllMod(mod);
+            else if (mod.Config.IsNativeMod(mod.Path))
+                instance = PrepareNativeMod(mod);
+            else
+                instance = PrepareDllMod(mod);
 
-    private void StartAllInstances(ModInstance[] instances)
-    {
-        foreach (var instance in instances)
-            ExecuteWithStopwatch($"Initialized Mod: {instance.ModConfig.ModId}", StartMod, instance);
+            StartMod(instance);
+            Logger?.LogWriteLineAsync($"Loaded: {mod.Config.ModId} in {watch.ElapsedMilliseconds}ms");
+        }
     }
 
     /// <summary>
@@ -109,25 +102,17 @@ public class PluginManager : IDisposable
     public void UnloadMod(string modId)
     {
         var mod = _modifications[modId];
-        if (mod != null)
-        {
-            if (mod.CanUnload)
-            {
-                LoaderApi.ModUnloading(mod.Mod, mod.ModConfig);
-                _modIdToFolder.Remove(modId, out _);
-                _modIdToMetadata.Remove(modId, out _);
-                _modifications.Remove(modId, out _);
-                mod.Dispose();
-            }
-            else
-            {
-                throw new ReloadedException(Errors.ModUnloadNotSupported(modId));
-            }
-        }
-        else
-        {
+        if (mod == null)
             throw new ReloadedException(Errors.ModToUnloadNotFound(modId));
-        }
+
+        if (!mod.CanUnload)
+            throw new ReloadedException(Errors.ModUnloadNotSupported(modId));
+
+        LoaderApi.ModUnloading(mod.Mod, mod.ModConfig);
+        _modIdToFolder.Remove(modId, out _);
+        _modIdToExports.Remove(modId, out _);
+        _modifications.Remove(modId, out _);
+        mod.Dispose();
     }
 
     /// <summary>
@@ -136,21 +121,13 @@ public class PluginManager : IDisposable
     public void SuspendMod(string modId)
     {
         var mod = _modifications[modId];
-        if (mod != null)
-        {
-            if (mod.CanSuspend)
-            {
-                mod.Suspend();
-            }
-            else
-            {
-                throw new ReloadedException(Errors.ModSuspendNotSupported(modId));
-            }
-        }
-        else
-        {
+        if (mod == null)
             throw new ReloadedException(Errors.ModToSuspendNotFound(modId));
-        }
+
+        if (!mod.CanSuspend)
+            throw new ReloadedException(Errors.ModSuspendNotSupported(modId));
+
+        mod.Suspend();
     }
 
     /// <summary>
@@ -159,21 +136,13 @@ public class PluginManager : IDisposable
     public void ResumeMod(string modId)
     {
         var mod = _modifications[modId];
-        if (mod != null)
-        {
-            if (mod.CanSuspend)
-            {
-                mod.Resume();
-            }
-            else
-            {
-                throw new ReloadedException(Errors.ModSuspendNotSupported(modId));
-            }
-        }
-        else
-        {
+        if (mod == null)
             throw new ReloadedException(Errors.ModToResumeNotFound(modId));
-        }
+
+        if (!mod.CanSuspend)
+            throw new ReloadedException(Errors.ModSuspendNotSupported(modId));
+
+        mod.Resume();
     }
 
     /// <summary>
@@ -201,56 +170,128 @@ public class PluginManager : IDisposable
     }
 
     /* Mod Loading */
-
-    /// <summary>
-    /// Obtains an instance of an individual ready to load mod.
-    /// To start an instance, call <see cref="StartMod"/>
-    /// </summary>
-    /// <exception cref="ArgumentException">Mod with specified ID is already loaded.</exception>
-    /// <param name="tuple">A tuple of mod config and path to config.</param>
-    private ModInstance GetModInstance(PathTuple<ModConfig> tuple)
+    private bool DoesDllExist(string dllPath, PathTuple<ModConfig> mod)
     {
-        // Check if mod with ID already loaded.
-        if (IsModLoaded(tuple.Config.ModId))
-            throw new ReloadedException(Errors.ModAlreadyLoaded(tuple.Config.ModId));
+        bool result = File.Exists(dllPath);
+        if (!result)
+            Logger.LogWriteLineAsync($"DLL Not Found! {Path.GetFileName(dllPath)}\n" +
+                                      $"Mod Name: {mod.Config.ModName}, Mod ID: {mod.Config.ModId}\n" +
+                                      $"Please re-download the mod. It is either corrupt or you may have downloaded the source code by accident.",
+                _loader.Logger.ColorError);
 
-        // Load DLL or non-dll mod.
-        if (tuple.Config.HasDllPath())
+        return result;
+    }
+    
+    private ModInstance PrepareDllMod(PathTuple<ModConfig> mod)
+    {
+        // Issue: Share types of mod with mod itself.
+        // Load the Mod
+        var modId = mod.Config.ModId;
+        var dllPath = mod.Config.GetDllPath(mod.Path);
+        _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(mod.Path)!);
+        
+        // Return dummy if no DLL.
+        if (!DoesDllExist(dllPath, mod))
+            return new ModInstance(mod.Config);
+        
+        var loadContext = LoadModPlugin(mod, dllPath, true, out var entryPointType, out var exportsType);
+
+        // Handle exports
+        var config = mod.Config;
+        var configNeedsUpdated = !config.CanUnload.HasValue || !config.HasExports.HasValue;
+        var exports = DefaultExportedTypes;
+        if (exportsType != null)
         {
-            var dllPath = tuple.Config.GetDllPath(tuple.Path);
-            if (File.Exists(dllPath))
-                return tuple.Config.IsNativeMod(tuple.Path) ? PrepareNativeMod(tuple) : PrepareDllMod(tuple);
-            else
-                Logger?.LogWriteLineAsync($"DLL Not Found! {Path.GetFileName(dllPath)}\n" +
-                                          $"Mod Name: {tuple.Config.ModName}, Mod ID: {tuple.Config.ModId}\n" +
-                                          $"Please re-download the mod. It is either corrupt or you may have downloaded the source code by accident.",
-                    _loader.Logger.ColorError);
-        }
+            var pluginExports = (IExports) Activator.CreateInstance(exportsType)!;
+            var typesList = new List<Type>();
+            typesList.AddRange(pluginExports.GetTypes());
+            typesList.AddRange(pluginExports.GetTypesEx(new ExportsContext()
+            {
+                ApplicationConfig = LoaderApi.GetAppConfig()
+            }));
+            
+            var assemblies = LoadTypesIntoSharedContext(typesList);
+            exports        = GC.AllocateUninitializedArray<Type>(typesList.Count);
 
-        return PrepareNonDllMod(tuple);
+            // Find exports in assemblies that were just loaded into the shared context.
+            // If we use the ones from the other mods' ALCs, the other ALC will stay loaded
+            // because we are still holding a reference to the exports.
+            var assemblyToTypes = new Dictionary<Assembly, Type[]>();
+            foreach (var asm in assemblies)
+            {
+                if (!assemblyToTypes.ContainsKey(asm)) 
+                    assemblyToTypes[asm] = asm.GetTypes();
+            }
+
+            for (int x = 0; x < assemblies.Length; x++)
+            {
+                var target        = typesList[x];
+                var assemblyTypes = assemblyToTypes[assemblies[x]];
+                exports[x]        = assemblyTypes.First(y => y.FullName == target.FullName);
+            }
+            
+            config.HasExports = true;
+            _modIdToExports[config.ModId] = exports;
+            loadContext.Dispose();
+            loadContext = LoadModPlugin(mod, dllPath, false, out entryPointType, out _);
+        }
+        else
+        {
+            config.HasExports ??= false;
+        }
+        
+        // Load entrypoint.
+        var plugin = (IModV1) Activator.CreateInstance(entryPointType!)!;
+        
+        // Update Unload State
+        if (configNeedsUpdated)
+            UpdateConfig(mod, plugin);
+            
+        return new ModInstance(loadContext, plugin, mod.Config);
     }
 
-    private ModInstance PrepareDllMod(PathTuple<ModConfig> tuple)
+    private LoadContext LoadModPlugin(PathTuple<ModConfig> mod, string dllPath, bool searchForExports, out Type? entryPointType, out Type? exportsType)
     {
-        var modId = tuple.Config.ModId;
-        var dllPath = tuple.Config.GetDllPath(tuple.Path);
-        _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
-
-        var loadContext     = LoadContext.BuildModLoadContext(dllPath, _modIdToMetadata[modId].IsUnloadable, GetExportsForModConfig(tuple.Config), _sharedContext.Context);
+        // If we don't know if we have exports, we need to make it unloadable, such that if we do actually have exports we can unload.
+        var config = mod.Config;
+        var loadContext = LoadContext.BuildModLoadContext(dllPath, config.HasExports.GetValueOrDefault(true) | config.CanUnload.GetValueOrDefault(false),
+            GetExportsForModConfig(mod.Config), _sharedContext.Context);
         var defaultAssembly = loadContext.LoadDefaultAssembly();
-        var types           = defaultAssembly.GetTypes();
-        var entryPoint      = types.FirstOrDefault(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
+        var types = defaultAssembly.GetTypes();
 
-        // Load entrypoint.
-        var plugin = (IModV1) Activator.CreateInstance(entryPoint);
-        return new ModInstance(loadContext, plugin, tuple.Config);
+        // Find entry point and exports.
+        entryPointType = null;
+        exportsType = null;
+        foreach (var type in types)
+        {
+            if (type.IsAbstract)
+                continue;
+
+            if (typeof(IModV1).IsAssignableFrom(type))
+            {
+                entryPointType = type;
+                if (!searchForExports)
+                    return loadContext;
+            }
+            
+            if (typeof(IExports).IsAssignableFrom(type))
+                exportsType = type;
+            
+            // Most mods don't define exports, so no point adding a check here if we found both when searching for both.
+        }
+
+        return loadContext;
     }
 
     private ModInstance PrepareNativeMod(PathTuple<ModConfig> tuple)
     {
         var modId = tuple.Config.ModId;
         var dllPath = tuple.Config.GetNativeDllPath(tuple.Path);
-        _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
+        
+        if (!DoesDllExist(dllPath, tuple))
+            return new ModInstance(tuple.Config);
+        
+        _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path)!);
         return new ModInstance(new NativeMod(dllPath), tuple.Config);
     }
 
@@ -261,7 +302,7 @@ public class PluginManager : IDisposable
         if (Directory.Exists(tuple.Path))
             _modIdToFolder[tuple.Config.ModId] = Path.GetFullPath(tuple.Path);
         else
-            _modIdToFolder[tuple.Config.ModId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path));
+            _modIdToFolder[tuple.Config.ModId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path)!);
 
         return new ModInstance(tuple.Config);
     }
@@ -291,102 +332,22 @@ public class PluginManager : IDisposable
         // The type is already preloaded into the default load context, and as such, will be inherited from the default context.
         // i.e. The version loaded into the default context will be used.
         // This is important because we need a single source for the other mods, i.e. ones which take this one as dependency.
-        if (_modIdToMetadata.ContainsKey(modConfig.ModId))
-            exports = exports.Concat(_modIdToMetadata[modConfig.ModId].Exports);
+        if (_modIdToExports.ContainsKey(modConfig.ModId))
+            exports = exports.Concat(_modIdToExports[modConfig.ModId]);
 
         foreach (var dep in modConfig.ModDependencies)
         {
-            if (_modIdToMetadata.ContainsKey(dep))
-                exports = exports.Concat(_modIdToMetadata[dep].Exports);
+            if (_modIdToExports.ContainsKey(dep))
+                exports = exports.Concat(_modIdToExports[dep]);
         }
 
         foreach (var optionalDep in modConfig.OptionalDependencies)
         {
-            if (_modIdToMetadata.ContainsKey(optionalDep))
-                exports = exports.Concat(_modIdToMetadata[optionalDep].Exports);
+            if (_modIdToExports.ContainsKey(optionalDep))
+                exports = exports.Concat(_modIdToExports[optionalDep]);
         }
 
         return exports.ToArray();
-    }
-
-    private void PreloadAssemblyMetadata(List<PathTuple<ModConfig>> configPathTuples)
-    {
-        if (_loader.LoaderConfig.LoadModsInParallel)
-        {
-            var partitioner = Partitioner.Create(0, configPathTuples.Count);
-            Parallel.ForEach(partitioner, (tuple, state) =>
-            {
-                for (int x = tuple.Item1; x < tuple.Item2; x++)
-                    PreloadAssemblyMetadataItem(configPathTuples[x]);
-            });
-        }
-        else
-        {
-            for (int x = 0; x < configPathTuples.Count; x++)
-                PreloadAssemblyMetadataItem(configPathTuples[x]);
-        }
-    }
-
-    private void PreloadAssemblyMetadataItem(PathTuple<ModConfig> tuple)
-    {
-        var dllPath = tuple.Config.GetDllPath(tuple.Path);
-        if (!File.Exists(dllPath) || tuple.Config.IsNativeMod(tuple.Path))
-            return;
-
-        if (GetMetadataForDllMod(dllPath, out var exports, out bool isUnloadable))
-            _modIdToMetadata[tuple.Config.ModId] = new ModAssemblyMetadata(exports, isUnloadable);
-    }
-
-    private bool GetMetadataForDllMod(string dllPath, out Type[] exports, out bool isUnloadable)
-    {
-        exports      = DefaultExportedTypes; // Preventing heap allocation here.
-        isUnloadable = false;
-
-        var loadContext     = LoadContext.BuildModLoadContext(dllPath, true, SharedTypes, _sharedContext.Context);
-        var defaultAssembly = loadContext.LoadDefaultAssembly();
-        var types           = defaultAssembly.GetTypes();
-
-        var exportsEntryPoint = types.FirstOrDefault(t => typeof(IExports).IsAssignableFrom(t) && !t.IsAbstract);
-        if (exportsEntryPoint != null)
-        {
-            var pluginExports = (IExports) Activator.CreateInstance(exportsEntryPoint);
-            var typesList = new List<Type>();
-            typesList.AddRange(pluginExports.GetTypes());
-            typesList.AddRange(pluginExports.GetTypesEx(new ExportsContext()
-            {
-                ApplicationConfig = LoaderApi.GetAppConfig()
-            }));
-            
-            var assemblies    = LoadTypesIntoSharedContext(typesList);
-            exports           = new Type[typesList.Count];
-
-            // Find exports in assemblies that were just loaded into the shared context.
-            // If we use the ones from the other mods' ALCs, the other ALC will stay loaded
-            // because we are still holding a reference to the exports.
-            var assemblyToTypes = new Dictionary<Assembly, Type[]>();
-            foreach (var asm in assemblies)
-            {
-                if (!assemblyToTypes.ContainsKey(asm)) 
-                    assemblyToTypes[asm] = asm.GetTypes();
-            }
-
-            for (int x = 0; x < assemblies.Length; x++)
-            {
-                var target        = typesList[x];
-                var assemblyTypes = assemblyToTypes[assemblies[x]];
-                exports[x]        = assemblyTypes.First(y => y.FullName == target.FullName);
-            }
-        }
-
-        var modEntryPoint = types.FirstOrDefault(t => typeof(IModV1).IsAssignableFrom(t) && !t.IsAbstract);
-        if (modEntryPoint != null)
-        {
-            var plugin = (IModV1) Activator.CreateInstance(modEntryPoint);
-            isUnloadable = plugin.CanUnload();
-        }
-
-        loadContext.Dispose();
-        return true;
     }
 
     private Assembly[] LoadTypesIntoSharedContext(IReadOnlyList<Type> types)
@@ -400,23 +361,13 @@ public class PluginManager : IDisposable
 
         return assemblies;
     }
-
-    /* Utility */
-
-    private void ExecuteWithStopwatch<T>(string message, Action<T> code, T parameter)
+    
+    /* Maintenance */
+    private void UpdateConfig(PathTuple<ModConfig> mod, IModV1 plugin)
     {
-        var _stopwatch = new Stopwatch();
-        _stopwatch.Start();
-        code(parameter);
-        Logger?.LogWriteLineAsync($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
-    }
-
-    private Y ExecuteWithStopwatch<T, Y>(string message, Func<T, Y> code, T parameter)
-    {
-        var _stopwatch = new Stopwatch();
-        _stopwatch.Start();
-        var result = code(parameter);
-        Logger?.LogWriteLineAsync($"{message}: Complete {_stopwatch.ElapsedMilliseconds}ms");
-        return result;
+        Logger.WriteLineAsync("Updating Config w/ HasExports & CanUnload.");
+        mod.Config.CanUnload = plugin.CanUnload();
+        mod.Save();
     }
 }
+#nullable disable

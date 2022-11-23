@@ -121,12 +121,6 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     public NugetFeed[] NuGetFeeds { get; set; } = DefaultFeeds;
 
     /// <summary>
-    /// If true, mods are loaded in parallel whenever possible.
-    /// Else false.
-    /// </summary>
-    public bool LoadModsInParallel { get; set; } = true;
-
-    /// <summary>
     /// Force early versions of mods to be downloaded.
     /// </summary>
     public bool ForceModPrereleases { get; set; } = false;
