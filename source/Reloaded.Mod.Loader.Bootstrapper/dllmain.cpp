@@ -237,12 +237,8 @@ struct ModInfoDummy
 
 extern "C"
 {
-	// Note: MainMemory's Mod Loaders have inconsistent entry points (some having helper functions, some not). Not exporting.
-	__declspec(dllexport) ModInfoDummy SA2ModInfo { 1 };
-	__declspec(dllexport) ModInfoDummy SADXModInfo { 1 };
-	__declspec(dllexport) ModInfoDummy SonicRModInfo { 1 };
-	__declspec(dllexport) ModInfoDummy ManiaModInfo { 1 };
-	__declspec(dllexport) ModInfoDummy SKCModInfo { 1 };
+	// Note: MainMemory's Mod Loaders have inconsistent entry points (some having helper functions, some not). Not exporting proper defs.
+	__declspec(dllexport) ModInfoDummy MainMemoryModInfo = { 1 };
 
 	// Entry point for Ultimate ASI Loader, to allow waiting for Reloaded II creation thread to terminate.
 	__declspec(dllexport) void InitializeASI()
