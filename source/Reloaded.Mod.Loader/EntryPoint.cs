@@ -54,13 +54,20 @@ public static class EntryPoint
 
             AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
             ExecuteTimed("Create Loader", CreateLoader);
-            var setupHooksTask = Task.Run(() => ExecuteTimed("Setting Up Hooks (Async)", SetupHooks));
-            InitialiseParameters(parameters);
-            ExecuteTimed("Loading Mods (Total)", LoadMods);
-
-            setupHooksTask.Wait();
-            Logger?.LogWriteLineAsync($"Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
-            _stopWatch.Reset();
+            
+            // Get Reloaded.Hooks
+            try
+            {
+                _loader.LoadWithExportsIntoCurrentALC("reloaded.sharedlib.hooks");
+            }
+            catch (ReloadedException ex)
+            {
+                throw new Exception($"Failed to Load Reloaded Hooks Shared Lib Mod\n" +
+                                    $"Quite honestly, if it's missing, this is kind of an achievement, please run the launcher, it'll download.\n" +
+                                    $"{ex.Message}\n{ex.StackTrace}", ex);
+            }
+            
+            SetupLoader2(parameters);
         }
         catch (Exception ex)
         {
@@ -68,6 +75,24 @@ public static class EntryPoint
         }
     }
 
+    // We must resolve hooks shared lib first, so we cannot inline this to avoid runtime exception from missing lib.
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static unsafe void SetupLoader2(EntryPointParameters* parameters)
+    {
+        _loader.Manager.LoaderApi.GetController<IReloadedHooks>().TryGetTarget(out var hooks);
+
+        var setupHooksTask = Task.Run(() => ExecuteTimed("Setting Up Hooks (Async)", () => SetupHooks(hooks)));
+        InitialiseParameters(parameters);
+        ExecuteTimed("Loading Mods (Total)", () => LoadMods(hooks));
+
+        setupHooksTask.Wait();
+        Logger?.LogWriteLineAsync($"Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
+        _stopWatch.Reset();
+    }
+
+    // No inlining because we must merge this into current ALC first!!
+
+    
     private static void CreateLoader() => _loader = new Loader();
     private static unsafe void InitialiseParameters(EntryPointParameters* parameters)
     {
@@ -84,21 +109,21 @@ public static class EntryPoint
         }
     }
 
-    private static unsafe void SetupHooks()
+    private static unsafe void SetupHooks(IReloadedHooks hooks)
     {
         // Hook ExitProcess to ensure log save on process exit.
-        _exitHook = new ProcessExitHook(SaveAndFlushLog);
-        _crashHook = new ProcessCrashHook(&HandleCrash);
+        _exitHook = new ProcessExitHook(SaveAndFlushLog, hooks);
+        _crashHook = new ProcessCrashHook(&HandleCrash, hooks);
 
         // Hook Console Close
         if (_loader.Console != null)
             _loader.Console.OnConsoleClose += SaveAndFlushLog;
 
         // Hook Steam
-        _steamHook = new SteamHook(ReloadedHooks.Instance, _loader.Logger, Path.GetDirectoryName(_process.MainModule.FileName));
+        _steamHook = new SteamHook(hooks, _loader.Logger, Path.GetDirectoryName(_process.MainModule.FileName));
     }
 
-    private static void LoadMods()
+    private static void LoadMods(IReloadedHooks hooks)
     {
         // Note: If loaded externally, we assume another mod loader or DLL override took care of bypassing DRM.
         bool loadedFromExternalSource = (_parameters.Flags & EntryPointFlags.LoadedExternally) != 0;
@@ -126,7 +151,7 @@ public static class EntryPoint
                                       $"Please note this feature is experimental.\n" +
                                       $"If you encounter issues, report and/or try ASI Loader `Edit Application -> Deploy ASI Loader`", Logger.ColorWarning);
                 
-            _delayInjector = new DelayInjector(() =>
+            _delayInjector = new DelayInjector(hooks, () =>
             {
                 Logger?.LogWriteLineAsync($"Loading via Delayed Injection (DRM Workaround)", Logger.ColorInformation);
                 _loader.LoadForCurrentProcess();

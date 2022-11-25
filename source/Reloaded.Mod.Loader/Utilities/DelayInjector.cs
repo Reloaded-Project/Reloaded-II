@@ -16,16 +16,14 @@ public unsafe class DelayInjector
     private int* _asmEntryFunctionOrdinal;
     private Logger _logger;
 
-    public DelayInjector(Action action, Logger logger)
+    public DelayInjector(IReloadedHooks hooks, Action action, Logger logger)
     {
         _logger = logger;
 
         // Allocate space for code to identify entry point from hooks.
         // DO NOT CHANGE, UNLESS ALSO CHANGING ASSEMBLY BELOW
-        var helper = new MemoryBufferHelper(Process.GetCurrentProcess());
-        var alloc  = helper.Allocate(sizeof(int) * 2);
-        _asmEntryDllOrdinal = (int*) alloc.MemoryAddress;
-        _asmEntryFunctionOrdinal = (int*) (alloc.MemoryAddress + sizeof(int));
+        _asmEntryDllOrdinal = (int*)NativeMemory.Alloc(sizeof(int) * 2);
+        _asmEntryFunctionOrdinal = _asmEntryDllOrdinal + 1;
 
         var assemblyFolder = Path.GetDirectoryName(typeof(DelayInjector).Assembly.Location);
         var predefinedDllPath = Path.Combine(assemblyFolder, "DelayInjectHooks.json");
@@ -46,7 +44,7 @@ public unsafe class DelayInjector
                 if (functionAddr == IntPtr.Zero)
                     continue;
 
-                _hooks.Add(CreateHook((long) functionAddr, x, y));
+                _hooks.Add(CreateHook((long) functionAddr, x, y, hooks));
             }
         }
     }
@@ -57,10 +55,10 @@ public unsafe class DelayInjector
     /// <param name="address">The address to hook.</param>
     /// <param name="dllOrdinal">Index of the DLL in the DLL list.</param>
     /// <param name="functionOrdinal">Index of the function in the DLL's function list.</param>
-    private unsafe IAsmHook CreateHook(long address, int dllOrdinal, int functionOrdinal)
+    /// <param name="hooks">The hooking library to use.</param>
+    private unsafe IAsmHook CreateHook(long address, int dllOrdinal, int functionOrdinal, IReloadedHooks hooks)
     {
-        var instance  = ReloadedHooks.Instance;
-        var utilities = instance.Utilities;
+        var utilities = hooks.Utilities;
             
         // Assumes function uses Microsoft call convention on x64.
         var asmCode = new string[]
@@ -84,7 +82,7 @@ public unsafe class DelayInjector
         };
 
         _wrappers.Add(wrapper);
-        return instance.CreateAsmHook(asmCode, address).Activate();
+        return hooks.CreateAsmHook(asmCode, address).Activate();
     }
 
     /// <summary>
@@ -108,6 +106,7 @@ public unsafe class DelayInjector
             hook.Disable();
 
         _wrappers.Clear();
+        NativeMemory.Free(_asmEntryDllOrdinal);
     }
 
     private class DllEntry
