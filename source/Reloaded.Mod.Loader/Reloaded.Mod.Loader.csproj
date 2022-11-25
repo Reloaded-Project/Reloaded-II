@@ -13,7 +13,7 @@
     <NoWarn>$(NoWarn);NU1605;NU1701</NoWarn>
 	  <Version>1.22.9</Version>
     <Platforms>x86;x64</Platforms>
-    <GenerateDepsFile>false</GenerateDepsFile>
+    <GenerateDepsJson>false</GenerateDepsJson>
 
     <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
     <!-- If you set this to true, trimming will be enabled when you publish the Mod Loader. -->
