@@ -12,14 +12,14 @@ public class ProcessExitHook
 
     private static IHook<ExitProcess> _exitProcessHook;
 
-    public ProcessExitHook(Action codeToRun) : this() => OnProcessExit += codeToRun;
-    public ProcessExitHook()
+    public ProcessExitHook(Action codeToRun, IReloadedHooks hooks) : this(hooks) => OnProcessExit += codeToRun;
+    public ProcessExitHook(IReloadedHooks hooks)
     {
         // Hook native import for ExitProcess. (So we can save log on exit)
         var kernel32 = Kernel32.GetModuleHandle("kernel32.dll");
         var address = Kernel32.GetProcAddress(kernel32, "ExitProcess");
         if (address != IntPtr.Zero)
-            _exitProcessHook = new Hook<ExitProcess>(ExitProcessImpl, address.ToUnsigned()).Activate();
+            _exitProcessHook = hooks.CreateHook<ExitProcess>(ExitProcessImpl, address).Activate();
     }
 
     private void ExitProcessImpl(uint uexitcode)

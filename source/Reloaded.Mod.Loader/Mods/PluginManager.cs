@@ -369,5 +369,8 @@ public class PluginManager : IDisposable
         mod.Config.CanUnload = plugin.CanUnload();
         mod.Save();
     }
+
+    /* Internal API */
+    internal Type[] GetExportsForModId(string modId) => _modIdToExports[modId];
 }
 #nullable disable

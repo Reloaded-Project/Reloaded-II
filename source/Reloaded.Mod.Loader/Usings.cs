@@ -1,10 +1,7 @@
 global using Colorful;
 global using Indieteur.SAMAPI;
 global using McMaster.NETCore.Plugins.Loader;
-global using Reloaded.Hooks;
 global using Reloaded.Hooks.Definitions;
-global using Reloaded.Hooks.Definitions.Helpers;
-global using Reloaded.Memory.Buffers;
 global using Reloaded.Mod.Interfaces;
 global using Reloaded.Mod.Interfaces.Internal;
 global using Reloaded.Mod.Interfaces.Structs;

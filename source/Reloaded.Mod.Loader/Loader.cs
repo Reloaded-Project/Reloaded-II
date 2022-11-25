@@ -145,7 +145,7 @@ public class Loader : IDisposable
     /// <summary>
     /// Loads a collection of mods with their associated dependencies.
     /// </summary>
-    private void LoadModsWithDependencies(IEnumerable<ModConfig> modsToLoad, List<PathTuple<ModConfig>> allMods = null)
+    internal void LoadModsWithDependencies(IEnumerable<ModConfig> modsToLoad, List<PathTuple<ModConfig>> allMods = null)
     {
         // Cache configuration paths for all mods.
         if (allMods == null)
@@ -221,5 +221,40 @@ public class Loader : IDisposable
     private static string NormalizePath(string path)
     {
         return Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+    }
+
+    /// <summary>
+    /// Loads a mod, with shared types being imported into current AssemblyLoadContext.
+    /// </summary>
+    /// <param name="modId">The id of the mod to load.</param>
+    internal void LoadWithExportsIntoCurrentALC(string modId)
+    {
+        var mod      = FindMod(modId, out var allMods);
+        var modArray = new[] { mod.Config };
+        LoadModsWithDependencies(modArray, allMods);
+        
+        var types = Manager.GetExportsForModId(modId);
+        var currentAlc = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly());
+        
+        // Add event to resolve types if needed.
+        currentAlc.Resolving += (context, name) =>
+        {
+            foreach (var type in types)
+            {
+                // Check if the type has same name
+                if (type.Assembly.GetName().Name != name.Name) 
+                    continue;
+                
+                var alc = AssemblyLoadContext.GetLoadContext(type.Assembly);
+                if (alc == context) 
+                    continue;
+                
+                var result = alc.LoadFromAssemblyName(name);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        };
     }
 }

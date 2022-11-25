@@ -11,7 +11,7 @@ public unsafe class ProcessCrashHook
     private static delegate*<IntPtr, int> _handleCrash;
     private static bool _initialized;
 
-    public ProcessCrashHook(delegate*<IntPtr, int> handler)
+    public ProcessCrashHook(delegate*<IntPtr, int> handler, IReloadedHooks hooks)
     {
         if (_initialized)
             return;
@@ -21,7 +21,7 @@ public unsafe class ProcessCrashHook
         var kernel32 = Kernel32.GetModuleHandle("kernel32.dll");
         var unhandledAddr = Kernel32.GetProcAddress(kernel32, "UnhandledExceptionFilter");
         if (unhandledAddr != IntPtr.Zero)
-            _unhandledExceptionFilterHook = ReloadedHooks.Instance.CreateHook<UnhandledExceptionFilterFuncPtr>(typeof(ProcessCrashHook), nameof(CrashHandlerImpl), (long)unhandledAddr).Activate();
+            _unhandledExceptionFilterHook = hooks.CreateHook<UnhandledExceptionFilterFuncPtr>(typeof(ProcessCrashHook), nameof(CrashHandlerImpl), (long)unhandledAddr).Activate();
     }
 
     [UnmanagedCallersOnly(CallConvs = new []{ typeof(CallConvStdcall) })]
