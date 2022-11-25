@@ -1,3 +1,4 @@
+using Reloaded.Mod.Loader.Update.Providers.GitHub;
 using Constants = Reloaded.Mod.Launcher.Lib.Misc.Constants;
 using Version = Reloaded.Mod.Launcher.Lib.Utility.Version;
 
@@ -8,6 +9,42 @@ namespace Reloaded.Mod.Launcher.Lib;
 /// </summary>
 public static class Update
 {
+    private static IEnumerable<ModConfig> _modLoaderDependencies = new ModConfig[]
+    {
+        new()
+        {
+            ModId = "reloaded.mod.loader",
+            ModDependencies = new []{ "reloaded.sharedlib.hooks" },
+            PluginData = new Dictionary<string, object>()
+            {
+                // GitHub Dependency Resolver
+                {     
+                    GitHubReleasesDependencyMetadataWriter.PluginId,
+                    new DependencyResolverMetadata<GitHubReleasesUpdateResolverFactory.GitHubConfig>()
+                    {
+                        IdToConfigMap = new()
+                        {
+                            {
+                                "reloaded.sharedlib.hooks",
+                                new DependencyResolverItem<GitHubReleasesUpdateResolverFactory.GitHubConfig>()
+                                {
+                                    ReleaseMetadataName = "Sewer56.Update.ReleaseMetadata.json",
+                                    Config = new GitHubReleasesUpdateResolverFactory.GitHubConfig()
+                                    {
+                                        RepositoryName = "Reloaded.SharedLib.Hooks.ReloadedII",
+                                        UserName = "Sewer56",
+                                        UseReleaseTag = true,
+                                        AssetFileName = "reloaded.sharedlib.hooks.zip"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+
     /* Strings */
 
     /// <summary>
@@ -197,7 +234,7 @@ public static class Update
     public static DependencyResolutionResult CheckMissingDependencies()
     {
         var modConfigService = IoC.Get<ModConfigService>();
-        return modConfigService.GetMissingDependencies();
+        return modConfigService.GetMissingDependencies(_modLoaderDependencies);
     }
 
     /// <summary>

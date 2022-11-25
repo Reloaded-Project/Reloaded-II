@@ -27,7 +27,12 @@ public class ModConfigService : ConfigServiceBase<ModConfig>
     /// <summary>
     /// Runs a full dependency check to check for mods with missing dependencies.
     /// </summary>
-    public DependencyResolutionResult GetMissingDependencies()
+    public DependencyResolutionResult GetMissingDependencies() => GetMissingDependencies(Array.Empty<ModConfig>());
+
+    /// <summary>
+    /// Runs a full dependency check to check for mods with missing dependencies.
+    /// </summary>
+    public DependencyResolutionResult GetMissingDependencies(IEnumerable<ModConfig> modsToResolve)
     {
         // Get list of all mods.
         var allMods = Items.ToArray();
@@ -36,13 +41,13 @@ public class ModConfigService : ConfigServiceBase<ModConfig>
             allModIds.Add(mod.Config.ModId);
 
         var resolutionResult = new DependencyResolutionResult();
-        foreach (var item in allMods)
+        foreach (var item in allMods.Select(x => x.Config).Concat(modsToResolve))
         {
             var dependencyItem = new DependencyResolutionItem();
-            dependencyItem.Mod = item.Config;
+            dependencyItem.Mod = item;
 
             // Get missing dependencies.
-            foreach (var dependency in item.Config.ModDependencies)
+            foreach (var dependency in item.ModDependencies)
             {
                 if (!allModIds.Contains(dependency))
                     dependencyItem.Dependencies.Add(dependency);

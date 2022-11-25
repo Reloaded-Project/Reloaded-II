@@ -56,7 +56,17 @@ public static class EntryPoint
             ExecuteTimed("Create Loader", CreateLoader);
             
             // Get Reloaded.Hooks
-            _loader.LoadWithExportsIntoCurrentALC("reloaded.sharedlib.hooks");
+            try
+            {
+                _loader.LoadWithExportsIntoCurrentALC("reloaded.sharedlib.hooks");
+            }
+            catch (ReloadedException ex)
+            {
+                throw new Exception($"Failed to Load Reloaded Hooks Shared Lib Mod\n" +
+                                    $"Quite honestly, if it's missing, this is kind of an achievement, please run the launcher, it'll download.\n" +
+                                    $"{ex.Message}\n{ex.StackTrace}", ex);
+            }
+            
             SetupLoader2(parameters);
         }
         catch (Exception ex)
