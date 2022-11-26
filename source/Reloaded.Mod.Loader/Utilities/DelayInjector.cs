@@ -109,7 +109,7 @@ public unsafe class DelayInjector
         NativeMemory.Free(_asmEntryDllOrdinal);
     }
 
-    private class DllEntry
+    private struct DllEntry
     {
         public string Name { get; set; }
         public string[] Functions { get; set; }
