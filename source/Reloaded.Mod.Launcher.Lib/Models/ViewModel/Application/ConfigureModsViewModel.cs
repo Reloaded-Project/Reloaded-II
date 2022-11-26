@@ -8,7 +8,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// <summary>
     /// All mods available for the game.
     /// </summary>
-    public ObservableCollection<ModEntry> AllMods { get; set; } = null!;
+    public ObservableCollection<ModEntry>? AllMods { get; set; }
 
     /// <summary>
     /// The currently highlighted mod.
@@ -81,11 +81,16 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// </summary>
     private void BuildModList()
     {
-        AllMods = new ObservableCollection<ModEntry>(GetInitialModSet(_applicationViewModel, ApplicationTuple));
-        AllMods.CollectionChanged += async (_, _) =>
+        if (AllMods == null)
         {
-            await SaveApplication(); // Save on reorder.
-        }; 
+            AllMods = new ObservableCollection<ModEntry>();
+            AllMods.CollectionChanged += async (_, _) =>
+            {
+                await SaveApplication(); // Save on reorder.
+            }; 
+        }
+
+        Collections.ModifyObservableCollection(AllMods, GetInitialModSet(_applicationViewModel, ApplicationTuple));
     }
 
     /// <summary>
@@ -139,7 +144,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
         try
         {
-            ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
+            ApplicationTuple.Config.EnabledMods = AllMods!.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
             await ApplicationTuple.SaveAsync(_saveToken.Token);
         }
         catch (TaskCanceledException) { /* Ignored */ }
