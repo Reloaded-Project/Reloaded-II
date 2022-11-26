@@ -1,6 +1,6 @@
 namespace Reloaded.Mod.Loader.IO.Config;
 
-[Equals(DoNotAddEqualityOperators = true)]
+[Equals(DoNotAddEqualityOperators = true, DoNotAddGetHashCode = true)]
 public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
 {
     /* Constants */

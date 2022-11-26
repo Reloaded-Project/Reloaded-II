@@ -2,7 +2,7 @@ using Reloaded.Mod.Loader.IO.Config.Contexts;
 
 namespace Reloaded.Mod.Loader.IO.Config;
 
-[Equals(DoNotAddEqualityOperators = true)]
+[Equals(DoNotAddEqualityOperators = true, DoNotAddGetHashCode = true)]
 public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<ApplicationConfig>
 {
     public const string ConfigFileName = "AppConfig.json";
