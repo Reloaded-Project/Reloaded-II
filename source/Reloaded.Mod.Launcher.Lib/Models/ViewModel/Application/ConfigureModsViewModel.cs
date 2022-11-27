@@ -125,7 +125,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
         var modsForThisApp = _applicationViewModel.ModsForThisApp.ToArray();
         Collections.ModifyObservableCollection(AllMods, GetInitialModSet(modsForThisApp, ApplicationTuple));
-        Collections.ModifyObservableCollection(AllTags, GetTags(modsForThisApp));
+        Collections.ModifyObservableCollection(AllTags, GetTags(modsForThisApp).OrderBy(x => x));
 
         if (string.IsNullOrEmpty(SelectedTag))
             SelectedTag = AllTags[0];
