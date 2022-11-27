@@ -6,6 +6,11 @@ namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 public class ConfigureModsViewModel : ObservableObject, IDisposable
 {
     /// <summary>
+    /// Special tag that includes all items.
+    /// </summary>
+    public const string IncludeAllTag = "! ALL TAGS !";
+
+    /// <summary>
     /// All mods available for the game.
     /// </summary>
     public ObservableCollection<ModEntry>? AllMods { get; set; }
@@ -19,6 +24,14 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// Stores the currently selected application.
     /// </summary>
     public PathTuple<ApplicationConfig> ApplicationTuple { get; set; }
+
+    /// <summary>
+    /// List of all selectable tags to filter by.
+    /// </summary>
+    public ObservableCollection<string> AllTags { get; set; } = new ObservableCollection<string>();
+
+    /// <summary/>
+    public string SelectedTag { get; set; } = string.Empty;
 
     /// <summary/>
     public OpenModFolderCommand OpenModFolderCommand { get; set; } = null!;
@@ -90,17 +103,21 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
             }; 
         }
 
-        Collections.ModifyObservableCollection(AllMods, GetInitialModSet(_applicationViewModel, ApplicationTuple));
+        var modsForThisApp = _applicationViewModel.ModsForThisApp.ToArray();
+        Collections.ModifyObservableCollection(AllMods, GetInitialModSet(modsForThisApp, ApplicationTuple));
+        Collections.ModifyObservableCollection(AllTags, GetTags(modsForThisApp));
+
+        if (string.IsNullOrEmpty(SelectedTag))
+            SelectedTag = AllTags[0];
     }
 
     /// <summary>
     /// Builds the initial set of mods to display in the list.
     /// </summary>
-    private List<ModEntry> GetInitialModSet(ApplicationViewModel model, PathTuple<ApplicationConfig> applicationTuple)
+    private List<ModEntry> GetInitialModSet(PathTuple<ModConfig>[] modsForThisApp, PathTuple<ApplicationConfig> applicationTuple)
     {
         // Note: Must put items in top to bottom load order.
         var enabledModIds   = applicationTuple.Config.EnabledMods;
-        var modsForThisApp  = model.ModsForThisApp.ToArray();
 
         // Get dictionary of mods for this app by Mod ID
         var modDictionary  = new Dictionary<string, PathTuple<ModConfig>>();
@@ -117,9 +134,25 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
         // Add disabled mods.
         var enabledModIdSet = applicationTuple.Config.EnabledMods.ToHashSet();
-        var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId));
+        var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
         totalModList.AddRange(disabledMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
         return totalModList;
+    }
+
+    /// <summary>
+    /// Builds the initial set of mods to display in the list.
+    /// </summary>
+    private HashSet<string> GetTags(PathTuple<ModConfig>[] modsForThisApp)
+    {
+        // Note: Must put items in top to bottom load order.
+        var tags = new HashSet<string>();
+        tags.Add(IncludeAllTag);
+
+        foreach (var mod in modsForThisApp)
+        foreach (var tag in mod.Config.Tags)
+            tags.Add(tag);
+
+        return tags;
     }
 
     private ModEntry MakeSaveSubscribedModEntry(bool? isEnabled, PathTuple<ModConfig> item)
