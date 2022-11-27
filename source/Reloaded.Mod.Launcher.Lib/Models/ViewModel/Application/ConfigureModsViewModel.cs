@@ -21,6 +21,11 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     public const string NoCodeInjectionTag = "No Code Injection";
 
     /// <summary>
+    /// Special tag that excludes universal mods.
+    /// </summary>
+    public const string NoUniversalModsTag = "No Universal Mods";
+
+    /// <summary>
     /// All mods available for the game.
     /// </summary>
     public ObservableCollection<ModEntry>? AllMods { get; set; }
@@ -160,13 +165,17 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
         foreach (var mod in modsForThisApp)
         {
+            foreach (var tag in mod.Config.Tags)
+                tags.Add(tag);
+
+            // Auto-tags
             if (mod.Config.HasDllPath())
                 tags.Add(CodeInjectionTag);
             else
                 tags.Add(NoCodeInjectionTag);
 
-            foreach (var tag in mod.Config.Tags)
-                tags.Add(tag);
+            if (mod.Config.IsUniversalMod)
+                tags.Add(NoUniversalModsTag);
         }
         return tags;
     }
