@@ -81,6 +81,9 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
             // Auto tag: Universal mod
             if (ViewModel.SelectedTag == ConfigureModsViewModel.NoUniversalModsTag)
                 e.Accepted = !config.IsUniversalMod;
+
+            if (ViewModel.SelectedTag == ConfigureModsViewModel.NativeModTag)
+                e.Accepted = config.IsNativeMod("");
         }
     }
 

@@ -21,6 +21,11 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     public const string NoCodeInjectionTag = "No Code Injection";
 
     /// <summary>
+    /// Special tag that includes items that use native code.
+    /// </summary>
+    public const string NativeModTag = "Native Mod";
+
+    /// <summary>
     /// Special tag that excludes universal mods.
     /// </summary>
     public const string NoUniversalModsTag = "No Universal Mods";
@@ -176,6 +181,9 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
             if (mod.Config.IsUniversalMod)
                 tags.Add(NoUniversalModsTag);
+
+            if (mod.Config.IsNativeMod(""))
+                tags.Add(NativeModTag);
         }
         return tags;
     }
