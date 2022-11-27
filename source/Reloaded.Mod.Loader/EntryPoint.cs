@@ -1,3 +1,4 @@
+using System.Runtime;
 using Reloaded.Memory.Pointers;
 using System.Security.Policy;
 using System.Text.Json.Serialization;
@@ -41,6 +42,14 @@ public static class EntryPoint
         _reloadedMappedFile = new ReloadedMappedFile(_process.Id);
         SetupLoader((EntryPointParameters*)argument);
         _reloadedMappedFile.SetInitialized(true);
+        
+        // Force full GC. including LOH. Justification is most mods idle most of the time, so it may take long until Gen 2.
+        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+        GC.AddMemoryPressure(nint.MaxValue);
+        GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive, true, true); 
+        GC.Collect(0, GCCollectionMode.Forced, false); // Invoke again to trigger some heuristic in GC telling it there's some pressure going on 
+        GC.RemoveMemoryPressure(nint.MaxValue);
+        
         return 0; // Server is no longer part of mod loader, return 0 port.
     }
 
