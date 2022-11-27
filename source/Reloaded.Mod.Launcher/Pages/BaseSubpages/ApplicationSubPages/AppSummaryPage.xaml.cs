@@ -50,15 +50,25 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
         e.Accepted = true;
 
         // Filter name
+        var config = tuple.Tuple.Config;
         if (ModsFilter.Text.Length > 0)
-            e.Accepted = tuple.Tuple.Config.ModName.Contains(ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase);
+            e.Accepted = config.ModName.Contains(ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase);
 
         if (e.Accepted == false)
             return;
 
         // Filter tag
         if (ViewModel.SelectedTag != ConfigureModsViewModel.IncludeAllTag)
-            e.Accepted = tuple.Tuple.Config.Tags.Contains(ViewModel.SelectedTag);
+        {
+            e.Accepted = config.Tags.Contains(ViewModel.SelectedTag);
+
+            if (e.Accepted != false)
+                return;
+
+            // Try auto tags
+            if (config.HasDllPath() && ViewModel.SelectedTag == ConfigureModsViewModel.CodeInjectionTag)
+                e.Accepted = true;
+        }
     }
 
     private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

@@ -11,6 +11,11 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     public const string IncludeAllTag = "! ALL TAGS !";
 
     /// <summary>
+    /// Special tag that includes items that have custom code.
+    /// </summary>
+    public const string CodeInjectionTag = "Code Injection";
+
+    /// <summary>
     /// All mods available for the game.
     /// </summary>
     public ObservableCollection<ModEntry>? AllMods { get; set; }
@@ -149,9 +154,13 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         tags.Add(IncludeAllTag);
 
         foreach (var mod in modsForThisApp)
-        foreach (var tag in mod.Config.Tags)
-            tags.Add(tag);
+        {
+            if (mod.Config.HasDllPath())
+                tags.Add(CodeInjectionTag);
 
+            foreach (var tag in mod.Config.Tags)
+                tags.Add(tag);
+        }
         return tags;
     }
 
