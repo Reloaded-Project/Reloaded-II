@@ -66,7 +66,10 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
                 return;
 
             // Try auto tags
-            if (config.HasDllPath() && ViewModel.SelectedTag == ConfigureModsViewModel.CodeInjectionTag)
+            bool hasCodeInjection = config.HasDllPath();
+            if (hasCodeInjection && ViewModel.SelectedTag == ConfigureModsViewModel.CodeInjectionTag)
+                e.Accepted = true;
+            else if (!hasCodeInjection && ViewModel.SelectedTag == ConfigureModsViewModel.NoCodeInjectionTag)
                 e.Accepted = true;
         }
     }

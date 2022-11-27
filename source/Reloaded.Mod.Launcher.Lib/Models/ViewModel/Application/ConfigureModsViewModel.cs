@@ -11,9 +11,14 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     public const string IncludeAllTag = "! ALL TAGS !";
 
     /// <summary>
-    /// Special tag that includes items that have custom code.
+    /// Special tag that includes items that don't have custom code.
     /// </summary>
     public const string CodeInjectionTag = "Code Injection";
+
+    /// <summary>
+    /// Special tag that includes items that have custom code.
+    /// </summary>
+    public const string NoCodeInjectionTag = "No Code Injection";
 
     /// <summary>
     /// All mods available for the game.
@@ -157,6 +162,8 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         {
             if (mod.Config.HasDllPath())
                 tags.Add(CodeInjectionTag);
+            else
+                tags.Add(NoCodeInjectionTag);
 
             foreach (var tag in mod.Config.Tags)
                 tags.Add(tag);
