@@ -21,7 +21,14 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
         _manipulator    = new DictionaryResourceManipulator(this.Contents.Resources);
         _modsViewSource = _manipulator.Get<CollectionViewSource>("FilteredMods");
         _modsViewSource.Filter += ModsViewSourceOnFilter;
+        ViewModel.PropertyChanged += OnFilterChanged;
         SwappedOut += Dispose;
+    }
+
+    private void OnFilterChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModel.SelectedTag))
+            _modsViewSource.View.Refresh();
     }
 
     ~AppSummaryPage() => Dispose();
@@ -38,15 +45,20 @@ public partial class AppSummaryPage : ApplicationSubPage, IDisposable
     }
 
     private void ModsViewSourceOnFilter(object sender, FilterEventArgs e)
-    {
-        if (ModsFilter.Text.Length <= 0)
-        {
-            e.Accepted = true;
-            return;
-        }
-
+    {;
         var tuple = (ModEntry)e.Item;
-        e.Accepted = tuple.Tuple.Config.ModName.Contains(ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase);
+        e.Accepted = true;
+
+        // Filter name
+        if (ModsFilter.Text.Length > 0)
+            e.Accepted = tuple.Tuple.Config.ModName.Contains(ModsFilter.Text, StringComparison.InvariantCultureIgnoreCase);
+
+        if (e.Accepted == false)
+            return;
+
+        // Filter tag
+        if (ViewModel.SelectedTag != ConfigureModsViewModel.IncludeAllTag)
+            e.Accepted = tuple.Tuple.Config.Tags.Contains(ViewModel.SelectedTag);
     }
 
     private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)

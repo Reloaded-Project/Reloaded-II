@@ -28,6 +28,7 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public string ModR2RManagedDll64 { get; set; } = String.Empty;
     public string ModNativeDll32    { get; set; } = String.Empty;
     public string ModNativeDll64    { get; set; } = String.Empty;
+    public string[] Tags            { get; set; } = Array.Empty<string>();
     public bool?  CanUnload         { get; set; } = null;
     public bool?  HasExports        { get; set; } = null;
     public bool   IsLibrary         { get; set; } = false;

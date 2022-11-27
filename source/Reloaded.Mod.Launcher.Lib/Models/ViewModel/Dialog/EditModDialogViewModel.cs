@@ -1,3 +1,5 @@
+using IoC;
+
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>
@@ -21,9 +23,19 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
     public ObservableCollection<BooleanGenericTuple<IModConfig>> Dependencies { get; set; } = new ObservableCollection<BooleanGenericTuple<IModConfig>>();
 
     /// <summary>
+    /// All tags used.
+    /// </summary>
+    public ObservableCollection<string> Tags { get; set; } = new ObservableCollection<string>();
+
+    /// <summary>
     /// All possible applications for the mod configurations.
     /// </summary>
     public ObservableCollection<BooleanGenericTuple<IApplicationConfig>> Applications { get; set; } = new ObservableCollection<BooleanGenericTuple<IApplicationConfig>>();
+
+    /// <summary>
+    /// Name of the tag to be set.
+    /// </summary>
+    public string TagName { get; set; } = "";
 
     /// <summary>
     /// Filter allowing for dependencies to be filtered out.
@@ -65,6 +77,9 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
         _applicationConfigService = applicationConfigService;
         ConfigTuple = modTuple;
         Config = modTuple.Config;
+
+        // Add Tags
+        Tags.AddRange(Config.Tags);
 
         // Build Dependencies
         var mods = modConfigService.Items; // In case collection changes during window open.
@@ -118,6 +133,7 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
         string configSavePath  = Path.Combine(modDirectory, ModConfig.ConfigFileName);
         Config.ModDependencies = Dependencies.Where(x => x.Enabled).Select(x => x.Generic.ModId).ToArray();
         Config.SupportedAppId = Applications.Where(x => x.Enabled).Select(x => x.Generic.AppId).ToArray();
+        Config.Tags = Tags.ToArray();
 
         // Save Plugins
         foreach (var update in Updates)
@@ -164,6 +180,18 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
     {
         if (_setModImageCommand.CanExecute(null))
             _setModImageCommand.Execute(null);
+    }
+
+    /// <summary>
+    /// Adds the currently written in tag.
+    /// </summary>
+    public void AddCurrentTag()
+    {
+        if (string.IsNullOrEmpty(TagName) || Tags.Contains(TagName))
+            return;
+
+        Tags.Add(TagName);
+        TagName = "";
     }
 
     /// <summary>

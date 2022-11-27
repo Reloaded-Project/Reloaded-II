@@ -38,12 +38,22 @@
         </Grid.RowDefinitions>
 
         <!-- Search Filter -->
-        <Grid Grid.Row="0" Margin="{DynamicResource PanelMargin}">
+        <DockPanel Grid.Row="0" LastChildFill="True" Margin="{DynamicResource PanelMargin}">
+
+            <ComboBox DockPanel.Dock="Right"
+                      SelectedItem="{Binding SelectedTag}"
+                      ItemsSource="{Binding AllTags}"
+                      Margin="{DynamicResource CommonItemHorizontalMarginLeft}"
+                      ToolTip="{DynamicResource ConfigureModsSelectTagTooltip}" 
+                      ToolTipService.InitialShowDelay="0" 
+                      Width="130" />
+
             <TextBox x:Name="ModsFilter" 
                      Style="{DynamicResource TextboxWithPlaceholder}" 
                      Tag="{DynamicResource ModManagerSearchMods}" 
                      TextChanged="ModsFilter_TextChanged"/>
-        </Grid>
+
+        </DockPanel>
 
         <!-- Items -->
         <Grid Grid.Row="1" Margin="{DynamicResource PanelMargin}">
