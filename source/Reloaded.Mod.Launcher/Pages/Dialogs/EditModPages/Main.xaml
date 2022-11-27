@@ -169,7 +169,6 @@
                 <ComboBoxItem Content="Character" />
                 <ComboBoxItem Content="Sound Effect" />
                 <ComboBoxItem Content="Music" />
-                <ComboBoxItem Content="Code Injection" />
                 <ComboBoxItem Content="Texture" />
             </ComboBox>
             
