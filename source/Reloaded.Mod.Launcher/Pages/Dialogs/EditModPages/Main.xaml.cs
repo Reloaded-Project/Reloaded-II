@@ -17,4 +17,6 @@ public partial class Main : ReloadedPage
     {
         ViewModel.SetNewImage();
     }
+
+    private void AddTag_Click(object sender, RoutedEventArgs e) => ViewModel.AddCurrentTag();
 }

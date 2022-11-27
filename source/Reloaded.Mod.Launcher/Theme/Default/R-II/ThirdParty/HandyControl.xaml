@@ -214,4 +214,23 @@
         </Setter>
     </Style>
 
+    <!-- Tags in Reloaded Style -->
+    <Style TargetType="hc:TagContainer" BasedOn="{StaticResource TagContainerBaseStyle}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Focusable" Value="False" />
+    </Style>
+
+    <Style x:Key="ReloadedTag" BasedOn="{StaticResource TagBaseStyle}" TargetType="{x:Type hc:Tag}">
+        <Setter Property="Content" Value="{Binding .}" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}" />
+
+        <Style.Triggers>
+            <Trigger Property="UIElement.IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

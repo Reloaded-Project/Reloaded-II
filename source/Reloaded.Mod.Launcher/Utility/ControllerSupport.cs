@@ -1,3 +1,5 @@
+using HandyControl.Controls;
+using System.Windows.Controls;
 using static Reloaded.Input.Implementations.Implementations;
 using static Sewer56.UI.Controller.Core.Enums.Button;
 using Image = System.Windows.Controls.Image;
@@ -154,6 +156,32 @@ public static class ControllerSupport
                 {
                     RoutedEvent = UIElement.PreviewMouseLeftButtonDownEvent,
                 });
+
+                break;
+
+
+            case Tag hcTag:
+
+                if (!state.IsButtonPressed(Accept))
+                    break;
+
+                var button = (System.Windows.Controls.Button) hcTag.Template.FindName("ButtonClose", hcTag);
+
+                if (button != null)
+                {
+                    var command = button.Command;
+                    if (command != null)
+                    {
+                        if (command.CanExecute(null))
+                            command.Execute(null);
+                    }
+
+                    button?.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+                    {
+                        RoutedEvent = UIElement.PreviewMouseDownEvent,
+                    });
+                }
+
 
                 break;
         }
