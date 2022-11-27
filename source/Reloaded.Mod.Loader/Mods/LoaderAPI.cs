@@ -136,6 +136,7 @@ public class LoaderAPI : IModLoader
             }
         }
 
+        _loader.Logger.LogWriteLine($"[LoaderAPI] Warning: GetController<{typeof(T).Name}> returned null.", _loader.Logger.ColorWarning);
         return null;
     }
 
