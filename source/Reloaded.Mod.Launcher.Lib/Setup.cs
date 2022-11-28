@@ -294,19 +294,30 @@ public static class Setup
         // Update Environment Variables
         Task.Run(() =>
         {
-            // In case of first time use, so variables propagate to child processes.
-            Environment.SetEnvironmentVariable("RELOADEDII_LOADER64", config.LoaderPath64, EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("RELOADEDII_LOADER32", config.LoaderPath32, EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("RELOADEDII_LAUNCHER", config.LauncherPath, EnvironmentVariableTarget.Process);
-            
-            // DO NOT CHANGE, BREAKS BACKCOMPAT
-            // THIS IS SLOW, RUN THIS SECOND
-            Environment.SetEnvironmentVariable("RELOADEDIIMODS", config.GetModConfigDirectory(), EnvironmentVariableTarget.User);
-            Environment.SetEnvironmentVariable("RELOADEDII_LOADER64", config.LoaderPath64, EnvironmentVariableTarget.User);
-            Environment.SetEnvironmentVariable("RELOADEDII_LOADER32", config.LoaderPath32, EnvironmentVariableTarget.User);
-            Environment.SetEnvironmentVariable("RELOADEDII_LAUNCHER", config.LauncherPath, EnvironmentVariableTarget.User);
-            
+            RegisterLoaderPaths(config);
         });
+    }
+    
+    internal static void RegisterLoaderPaths(LoaderConfig config, bool onlyEssentialVars = false)
+    {
+        // In case user before changes are propagated.
+        Environment.SetEnvironmentVariable("RELOADEDII_LOADER64", config.LoaderPath64, EnvironmentVariableTarget.Process);
+        Environment.SetEnvironmentVariable("RELOADEDII_LOADER32", config.LoaderPath32, EnvironmentVariableTarget.Process);
+        Environment.SetEnvironmentVariable("RELOADEDII_LAUNCHER", config.LauncherPath, EnvironmentVariableTarget.Process);
+        
+        // DO NOT CHANGE THIS METHOD, BREAKS BACKCOMPAT
+        // THIS IS SLOW, RUN THIS SECOND
+        // Get the user classes subkey.
+        using (var environmentKey = Registry.CurrentUser.OpenSubKey("Environment", true))
+        {
+            environmentKey.SetValue("RELOADEDII_LOADER64", config.LoaderPath64);
+            environmentKey.SetValue("RELOADEDII_LOADER32", config.LoaderPath32);
+            environmentKey.SetValue("RELOADEDII_LAUNCHER", config.LauncherPath);
+        }
+
+        // Fires WM_SETTINGCHANGE indirectly.
+        if (!onlyEssentialVars)
+            Environment.SetEnvironmentVariable("RELOADEDIIMODS", config.GetModConfigDirectory(), EnvironmentVariableTarget.User);
     }
 
     /// <summary>

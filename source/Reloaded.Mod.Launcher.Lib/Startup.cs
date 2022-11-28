@@ -74,6 +74,7 @@ public static class Startup
         // Acquire arguments
         var loaderConfig = IoC.Get<LoaderConfig>();
         loaderConfig.UpdatePaths(Paths.CurrentProgramFolder, Resources.ErrorLoaderNotFound.Get());
+        Setup.RegisterLoaderPaths(loaderConfig, true);
         IConfig<LoaderConfig>.ToPath(loaderConfig, Paths.LoaderConfigPath);
 
         _commandLineArguments.TryGetValue(Constants.ParameterArguments, out var arguments);
