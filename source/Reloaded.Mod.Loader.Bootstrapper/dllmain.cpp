@@ -49,7 +49,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 			if (preload_setup_info())
 			{
 				initializeThreadHandle = CreateThread(nullptr, 0, &load_reloaded_async, 0, 0, nullptr);
-				Sleep(8); // Just enough to get the thread we created to the lock.
 			}
 			break;
 
