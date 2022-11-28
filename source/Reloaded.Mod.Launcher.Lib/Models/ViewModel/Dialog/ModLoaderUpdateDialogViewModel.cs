@@ -35,6 +35,11 @@ public class ModLoaderUpdateDialogViewModel : ObservableObject
     /// </summary>
     public string? ReleaseUrl { get; set; }
 
+    /// <summary>
+    /// True if an update can be started;
+    /// </summary>
+    public bool CanStartUpdate { get; set; } = true;
+
     private UpdateManager<Empty> _manager;
     private NuGetVersion _targetVersion;
 
@@ -64,6 +69,7 @@ public class ModLoaderUpdateDialogViewModel : ObservableObject
     /// </summary>
     public async Task Update()
     {
+        CanStartUpdate = false;
         if (ApplicationInstanceTracker.GetAllProcesses(out var processes))
         {
             ActionWrappers.ExecuteWithApplicationDispatcher(() =>
