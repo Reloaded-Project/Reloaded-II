@@ -300,7 +300,7 @@ public static class Setup
     
     internal static void RegisterLoaderPaths(LoaderConfig config, bool onlyEssentialVars = false)
     {
-        // In case user before changes are propagated.
+        // In case user closes launcher before changes are propagated.
         Environment.SetEnvironmentVariable("RELOADEDII_LOADER64", config.LoaderPath64, EnvironmentVariableTarget.Process);
         Environment.SetEnvironmentVariable("RELOADEDII_LOADER32", config.LoaderPath32, EnvironmentVariableTarget.Process);
         Environment.SetEnvironmentVariable("RELOADEDII_LAUNCHER", config.LauncherPath, EnvironmentVariableTarget.Process);
