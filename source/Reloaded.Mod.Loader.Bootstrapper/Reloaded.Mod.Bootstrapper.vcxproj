@@ -226,6 +226,7 @@
     <ClInclude Include="LoaderConfig.h" />
     <ClInclude Include="nethost\nethost.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ReloadedPaths.h" />
     <ClInclude Include="resource.h" />

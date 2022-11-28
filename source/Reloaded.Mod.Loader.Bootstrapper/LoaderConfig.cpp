@@ -2,19 +2,49 @@
 #include "LoaderConfig.h"
 #include "Utilities.h"
 #include <Shlobj_core.h>
+#include <fstream>
 #include <locale>
+#include <codecvt>
 #include "ReloadedPaths.h"
 
-#pragma warning(disable:4996) // _CRT_SECURE_NO_WARNINGS
+LoaderConfig::LoaderConfig()
+{
+	// Get path to AppData
+	char_t buffer[32767]; // Max Windows10+ path.
+	BOOL result = SHGetSpecialFolderPath(nullptr, buffer, CSIDL_APPDATA, false);
+
+	if (!result)
+		throw std::exception("Failed to obtain the path of the AppData folder.");
+
+	// Get path to Reloaded Config
+	const string_t appData = string_t(buffer);
+	const string_t reloadedConfigPath = appData + L"\\Reloaded-Mod-Loader-II\\ReloadedII.json";
+
+	if (!Utilities::file_exists(reloadedConfigPath))
+		throw std::exception("Reloaded config has not been found.");
+
+	// Get loader path.
+	std::ifstream configFile = std::ifstream(reloadedConfigPath);
+	config = json::parse(configFile);
+}
 
 string_t LoaderConfig::get_loader_path()
 {
 	#if _WIN64
-	const string_t loaderPath = _wgetenv(L"RELOADEDII_LOADER64");
+	const std::string stringLoaderPath = config["LoaderPath64"];
 	#else
-	const string_t loaderPath = _wgetenv(L"RELOADEDII_LOADER32");
+	const std::string stringLoaderPath = config["LoaderPath32"];
 	#endif
 	
+
+	/* std::string is non-wide and will not handle unicode characters on Windows.
+	 * Need to convert back to wide characters.
+	 *
+	 * This is to support file paths with international locale e.g. Cyrillic, Chinese, Japanese.
+	*/
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	const string_t loaderPath = converter.from_bytes(stringLoaderPath);
+
 	if (!Utilities::file_exists(loaderPath))
 		throw std::exception("Reloaded Mod Loader DLL has not been found.");
 
@@ -34,7 +64,9 @@ string_t LoaderConfig::get_runtime_config_path()
 
 string_t LoaderConfig::get_launcher_path()
 {
-	const string_t launcherPath = _wgetenv(L"RELOADEDII_LAUNCHER");
+	const std::string stringLauncherPath = config["LauncherPath"];
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	const string_t launcherPath = converter.from_bytes(stringLauncherPath);
 
 	if (!Utilities::file_exists(launcherPath))
 		throw std::exception("Reloaded Mod Loader DLL has not been found.");

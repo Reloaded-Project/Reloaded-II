@@ -1,18 +1,22 @@
 #pragma once
+#include "nlohmann/json.hpp"
 #include "CoreCLR.hpp"
 #include "ReloadedPaths.h"
 
+using json = nlohmann::json;
 
 class LoaderConfig
 {
 	public:
-		LoaderConfig() { };
+		LoaderConfig();
 		~LoaderConfig() = default;
 
-		static string_t get_loader_path();
-		static string_t get_launcher_path();
-		static string_t get_runtime_config_path();
+		json config;
 
-		static ReloadedPaths get_loader_paths();
+		string_t get_loader_path();
+		string_t get_launcher_path();
+		string_t get_runtime_config_path();
+	
+		ReloadedPaths get_loader_paths();
 };
 
