@@ -145,8 +145,15 @@ public static class EntryPoint
         }
         else
         {
-            var basicPeParser = new BasicPeParser(Environment.CurrentProcessLocation.Value);
-            drmTypes = CheckDrmAndNotify(basicPeParser, _loader.Logger, out requiresDelayStart);
+            try
+            {
+                var basicPeParser = new BasicPeParser(Environment.CurrentProcessLocation.Value);
+                drmTypes = CheckDrmAndNotify(basicPeParser, _loader.Logger, out requiresDelayStart);
+            }
+            catch (Exception e)
+            {
+                Logger?.LogWriteLineAsync($"Failed to check DRM. Probably unable to read EXE file.", Logger.ColorWarning);
+            }
         }
 
         if (!requiresDelayStart || loadedFromExternalSource)
