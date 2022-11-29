@@ -16,19 +16,15 @@ public class NuGetDependencyResolver : IDependencyResolver
     /// <inheritdoc />
     public async Task<ModDependencyResolveResult> ResolveAsync(string packageId, Dictionary<string, object>? pluginData = null, CancellationToken token = default)
     {
-        var searchResult = await _repository.FindDependencies(packageId, true, true, token);
-        var result       = new ModDependencyResolveResult();
-
-        foreach (var dependency in searchResult.Dependencies)
-        {
-            var package    = dependency.Generic;
-            var repository = dependency.Repository;
-            result.FoundDependencies.Add(await WebDownloadablePackage.FromNuGetAsync(package, repository));
-        }
-
-        foreach (var notFound in searchResult.PackagesNotFound)
-            result.NotFoundDependencies.Add(notFound);
-
+        var searchResult  = await _repository.GetPackageDetails(packageId, true, true, token);
+        var newestPackage = _repository.GetNewestPackage(searchResult);
+        var result        = new ModDependencyResolveResult();
+        
+        if (newestPackage != null)
+            result.FoundDependencies.Add(await WebDownloadablePackage.FromNuGetAsync(newestPackage.Generic, newestPackage.Repository));
+        else
+            result.NotFoundDependencies.Add(packageId);
+        
         return result;
     }
 }
