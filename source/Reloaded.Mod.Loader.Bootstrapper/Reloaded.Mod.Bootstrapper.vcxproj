@@ -177,7 +177,6 @@
       <ProgramDatabaseFile>$(OutDir)\X86\Bootstrapper\$(TargetName).pdb</ProgramDatabaseFile>
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
       <AdditionalOptions>/brepro %(AdditionalOptions)</AdditionalOptions>
-      <SectionAlignment>128</SectionAlignment>
       <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -214,7 +213,6 @@
       <ProgramDatabaseFile>$(OutDir)\X64\Bootstrapper\$(TargetName).pdb</ProgramDatabaseFile>
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
       <AdditionalOptions>/brepro %(AdditionalOptions)</AdditionalOptions>
-      <SectionAlignment>128</SectionAlignment>
       <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
