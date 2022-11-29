@@ -139,6 +139,8 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
             string configId = config.Config.ModId;
             string configDirectory = Path.GetDirectoryName(config.Path)!;
             returnResult = Path.Combine(packageFolder, IO.Utility.IOEx.ForceValidFilePath(configId));
+            try { Directory.Delete(returnResult, true); }
+            catch (Exception) { }
             IOEx.MoveDirectory(configDirectory, returnResult);
         }
 
