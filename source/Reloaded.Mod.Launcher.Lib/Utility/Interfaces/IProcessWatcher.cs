@@ -1,12 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility.Interfaces;
 
 /// <summary>
 /// Interface used to watch for the launching and exiting of processes.
 /// </summary>
-public interface IProcessWatcher
+public interface IProcessWatcher : IDisposable
 {
     /// <summary>
     /// Executed when a new process has been launched.

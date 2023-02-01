@@ -1,21 +1,49 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;net7.0</TargetFrameworks>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Version>1.1.1</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Sewer56</Authors>
+    <Company />
+    <Description>Library for creating downloadable packages and updates for Reloaded II mods. For usage instructions please see the Programmers' section in Reloaded wiki.</Description>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <LangVersion>preview</LangVersion>
+    <PackageIcon>NuGet-Icon.png</PackageIcon>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sewer56.Update" Version="2.2.0" />
-    <PackageReference Include="Sewer56.Update.Extractors.SevenZipSharp" Version="1.1.1" GeneratePathProperty="true" />
-    <PackageReference Include="Sewer56.Update.Packaging" Version="2.1.2" />
-    <PackageReference Include="Sewer56.Update.Resolvers.NuGet" Version="1.1.0" />
-    <PackageReference Include="Sewer56.Update.Resolvers.GameBanana" Version="1.2.3" />
+    <PackageReference Include="Sewer56.Update" Version="4.0.0" />
+    <PackageReference Include="Sewer56.Update.Extractors.SevenZipSharp" Version="1.1.2" GeneratePathProperty="true" />
+    <PackageReference Include="Sewer56.Update.Packaging" Version="3.0.0" />
+    <PackageReference Include="Sewer56.Update.Resolvers.NuGet" Version="1.4.0" />
+    <PackageReference Include="Sewer56.Update.Resolvers.GameBanana" Version="1.4.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\NuGet-Icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

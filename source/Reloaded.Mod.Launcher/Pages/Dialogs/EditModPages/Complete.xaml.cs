@@ -1,12 +1,3 @@
-﻿using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.WPF.Theme.Default;
-using Reloaded.WPF.Utilities;
-
 namespace Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages;
 
 /// <summary>

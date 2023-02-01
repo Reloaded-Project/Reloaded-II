@@ -1,9 +1,3 @@
-﻿using System;
-using System.IO;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.IO;
 
 public class ConfigReaderTests : IDisposable

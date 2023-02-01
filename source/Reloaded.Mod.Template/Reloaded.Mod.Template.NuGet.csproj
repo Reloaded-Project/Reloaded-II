@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>1.2.0</PackageVersion>
+    <PackageVersion>1.5.0</PackageVersion>
     <PackageId>Reloaded.Mod.Templates</PackageId>
     <Title>Reloaded-II Mod Templates</Title>
     <Authors>Sewer56</Authors>
@@ -14,6 +14,7 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <NoWarn>1701;1702;NU5110;NU5111;NU5128</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

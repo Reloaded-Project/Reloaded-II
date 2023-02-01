@@ -1,40 +1,84 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Windows.Media.Imaging;
-using Reloaded.Memory;
-using Reloaded.Memory.Streams;
-using Reloaded.Mod.Launcher.Lib.Misc;
+using Image = System.Drawing.Image;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace Reloaded.Mod.Launcher.Misc;
 
 public class Imaging
 {
+    private static BitmapImage? _placeholderIcon;
+
+    /// <summary>
+    /// Converts a WPF URI into a image.
+    /// </summary>
     public static BitmapImage BitmapFromUri(Uri source)
     {
         string uri = source.OriginalString.Replace("pack://siteoforigin:,,,", Constants.ApplicationDirectory);
-        using (var stream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.Read))
+        using var stream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.Read);
+        var bitmapImage = BitmapFromStream(stream);
+        return bitmapImage;
+    }
+
+    /// <summary>
+    /// Loads an image from a given stream.
+    /// </summary>
+    public static BitmapImage BitmapFromStreamViaPhotoSauce(Stream stream, int? decodePixelWidth = null, int? decodePixelHeight = null)
+    {
+        var origPosition = stream.Position;
+        try
         {
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapImage.StreamSource = stream;
-            bitmapImage.EndInit();
-            bitmapImage.Freeze();
-            return bitmapImage;
+            var data = GC.AllocateUninitializedArray<byte>((int)stream.Length);
+            stream.CopyTo(new MemoryStream(data));
+            var memStream = BmpImageConverter.Instance.Convert(data, "", out _);
+            return BitmapFromStream(memStream, decodePixelWidth, decodePixelHeight);
         }
+        finally
+        {
+            stream.Position = origPosition;
+        }
+    }
+
+    /// <summary>
+    /// Loads an image from a given stream.
+    /// </summary>
+    public static BitmapImage BitmapFromStream(Stream stream, int? decodePixelWidth = null, int? decodePixelHeight = null)
+    {
+        var bitmapImage = new BitmapImage();
+        bitmapImage.BeginInit();
+        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+        bitmapImage.StreamSource = stream;
+        
+        if (decodePixelHeight.HasValue)
+            bitmapImage.DecodePixelHeight = decodePixelHeight.Value;
+
+        if (decodePixelWidth.HasValue)
+            bitmapImage.DecodePixelWidth = decodePixelWidth.Value;
+
+        bitmapImage.EndInit();
+        bitmapImage.Freeze();
+        return bitmapImage;
+    }
+
+    /// <summary>
+    /// Gets the icon used for placeholders in Reloaded.
+    /// </summary>
+    public static BitmapImage GetPlaceholderIcon()
+    {
+        if (_placeholderIcon != null)
+            return _placeholderIcon;
+
+        var img = new BitmapImage(new Uri(Paths.PLACEHOLDER_IMAGE, UriKind.RelativeOrAbsolute));
+        img.CacheOption = BitmapCacheOption.OnLoad;
+        img.Freeze();
+
+        _placeholderIcon = img;
+        return img;
     }
 
     public static Image ImageFromUri(Uri source)
     {
         string uri = source.OriginalString.Replace("pack://siteoforigin:,,,", Constants.ApplicationDirectory);
-        using (var stream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.Read))
-        {
-            return Image.FromStream(stream);
-        }
+        using var stream = new FileStream(uri, FileMode.Open, FileAccess.Read, FileShare.Read);
+        return Image.FromStream(stream);
     }
 
     /*
@@ -111,7 +155,7 @@ public class Imaging
     /// <param name="output">The output stream</param
     public static bool TryConvertToIcon(Stream input, Stream output)
     {
-        Bitmap inputBitmap = (Bitmap) Image.FromStream(input);
+        var inputBitmap = (Bitmap) Image.FromStream(input);
         return TryConvertToIcon(inputBitmap, output);
     }
 
@@ -122,11 +166,9 @@ public class Imaging
     /// <param name="outputPath">The output path.</param>
     public static bool TryConvertToIcon(string inputPath, string outputPath)
     {
-        using (FileStream inputStream = new FileStream(inputPath, FileMode.Open))
-        using (FileStream outputStream = new FileStream(outputPath, FileMode.OpenOrCreate))
-        {
-            return TryConvertToIcon(inputStream, outputStream);
-        }
+        using FileStream inputStream = new FileStream(inputPath, FileMode.Open);
+        using FileStream outputStream = new FileStream(outputPath, FileMode.OpenOrCreate);
+        return TryConvertToIcon(inputStream, outputStream);
     }
 
     /// <summary>
@@ -136,10 +178,8 @@ public class Imaging
     /// <param name="outputPath">The output path.</param>
     public static bool TryConvertToIcon(Image inputImage, string outputPath)
     {
-        using (FileStream outputStream = new FileStream(outputPath, FileMode.OpenOrCreate))
-        {
-            return TryConvertToIcon(new Bitmap(inputImage), outputStream);
-        }
+        using FileStream outputStream = new FileStream(outputPath, FileMode.OpenOrCreate);
+        return TryConvertToIcon(new Bitmap(inputImage), outputStream);
     }
 
 

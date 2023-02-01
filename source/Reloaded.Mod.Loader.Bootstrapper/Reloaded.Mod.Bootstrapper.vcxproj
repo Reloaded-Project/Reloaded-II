@@ -96,8 +96,10 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;RELOADEDMODBOOTSTRAPPER_EXPORTS;_WINDOWS;_USRDLL;NETHOST_USE_AS_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>6262;26451;4099</DisableSpecificWarnings>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>.\nethost\x86-libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -110,6 +112,8 @@
       <OutputFile>$(OutDir)\X86\Bootstrapper\$(TargetName)$(TargetExt)</OutputFile>
       <ProgramDatabaseFile>$(OutDir)\X86\Bootstrapper\$(TargetName).pdb</ProgramDatabaseFile>
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
+      <AdditionalOptions></AdditionalOptions>
+      <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -121,8 +125,10 @@
       <PreprocessorDefinitions>NDEBUG;RELOADEDMODBOOTSTRAPPER_EXPORTS;_WINDOWS;_USRDLL;NETHOST_USE_AS_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>6262;26451;4099</DisableSpecificWarnings>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>.\nethost\x64-libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -135,21 +141,27 @@
       <OutputFile>$(OutDir)\X64\Bootstrapper\$(TargetName)$(TargetExt)</OutputFile>
       <ProgramDatabaseFile>$(OutDir)\X64\Bootstrapper\$(TargetName).pdb</ProgramDatabaseFile>
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
+      <AdditionalOptions></AdditionalOptions>
+      <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
+      <Optimization>MinSpace</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;RELOADEDMODBOOTSTRAPPER_EXPORTS;_WINDOWS;_USRDLL;NETHOST_USE_AS_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>6262;26451;4099</DisableSpecificWarnings>
+      <StringPooling>true</StringPooling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>.\nethost\x86-libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -164,21 +176,28 @@
       <OutputFile>$(OutDir)\X86\Bootstrapper\$(TargetName)$(TargetExt)</OutputFile>
       <ProgramDatabaseFile>$(OutDir)\X86\Bootstrapper\$(TargetName).pdb</ProgramDatabaseFile>
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
+      <AdditionalOptions>/brepro %(AdditionalOptions)</AdditionalOptions>
+      <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
+      <Optimization>MinSpace</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;RELOADEDMODBOOTSTRAPPER_EXPORTS;_WINDOWS;_USRDLL;NETHOST_USE_AS_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>6262;26451;4099</DisableSpecificWarnings>
+      <StringPooling>true</StringPooling>
+      <AdditionalOptions></AdditionalOptions>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>.\nethost\x64-libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -193,6 +212,8 @@
       <OutputFile>$(OutDir)\X64\Bootstrapper\$(TargetName)$(TargetExt)</OutputFile>
       <ProgramDatabaseFile>$(OutDir)\X64\Bootstrapper\$(TargetName).pdb</ProgramDatabaseFile>
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
+      <AdditionalOptions>/brepro %(AdditionalOptions)</AdditionalOptions>
+      <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -240,6 +261,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="exports.def" />
   </ItemGroup>
   <!-- Build X64 and X86 at same time. -->
   <Target Name="AfterBuild">

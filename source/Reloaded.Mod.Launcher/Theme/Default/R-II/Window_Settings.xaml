@@ -14,6 +14,7 @@
     <Thickness x:Key="CommonItemVerticalMarginSmallest">0,2.5</Thickness>
     <Thickness x:Key="CommonItemVerticalMarginTop">0,10,0,0</Thickness>
 
+    <Thickness x:Key="CommonItemHorizontalMarginLeft">10,0,0,0</Thickness>
     <Thickness x:Key="CommonItemHorizontalMargin">10,0</Thickness>
     <Thickness x:Key="CommonItemHorizontalMarginSmall">7.5,0</Thickness>
     <Thickness x:Key="CommonItemHorizontalMarginSmaller">5,0</Thickness>
@@ -56,5 +57,14 @@
     <sys:Double x:Key="PopupLabelExitSlideAnimationDuration">0.666</sys:Double>   <!-- Length of the slide out part of the animation in Milliseconds -->
     <sys:Double x:Key="PopupLabelExitFadeAnimationDuration">0.666</sys:Double>    <!-- Length of the fade out part of the animation in Milliseconds -->
     <sys:Double x:Key="PopupLabelExitFadeOpacityEnd">0.0</sys:Double>             <!-- The opacity to fade out to (from 1.0). -->
+
+    <!-- Download Menu Stuff Properties -->
+    <Thickness x:Key="DownloadMenuHorizontalItemMargin">0,0,10,0</Thickness>
+
+    <!-- SVG Icon Related Properties -->
+    <Thickness x:Key="SVGIconToTextMargin">0,0,5,0</Thickness>
+
+    <!-- Create Pack Menu -->
+    <GridLength x:Key="PackEditorBarWidth">240</GridLength>
 
 </ResourceDictionary>

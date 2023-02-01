@@ -32,6 +32,10 @@
     Full or relative path to a file containing the changelog for the mod.
     The changelog should be written in Markdown format.
 
+.PARAMETER ReadmePath
+    Full or relative path to a file containing the changelog for the mod.
+    The changelog should be written in Markdown format.
+
 .PARAMETER IsPrerelease
     Default: $False
 
@@ -131,6 +135,11 @@
 
     Removes executables from build output. Useful when performing R2R Optimisation.
 
+.PARAMETER UseScriptDirectory
+    Default: $True
+
+    Uses script directory for performing build. Otherwise uses current directory.
+    
 .EXAMPLE
   .\Publish.ps1 -ProjectPath "Reloaded.Hooks.ReloadedII/Reloaded.Hooks.ReloadedII.csproj" -PackageName "Reloaded.Hooks.ReloadedII" -PublishOutputDir "Publish/ToUpload"
 
@@ -146,10 +155,12 @@ param (
     $IsPrerelease=$False, 
     $MakeDelta=$False, 
     $ChangelogPath="",
+    $ReadmePath="",
     $Build=$True,
     $BuildR2R=$False,
-    $RemoveExe = $True,
-	
+    $RemoveExe=$True,
+    $UseScriptDirectory=$True,
+
     ## => User Config <= ## 
     $ProjectPath = "Reloaded.Mod.Template.csproj",
     $PackageName = "Reloaded.Mod.Template",
@@ -193,12 +204,18 @@ $reloadedToolsPath = "./Publish/Tools/Reloaded-Tools"    # Used to check if tool
 $updateToolsPath   = "./Publish/Tools/Update-Tools"      # Used to check if update tools are installed.
 $reloadedToolPath = "$reloadedToolsPath/Reloaded.Publisher.exe"  # Path to Reloaded publishing tool.
 $updateToolPath   = "$updateToolsPath/Sewer56.Update.Tool.dll" # Path to Update tool.
-$changelogFullPath = [System.IO.Path]::GetFullPath($ChangelogPath)
+$changelogFullPath = $null
+$readmeFullPath = $null
+if ($ChangelogPath) { $changelogFullPath = [System.IO.Path]::GetFullPath($ChangelogPath) }
+if ($ReadmePath) { $readmeFullPath = [System.IO.Path]::GetFullPath($ReadmePath) }
 
 ## => Script <= ##
 # Set Working Directory
-Split-Path $MyInvocation.MyCommand.Path | Push-Location
-[Environment]::CurrentDirectory = $PWD
+$UseScriptDirectory = [bool]::Parse($UseScriptDirectory)
+if ($UseScriptDirectory) {
+    Split-Path $MyInvocation.MyCommand.Path | Push-Location
+    [Environment]::CurrentDirectory = $PWD
+}
 
 # Convert Booleans
 $IsPrerelease = [bool]::Parse($IsPrerelease)
@@ -302,6 +319,10 @@ function Get-Common-Publish-Args {
 	if ($ChangelogPath) {
         $arguments += " --changelogpath `"$changelogFullPath`""
 	}
+
+    if ($ReadmePath) {
+        $arguments += " --readmepath `"$readmeFullPath`""
+	}
 	
 	if ($AllowDeltas -and $MakeDelta) {
         $arguments += " --olderversionfolders `"$deltaDirectory`""
@@ -382,4 +403,6 @@ Remove-Item $TempDirectory -Recurse -ErrorAction SilentlyContinue
 # Restore Working Directory
 Write-Host "Done."
 Write-Host "Upload the files in folder `"$PublishOutputDir`" to respective location or website."
-Pop-Location
+if ($UseScriptDirectory) {
+    Pop-Location
+}

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Management;
-using Reloaded.Mod.Launcher.Lib.Utility.Interfaces;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
 /// Utility class that provides events for when processes start up and/or shut down using WMI.
 /// </summary>
-public class WmiProcessWatcher : ObservableObject, IDisposable, IProcessWatcher
+public class WmiProcessWatcher : ObservableObject, IProcessWatcher
 {
     private const string WmiProcessidName = "ProcessID";
 
@@ -40,6 +34,10 @@ public class WmiProcessWatcher : ObservableObject, IDisposable, IProcessWatcher
     /// <inheritdoc />
     public void Dispose()
     {
+        _startWatcher.EventArrived -= ApplicationLaunched;
+        _stopWatcher.EventArrived -= ApplicationExited;
+        _startWatcher.Stop();
+        _stopWatcher.Stop();
         _startWatcher.Dispose();
         _stopWatcher.Dispose();
         GC.SuppressFinalize(this);

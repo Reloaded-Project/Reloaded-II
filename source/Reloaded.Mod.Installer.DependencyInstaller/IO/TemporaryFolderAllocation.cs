@@ -1,6 +1,3 @@
-﻿using System;
-using System.IO;
-
 namespace Reloaded.Mod.Installer.DependencyInstaller.IO;
 
 /// <summary>
@@ -26,7 +23,7 @@ public class TemporaryFolderAllocation : IDisposable
     public void Dispose()
     {
         try { Directory.Delete(FolderPath, true); }
-        catch (Exception e) { }
+        catch (Exception) { }
         GC.SuppressFinalize(this);
     }
 

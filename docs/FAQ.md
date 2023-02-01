@@ -11,13 +11,6 @@ Anything else is unofficial.
 
 GitHub is always kept up to date while GameBanana is sometimes updated slightly less periodically. Regardless of what you download, the launcher will always offer to update itself to the latest up to date version.
 
-## Reloaded doesn't boot, what should I do?
-
-Have you installed the dependencies?
-No, seriously, 99% of the time it's just that. 
-
-Please look directly above the download button on both GameBanana and GitHub and download **ALL** of the linked dependencies.
-
 ## How do I get started with using Reloaded?
 
 It's as easy as 1,2,3. [Take a look at the quick start guide!](./QuickStart.md)
@@ -27,22 +20,34 @@ It's as easy as 1,2,3. [Take a look at the quick start guide!](./QuickStart.md)
 ![](https://cdn.discordapp.com/attachments/745941458686705767/746941241383583744/EnableModAndLaunchGame.gif)
 
 ## How do I report issues with Reloaded?
+
 Please use the following link: [https://github.com/Reloaded-Project/Reloaded-II/issues](https://github.com/Reloaded-Project/Reloaded-II/issues)
 
 ## Can I use Reloaded with Steam Overlay/Controller Support?
 
-There are multiple ways to do so, but the two recommended ones are:
+There are multiple ways to do so, but the two recommended ones are:  
 
-- Add Reloaded Shortcut to Steam
-- Load Reloaded via a DLL replacement based code loader (e.g. Ultimate ASI Loader)
+- Add Reloaded Shortcut to Steam  
+- Load Reloaded via another code loader (e.g. Ultimate ASI Loader)  
 
-For the first option, simply create a shortcut from within the Reloaded launcher and add it to Steam, then copy the `Target` from your shortcut properties into Steam's own `Target` field.
+=== "Adding Steam Shortcut (Recommended)"
 
-![Example](https://cdn.discordapp.com/attachments/745941458686705767/746954484990607450/90083094-8855f400-dd09-11ea-9e6b-494f6977c327.png)
+    Create a shortcut from within the Reloaded Launcher and add it to Steam. 
+    
+    Right click the shortcuit and copy the entirety of the `--launch "PathToGame\Game.exe"` argument within the `Target` field into Steam's own `Launch Options` field.  
 
-The second option can now also be automated from the launcher, by expanding the `Advanced` section of `Add/Edit Application Menu`. Simply press the `Deploy ASI Loader` button and voila!
+    Remember that the `--launch` argument comes **after** the path to your Reloaded-II installation, and not to include the preceeding space.  
 
-![Example2](https://cdn.discordapp.com/attachments/745941458686705767/746954951850328135/unknown.png)
+    ![Example](./Images/SteamShortcutSimple.png)
+
+=== "Installing ASI Loader (Alternative)"
+
+    In your Mod Selection Menu, click `Edit Application` and expand the `Advanced` section.  
+    Then simply press the `Deploy ASI Loader` button and voila!  
+
+    ![Example2](https://cdn.discordapp.com/attachments/745941458686705767/746954951850328135/unknown.png)  
+
+    If you are using Wine, [there is an extra step involved](./LinuxSetupGuide.md).  
 
 ## My controller does not work when using Reloaded
 
@@ -68,11 +73,6 @@ Before you get going, reach out and consult the community for your application! 
 As a programmer you should have an adequate level of self sufficiency. As such, please follow the following guide: [Building Mods](./DevelopmentEnvironmentSetup.md)
 
 ![](https://cdn.discordapp.com/attachments/745941458686705767/746946696797356072/NewProject.png)
-
-Documentation for two of the most commonly used libraries (they are part of the template!) can be found in the following places:
-
-- [Reloaded.Memory](https://github.com/Reloaded-Project/Reloaded.Memory)
-- [Reloaded.Hooks](https://github.com/Reloaded-Project/Reloaded.Hooks)
 
 ### How can I contribute to Reloaded?
 

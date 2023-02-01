@@ -16,6 +16,11 @@ function New-TemporaryDirectory
 	return "$returnValue"
 }
 
+# Set Working Directory
+Split-Path $MyInvocation.MyCommand.Path | Push-Location
+[Environment]::CurrentDirectory = $PWD
+Write-Host "New Current Directory: $(Get-Location)"
+
 # Build Locations
 $buildPath = New-TemporaryDirectory
 $outputPath = "$buildPath/Publish"
@@ -48,11 +53,6 @@ $releaseFolder = "/Release"
 $toolsReleaseFileName = "/Tools.zip"
 $cleanupPaths = ("$buildPath", "$toolsPath", "$publishDirectory", "$chocoToolsPath")
 
-# Set Working Directory
-Split-Path $MyInvocation.MyCommand.Path | Push-Location
-[Environment]::CurrentDirectory = $PWD
-Write-Host "New Current Directory: $(Get-Location)"
-
 # Clean output directories
 foreach ($cleanupPath in $cleanupPaths) {
     Get-ChildItem "$cleanupPath" -Include * -Recurse -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
@@ -69,7 +69,8 @@ dotnet publish "$launcherProjectPath" -c Release --self-contained false -o "$out
 dotnet publish "$launcherProjectPath" -c Release -r win-x86 --self-contained false -o "$outputPath32"
 
 # Build Loader
-dotnet publish "$loaderProjectPath" -c Release -r win-any --self-contained false -o "$loaderOutputPath"
+dotnet publish "$loaderProjectPath" -c Release -r win-x64 --self-contained false -o "$loader64OutputPath" /p:PublishReadyToRun=true
+dotnet publish "$loaderProjectPath" -c Release -r win-x86 --self-contained false -o "$loader32OutputPath" /p:PublishReadyToRun=true
 
 # Build Tools
 dotnet publish "$nugetConverterProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
@@ -119,7 +120,8 @@ Add-Type -A System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::CreateFromDirectory("$toolsPath", "$publishDirectory" + "$toolsReleaseFileName")
 
 # Publish Mod
-[IO.Compression.ZipFile]::CreateFromDirectory("$outputPath", "$publishDirectory/$releaseFolder")
+Get-ChildItem -Path "$outputPath" -Recurse -Force -ErrorAction SilentlyContinue
+New-Item "$publishDirectory/$releaseFolder" -ItemType Directory -ErrorAction SilentlyContinue
 ./Publish.Reloaded.Release.ps1 -Version "$Version" -CurrentVersionPath "$outputPath" -ReleasePath "$publishDirectory/$releaseFolder"
 
 Remove-Item "$chocoToolsPath" -Recurse -ErrorAction SilentlyContinue

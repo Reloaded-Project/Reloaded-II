@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
+using Reloaded.Mod.Loader.IO.Config.Contexts;
 
 namespace Reloaded.Mod.Loader.IO.Config;
 
@@ -190,6 +183,15 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
         // Resolves any internal "..\" to get the true full path.
         return Path.GetFullPath(finalPath);
     }
+
+    // Reflection-less JSON
+    public static JsonTypeInfo<ApplicationConfig> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = false;
+        return ApplicationConfigContext.Default.ApplicationConfig;
+    }
+    
+    public JsonTypeInfo<ApplicationConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 
     /*
         ---------

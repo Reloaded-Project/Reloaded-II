@@ -1,10 +1,3 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text.Json.Serialization;
-using Reloaded.Mod.Loader.IO.Config.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
 using static System.String;
 
 namespace Reloaded.Mod.Loader.IO.Config;
@@ -14,6 +7,7 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
 {
     private const string DefaultApplicationConfigDirectory  = "Apps";
     private const string DefaultModConfigDirectory          = "Mods";
+    private const string DefaultMiscConfigDirectory         = "User/Misc";
     private const string DefaultModUserConfigDirectory      = "User/Mods";
     private const string DefaultPluginConfigDirectory       = "Plugins";
     private const string DefaultLanguageFile                = "en-GB.xaml";
@@ -58,25 +52,31 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     /// The directory which houses all Reloaded Application information (e.g. Games etc.)
     /// </summary>
     [JsonInclude]
-    public string ApplicationConfigDirectory { private get; set; } = Empty;
+    public string ApplicationConfigDirectory { internal get; set; } = Empty;
 
     /// <summary>
-    /// Contains the directory which houses all Reloaded mods.
+    /// Contains the directory which houses all Reloaded mod user configurations.
     /// </summary>
     [JsonInclude]
-    public string ModUserConfigDirectory { private get; set; } = Empty;
+    public string ModUserConfigDirectory { internal get; set; } = Empty;
+
+    /// <summary>
+    /// Contains the directory which houses all miscellaneous Reloaded configurations.
+    /// </summary>
+    [JsonInclude]
+    public string MiscConfigDirectory { internal get; set; } = Empty;
 
     /// <summary>
     /// Contains the directory which houses all Reloaded plugins.
     /// </summary>
     [JsonInclude]
-    public string PluginConfigDirectory { private get; set; } = Empty;
+    public string PluginConfigDirectory { internal get; set; } = Empty;
 
     /// <summary>
     /// Contains the directory which houses all Reloaded mods.
     /// </summary>
     [JsonInclude]
-    public string ModConfigDirectory { private get; set; } = Empty;
+    public string ModConfigDirectory { internal get; set; } = Empty;
 
     /// <summary>
     /// Contains a list of all plugins that are enabled, by config paths relative to plugin directory.
@@ -111,15 +111,14 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     public int LogFileDeleteHours { get; set; } = 336;
 
     /// <summary>
+    /// Amount after which leftover crash dumps are deleted.
+    /// </summary>
+    public int CrashDumpDeleteHours { get; set; } = 24;
+
+    /// <summary>
     /// A list of all available NuGet feeds from which mod packages might be obtained.
     /// </summary>
     public NugetFeed[] NuGetFeeds { get; set; } = DefaultFeeds;
-
-    /// <summary>
-    /// If true, mods are loaded in parallel whenever possible.
-    /// Else false.
-    /// </summary>
-    public bool LoadModsInParallel { get; set; } = true;
 
     /// <summary>
     /// Force early versions of mods to be downloaded.
@@ -154,7 +153,17 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
     [JsonIgnore]
     public bool UsePortableMode { get; set; }
 
-    private string? _launcherFolder;
+    /// <summary>
+    /// Skips launch warnings related to WINE.
+    /// </summary>
+    public bool SkipWineLaunchWarning { get; set; }
+    
+    /// <summary>
+    /// Disables DirectInput support, used for people with input device issues.
+    /// </summary>
+    public bool DisableDInput { get; set; }
+
+    private string _launcherFolder;
 
     /* Some mods are universal :wink: */
 
@@ -178,6 +187,8 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
 
     public string GetModConfigDirectory() => UsePortableMode ? GetDirectoryRelativeToLauncherFolder(DefaultModConfigDirectory) : ModConfigDirectory;
 
+    public string GetMiscConfigDirectory() => UsePortableMode ? GetDirectoryRelativeToLauncherFolder(DefaultMiscConfigDirectory) : MiscConfigDirectory;
+
     private void RerouteDefaultFeed()
     {
         foreach (var feed in NuGetFeeds)
@@ -200,9 +211,11 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
                 Directory.CreateDirectory(GetModConfigDirectory());
                 Directory.CreateDirectory(GetModUserConfigDirectory());
                 Directory.CreateDirectory(GetPluginConfigDirectory());
+                Directory.CreateDirectory(GetMiscConfigDirectory());
             }
 
             ApplicationConfigDirectory  = SetDefaultDirectory(ApplicationConfigDirectory, DefaultApplicationConfigDirectory);
+            MiscConfigDirectory         = SetDefaultDirectory(MiscConfigDirectory, DefaultMiscConfigDirectory);
             ModUserConfigDirectory      = SetDefaultDirectory(ModUserConfigDirectory, DefaultModUserConfigDirectory);
             ModConfigDirectory          = SetDefaultDirectory(ModConfigDirectory, DefaultModConfigDirectory);
             PluginConfigDirectory       = SetDefaultDirectory(PluginConfigDirectory, DefaultPluginConfigDirectory);
@@ -322,4 +335,13 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
             return Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         }
     }
+
+    // Reflection-less JSON
+    public static JsonTypeInfo<LoaderConfig> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = false;
+        return LoaderConfigContext.Default.LoaderConfig;
+    }
+    
+    public JsonTypeInfo<LoaderConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 }

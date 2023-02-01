@@ -1,8 +1,3 @@
-﻿using System.ComponentModel;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update.Interfaces;
-
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
 /// <inheritdoc />
@@ -20,7 +15,7 @@ public class GameBananaPackageProviderFactory : IPackageProviderFactory
         if (!this.TryGetConfiguration<GameBananaProviderConfig>(mod, out var gbConfig))
             return null;
 
-        return new GameBananaPackageProvider(gbConfig!.GameId);
+        return new IndexedGameBananaPackageProvider(gbConfig!.GameId);
     }
 
     /// <inheritdoc />
@@ -45,5 +40,20 @@ public class GameBananaPackageProviderFactory : IPackageProviderFactory
         [Description("Id of the game on GameBanana, this is the last number in the URL to the game page.\n" +
                      "e.g. 6061 if your game URL is https://gamebanana.com/games/6061.")]
         public int GameId { get; set; } = 0;
+
+        // Reflection-less JSON
+        /// <inheritdoc />
+        public static JsonTypeInfo<GameBananaProviderConfig> GetJsonTypeInfo(out bool supportsSerialize)
+        {
+            supportsSerialize = true;
+            return GameBananaProviderConfigContext.Default.GameBananaProviderConfig;
+        }
+        
+        /// <inheritdoc />
+        public JsonTypeInfo<GameBananaProviderConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
 }
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(GameBananaPackageProviderFactory.GameBananaProviderConfig))]
+internal partial class GameBananaProviderConfigContext : JsonSerializerContext { }

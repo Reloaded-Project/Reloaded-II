@@ -1,8 +1,3 @@
-﻿using System;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Interfaces.Internal;
-using TestInterfaces;
-
 namespace TestModA
 {
     public class Program : IModV2, ITestHelper, ITestModA, IExports

@@ -1,10 +1,3 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using HandyControl.Controls;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
-
 namespace Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages;
 
 /// <summary>

@@ -292,6 +292,25 @@
         />
     </Storyboard>
 
+    <!-- AccentColorLightest <==> AccentColorLighterBrush -->
+    <Storyboard x:Key="ForegroundFadeAccentLightestToAccentLighter"
+                Storyboard.TargetProperty="Foreground.Color">
+        <ColorAnimation
+            From="{StaticResource AccentColorLightest}"
+            To="{StaticResource AccentColorLighter}"
+            Duration="{StaticResource ColorTransitionDuration}"
+        />
+    </Storyboard>
+
+    <Storyboard x:Key="ForegroundFadeAccentLighterToAccentLightest"
+                Storyboard.TargetProperty="Foreground.Color">
+        <ColorAnimation
+            From="{StaticResource AccentColorLighter}"
+            To="{StaticResource AccentColorLightest}"
+            Duration="{StaticResource ColorTransitionDuration}"
+        />
+    </Storyboard>
+
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Animations xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Default Styles xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
 
@@ -300,6 +319,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource FontLight}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSizeRegular}" />
         <Setter Property="Foreground" Value="{StaticResource TextColorBrush}"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
     </Style>
 
     <!-- Text Blocks -->
@@ -697,7 +717,6 @@
         <Setter Property="Foreground" Value="{StaticResource BorderColorBrush}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeRegular}"/>
         <Setter Property="properties:ShowComboboxArrow.Value" Value="True" />
 
@@ -719,7 +738,7 @@
                                           IsHitTestVisible="False"
                                           HorizontalAlignment="Center" 
                                           VerticalAlignment="Center"
-                                          Focusable="True"
+                                          Focusable="False"
                                           Content="{TemplateBinding SelectionBoxItem}" 
                                           ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                           ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
@@ -870,6 +889,7 @@
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
                     <Setter Property="Background" Value="{StaticResource BackgroundColorBrush}"/>
                     <Setter Property="Padding" Value="{DynamicResource DataGridCellPadding}"/>
+                    <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
 
                     <Setter Property="Template">
                         <Setter.Value>
@@ -989,6 +1009,7 @@
             <Setter.Value>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Padding" Value="{DynamicResource ListViewItemPadding}"/>
+                    <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
 
                     <Setter Property="Template">
                         <Setter.Value>
@@ -1066,6 +1087,7 @@
             <Setter.Value>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Padding" Value="{DynamicResource ListViewItemPadding}"/>
+                    <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
 
                     <Setter Property="Template">
                         <Setter.Value>
@@ -1439,6 +1461,22 @@
         </Setter>
     </Style>
 
+    <!-- Hyperlink Style: Redefined -->
+    <Style x:Key="DefaultHyperlink" TargetType="{x:Type Hyperlink}">
+        <Setter Property="Foreground" Value="{StaticResource AccentColorLightestBrush}"/>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource ForegroundFadeAccentLightestToAccentLighter}"/>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource ForegroundFadeAccentLighterToAccentLightest}"/>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Default Styles xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Style Bindings xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
 
@@ -1464,6 +1502,7 @@
     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource DefaultMenuItemStyle}"/>
     <Style TargetType="{x:Type ContextMenu}" BasedOn="{StaticResource DefaultContextMenu}"/>
     <Style TargetType="{x:Type StatusBar}" BasedOn="{StaticResource DefaultStatusbar}"/>
+    <Style TargetType="{x:Type Hyperlink}" BasedOn="{StaticResource DefaultHyperlink}"/>
 
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Style Bindings xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Custom/Optional Styles xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->

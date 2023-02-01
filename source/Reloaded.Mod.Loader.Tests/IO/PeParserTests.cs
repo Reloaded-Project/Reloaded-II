@@ -1,8 +1,3 @@
-﻿using System;
-using System.Linq;
-using Reloaded.Mod.Loader.IO.Utility.Parsers;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.IO;
 
 public class PeParserTests

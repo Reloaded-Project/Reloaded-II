@@ -1,17 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Lib.Commands.Mod;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Application;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 
 /// <summary>
@@ -20,9 +6,34 @@ namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 public class ConfigureModsViewModel : ObservableObject, IDisposable
 {
     /// <summary>
+    /// Special tag that includes all items.
+    /// </summary>
+    public const string IncludeAllTag = "! ALL TAGS !";
+
+    /// <summary>
+    /// Special tag that includes items that don't have custom code.
+    /// </summary>
+    public const string CodeInjectionTag = "Code Injection";
+
+    /// <summary>
+    /// Special tag that includes items that have custom code.
+    /// </summary>
+    public const string NoCodeInjectionTag = "No Code Injection";
+
+    /// <summary>
+    /// Special tag that includes items that use native code.
+    /// </summary>
+    public const string NativeModTag = "Native Mod";
+
+    /// <summary>
+    /// Special tag that excludes universal mods.
+    /// </summary>
+    public const string NoUniversalModsTag = "No Universal Mods";
+
+    /// <summary>
     /// All mods available for the game.
     /// </summary>
-    public ObservableCollection<ModEntry> AllMods { get; set; } = null!;
+    public ObservableCollection<ModEntry>? AllMods { get; set; } = null!;
 
     /// <summary>
     /// The currently highlighted mod.
@@ -34,11 +45,22 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// </summary>
     public PathTuple<ApplicationConfig> ApplicationTuple { get; set; }
 
+    /// <summary>
+    /// List of all selectable tags to filter by.
+    /// </summary>
+    public ObservableCollection<string> AllTags { get; set; } = new ObservableCollection<string>();
+
+    /// <summary/>
+    public string SelectedTag { get; set; } = string.Empty;
+
     /// <summary/>
     public OpenModFolderCommand OpenModFolderCommand { get; set; } = null!;
 
     /// <summary/>
     public ConfigureModCommand ConfigureModCommand { get; set; } = null!;
+
+    /// <summary/>
+    public VisitModProjectUrlCommand VisitModProjectUrlCommand { get; set; } = null!;
 
     /// <summary/>
     public EditModCommand EditModCommand { get; set; } = null!;
@@ -52,8 +74,10 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// <summary/>
     public OpenUserConfigFolderCommand OpenUserConfigFolderCommand { get; set; } = null!;
 
+    private ModEntry? _cachedModEntry;
     private ApplicationViewModel _applicationViewModel;
     private readonly ModUserConfigService _userConfigService;
+    private CancellationTokenSource _saveToken;
 
     /// <inheritdoc />
     public ConfigureModsViewModel(ApplicationViewModel model, ModUserConfigService userConfigService)
@@ -61,6 +85,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         ApplicationTuple = model.ApplicationTuple;
         _applicationViewModel = model;
         _userConfigService = userConfigService;
+        _saveToken = new CancellationTokenSource();
 
         // Wait for parent to fully initialize.
         _applicationViewModel.OnGetModsForThisApp += BuildModList;
@@ -68,7 +93,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
         BuildModList();
 
         SelectedMod = AllMods.FirstOrDefault();
-        this.PropertyChanged += OnSelectedModChanged;
+        PropertyChanged += OnSelectedModChanged;
         UpdateCommands();
     }
 
@@ -80,6 +105,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     {
         _applicationViewModel.OnLoadModSet -= BuildModList;
         _applicationViewModel.OnGetModsForThisApp -= BuildModList;
+        _saveToken?.Dispose();
         GC.SuppressFinalize(this);
     }
 
@@ -88,18 +114,27 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// </summary>
     private void BuildModList()
     {
-        AllMods = new ObservableCollection<ModEntry>(GetInitialModSet(_applicationViewModel, ApplicationTuple));
-        AllMods.CollectionChanged += async (_, _) => await SaveApplication(); // Save on reorder.
+        if (AllMods != null)
+            AllMods.CollectionChanged -= OnReorderMods;
+        
+        var modsForThisApp = _applicationViewModel.ModsForThisApp.ToArray();
+        AllMods = new ObservableCollection<ModEntry>(GetInitialModSet(modsForThisApp, ApplicationTuple));
+        AllMods.CollectionChanged += OnReorderMods;
+        
+        Collections.ModifyObservableCollection(AllTags, GetTags(modsForThisApp).OrderBy(x => x));
+        if (string.IsNullOrEmpty(SelectedTag))
+            SelectedTag = AllTags[0];
     }
+
+    private async void OnReorderMods(object? sender, NotifyCollectionChangedEventArgs e) => await SaveApplication();
 
     /// <summary>
     /// Builds the initial set of mods to display in the list.
     /// </summary>
-    private List<ModEntry> GetInitialModSet(ApplicationViewModel model, PathTuple<ApplicationConfig> applicationTuple)
+    private List<ModEntry> GetInitialModSet(PathTuple<ModConfig>[] modsForThisApp, PathTuple<ApplicationConfig> applicationTuple)
     {
         // Note: Must put items in top to bottom load order.
         var enabledModIds   = applicationTuple.Config.EnabledMods;
-        var modsForThisApp  = model.ModsForThisApp.ToArray();
 
         // Get dictionary of mods for this app by Mod ID
         var modDictionary  = new Dictionary<string, PathTuple<ModConfig>>();
@@ -116,9 +151,38 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
         // Add disabled mods.
         var enabledModIdSet = applicationTuple.Config.EnabledMods.ToHashSet();
-        var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId));
+        var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
         totalModList.AddRange(disabledMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
         return totalModList;
+    }
+
+    /// <summary>
+    /// Builds the initial set of mods to display in the list.
+    /// </summary>
+    private HashSet<string> GetTags(PathTuple<ModConfig>[] modsForThisApp)
+    {
+        // Note: Must put items in top to bottom load order.
+        var tags = new HashSet<string>();
+        tags.Add(IncludeAllTag);
+
+        foreach (var mod in modsForThisApp)
+        {
+            foreach (var tag in mod.Config.Tags)
+                tags.Add(tag);
+
+            // Auto-tags
+            if (mod.Config.HasDllPath())
+                tags.Add(CodeInjectionTag);
+            else
+                tags.Add(NoCodeInjectionTag);
+
+            if (mod.Config.IsUniversalMod)
+                tags.Add(NoUniversalModsTag);
+
+            if (mod.Config.IsNativeMod(""))
+                tags.Add(NativeModTag);
+        }
+        return tags;
     }
 
     private ModEntry MakeSaveSubscribedModEntry(bool? isEnabled, PathTuple<ModConfig> item)
@@ -138,10 +202,18 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
     private async Task SaveApplication()
     {
-        ApplicationTuple.Config.EnabledMods = AllMods.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
-        await ApplicationTuple.SaveAsync();
+        _saveToken.Cancel();
+        _saveToken = new CancellationTokenSource();
+
+        try
+        {
+            ApplicationTuple.Config.EnabledMods = AllMods!.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
+            await ApplicationTuple.SaveAsync(_saveToken.Token);
+        }
+        catch (TaskCanceledException) { /* Ignored */ }
     }
 
+    [SuppressPropertyChangedWarnings]
     private void OnSelectedModChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SelectedMod))
@@ -150,16 +222,21 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
     private void UpdateCommands()
     {
-        if (SelectedMod == null) 
+        // Some operations like swapping order of 2 lists might fire a 
+        // event with SelectedMod == null, then select our mod again.
+        // Setting up some commands (particularly ConfigureMod) can cause lag, so let's mitigate this.
+        if (SelectedMod == null || SelectedMod == _cachedModEntry) 
             return;
 
         OpenModFolderCommand = new OpenModFolderCommand(SelectedMod.Tuple);
         EditModCommand = new EditModCommand(SelectedMod.Tuple, null);
         PublishModCommand = new PublishModCommand(SelectedMod.Tuple);
+        VisitModProjectUrlCommand = new VisitModProjectUrlCommand(SelectedMod.Tuple);
 
         var userConfig = _userConfigService.ItemsById.GetValueOrDefault(SelectedMod.Tuple.Config.ModId);
         EditModUserConfigCommand = new EditModUserConfigCommand(userConfig);
         OpenUserConfigFolderCommand = new OpenUserConfigFolderCommand(userConfig);
-        ConfigureModCommand = new ConfigureModCommand(SelectedMod.Tuple, userConfig);
+        ConfigureModCommand = new ConfigureModCommand(SelectedMod.Tuple, userConfig, ApplicationTuple);
+        _cachedModEntry = SelectedMod;
     }
 }

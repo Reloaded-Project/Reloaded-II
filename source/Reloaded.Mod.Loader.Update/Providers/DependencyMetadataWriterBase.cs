@@ -1,11 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using Reloaded.Mod.Interfaces.Utilities;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Packaging.Structures;
-
 namespace Reloaded.Mod.Loader.Update.Providers;
 
 /// <summary>
@@ -81,6 +73,17 @@ public class DependencyResolverMetadata<TConfig> : IConfig<DependencyResolverMet
     /// Maps a list of individual ids to configurations.
     /// </summary>
     public Dictionary<string, DependencyResolverItem<TConfig>> IdToConfigMap { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+
+    // Reflection-less JSON
+    /// <inheritdoc />
+    public static JsonTypeInfo<DependencyResolverMetadata<TConfig>> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = false;
+        return null!;
+    }
+    
+    /// <inheritdoc />
+    public JsonTypeInfo<DependencyResolverMetadata<TConfig>> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 }
 
 /// <summary/>

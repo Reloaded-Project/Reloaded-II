@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Threading;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
 using static Reloaded.Mod.Loader.IO.Utility.FileSystemWatcherFactory;
 
 namespace Reloaded.Mod.Loader.IO.Services;
 
-public abstract class ConfigServiceBase<TConfigType> where TConfigType : IConfig<TConfigType>, new()
+public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TConfigType : IConfig<TConfigType>, new()
 {
     /// <summary>
     /// Current up to date list of all items.

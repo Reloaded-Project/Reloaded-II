@@ -1,8 +1,3 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Update.Packaging.Converters.NuGet;
-
 namespace NuGetConverter;
 
 class Program

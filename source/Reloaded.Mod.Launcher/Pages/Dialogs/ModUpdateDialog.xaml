@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
         xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+        xmlns:attachedProperties="clr-namespace:Reloaded.WPF.Theme.Default.AttachedProperties;assembly=Reloaded.WPF.Theme.Default"
+        xmlns:wpf="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
+        xmlns:misc="clr-namespace:Reloaded.Mod.Launcher.Misc"
         mc:Ignorable="d"
         MinHeight="10"
         MinWidth="10"
@@ -12,19 +15,25 @@
         Height="450" 
         Width="800"
         WindowStartupLocation="CenterScreen"
+        Hyperlink.RequestNavigate="RequestNavigate"
         Title="{DynamicResource UpdateModTitle}"
-        Style="{DynamicResource ReloadedWindow}">
+        Style="{DynamicResource ReloadedWindow}"
+    xmlns:langs="clr-namespace:HandyControl.Properties.Langs;assembly=HandyControl"
+    xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl">
     <Grid Margin="{DynamicResource PageMarginSmall}" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Window}}}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid Margin="{DynamicResource PanelMargin}"
                   Grid.Row="0">
             <DataGrid 
+                    x:Name="ModListGrid"
                     ItemsSource="{Binding UpdateInfo, UpdateSourceTrigger=PropertyChanged}"
+                    SelectedItem="{Binding SelectedUpdate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     VerticalContentAlignment="Top"
             
                     CanUserResizeColumns="False"
@@ -33,12 +42,18 @@
                     CanUserDeleteRows="False"
                     CanUserSortColumns="False"
                     CanUserReorderColumns="False"
+                    attachedProperties:FixDataGridAutoGeneratingColumnStyle.Value="True"
+                    misc:FixDataGridColumnWidths.Value="true"
+                    Width="700"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
 
                     IsReadOnly="True"
                     AutoGenerateColumns="False">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="{DynamicResource UpdateModModId}" Binding="{Binding ModId}" Width="Auto" IsReadOnly="True" />
+                    <DataGridCheckBoxColumn Header="{DynamicResource UpdateModModEnabled}" Binding="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="Auto" />
+                    <DataGridTextColumn Header="{DynamicResource UpdateModModName}" Binding="{Binding ModName,NotifyOnTargetUpdated=True}" Width="*" IsReadOnly="True" />
                     <DataGridTextColumn Header="{DynamicResource UpdateModOldVersion}" Binding="{Binding OldVersion}" Width="Auto" IsReadOnly="True" />
                     <DataGridTextColumn Header="{DynamicResource UpdateModNewVersion}" Binding="{Binding NewVersion}" Width="Auto" IsReadOnly="True" />
                     <DataGridTextColumn Header="{DynamicResource UpdateModSize}" Binding="{Binding UpdateSizeMB, Converter={x:Static converters:FloatToThreeDecimalPlaces.Instance}}" Width="Auto" IsReadOnly="True" />
@@ -46,6 +61,20 @@
             </DataGrid>
         </Grid>
 
+        <!-- Changelog -->
+        <wpf:MarkdownViewer Style="{DynamicResource MarkdownViewerStyle1}" Grid.Row="2"
+                            MaxWidth="{Binding ActualWidth, ElementName=ModListGrid}"
+                            Visibility="{Binding SelectedUpdate.Changelog, Converter={x:Static converters:StringToVisibilityConverter.Instance}}"
+                            Markdown="{Binding SelectedUpdate.Changelog}">
+            <wpf:MarkdownViewer.Resources>
+                <Style TargetType="{x:Type FlowDocumentScrollViewer}" BasedOn="{StaticResource FlowDocumentScrollViewerWithoutToolbar}"/>
+            </wpf:MarkdownViewer.Resources>
+            <wpf:MarkdownViewer.CommandBindings>
+                <CommandBinding Command="{x:Static wpf:Commands.Hyperlink}" Executed="OpenHyperlink" />
+            </wpf:MarkdownViewer.CommandBindings>
+        </wpf:MarkdownViewer>
+
+        <!-- Bottom Bar -->
         <Grid Margin="{DynamicResource PanelMargin}" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"   />
@@ -60,6 +89,7 @@
 
             <Button Grid.Column="2" Content="{DynamicResource UpdateModDownload}" 
                     x:Name="Button"
+                    IsEnabled="{Binding CanDownload}"
                     Click="Button_Click"/>
         </Grid>
     </Grid>

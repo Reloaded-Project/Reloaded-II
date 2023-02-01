@@ -1,11 +1,3 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana;
-
 namespace Reloaded.Mod.Loader.Update;
 
 /// <summary>
@@ -26,8 +18,9 @@ public static class PackageProviderFactory
     /// Returns the first appropriate provider that can handle fetching packages for a game.
     /// </summary>
     /// <param name="application">The application in question.</param>
+    /// <param name="nugetRepositories">[Optional] NuGet repositories to use.</param>
     /// <returns>A resolver that can handle the mod, else null.</returns>
-    public static AggregatePackageProvider? GetProvider(PathTuple<ApplicationConfig> application)
+    public static AggregatePackageProvider? GetProvider(PathTuple<ApplicationConfig> application, IEnumerable<INugetRepository>? nugetRepositories = null)
     {
         // Create resolvers.
         var providers = new List<IDownloadablePackageProvider>();
@@ -38,7 +31,41 @@ public static class PackageProviderFactory
                 providers.Add(provider);
         }
 
+        // Add NuGets.
+        if (nugetRepositories != null)
+            foreach (var nugetRepo in nugetRepositories)
+                providers.Add(new IndexedNuGetPackageProvider(nugetRepo, application.Config.AppId));
+
         return providers.Count > 0 ? new AggregatePackageProvider(providers.ToArray(), application.Config.AppName) : null;
+    }
+
+    /// <summary>
+    /// Gets all possible providers for downloadable packages.
+    /// </summary>
+    /// <param name="applications">Applications for which to get provider for.</param>
+    /// <param name="repositories">Repositories which to include.</param>
+    /// <returns>List of providers of downloadable packages.</returns>
+    public static List<IDownloadablePackageProvider> GetAllProviders(IEnumerable<PathTuple<ApplicationConfig>> applications, IEnumerable<INugetRepository>? repositories = null)
+    {
+        var providers = new List<IDownloadablePackageProvider>();
+        
+        // Get package provider for individual games.
+        var repos = new List<INugetRepository>();
+        if (repositories != null)
+            repos.AddRange(repositories);
+        
+        foreach (var appConfig in applications)
+        {
+            var provider = GetProvider(appConfig, repos);
+            if (provider != null)
+                providers.Add(provider);
+        }
+
+        // Get package provider for all packages.
+        foreach (var nugetSource in repos)
+            providers.Add(new IndexedNuGetPackageProvider(nugetSource));
+
+        return providers;
     }
 
     /// <summary>

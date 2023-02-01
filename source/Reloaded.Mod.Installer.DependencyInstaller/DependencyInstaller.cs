@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using CliWrap;
-using NetCoreInstallChecker;
-using NetCoreInstallChecker.Structs.Config;
-using NetCoreInstallChecker.Structs.Config.Enum;
-using RedistributableChecker;
+using System.Diagnostics;
 
 namespace Reloaded.Mod.Installer.DependencyInstaller;
 
@@ -160,7 +148,7 @@ public static class DependencyInstaller
             while (installQueue.TryDequeue(out UrlCommandlinePair runtimeInstallPath))
             {
                 var installProgress = installSlicer.Slice(1.0 / queueElements);
-                await Cli.Wrap(runtimeInstallPath.Url).WithArguments(runtimeInstallPath.Parameters).ExecuteAsync(token);
+                ExecuteAsAdmin(runtimeInstallPath.Url, runtimeInstallPath.Parameters);
                 installProgress.Report(1);
             }
 
@@ -172,6 +160,33 @@ public static class DependencyInstaller
         }
 
         progress.Report(1);
+    }
+
+    private static void ExecuteAsAdmin(string filePath, IEnumerable<string> arguments)
+    {
+        Process proc = new Process();
+        filePath = Path.GetFullPath(filePath);
+        proc.StartInfo.FileName = filePath;
+        proc.StartInfo.SetArguments(arguments);
+        proc.StartInfo.UseShellExecute = true;
+        proc.StartInfo.Verb = "runas";
+        proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(filePath)!;
+        proc.Start();
+        proc.WaitForExit();
+    }
+
+    private static void SetArguments(this ProcessStartInfo processStartInfo, IEnumerable<string> args)
+    {
+        processStartInfo.Arguments = String.Join(" ", args.Select(arg => 
+        {
+            if (arg.Contains('"')) 
+                arg = arg.Replace("\"", "\"\"");
+
+            if (arg.Contains(' ')) 
+                arg = '"' + arg + '"';
+
+            return arg;
+        }));
     }
 }
 

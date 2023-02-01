@@ -1,6 +1,3 @@
-﻿using System;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
-
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 
 /// <summary>

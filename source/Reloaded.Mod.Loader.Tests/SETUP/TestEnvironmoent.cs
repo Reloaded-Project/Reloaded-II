@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-using Environment = Reloaded.Mod.Shared.Environment;
+using System.Diagnostics;
+using Paths = Reloaded.Mod.Loader.IO.Paths;
 
 namespace Reloaded.Mod.Loader.Tests.SETUP;
 
@@ -101,7 +92,7 @@ public class TestEnvironmoent : IDisposable
 
             ThisApplication = new ApplicationConfig(IdOfThisApp,
                 "Reloaded Mod Loader Tests",
-                Environment.CurrentProcessLocation.Value,
+                Path.GetFullPath(Process.GetCurrentProcess().MainModule!.FileName!),
                 new[] { TestModConfigA.ModId, TestModConfigB.ModId, TestModConfigD.ModId });
 
             ConfigurationPathOfThisApp = Path.Combine(TestConfig.GetApplicationConfigDirectory(), IdOfThisApp, ApplicationConfig.ConfigFileName);

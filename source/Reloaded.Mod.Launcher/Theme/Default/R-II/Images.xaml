@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Theme.Default.R_II" xmlns:system="clr-namespace:System;assembly=System.Runtime">
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
     <ImageSource x:Key="IconAddApp">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconAddApp.png</ImageSource>
     <system:String x:Key="VideoExtractMod">pack://siteoforigin:,,,/Theme/Default/R-II/Images/InstallMod.mp4</system:String>
@@ -20,5 +20,19 @@
     <ImageSource x:Key="ReloadedNoBrackets">pack://siteoforigin:,,,/Theme/Default/R-II/Images/ReloadedNoBrackets.png</ImageSource>
 
     <ImageSource x:Key="TutorialAddAppExample">pack://siteoforigin:,,,/Theme/Default/R-II/Images/TutorialAddAppExample.png</ImageSource>
+    <ImageSource x:Key="IconSourceGameBanana">pack://siteoforigin:,,,/Theme/Default/R-II/Images/IconGameBanana.png</ImageSource>
+
+    <!-- Download Menu XAML Graphics: Originally sourced from https://materialdesignicons.com under MIT License
+         Bind to `Geometry` instances.
+    -->
+    <Geometry x:Key="IconGeometryDownload">M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z</Geometry>
+    <Geometry x:Key="IconGeometryConfig">M22.7,19L13.6,9.9C14.5,7.6 14,4.9 12.1,3C10.1,1 7.1,0.6 4.7,1.7L9,6L6,9L1.6,4.7C0.4,7.1 0.9,10.1 2.9,12.1C4.8,14 7.5,14.5 9.8,13.6L18.9,22.7C19.3,23.1 19.9,23.1 20.3,22.7L22.6,20.4C23.1,20 23.1,19.3 22.7,19Z</Geometry>
+    <Geometry x:Key="IconGeometryView">M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z</Geometry>
+    <Geometry x:Key="IconGeometryLike">M23,10C23,8.89 22.1,8 21,8H14.68L15.64,3.43C15.66,3.33 15.67,3.22 15.67,3.11C15.67,2.7 15.5,2.32 15.23,2.05L14.17,1L7.59,7.58C7.22,7.95 7,8.45 7,9V19A2,2 0 0,0 9,21H18C18.83,21 19.54,20.5 19.84,19.78L22.86,12.73C22.95,12.5 23,12.26 23,12V10M1,21H5V9H1V21Z</Geometry>
+    <Geometry x:Key="IconGeometryAuthor">M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z</Geometry>
+    <Geometry x:Key="IconGeometryPrevious">M20,9V15H12V19.84L4.16,12L12,4.16V9H20Z</Geometry>
+    <Geometry x:Key="IconGeometryNext">M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z</Geometry>
+    <Geometry x:Key="IconGeometryTime">M12 20C16.4 20 20 16.4 20 12S16.4 4 12 4 4 7.6 4 12 7.6 20 12 20M12 2C17.5 2 22 6.5 22 12S17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2M12.5 7V13H7V11.5H11V7H12.5Z</Geometry>
+
 
 </ResourceDictionary>

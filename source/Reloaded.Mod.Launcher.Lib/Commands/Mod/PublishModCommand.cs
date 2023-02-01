@@ -1,12 +1,3 @@
-﻿using System.Windows.Input;
-using NuGet.Versioning;
-using Reloaded.Mod.Launcher.Lib.Commands.Templates;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Mod;
 
 /// <summary>
@@ -39,6 +30,8 @@ public class PublishModCommand : WithCanExecuteChanged, ICommand
         if (!PackageResolverFactory.HasAnyConfiguredResolver(_modTuple))
             Actions.DisplayMessagebox(Resources.PublishModWarningTitle.Get(), Resources.PublishModWarningDescription.Get());
 
+        // Save just in case it was modified by source UI.
+        _modTuple.Save();
         Actions.PublishModDialog(new PublishModDialogViewModel(_modTuple!));
     }
 }

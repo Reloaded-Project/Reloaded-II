@@ -1,27 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
-using Microsoft.Win32;
-using Reloaded.Mod.Launcher.Lib.Misc;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Lib.Utility.Interfaces;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Dependency;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
+using Application = System.Windows.Application;
+using Environment = System.Environment;
 
 namespace Reloaded.Mod.Launcher.Lib;
 
@@ -38,7 +16,8 @@ public static class Setup
     /// </summary>
     /// <param name="updateText">A function that updates the visible text onscreen.</param>
     /// <param name="minimumSplashDelay">Minimum amount of time to wait to complete the loading process.</param>
-    public static async Task SetupApplicationAsync(Action<string> updateText, int minimumSplashDelay)
+    /// <param name="backgroundTasks">Contains all background tasks.</param>
+    public static async Task SetupApplicationAsync(Action<string> updateText, int minimumSplashDelay, List<Task> backgroundTasks)
     {
         if (!_loadExecuted)
         {
@@ -51,23 +30,21 @@ public static class Setup
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             var setupServicesTask = Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Send, SetupServices);
             RegisterReloadedProtocol();
+            RegisterR2PackProtocol();
+            RegisterR2Pack();
 
             updateText(Resources.SplashCreatingDefaultConfig.Get());
-#pragma warning disable 4014
-            UpdateDefaultConfig(); // Fire and forget.
-#pragma warning restore 4014
+            backgroundTasks.Add(UpdateDefaultConfig()); // Fire and forget.
             CheckForMissingDependencies();
                 
             updateText(Resources.SplashPreparingResources.Get());
-#pragma warning disable CS4014
-            Task.Run(CheckForUpdatesAsync);  // Fire and forget, we don't want to delay startup time.
-#pragma warning restore CS4014
+            backgroundTasks.Add(Task.Run(CheckForUpdatesAsync)); // Fire and forget, we don't want to delay startup time.
             await setupServicesTask; // required for viewmodels & sanity tests.
             SetupViewModels();
 
             updateText(Resources.SplashRunningSanityChecks.Get());
-            DoSanityTests();
-            var _ = Task.Run(CompressOldLogs);
+            backgroundTasks.Add(DoSanityTests());
+            backgroundTasks.Add(Task.Run(HandleLogsAndCrashdumps));
 
             // Wait until splash screen time.
             updateText($"{Resources.SplashLoadCompleteIn.Get()} {watch.ElapsedMilliseconds}ms");
@@ -82,12 +59,24 @@ public static class Setup
     /// <summary>
     /// Compresses old loader log files into a zip archive.
     /// </summary>
-    private static void CompressOldLogs()
+    private static void HandleLogsAndCrashdumps()
     {
-        using var logCompressor = new LogFileCompressor(Paths.ArchivedLogPath);
         var loaderConfig = IoC.Get<LoaderConfig>();
+
+        // Logs (delete & compress)
+        using var logCompressor = new LogFileCompressor(Paths.ArchivedLogPath);
         logCompressor.AddFiles(Paths.LogPath, TimeSpan.FromHours(loaderConfig.LogFileCompressTimeHours));
         logCompressor.DeleteOldFiles(TimeSpan.FromHours(loaderConfig.LogFileDeleteHours));
+
+        // Crashdumps (delete)
+        var dumpFolders = Directory.GetDirectories(Paths.CrashDumpPath);
+        var now = DateTime.UtcNow;
+        foreach (var folder in dumpFolders)
+        {
+            var timeElapsed = now - Directory.GetLastWriteTimeUtc(folder);
+            if (timeElapsed.TotalHours > loaderConfig.CrashDumpDeleteHours)
+                IOEx.TryDeleteDirectory(folder);
+        }
     }
 
     /// <summary>
@@ -155,51 +144,60 @@ public static class Setup
     /// <summary>
     /// Tests possible error cases.
     /// </summary>
-    private static void DoSanityTests()
+    private static Task DoSanityTests()
     {
         // Needs to be ran after SetupViewModelsAsync
         var apps = IoC.GetConstant<ApplicationConfigService>().Items;
         var mods = IoC.GetConstant<ModConfigService>().Items.ToArray();
-        var updatedBootstrappers = new List<string>();
 
+        // Enforce compatibility non-async, since this is unlikely to do anything.
         foreach (var app in apps)
-        {
-            // Incompatible Mods
             EnforceModCompatibility(app, mods);
 
-            // Bootstrapper Update
-            try
+        // Checking bootstrappers could add I/O overhead on cold boot, delegate to threadpool.
+        void UpdateBootstrappers()
+        {
+            var updatedBootstrappers = new List<string>();
+            foreach (var app in apps)
             {
-                var deployer = new AsiLoaderDeployer(app);
-                var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
-                if (!File.Exists(bootstrapperInstallPath))
-                    continue;
-
-                var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
                 try
                 {
-                    if (!updater.NeedsUpdate())
+                    var deployer = new AsiLoaderDeployer(app);
+                    var bootstrapperInstallPath = deployer.GetBootstrapperInstallPath(out _);
+                    if (!File.Exists(bootstrapperInstallPath)) 
                         continue;
+
+                    var updater = new BootstrapperUpdateChecker(bootstrapperInstallPath);
+                    try
+                    {
+                        if (!updater.NeedsUpdate()) 
+                            continue;
+                    }
+                    catch (Exception) { /* ignored */ }
+
+                    var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
+                    try
+                    {
+                        File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
+                        updatedBootstrappers.Add(app.Config.AppName);
+                    }
+                    catch (Exception) { /* ignored */ }
                 }
                 catch (Exception) { /* ignored */ }
-
-                var bootstrapperSourcePath = deployer.GetBootstrapperDllPath();
-                try
-                {
-                    File.Copy(bootstrapperSourcePath, bootstrapperInstallPath, true);
-                    updatedBootstrappers.Add(app.Config.AppName);
-                }
-                catch (Exception) { /* ignored */  }
             }
-            catch (Exception) { /* ignored */ }
+
+            if (updatedBootstrappers.Count <= 0) 
+                return;
+
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+            {
+                var title = Resources.BootstrapperUpdateTitle.Get();
+                var description = string.Format(Resources.BootstrapperUpdateDescription.Get(), String.Join('\n', updatedBootstrappers));
+                Actions.DisplayMessagebox.Invoke(title, description);
+            });
         }
 
-        if (updatedBootstrappers.Count <= 0)
-            return;
-
-        var title = Resources.BootstrapperUpdateTitle.Get();
-        var description = string.Format(Resources.BootstrapperUpdateDescription.Get(), String.Join('\n', updatedBootstrappers));
-        Actions.DisplayMessagebox.Invoke(title, description);
+        return Task.Run(UpdateBootstrappers);
     }
 
     private static void RegisterReloadedProtocol()
@@ -208,10 +206,32 @@ public static class Setup
         var classesSubKey = Registry.CurrentUser.OpenSubKey("Software", true)?.OpenSubKey("Classes", true);
 
         // Add a Reloaded Key.
-        RegistryKey reloadedProtocolKey = classesSubKey?.CreateSubKey($"{Constants.ReloadedProtocol}")!;
+        var reloadedProtocolKey = classesSubKey?.CreateSubKey($"{Constants.ReloadedProtocol}")!;
         reloadedProtocolKey?.SetValue("", $"URL:{Constants.ReloadedProtocol}");
         reloadedProtocolKey?.SetValue("URL Protocol", "");
         reloadedProtocolKey?.CreateSubKey(@"shell\open\command")?.SetValue("", $"\"{Path.ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe")}\" {Constants.ParameterDownload} %1");
+    }
+
+    private static void RegisterR2PackProtocol()
+    {
+        // Get the user classes subkey.
+        var classesSubKey = Registry.CurrentUser.OpenSubKey("Software", true)?.OpenSubKey("Classes", true);
+
+        // Add a Reloaded Key.
+        var reloadedProtocolKey = classesSubKey?.CreateSubKey($"{Constants.ReloadedPackProtocol}")!;
+        reloadedProtocolKey?.SetValue("", $"URL:{Constants.ReloadedPackProtocol}");
+        reloadedProtocolKey?.SetValue("URL Protocol", "");
+        reloadedProtocolKey?.CreateSubKey(@"shell\open\command")?.SetValue("", $"\"{Path.ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe")}\" {Constants.ParameterR2PackDownload} %1");
+    }
+
+    private static void RegisterR2Pack()
+    {
+        // Get the user classes subkey.
+        var classesKey = Registry.CurrentUser.OpenSubKey("Software", true)?.OpenSubKey("Classes", true);
+
+        // Add an R2 Key.
+        var reloadedPackKey = classesKey?.CreateSubKey(Loader.Update.Packs.Constants.Extension);
+        reloadedPackKey?.CreateSubKey(@"shell\open\command")?.SetValue("", $"\"{Path.ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe")}\" {Constants.ParameterR2Pack} \"%1\"");
     }
 
     private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e) => Errors.HandleException((Exception) e.ExceptionObject);
@@ -234,12 +254,12 @@ public static class Setup
         var config = IoC.Get<LoaderConfig>();
         var synchronizationContext = Actions.SynchronizationContext;
 
-        IoC.Kernel.Rebind<IProcessWatcher>().ToConstant(IProcessWatcher.Get());
-        IoC.Kernel.Rebind<ApplicationConfigService>().ToConstant(new ApplicationConfigService(config, synchronizationContext));
-
+        IoC.BindToConstant(IProcessWatcher.Get());
+        IoC.BindToConstant(new ApplicationConfigService(config, synchronizationContext));
+        
         var modConfigService = new ModConfigService(config, synchronizationContext);
-        IoC.Kernel.Rebind<ModConfigService>().ToConstant(modConfigService);
-        IoC.Kernel.Rebind<ModUserConfigService>().ToConstant(new ModUserConfigService(config, modConfigService, synchronizationContext));
+        IoC.BindToConstant(modConfigService);
+        IoC.BindToConstant(new ModUserConfigService(config, modConfigService, synchronizationContext));
     }
 
     /// <summary>
@@ -249,10 +269,11 @@ public static class Setup
     {
         var config = IoC.Get<LoaderConfig>();
         IoC.GetConstant<MainPageViewModel>();
+        IoC.BindToConstant<IModPackImageConverter>(new JxlImageConverter());
 
         try
         {
-            IoC.Kernel.Rebind<AggregateNugetRepository>().ToConstant(new AggregateNugetRepository(config.NuGetFeeds));
+            IoC.BindToConstant(new AggregateNugetRepository(config.NuGetFeeds));
         }
         catch (Exception)
         {

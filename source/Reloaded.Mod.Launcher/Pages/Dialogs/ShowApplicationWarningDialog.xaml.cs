@@ -1,7 +1,3 @@
-﻿using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
-
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
 /// <summary>
@@ -16,13 +12,10 @@ public partial class ShowApplicationWarningDialog : ReloadedWindow
         InitializeComponent();
         ViewModel = viewmodel;
     }
-
-    private void OK_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    
+    private void OK_Click(object sender, RoutedEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed)
-        {
-            DialogResult = true;
-            this.Close();
-        }
+        DialogResult = true;
+        this.Close();
     }
 }

@@ -1,19 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using Reloaded.Mod.Launcher.Interop;
-using Reloaded.Mod.Launcher.Lib.Interop;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs;
-using Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
-using Reloaded.Mod.Launcher.Pages.Dialogs;
-using Reloaded.Mod.Launcher.Utility;
-using Reloaded.Mod.Loader.Community.Config;
-using Reloaded.WPF.Theme.Default;
+using IconConverter = Reloaded.Mod.Launcher.Interop.IconConverter;
+using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher;
 
@@ -43,7 +29,11 @@ public static class LibraryBindings
             showFetchPackageDialog: ShowFetchPackageDialog,
             showSelectAddedGameDialog: ShowSelectAddedGameDialog,
             showAddAppMismatchDialog: ShowAddAppMismatchDialog,
-            showApplicationWarningDialog: ShowApplicationWarningDialog
+            showApplicationWarningDialog: ShowApplicationWarningDialog,
+            showRunAppViaWineDialog: ShowRunAppViaWineDialog,
+            showEditPackDialog: ShowEditPackDialog,
+            showInstallModPackDialog: ShowInstallModPackDialog,
+            initControllerSupport: ControllerSupport.Init
         );
     }
 
@@ -118,6 +108,10 @@ public static class LibraryBindings
     private static bool ShowFetchPackageDialog(DownloadPackageViewModel viewmodel) => ShowDialogAndGetResult(new DownloadPackageDialog(viewmodel));
     private static bool ShowAddAppMismatchDialog(AddAppHashMismatchDialogViewModel viewmodel) => ShowDialogAndGetResult(new AddAppHashMismatchDialog(viewmodel));
     private static bool ShowApplicationWarningDialog(AddApplicationWarningDialogViewModel viewmodel) => ShowDialogAndGetResult(new ShowApplicationWarningDialog(viewmodel));
+    private static bool ShowInstallModPackDialog(InstallModPackDialogViewModel viewmodel) => ShowDialogAndGetResult(new InstallModPackDialog(viewmodel));
+    private static bool ShowRunAppViaWineDialog() => ShowDialogAndGetResult(new RunAppViaWineDialog());
+
+    private static bool ShowEditPackDialog(EditModPackDialogViewModel viewmodel) => ShowDialogAndGetResult(new EditModPackDialog(viewmodel));
 
     private static IndexAppEntry? ShowSelectAddedGameDialog(SelectAddedGameDialogViewModel viewmodel)
     {

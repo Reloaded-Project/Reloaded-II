@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
+using System.Windows.Navigation;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
@@ -22,4 +20,10 @@ public partial class ModUpdateDialog : ReloadedWindow
         if (await ViewModel.Update())
             this.Close();
     }
+
+    private void OpenHyperlink(object sender, ExecutedRoutedEventArgs e) => ThemeHelpers.OpenHyperlink(sender, e);
+
+    // Don't navigate hyperlinks in our markdown, thanks!
+    // Not sure if this is needed on non Page items, but just in case.
+    private void RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) => e.Handled = true;
 }

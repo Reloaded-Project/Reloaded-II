@@ -1,11 +1,3 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
-using Bogus;
-using Reloaded.Mod.Loader.Community.Config;
-using Xunit;
-using Xunit.Abstractions;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Reloaded.Mod.Loader.Tests.Community;
@@ -32,7 +24,7 @@ public class FileSizeTest
         var hashes = GetHashFaker().Generate(numApplications);
         var ids = GetIdFaker().Generate(numApplications);
 
-        var index = new Index();
+        var index = new Mod.Loader.Community.Config.Index();
         for (int x = 0; x < applications.Count; x++)
         {
             index.IdToApps[ids[x]] = new List<IndexAppEntry>() { applications[x] };

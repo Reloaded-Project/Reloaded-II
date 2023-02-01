@@ -1,28 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using NuGet.Frameworks;
-using NuGet.Packaging;
-using NuGet.Packaging.Core;
-using NuGet.Versioning;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update.Packaging.Extra;
-using SevenZip;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Packaging;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Packaging.IO;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Packaging.Structures.ReleaseBuilder;
-using Sewer56.Update.Resolvers.GameBanana;
-using Sewer56.Update.Resolvers.NuGet;
 using PackageType = Sewer56.Update.Packaging.Enums.PackageType;
 
 namespace Reloaded.Mod.Loader.Update.Packaging;
@@ -92,6 +67,38 @@ public static class Publisher
                 {
                     packageBuilder.Title = args.ModTuple.Config.ModName;
 
+                    // Add readme
+                    if (!string.IsNullOrEmpty(args.ReadmePath))
+                    {
+                        const string readmeFilePath = "README.md";
+                        packageBuilder.Readme = readmeFilePath;
+                        packageBuilder.Files.Add(new PhysicalPackageFile()
+                        {
+                            SourcePath = args.ReadmePath,
+                            TargetPath = readmeFilePath
+                        });
+                    }
+
+                    // Add icon
+                    if (args.ModTuple.Config.TryGetIconPath(args.ModTuple.Path, out var iconToPack))
+                    {
+                        const string iconFilePath = "icon.png";
+                        packageBuilder.Icon = iconFilePath;
+                        packageBuilder.Files.Add(new PhysicalPackageFile()
+                        {
+                            SourcePath = iconToPack,
+                            TargetPath = iconFilePath
+                        });
+                    }
+
+                    // Add changelog
+                    if (!string.IsNullOrEmpty(args.ChangelogPath))
+                        packageBuilder.ReleaseNotes = File.ReadAllText(args.ChangelogPath);
+
+                    // Add supported games to packages.
+                    foreach (var supportedGame in args.ModTuple.Config.SupportedAppId)
+                        packageBuilder.Tags.Add(supportedGame);
+
                     var mods = args.ModTuple.Config.ModDependencies.Select(x => new PackageDependency(x, VersionRange.All));
                     packageBuilder.DependencyGroups.Add(new PackageDependencyGroup(NuGetFramework.AnyFramework, mods));
                 } 
@@ -108,6 +115,9 @@ public static class Publisher
 
         if (!string.IsNullOrEmpty(args.ChangelogPath))
             extraData.Changelog = await File.ReadAllTextAsync(args.ChangelogPath);
+
+        if (!string.IsNullOrEmpty(args.ReadmePath))
+            extraData.Readme = await File.ReadAllTextAsync(args.ReadmePath);
 
         var buildArgs = new BuildArgs()
         {
@@ -234,6 +244,11 @@ public static class Publisher
         /// Path to the changelog to use for this release.
         /// </summary>
         public string? ChangelogPath { get; set; } = null;
+
+        /// <summary>
+        /// Path to the readme to use for this release.
+        /// </summary>
+        public string? ReadmePath { get; set; } = null;
     }
 
     /// <summary>
@@ -257,6 +272,3 @@ public static class Publisher
         GameBanana,
     }
 }
-
-
-

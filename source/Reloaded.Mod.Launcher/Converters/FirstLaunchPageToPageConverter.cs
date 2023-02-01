@@ -1,11 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Windows.Data;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
-using Reloaded.WPF.Theme.Default;
+using Complete = Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages.Complete;
 
 namespace Reloaded.Mod.Launcher.Converters;
 
@@ -19,15 +12,15 @@ public class FirstLaunchPageToPageConverter : IValueConverter
         switch ((FirstLaunchPage)value)
         {
             case FirstLaunchPage.Complete:
-                return IoC.GetConstant<Complete>();
+                return Lib.IoC.Get<Complete>();
             case FirstLaunchPage.AddApplication:
-                return IoC.GetConstant<AddApplication>();
+                return Lib.IoC.Get<AddApplication>();
             case FirstLaunchPage.AddModExtract:
-                return IoC.GetConstant<AddModExtract>();
+                return Lib.IoC.Get<AddModExtract>();
             case FirstLaunchPage.ModEnablePage:
-                return IoC.GetConstant<ModEnablePage>();
+                return Lib.IoC.Get<ModEnablePage>();
             case FirstLaunchPage.ModConfigPage:
-                return IoC.GetConstant<ModConfigPage>();
+                return Lib.IoC.Get<ModConfigPage>();
             default:
                 Debugger.Break();
                 return null!;

@@ -1,5 +1,3 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
 namespace Reloaded.Mod.Loader.Exceptions;
 
 [ExcludeFromCodeCoverage]

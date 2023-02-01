@@ -1,7 +1,4 @@
-﻿using System.Windows.Controls;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.WPF.Theme.Default;
+using Button = System.Windows.Controls.Button;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
@@ -28,7 +25,11 @@ public partial class DownloadPackageDialog : ReloadedWindow
 
             Button.IsEnabled = false;
         }
+
+        Closed += OnClosed;
     }
+
+    private void OnClosed(object? sender, EventArgs e) => ViewModel.DownloadToken.Cancel();
 
     private async void Download_Click(object sender, System.Windows.RoutedEventArgs e)
     {

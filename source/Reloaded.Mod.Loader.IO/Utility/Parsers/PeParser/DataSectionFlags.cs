@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Reloaded.Mod.Loader.IO.Utility.Parsers.PeParser;
 
 [Flags]

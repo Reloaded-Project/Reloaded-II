@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using Ninject;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
+using Container = IoC.Container;
 
 namespace Reloaded.Mod.Launcher.Lib;
 
@@ -13,9 +8,11 @@ namespace Reloaded.Mod.Launcher.Lib;
 public static class IoC
 {
     /// <summary>
-    /// The standard NInject Kernel.
+    /// The standard IoC Container.
     /// </summary>
-    public static IKernel Kernel { get; } = new StandardKernel();
+    public static Container Container { get; } = Container.Create("Global IoC Container");
+
+    private static readonly Dictionary<Type, IToken> TypeToTokenMap = new Dictionary<Type, IToken>();
 
     /// <summary>
     /// Sets up the IoC container with any relevant bindings on first access of the class.
@@ -41,7 +38,7 @@ public static class IoC
             IConfig<LoaderConfig>.ToPath(config, Paths.LoaderConfigPath);
         }
 
-        Kernel.Bind<LoaderConfig>().ToConstant(config);
+        BindToConstant(config);
     }
 
     /// <summary>
@@ -49,8 +46,65 @@ public static class IoC
     /// </summary>
     public static T Get<T>()
     {
-        return Kernel.Get<T>();
+        if (!IsExplicitlyBound<T>())
+        {
+            // We need to do it this way because rebind might fail with existing binding.
+            BindToTransient<T>();
+            return Container.Resolve<T>();
+        }
+        
+        return Container.Resolve<T>();
     }
+
+    /// <summary>
+    /// Binds the given type to a transient value (new type is created each time).
+    /// </summary>
+    /// <typeparam name="T">The type of the value to bind.</typeparam>
+    public static IToken BindToTransient<T>()
+    {
+        var token = Container.Bind<T>().As(Lifetime.Transient).To();
+        TypeToTokenMap[typeof(T)] = token;
+        return token;
+    }
+
+    /// <summary>
+    /// Binds the given type to a constant value.
+    /// </summary>
+    /// <typeparam name="T">The type of the value to bind.</typeparam>
+    /// <param name="item">The item to set.</param>
+    public static IToken BindToConstant<T>(T item)
+    {
+        var token = Container.Bind<T>().As(Lifetime.ContainerSingleton).To(context => item);
+        TypeToTokenMap[typeof(T)] = token;
+        return token;
+    }
+
+    /// <summary>
+    /// Re-binds the given type to a constant value.
+    /// Use with singleton dialogs only. Remember to unbind.
+    /// </summary>
+    /// <typeparam name="T">The type of the value to bind.</typeparam>
+    /// <param name="item">The item to set.</param>
+    public static IToken RebindToConstant<T>(T item)
+    {
+        Unbind<T>();
+        return BindToConstant(item);
+    }
+
+    /// <summary>
+    /// Unbinds a specified type.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public static void Unbind<T>()
+    {
+        if (TypeToTokenMap.Remove(typeof(T), out var token))
+            token.Dispose();
+    }
+
+    /// <summary>
+    /// Unbinds a specified type.
+    /// </summary>
+    public static void Unbind<T>(T value) => Unbind<T>();
 
     /// <summary>
     /// Retrieves a constant service/class.
@@ -58,21 +112,16 @@ public static class IoC
     /// </summary>
     public static T GetConstant<T>()
     {
-        var value = Kernel.Get<T>();
+        // Ensure singleton is created.
+        if (!IsExplicitlyBound<T>())
+            Container.Bind<T>().As(Lifetime.ContainerSingleton).To();
 
-        if (! IsExplicitlyBound<T>())
-        {
-            Kernel.Bind<T>().ToConstant(value);
-        }
-
-        return value;
+        // Resolve our singleton (which will bind it)
+        return Container.Resolve<T>(); 
     }
 
     /// <summary>
     /// Returns true if a type has been bound by the user, else false.
     /// </summary>
-    public static bool IsExplicitlyBound<T>()
-    {
-        return !Kernel.GetBindings(typeof(T)).All(x => x.IsImplicit);
-    }
+    public static bool IsExplicitlyBound<T>() => Container.IsBound<T>();
 }

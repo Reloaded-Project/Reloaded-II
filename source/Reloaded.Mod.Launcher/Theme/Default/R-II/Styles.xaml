@@ -10,6 +10,7 @@
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Colours.xaml"/>
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Fonts.xaml"/>
                 <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Settings.xaml"/>
+                <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Default/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
@@ -23,6 +24,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource FontLight}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSizeRegular}" />
         <Setter Property="Foreground" Value="{StaticResource TextColorBrush}"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
     </Style>
 
     <!-- Dark Style Tooltips -->
@@ -48,11 +50,64 @@
         </Setter>
     </Style>
 
+    <!-- Simple ScrollViewer -->
+    <Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+        <Setter Property="Focusable" Value="False" />
+    </Style>
+
+    <Style x:Key="VerticalSeparator" TargetType="{x:Type Separator}" BasedOn="{StaticResource DefaultSeparatorStyle}">
+        <Setter Property="LayoutTransform">
+            <Setter.Value>
+                <RotateTransform Angle="90"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Default Styles xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxx Style Bindings xxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
 
     <!-- The following styles will be automatically applied to new controls. -->
 
     <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource DefaultToolTip}"/>
+    
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Transitions xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  -->
+    
+    <!-- Border <==> Accent Dark Color -->
+    <Storyboard x:Key="BackgroundFadeBorderToAccentDark"
+                Storyboard.TargetProperty="Background.Color">
+        <ColorAnimation
+            From="{StaticResource BorderColor}"
+            To="{StaticResource AccentColorDark}"
+            Duration="{StaticResource ColorTransitionDuration}"
+        />
+    </Storyboard>
 
+    <Storyboard x:Key="BackgroundFadeAccentDarkToBorder"
+                Storyboard.TargetProperty="Background.Color">
+        <ColorAnimation
+            From="{StaticResource AccentColorDark}"
+            To="{StaticResource BorderColor}"
+            Duration="{StaticResource ColorTransitionDuration}"
+        />
+    </Storyboard>
+    
+    <Storyboard x:Key="BackgroundFadeBorderToAccentDarker"
+                Storyboard.TargetProperty="Background.Color">
+        <ColorAnimation
+            From="{StaticResource BorderColor}"
+            To="{StaticResource AccentColorDarker}"
+            Duration="{StaticResource ColorTransitionDuration}"
+        />
+    </Storyboard>
+
+    <Storyboard x:Key="BackgroundFadeAccentDarkerToBorder"
+                Storyboard.TargetProperty="Background.Color">
+        <ColorAnimation
+            From="{StaticResource AccentColorDarker}"
+            To="{StaticResource BorderColor}"
+            Duration="{StaticResource ColorTransitionDuration}"
+        />
+    </Storyboard>
+
+    <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{DynamicResource TooltipBackgroundColor}" Opacity="0.9"/>
 </ResourceDictionary>

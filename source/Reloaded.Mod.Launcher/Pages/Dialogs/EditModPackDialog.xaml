@@ -1,0 +1,166 @@
+﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.EditModPackDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
+        xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+        xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF"
+        mc:Ignorable="d"
+        Height="720" 
+        Width="1000"
+        Title="{DynamicResource EditModPackTitle}"
+        Style="{DynamicResource ReloadedWindow}">
+    <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{DynamicResource PackEditorBarWidth}"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Left Side -->
+        <Grid Grid.Column="0" Background="{DynamicResource AccentColorBrushDark}">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Main Package Button -->
+            <Grid Grid.Row="0" Focusable="True" MouseDown="OnClickMainPackageDetails">
+                <Grid.Background>
+                    <SolidColorBrush Color="{Binding ., Source={StaticResource AccentColorDarker}, Mode=OneTime}" />
+                </Grid.Background>
+
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.ExitActions>
+                                    <BeginStoryboard Storyboard="{StaticResource BackgroundFadeAccentDarkerToBorder}"/>
+                                </MultiTrigger.ExitActions>
+                                <MultiTrigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource BackgroundFadeBorderToAccentDarker}"/>
+                                </MultiTrigger.EnterActions>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsFocused" Value="False" />
+                                    <Condition Property="IsMouseOver" Value="False" />
+                                </MultiTrigger.Conditions>
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <!-- Title -->
+                <StackPanel Orientation="Vertical">
+
+                    <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
+                                   Text="{Binding Pack.Name}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontStyle="Normal"
+                                   Margin="{DynamicResource CommonItemVerticalMarginSmallest}" />
+
+                    <TextBlock Style="{DynamicResource SidebarTextblock}" 
+                                   Text="{DynamicResource ModPackClickToEdit}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="NoWrap"
+                                   FontStyle="Normal"
+                                   Margin="{DynamicResource CommonItemVerticalMarginSmallest}" />
+
+                </StackPanel>
+            </Grid>
+
+            <!-- Mods -->
+            <ScrollViewer Grid.Row="1" Focusable="False">
+                <ItemsControl ItemsSource="{Binding Pack.Items}" Focusable="False">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid MouseDown="OnClickIndividualModPage"
+                                  ToolTip="{Binding Summary}" ToolTipService.InitialShowDelay="0">
+                                <Grid.Background>
+                                    <SolidColorBrush Color="{Binding ., Source={StaticResource AccentColorDark}, Mode=OneTime}" />
+                                </Grid.Background>
+
+                                <!-- Change Colour on Selection -->
+                                <Grid.Style>
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Style.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.ExitActions>
+                                                    <BeginStoryboard Storyboard="{StaticResource BackgroundFadeAccentDarkToBorder}"/>
+                                                </MultiTrigger.ExitActions>
+                                                <MultiTrigger.EnterActions>
+                                                    <BeginStoryboard Storyboard="{StaticResource BackgroundFadeBorderToAccentDark}"/>
+                                                </MultiTrigger.EnterActions>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsFocused" Value="False" />
+                                                    <Condition Property="IsMouseOver" Value="False" />
+                                                </MultiTrigger.Conditions>
+                                            </MultiTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+
+                                <!-- Put Mod Details Here -->
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Style="{DynamicResource SidebarHeaderTextBlock}" 
+                                                   Text="{Binding Name}" TextWrapping="WrapWithOverflow"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontStyle="Normal"
+                                                   Margin="{DynamicResource CommonItemVerticalMarginSmallest}" />
+
+                                </StackPanel>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- Add Mod / Remove Selected -->
+            <StackPanel Grid.Row="2" Orientation="Vertical">
+
+                <!-- Add Mod -->
+                <Button Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                        Style="{DynamicResource UnpaddedStretchedGridButton}"
+                        Content="{DynamicResource ModPackAddMod}" 
+                        ToolTip="{DynamicResource ModPackAddModTooltip}" ToolTipService.InitialShowDelay="0"
+                        PreviewMouseDown="AddMod"/>
+
+                <!-- Remove Mod -->
+                <Button Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                        Style="{DynamicResource UnpaddedStretchedGridButton}"
+                        Content="{DynamicResource ModPackRemoveMod}" 
+                        ToolTip="{DynamicResource ModPackRemoveModTooltip}" ToolTipService.InitialShowDelay="0"
+                        PreviewMouseDown="RemoveMod"/>
+
+                <!-- Load Pack -->
+                <Button Content="{DynamicResource ModPackLoadExisting}" 
+                        Style="{DynamicResource UnpaddedStretchedGridButton}"
+                        Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                        Click="LoadExistingPack" />
+
+                <!-- Save Pack -->
+                <Button Content="{DynamicResource ModPackSavePack}" 
+                        Style="{DynamicResource UnpaddedStretchedGridButton}"
+                        Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                        Click="SavePack" />
+
+                <!-- Preview Pack -->
+                <Button Content="{DynamicResource ModPackPreviewPack}" 
+                        Style="{DynamicResource UnpaddedStretchedGridButton}"
+                        Margin="{DynamicResource CommonItemCombinedMarginSmaller}" 
+                        Click="PreviewPack" />
+
+            </StackPanel>
+        </Grid>
+
+        <!-- Right Side -->
+        <controls:PageHost Grid.Column="1" x:Name="PageHost"  />
+        
+    </Grid>
+</default:ReloadedWindow>

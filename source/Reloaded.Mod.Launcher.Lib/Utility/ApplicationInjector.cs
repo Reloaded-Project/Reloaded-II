@@ -1,10 +1,3 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Server;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
@@ -39,29 +32,32 @@ public class ApplicationInjector
         if (handle == 0)
             throw new ArgumentException(Resources.ErrorDllInjectionFailed.Get());
 
-        // Wait until mod loader loads.
-        // If debugging, ignore timeout.
-        bool WhileCondition()
-        {
-            if (CheckRemoteDebuggerPresent(_process.Handle, out var isDebuggerPresent))
-                return isDebuggerPresent;
-
-            return false;
-        }
-        
         try
         {
+            // Wait until mod loader loads.
+            // If debugging, ignore timeout.
+            bool WhileCondition()
+            {
+                if (CheckRemoteDebuggerPresent(_process.Handle, out var isDebuggerPresent))
+                    return isDebuggerPresent;
+
+                return false;
+            }
+
             ActionWrappers.TryGetValueWhile(() =>
             {
-                // Exit if application crashes while loading Reloaded..
+                // Exit if application crashes while loading Reloaded.
                 if (_process.HasExited)
                     return 0;
 
-                var port = Client.GetPort(_process.Id);
-                if (port == 0)
-                    throw new Exception("Reloaded is still loading.");
+                if (!ReloadedMappedFile.Exists(_process.Id))
+                    throw new Exception("Reloaded isn't yet loaded.");
 
-                return port;
+                using var file = new ReloadedMappedFile(_process.Id);
+                if (!file.GetState().IsInitialized)
+                    throw new Exception("Reloaded is loaded but not fully initalized.");
+
+                return 0;
             }, WhileCondition, _modLoaderSetupTimeout, _modLoaderSetupSleepTime);
         }
         catch (Exception e)

@@ -1,0 +1,7 @@
+LIBRARY   Reloaded.Mod.Loader.Bootstrapper
+EXPORTS
+   SA2ModInfo=MainMemoryModInfo
+   SADXModInfo=MainMemoryModInfo
+   ManiaModInfo=MainMemoryModInfo
+   SonicRModInfo=MainMemoryModInfo
+   SKCModInfo=MainMemoryModInfo

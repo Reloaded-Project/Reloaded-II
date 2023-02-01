@@ -1,6 +1,3 @@
-﻿using System;
-using Reloaded.Mod.Loader.Community.Config;
-
 namespace Reloaded.Mod.Loader.Community;
 
 /// <summary>

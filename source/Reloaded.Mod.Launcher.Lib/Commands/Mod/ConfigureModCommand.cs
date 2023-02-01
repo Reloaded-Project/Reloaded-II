@@ -1,18 +1,3 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Loader;
-using System.Windows.Input;
-using McMaster.NETCore.Plugins;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Lib.Commands.Templates;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Mod;
 
 /// <summary>
@@ -23,12 +8,15 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
     private static Type[] _sharedTypes = { typeof(IConfiguratorV1) };
     private readonly PathTuple<ModConfig>? _modTuple;
     private readonly PathTuple<ModUserConfig>? _modUserConfigTuple;
+    private readonly PathTuple<ApplicationConfig> _applicationTuple;
+    private bool? _canExecute = null;
 
     /// <inheritdoc />
-    public ConfigureModCommand(PathTuple<ModConfig>? modTuple, PathTuple<ModUserConfig>? userConfig)
+    public ConfigureModCommand(PathTuple<ModConfig>? modTuple, PathTuple<ModUserConfig>? userConfig, PathTuple<ApplicationConfig> applicationTuple)
     {
         _modTuple = modTuple;
         _modUserConfigTuple = userConfig;
+        _applicationTuple = applicationTuple;
     }
 
     /* ICommand */
@@ -50,15 +38,18 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         if (_modTuple == null) 
             return false;
 
+        if (_canExecute.HasValue)
+            return _canExecute.Value;
+
         try
         {
-            var result = TryGetConfiguratorDisposing();
-            GC.Collect(0, GCCollectionMode.Forced, false);
-            return result;
+            _canExecute = TryGetConfiguratorDisposing();
+            return _canExecute.Value;
         }
         catch (Exception)
         {
-            return false;
+            _canExecute = false;
+            return _canExecute.Value;
         }
     }
 
@@ -68,8 +59,6 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
     {
         var result = TryGetConfigurator(out var configurator, out var loader);
         loader?.Dispose();
-        configurator = null;
-        loader = null;
         return result;
     }
 
@@ -108,6 +97,16 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
             var configDirectory = Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!);
             versionTwo.Migrate(modDirectory, configDirectory);
             versionTwo.SetConfigDirectory(configDirectory);
+        }
+
+        if (configurator is IConfiguratorV3 versionThree)
+        {
+            versionThree.SetContext(new ConfiguratorContext()
+            {
+                Application = _applicationTuple.Config,
+                ModConfigPath = _modTuple.Path,
+                ApplicationConfigPath = _applicationTuple.Path
+            });
         }
             
         return true;

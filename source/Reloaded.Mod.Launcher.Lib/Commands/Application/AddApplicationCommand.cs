@@ -1,17 +1,3 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Windows.Input;
-using Ookii.Dialogs.Wpf;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Application;
 
 /// <summary>
@@ -39,6 +25,13 @@ public class AddApplicationCommand : ICommand
     /// <param name="parameter">Optional parameter. See <see cref="AddApplicationCommandParams"/>.</param>
     public async void Execute(object? parameter)
     {
+        await ExecuteAsync(parameter);
+    }
+
+    /// <summary/>
+    /// <param name="parameter">Optional parameter. See <see cref="AddApplicationCommandParams"/>.</param>
+    public async Task ExecuteAsync(object? parameter)
+    {
         var commandParam = parameter as AddApplicationCommandParams;
         var param = commandParam ?? new AddApplicationCommandParams();
 
@@ -52,8 +45,24 @@ public class AddApplicationCommand : ICommand
         }
 
         // Get file information and populate initial application details.
-        var fileInfo = FileVersionInfo.GetVersionInfo(exePath);
-        var config = new ApplicationConfig(Path.GetFileName(fileInfo.FileName).ToLower(), fileInfo.ProductName, exePath);
+        static string GetProductName(string exePath)
+        {
+            try
+            {
+                var name = FileVersionInfo.GetVersionInfo(exePath).ProductName;
+                return !string.IsNullOrEmpty(name) ? name! : Path.GetFileName(exePath)!;
+            }
+            catch (Exception e)
+            {
+                Errors.HandleException(e, Resources.ErrorAddApplicationGetVersionInfo.Get());
+                return Path.GetFileName(exePath);
+            }
+        }
+
+        try { exePath = SymlinkResolver.GetFinalPathName(exePath); }
+        catch (Exception e) { Errors.HandleException(e, Resources.ErrorAddApplicationCantReadSymlink.Get()); }
+        
+        var config = new ApplicationConfig(Path.GetFileName(exePath).ToLower(), GetProductName(exePath), exePath);
 
         // Set AppName if empty & Ensure no duplicate ID.
         if (string.IsNullOrEmpty(config.AppName))
@@ -89,7 +98,7 @@ public class AddApplicationCommand : ICommand
         // Set return value
         param.ResultCreatedApplication = true;
     }
-    
+
     private void ApplicationsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         var newConfig = _configService.Items.FirstOrDefault(x => x.Config.AppId == _newConfig?.AppId);
@@ -117,7 +126,8 @@ public class AddApplicationCommand : ICommand
     /// </summary>
     private string SelectEXEFile()
     {
-        var dialog = new VistaOpenFileDialog();
+        var dialog = new VistaSaveFileDialog();
+        dialog.OverwritePrompt = false;
         dialog.Title = Resources.AddAppExecutableTitle.Get();
         dialog.Filter = $"{Resources.AddAppExecutableFilter.Get()} (*.exe)|*.exe";
 

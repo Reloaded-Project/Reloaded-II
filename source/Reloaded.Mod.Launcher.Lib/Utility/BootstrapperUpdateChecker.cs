@@ -1,7 +1,3 @@
-﻿using System;
-using System.Diagnostics;
-using Reloaded.Mod.Shared;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
@@ -25,5 +21,18 @@ public class BootstrapperUpdateChecker
     /// Gets the version of a bootstrapper DLL.
     /// </summary>
     /// <returns>A valid Bootstrapper version number (compare with <see cref="EntryPointParameters.CurrentVersion"/>).</returns>
-    public int GetDllVersion() => Convert.ToInt32(FileVersionInfo.GetVersionInfo(_bootstrapperPath).ProductVersion);
+    public int GetDllVersion()
+    {
+        var version = 0;
+        try
+        {
+            version = Convert.ToInt32(FileVersionInfo.GetVersionInfo(_bootstrapperPath).ProductVersion);
+        }
+        catch (Exception e)
+        {
+            Errors.HandleException(e, $"[Bootstrapper update check] {Resources.ErrorAddApplicationGetVersionInfo.Get()}\n{e.Message}");
+        }
+        
+        return version;
+    }
 }

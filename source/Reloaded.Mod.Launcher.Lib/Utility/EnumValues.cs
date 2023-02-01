@@ -1,6 +1,3 @@
-﻿using System;
-using System.Linq;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>

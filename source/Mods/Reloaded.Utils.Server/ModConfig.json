@@ -1,0 +1,20 @@
+{
+  "ModId": "reloaded.utils.server",
+  "ModName": "Reloaded II Server",
+  "ModAuthor": "Sewer56",
+  "ModVersion": "1.0.1",
+  "ModDescription": "Hosts a remote control server for Reloaded II; allowing for functionality such as remote mod loading/unloading.",
+  "ModDll": "Reloaded.Utils.Server.dll",
+  "ModIcon": "Preview.png",
+  "ModR2RManagedDll32": "x86/Reloaded.Utils.Server.dll",
+  "ModR2RManagedDll64": "x64/Reloaded.Utils.Server.dll",
+  "ModNativeDll32": "",
+  "ModNativeDll64": "",
+  "IsLibrary": false,
+  "ReleaseMetadataFileName": "Reloaded.Utils.Server.ReleaseMetadata.json",
+  "PluginData": {},
+  "IsUniversalMod": true,
+  "ModDependencies": [ "reloaded.sharedlib.hooks" ],
+  "OptionalDependencies": [],
+  "SupportedAppId": []
+}

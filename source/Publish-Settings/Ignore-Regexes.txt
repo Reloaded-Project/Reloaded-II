@@ -1,7 +1,9 @@
-Sewer56\.Update\.Metadata\.json
+.*Sewer56\.Update\.Metadata\.json
 ^Apps
 ^Mods
 ^Plugins
 ^User
 ^Theme
 ^Assets[\\\/]Languages
+^portable\.txt
+^Portable\.txt

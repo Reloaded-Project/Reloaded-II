@@ -7,76 +7,81 @@
               xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
               xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
               xmlns:controls="clr-namespace:Reloaded.Mod.Launcher.Controls"
-              xmlns:system="clr-namespace:System;assembly=System.Runtime"
-              mc:Ignorable="d" 
+              xmlns:system="clr-namespace:System;assembly=System.Runtime" xmlns:hc="https://handyorg.github.io/handycontrol"
+                      mc:Ignorable="d" 
               Width="Auto"
               Height="Auto"
               Title="Main">
 
-    <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
-        <Grid.Resources>
-            <ResourceDictionary>
-                <system:Double x:Key="DetailsImageWidth">180</system:Double>
-                <system:Double x:Key="DetailsColumnWidth">280</system:Double>
-            </ResourceDictionary>
-        </Grid.Resources>
+    <StackPanel DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
+        
+        <Grid Margin="{DynamicResource CommonItemVerticalMargin}">
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <system:Double x:Key="DetailsImageWidth">180</system:Double>
+                    <system:Double x:Key="DetailsColumnWidth">280</system:Double>
+                </ResourceDictionary>
+            </Grid.Resources>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}" />
-            <ColumnDefinition MinWidth="{StaticResource DetailsImageWidth}" Width="*" />
-        </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}" />
+                <ColumnDefinition MinWidth="{StaticResource DetailsImageWidth}" Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <!-- Application Image -->
-        <Viewbox Width="{StaticResource DetailsImageWidth}" 
+            <!-- Application Image -->
+            <Viewbox Width="{StaticResource DetailsImageWidth}" 
                  Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
                  Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                  Grid.ColumnSpan="3"
                  Grid.Column="0"
                  Grid.Row="0">
-            <Image x:Name="ModIcon"
+                <Image x:Name="ModIcon"
                    ToolTip="{DynamicResource AddAppImageTooltip}" 
                    ToolTipService.InitialShowDelay="0"
                    PreviewMouseDown="ModIcon_PreviewMouseDown">
-                <Image.Source>
-                    <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
-                        <Binding Path="ConfigTuple" IsAsync="True"/>
-                        <Binding Path="ConfigTuple.Config.ModIcon" IsAsync="True"/>
-                    </MultiBinding>
-                </Image.Source>
-            </Image>
-        </Viewbox>
+                    <Image.Source>
+                        <MultiBinding Converter="{x:Static converters:ModConfigToImageConverter.Instance}" UpdateSourceTrigger="PropertyChanged">
+                            <Binding Path="ConfigTuple" IsAsync="True"/>
+                            <Binding Path="ConfigTuple.Config.ModIcon" IsAsync="True"/>
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </Viewbox>
 
-        <!-- Name -->
-        <Label Content="{DynamicResource CreateModDialogName}" VerticalAlignment="Center" 
+            <!-- Name -->
+            <Label Content="{DynamicResource CreateModDialogName}" VerticalAlignment="Center" 
                Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" />
 
-        <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+            <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
                  Tag="{DynamicResource CreateModDialogName}" 
                  Text="{Binding Config.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  MinWidth="{StaticResource DetailsColumnWidth}"
                  Margin="{DynamicResource CommonItemVerticalMarginSmall}"
                  ToolTip="{DynamicResource CreateModDialogName}"
+                 ToolTipService.InitialShowDelay="0"
                  HorizontalAlignment="Stretch" 
                  VerticalAlignment="Center" 
                  Grid.Column="2" Grid.Row="1" />
 
-        <!-- Author -->
-        <Label Content="{DynamicResource CreateModDialogAuthor}" VerticalAlignment="Center" 
+            <!-- Author -->
+            <Label Content="{DynamicResource CreateModDialogAuthor}" VerticalAlignment="Center" 
                Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" />
 
-        <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+            <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
                  Text="{Binding Config.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Tag="{DynamicResource CreateModDialogAuthor}" 
                  ToolTip="{DynamicResource CreateModDialogAuthor}"
+                 ToolTipService.InitialShowDelay="0"
                  Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
                  MinWidth="{StaticResource DetailsColumnWidth}"
                  HorizontalAlignment="Stretch" 
@@ -84,14 +89,15 @@
                  Grid.Column="2" Grid.Row="2"/>
 
 
-        <!-- Version -->
-        <Label Content="{DynamicResource CreateModDialogVersion}" VerticalAlignment="Center" 
+            <!-- Version -->
+            <Label Content="{DynamicResource CreateModDialogVersion}" VerticalAlignment="Center" 
                Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" />
 
-        <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+            <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
                  Text="{Binding Config.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Tag="{DynamicResource CreateModDialogVersion}" 
                  ToolTip="{DynamicResource CreateModDialogVersion}"
+                 ToolTipService.InitialShowDelay="0"
                  Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
                  MinWidth="{StaticResource DetailsColumnWidth}"
                  HorizontalAlignment="Stretch" 
@@ -99,14 +105,15 @@
                  x:Name="VersionBox"
                  Grid.Column="2" Grid.Row="3" />
 
-        <!-- Description -->
-        <Label Content="{DynamicResource CreateModDialogDescriptionShort}" VerticalAlignment="Center" 
+            <!-- Description -->
+            <Label Content="{DynamicResource CreateModDialogDescriptionShort}" VerticalAlignment="Center" 
                Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" />
 
-        <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+            <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
                  Text="{Binding Config.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Tag="{DynamicResource CreateModDialogDescription}" 
                  ToolTip="{DynamicResource CreateModDialogDescription}"
+                 ToolTipService.InitialShowDelay="0"    
                  Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
                  MinWidth="{StaticResource DetailsColumnWidth}"
                  Width="{Binding Path=ActualWidth, ElementName=VersionBox}"
@@ -115,5 +122,60 @@
                  Grid.Column="2" Grid.Row="4"
                  VerticalAlignment="Center"/>
 
-    </Grid>
+            <!-- Project URL -->
+            <Label Content="{DynamicResource CreateModDialogProjectUrl}" VerticalAlignment="Center" 
+               Grid.Column="0" Grid.Row="5" HorizontalAlignment="Center" />
+
+            <TextBox Style="{DynamicResource TextboxWithPlaceholder}" 
+                 Text="{Binding Config.ProjectUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Tag="{DynamicResource CreateModDialogProjectUrlPlaceholder}" 
+                 ToolTip="{DynamicResource CreateModDialogProjectUrlPlaceholder}"
+                 ToolTipService.InitialShowDelay="0"
+                 Margin="{DynamicResource CommonItemVerticalMarginSmall}" 
+                 MinWidth="{StaticResource DetailsColumnWidth}"
+                 Width="{Binding Path=ActualWidth, ElementName=VersionBox}"
+                 TextWrapping="Wrap"
+                 HorizontalAlignment="Stretch"
+                 Grid.Column="2" Grid.Row="5"
+                 VerticalAlignment="Center"/>
+
+        </Grid>
+        
+        <!-- Tag List -->
+        <hc:TagContainer ItemsSource="{Binding Tags, Mode=TwoWay}" 
+                         Margin="{DynamicResource CommonItemVerticalMargin}"
+                         ItemContainerStyle="{DynamicResource ReloadedTag}" />
+
+        <DockPanel LastChildFill="True">
+            <Button  Style="{DynamicResource UnpaddedButton}" 
+                     Padding="15,0"
+                     Margin="{DynamicResource CommonItemHorizontalMarginLeft}" 
+                     DockPanel.Dock="Right" 
+                     Content="{DynamicResource EditModAddTag}" 
+                     Click="AddTag_Click"/>
+
+            <ComboBox VerticalAlignment="Center" HorizontalAlignment="Center"
+                      IsSynchronizedWithCurrentItem="True"
+                      DockPanel.Dock="Right" 
+                      Margin="{DynamicResource CommonItemHorizontalMarginSmaller}"
+                      SelectedValue="{Binding TagName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                      SelectedValuePath="Content"
+                      ToolTipService.InitialShowDelay="0"
+                      ToolTip="{DynamicResource EditModSelectPresetTagTooltip}"
+                      Width="130">
+
+                <ComboBoxItem Content="GUI/HUD" />
+                <ComboBoxItem Content="Stage/Level" />
+                <ComboBoxItem Content="Character" />
+                <ComboBoxItem Content="Sound Effect" />
+                <ComboBoxItem Content="Music" />
+                <ComboBoxItem Content="Texture" />
+            </ComboBox>
+            
+            <TextBox Text="{Binding TagName}" Style="{DynamicResource TextboxWithPlaceholder}" Tag="{DynamicResource EditModAddTagPlaceHolder}" VerticalAlignment="Center" />
+
+        </DockPanel>
+
+    </StackPanel>
+    
 </default:ReloadedPage>

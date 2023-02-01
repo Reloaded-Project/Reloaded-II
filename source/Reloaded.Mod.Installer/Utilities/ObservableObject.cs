@@ -1,5 +1,3 @@
-﻿using System.ComponentModel;
-
 namespace Reloaded.Mod.Installer.Utilities;
 
 /// <summary>
@@ -7,7 +5,7 @@ namespace Reloaded.Mod.Installer.Utilities;
 /// </summary>
 public abstract class ObservableObject : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void RaisePropertyChangedEvent(string propertyName)
     {

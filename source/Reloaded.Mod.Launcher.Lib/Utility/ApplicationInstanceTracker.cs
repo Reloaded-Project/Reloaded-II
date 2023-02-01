@@ -1,14 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility.Interfaces;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Server;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
@@ -39,7 +28,7 @@ public class ApplicationInstanceTracker : IDisposable
         if (token.IsCancellationRequested) 
             return;
 
-        _processWatcher = IoC.Get<IProcessWatcher>();
+        _processWatcher = IoC.GetConstant<IProcessWatcher>();
         _processWatcher.OnNewProcess += ProcessWatcherOnOnNewProcess;
         _processWatcher.OnRemovedProcess += ProcessWatcherOnOnRemovedProcess;
     }
@@ -50,6 +39,12 @@ public class ApplicationInstanceTracker : IDisposable
     /// <inheritdoc />
     public void Dispose()
     {
+        if (_processWatcher != null)
+        {
+            _processWatcher.OnNewProcess -= ProcessWatcherOnOnNewProcess;
+            _processWatcher.OnRemovedProcess -= ProcessWatcherOnOnRemovedProcess;
+        }
+
         GC.SuppressFinalize(this);
     }
 
@@ -94,8 +89,8 @@ public class ApplicationInstanceTracker : IDisposable
     /// <summary>
     /// Returns a collection of all Reloaded and non-Reloaded processes on the local machine.
     /// </summary>
-    /// <returns></returns>
-    public ProcessCollection GetProcesses()
+    /// <returns>List, incomplete if cancellation requested.</returns>
+    public ProcessCollection GetProcesses(CancellationToken token = default)
     {
         if (_processes == null)
             return default;
@@ -103,7 +98,11 @@ public class ApplicationInstanceTracker : IDisposable
         var processCollection = ProcessCollection.GetEmpty(_processes.Count);
         foreach (var process in _processes.ToArray())
         {
-            if (Client.IsModLoaderPresent(process))
+            // Return if cancellation requested.
+            if (token.IsCancellationRequested)
+                return processCollection;
+
+            if (ReloadedMappedFile.Exists(process.Id))
                 processCollection.ReloadedProcesses.Add(process);
             else
                 processCollection.NonReloadedProcesses.Add(process);

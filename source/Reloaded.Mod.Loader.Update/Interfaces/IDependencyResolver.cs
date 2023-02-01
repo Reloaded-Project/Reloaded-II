@@ -1,9 +1,3 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.IO.Config;
-
 namespace Reloaded.Mod.Loader.Update.Interfaces;
 
 /// <summary>
@@ -15,9 +9,9 @@ public interface IDependencyResolver
     /// Tries to find results for a given package.
     /// </summary>
     /// <param name="packageId">ID of the package to resolve.</param>
-    /// <param name="modConfig">Mod configuration of the mod expressing this ID as dependency. May be null.</param>
+    /// <param name="pluginData">May contain additional context for the resolver. This is usually obtained from <see cref="ModConfig.PluginData"/>.</param>
     /// <param name="token">Allows for the task to be canceled.</param>
-    public Task<ModDependencyResolveResult> ResolveAsync(string packageId, ModConfig? modConfig = null, CancellationToken token = default);
+    public Task<ModDependencyResolveResult> ResolveAsync(string packageId, Dictionary<string, object>? pluginData = null, CancellationToken token = default);
 }
 
 /// <summary>
@@ -49,6 +43,9 @@ public class ModDependencyResolveResult
         {
             foreach (var found in result.FoundDependencies)
             {
+                if (found.Id == null)
+                    continue;
+
                 if (idToNewestVersion.TryGetValue(found.Id, out var existing))
                 {
                     if (existing.Version < found.Version)

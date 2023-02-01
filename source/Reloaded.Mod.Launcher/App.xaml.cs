@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Windows;
-using Reloaded.Mod.Launcher.Utility;
 using static System.Environment;
+using Environment = Reloaded.Mod.Shared.Environment;
+using Path = System.IO.Path;
+using Paths = Reloaded.Mod.Loader.IO.Paths;
 
 namespace Reloaded.Mod.Launcher;
 
@@ -15,20 +13,17 @@ public partial class App : Application
     /// <summary>
     /// Entry point for the application.
     /// </summary>
-    public App()
+    public App() => this.Startup += OnStartup;
+
+    private void OnStartup(object sender, StartupEventArgs e)
     {
-        // Update handler
+        // Run update handler.
         if (Sewer56.Update.Hooks.Startup.HandleCommandLineArgs(GetCommandLineArgs()))
         {
             Application.Current.Shutdown(0);
             return;
         }
-
-        this.Startup += OnStartup;
-    }
-
-    private void OnStartup(object sender, StartupEventArgs e)
-    {
+        
         SetupResources();
 
         // Common Commandline Argument Handler
@@ -41,11 +36,16 @@ public partial class App : Application
         }
 
         Application.Current.ShutdownMode = originalMode;
+        StartProfileOptimization();
+        PrepareWebRequests();
+
+        var window = new MainWindow();
+        window.ShowDialog();
     }
 
     private void SetupResources()
     {
-        var launcherFolder   = Path.GetDirectoryName(GetCommandLineArgs()[0]);
+        var launcherFolder   = AppContext.BaseDirectory;
         var languageSelector = new XamlFileSelector($"{launcherFolder}\\Assets\\Languages");
         var themeSelector    = new XamlFileSelector($"{launcherFolder}\\Theme");
         
@@ -55,6 +55,7 @@ public partial class App : Application
         Resources.MergedDictionaries.Add(languageSelector);
         Resources.MergedDictionaries.Add(themeSelector);
         themeSelector.NewFileSet += OnThemeChanged;
+        Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri($"{launcherFolder}\\Theme\\Helpers\\BackwardsCompatibilityHelpers.xaml", UriKind.RelativeOrAbsolute) });
     }
 
     private void OnThemeChanged()
@@ -72,11 +73,73 @@ public partial class App : Application
         TryAssignResource("AccentColorLighter", "DarkPrimaryColor");
         TryAssignResource("AccentColorLighter", "PrimaryColor");
         TryAssignResource("AccentColorLight", "LightPrimaryColor");
+
+        // Remove focus from scroll viewers
         if (Current.MainWindow != null)
         {
             Current.MainWindow.ApplyTemplate();
             Current.MainWindow.OnApplyTemplate();
             Current.MainWindow.InvalidateVisual();
         }
+    }
+
+    /// <summary>
+    /// Starts profile-optimization a.k.a. 'Multicore JIT'.
+    /// We're not actually using this for the async JIT but to load other DLLs on a background thread to avoid an I/O bottleneck.  
+    /// </summary>
+    public static void StartProfileOptimization()
+    {
+        // Start Profile Optimization
+        var profileRoot = Path.Combine(Paths.ConfigFolder, "ProfileOptimization");
+        Directory.CreateDirectory(profileRoot);
+
+        // Define the folder where to save the profile files.
+        ProfileOptimization.SetProfileRoot(profileRoot);
+
+        // Start profiling.
+        ProfileOptimization.StartProfile("Launcher-startup.profile");
+    }
+
+    /// <summary>
+    /// Finishes profile-optimization a.k.a. 'Multicore JIT'
+    /// </summary>
+    public static void StopProfileOptimization()
+    {
+        ProfileOptimization.StartProfile(null!);
+    }
+    
+    private void PrepareWebRequests()
+    {        
+        // Raise maximum number of WebRequest connections
+        ServicePointManager.DefaultConnectionLimit = int.MaxValue;
+        
+        // When .NET makes first HTTP request, it takes some time to resolve proxy settings.
+        // We can speed this up by resolving the proxy ourselves.
+        Task.Run(WebRequest.GetSystemWebProxy);
+    }
+
+    /// <summary>
+    /// Empties the working set of the process, purging as much memory back to RAM as possible.  
+    /// We do this after initializing Reloaded (at a small perf penalty) as there's gonna be stuff that will never be needed in RAM again.
+    ///
+    /// We can let the CEF & Electron apps in this world (like your Slacks and Discords) eat up all the RAM instead.
+    /// </summary>
+    public static void EmptyWorkingSet() => EmptyWorkingSet(Environment.CurrentProcess.Handle);
+
+    [DllImport("psapi")]
+    private static extern bool EmptyWorkingSet(IntPtr hProcess);
+
+    /// <summary>
+    /// Ran upon exiting the application.
+    /// </summary>
+    protected override void OnExit(ExitEventArgs e)
+    {
+        base.OnExit(e);
+
+        // Flush image cache on exit.
+        if (Lib.IoC.IsExplicitlyBound<ImageCacheService>())
+            Lib.IoC.GetConstant<ImageCacheService>().Shutdown();
+
+        Caches.Shutdown();
     }
 }

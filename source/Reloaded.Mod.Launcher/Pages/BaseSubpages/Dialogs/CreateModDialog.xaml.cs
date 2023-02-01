@@ -1,12 +1,5 @@
-﻿using System.Threading.Tasks;
-using System.Windows;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.WPF.Theme.Default;
 using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
+using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 
@@ -29,11 +22,11 @@ public partial class CreateModDialog : ReloadedWindow
         if (createdMod == null)
             return;
 
-        var modConfigService = IoC.Get<ModConfigService>();
+        var modConfigService = Lib.IoC.Get<ModConfigService>();
         var mod = await ActionWrappers.TryGetValueAsync(() => modConfigService.ItemsById[createdMod.Config.ModId], 5000, 32);
         if (mod != null)
         {
-            var createModDialog = new EditModDialog(new EditModDialogViewModel(mod, IoC.Get<ApplicationConfigService>(), modConfigService));
+            var createModDialog = new EditModDialog(new EditModDialogViewModel(mod, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
             createModDialog.Owner = Window.GetWindow(this);
             createModDialog.ShowDialog();
         }

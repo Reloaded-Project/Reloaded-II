@@ -1,9 +1,3 @@
-﻿using System;
-using System.Net;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Community.Config;
-using Reloaded.Mod.Loader.Community.Utility;
 using Index = Reloaded.Mod.Loader.Community.Config.Index;
 
 namespace Reloaded.Mod.Loader.Community;
@@ -37,7 +31,11 @@ public class IndexApi
     public async Task<Index> GetIndexAsync()
     {
         var uri = new Uri(IndexUrl, Routes.Index);
-        return await DownloadAndDeserialize<Index>(uri);
+        var index = await DownloadAndDeserialize<Index>(uri);
+        if (index == null)
+            throw new Exception("Failed to download index");
+
+        return index;
     }
 
     /// <summary>
@@ -49,10 +47,14 @@ public class IndexApi
             throw new ArgumentException($"({nameof(appEntry.FilePath)}) was null or empty.");
 
         var uri = new Uri(IndexUrl, Routes.GetApplicationPath(appEntry.FilePath));
-        return await DownloadAndDeserialize<AppItem>(uri);
+        var appItem = await DownloadAndDeserialize<AppItem>(uri);
+        if (appItem == null)
+            throw new Exception("Failed to download package index entry.");
+        
+        return appItem;
     }
 
-    private static async Task<T> DownloadAndDeserialize<T>(Uri uri)
+    private static async Task<T?> DownloadAndDeserialize<T>(Uri uri)
     {
         using var webClient = new WebClient();
         var bytes = Compression.Decompress(await webClient.DownloadDataTaskAsync(uri));

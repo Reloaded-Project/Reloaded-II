@@ -1,12 +1,3 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Threading;
-using Reloaded.Mod.Launcher.Lib.Utility.Interfaces;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
@@ -38,6 +29,9 @@ public class ProcessWatcher : ObservableObject, IProcessWatcher
         _processes.CollectionChanged += ProcessesChanged;
         _timer = new Timer(Tick, null, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(interval));
     }
+
+    /// <inheritdoc />
+    public void Dispose() => _timer.Dispose();
 
     private void Tick(object? state)
     {

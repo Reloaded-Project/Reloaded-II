@@ -1,0 +1,12 @@
+global using NetCoreInstallChecker;
+global using NetCoreInstallChecker.Structs.Config;
+global using NetCoreInstallChecker.Structs.Config.Enum;
+global using RedistributableChecker;
+global using System;
+global using System.Collections.Concurrent;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Net;
+global using System.Threading;
+global using System.Threading.Tasks;

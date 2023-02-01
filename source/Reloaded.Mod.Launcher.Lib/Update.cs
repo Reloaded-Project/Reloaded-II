@@ -1,25 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Protocol.Core.Types;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Structures;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
-using Sewer56.Update;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Resolvers.GitHub;
-using Sewer56.Update.Structures;
+using Reloaded.Mod.Loader.Update.Providers.GitHub;
 using Constants = Reloaded.Mod.Launcher.Lib.Misc.Constants;
 using Version = Reloaded.Mod.Launcher.Lib.Utility.Version;
 
@@ -30,6 +9,42 @@ namespace Reloaded.Mod.Launcher.Lib;
 /// </summary>
 public static class Update
 {
+    private static IEnumerable<ModConfig> _modLoaderDependencies = new ModConfig[]
+    {
+        new()
+        {
+            ModId = "reloaded.mod.loader",
+            ModDependencies = new []{ "reloaded.sharedlib.hooks" },
+            PluginData = new Dictionary<string, object>()
+            {
+                // GitHub Dependency Resolver
+                {     
+                    GitHubReleasesDependencyMetadataWriter.PluginId,
+                    new DependencyResolverMetadata<GitHubReleasesUpdateResolverFactory.GitHubConfig>()
+                    {
+                        IdToConfigMap = new()
+                        {
+                            {
+                                "reloaded.sharedlib.hooks",
+                                new DependencyResolverItem<GitHubReleasesUpdateResolverFactory.GitHubConfig>()
+                                {
+                                    ReleaseMetadataName = "Sewer56.Update.ReleaseMetadata.json",
+                                    Config = new GitHubReleasesUpdateResolverFactory.GitHubConfig()
+                                    {
+                                        RepositoryName = "Reloaded.SharedLib.Hooks.ReloadedII",
+                                        UserName = "Sewer56",
+                                        UseReleaseTag = true,
+                                        AssetFileName = "reloaded.sharedlib.hooks.zip"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+
     /* Strings */
 
     /// <summary>
@@ -156,14 +171,11 @@ public static class Update
 
             // Get Dependencies
             var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
+            
             var results = new List<Task<ModDependencyResolveResult>>();
             foreach (var dependencyItem in missingDeps.Items)
-            {
-                foreach (var dependency in dependencyItem.Dependencies)
-                {
-                    results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod, token));
-                }
-            }
+            foreach (var dependency in dependencyItem.Dependencies)
+                results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod.PluginData, token));
 
             await Task.WhenAll(results);
 
@@ -222,7 +234,7 @@ public static class Update
     public static DependencyResolutionResult CheckMissingDependencies()
     {
         var modConfigService = IoC.Get<ModConfigService>();
-        return modConfigService.GetMissingDependencies();
+        return modConfigService.GetMissingDependencies(_modLoaderDependencies);
     }
 
     /// <summary>

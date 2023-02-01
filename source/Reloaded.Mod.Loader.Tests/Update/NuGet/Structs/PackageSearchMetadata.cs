@@ -1,12 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using NuGet.Packaging;
-using NuGet.Packaging.Core;
-using NuGet.Protocol;
-using NuGet.Protocol.Core.Types;
-
 namespace Reloaded.Mod.Loader.Tests.Update.NuGet.Structs;
 
 [ExcludeFromCodeCoverage]
@@ -48,6 +39,9 @@ public class CustomPackageSearchMetadata : IPackageSearchMetadata
     public Uri ProjectUrl { get; set; }
 
     /// <inheritdoc />
+    public Uri ReadmeUrl { get; }
+
+    /// <inheritdoc />
     public Uri ReportAbuseUrl { get; set; }
 
     /// <inheritdoc />
@@ -79,4 +73,6 @@ public class CustomPackageSearchMetadata : IPackageSearchMetadata
 
     /// <inheritdoc />
     public LicenseMetadata LicenseMetadata { get; set; }
+
+    public IEnumerable<PackageVulnerabilityMetadata> Vulnerabilities { get; }
 }

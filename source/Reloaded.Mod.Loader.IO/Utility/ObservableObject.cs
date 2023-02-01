@@ -1,6 +1,5 @@
-﻿#pragma warning disable 1591
+#pragma warning disable 1591
 
-using System.ComponentModel;
 
 namespace Reloaded.Mod.Loader.IO.Utility;
 

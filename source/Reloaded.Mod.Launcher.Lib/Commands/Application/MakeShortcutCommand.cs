@@ -1,14 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices.ComTypes;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib.Commands.Templates;
-using Reloaded.Mod.Launcher.Lib.Interop;
-using Reloaded.Mod.Launcher.Lib.Misc;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
 using Constants = Reloaded.Mod.Launcher.Lib.Misc.Constants;
+using Environment = System.Environment;
 using File = System.IO.File;
 
 namespace Reloaded.Mod.Launcher.Lib.Commands.Application;

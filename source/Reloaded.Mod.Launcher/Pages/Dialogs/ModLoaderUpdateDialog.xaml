@@ -72,6 +72,7 @@
                     HorizontalAlignment="Stretch" Click="ViewChangelogClick"/>
 
             <Button Grid.Column="2"
+                    IsEnabled="{Binding CanStartUpdate}"
                     Content="{DynamicResource UpdateLoaderUpdate}" Click="UpdateClick"/>
         </Grid>
     </Grid>

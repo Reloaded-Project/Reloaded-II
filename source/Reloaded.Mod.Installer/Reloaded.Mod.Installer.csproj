@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>NET472</TargetFramework>
     <UseWPF>true</UseWPF>
     <LangVersion>preview</LangVersion>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AssemblyName >Setup</AssemblyName>
+    <AssemblyName>Setup</AssemblyName>
     <Nullable>enable</Nullable>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
+    <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
+    <StartupObject>Reloaded.Mod.Installer.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,13 +18,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ConsoleProgressBar" Version="2.0.0" />
     <PackageReference Include="Costura.Fody" Version="5.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="HandyControl" Version="3.2.0" />
     <PackageReference Include="Onova" Version="2.6.2" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" >
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>

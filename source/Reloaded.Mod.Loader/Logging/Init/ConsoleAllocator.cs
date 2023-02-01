@@ -1,5 +1,3 @@
-﻿using System;
-using System.Runtime.InteropServices;
 using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader.Logging.Init;

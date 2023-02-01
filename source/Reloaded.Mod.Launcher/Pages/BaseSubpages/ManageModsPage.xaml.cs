@@ -1,33 +1,26 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.WPF.Utilities;
+using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 
 /// <summary>
 /// The main page of the application.
 /// </summary>
-public partial class ManageModsPage : ReloadedIIPage
+public partial class ManageModsPage : ReloadedIIPage, IDisposable
 {
     public ManageModsViewModel ViewModel { get; set; }
     private readonly CollectionViewSource _modsViewSource;
     private readonly CollectionViewSource _appsViewSource;
+    private bool _disposed;
+    private MainWindow _mainWindow;
 
     public ManageModsPage() : base()
     {
+        SwappedOut += Dispose;
         InitializeComponent();
-        ViewModel = IoC.GetConstant<ManageModsViewModel>();
+        ViewModel = Lib.IoC.GetConstant<ManageModsViewModel>();
         this.DataContext = ViewModel;
-        this.AnimateOutStarted += SaveCurrentMod;
-        IoC.Get<MainWindow>().Closing += OnMainWindowClosing;
+        _mainWindow = Lib.IoC.GetConstant<MainWindow>();
+        _mainWindow.Closing += OnMainWindowClosing;
 
         // Setup filters
         var manipulator = new DictionaryResourceManipulator(this.Contents.Resources);
@@ -37,7 +30,19 @@ public partial class ManageModsPage : ReloadedIIPage
         _appsViewSource.Filter += AppsViewSourceOnFilter;
     }
 
-    private void OnMainWindowClosing(object sender, CancelEventArgs e) => SaveCurrentMod();
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        _disposed = true;
+        SaveCurrentMod();
+        _modsViewSource.Filter -= ModsViewSourceOnFilter;
+        _appsViewSource.Filter -= AppsViewSourceOnFilter;
+        _mainWindow.Closing -= OnMainWindowClosing;
+    }
+
+    private void OnMainWindowClosing(object? sender, CancelEventArgs e) => Dispose();
 
     private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _modsViewSource.View.Refresh();
     private void AppsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _appsViewSource.View.Refresh();
@@ -55,11 +60,8 @@ public partial class ManageModsPage : ReloadedIIPage
         e.Accepted = textToCheck.Contains(textToFind, StringComparison.InvariantCultureIgnoreCase);
     }
 
-    private void Button_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void New_Click(object sender, RoutedEventArgs e)
     {
-        if (e.LeftButton != MouseButtonState.Pressed) 
-            return;
-            
         var createModDialog = new CreateModDialog(ViewModel.ModConfigService);
         createModDialog.Owner = Window.GetWindow(this);
         createModDialog.ShowDialog();
@@ -87,4 +89,5 @@ public partial class ManageModsPage : ReloadedIIPage
         ViewModel.SetNewImage();
         e.Handled = true;
     }
+
 }

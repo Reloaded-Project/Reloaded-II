@@ -1,7 +1,3 @@
-﻿using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
-
 namespace Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages;
 
 /// <summary>
@@ -19,9 +15,8 @@ public partial class Main : ReloadedPage
 
     private void ModIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.LeftButton != MouseButtonState.Pressed)
-            return;
-
         ViewModel.SetNewImage();
     }
+
+    private void AddTag_Click(object sender, RoutedEventArgs e) => ViewModel.AddCurrentTag();
 }

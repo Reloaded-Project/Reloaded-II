@@ -1,11 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Update.Interfaces;
-
 namespace Reloaded.Mod.Loader.Update.Providers;
 
 /// <summary>
@@ -22,12 +14,12 @@ public class AggregateDependencyResolver : IDependencyResolver
     }
 
     /// <inheritdoc />
-    public async Task<ModDependencyResolveResult> ResolveAsync(string packageId, ModConfig? modConfig = null, CancellationToken token = default)
+    public async Task<ModDependencyResolveResult> ResolveAsync(string packageId, Dictionary<string, object>? pluginData = null, CancellationToken token = default)
     {
         // Run parallel resolve operations
         var tasks = new Task<ModDependencyResolveResult>[_resolvers.Length];
         for (var x = 0; x < _resolvers.Length; x++)
-            tasks[x] = _resolvers[x].ResolveAsync(packageId, modConfig, token);
+            tasks[x] = _resolvers[x].ResolveAsync(packageId, pluginData, token);
 
         await Task.WhenAll(tasks);
 
@@ -40,6 +32,9 @@ public class AggregateDependencyResolver : IDependencyResolver
             // Merge found dependencies
             foreach (var dependency in task.Result.FoundDependencies)
             {
+                if (dependency.Id == null)
+                    continue;
+
                 if (!packageToVersionMap.TryGetValue(dependency.Id, out var existing))
                 {
                     packageToVersionMap[dependency.Id] = dependency;

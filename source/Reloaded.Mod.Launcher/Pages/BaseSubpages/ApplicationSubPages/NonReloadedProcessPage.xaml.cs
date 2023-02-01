@@ -1,7 +1,3 @@
-﻿using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
-using Reloaded.Mod.Launcher.Lib.Utility;
-
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 
 /// <summary>
@@ -11,10 +7,10 @@ public partial class NonReloadedProcessPage : ApplicationSubPage
 {
     public NonReloadedPageViewModel ViewModel { get; set; }
 
-    public NonReloadedProcessPage()
+    public NonReloadedProcessPage(ApplicationViewModel appViewModel)
     {
         InitializeComponent();
-        ViewModel = IoC.Get<NonReloadedPageViewModel>();
+        ViewModel = new NonReloadedPageViewModel(appViewModel);
     }
 
     private void Button_Click(object sender, System.Windows.RoutedEventArgs e)

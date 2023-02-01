@@ -88,18 +88,12 @@
     <ClInclude Include="CoreCLR.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files\project-template</Filter>
-    </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>Header Files\project-template</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files\project-template</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
       <Filter>Source Files\project-template</Filter>
     </ClCompile>
   </ItemGroup>

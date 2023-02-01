@@ -1,6 +1,5 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
 
 #ifndef __NETHOST_H__
 #define __NETHOST_H__
@@ -14,7 +13,7 @@
         // Consuming the nethost as a static library
         // Shouldn't export attempt to dllimport.
         #ifdef NETHOST_USE_AS_STATIC
-            #define NETHOST_API 
+            #define NETHOST_API
         #else
             #define NETHOST_API __declspec(dllimport)
         #endif
@@ -48,7 +47,7 @@ extern "C" {
 //     Size of the struct. This is used for versioning.
 //
 //   assembly_path
-//     Path to the compenent's assembly.
+//     Path to the component's assembly.
 //     If specified, hostfxr is located as if the assembly_path is the apphost
 //
 //   dotnet_root
@@ -78,7 +77,7 @@ struct get_hostfxr_parameters {
 //
 //   get_hostfxr_parameters
 //     Optional. Parameters that modify the behaviour for locating the hostfxr library.
-//     If nullptr, hostfxr is located using the enviroment variable or global registration
+//     If nullptr, hostfxr is located using the environment variable or global registration
 //
 // Return value:
 //   0 on success, otherwise failure

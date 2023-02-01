@@ -1,11 +1,3 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
-using System.Threading;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.Logging.Structs;
-
 namespace Reloaded.Mod.Loader.Logging;
 
 public class Logger : ILogger

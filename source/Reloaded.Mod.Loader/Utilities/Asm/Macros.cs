@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+using Environment = System.Environment;
 
 namespace Reloaded.Mod.Loader.Utilities.Asm;
 

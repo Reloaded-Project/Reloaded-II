@@ -1,17 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using Force.DeepCloner;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana;
-using Reloaded.Mod.Loader.Update.Providers.GitHub;
-using Reloaded.Mod.Loader.Update.Providers.NuGet;
-using Reloaded.Mod.Loader.Update.Structures;
-using Sewer56.Update.Interfaces;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Resolvers;
+using IPackageResolver = Sewer56.Update.Interfaces.IPackageResolver;
 
 namespace Reloaded.Mod.Loader.Update;
 
@@ -26,6 +13,7 @@ public static class PackageResolverFactory
     public static IUpdateResolverFactory[] All { get; private set; } =
     {
         // Listed in order of preference.
+        // Note that AggregatePackageResolver will pick based on smallest download size first, then use this order.
         new NuGetUpdateResolverFactory(),
         new GitHubReleasesUpdateResolverFactory(),
         new GameBananaUpdateResolverFactory()

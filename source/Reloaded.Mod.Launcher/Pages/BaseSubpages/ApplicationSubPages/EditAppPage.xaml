@@ -75,6 +75,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <TextBox
+                        x:Name="ApplicationPathTextbox"
                         Grid.Column="0"
                         Text="{Binding Application.Config.AppLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Margin="{DynamicResource CommonItemVerticalMargin}"
@@ -111,12 +112,13 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
-                                        <CheckBox Content="{Binding Factory.FriendlyName}" IsChecked="{Binding IsEnabled}" 
+                                        <CheckBox Content="{Binding Factory.FriendlyName, Mode=OneTime}" IsChecked="{Binding IsEnabled}" 
                                                   Style="{DynamicResource DefaultCheckBox}"
                                                   HorizontalAlignment="Center" Margin="{DynamicResource CommonItemVerticalMargin}" />
 
                                         <controls:PropertyGridEx MinWidth="500" 
                                                                  Width="Auto"
+                                                                 MaxHeight="9999999"
                                                                  FlattenChildProperties="ParentNameAsCategory"
                                                                  Background="Transparent"
                                                                  SelectedObject="{Binding Configuration}"

@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-	  <Version>2.2.1</Version>
+    <TargetFrameworks>net5.0;net7.0</TargetFrameworks>
+	  <Version>2.8.0</Version>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <LangVersion>preview</LangVersion>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -10,23 +10,25 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <Authors>Sewer56</Authors>
 	  <Company />
-	  <Description>Contains code for parsing Reloaded-II's various configuration files as well as providing services for reading configurations in real time. This is an "internal" package; no documentation is provided and the API can change at any time.</Description>
+	  <Description>The I/O library is used for discovery, monitoring changes and parsing of Reloaded-II's configuration files. For usage instructions please see the Programmers' section in Reloaded wiki.</Description>
 	  <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 	  <PackageProjectUrl>https://github.com/Reloaded-Project/Reloaded-II</PackageProjectUrl>
-	  <PackageIconUrl>https://avatars1.githubusercontent.com/u/45473408</PackageIconUrl>
 	  <RepositoryUrl>https://github.com/Reloaded-Project/Reloaded-II</RepositoryUrl>
 	  <RepositoryType>git</RepositoryType>
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageIcon>NuGet-Icon.png</PackageIcon>
+	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 	
   <ItemGroup>
-    <PackageReference Include="Equals.Fody" Version="4.0.1">
+    <PackageReference Include="Equals.Fody" Version="4.0.2">
 	  <PrivateAssets>all</PrivateAssets>
 	</PackageReference>
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.9">
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Reloaded.Memory" Version="6.1.3" />
+    <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
+    <PackageReference Include="System.Text.Json" Version="7.0.0-rc.2.22472.3" Condition="'$(TargetFramework)' == 'net5.0'" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +40,10 @@
 	  <Pack>True</Pack>
 	  <PackagePath></PackagePath>
     </None>
+	<None Include="..\NuGet-Icon.png">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
   </ItemGroup>
 
 </Project>

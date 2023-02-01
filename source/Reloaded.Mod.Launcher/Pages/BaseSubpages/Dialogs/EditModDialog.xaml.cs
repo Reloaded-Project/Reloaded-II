@@ -1,7 +1,3 @@
-﻿using System.ComponentModel;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
-
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 
 /// <summary>
@@ -10,7 +6,6 @@ namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 public partial class EditModDialog : ReloadedWindow
 {
     public EditModDialogViewModel RealViewModel  { get; set; }
-
 
     public EditModDialog(EditModDialogViewModel viewModel)
     {
@@ -21,7 +16,11 @@ public partial class EditModDialog : ReloadedWindow
         this.Closing += OnClosing;
     }
 
-    private void OnClosing(object sender, CancelEventArgs e) => RealViewModel.Save();
+    private void OnClosing(object? sender, CancelEventArgs e)
+    {
+        RealViewModel.Save();
+        RealViewModel.Dispose(); // Unbind Constant.
+    }
 
     private void Last_Click(object sender, System.Windows.RoutedEventArgs e)
     {

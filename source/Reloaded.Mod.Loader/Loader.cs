@@ -1,19 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Loader;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.Exceptions;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Logging;
-using Reloaded.Mod.Loader.Logging.Interfaces;
-using Reloaded.Mod.Loader.Mods;
-using Reloaded.Mod.Loader.Server.Messages.Structures;
-using Reloaded.Mod.Loader.Utilities;
 using Console = Reloaded.Mod.Loader.Logging.Console;
 using Environment = Reloaded.Mod.Shared.Environment;
 
@@ -65,6 +49,7 @@ public class Loader : IDisposable
     public void Dispose()
     {
         Manager?.Dispose();
+        LogWriter?.Dispose();
         GC.SuppressFinalize(this);
     }
 
@@ -103,10 +88,10 @@ public class Loader : IDisposable
         Manager.ResumeMod(modId);
     }
 
-    public List<ModInfo> GetLoadedModSummary()
+    public ModInfo[] GetLoadedModInfo()
     {
         Wrappers.ThrowIfENotEqual(IsLoaded, true, Errors.ModLoaderNotInitialized);
-        return Manager.GetLoadedModSummary();
+        return Manager.GetLoadedModInfo();
     }
 
     /* Methods */
@@ -160,7 +145,7 @@ public class Loader : IDisposable
     /// <summary>
     /// Loads a collection of mods with their associated dependencies.
     /// </summary>
-    private void LoadModsWithDependencies(IEnumerable<ModConfig> modsToLoad, List<PathTuple<ModConfig>> allMods = null)
+    internal void LoadModsWithDependencies(IEnumerable<ModConfig> modsToLoad, List<PathTuple<ModConfig>> allMods = null)
     {
         // Cache configuration paths for all mods.
         if (allMods == null)
@@ -215,6 +200,7 @@ public class Loader : IDisposable
     {
         var configurations = ApplicationConfig.GetAllApplications(LoaderConfig.GetApplicationConfigDirectory());
         var fullPath       = NormalizePath(Environment.CurrentProcessLocation.Value);
+        Logger.LogWriteLineAsync($"Current Process Location: {fullPath}");
 
         foreach (var configuration in configurations)
         {
@@ -235,5 +221,40 @@ public class Loader : IDisposable
     private static string NormalizePath(string path)
     {
         return Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+    }
+
+    /// <summary>
+    /// Loads a mod, with shared types being imported into current AssemblyLoadContext.
+    /// </summary>
+    /// <param name="modId">The id of the mod to load.</param>
+    internal void LoadWithExportsIntoCurrentALC(string modId)
+    {
+        var mod      = FindMod(modId, out var allMods);
+        var modArray = new[] { mod.Config };
+        LoadModsWithDependencies(modArray, allMods);
+        
+        var types = Manager.GetExportsForModId(modId);
+        var currentAlc = AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly());
+        
+        // Add event to resolve types if needed.
+        currentAlc.Resolving += (context, name) =>
+        {
+            foreach (var type in types)
+            {
+                // Check if the type has same name
+                if (type.Assembly.GetName().Name != name.Name) 
+                    continue;
+                
+                var alc = AssemblyLoadContext.GetLoadContext(type.Assembly);
+                if (alc == context) 
+                    continue;
+                
+                var result = alc.LoadFromAssemblyName(name);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        };
     }
 }

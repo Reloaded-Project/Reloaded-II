@@ -1,19 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.Community;
-using Reloaded.Mod.Loader.Community.Config;
-using Reloaded.Mod.Loader.Community.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana;
-using Sewer56.Update.Misc;
-using Standart.Hash.xxHash;
+using FileMode = System.IO.FileMode;
 
 namespace Reloaded.Mod.Launcher.Lib.Commands.Application;
 
@@ -43,12 +28,21 @@ public class QueryCommunityIndexCommand : ICommand
     public async Task ExecuteAsync()
     {
         var config = _application.Config;
-        await using var fileStream = new FileStream(ApplicationConfig.GetAbsoluteAppLocation(_application), FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 524288);
         var indexApi  = new IndexApi();
         var index = await indexApi.GetIndexAsync();
-        var hash = Hashing.ToString(await xxHash64.ComputeHashAsync(fileStream));
-        var applications = index.FindApplication(hash, config.AppId, out bool hashMatches);
 
+        string hash = "";
+        try
+        {
+            await using var fileStream = new FileStream(ApplicationConfig.GetAbsoluteAppLocation(_application), FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 524288);
+            hash = Hashing.ToString(await Hashing.FromStreamAsync(fileStream));
+        }
+        catch (Exception e)
+        {
+            Errors.HandleException(e, $"{Resources.ErrorCantReadExeFile.Get()}\n");
+        }
+        
+        var applications = index.FindApplication(hash, config.AppId, out bool hashMatches);
         await await ActionWrappers.ExecuteWithApplicationDispatcherAsync(async () =>
         {
             if (applications.Count == 1 && hashMatches)

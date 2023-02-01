@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
+using Point = System.Windows.Point;
 
 namespace Reloaded.Mod.Launcher.Controls.Properties;
 

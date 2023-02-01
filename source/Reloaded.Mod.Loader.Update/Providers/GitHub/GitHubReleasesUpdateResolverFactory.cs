@@ -1,14 +1,5 @@
-﻿using System.ComponentModel;
-using System.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Structures;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Interfaces;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Resolvers.GitHub;
+using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
+using IPackageResolver = Sewer56.Update.Interfaces.IPackageResolver;
 
 namespace Reloaded.Mod.Loader.Update.Providers.GitHub;
 
@@ -139,6 +130,17 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
                      "e.g. *update.zip will look for any file ending with 'update.zip'\n" +
                      "For backwards compatibility only. Do not use with new mods.")]
         public string AssetFileName { get; set; } = "Mod.zip";
+
+        // Reflection-free JSON
+        /// <inheritdoc />
+        public static JsonTypeInfo<GitHubConfig> GetJsonTypeInfo(out bool supportsSerialize)
+        {
+            supportsSerialize = true;
+            return GitHubConfigContext.Default.GitHubConfig;
+        }
+        
+        /// <inheritdoc />
+        public JsonTypeInfo<GitHubConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
         
     /// <summary>
@@ -156,5 +158,25 @@ public class GitHubReleasesUpdateResolverFactory : IUpdateResolverFactory
         /// Overrides the global setting to enable or disable prereleases.
         /// </summary>
         public bool EnablePrereleases { get; set; } = false;
+
+        // Reflection-free JSON
+        /// <inheritdoc />
+        public static JsonTypeInfo<GitHubUserConfig> GetJsonTypeInfo(out bool supportsSerialize)
+        {
+            supportsSerialize = true;
+            return GitHubUserConfigContext.Default.GitHubUserConfig;
+        }
+        
+        /// <inheritdoc />
+        public JsonTypeInfo<GitHubUserConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
 }
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(GitHubReleasesUpdateResolverFactory.GitHubConfig))]
+internal partial class GitHubConfigContext : JsonSerializerContext { }
+
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(GitHubReleasesUpdateResolverFactory.GitHubUserConfig))]
+internal partial class GitHubUserConfigContext : JsonSerializerContext { }

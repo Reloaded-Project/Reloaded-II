@@ -1,8 +1,3 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using Reloaded.Mod.Launcher.Lib.Interop;
-using Reloaded.WPF.Utilities;
-
 namespace Reloaded.Mod.Launcher.Interop;
 
 /// <summary>

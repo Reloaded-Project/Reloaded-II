@@ -1,16 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using PropertyChanged;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Structs.Dependencies;
-using Reloaded.Mod.Loader.IO.Structs.Sorting;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Loader.IO.Config;
 
 [Equals(DoNotAddEqualityOperators = true, DoNotAddGetHashCode = true)]
@@ -34,13 +21,16 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public string ModVersion        { get; set; } = DefaultVersion;
     public string ModDescription    { get; set; } = DefaultDescription;
     public string ModDll            { get; set; } = String.Empty;
-
+    
     [DoNotCheckEquality]
     public string ModIcon           { get; set; } = String.Empty;
     public string ModR2RManagedDll32 { get; set; } = String.Empty;
     public string ModR2RManagedDll64 { get; set; } = String.Empty;
     public string ModNativeDll32    { get; set; } = String.Empty;
     public string ModNativeDll64    { get; set; } = String.Empty;
+    public string[] Tags            { get; set; } = Array.Empty<string>();
+    public bool?  CanUnload         { get; set; } = null;
+    public bool?  HasExports        { get; set; } = null;
     public bool   IsLibrary         { get; set; } = false;
     public string ReleaseMetadataFileName { get; set; } = "Sewer56.Update.ReleaseMetadata.json";
 
@@ -54,6 +44,7 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public string[] ModDependencies         { get; set; } = Array.Empty<string>();
     public string[] OptionalDependencies    { get; set; } = Array.Empty<string>();
     public string[] SupportedAppId          { get; set; } = Array.Empty<string>();
+    public string ProjectUrl { get; set; } = String.Empty;
 
     /*
        ---------------
@@ -430,6 +421,15 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
         OptionalDependencies ??= EmptyArray<string>.Instance;
         SupportedAppId ??= EmptyArray<string>.Instance;
     }
+
+    // Reflection-less JSON
+    public static JsonTypeInfo<ModConfig> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = false;   
+        return ModConfigContext.Default.ModConfig;
+    }
+    
+    public JsonTypeInfo<ModConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 
     /*
        ---------

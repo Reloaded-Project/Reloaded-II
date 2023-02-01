@@ -1,6 +1,3 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace Reloaded.Mod.Loader.Update.Utilities;
 
 /// <summary>
@@ -39,9 +36,9 @@ public struct PaginationHelper : INotifyPropertyChanged
     /// <summary>
     /// Decrements the pagination helper to the previous page.
     /// </summary>
-    public void PreviousPage()
+    public void PreviousPage(int numPages = 1)
     {
-        Page -= 1;
+        Page -= numPages;
         if (Page < 0)
             Page = 0;
     }
@@ -54,10 +51,19 @@ public struct PaginationHelper : INotifyPropertyChanged
     /// <summary>
     /// Advances the helper to the next page.
     /// </summary>
-    public void NextPage()
+    public void NextPage(int numPages = 1)
     {
         if (Page != int.MaxValue)
-            Page += 1;
+            Page += numPages;
+    }
+
+    /// <summary>
+    /// Returns a pagination helper incremented by given number of pages.
+    /// </summary>
+    public static PaginationHelper operator +(PaginationHelper a, int b)
+    {
+        a.NextPage(b);
+        return a;
     }
 
     /// <inheritdoc />

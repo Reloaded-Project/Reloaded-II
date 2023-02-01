@@ -1,21 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Versioning;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers.Web;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Interfaces;
-using Sewer56.Update.Interfaces.Extensions;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Packaging.Structures;
-using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
+using IPackageResolver = Sewer56.Update.Interfaces.IPackageResolver;
 
 namespace Reloaded.Mod.Loader.Update.Providers.Update;
 
@@ -25,7 +8,7 @@ namespace Reloaded.Mod.Loader.Update.Providers.Update;
 public class UpdateDownloadablePackage : IDownloadablePackage
 {
     /// <summary>
-    /// The package resovler tied to this package.
+    /// The package resolver tied to this package.
     /// </summary>
     public IPackageResolver PackageResolver { get; private set; }
 
@@ -39,25 +22,57 @@ public class UpdateDownloadablePackage : IDownloadablePackage
     }
 
     /// <inheritdoc />
-    public string Id { get; set; } = "";
-
-    /// <inheritdoc />
     public string Name { get; set; } = "Unknown Package";
-
-    /// <inheritdoc />
-    public string Authors { get; set; } = "Unknown Author";
-
-    /// <inheritdoc />
-    public string Description { get; set; } = "No Description";
 
     /// <inheritdoc />
     public string Source { get; internal set; } = null!;
 
     /// <inheritdoc />
-    public NuGetVersion Version { get; internal set; } = null!;
+    public string? Id { get; set; }
 
     /// <inheritdoc />
-    public long FileSize { get; internal set; }
+    public string? Authors { get; set; }
+
+    /// <inheritdoc />
+    public Submitter? Submitter { get; set; }
+
+    /// <inheritdoc />
+    public string? Description { get; set; }
+
+    /// <inheritdoc />
+    public NuGetVersion? Version { get; internal set; }
+
+    /// <inheritdoc />
+    public long? FileSize { get; internal set; }
+
+    /// <inheritdoc />
+    public string? MarkdownReadme { get; } = null!;
+
+    /// <summary>
+    /// Unsupported.
+    /// </summary>
+    public DownloadableImage[]? Images { get; set; } = null;
+
+    /// <inheritdoc />
+    public Uri? ProjectUri { get; set; } = null;
+
+    /// <inheritdoc />
+    public long? LikeCount { get; set; } = null;
+
+    /// <inheritdoc />
+    public long? ViewCount { get; set; } = null;
+
+    /// <inheritdoc />
+    public long? DownloadCount { get; set; } = null;
+
+    /// <inheritdoc />
+    public DateTime? Published { get; set; } = null!;
+
+    /// <inheritdoc />
+    public string? Changelog { get; }
+
+    /// <inheritdoc />
+    public string[]? Tags { get; set; }
 
     private async Task GetPackageDetailsAsync()
     {
@@ -83,7 +98,7 @@ public class UpdateDownloadablePackage : IDownloadablePackage
 
         // Download Package
         var downloadSlice = progressSlicer.Slice(0.9f);
-        await PackageResolver.DownloadPackageAsync(Version, tempDownloadPath, new ReleaseMetadataVerificationInfo() { FolderPath = tempDownloadPath }, downloadSlice, token);
+        await PackageResolver.DownloadPackageAsync(Version!, tempDownloadPath, new ReleaseMetadataVerificationInfo() { FolderPath = tempDownloadPath }, downloadSlice, token);
 
         // Extract package.
         var extractSlice = progressSlicer.Slice(0.1f);
@@ -94,6 +109,8 @@ public class UpdateDownloadablePackage : IDownloadablePackage
         return WebDownloadablePackage.CopyPackagesFromExtractFolderToTargetDir(packageFolder, tempExtractDir.FolderPath, token);
     }
 
+#pragma warning disable CS0067 // Event never used
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
+#pragma warning restore CS0067 // Event never used
 }

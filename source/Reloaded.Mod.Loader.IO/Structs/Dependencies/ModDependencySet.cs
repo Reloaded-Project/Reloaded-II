@@ -1,6 +1,3 @@
-﻿using System.Collections.Generic;
-using Reloaded.Mod.Loader.IO.Config;
-
 namespace Reloaded.Mod.Loader.IO.Structs.Dependencies;
 
 /// <summary>

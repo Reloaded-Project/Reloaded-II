@@ -10,7 +10,7 @@
 LoaderConfig::LoaderConfig()
 {
 	// Get path to AppData
-	char_t buffer[MAX_PATH];
+	char_t buffer[32767]; // Max Windows10+ path.
 	BOOL result = SHGetSpecialFolderPath(nullptr, buffer, CSIDL_APPDATA, false);
 
 	if (!result)

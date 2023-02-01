@@ -1,13 +1,6 @@
-﻿using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Bogus;
-using Newtonsoft.Json;
-using Reloaded.Mod.Loader.Community;
-using Reloaded.Mod.Loader.Community.Config;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Xunit;
+using IndexApi = Reloaded.Mod.Loader.Community.IndexApi;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using Routes = Reloaded.Mod.Loader.Community.Routes;
 
 namespace Reloaded.Mod.Loader.Tests.Community;
 
@@ -103,7 +96,7 @@ public class IndexTest
         Assert.True(!string.IsNullOrEmpty(application.Hash));
     }
 
-    private static Index BuildIndex(int numItems, string sourceDir, string targetDir)
+    private static Mod.Loader.Community.Config.Index BuildIndex(int numItems, string sourceDir, string targetDir)
     {
         // Arrange: Write Applications
         var entries = GetGameEntryFaker().Generate(numItems);
@@ -117,7 +110,7 @@ public class IndexTest
         }
 
         // Act
-        return Index.Build(sourceDir, targetDir);
+        return Mod.Loader.Community.Config.Index.Build(sourceDir, targetDir);
     }
 
     private static Faker<AppItem> GetGameEntryFaker()

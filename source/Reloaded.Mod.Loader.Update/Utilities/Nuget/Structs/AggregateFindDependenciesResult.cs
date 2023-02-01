@@ -1,6 +1,3 @@
-﻿using System.Collections.Generic;
-using NuGet.Protocol.Core.Types;
-
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 
 /// <summary>

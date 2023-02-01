@@ -1,8 +1,3 @@
-﻿using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Commands.Application;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog.FirstLaunch;
-using Reloaded.WPF.Theme.Default;
-
 namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
 
 /// <summary>
@@ -10,10 +5,11 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
 /// </summary>
 public partial class AddApplication : ReloadedPage
 {
-    public AddApplicationViewModel ViewModel { get; set; } = IoC.Get<AddApplicationViewModel>();
+    public AddApplicationViewModel ViewModel { get; set; } 
 
     public AddApplication()
     {
+        ViewModel = Lib.IoC.Get<AddApplicationViewModel>();
         InitializeComponent();
     }
 
@@ -21,10 +17,10 @@ public partial class AddApplication : ReloadedPage
 
     private void SkipStep_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.FirstLaunchViewModel.GoToNextStep();
 
-    private void AddApplication_Click(object sender, System.Windows.RoutedEventArgs e)
+    private async void AddApplication_Click(object sender, System.Windows.RoutedEventArgs e)
     {
         var parameters = new AddApplicationCommandParams();
-        ViewModel.AddApplicationCommand.Execute(parameters);
+        await ViewModel.AddApplicationCommand.ExecuteAsync(parameters);
 
         if (parameters.ResultCreatedApplication)
             ViewModel.FirstLaunchViewModel.GoToNextStep();

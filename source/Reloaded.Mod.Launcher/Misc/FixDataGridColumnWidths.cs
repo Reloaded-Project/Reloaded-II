@@ -1,9 +1,3 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using Reloaded.WPF.MVVM;
-
 namespace Reloaded.Mod.Launcher.Misc;
 
 /// <summary>

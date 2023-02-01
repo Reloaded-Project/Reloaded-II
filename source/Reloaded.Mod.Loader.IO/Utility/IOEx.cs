@@ -1,13 +1,3 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.IO.Utility.Windows;
-
 namespace Reloaded.Mod.Loader.IO.Utility;
 
 public static class IOEx
@@ -191,16 +181,12 @@ public static class IOEx
     /// <param name="minDepth">Minimum depth (inclusive) to search in with 1 indicating current directory.</param>
     public static List<string> GetFilesEx(string directory, string fileName, int maxDepth = 1, int minDepth = 1)
     {
-        var directories = new List<string>();
-        GetFilesExDirectories(directory, maxDepth, minDepth, 0, directories);
-
-        // Wait for all threads to terminate.
         var files = new List<string>();
-        if (directories.Count <= 0) 
-            return files;
 
-        foreach (var dir in directories)
-            files.AddRange(Directory.GetFiles(dir, fileName, SearchOption.TopDirectoryOnly));
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            GetFilesExDirectories_Generic(directory, fileName, maxDepth, minDepth, 0, files);
+        else
+            GetFilesExDirectories_Windows(directory, fileName, maxDepth, minDepth, 0, files);
 
         return files;
     }
@@ -216,17 +202,20 @@ public static class IOEx
             return Directory.GetFiles(path, fileName, SearchOption.TopDirectoryOnly);
 
 #pragma warning disable CA1416 // Validate platform compatibility
-        if (!WindowsDirectorySearcher.TryGetDirectoryContents(path, out var fileInformations, out var directories))
+        var files = new List<NtQueryDirectoryFileSearcher.FileInformation>();
+        var directories = new List<NtQueryDirectoryFileSearcher.DirectoryInformation>();
+
+        if (!NtQueryDirectoryFileSearcher.TryGetDirectoryContents(path, files, directories))
             return Directory.GetFiles(path, fileName, SearchOption.TopDirectoryOnly);
 
-        var files = new List<string>(fileInformations.Count);
-        foreach (var fileInformation in fileInformations)
+        var filePaths = new List<string>(files.Count);
+        foreach (var file in files)
         {
-            if (Path.GetFileName(fileInformation.FullPath).Equals(fileName, StringComparison.OrdinalIgnoreCase))
-                files.Add(fileInformation.FullPath);
+            if (file.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase))
+                filePaths.Add(Path.Combine(file.DirectoryPath, file.FileName));
         }
 #pragma warning restore CA1416
-        return files.ToArray();
+        return filePaths.ToArray();
     }
 
     /// <summary>
@@ -261,15 +250,51 @@ public static class IOEx
         catch (Exception) { /* Ignored */ }
     }
 
-    private static void GetFilesExDirectories(string directory, int maxDepth, int minDepth, int currentDepth, List<string> directories)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void GetFilesExDirectories_Windows(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files)
+    {
+#pragma warning disable CA1416 // Validate platform compatibility
+        var listFileInfo = new List<NtQueryDirectoryFileSearcher.FileInformation>();
+        var listDirInfo = new List<NtQueryDirectoryFileSearcher.DirectoryInformation>();
+        GetFilesExDirectories_Windows_Internal(directory, fileName, maxDepth, minDepth, currentDepth, files, listFileInfo, listDirInfo);
+#pragma warning restore CA1416 // Validate platform compatibility
+    }
+
+    [SupportedOSPlatform("windows5.1.2600")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void GetFilesExDirectories_Windows_Internal(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files, List<NtQueryDirectoryFileSearcher.FileInformation> fileInfoBuffer, List<NtQueryDirectoryFileSearcher.DirectoryInformation> dirInfoBuffer)
+    {
+        fileInfoBuffer.Clear();
+        dirInfoBuffer.Clear();
+        
+        // We always need to query because we need directories.
+        NtQueryDirectoryFileSearcher.TryGetDirectoryContents(directory, fileInfoBuffer, dirInfoBuffer);
+        if (currentDepth >= minDepth - 1 && currentDepth < maxDepth)
+        {
+            foreach (var fileInfo in fileInfoBuffer)
+            {
+                if (fileInfo.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase))
+                    files.Add(Path.Combine(fileInfo.DirectoryPath, fileInfo.FileName));
+            }
+        }
+
+        if (currentDepth + 1 >= maxDepth)
+            return;
+
+        foreach (var subdir in dirInfoBuffer.ToArray())
+            GetFilesExDirectories_Windows_Internal(subdir.FullPath, fileName, maxDepth, minDepth, currentDepth + 1, files, fileInfoBuffer, dirInfoBuffer);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+    private static void GetFilesExDirectories_Generic(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files)
     {
         if (currentDepth >= minDepth - 1 && currentDepth < maxDepth)
-            directories.Add(directory);
+            files.AddRange(GetFilesInDirectory(directory, fileName));
 
         if (currentDepth + 1 >= maxDepth) 
             return;
 
         foreach (var subdir in Directory.GetDirectories(directory))
-            GetFilesExDirectories(subdir, maxDepth, minDepth, currentDepth + 1, directories);
+            GetFilesExDirectories_Generic(subdir, fileName, maxDepth, minDepth, currentDepth + 1, files);
     }
 }

@@ -1,7 +1,3 @@
-﻿using System;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 
 /// <summary>
@@ -28,9 +24,17 @@ public class NonReloadedPageViewModel : ObservableObject, IDisposable
     /// <inheritdoc />
     public void Dispose()
     {
-        ApplicationViewModel.SelectedProcess!.Exited -= SelectedProcessOnExited;
+        if (ApplicationViewModel.SelectedProcess != null)
+            ApplicationViewModel.SelectedProcess!.Exited -= SelectedProcessOnExited;
+        
         GC.SuppressFinalize(this);
     }
 
-    private void SelectedProcessOnExited(object? sender, EventArgs e) => ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
+    private void SelectedProcessOnExited(object? sender, EventArgs e)
+    {
+        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
+        {
+            ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
+        });
+    }
 }

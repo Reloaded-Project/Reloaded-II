@@ -1,6 +1,3 @@
-﻿using System.Collections.Generic;
-using Sewer56.Update.Structures;
-
 namespace Reloaded.Mod.Loader.Update.Structures;
 
 /// <summary>

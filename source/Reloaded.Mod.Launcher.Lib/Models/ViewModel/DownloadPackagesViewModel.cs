@@ -1,29 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using NuGet.Protocol.Core.Types;
-using Reloaded.Mod.Launcher.Lib.Commands.Download;
-using Reloaded.Mod.Launcher.Lib.Commands.Templates;
-using Reloaded.Mod.Launcher.Lib.Models.Model.DownloadPackagePage;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers;
-using Reloaded.Mod.Loader.Update.Providers.NuGet;
-using Reloaded.Mod.Loader.Update.Utilities;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
@@ -40,7 +15,7 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// <summary>
     /// List of potential packages to download.
     /// </summary>
-    public ObservableCollection<IDownloadablePackage> SearchResult  { get; set; } = new();
+    public BatchObservableCollection<IDownloadablePackage> SearchResult  { get; set; } = new();
 
     /// <summary>
     /// The currently selected package.
@@ -73,16 +48,49 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     public bool CanGoToNextPage { get; set; } = true;
 
     /// <summary>
+    /// Hide already installed mods.
+    /// </summary>
+    public bool HideInstalled { get; set; } = false;
+
+    /// <summary>
     /// List of all available package providers.
     /// </summary>
-    public ObservableCollection<AggregatePackageProvider> PackageProviders { get; set; } = new();
+    public ObservableCollection<IDownloadablePackageProvider> PackageProviders { get; set; } = new();
 
     /// <summary>
     /// The currently used package provider.
     /// </summary>
-    public AggregatePackageProvider CurrentPackageProvider { get; set; }
+    public IDownloadablePackageProvider CurrentPackageProvider { get; set; }
 
-    private CancellationTokenSource? _tokenSource;
+    /// <summary>
+    /// Selects the next package for viewing.
+    /// </summary>
+    public RelayCommand SelectNextItem { get; set; }
+
+    /// <summary>
+    /// Selects the previous package for viewing.
+    /// </summary>
+    public RelayCommand SelectLastItem { get; set; }
+
+    /// <summary>
+    /// Source for current search' cancellationtoken.
+    /// </summary>
+    public CancellationTokenSource CurrentSearchTokenSource { get; set; } = new ();
+
+    /// <summary>
+    /// The available sorting strategies.
+    /// </summary>
+    public ObservableCollection<SearchSortingMode> SortingModes { get; set; } = new ObservableCollection<SearchSortingMode>();
+
+    /// <summary>
+    /// The current sorting strategy used.
+    /// </summary>
+    public SearchSortingMode SortingMode { get; set; } = new SearchSortingMode();
+
+    /// <summary>
+    /// Whether the search should work in descending order.
+    /// </summary>
+    public bool SortDescending { get; set; } = true;
 
     private PaginationHelper _paginationHelper = PaginationHelper.Default;
 
@@ -91,34 +99,33 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// <inheritdoc />
     public DownloadPackagesViewModel(AggregateNugetRepository nugetRepository, ApplicationConfigService appConfigService)
     {
-        // Get package provider for individual games.
-        foreach (var appConfig in appConfigService.Items.ToArray())
-        {
-            var provider = PackageProviderFactory.GetProvider(appConfig);
-            if (provider != null)
-                PackageProviders.Add(provider);
-        }
+        // Get providers for all games.
+        PackageProviders.AddRange(PackageProviderFactory.GetAllProviders(appConfigService.Items.ToArray(), nugetRepository.Sources));
 
-        // Get package provider for all packages.
-        PackageProviders.Add(new AggregatePackageProvider(new IDownloadablePackageProvider[] { new NuGetPackageProvider(nugetRepository) }, "NuGet"));
-        var allPackageProvider = new AggregatePackageProvider(PackageProviders.Select(x => (IDownloadablePackageProvider)x).ToArray(), Resources.DownloadPackagesAll.Get());
+        var allPackageProvider = new AggregatePackageProvider(PackageProviders.Select(x => x).ToArray(), Resources.DownloadPackagesAll.Get());
         PackageProviders.Add(allPackageProvider);
         CurrentPackageProvider = allPackageProvider;
 
         // Setup other viewmodel elements.
         ConfigureNuGetSourcesCommand = new ConfigureNuGetSourcesCommand(RefreshOnSourceChange);
         PropertyChanged += OnAnyPropChanged;
+        SelectLastItem = new RelayCommand(SelectLastResult, CanSelectLastResult);
+        SelectNextItem = new RelayCommand(SelectNextResult, CanSelectNextResult);
         UpdateCommands();
 
         // React to search results and pagination stuff.
         SearchResult.CollectionChanged += SetCanGoToNextPageOnSearchResultsChanged;
-
+        
         // Perform Initial Search.
-        _paginationHelper.ItemsPerPage = 10;
+        _paginationHelper.ItemsPerPage = 500;
+        SortingModes = new ObservableCollection<SearchSortingMode>(SearchSortingMode.GetAll());
 #pragma warning disable CS4014
         GetSearchResults();
 #pragma warning restore CS4014
     }
+
+    /// <inheritdoc />
+    public void Dispose() => CurrentSearchTokenSource?.Dispose();
 
     /// <summary>
     /// Gets the search results for the current search term.
@@ -126,11 +133,18 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     /// <returns></returns>
     public async Task GetSearchResults()
     {
-        _tokenSource?.Cancel();
-        _tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-        
-        var searchTuples = await CurrentPackageProvider.SearchAsync(SearchQuery, _paginationHelper.Skip, _paginationHelper.Take, _tokenSource.Token);
-        Collections.ModifyObservableCollection(SearchResult, searchTuples);
+        CurrentSearchTokenSource?.Cancel();
+        CurrentSearchTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+        var localTokenSource = CurrentSearchTokenSource;
+        var searchTuples = await CurrentPackageProvider.SearchAsync(SearchQuery, _paginationHelper.Skip, _paginationHelper.Take, new SearchOptions()
+        {
+            Sort = SortingMode.SortingMode,
+            SortDescending = SortingMode.IsDescending
+        }, localTokenSource.Token);
+
+        // Ideally we would use ModifyObservableCollection but this is not possible when the results are sorted; as our view wouldn't reorder them.
+        if (!localTokenSource.IsCancellationRequested)
+            SearchResult = new BatchObservableCollection<IDownloadablePackage>(searchTuples);
     }
 
     /// <summary>
@@ -154,6 +168,43 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
         await GetSearchResults();
     }
 
+    /// <summary>
+    /// Returns true if next result in the list can be selected.
+    /// </summary>
+    public bool CanSelectNextResult(object? unused = null)
+    {
+        var index = SearchResult.IndexOf(SelectedResult);
+        return index < SearchResult.Count - 1;
+    }
+
+    /// <summary>
+    /// Returns true if next result in the list can be selected.
+    /// </summary>
+    public bool CanSelectLastResult(object? unused = null)
+    {
+        var index = SearchResult.IndexOf(SelectedResult);
+        return index > 0;
+    }
+
+    /// <summary>
+    /// Selects the next result in the list.
+    /// </summary>
+    public void SelectLastResult(object? unused = null)
+    {
+        var index = SearchResult.IndexOf(SelectedResult);
+        SelectedResult = SearchResult[index - 1];
+    }
+
+    /// <summary>
+    /// Selects the next result in the list.
+    /// </summary>
+    public void SelectNextResult(object? unused = null)
+    {
+        var index = SearchResult.IndexOf(SelectedResult);
+        SelectedResult = SearchResult[index + 1];
+    }
+
+    [SuppressPropertyChangedWarnings]
     private void OnAnyPropChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SearchQuery))
@@ -161,6 +212,10 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
             ResetSearch();
         }
         else if (e.PropertyName == nameof(CurrentPackageProvider))
+        {
+            ResetSearch();
+        }
+        else if (e.PropertyName == nameof(SortingMode))
         {
             ResetSearch();
         }
@@ -182,12 +237,6 @@ public class DownloadPackagesViewModel : ObservableObject, IDisposable
     private void SetCanGoToNextPageOnSearchResultsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         CanGoToNextPage = SearchResult.Count >= _paginationHelper.ItemsPerPage;
-    }
-
-    /// <inheritdoc />
-    public void Dispose()
-    {
-        _tokenSource?.Dispose();
     }
 
     private async void RefreshOnSourceChange() => await GetSearchResults();
@@ -248,8 +297,6 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
             _canExecute = false;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             
-            // TODO: Download Packages Async
-            // Update.DownloadNuGetPackagesAsync()
             ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 var viewModel = new DownloadPackageViewModel(_package!, IoC.Get<LoaderConfig>());

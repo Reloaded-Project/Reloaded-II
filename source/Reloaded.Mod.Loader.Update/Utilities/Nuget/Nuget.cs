@@ -1,11 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using NuGet.Common;
-using NuGet.Packaging;
-using NuGet.Protocol.Core.Types;
-using Reloaded.Mod.Loader.IO.Utility;
+using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
 
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget;
 

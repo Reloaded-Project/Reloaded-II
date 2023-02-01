@@ -1,6 +1,3 @@
-﻿using System;
-using System.Windows.Input;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Templates;
 
 /// <summary>

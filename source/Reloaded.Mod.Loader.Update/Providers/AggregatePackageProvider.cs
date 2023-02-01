@@ -1,9 +1,3 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Update.Interfaces;
-
 namespace Reloaded.Mod.Loader.Update.Providers;
 
 /// <summary>
@@ -26,14 +20,15 @@ public class AggregatePackageProvider : IDownloadablePackageProvider
     }
 
     /// <inheritdoc />
-    public async Task<List<IDownloadablePackage>> SearchAsync(string text, int skip, int take, CancellationToken token = default)
+    public async Task<IEnumerable<IDownloadablePackage>> SearchAsync(string text, int skip, int take, SearchOptions? options = null, CancellationToken token = default)
     {
-        var results = new Task<List<IDownloadablePackage>>[_providers.Length];
+        var results = new Task<IEnumerable<IDownloadablePackage>>[_providers.Length];
 
         for (var x = 0; x < _providers.Length; x++)
-            results[x] = _providers[x].SearchAsync(text, skip, take, token);
+            results[x] = _providers[x].SearchAsync(text, skip, take, options, token);
 
         await Task.WhenAll(results);
-        return results.SelectMany(x => x.Result).ToList();
+        options ??= new SearchOptions();
+        return results.SelectMany(x => x.Result).ApplyFilters(options.Sort, options.SortDescending);
     }
 }

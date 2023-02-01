@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d322e71a-f32e-42e9-8340-c747d3d9028c</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Reloaded.Mod.Shared2</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)EntryPointParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Environment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SharedConstants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Usings.cs" />
+  </ItemGroup>
+</Project>

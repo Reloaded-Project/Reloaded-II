@@ -1,8 +1,3 @@
-﻿using System.Windows;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog.FirstLaunch;
-using Reloaded.WPF.Theme.Default;
-
 namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
 
 /// <summary>
@@ -10,7 +5,7 @@ namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
 /// </summary>
 public partial class Complete : ReloadedPage
 {
-    public CompleteViewModel ViewModel { get; set; } = IoC.Get<CompleteViewModel>();
+    public CompleteViewModel ViewModel { get; set; } = Lib.IoC.Get<CompleteViewModel>();
 
     public Complete()
     {

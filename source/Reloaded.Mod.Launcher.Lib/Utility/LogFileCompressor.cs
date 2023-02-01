@@ -1,7 +1,5 @@
-﻿using System;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
+using CompressionLevel = System.IO.Compression.CompressionLevel;
+using FileMode = System.IO.FileMode;
 
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 

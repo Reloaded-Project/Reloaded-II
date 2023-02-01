@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IsPackable>false</IsPackable>
     <LangVersion>preview</LangVersion>
     <OutputPath>..\Output\Tests\</OutputPath>
     <Nullable>disable</Nullable>
+    <NoWarn>$(NoWarn);NU1605;NU1701;MSB3270</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets.cs" />
     <Content Include="HeroesControllerPostProcess.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -32,20 +34,29 @@
     <Content Include="xunit.runner.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="34.0.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
-    <PackageReference Include="Moq" Version="4.14.5" />
+    <Compile Remove="Assets\Assets.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="34.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="Moq" Version="4.18.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mods\Reloaded.Utils.Server\Reloaded.Utils.Server.csproj" />
+    <ProjectReference Include="..\Reloaded.Mod.Launcher.Lib\Reloaded.Mod.Launcher.Lib.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Community\Reloaded.Mod.Loader.Community.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
@@ -67,7 +78,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Update\Utilities\" />
+    <Folder Include="Assets\R2Pack" />
+    <Folder Include="Utility\" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,3 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.Logging.Interfaces;
 using Environment = Reloaded.Mod.Shared.Environment;
 
 namespace Reloaded.Mod.Loader.Logging;

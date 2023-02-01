@@ -1,14 +1,3 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Input;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Config.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>

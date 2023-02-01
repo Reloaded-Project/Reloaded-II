@@ -1,7 +1,3 @@
-﻿using System.ComponentModel;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
-
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 
 /// <summary>
@@ -18,5 +14,5 @@ public partial class EditModUserConfigDialog : ReloadedWindow
         this.Closing += OnClosing;
     }
 
-    private async void OnClosing(object sender, CancelEventArgs e) => await RealViewModel.SaveAsync();
+    private async void OnClosing(object? sender, CancelEventArgs e) => await RealViewModel.SaveAsync();
 }

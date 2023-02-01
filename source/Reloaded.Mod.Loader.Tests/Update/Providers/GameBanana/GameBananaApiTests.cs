@@ -1,8 +1,3 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana.Structures;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Providers.GameBanana;
 
 public class GameBananaApiTests
@@ -10,7 +5,7 @@ public class GameBananaApiTests
     [Fact]
     public async Task Search_ByGame_ReturnsAllResults()
     {
-        var result = await GameBananaMod.GetByNameAsync("", 7486, 0, 10);
+        var result = await GameBananaMod.GetByNameAllCategoriesAsync("", 7486, 0, 10);
 
         // Assert
         Assert.True(result.Count > 0);
@@ -20,7 +15,7 @@ public class GameBananaApiTests
     [Fact]
     public async Task Search_WithString_ReturnsTestLibrary()
     {
-        var result = await GameBananaMod.GetByNameAsync("Update Lib. Test", 7486, 0, 10);
+        var result = await GameBananaMod.GetByNameAllCategoriesAsync("Update Lib. Test", 7486, 0, 10);
 
         // Assert
         Assert.Single(result);
@@ -30,7 +25,7 @@ public class GameBananaApiTests
     [Fact]
     public async Task Search_WithSingleChar_DoesNotThrow()
     {
-        var result = await GameBananaMod.GetByNameAsync("u", 7486, 0, 10);
+        var result = await GameBananaMod.GetByNameAllCategoriesAsync("u", 7486, 0, 10);
 
         // Assert
         Assert.True(result.Count > 0);
@@ -39,7 +34,7 @@ public class GameBananaApiTests
     [Fact]
     public async Task Search_ReturnsModManagerIntegrations()
     {
-        var result = await GameBananaMod.GetByNameAsync("Update Lib. Test", 7486, 0, 10);
+        var result = await GameBananaMod.GetByNameAllCategoriesAsync("Update Lib. Test", 7486, 0, 10);
 
         // Assert
         var integration = result![0].ManagerIntegrations!.First();

@@ -1,5 +1,3 @@
-﻿using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Loader.IO.Structs;
 
 public class BooleanGenericTuple<TGeneric> : ObservableObject

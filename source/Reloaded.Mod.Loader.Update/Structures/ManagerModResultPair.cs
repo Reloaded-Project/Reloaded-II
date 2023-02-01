@@ -1,9 +1,3 @@
-﻿using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Sewer56.Update;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Structures;
-
 namespace Reloaded.Mod.Loader.Update.Structures;
 
 /// <summary>

@@ -53,7 +53,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
 			if (preload_setup_info())
 			{
 				initializeThreadHandle = CreateThread(nullptr, 0, &load_reloaded_async, 0, 0, nullptr);
-				Sleep(8); // Just enough to get the thread we created to the lock.
 			}
 			break;
 
@@ -241,12 +240,8 @@ struct ModInfoDummy
 
 extern "C"
 {
-	// Note: MainMemory's Mod Loaders have inconsistent entry points (some having helper functions, some not). Not exporting.
-	__declspec(dllexport) ModInfoDummy SA2ModInfo { 1 };
-	__declspec(dllexport) ModInfoDummy SADXModInfo { 1 };
-	__declspec(dllexport) ModInfoDummy SonicRModInfo { 1 };
-	__declspec(dllexport) ModInfoDummy ManiaModInfo { 1 };
-	__declspec(dllexport) ModInfoDummy SKCModInfo { 1 };
+	// Note: MainMemory's Mod Loaders have inconsistent entry points (some having helper functions, some not). Not exporting proper defs.
+	__declspec(dllexport) ModInfoDummy MainMemoryModInfo = { 1 };
 
 	// Entry point for Ultimate ASI Loader, to allow waiting for Reloaded II creation thread to terminate.
 	__declspec(dllexport) void InitializeASI()

@@ -1,12 +1,9 @@
-﻿using System.Windows;
-using Reloaded.Mod.Launcher.Lib.Interop;
-
 namespace Reloaded.Mod.Launcher.Interop;
 
 /// <summary>
 /// Resource provider which fetches resources from WPF's implementation of XAML.
 /// </summary>
-public class XamlResourceProvider : IDictionaryResourceProvider
+public struct XamlResourceProvider : IDictionaryResourceProvider
 {
     public TResource Get<TResource>(string resourceName) => (TResource) Application.Current.Resources[resourceName];
 

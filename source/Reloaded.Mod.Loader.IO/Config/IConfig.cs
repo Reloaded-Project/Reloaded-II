@@ -1,9 +1,4 @@
-﻿using System.IO;
-using System.Text;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.IO.Utility;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Reloaded.Mod.Loader.IO.Config;
 
@@ -12,8 +7,39 @@ namespace Reloaded.Mod.Loader.IO.Config;
 /// </summary>
 public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
 {
-    private static JsonSerializerOptions _options = new JsonSerializerOptions() { WriteIndented = true };
+    private static JsonSerializerOptions _options = new JsonSerializerOptions()
+    {
+        WriteIndented = true
+    };
+    
+    private static Encoding _encoding = new UTF8Encoding(false);
 
+#if NET7_0_OR_GREATER
+    /// <summary>
+    /// Returns the JSON type info for reflection-less serialization.
+    /// </summary>
+    public static abstract JsonTypeInfo<TType> GetJsonTypeInfo(out bool supportsSerialize);
+#else
+    /// <summary>
+    /// Returns the JSON type info for reflection-less serialization.
+    /// </summary>
+    public abstract JsonTypeInfo<TType> GetJsonTypeInfoNet5(out bool supportsSerialize);
+#endif
+
+    /// <summary>
+    /// Returns the JSON type info for reflection-less serialization.
+    /// Wrapper that calls correct underlying method.
+    /// </summary>
+    public static JsonTypeInfo<TType> GetJsonTypeInfoHelper(out bool supportsSerialize)
+    {
+#if NET7_0_OR_GREATER
+        return TType.GetJsonTypeInfo(out supportsSerialize);
+#else
+        var instance = Activator.CreateInstance<TType>();
+        return instance.GetJsonTypeInfoNet5(out supportsSerialize);
+#endif
+    }
+    
     /// <summary>
     /// Writes a given mod configurations to an absolute file path.
     /// </summary>
@@ -26,12 +52,32 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
     /// <param name="filePath">The absolute file path of the config file.</param>
     public static TType FromPath(string filePath)
     {
-        using var stream = IOEx.OpenFile(filePath, FileMode.Open, FileAccess.Read);
-        using var textReader = new StreamReader(stream);
-        string jsonFile = textReader.ReadToEnd();
-        var result = JsonSerializer.Deserialize<TType>(jsonFile, _options);
-        result.SanitizeConfig();
-        return result;
+        int numAttempts = 0;
+        int sleepTime = 32;
+        while (true)
+        {
+            try
+            {
+                using var stream = IOEx.OpenFile(filePath, FileMode.Open, FileAccess.Read);
+                using var textReader = new StreamReader(stream);
+                string jsonFile = textReader.ReadToEnd();
+                var info = GetJsonTypeInfoHelper(out _);
+                var result = info != null ? JsonSerializer.Deserialize(jsonFile, info) 
+                    : JsonSerializer.Deserialize<TType>(jsonFile, _options);
+
+                result.SanitizeConfig();
+                return result;
+            }
+            catch (Exception)
+            {
+                if (numAttempts >= 6)
+                    throw;
+
+                numAttempts++;
+                Thread.Sleep(sleepTime);
+                sleepTime *= 2;
+            }
+        }
     }
 
     /// <summary>
@@ -55,10 +101,31 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
     /// <param name="token">Token that can be used to cancel deserialization</param>
     public static async Task<TType> FromPathAsync(string filePath, CancellationToken token = default)
     {
-        await using var stream = await IOEx.OpenFileAsync(filePath, FileMode.Open, FileAccess.Read, token);
-        var result = await JsonSerializer.DeserializeAsync<TType>(stream, _options, token);
-        result.SanitizeConfig();
-        return result;
+        int numAttempts = 0;
+        int sleepTime = 32;
+
+        while (true)
+        {
+            try
+            {
+                await using var stream = await IOEx.OpenFileAsync(filePath, FileMode.Open, FileAccess.Read, token);
+                var info = GetJsonTypeInfoHelper(out _);
+                var result = info != null ? await JsonSerializer.DeserializeAsync(stream, info, token) :
+                    await JsonSerializer.DeserializeAsync<TType>(stream, _options, token);
+        
+                result.SanitizeConfig();
+                return result;
+            }
+            catch (Exception)
+            {
+                if (numAttempts >= 6)
+                    throw;
+
+                numAttempts++;
+                await Task.Delay(sleepTime, token);
+                sleepTime *= 2;
+            }
+        }
     }
 
     /// <summary>
@@ -86,11 +153,15 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
         string fullPath = Path.GetFullPath(filePath);
         CreateDirectoryIfNotExist(Path.GetDirectoryName(fullPath));
 
-        string jsonFile  = JsonSerializer.Serialize(config, _options);
+        var info = GetJsonTypeInfoHelper(out var serialize);
+        string jsonFile  = info != null && serialize 
+            ? JsonSerializer.Serialize(config, info) 
+            : JsonSerializer.Serialize(config, _options);
+
         var tempPath     = $"{fullPath}.{Path.GetRandomFileName()}";
         
         using (var stream = IOEx.OpenFile(tempPath, FileMode.Create, FileAccess.Write))
-        using (var textWriter = new StreamWriter(stream, Encoding.UTF8))
+        using (var textWriter = new StreamWriter(stream, _encoding))
             textWriter.WriteLine(jsonFile);
 
         IOEx.MoveFile(tempPath, fullPath);
@@ -106,12 +177,25 @@ public interface IConfig<TType> : IConfig where TType : IConfig<TType>, new()
     {
         string fullPath = Path.GetFullPath(filePath);
         CreateDirectoryIfNotExist(Path.GetDirectoryName(fullPath));
+        var info = GetJsonTypeInfoHelper(out bool serialize);
+
         var tempPath = $"{fullPath}.{Path.GetRandomFileName()}";
+        try
+        {
+            await using (var stream = await IOEx.OpenFileAsync(tempPath, FileMode.Create, FileAccess.Write, token))
+            {
+                if (info != null && serialize)
+                    await JsonSerializer.SerializeAsync(stream, config, info, token);
+                else
+                    await JsonSerializer.SerializeAsync(stream, config, _options, token);
+            }
 
-        await using (var stream = await IOEx.OpenFileAsync(tempPath, FileMode.Create, FileAccess.Write, token))
-            await JsonSerializer.SerializeAsync(stream, config, _options, token);
-
-        await IOEx.MoveFileAsync(tempPath, fullPath, token);
+            await IOEx.MoveFileAsync(tempPath, fullPath, token);
+        }
+        catch (TaskCanceledException)
+        {
+            File.Delete(tempPath);
+        }
     }
 
     private static void CreateDirectoryIfNotExist(string directory)

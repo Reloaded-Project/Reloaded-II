@@ -1,6 +1,3 @@
-﻿using System;
-using System.Threading;
-
 namespace Reloaded.Mod.Loader.IO.Utility;
 
 public static class Extensions

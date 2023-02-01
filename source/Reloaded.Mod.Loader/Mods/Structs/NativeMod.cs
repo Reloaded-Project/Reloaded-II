@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Interfaces.Internal;
+using System.Text;
 
 namespace Reloaded.Mod.Loader.Mods.Structs;
 
@@ -31,7 +28,14 @@ public class NativeMod : IModV1
     /// <param name="path">Path to the native DLL.</param>
     public NativeMod(string path)
     {
+        // Set new DLL Directory, load library and restore.
+        // This could probably be better optimised but isn't a hot path, would rather save on memory, so it's no big deal.
+        var builder = new StringBuilder(4096); // ought to be enough characters given most programs break at 260 anyway. 
+        GetDllDirectoryW(builder.Length, builder);
+        SetDllDirectoryW(Path.GetDirectoryName(path));
         _moduleHandle = LoadLibraryW(path);
+        SetDllDirectoryW(builder.ToString());
+        
         _start = GetDelegateForNativeFunction<ReloadedStart>(_moduleHandle, nameof(ReloadedStart));
         _reloadedSuspend = GetDelegateForNativeFunction<ReloadedSuspend>(_moduleHandle, nameof(ReloadedSuspend));
         _reloadedResume = GetDelegateForNativeFunction<ReloadedResume>(_moduleHandle, nameof(ReloadedResume));
@@ -97,5 +101,11 @@ public class NativeMod : IModV1
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Ansi)]
     public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
+    
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    public static extern int GetDllDirectoryW(int nBufferLength, StringBuilder lpPathName);
+    
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    public static extern bool SetDllDirectoryW(string lpPathName);
     #endregion
 }

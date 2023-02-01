@@ -1,0 +1,250 @@
+﻿<pages:ReloadedIIPage x:Class="Reloaded.Mod.Launcher.Pages.BaseSubpages.DownloadPackagesPages.PackagePreviewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:pages="clr-namespace:Reloaded.Mod.Launcher.Pages"
+      xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+      xmlns:wpf="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"
+      mc:Ignorable="d" 
+      d:DesignHeight="560" d:DesignWidth="950"
+      Title="PackagePreviewPage"
+      xmlns:utility="clr-namespace:Reloaded.Mod.Launcher.Utility"
+      xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl"
+      xmlns:interactivity="clr-namespace:HandyControl.Interactivity;assembly=HandyControl">
+
+    <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}" Background="{DynamicResource PageOverlayBackgroundBrush}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel -->
+        <DockPanel>
+
+            <!-- Title -->
+            <TextBlock Text="{Binding Package.Name}" Style="{DynamicResource PackagePreviewModTitleTextBlock}" 
+                       HorizontalAlignment="Center" TextWrapping="WrapWithOverflow"
+                       DockPanel.Dock="Top"/>
+
+            <!-- Avatar & Author -->
+            <Grid DockPanel.Dock="Top" Margin="{DynamicResource CommonItemHorizontalMargin}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Transparent background allows for hit testing empty space for thumbnails -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Background="Transparent"
+                            ToolTip="{DynamicResource DownloadsPackagePreviewModAuthorTooltip}" ToolTipService.InitialShowDelay="0">
+                    <Viewbox MaxHeight="{Binding ElementName=AuthorBtnText, Path=ActualHeight}">
+                        <Canvas Width="24" Height="24">
+                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryAuthor}" />
+                        </Canvas>
+                    </Viewbox>
+
+                    <TextBlock Text="{Binding Package.Submitter.UserName, FallbackValue='Author'}" Grid.Column="1"
+                               Visibility="{Binding Package.Submitter, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
+                               Style="{DynamicResource DownloadModTitleTextBlock}" 
+                               TextTrimming="CharacterEllipsis" 
+                               Name="AuthorBtnText"/>
+                </StackPanel>
+
+                <!-- Stats -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="3"
+                            utility:MarginSetter.Enable="True" utility:MarginSetter.Margin="{DynamicResource DownloadMenuHorizontalItemMargin}" utility:MarginSetter.LastItemMargin="0">
+
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Package.DownloadCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}"
+                                ToolTip="{DynamicResource DownloadsPackagePreviewDownloadCountTooltip}" ToolTipService.InitialShowDelay="0"
+                                Background="Transparent">
+                        <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryDownload}" />
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Name="DownloadCountText" Text="{Binding Package.DownloadCount, FallbackValue='0'}" Style="{DynamicResource DownloadModTitleTextBlock}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Package.ViewCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}"
+                                ToolTip="{DynamicResource DownloadsPackagePreviewViewCountTooltip}" ToolTipService.InitialShowDelay="0"
+                                Background="Transparent">
+                        <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryView}" />
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Text="{Binding Package.ViewCount, FallbackValue='0'}"
+                                   Style="{DynamicResource DownloadModTitleTextBlock}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Package.LikeCount, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}"
+                                ToolTip="{DynamicResource DownloadsPackagePreviewLikeCountTooltip}" ToolTipService.InitialShowDelay="0"
+                                Background="Transparent">
+                        <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadCountText, Path=ActualHeight}">
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryLike}" />
+                            </Canvas>
+                        </Viewbox>
+                        <TextBlock Text="{Binding Package.LikeCount, FallbackValue='0'}" Style="{DynamicResource DownloadModTitleTextBlock}" />
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+
+            <!-- Last Updated -->
+            <Grid Margin="{DynamicResource CommonItemHorizontalMargin}" DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Background="Transparent"
+                            ToolTip="{DynamicResource DownloadsPackagePreviewPublishDateTooltip}" ToolTipService.InitialShowDelay="0">
+
+                    <Viewbox MaxHeight="{Binding ElementName=PublishedDateText, Path=ActualHeight}">
+                        <Canvas Width="24" Height="24">
+                            <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryTime}" />
+                        </Canvas>
+                    </Viewbox>
+
+                    <TextBlock TextTrimming="CharacterEllipsis" x:Name="PublishedDateText"
+                               Visibility="{Binding Package.Published, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}" 
+                               Style="{DynamicResource DownloadModTitleTextBlock}" 
+                               Text="{Binding Package.Published, Converter={x:Static converters:DateTimeToHumanConverter.Instance}}"/>
+
+                </StackPanel>
+
+                <!-- Image -->
+                <Image Grid.Column="1" Style="{DynamicResource HighQualityImage}" 
+                       HorizontalAlignment="Right" OverridesDefaultStyle="True" 
+                       Width="Auto" MaxHeight="{Binding ElementName=PublishedDateText, Path=ActualHeight}" 
+                       Loaded="OnSourceImageLoaded" />
+
+            </Grid>
+
+            <!-- Divider -->
+            <Separator DockPanel.Dock="Top" 
+                       Background="{DynamicResource SeparatorOnOverlayBrush}"
+                       RenderOptions.EdgeMode="Aliased" 
+                       Margin="{DynamicResource CommonItemCombinedMargin}" />
+
+            <!-- Description -->
+            <wpf:MarkdownViewer Focusable="False" 
+                                Markdown="{Binding Package, FallbackValue='No Description', Converter={x:Static converters:PackageToDescriptionConverter.Instance}}" 
+                                Style="{DynamicResource MarkdownViewerTextOnly}">
+                <wpf:MarkdownViewer.CommandBindings>
+                    <CommandBinding Command="{x:Static wpf:Commands.Hyperlink}" Executed="OpenHyperlink" />
+                </wpf:MarkdownViewer.CommandBindings>
+            </wpf:MarkdownViewer>
+
+        </DockPanel>
+
+        <!-- Middle Separator -->
+        <Separator Grid.Column="1" Margin="{DynamicResource CommonItemCombinedMargin}" 
+                   Style="{DynamicResource VerticalSeparator}" 
+                   Background="{DynamicResource SeparatorOnOverlayBrush}"
+                   Opacity="0.25"
+                   RenderOptions.EdgeMode="Aliased" />
+
+        <!-- Right Panel -->
+        <Grid Grid.Column="2">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Image and Caption -->
+            <StackPanel Grid.Row="0" Orientation="Vertical">
+
+                <!-- Images -->
+                <!-- Using the viewbox to add stretch support to carousel. -->
+                <Viewbox>
+                    <hc:Carousel Style="{DynamicResource ReloadedCarousel}" Width="640" Height="360" Loaded="OnCarouselLoaded" IsCenter="True" ExtendWidth="0" x:Name="PreviewCarousel" Focusable="False" />
+                </Viewbox>
+
+                <!-- Caption -->
+                <TextBlock Text="{Binding SelectedImage.Caption}" 
+                           Visibility="{Binding SelectedImage.Caption, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}"
+                           HorizontalAlignment="Center" 
+                           Style="{DynamicResource DefaultTextBlock}" />
+
+            </StackPanel>
+
+            <!-- Changelog -->
+            <wpf:MarkdownViewer Focusable="False" 
+                                Grid.Row="1"
+                                Markdown="{Binding Package.Changelog, FallbackValue='No Changelog'}" Style="{DynamicResource MarkdownViewerTextOnly}" >
+                <wpf:MarkdownViewer.CommandBindings>
+                    <CommandBinding Command="{x:Static wpf:Commands.Hyperlink}" Executed="OpenHyperlink" />
+                </wpf:MarkdownViewer.CommandBindings>
+            </wpf:MarkdownViewer>
+
+            <!-- Control Buttons -->
+            <StackPanel Orientation="Vertical" Grid.Row="2">
+
+                <!-- Navigation -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                            utility:MarginSetter.Enable="True" utility:MarginSetter.Margin="{DynamicResource CommonItemCombinedMarginSmaller}" utility:MarginSetter.LastItemMargin="{DynamicResource CommonItemCombinedMarginSmaller}">
+                    <!-- Prev/Next -->
+                    <Button Command="{Binding Path=SelectLastItem}"
+                            Style="{DynamicResource UnpaddedButton}" Height="{Binding ElementName=DownloadBtn, Path=ActualHeight}"
+                            VerticalContentAlignment="Center">
+                        <Viewbox>
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryPrevious}" />
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+
+                    <Button Command="{Binding Path=SelectNextItem}"
+                            Style="{DynamicResource UnpaddedButton}" Height="{Binding ElementName=DownloadBtn, Path=ActualHeight}"
+                            VerticalContentAlignment="Center">
+                        <Viewbox>
+                            <Canvas Width="24" Height="24">
+                                <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryNext}" />
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+
+                <!-- Actions -->
+                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right" 
+                            utility:MarginSetter.Enable="True" utility:MarginSetter.Margin="{DynamicResource CommonItemCombinedMarginSmaller}" utility:MarginSetter.LastItemMargin="{DynamicResource CommonItemCombinedMarginSmaller}">
+
+                    <!-- Download -->
+                    <Button Command="{Binding DownloadModCommand, UpdateSourceTrigger=PropertyChanged}" Name="DownloadBtn">
+                        <StackPanel Orientation="Horizontal" Margin="0,0">
+                            <Viewbox Margin="{DynamicResource SVGIconToTextMargin}" MaxHeight="{Binding ElementName=DownloadBtnText, Path=ActualHeight}">
+                                <Canvas Width="24" Height="24">
+                                    <Path Fill="{DynamicResource TextColorBrush}" Data="{DynamicResource IconGeometryDownload}" />
+                                </Canvas>
+                            </Viewbox>
+
+                            <TextBlock Text="{Binding DownloadPackageStatus, Converter={x:Static converters:DownloadModStatusToString.Instance}, FallbackValue='Download'}" 
+                                       Name="DownloadBtnText"
+                                       Style="{DynamicResource DefaultTextBlock}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Project URL -->
+                    <Button Content="{DynamicResource DownloadsPackagePreviewProjectUrl}" 
+                            Visibility="{Binding Package.ProjectUri, Converter={x:Static converters:NotNullToVisibleConverter.Instance}}"
+                            Click="Click_OpenProjectUrl"/>
+
+                    <!-- Close -->
+                    <Button Content="{DynamicResource DownloadsPackagePreviewClose}" Click="Click_Close" x:Name="CloseBtn" />
+
+                </StackPanel>
+            </StackPanel>
+
+
+        </Grid>
+
+
+
+    </Grid>
+</pages:ReloadedIIPage>

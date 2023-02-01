@@ -1,6 +1,3 @@
-﻿using Reloaded.WPF.Pages.Animations;
-using Reloaded.WPF.Pages.Animations.Enum;
-
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 
 /// <summary>

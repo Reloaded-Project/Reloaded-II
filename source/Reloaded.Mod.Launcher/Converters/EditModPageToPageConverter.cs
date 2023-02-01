@@ -1,11 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Windows.Data;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages;
-using Reloaded.WPF.Theme.Default;
+using Complete = Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages.Complete;
 
 namespace Reloaded.Mod.Launcher.Converters;
 
@@ -19,13 +12,13 @@ public class EditModPageToPageConverter : IValueConverter
         switch ((EditModPage)value)
         {
             case EditModPage.Main:
-                return IoC.Get<Main>();
+                return Lib.IoC.Get<Main>();
             case EditModPage.Dependencies:
-                return IoC.Get<Dependencies>();
+                return Lib.IoC.Get<Dependencies>();
             case EditModPage.Updates:
-                return IoC.Get<Updates>();
+                return Lib.IoC.Get<Updates>();
             case EditModPage.Special:
-                return IoC.Get<Complete>();
+                return Lib.IoC.Get<Complete>();
             default:
                 Debugger.Break();
                 return null!;

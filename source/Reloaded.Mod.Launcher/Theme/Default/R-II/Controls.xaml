@@ -182,11 +182,13 @@
     <!-- Styles not fully inheriting from Control -->
     <Style x:Key="LabelButton" TargetType="{x:Type Button}">
 
+        <Setter Property="Focusable" Value="True"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource BorderColorBrush}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource ReloadedFocusVisual}"/>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -238,6 +240,115 @@
             </Setter.Value>
         </Setter>
 
+    </Style>
+
+
+    <!-- Hyperlink without special mouse effect -->
+    <Style x:Key="HyperlinkWithoutMouseEffects" TargetType="{x:Type Hyperlink}" BasedOn="{StaticResource DefaultHyperlink}">
+
+        <!-- Disable from base style -->
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions/>
+                <Trigger.ExitActions/>
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+    <!-- Download Menu Title -->
+    <Style x:Key="DownloadModTitleTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource RIIDefaultTextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontBold}"/>
+    </Style>
+
+    <!-- Package Preview Page Title -->
+    <Style x:Key="PackagePreviewModTitleTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DownloadModTitleTextBlock}">
+        <Setter Property="FontSize" Value="32"/>
+    </Style>
+
+    <!-- Download Menu Title -->
+    <Style x:Key="ModPackTitleTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource RIIDefaultTextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLargest}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontBold}"/>
+    </Style>
+
+    <Style x:Key="ModPackSummaryTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource RIIDefaultTextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarger}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- Custom Toggle Button -->
+    <Style x:Key="PopupToggleButton" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource BaseStyle}">
+
+        <!-- Cannot be StaticResource in combination with Animations
+             As local BG colour will not be shared with global. 
+        -->
+        <Setter Property="Background" Value="{StaticResource AccentColorLightBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="8"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+
+                    <!-- Background and border color -->
+                    <Border x:Name="border" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            Background="{TemplateBinding Background}" 
+                            SnapsToDevicePixels="True">
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver"/>
+                                <VisualState x:Name="Pressed" />
+                                <VisualState x:Name="Disabled"/>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked"/>
+                                <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Indeterminate" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <ContentPresenter 
+                            x:Name="contentPresenter" 
+                            ContentTemplate="{TemplateBinding ContentTemplate}" 
+                            Content="{TemplateBinding Content}" 
+                            ContentStringFormat="{TemplateBinding ContentStringFormat}" 
+                            Focusable="False" 
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                            Margin="{TemplateBinding Padding}" 
+                            RecognizesAccessKey="True" 
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+
+                        <!-- Mouseover Color Switch -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource BackgroundFadeAccentLightToAccent}"/>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource BackgroundFadeAccentToAccentLight}"/>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+                        <!-- Gray on Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource BorderColorBrush}"/>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

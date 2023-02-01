@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Tests.SETUP;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers.NuGet;
-using Reloaded.Mod.Loader.Update.Structures;
-using Reloaded.Mod.Loader.Update.Utilities;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Resolvers;
-using Sewer56.Update.Structures;
-using Xunit;
+using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
 
 namespace Reloaded.Mod.Loader.Tests.Update.Resolvers;
 

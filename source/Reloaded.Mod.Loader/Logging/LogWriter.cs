@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Threading;
+using Environment = System.Environment;
 
 namespace Reloaded.Mod.Loader.Logging;
 
@@ -95,5 +91,10 @@ public class LogWriter : IDisposable
     }
 
     /// <inheritdoc />
-    public void Dispose() => _logger.OnPrintMessage -= OnPrintMessage;
+    public void Dispose()
+    {
+        _logger.OnPrintMessage -= OnPrintMessage;
+        _autoFlushThread.Dispose();
+        _textStream.Dispose();
+    }
 }

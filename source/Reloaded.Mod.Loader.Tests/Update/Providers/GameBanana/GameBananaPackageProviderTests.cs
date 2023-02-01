@@ -1,11 +1,3 @@
-﻿using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.Providers.GameBanana;
 
 public class GameBananaPackageProviderTests
@@ -20,7 +12,7 @@ public class GameBananaPackageProviderTests
         var packages = await provider.SearchAsync("");
 
         // Assert
-        Assert.True(packages.Count > 0);
+        Assert.True(packages.Any());
     }
 
     [Fact]
@@ -33,7 +25,7 @@ public class GameBananaPackageProviderTests
         var packages = await provider.SearchAsync("Update Lib. Test");
 
         // Assert
-        Assert.True(packages.Count > 0);
+        Assert.True(packages.Any());
         //Assert.Contains(packages, package => package.Id.Equals("reloaded.sharedlib.hooks", StringComparison.OrdinalIgnoreCase));
     }
 

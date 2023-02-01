@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Interfaces;
+namespace Reloaded.Mod.Interfaces;
 
 /// <summary>
 /// Provides configuration support for the current mod.

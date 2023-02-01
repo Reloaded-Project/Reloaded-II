@@ -1,14 +1,3 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using Force.DeepCloner;
-using Reloaded.Mod.Launcher.Lib.Commands.Mod;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
 /// <summary>
@@ -39,6 +28,9 @@ public class ManageModsViewModel : ObservableObject
 
     /// <summary/>
     public PublishModCommand PublishModCommand { get; set; } = null!;
+    
+    /// <summary/>
+    public CreateModPackCommand CreateModPackCommand { get; set; } = new();
 
     /* If false, events to reload mod list are not sent. */
     private ApplicationConfigService _appConfigService;
@@ -54,7 +46,7 @@ public class ManageModsViewModel : ObservableObject
 
         SelectedModTuple   = ModConfigService.Items.FirstOrDefault()!;
         CloneCurrentItem();
-        this.PropertyChanged += OnSelectedModChanged;
+        PropertyChanged += OnSelectedModChanged;
         UpdateCommands();
     }
 
@@ -65,8 +57,12 @@ public class ManageModsViewModel : ObservableObject
     public void SetNewMod(PathTuple<ModConfig>? oldModTuple, PathTuple<ModConfig>? newModTuple)
     {
         // Save old collection.
-        if (oldModTuple != null && !oldModTuple.Config.Equals(_configCopy) && ModConfigService.ItemsById.ContainsKey(oldModTuple.Config.ModId))
-            SaveMod(oldModTuple);
+        if (oldModTuple != null)
+        {
+            oldModTuple.Config.SupportedAppId = EnabledAppIds.Where(x => x.Enabled).Select(x => x.Generic.AppId).ToArray();
+            if (!oldModTuple.Config.Equals(_configCopy) && oldModTuple.Config.ModId == _configCopy.ModId && ModConfigService.ItemsById.ContainsKey(oldModTuple.Config.ModId))
+                SaveMod(oldModTuple);
+        }
 
         // Make new collection.
         if (newModTuple == null) 
@@ -86,7 +82,6 @@ public class ManageModsViewModel : ObservableObject
         if (oldModTuple == null) 
             return;
 
-        oldModTuple.Config.SupportedAppId = EnabledAppIds.Where(x => x.Enabled).Select(x => x.Generic.AppId).ToArray();
         oldModTuple.SaveAsync();
     }
         
@@ -99,6 +94,7 @@ public class ManageModsViewModel : ObservableObject
             _setModImageCommand.Execute(null);
     }
 
+    [SuppressPropertyChangedWarnings]
     private void OnSelectedModChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SelectedModTuple))

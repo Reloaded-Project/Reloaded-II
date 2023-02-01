@@ -1,9 +1,3 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Protocol.Core.Types;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
-
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
 
 /// <summary>
@@ -48,6 +42,13 @@ public interface INugetRepository
     Task<DownloadResourceResult> DownloadPackageAsync(IPackageSearchMetadata packageMetadata, CancellationToken token = default);
 
     /// <summary>
+    /// Downloads a specified NuGet .nuspec.
+    /// </summary>
+    /// <param name="identity">The package identity to use.</param>
+    /// <param name="token">A cancellation token to allow cancellation of the task.</param>
+    Task<byte[]?> DownloadNuspecAsync(PackageIdentity identity, CancellationToken token = default);
+
+    /// <summary>
     /// Retrieves the details of an individual package.
     /// </summary>
     /// <param name="includeUnlisted">Include unlisted packages.</param>
@@ -56,6 +57,14 @@ public interface INugetRepository
     /// <param name="token">A cancellation token to allow cancellation of the task.</param>
     /// <returns>Return contains an array of versions for this package.</returns>
     Task<IEnumerable<IPackageSearchMetadata>> GetPackageDetails(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default);
+
+    /// <summary>
+    /// Retrieves the details of an individual package.
+    /// </summary>
+    /// <param name="identity">Contains the identity of the package (specific details)</param>
+    /// <param name="token">A cancellation token to allow cancellation of the task.</param>
+    /// <returns>Return contains an array of versions for this package.</returns>
+    Task<IPackageSearchMetadata?> GetPackageDetails(PackageIdentity identity, CancellationToken token = default);
 
     /// <summary>
     /// Finds all of the dependencies of a given package, including dependencies not available in the target repository.

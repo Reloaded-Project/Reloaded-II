@@ -11,11 +11,16 @@ Markdig.Wpf: MIT
 Colorful.Console: MIT
 PropertyChanged.Fody: MIT
 Fody: MIT
-Onova: GPL V3 or later*
 Ultimate ASI Loader: MIT
 SharpCompress: MIT
 System.Drawing.Common: MIT
 System.Management: MIT
+MaterialDesignIcons: MIT
+Akavache: MIT
+CacheCow: MIT
+
+If any licenses are missing in this document, please notify me.  
+It is difficult to keep track of recursive dependencies.  
 
 -----
 GPL V3

@@ -1,7 +1,3 @@
-﻿using System.Collections.Generic;
-using Reloaded.Mod.Loader.Community.Config;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>

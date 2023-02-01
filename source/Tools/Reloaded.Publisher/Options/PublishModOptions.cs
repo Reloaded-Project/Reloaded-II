@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using CommandLine;
-using SevenZip;
-using Sewer56.Update.Packaging.Structures;
-
 namespace Reloaded.Publisher.Options
 {
     [Verb("Publish", HelpText = "Creates a new release or updates an existing release.")]
@@ -50,5 +44,8 @@ namespace Reloaded.Publisher.Options
 
         [Option(Required = false, HelpText = "File path to the file containing the changelog for the package, in Markdown format.")]
         public string? ChangelogPath { get; set; } = null;
+
+        [Option(Required = false, HelpText = "File path to the file containing the readme for the package, in Markdown format. The readme is displayed in the download mods page.")]
+        public string? ReadmePath { get; set; } = null;
     }
 }

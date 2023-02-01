@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace TestInterfaces
 {
     public interface ITestHelper

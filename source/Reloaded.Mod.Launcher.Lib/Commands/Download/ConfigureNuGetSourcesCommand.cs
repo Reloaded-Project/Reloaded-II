@@ -1,9 +1,3 @@
-﻿using System;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Download;
 
 /// <summary>

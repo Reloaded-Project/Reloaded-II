@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Lib.Models.Model.DownloadPackagePage;
+namespace Reloaded.Mod.Launcher.Lib.Models.Model.DownloadPackagePage;
 
 /// <summary>
 /// Represents the status of a mod download.

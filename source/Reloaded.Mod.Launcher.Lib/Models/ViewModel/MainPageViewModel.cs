@@ -1,17 +1,11 @@
-﻿using PropertyChanged;
-using Reloaded.Mod.Launcher.Lib.Commands.Application;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
+using Page = Reloaded.Mod.Launcher.Lib.Models.Model.Pages.Page;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
 /// <summary>
 /// A viewmodel for the 'main page', which consists of the sidebar and a secondary, child page on the right panel.
 /// </summary>
-public class MainPageViewModel : Loader.IO.Utility.ObservableObject
+public class MainPageViewModel : ObservableObject
 {
     /// <summary>
     /// Stores the page to be displayed to the user.
@@ -27,6 +21,7 @@ public class MainPageViewModel : Loader.IO.Utility.ObservableObject
 
             _launcherPage = value;
             RaisePropertyChangedEvent(nameof(Page));
+            SelectedApplication = null;
         }
     }
 
@@ -66,5 +61,38 @@ public class MainPageViewModel : Loader.IO.Utility.ObservableObject
         SelectedApplication = tuple;
         _launcherPage = Page.Application;
         RaisePropertyChangedEvent(nameof(Page));
+    }
+
+    /// <summary>
+    /// Switches page in a given direction.
+    /// </summary>
+    /// <param name="direction">The direction to switch page in. Expected values -1, 0, 1</param>
+    /// <param name="sortedConfigurations">List of all sorted applications.</param>
+    public void SwitchPage(int direction, IList<PathTuple<ApplicationConfig>> sortedConfigurations)
+    {
+        direction = NavigationUtils.NormalizeDirection(direction);
+
+        // Get index of application
+        var appIndex = sortedConfigurations.IndexOf(SelectedApplication!);
+        if (appIndex == -1)
+            appIndex = 0;
+
+        // Add to current page.
+        var firstAppIndex = (int)Page.Application;
+        var pageCount  = firstAppIndex + sortedConfigurations.Count;
+        var nextIndex = ((int)Page + appIndex + direction) % (pageCount);
+        if (nextIndex < 0)
+            nextIndex = pageCount - (-nextIndex); // + 1 to convert page index to page count
+
+        // Handle regular page.
+        if (nextIndex < firstAppIndex)
+        {
+            Page = (Page)nextIndex;
+            return;
+        }
+
+        // Handle application page.
+        var appOffset = nextIndex - firstAppIndex;
+        SwitchToApplication(sortedConfigurations[appOffset]);
     }
 }

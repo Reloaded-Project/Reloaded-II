@@ -1,10 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Runtime.InteropServices;
-using Indieteur.SAMAPI;
-using Reloaded.Hooks.Definitions;
-using Reloaded.Mod.Loader.Logging;
+using Environment = System.Environment;
 
 namespace Reloaded.Mod.Loader.Utilities.Steam;
 

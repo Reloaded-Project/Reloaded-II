@@ -1,15 +1,10 @@
-﻿using System;
-using System.Globalization;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
 namespace Reloaded.Mod.Loader.Update.Utilities;
 
 /// <summary>
 /// Class that wraps a string. Used for data binding.
 /// </summary>
 [JsonConverter(typeof(StringWrapperConverter))]
-public class StringWrapper
+public class StringWrapper : ObservableObject
 {
     /// <summary>
     /// Value of the string wrapper.

@@ -1,8 +1,3 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Threading;
-using Reloaded.Mod.Launcher.Lib.Static;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Templates;
 
 /// <summary>

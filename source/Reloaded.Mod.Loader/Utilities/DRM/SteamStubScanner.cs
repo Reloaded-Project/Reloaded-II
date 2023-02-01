@@ -1,7 +1,3 @@
-﻿using System.IO;
-using System.Linq;
-using Reloaded.Mod.Loader.IO.Utility.Parsers;
-
 namespace Reloaded.Mod.Loader.Utilities.DRM;
 
 public static class SteamStubScanner

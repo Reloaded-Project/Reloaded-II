@@ -1,8 +1,3 @@
-﻿using System.ComponentModel;
-using System.Threading;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
-
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
 /// <summary>
@@ -25,7 +20,7 @@ public partial class PublishModDialog : ReloadedWindow
         this.Closing += OnClosing;
     }
 
-    private void OnClosing(object sender, CancelEventArgs e) => _cancellationTokenSource.Cancel();
+    private void OnClosing(object? sender, CancelEventArgs e) => _cancellationTokenSource.Cancel();
 
     private async void Publish_Click(object sender, System.Windows.RoutedEventArgs e)
     {
@@ -51,4 +46,8 @@ public partial class PublishModDialog : ReloadedWindow
     private void SetOutputFolder_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.SetOutputFolder();
 
     private void PublishTutorial_Click(object sender, System.Windows.RoutedEventArgs e) => ViewModel.ShowPublishTutorial();
+
+    private void SetChangelogPath_Click(object sender, RoutedEventArgs e) => ViewModel.SetChangelogPath();
+
+    private void SetReadmePath_Click(object sender, RoutedEventArgs e) => ViewModel.SetReadmePath();
 }

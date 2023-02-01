@@ -89,17 +89,23 @@
                         <!-- Load Game -->
                         <TextBlock Style="{DynamicResource SidebarTextblock}" 
                                    Text="{DynamicResource ApplicationLaunch}"
-                                   PreviewMouseDown="LaunchApplication_PreviewMouseDown"/>
+                                   PreviewMouseLeftButtonDown="LaunchApplication_PreviewMouseDown"
+                                   KeyboardNavigation.IsTabStop="True"
+                                   Focusable="True"/>
 
                         <!-- Main Page -->
                         <TextBlock Style="{DynamicResource SidebarTextblock}" 
                                    Text="{DynamicResource TitleConfigureMods}"
-                                   PreviewMouseDown="Summary_PreviewMouseDown"/>
+                                   PreviewMouseLeftButtonDown="Summary_PreviewMouseDown"
+                                   KeyboardNavigation.IsTabStop="True"
+                                   Focusable="True"/>
 
                         <!-- Edit Page -->
                         <TextBlock Style="{DynamicResource SidebarTextblock}" 
                                    Text="{DynamicResource TitleEditApplication}"
-                                   PreviewMouseDown="Edit_PreviewMouseDown"/>
+                                   PreviewMouseLeftButtonDown="Edit_PreviewMouseDown"
+                                   KeyboardNavigation.IsTabStop="True"
+                                   Focusable="True"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="1">
@@ -115,21 +121,27 @@
                                    Text="{DynamicResource AddAppCreateShortcut}"
                                    ToolTipService.InitialShowDelay="0"
                                    ToolTip="{DynamicResource ApplicationTooltipCreateShortcutDescription}"
-                                   PreviewMouseDown="MakeShortcut_PreviewMouseDown"/>
+                                   PreviewMouseLeftButtonDown="MakeShortcut_PreviewMouseDown"
+                                   KeyboardNavigation.IsTabStop="True"
+                                   Focusable="True"/>
 
                         <!-- Load Mod Collection -->
                         <TextBlock Style="{DynamicResource SidebarTextblock}" 
                                    Text="{DynamicResource LoadModSet}"
                                    ToolTipService.InitialShowDelay="0"
                                    ToolTip="{DynamicResource ApplicationTooltipLoadModSet}"
-                                   PreviewMouseDown="LoadModSet_PreviewMouseDown"/>
+                                   PreviewMouseLeftButtonDown="LoadModSet_PreviewMouseDown"
+                                   KeyboardNavigation.IsTabStop="True"
+                                   Focusable="True"/>
 
                         <!-- Save Mod Collection -->
                         <TextBlock Style="{DynamicResource SidebarTextblock}" 
                                    Text="{DynamicResource SaveModSet}"
                                    ToolTipService.InitialShowDelay="0"
                                    ToolTip="{DynamicResource ApplicationTooltipSaveModSet}"
-                                   PreviewMouseDown="SaveModSet_PreviewMouseDown"/>
+                                   PreviewMouseLeftButtonDown="SaveModSet_PreviewMouseDown"
+                                   KeyboardNavigation.IsTabStop="True"
+                                   Focusable="True"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="2">
@@ -144,7 +156,8 @@
 
                             <!-- Reloaded Processes -->
                             <ItemsControl ItemsSource="{Binding ProcessesWithReloaded, UpdateSourceTrigger=PropertyChanged}"
-                                          Style="{DynamicResource ProcessListStyle}">
+                                          Style="{DynamicResource ProcessListStyle}"
+                                          Focusable="False">
 
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -153,7 +166,9 @@
                                                    Text="{Binding ., Converter={StaticResource ReloadedPrcConverter}}"
                                                    ToolTipService.InitialShowDelay="0"
                                                    ToolTip="{DynamicResource ApplicationTooltipProcessRldDescription}"
-                                                   PreviewMouseDown="ReloadedMod_PreviewMouseDown"/>
+                                                   PreviewMouseLeftButtonDown="ReloadedMod_PreviewMouseLeftButtonDown"
+                                                   KeyboardNavigation.IsTabStop="True"
+                                                   Focusable="True"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
 
@@ -161,7 +176,7 @@
 
                             <!-- Non-Reloaded Processes -->
                             <ItemsControl ItemsSource="{Binding ProcessesWithoutReloaded, UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{DynamicResource ProcessListStyle}">
+                                      Style="{DynamicResource ProcessListStyle}" Focusable="False">
 
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -170,7 +185,7 @@
                                                    Text="{Binding ., Converter={StaticResource NonReloadedPrcConverter}}"
                                                    ToolTipService.InitialShowDelay="0"
                                                    ToolTip="{DynamicResource ApplicationTooltipProcessSysDescription}"
-                                                   PreviewMouseDown="NonReloadedMod_PreviewMouseDown"/>
+                                                   PreviewMouseLeftButtonDown="NonReloadedMod_PreviewMouseLeftButtonDown"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
 
@@ -190,7 +205,7 @@
                                    Style="{DynamicResource RIIDefaultTextBlock}"
                                    VerticalAlignment="Center"/>
 
-                            <TextBlock Text="{Binding ModsForThisApp.Count, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
+                            <TextBlock Text="{Binding NumModsForThisApp, UpdateSourceTrigger=PropertyChanged, FallbackValue=123}"
                                    Margin="{DynamicResource ListEntryItemMarginSmall}"
                                    Style="{DynamicResource RIIDefaultTextBlock}"
                                    VerticalAlignment="Center"/>
@@ -201,7 +216,7 @@
         </ScrollViewer>
 
         <!-- Right Side -->
-        <reloadedWpfControls:PageHost x:Name="PageHost" Grid.Column="1" CurrentPage="{Binding Page, Converter={x:Static converters:ApplicationSubPageToPageConverter.Instance}}" />
+        <reloadedWpfControls:PageHost x:Name="PageHost" Grid.Column="1" />
 
     </Grid>
 </pages:ReloadedIIPage>

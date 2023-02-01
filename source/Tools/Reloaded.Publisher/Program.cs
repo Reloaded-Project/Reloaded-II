@@ -1,15 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using CommandLine;
-using CommandLine.Text;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Publisher.Options;
-
 namespace Reloaded.Publisher;
 
 internal class Program
@@ -51,6 +39,7 @@ internal class Program
             PackageName = options.PackageName,
             PublishTarget = options.PublishTarget,
             ChangelogPath = options.ChangelogPath,
+            ReadmePath = options.ReadmePath,
             MetadataFileName = config.ReleaseMetadataFileName
         });
     }

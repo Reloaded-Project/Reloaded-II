@@ -1,8 +1,3 @@
-﻿using System;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-
 namespace Reloaded.Mod.Launcher.Converters;
 
 /// <summary>
@@ -12,9 +7,9 @@ public class StringToVisibilityConverter : IValueConverter
 {
     public static StringToVisibilityConverter Instance { get; set; } = new StringToVisibilityConverter();
 
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is string text && string.IsNullOrEmpty(text))
+        if (value is null or "")
             return Visibility.Collapsed;
 
         return Visibility.Visible;

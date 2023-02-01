@@ -1,24 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Threading.Tasks;
-using NuGet.Versioning;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Tests.SETUP;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Packaging;
-using Reloaded.Mod.Loader.Update.Structures;
-using Sewer56.DeltaPatchGenerator.Lib.Utility;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Interfaces;
-using Sewer56.Update.Packaging.Extractors;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Resolvers;
-using Sewer56.Update.Structures;
-using Xunit;
+using IOEx = Sewer56.DeltaPatchGenerator.Lib.Utility.IOEx;
+using IPackageResolver = Sewer56.Update.Interfaces.IPackageResolver;
 
 namespace Reloaded.Mod.Loader.Tests.Update;
 

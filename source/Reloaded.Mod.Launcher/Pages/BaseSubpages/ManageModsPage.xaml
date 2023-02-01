@@ -45,7 +45,7 @@
                 <StackPanel>
 
                     <!-- Application Image -->
-                    <Border x:Name="BannerImage" BorderBrush="{DynamicResource BorderColorBrush}" Background="Transparent" BorderThickness="1">
+                    <Border BorderBrush="{DynamicResource BorderColorBrush}" Background="Transparent" BorderThickness="1">
                         <Viewbox>
                             <Image ToolTip="{DynamicResource AddAppImageTooltip}"
                                    ToolTipService.InitialShowDelay="0"
@@ -75,6 +75,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <Button Grid.Column="0"
@@ -82,7 +83,7 @@
                                 Margin="0"
                                 Style="{DynamicResource UnpaddedStretchedGridButton}"
                                 Content="{DynamicResource AddAppNewButton}" 
-                                PreviewMouseDown="Button_PreviewMouseDown"/>
+                                Click="New_Click"/>
 
                         <Button Grid.Column="1"
                                 Grid.Row="0"
@@ -104,6 +105,14 @@
                                 Content="{DynamicResource ModManagerContextPublish}" 
                                 Margin="0"
                                 Command="{Binding PublishModCommand}"/>
+                        
+                        <Button Grid.Row="2"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Style="{DynamicResource UnpaddedStretchedButton}"
+                                Content="{DynamicResource CreateModPackTitle}" 
+                                Margin="0"
+                                Command="{Binding CreateModPackCommand}"/>
                     </Grid>
 
                     <!-- Mod Properties -->
@@ -120,11 +129,6 @@
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogVersion}"
-                         HorizontalAlignment="Stretch" />
-
-                    <TextBox Text="{Binding Path=SelectedModTuple.Config.ModDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         Margin="{DynamicResource CommonItemVerticalMarginTop}" 
-                         ToolTip="{DynamicResource CreateModDialogDescription}"
                          HorizontalAlignment="Stretch" />
 
                 </StackPanel>
@@ -170,7 +174,6 @@
                     <!-- List of Mods -->
                     <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="{DynamicResource PanelMargin}">
                         <ListView 
-                            x:Name="ModListView"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding Source={StaticResource SortedMods}}"
                             SelectedItem="{Binding SelectedModTuple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 

@@ -1,5 +1,3 @@
-﻿using Sewer56.Update.Misc;
-
 namespace Reloaded.Mod.Loader.Update.Providers.GameBanana;
 
 /// <summary>

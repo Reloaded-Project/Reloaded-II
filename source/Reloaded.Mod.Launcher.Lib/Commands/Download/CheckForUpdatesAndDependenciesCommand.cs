@@ -1,10 +1,3 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib.Commands.Templates;
-using Reloaded.Mod.Launcher.Lib.Static;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.Download;
 
 /// <summary>

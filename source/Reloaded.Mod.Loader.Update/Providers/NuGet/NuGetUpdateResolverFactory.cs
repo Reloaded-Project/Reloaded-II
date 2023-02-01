@@ -1,21 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Structures;
-using Reloaded.Mod.Loader.Update.Utilities;
-using Sewer56.Update.Interfaces;
-using Sewer56.Update.Misc;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Resolvers;
-using Sewer56.Update.Resolvers.NuGet;
-using Sewer56.Update.Resolvers.NuGet.Utilities;
+using IOEx = Reloaded.Mod.Loader.IO.Utility.IOEx;
+using IPackageResolver = Sewer56.Update.Interfaces.IPackageResolver;
+using NuGetRepository = Sewer56.Update.Resolvers.NuGet.Utilities.NugetRepository;
 
 namespace Reloaded.Mod.Loader.Update.Providers.NuGet;
 
@@ -49,7 +34,7 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
     public void Migrate(PathTuple<ModConfig> mod, PathTuple<ModUserConfig>? userConfig)
     {
         var modDirectory   = Path.GetDirectoryName(mod.Path);
-        var nuspecFilePath = Path.Combine(modDirectory!, $"{IOEx.ForceValidFilePath(mod.Config.ModId)}.nuspec");
+        var nuspecFilePath = Path.Combine(modDirectory!, $"{IO.Utility.IOEx.ForceValidFilePath(mod.Config.ModId)}.nuspec");
         if (File.Exists(nuspecFilePath))
         {
             this.SetConfiguration(mod, new NuGetConfig()
@@ -97,7 +82,7 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
                 new NuGetUpdateResolverSettings()
                 {
                     AllowUnlisted = true,
-                    NugetRepository = new NugetRepository(url),
+                    NugetRepository = new NuGetRepository(url),
                     PackageId = mod.Config.ModId
                 },
                 data.CommonPackageResolverSettings
@@ -160,6 +145,17 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
         [Description("URL to the NuGet repositories to use to check for updates for this mod.\n" +
                      "Right click to add and remove items.")]
         public ObservableCollection<StringWrapper> DefaultRepositoryUrls { get; set; } = new ObservableCollection<StringWrapper>();
+
+        // Reflection-less serialization.
+        /// <inheritdoc />
+        public static JsonTypeInfo<NuGetConfig> GetJsonTypeInfo(out bool supportsSerialize)
+        {
+            supportsSerialize = true;
+            return NuGetConfigContext.Default.NuGetConfig;
+        }
+        
+        /// <inheritdoc />
+        public JsonTypeInfo<NuGetConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
     }
 
     /// <summary>
@@ -168,3 +164,7 @@ public class NuGetUpdateResolverFactory : IUpdateResolverFactory
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static void SetNowTime(DateTime newNowTime) => Now = newNowTime;
 }
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(NuGetUpdateResolverFactory.NuGetConfig))]
+internal partial class NuGetConfigContext : JsonSerializerContext { }

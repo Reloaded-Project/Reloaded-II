@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Reloaded.Mod.Interfaces.Internal;
 
 public interface IModConfigV3 : IModConfigV2

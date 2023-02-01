@@ -1,13 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Reloaded.Mod.Launcher.Lib.Interop;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Utility;
+using Version = Reloaded.Mod.Launcher.Lib.Utility.Version;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel;
 
@@ -54,12 +45,12 @@ public class SettingsPageViewModel : ObservableObject
     /// <summary>
     /// Allows you to select the mod loader language.
     /// </summary>
-    public IResourceFileSelector? LanguageSelector => Launcher.Lib.Lib.LanguageSelector;
+    public IResourceFileSelector? LanguageSelector => Lib.LanguageSelector;
 
     /// <summary>
     /// Allows you to select the mod loader theme.
     /// </summary>
-    public IResourceFileSelector? ThemeSelector => Launcher.Lib.Lib.ThemeSelector;
+    public IResourceFileSelector? ThemeSelector => Lib.ThemeSelector;
 
     /// <summary/>
     public SettingsPageViewModel(ApplicationConfigService appConfigService, ModConfigService modConfigService, LoaderConfig loaderConfig)
@@ -73,9 +64,17 @@ public class SettingsPageViewModel : ObservableObject
         AppConfigService.Items.CollectionChanged += MainPageViewModelOnApplicationsChanged;
         ModConfigService.Items.CollectionChanged += ManageModsViewModelOnModsChanged;
 
-        var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule!.FileName!);
-        Copyright = Regex.Replace(version.LegalCopyright!, @"\|.*", $"| {Version.GetReleaseVersion()!.ToNormalizedString()}");
-        RuntimeVersion = $"Core: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}";
+        string copyRightStr = "Sewer56 ~ Unknown Date | Unknown Version";
+        try
+        {
+            var version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule!.FileName!);
+            if (!string.IsNullOrEmpty(version.LegalCopyright))
+                copyRightStr = version.LegalCopyright;
+        }
+        catch (Exception) { /* Non-critical, could happen on CIFS file share, we can ignore. */ }
+        
+        Copyright = Regex.Replace(copyRightStr, @"\|.*", $"| {Version.GetReleaseVersion()!.ToNormalizedString()}");
+        RuntimeVersion = $"Core: {RuntimeInformation.FrameworkDescription}";
         ActionWrappers.ExecuteWithApplicationDispatcher(() =>
         {
             SelectCurrentLanguage();

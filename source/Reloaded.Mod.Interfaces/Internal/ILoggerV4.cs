@@ -1,6 +1,3 @@
-﻿using System;
-using System.Drawing;
-
 namespace Reloaded.Mod.Interfaces.Internal;
 
 public interface ILoggerV4 : ILoggerV3

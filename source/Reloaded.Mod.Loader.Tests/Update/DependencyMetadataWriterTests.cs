@@ -1,16 +1,3 @@
-﻿using System;
-using System.Threading.Tasks;
-using Force.DeepCloner;
-using Reloaded.Mod.Interfaces.Utilities;
-using Reloaded.Mod.Loader.Tests.SETUP;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Interfaces;
-using Reloaded.Mod.Loader.Update.Providers;
-using Reloaded.Mod.Loader.Update.Providers.GameBanana;
-using Reloaded.Mod.Loader.Update.Providers.GitHub;
-using Sewer56.Update.Misc;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update;
 
 public class DependencyMetadataWriterTests : IDisposable

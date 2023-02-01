@@ -1,12 +1,3 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Protocol.Core.Types;
-using Reloaded.Mod.Loader.IO.Config.Structs;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget.Interfaces;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
-
 namespace Reloaded.Mod.Loader.Update.Utilities.Nuget;
 
 /// <summary>
@@ -59,7 +50,7 @@ public class AggregateNugetRepository
         var result = new List<NugetTuple<IEnumerable<IPackageSearchMetadata>>>();
         foreach (var source in Sources)
         {
-            var res = await source.Search(searchString, includePrereleases, skip, results, token);
+            var res = await source.Search(searchString, includePrereleases, skip, results, token).ConfigureAwait(false);
             result.Add(new NugetTuple<IEnumerable<IPackageSearchMetadata>>(source, res));
         }
             
@@ -79,7 +70,7 @@ public class AggregateNugetRepository
         var result = new List<NugetTuple<IEnumerable<IPackageSearchMetadata>>>();
         foreach (var source in Sources)
         {
-            var res = await source.GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
+            var res = await source.GetPackageDetails(packageId, includePrerelease, includeUnlisted, token).ConfigureAwait(false);
             result.Add(new NugetTuple<IEnumerable<IPackageSearchMetadata>>(source, res));
         }
 
@@ -122,12 +113,12 @@ public class AggregateNugetRepository
     /// <returns>List of all dependencies, including the source package itself.</returns>
     public async Task<AggregateFindDependenciesResult> FindDependencies(string packageId, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
     {
-        var packages = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token);
+        var packages = await GetPackageDetails(packageId, includePrerelease, includeUnlisted, token).ConfigureAwait(false);
         var newest = GetNewestPackage(packages);
         if (newest == null)
             return new AggregateFindDependenciesResult(new HashSet<NugetTuple<IPackageSearchMetadata>>(), new HashSet<string>() { packageId });
         
-        var result = await FindDependencies(newest!.Generic, includePrerelease, includeUnlisted, token);
+        var result = await FindDependencies(newest!.Generic, includePrerelease, includeUnlisted, token).ConfigureAwait(false);
         result.Dependencies.Add(newest);
         return result;
     }
@@ -143,7 +134,7 @@ public class AggregateNugetRepository
     public async Task<AggregateFindDependenciesResult> FindDependencies(IPackageSearchMetadata packageSearchMetadata, bool includePrerelease, bool includeUnlisted, CancellationToken token = default)
     {
         var result = new AggregateFindDependenciesResult(new HashSet<NugetTuple<IPackageSearchMetadata>>(), new HashSet<string>()); 
-        await FindDependenciesRecursiveAsync(packageSearchMetadata, includePrerelease, includeUnlisted, result.Dependencies, result.PackagesNotFound, token);
+        await FindDependenciesRecursiveAsync(packageSearchMetadata, includePrerelease, includeUnlisted, result.Dependencies, result.PackagesNotFound, token).ConfigureAwait(false);
         return result;
     }
 
@@ -167,7 +158,7 @@ public class AggregateNugetRepository
         {
             foreach (var package in dependencySet.Packages)
             {
-                var metadata = (await GetPackageDetails(package.Id, includePrerelease, includeUnlisted, token));
+                var metadata = (await GetPackageDetails(package.Id, includePrerelease, includeUnlisted, token).ConfigureAwait(false));
                 if (metadata.Any(x => x.Generic!.Any()))
                 {
                     var latest = GetNewestPackage(metadata);
@@ -175,7 +166,7 @@ public class AggregateNugetRepository
                         continue;
 
                     dependenciesAccumulator.Add(latest!);
-                    await FindDependenciesRecursiveAsync(latest!.Generic!, includePrerelease, includeUnlisted, dependenciesAccumulator, packagesNotFoundAccumulator, token);
+                    await FindDependenciesRecursiveAsync(latest!.Generic!, includePrerelease, includeUnlisted, dependenciesAccumulator, packagesNotFoundAccumulator, token).ConfigureAwait(false);
                 }
                 else
                 {

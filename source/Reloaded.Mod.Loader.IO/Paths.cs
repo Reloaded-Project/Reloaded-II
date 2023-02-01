@@ -1,4 +1,3 @@
-﻿using System.IO;
 using static System.Environment;
 
 namespace Reloaded.Mod.Loader.IO;
@@ -38,9 +37,43 @@ public class Paths
     public static readonly string LogPath = Path.Combine(ConfigFolder, "Logs");
 
     /// <summary>
+    /// Location of the crash dump folder, used to store crash data.
+    /// </summary>
+    public static readonly string CrashDumpPath = Path.Combine(ConfigFolder, "CrashDumps");
+
+    /// <summary>
     /// Location of the logs archive, used to store old loader logs.
     /// </summary>
     public static readonly string ArchivedLogPath = Path.Combine(LogPath, "OldLogs.zip");
+
+    // MACHINE SPECIFIC DATA //
+
+    /// <summary>
+    /// Gets the path of the Reloaded folder in AppData where Reloaded configuration and user data reside.
+    /// </summary>
+    public static string ConfigFolderLocalPC { get; } = Path.Combine(GetFolderPath(SpecialFolder.LocalApplicationData), "Reloaded-Mod-Loader-II"); // DO NOT CHANGE, C++ BOOTSTRAPPER ALSO DEFINES THIS
+
+    /// <summary>
+    /// Location of the cache folder, used to cache external resources.
+    /// </summary>
+    public static readonly string CachePath = Path.Combine(ConfigFolderLocalPC, "Cache");
+
+    /// <summary>
+    /// Location of the cache file, used to cache images.
+    /// </summary>
+    public static readonly string ImageCachePath = Path.Combine(CachePath, "Image.db");
+
+    /// <summary>
+    /// Location of the cache file, used to cache web requests.
+    /// </summary>
+    public static readonly string WebCachePath = Path.Combine(CachePath, "Web.db");
+
+    /// <summary>
+    /// Location of the cache file, used to cache GameBanana mod manifests.
+    /// </summary>
+    public static readonly string GameBananaManifestCachePath = Path.Combine(CachePath, "GameBananaReleaseManifests.db");
+
+    // UTILITY METHODS //
 
     /// <summary>
     /// Gets the name of the Kernel32 Address Dumper; a tool which extracts the address of Kernel32 and shares it using mapped files.
@@ -70,13 +103,13 @@ public class Paths
     /// Gets the path of the 32-bit Reloaded Loader DLL.
     /// </summary>
     /// <param name="launcherPath">Path to the launcher folder.</param>
-    public static string GetLoaderPath32(string launcherPath) => Path.Combine(GetLoaderFolder(launcherPath), "Reloaded.Mod.Loader.dll");
+    public static string GetLoaderPath32(string launcherPath) => Path.Combine(GetLoaderFolder32(launcherPath), "Reloaded.Mod.Loader.dll");
 
     /// <summary>
     /// Gets the path of the 64-bit Reloaded Loader DLL.
     /// </summary>
     /// <param name="launcherPath">Path to the launcher folder.</param>
-    public static string GetLoaderPath64(string launcherPath) => Path.Combine(GetLoaderFolder(launcherPath), "Reloaded.Mod.Loader.dll");
+    public static string GetLoaderPath64(string launcherPath) => Path.Combine(GetLoaderFolder64(launcherPath), "Reloaded.Mod.Loader.dll");
 
     /// <summary>
     /// Gets the path of the 32-bit Reloaded Loader Bootstrapper DLL.

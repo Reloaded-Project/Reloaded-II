@@ -1,7 +1,3 @@
-﻿using System.IO;
-using Reloaded.Mod.Loader.Update.Utilities.Nuget;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Update.NuGet;
 
 public class NugetRepositoryTests
@@ -46,5 +42,12 @@ public class NugetRepositoryTests
         Assert.True(File.Exists(modConfigLocation));
 
         Directory.Delete(tempLocation.FullName, true);
+    }
+
+    [Fact]
+    public void DownloadNuSpec()
+    {
+        var nuspec = _nugetRepository.DownloadNuspecAsync(new PackageIdentity(TestPackageName, new NuGetVersion("1.0.0"))).Result;
+        Assert.NotNull(nuspec);
     }
 }

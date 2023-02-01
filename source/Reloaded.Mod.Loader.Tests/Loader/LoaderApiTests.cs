@@ -1,9 +1,3 @@
-﻿using System;
-using System.Linq;
-using Reloaded.Mod.Loader.Tests.SETUP;
-using TestInterfaces;
-using Xunit;
-
 namespace Reloaded.Mod.Loader.Tests.Loader;
 
 public class LoaderApiTests : IDisposable

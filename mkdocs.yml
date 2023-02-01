@@ -16,13 +16,15 @@ markdown_extensions:
   - tables
   - pymdownx.details
   - pymdownx.highlight
-  - pymdownx.superfences
+  - pymdownx.superfences 
   - pymdownx.tasklist
   - def_list
   - meta
   - md_in_html
   - attr_list
   - footnotes
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
@@ -54,17 +56,22 @@ nav:
   - For Users:
     - Quick Start: QuickStart.md
     - Frequently Asked Questions: FAQ.md
+    - Linux Setup Guide: LinuxSetupGuide.md
+    - Installing Mod Packs: InstallingModPacks.md
     - Advanced:
-        - NuGet Sources: NuGetSources.md
-        - Injection Methods: InjectionMethods.md
-        - Misc & Experimental Features: ExperimentalFeatures.md
+      - NuGet Sources: NuGetSources.md
+      - Injection Methods: InjectionMethods.md
+      - Misc & Experimental Features: ExperimentalFeatures.md
   - For Modders:
     - Getting Started: 
-        - 1. Creating Your Mod: CreatingMods.md
-        - 2. Adding Functionality: AddingModFunctionality.md
+      - 1. Creating Your Mod: CreatingMods.md
+      - 2. Adding Functionality: AddingModFunctionality.md
     - Releasing Mods:
-        - 1. Enabling Update Support: EnablingUpdateSupport.md
-        - 2. Creating a Release: CreatingRelease.md
+      - 1. Enabling Update Support: EnablingUpdateSupport.md
+      - 2. Creating a Release: CreatingRelease.md
+      - Extras (Optional): CreatingReleaseExtras.md
+    - Creating Mod Packs: CreatingModPacks.md
+
   - For Programmers:
     - Getting Started: 
         - 1. Setting Up Development Environment: DevelopmentEnvironmentSetup.md
@@ -83,13 +90,20 @@ nav:
         - How does it Really Work: DependencyInjection_HowItReallyWork.md
     - Mod Template Features: ModTemplate.md
     - Writing Native Mods: NativeMods.md
+    - Internal Libraries: 
+      - Introduction: InternalLibrariesIntro.md
+      - I/O Library: InternalLibrariesIO.md
+      - Community Index: InternalLibrariesCommunity.md
+      - Packaging: InternalLibrariesPackaging.md
+      - Update: InternalLibrariesUpdate.md
+      - Server: InternalLibrariesServer.md
     - Miscellaneous:
-        - Adding Mod Update Support: AddingUpdateSupport.md
-        - API Overview: APIOverview.md
-        - Optimizing Mods: OptimizingMods.md
-        - Shared Libraries: https://github.com/Sewer56/Reloaded.SharedLib.Hooks
-        - Writing Mods for Actively Developed Games/Apps: https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications
-        - Troubleshooting: Troubleshooting.md
+      - Adding Mod Update Support: AddingUpdateSupport.md
+      - API Overview: APIOverview.md
+      - Optimizing Mods: OptimizingMods.md
+      - Shared Libraries: https://github.com/Sewer56/Reloaded.SharedLib.Hooks
+      - Writing Mods for Actively Developed Games/Apps: https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications
+      - Troubleshooting: Troubleshooting.md
   - For Contributors:
     - Building Reloaded: BuildingReloaded.md
     - Project Structure: ProjectStructure.md

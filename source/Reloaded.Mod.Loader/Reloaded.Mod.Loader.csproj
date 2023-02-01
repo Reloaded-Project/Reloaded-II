@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
 	  <LangVersion>preview</LangVersion>
     <AssemblyTitle>Reloaded.Mod.Loader</AssemblyTitle>
 	  <UseWindowsForms>true</UseWindowsForms>
@@ -10,10 +10,10 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <NoWarn>$(NoWarn);NU1605</NoWarn>
-	  <Version>1.18.0</Version>
-    <OutputPath>..\\Output\\Launcher\\Loader</OutputPath>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <NoWarn>$(NoWarn);NU1605;NU1701</NoWarn>
+	  <Version>1.23.7</Version>
+    <Platforms>x86;x64</Platforms>
+    <GenerateDepsJson>false</GenerateDepsJson>
 
     <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
     <!-- If you set this to true, trimming will be enabled when you publish the Mod Loader. -->
@@ -27,8 +27,6 @@
     -->
     <!-- If it produces trim warnings, add it here. -->
     <RobustLinkRoots Include="Reloaded.Mod.Loader" />
-    <RobustLinkRoots Include="Reloaded.Hooks" />
-    <RobustLinkRoots Include="Reloaded.Mod.Loader.Server" />
     <RobustLinkRoots Include="Reloaded.Mod.Loader.IO" />
     <RobustLinkRoots Include="McMaster.NETCore.Plugins" />
 
@@ -42,6 +40,9 @@
     <RobustLinkAssemblies Include="Reloaded.Memory.Buffers" />
     <RobustLinkAssemblies Include="Indieteur.SAMAPI" />
     <RobustLinkAssemblies Include="Indieteur.VDFAPI" />
+    <RobustLinkAssemblies Include="LiteNetLib" />
+    <RobustLinkAssemblies Include="Reloaded.Hooks" />
+    <RobustLinkAssemblies Include="Reloaded.Hooks.Definitions" />
     <RobustLinkAssemblies Include="Colorful.Console" />
     <RobustLinkAssemblies Include="Microsoft.DotNet.PlatformAbstractions" />
     <RobustLinkAssemblies Include="Microsoft.Extensions.DependencyModel" />
@@ -52,6 +53,10 @@
       <!-- DO NOT ADD Reloaded.Mod.Interfaces or stuff we share with other mods!! -->
   </ItemGroup>
 
+  <Import Project="..\Reloaded.Mod.Loader.IPC\Reloaded.Mod.Loader.IPC.projitems" Label="Shared" />
+
+  <Import Project="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.projitems" Label="Shared" />
+
   <Import Project="../Robust.Trimming.targets" />
 
   <!-- USE NLS Instead of ICU. Saves around 25MB address space on x86 processes. -->
@@ -59,18 +64,33 @@
     <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
   </ItemGroup>
 
+  <!-- Disable HTTP/3, as this has issues with Wine. -->
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.Net.SocketsHttpHandler.Http3Support" Value="false" />
+  </ItemGroup>
+  
+  <!-- Build dual x86 & x64 -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <MSBuild Condition=" '$(Platform)' == 'x64' " Projects="$(MSBuildProjectFile)" Properties="Platform=x86;PlatFormTarget=x86" RunEachTargetSeparately="true" />
+  </Target>
+
+  <PropertyGroup Condition="'$(Platform)'=='x86'">
+    <OutputPath>..\\Output\\Launcher\\Loader\\x86</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x64'">
+    <OutputPath>..\\Output\\Launcher\\Loader\\x64</OutputPath>
+  </PropertyGroup>
+
+  <!-- NuGet Stuff -->
   <ItemGroup>
     <ProjectReference Include="..\Reloaded.Mod.Interfaces\Reloaded.Mod.Interfaces.csproj" />
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
-    <ProjectReference Include="..\Reloaded.Mod.Loader.Server\Reloaded.Mod.Loader.Server.csproj" />
-    <ProjectReference Include="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.csproj" />
-    <ProjectReference Include="..\Submodules\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.5" />
-    <PackageReference Include="Reloaded.Hooks" Version="4.0.1" />
-    <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="2.0.0-beta.0" />
+    <PackageReference Include="Reloaded.SharedLib.Hooks" Version="1.9.0" ExcludeAssets="runtime" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DelayInjectHooks.json">

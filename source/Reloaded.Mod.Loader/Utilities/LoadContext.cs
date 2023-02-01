@@ -1,10 +1,3 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.Loader;
-using McMaster.NETCore.Plugins.Loader;
-using Reloaded.Mod.Interfaces;
-
 namespace Reloaded.Mod.Loader.Utilities;
 
 public class LoadContext : IDisposable
@@ -46,7 +39,6 @@ public class LoadContext : IDisposable
         var interFacesAsmName = typeof(IModLoader).Assembly.GetName();
         var interFacesAsmFile = Path.Combine(loaderFolder, $"{interFacesAsmName.Name}.dll");
         var builder = new AssemblyLoadContextBuilder()
-            .EnableUnloading()
             .IsLazyLoaded(true)
             .PreferDefaultLoadContextAssembly(interFacesAsmName)
             .SetMainAssemblyPath(interFacesAsmFile);

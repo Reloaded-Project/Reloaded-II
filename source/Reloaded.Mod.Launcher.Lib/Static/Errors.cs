@@ -1,6 +1,3 @@
-﻿using System;
-using System.Diagnostics;
-
 namespace Reloaded.Mod.Launcher.Lib.Static;
 
 /// <summary>

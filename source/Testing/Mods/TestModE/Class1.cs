@@ -1,4 +1,4 @@
-﻿namespace TestModE
+namespace TestModE
 {
     public class Class1
     {

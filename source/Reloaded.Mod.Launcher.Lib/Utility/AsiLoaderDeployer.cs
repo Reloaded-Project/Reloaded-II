@@ -1,11 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility.Parsers;
+using FileMode = System.IO.FileMode;
 
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
@@ -46,8 +39,20 @@ public class AsiLoaderDeployer
         if (!File.Exists(appLocation))
             return false;
 
-        using var peParser = new BasicPeParser(appLocation);
+        try
+        {
+            using var peParser = new BasicPeParser(appLocation);
+            return GetSupportedDllFromParser(peParser);
+        }
+        catch (Exception e)
+        {
+            Errors.HandleException(e, Resources.ErrorCantReadExeFileAsiLoaderDeploy.Get());
+            return false;
+        }
+    }
 
+    private bool GetSupportedDllFromParser(BasicPeParser peParser)
+    {
         try
         {
             return GetFirstSupportedDllFile(peParser) != null;
@@ -188,7 +193,7 @@ public class AsiLoaderDeployer
         var libraryDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location);
         var compressedLoaderPath = $"{libraryDirectory}/Loader/Asi/UltimateAsiLoader.7z";
             
-        var archive = new SevenZip.SevenZipExtractor(compressedLoaderPath);
+        var archive = new SevenZipExtractor(compressedLoaderPath);
         using var writeStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write);
         archive.ExtractFile(is64bit ? "ASILoader64.dll" : "ASILoader32.dll", writeStream);
     }
@@ -216,6 +221,7 @@ public class AsiLoaderDeployer
 
     private static readonly string[] AsiLoaderSupportedDll64 = 
     {
+        "winmm.dll",
         "wininet.dll",
         "version.dll",
         "dsound.dll",

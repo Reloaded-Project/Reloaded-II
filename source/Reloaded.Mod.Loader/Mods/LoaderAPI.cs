@@ -1,14 +1,3 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Interfaces.Internal;
-using Reloaded.Mod.Loader.IO.Config;
-
 namespace Reloaded.Mod.Loader.Mods;
 
 // ReSharper disable once InconsistentNaming
@@ -147,6 +136,7 @@ public class LoaderAPI : IModLoader
             }
         }
 
+        _loader.Logger.LogWriteLine($"[LoaderAPI] Warning: GetController<{typeof(T).Name}> returned null.", _loader.Logger.ColorWarning);
         return null;
     }
 
@@ -164,5 +154,19 @@ public class LoaderAPI : IModLoader
             Directory.CreateDirectory(directory);
 
         return directory;
+    }
+
+    /* IModLoader V4 */
+    public void LoadMod(string modId) => _loader.LoadMod(modId);
+
+    public void UnloadMod(string modId) => _loader.UnloadMod(modId);
+
+    public void SuspendMod(string modId) => _loader.SuspendMod(modId);
+
+    public void ResumeMod(string modId) => _loader.ResumeMod(modId);
+
+    public ModInfo[] GetLoadedMods()
+    {
+        return _loader.GetLoadedModInfo();
     }
 }

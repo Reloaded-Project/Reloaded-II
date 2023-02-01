@@ -1,7 +1,3 @@
-﻿using System;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib.Utility;
-
 namespace Reloaded.Mod.Launcher.Lib.Commands.General;
 
 /// <summary>

@@ -1,6 +1,3 @@
-﻿using Reloaded.Mod.Launcher.Lib;
-using Reloaded.WPF.Theme.Default;
-
 namespace Reloaded.Mod.Launcher;
 
 /// <summary>
@@ -13,13 +10,15 @@ public partial class MainWindow : ReloadedWindow
     public MainWindow()
     {
         // Make viewmodel of this window available.
-        RealViewModel = IoC.GetConstant<Lib.Models.ViewModel.WindowViewModel>();
+        RealViewModel = Lib.IoC.GetConstant<Lib.Models.ViewModel.WindowViewModel>();
 
         // Initialize XAML.
         InitializeComponent();
 
         // Bind other models.
-        IoC.Kernel.Bind<WindowViewModel>().ToConstant((WindowViewModel)this.DataContext); // Controls window properties.
-        IoC.Kernel.Bind<MainWindow>().ToConstant(this);
+        Lib.IoC.BindToConstant((WPF.Theme.Default.WindowViewModel)DataContext);// Controls window properties.
+        Lib.IoC.BindToConstant(this);
     }
+
+    protected override System.Windows.Automation.Peers.AutomationPeer OnCreateAutomationPeer() => new EmptyAutomationPeer(this);
 }

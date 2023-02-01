@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+using static Reloaded.Mod.Installer.NativeImports;
 
-namespace Reloaded.Mod.Installer
+namespace Reloaded.Mod.Installer;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public App()
     {
+        // Hide the console window if not doing a commandline task.
+        var handle = GetConsoleWindow();
+        ShowWindow(handle, SW_HIDE);
     }
 }

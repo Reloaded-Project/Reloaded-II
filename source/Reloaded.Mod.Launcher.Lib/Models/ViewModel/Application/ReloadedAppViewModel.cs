@@ -1,16 +1,3 @@
-using System;
-using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Launcher.Lib.Static;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO.Utility;
-using Reloaded.Mod.Loader.Server;
-using Reloaded.Mod.Loader.Server.Messages.Response;
-using Reloaded.Mod.Loader.Server.Messages.Structures;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 
 /// <summary>
@@ -18,32 +5,34 @@ namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
 /// </summary>
 public class ReloadedAppViewModel : ObservableObject, IDisposable
 {
+    private const int RequestTimeout = 8000;
     private static int ClientLoaderSetupTimeout { get; set; } = 1000;
     private static int ClientLoaderSetupSleepTime { get; set; } = 32;
-    private static int ClientModListRefreshInterval { get; set; } = 100;
+    private static int ClientModListRefreshInterval { get; set; } = 125;
 
     /// <summary>
     /// ViewModel of the application being manipulated.
     /// </summary>
-    public ApplicationViewModel          ApplicationViewModel   { get; set; }
+    public ApplicationViewModel ApplicationViewModel { get; set; }
     
     /// <summary>
     /// Client used to connect to the server on the remote process.
     /// </summary>
-    public Client?                        Client                { get; set; }
+    public LiteNetLibClient? Client { get; set; }
 
     /// <summary>
     /// The currently highlighted mod.
     /// </summary>
-    public ModInfo                       SelectedMod            { get; set; } = null!;
+    public ServerModInfo SelectedMod { get; set; } = null!;
 
     /// <summary>
     /// List of currently loaded mods.
     /// </summary>
-    public ObservableCollection<ModInfo> CurrentMods            { get; set; } = new ObservableCollection<ModInfo>();
+    public ObservableCollection<ServerModInfo> CurrentMods { get; set; } = new ObservableCollection<ServerModInfo>();
 
     private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
     private System.Timers.Timer? _refreshTimer;
+    private int _port;
 
     /// <summary/>
     public ReloadedAppViewModel(ApplicationViewModel applicationViewModel)
@@ -53,25 +42,39 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
         ApplicationViewModel.SelectedProcess.Exited += SelectedProcessOnExited;
 
         /* Try establish connection. */
-        int port = 0;
-        try
-        {
-            port = ActionWrappers.TryGetValue(GetPort, ClientLoaderSetupTimeout, ClientLoaderSetupSleepTime);
-        }
-        catch (Exception ex)
-        {
-            Errors.HandleException(new Exception(Resources.ErrorFailedToObtainPort.Get(), ex));
+        if (!TryGetPort(true, out _port)) 
             return;
-        }
 
-        Client = new Client(port);
+        Client = new LiteNetLibClient(IPAddress.Loopback, "", _port, true);
+        Client.OnTryReconnect += (peer) => TryGetPort(false, out _port);
+        Client.OverrideDetailsOnReconnect += () => (null, _port);
         Client.OnReceiveException += ClientOnReceiveException;
-        Refresh();
 
         _refreshTimer = new System.Timers.Timer(ClientModListRefreshInterval);
         _refreshTimer.AutoReset = true;
-        _refreshTimer.Elapsed += (sender, args) => Refresh();
+        _refreshTimer.Elapsed += (sender, args) =>
+        {
+            if (Client is { IsConnected: true })
+                Refresh();
+        };
         _refreshTimer.Enabled = true;
+    }
+
+    private bool TryGetPort(bool throwOnFailure, out int port)
+    {
+        try
+        {
+            port = ActionWrappers.TryGetValue(GetPort, ClientLoaderSetupTimeout, ClientLoaderSetupSleepTime);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            port = -1;
+            if (throwOnFailure)
+                Errors.HandleException(new Exception(Resources.ErrorFailedToObtainPort.Get(), ex));
+            
+            return false;
+        }
     }
 
     /// <summary/>
@@ -82,6 +85,9 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
     {
         if (Client != null)
             Client.OnReceiveException -= ClientOnReceiveException;
+
+        if (ApplicationViewModel.SelectedProcess != null)
+            ApplicationViewModel.SelectedProcess.Exited -= SelectedProcessOnExited;
         
         _cancellationTokenSource?.Cancel();
         _refreshTimer?.Dispose();
@@ -90,10 +96,13 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
     private void SelectedProcessOnExited(object? sender, EventArgs e)
     {
         ApplicationViewModel.SelectedProcess!.Exited -= SelectedProcessOnExited;
-        ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
+        ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
+        {
+            ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary);
+        });
     }
 
-    private void ClientOnReceiveException(GenericExceptionResponse obj) => Errors.HandleException(new Exception(obj.Message));
+    private void ClientOnReceiveException(AcknowledgementOrExceptionResponse obj) => Errors.HandleException(new Exception(obj.Message));
 
     /// <summary>
     /// Resets the selected index.
@@ -120,10 +129,10 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
     /// </summary>
     public void Resume()    => Task.Run(ResumeTask).ContinueWith((_) => Refresh());
 
-    Task<Acknowledgement>?       UnloadTask()   => Client?.UnloadModAsync(SelectedMod.ModId, 1000, _cancellationTokenSource.Token);
-    Task<Acknowledgement>?       SuspendTask()  => Client?.SuspendModAsync(SelectedMod.ModId, 1000, _cancellationTokenSource.Token);
-    Task<Acknowledgement>?       ResumeTask()   => Client?.ResumeModAsync(SelectedMod.ModId, 1000, _cancellationTokenSource.Token);
-    Task<GetLoadedModsResponse>? RefreshTask()  => Client?.GetLoadedModsAsync(1000, _cancellationTokenSource.Token);
+    Task<AnyOf<AcknowledgementOrExceptionResponse, NullResponse>>?       UnloadTask()   => Client?.UnloadModAsync(SelectedMod.ModId, RequestTimeout, _cancellationTokenSource.Token);
+    Task<AnyOf<AcknowledgementOrExceptionResponse, NullResponse>>?       SuspendTask()  => Client?.SuspendModAsync(SelectedMod.ModId, RequestTimeout, _cancellationTokenSource.Token);
+    Task<AnyOf<AcknowledgementOrExceptionResponse, NullResponse>>?       ResumeTask()   => Client?.ResumeModAsync(SelectedMod.ModId, RequestTimeout, _cancellationTokenSource.Token);
+    Task<AnyOf<AcknowledgementOrExceptionResponse, GetLoadedModsResponse>>? RefreshTask()  => Client?.GetLoadedModsAsync(RequestTimeout, _cancellationTokenSource.Token);
 
     /// <summary>
     /// Refreshes the list of loaded mods.
@@ -133,9 +142,12 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
         try
         {
             var loadedMods = await Task.Run(RefreshTask).ConfigureAwait(false);
+            if (!loadedMods.IsSecond)
+                return;
+
             ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
-                Collections.ModifyObservableCollection(CurrentMods, loadedMods.Mods);
+                Collections.ModifyObservableCollection(CurrentMods, loadedMods.Second.Mods);
                 RaisePropertyChangedEvent(nameof(CurrentMods));
             });
         }
@@ -151,7 +163,7 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
     private int GetPort()
     {
         int pid = ApplicationViewModel.SelectedProcess!.Id;
-        return Client.GetPort(pid);
+        return ServerUtility.GetPort(pid);
     }
 
     /// <summary>

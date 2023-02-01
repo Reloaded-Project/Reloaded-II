@@ -37,8 +37,6 @@ The most common IDEs and code editors used with .NET include the following:
 - [JetBrains Rider](https://www.jetbrains.com/rider/): Paid. Good choice for those familiar with other JetBrains products like IntelliJ and PyCharm. Crossplatform.  
 - [Visual Studio Code](https://code.visualstudio.com/): Free. Crossplatform, supports .NET via plugins.  
 
-Note: At this current moment in time (2022), `Visual Studio` is the suggested code editor since it is the only one that can be used for debugging Reloaded mods at this time. This will hopefully change in the future.  
-
 ## Installing Reloaded Mod Template
 
 Reloaded provides a template to allow for a quick start with mod development.  

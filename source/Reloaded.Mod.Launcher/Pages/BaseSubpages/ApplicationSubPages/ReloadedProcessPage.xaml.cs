@@ -1,25 +1,26 @@
-﻿using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
-
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;
 
 /// <summary>
 /// Interaction logic for RunningProcessPage.xaml
 /// </summary>
-public partial class ReloadedProcessPage : ApplicationSubPage
+public partial class ReloadedProcessPage : ApplicationSubPage, IDisposable
 {
     public ReloadedAppViewModel ViewModel { get; set; }
+    private bool _disposed;
 
     public ReloadedProcessPage(ApplicationViewModel model)
     {
+        SwappedOut += Dispose;
         InitializeComponent();
         ViewModel = new ReloadedAppViewModel(model);
-        this.AnimateOutStarted += Dispose;
     }
 
-    private void Dispose()
+    public void Dispose()
     {
-        this.AnimateOutStarted -= Dispose;
+        if (_disposed)
+            return;
+
+        _disposed = true;
         ViewModel.Dispose();
     }
 

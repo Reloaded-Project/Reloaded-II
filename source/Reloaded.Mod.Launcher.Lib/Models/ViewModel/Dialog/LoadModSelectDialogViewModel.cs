@@ -1,9 +1,3 @@
-﻿using System;
-using System.Threading.Tasks;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Application;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>
@@ -36,7 +30,7 @@ public class LoadModSelectDialogViewModel
     {
         try
         {
-            Task.Run(() => ReloadedAppViewModel.Client?.LoadMod(SelectedMod!.Config.ModId));
+            Task.Run(() => ReloadedAppViewModel.Client?.LoadModAsync(SelectedMod!.Config.ModId));
         }
         catch (Exception)
         {

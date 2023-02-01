@@ -1,26 +1,11 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Launcher.Lib.Commands.Mod;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Update;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Loader.IO;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Services;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.Update;
-using Reloaded.Mod.Loader.Update.Interfaces;
+using IoC;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 
 /// <summary>
 /// The ViewModel for a dialog which allows us to edit the details of an individual mod.
 /// </summary>
-public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
+public class EditModDialogViewModel : ObservableObject, IDisposable
 {
     /// <summary>
     /// The individual mod configuration to be edited.
@@ -38,9 +23,19 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
     public ObservableCollection<BooleanGenericTuple<IModConfig>> Dependencies { get; set; } = new ObservableCollection<BooleanGenericTuple<IModConfig>>();
 
     /// <summary>
+    /// All tags used.
+    /// </summary>
+    public ObservableCollection<string> Tags { get; set; } = new ObservableCollection<string>();
+
+    /// <summary>
     /// All possible applications for the mod configurations.
     /// </summary>
     public ObservableCollection<BooleanGenericTuple<IApplicationConfig>> Applications { get; set; } = new ObservableCollection<BooleanGenericTuple<IApplicationConfig>>();
+
+    /// <summary>
+    /// Name of the tag to be set.
+    /// </summary>
+    public string TagName { get; set; } = "";
 
     /// <summary>
     /// Filter allowing for dependencies to be filtered out.
@@ -83,6 +78,9 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
         ConfigTuple = modTuple;
         Config = modTuple.Config;
 
+        // Add Tags
+        Tags.AddRange(Config.Tags);
+
         // Build Dependencies
         var mods = modConfigService.Items; // In case collection changes during window open.
         foreach (var mod in mods)
@@ -109,9 +107,14 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
 
         // Everything Else
         _setModImageCommand = new SetModImageCommand(modTuple);
-        IoC.Kernel.Rebind<EditModDialogViewModel>().ToConstant(this);
-        this.PropertyChanged += OnPageChanged;
+        IoC.RebindToConstant(this);
+        PropertyChanged += OnPageChanged;
     }
+
+    /// <summary>
+    /// Disposes resources of this window.
+    /// </summary>
+    public void Dispose() => IoC.Unbind(this);
 
     /// <summary>
     /// Initializes the window with an action to close it.
@@ -130,6 +133,7 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
         string configSavePath  = Path.Combine(modDirectory, ModConfig.ConfigFileName);
         Config.ModDependencies = Dependencies.Where(x => x.Enabled).Select(x => x.Generic.ModId).ToArray();
         Config.SupportedAppId = Applications.Where(x => x.Enabled).Select(x => x.Generic.AppId).ToArray();
+        Config.Tags = Tags.ToArray();
 
         // Save Plugins
         foreach (var update in Updates)
@@ -154,7 +158,7 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
         if (ModsFilter.Length <= 0)
             return true;
         
-        return item.Generic.ModName.IndexOf(this.ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        return item.Generic.ModName.IndexOf(ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
     }
 
     /// <summary>
@@ -166,7 +170,7 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
         if (ModsFilter.Length <= 0)
             return true;
 
-        return item.Generic.AppName.IndexOf(this.ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        return item.Generic.AppName.IndexOf(ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
     }
 
     /// <summary>
@@ -179,10 +183,23 @@ public class EditModDialogViewModel : Loader.IO.Utility.ObservableObject
     }
 
     /// <summary>
+    /// Adds the currently written in tag.
+    /// </summary>
+    public void AddCurrentTag()
+    {
+        if (string.IsNullOrEmpty(TagName) || Tags.Contains(TagName))
+            return;
+
+        Tags.Add(TagName);
+        TagName = "";
+    }
+
+    /// <summary>
     /// Used to close the page/window associated with the dialog.
     /// </summary>
     public void Close() => _close?.Invoke();
 
+    [SuppressPropertyChangedWarnings]
     private void OnPageChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Page))

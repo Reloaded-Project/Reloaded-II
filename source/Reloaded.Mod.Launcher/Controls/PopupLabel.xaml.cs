@@ -1,10 +1,3 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using Reloaded.WPF.Pages.Animations;
-using Reloaded.WPF.Pages.Animations.Enum;
-using Reloaded.WPF.Utilities;
-
 namespace Reloaded.Mod.Launcher.Controls;
 
 /// <summary>
@@ -81,7 +74,6 @@ public partial class PopupLabel : UserControl
         InitializeComponent();
 
         // Merge application resource dictionary (necessary to access XAML settings)
-        this.Resources.MergedDictionaries.Add(Application.Current.Resources);
         SetupXamlResources();
 
         // Update text and whether content is visible on load.
@@ -108,7 +100,7 @@ public partial class PopupLabel : UserControl
         _xamlExitFadeOpacityEnd = new XamlResource<double>("PopupLabelExitFadeOpacityEnd", thisArray, this);
     }
 
-    private void Button_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void OnClick(object sender, RoutedEventArgs e)
     {
         // Close/Open
         IsOpen = !IsOpen;

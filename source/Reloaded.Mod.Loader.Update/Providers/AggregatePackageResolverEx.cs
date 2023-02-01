@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using NuGet.Versioning;
-using Sewer56.Update.Extractors.SevenZipSharp;
-using Sewer56.Update.Interfaces;
-using Sewer56.Update.Interfaces.Extensions;
-using Sewer56.Update.Packaging.Interfaces;
-using Sewer56.Update.Packaging.Structures;
-using Sewer56.Update.Resolvers;
+using IPackageResolver = Sewer56.Update.Interfaces.IPackageResolver;
 
 namespace Reloaded.Mod.Loader.Update.Providers;
 
 /// <summary>
 /// Aggregate package resolver.
 /// </summary>
-public class AggregatePackageResolverEx : AggregatePackageResolver, IPackageResolver
+public class AggregatePackageResolverEx : AggregatePackageResolver
 {
     private readonly Dictionary<IPackageResolver, IPackageExtractor> _packageExtractors;
 

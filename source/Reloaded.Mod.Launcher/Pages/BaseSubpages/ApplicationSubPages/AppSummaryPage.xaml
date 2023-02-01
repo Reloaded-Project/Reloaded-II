@@ -38,17 +38,28 @@
         </Grid.RowDefinitions>
 
         <!-- Search Filter -->
-        <Grid Grid.Row="0" Margin="{DynamicResource PanelMargin}">
+        <DockPanel Grid.Row="0" LastChildFill="True" Margin="{DynamicResource PanelMargin}">
+
+            <ComboBox DockPanel.Dock="Right"
+                      SelectedItem="{Binding SelectedTag}"
+                      ItemsSource="{Binding AllTags}"
+                      Margin="{DynamicResource CommonItemHorizontalMarginLeft}"
+                      ToolTip="{DynamicResource ConfigureModsSelectTagTooltip}" 
+                      ToolTipService.InitialShowDelay="0" 
+                      Width="130" />
+
             <TextBox x:Name="ModsFilter" 
                      Style="{DynamicResource TextboxWithPlaceholder}" 
                      Tag="{DynamicResource ModManagerSearchMods}" 
                      TextChanged="ModsFilter_TextChanged"/>
-        </Grid>
+
+        </DockPanel>
 
         <!-- Items -->
         <Grid Grid.Row="1" Margin="{DynamicResource PanelMargin}">
             <ListView 
                 x:Name="ModListView"
+                Focusable="False"
                 HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={StaticResource FilteredMods}}"
                 SelectedItem="{Binding SelectedMod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -56,7 +67,9 @@
                 ToolTipService.InitialShowDelay="250"
                 VerticalAlignment="Stretch"
                 VerticalContentAlignment="Top"
-                VirtualizingStackPanel.VirtualizationMode="Recycling"
+                VirtualizingPanel.IsVirtualizing="True"
+                VirtualizingPanel.VirtualizationMode="Recycling"
+                PreviewKeyDown="KeyboardControls_KeyDown"
                 dd:DragDrop.IsDragSource="True"
                 dd:DragDrop.IsDropTarget="True">
                 <ListView.ContextMenu>
@@ -69,6 +82,7 @@
                             <MenuItem Header="{DynamicResource ModManagerContextOpenFolder}" Command="{Binding OpenUserConfigFolderCommand}" />
                         </MenuItem>
                         <MenuItem Header="{DynamicResource ModManagerContextConfigure}" Command="{Binding ConfigureModCommand}" />
+                        <MenuItem Header="{DynamicResource ModManagerContextVisitWebsite}" Command="{Binding VisitModProjectUrlCommand}" />
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.ItemTemplate>
@@ -89,7 +103,8 @@
                                       VerticalAlignment="Center" 
                                       Height="{DynamicResource ListEntryCheckboxHeightSmall}"
                                       Grid.Column="0"
-                                      IsThreeState="True" />
+                                      Focusable="False"
+                                      IsThreeState="False" />
 
                             <TextBlock Text="{Binding Tuple.Config.ModName, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
@@ -161,11 +176,13 @@
                     <Button Content="{DynamicResource ConfigureModsConfigure}" 
                             Command="{Binding ConfigureModCommand}"
                             HorizontalAlignment="Stretch"
+                            Focusable="True"
                             Grid.Column="0" />
 
                     <Button Content="{DynamicResource ConfigureModsOpenFolder}" 
                             Command="{Binding OpenModFolderCommand}"
                             HorizontalAlignment="Stretch"
+                            Focusable="True"
                             Grid.Column="2" />
                 </Grid>
 

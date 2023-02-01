@@ -1,13 +1,3 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.Mod.Loader.IO.Config;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.WPF.Theme.Default;
-using Reloaded.WPF.Utilities;
-
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages.Dialogs;
 
 /// <summary>

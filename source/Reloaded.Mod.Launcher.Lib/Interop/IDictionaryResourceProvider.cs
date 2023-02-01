@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Launcher.Lib.Interop;
+namespace Reloaded.Mod.Launcher.Lib.Interop;
 
 /// <summary>
 /// Abstraction for obtaining resources of a generic type from a given source.

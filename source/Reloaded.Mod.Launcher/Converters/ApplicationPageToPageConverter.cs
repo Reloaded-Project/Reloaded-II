@@ -1,11 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Windows.Data;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
-using Reloaded.Mod.Launcher.Pages.BaseSubpages;
-using Reloaded.WPF.Theme.Default;
+using Page = Reloaded.Mod.Launcher.Lib.Models.Model.Pages.Page;
 
 namespace Reloaded.Mod.Launcher.Converters;
 
@@ -19,13 +12,13 @@ public class ApplicationPageToPageConverter : IValueConverter
         switch ((Page) value)
         {
             case Page.ManageMods:
-                return IoC.GetConstant<ManageModsPage>();
+                return Lib.IoC.Get<ManageModsPage>();
             case Page.SettingsPage:
-                return IoC.GetConstant<SettingsPage>();
+                return Lib.IoC.Get<SettingsPage>();
             case Page.Application:
-                return IoC.Get<ApplicationPage>();
+                return Lib.IoC.Get<ApplicationPage>();
             case Page.DownloadMods:
-                return IoC.Get<DownloadPackagesPage>();
+                return Lib.IoC.Get<DownloadPackagesPage>();
             default:
                 Debugger.Break();
                 return null!;

@@ -1,5 +1,3 @@
-﻿using Reloaded.Mod.Loader.IO.Config;
-
 namespace Reloaded.Mod.Loader.Update.Packaging.Extra;
 
 /// <summary>
@@ -29,4 +27,9 @@ public class ReleaseMetadataExtraData
     /// Reserved for future use.
     /// </summary>
     public string? Changelog { get; set; }
+
+    /// <summary>
+    /// Contains the readme for the package, encoded as markdown.
+    /// </summary>
+    public string? Readme { get; set; }
 }

@@ -1,0 +1,134 @@
+{
+  "Mappings": {
+    "1": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 1,
+          "Inverted": false
+        }
+      },
+      "MappingType": 0
+    },
+    "2": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 2,
+          "Inverted": false
+        }
+      },
+      "MappingType": 0
+    },
+    "3": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 3,
+          "Inverted": false
+        }
+      },
+      "MappingType": 0
+    },
+    "4": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 4,
+          "Inverted": false
+        }
+      },
+      "MappingType": 0
+    },
+    "5": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 12,
+          "Inverted": false
+        }
+      },
+      "MappingType": 0
+    },
+    "6": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 13,
+          "Inverted": false
+        }
+      },
+      "MappingType": 0
+    },
+    "9": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 10,
+          "Inverted": false
+        }
+      },
+      "MappingType": 0
+    },
+    "10": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 9,
+          "Inverted": false
+        }
+      },
+      "MappingType": 0
+    },
+    "11": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 14,
+          "Inverted": false
+        }
+      },
+      "MappingType": 0
+    },
+    "512": {
+      "Mappings": {
+        "1": {
+          "ControllerId": "XInput 0",
+          "Index": 0,
+          "Inverted": false
+        }
+      },
+      "MappingType": 1
+    },
+    "513": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 1,
+          "Inverted": false
+        }
+      },
+      "MappingType": 1
+    },
+    "263": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 5,
+          "Inverted": false
+        }
+      },
+      "MappingType": 1
+    },
+    "264": {
+      "Mappings": {
+        "0": {
+          "ControllerId": "XInput 0",
+          "Index": 4,
+          "Inverted": false
+        }
+      },
+      "MappingType": 1
+    }
+  }
+}

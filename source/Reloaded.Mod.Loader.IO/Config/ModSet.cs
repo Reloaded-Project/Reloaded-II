@@ -1,8 +1,6 @@
-﻿using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Loader.IO.Config;
 
+[Equals(DoNotAddEqualityOperators = true)]
 public class ModSet : ObservableObject, IConfig<ModSet>
 {
     /* Class Members */
@@ -31,4 +29,13 @@ public class ModSet : ObservableObject, IConfig<ModSet>
     {
         EnabledMods ??= EmptyArray<string>.Instance;
     }
+
+    // Reflection-less JSON
+    public static JsonTypeInfo<ModSet> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = true;
+        return ModSetContext.Default.ModSet;
+    }
+    
+    public JsonTypeInfo<ModSet> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 }

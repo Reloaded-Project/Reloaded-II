@@ -1,31 +1,34 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Reloaded.Mod.Launcher.Lib;
-using Reloaded.Mod.Launcher.Lib.Commands.General;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel;
-using Reloaded.Mod.Launcher.Lib.Utility;
-using Reloaded.Mod.Launcher.Pages.Dialogs;
+using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;
 
 /// <summary>
 /// Interaction logic for SettingsPage.xaml
 /// </summary>
-public partial class SettingsPage : ReloadedIIPage
+public partial class SettingsPage : ReloadedIIPage, IDisposable
 {
     public SettingsPageViewModel ViewModel { get; set; }
+    private bool _disposed;
 
     public SettingsPage()
     {
+        SwappedOut += Dispose;
         InitializeComponent();
-        ViewModel = IoC.GetConstant<SettingsPageViewModel>();
-        this.AnimateOutStarted += OnLeavingPage;
-        IoC.Get<MainWindow>().Closing += OnMainWindowExit;
+        ViewModel = Lib.IoC.GetConstant<SettingsPageViewModel>();
+        Lib.IoC.Get<MainWindow>().Closing += OnMainWindowExit;
     }
 
-    private void OnMainWindowExit(object sender, CancelEventArgs e) => OnLeavingPage();
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        _disposed = true;
+        OnLeavingPage();
+        Lib.IoC.Get<MainWindow>().Closing -= OnMainWindowExit;
+    }
+
+    private void OnMainWindowExit(object? sender, CancelEventArgs e) => Dispose();
     private async void OnLeavingPage() => await ViewModel.SaveConfigAsync();
 
     private void Documents_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) => new OpenDocumentationCommand().Execute(null);
@@ -45,4 +48,6 @@ public partial class SettingsPage : ReloadedIIPage
         firstLaunchWindow.Owner = Window.GetWindow(this);
         firstLaunchWindow.ShowDialog();
     }
+
+    private void ControllerConfig_Click(object sender, RoutedEventArgs e) => ControllerSupport.Controller.Configure(true);
 }

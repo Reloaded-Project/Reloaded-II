@@ -1,15 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Loader.IO.Structs;
-using Reloaded.Mod.Loader.IO.Utility;
-
 namespace Reloaded.Mod.Loader.IO.Config;
 
 [DebuggerDisplay("{ModId}")]
-[Equals(DoNotAddEqualityOperators = true, DoNotAddGetHashCode = true)]
+[Equals(DoNotAddEqualityOperators = true)]
 public class ModUserConfig : ObservableObject, IConfig<ModUserConfig>, IModUserConfig
 {
     public const string ConfigFileName = "ModUserConfig.json";
@@ -61,4 +53,13 @@ public class ModUserConfig : ObservableObject, IConfig<ModUserConfig>, IModUserC
     /// <param name="modId">Id for the mod to get the user config for.</param>
     /// <param name="configDirectory">The directory containing the user configurations.</param>
     public static string GetUserConfigPathForMod(string modId, string configDirectory = null) => Path.Combine(GetUserConfigFolderForMod(modId, configDirectory), ConfigFileName);
+
+    // Reflection-less JSON
+    public static JsonTypeInfo<ModUserConfig> GetJsonTypeInfo(out bool supportsSerialize)
+    {
+        supportsSerialize = true;
+        return ModUserConfigContext.Default.ModUserConfig;
+    }
+    
+    public JsonTypeInfo<ModUserConfig> GetJsonTypeInfoNet5(out bool supportsSerialize) => GetJsonTypeInfo(out supportsSerialize);
 }

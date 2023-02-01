@@ -1,0 +1,7 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+	
+  <!-- Checks if environment variables are set -->
+  <Target Name="ReloadedEnvironmentVariableCheck" BeforeTargets="Build">
+    <Error Condition="$(RELOADEDIIMODS) == ''" Text="RELOADEDIIMODS environment variable is not set. Make sure you set this variable to the path of your Reloaded-II mods folder." />
+  </Target>
+</Project>

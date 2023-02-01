@@ -1,7 +1,3 @@
-﻿using System;
-using Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
-using Reloaded.WPF.Theme.Default;
-
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 
 /// <summary>

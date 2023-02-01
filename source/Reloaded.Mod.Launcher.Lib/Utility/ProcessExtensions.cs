@@ -1,8 +1,3 @@
-﻿using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Text;
-
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
@@ -106,7 +101,25 @@ public static unsafe class ProcessExtensions
     /// </summary>
     public static void OpenFileWithExplorer(string url)
     {
-        Process.Start(new ProcessStartInfo("cmd", $"/c start explorer \"{url}\""));
+        Process.Start(new ProcessStartInfo("cmd", $"/c start explorer \"{url}\"")
+        {
+            CreateNoWindow = true,
+            WindowStyle = ProcessWindowStyle.Hidden
+        });
+    }
+
+    /// <summary>
+    /// Opens an URL in browser.
+    /// </summary>
+    public static void OpenHyperlink(string url)
+    {
+        // Some links without full http(s) prefix might start with
+        // / after markdown conversion. Need to fix those.
+        url = url.TrimStart('/');
+        if (!url.StartsWith("http") || !url.StartsWith("https"))
+            url = $"http://{url}";
+
+        OpenFileWithDefaultProgram(url);
     }
 
     /// <summary>
@@ -114,7 +127,11 @@ public static unsafe class ProcessExtensions
     /// </summary>
     public static void OpenFileWithDefaultProgram(string url)
     {
-        Process.Start(new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\""));
+        Process.Start(new ProcessStartInfo("cmd", $"/c start \"\" \"{url}\"")
+        {
+            CreateNoWindow = true,
+            WindowStyle = ProcessWindowStyle.Hidden
+        });
     }
 
     /// <summary>

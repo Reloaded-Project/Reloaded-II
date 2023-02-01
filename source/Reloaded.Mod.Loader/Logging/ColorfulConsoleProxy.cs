@@ -1,6 +1,3 @@
-﻿using System.Drawing;
-using Reloaded.Mod.Loader.Logging.Interfaces;
-
 namespace Reloaded.Mod.Loader.Logging;
 
 /// <summary>
