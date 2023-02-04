@@ -453,4 +453,232 @@
     <sys:String x:Key="ConfigureModDialogReset">Reset</sys:String>
     <sys:String x:Key="ConfigureModDialogResetDescription" xml:space="preserve">Reset de huidige configuratie waarden naar de standaard waarden.&#x0a;[Let op: Dit benodigd mod ondersteuning, zoek contact op met de auteur als dit niet werkt]</sys:String>
 
+    <!-- Update 1.19.0: Controller Support -->
+    <sys:String x:Key="LoaderSettingsControllerBtn">Controller Configuratie [Beta]</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneName">Geen</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneDescription">Doet niks.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnUpName">Omhoog</sys:String>
+    <sys:String x:Key="ConfiguratorBtnUpDescription">Navigeert het menu omhoog.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDownName">Omlaag</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDownDescription">Navigeert het menu omlaag.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLeftName">Links</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLeftDescription">Navigeert het menu naar links.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnRightName">Rechts</sys:String>
+    <sys:String x:Key="ConfiguratorBtnRightDescription">Navigateert het menu naar rechts.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnAcceptName">Accepteer</sys:String>
+    <sys:String x:Key="ConfiguratorBtnAcceptDescription">Klikt op een knop.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDeclineName">Afwijzen</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDeclineDescription">Sluit de huidige niet hoofd window.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnNextPageName">Volgende Pagina</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNextPageDescription">Navigeer naar de volgende pagina binnen windows met meerdere paginas.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLastPageName">Laatste Pagina</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLastPageDescription">Navigeer naar de vorige pagina binnen windows met meerdere paginas.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnIncrementName">Toenemen</sys:String>
+    <sys:String x:Key="ConfiguratorBtnIncrementDescription">Voeg +1 toe aan de huidige hoeveelheid van een UI element.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDecrementName">Afnemen</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDecrementDescription">Trek 1 af van de huidige hoeveelheid van een UI element.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnModifierName">Aanpassing</sys:String>
+    <sys:String x:Key="ConfiguratorBtnModifierDescription">Maakt ander gedrag mogelijk voor UI elements.&#x0a;bv. Mod+Omhoog kan gebruikt worden om de mod volgorde te veranderen.</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightName">Menu Links/Rechts [Stick]</sys:String>
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightDescription">Navigeer het Menu naar Links/Rechts</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownName">Menu Omhoog/Omlaag [Stick]</sys:String>
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownDescription">Navigeer het Menu Omhoog/Omlaag</sys:String>
+
+    <sys:String x:Key="ConfiguratorCustomStringMainConfig">Hoofd Configuratie</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
+    <sys:String x:Key="ConfiguratorCustomStringTrigger">Trigger</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
+    <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Gebruik Dit om de Controller Trigger in te stellen</sys:String> <!-- Displays in description of trigger bindings. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Controller Configuratie [Beta]</sys:String> <!-- Name of the input configurator window. -->
+
+    <sys:String x:Key="ConfiguratorLibCustomStringNew">Nieuw</sys:String> <!-- "New" Used for button that adds values. -->
+    <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Links klikken wijst een nieuwe verbinding toe.&#x0a;Middel klik inverteert het getal.&#x0a;Rechts klik verwijdert de toewijzing!&#x0a;! geeft aan dat het getal is geinverteert.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
+    <sys:String x:Key="ConfiguratorLibCustomStringTimeout">Time-out</sys:String> <!-- Name of the input configurator window. -->
+
+    <!-- Update 1.20.0: Server as Separate Mod -->
+    <sys:String x:Key="ReloadedProcessNoticeNew">Benodigd dat 'Reloaded II Server' Mod is geactiveerd met LiteNetLib Host.&#x0a;Download het van de 'Download Mods' menu.</sys:String>
+    <sys:String x:Key="ReloadedProcessState">Conditie</sys:String> <!-- Is the mod running or paused? -->
+
+    <!-- Update 1.20.0: New Wine Run Dialog -->
+    <sys:String x:Key="WineCompatibilityNoticeTitleNew">Lanceer vanaf Wine</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeHeader_1">Je draait Reloaded binnen Wine, let hier op:</sys:String>
+    
+    <sys:String x:Key="WineCompatibilityNoticeList_1">- Het spel zal gestart worden door dezelfde Wine/Proton configuratie te gebruiken zoals deze launcher.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_2_1">- Als u dit niet wilt</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_2_2">Start dan ASI Loader</sys:String> <!-- Hyperlink-->
+    <sys:String x:Key="WineCompatibilityNoticeList_2_3">en open je spel buiten de launcher om.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_3_1">- Draaien met Proton benodigd extra stappen,</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_3_2">bekijk alstublieft de wiki.</sys:String> <!-- Hyperlink-->
+
+    <sys:String x:Key="WineCompatibilityNoticeFooter_1">Voor meer informatie,</sys:String> <!-- Start of footer, continued below. -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_2">bekijk de Wiki</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_3">of</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeFooter_4">maak een issue aan op GitHub.</sys:String>  <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <sys:String x:Key="WineCompatibilityNoticeOkNew">Start Applicatie</sys:String>
+
+    <!-- Update 1.20.0: Extended Publish Options -->
+    <sys:String x:Key="PublishModReadmeSectionTitle">Readme &amp; Changelog</sys:String>
+    <sys:String x:Key="PublishModReadmeSet">Stel Readme Bestand In</sys:String>
+    <sys:String x:Key="PublishModReadmeTooltip">Maakt het mogelijk om een Readme bestand te kiezen.&#x0a;Readme bestanden worden gebruikt als beschrijving in de Download Mods menu.&#x0a;Gebruikt Markdown. Bekijk de wiki voor meer informatie.</sys:String> <!-- Displays on Hover -->
+    <sys:String x:Key="PublishModChangelogSet">Stel Changelog Bestand In</sys:String>
+    <sys:String x:Key="PublishModChangelogTooltip">Maakt het mogelijk om een changelog bestand te kiezen.&#x0a;Changelogs worden gebruikt in de Download Mods menu en in de update venster.&#x0a;Gebruikt Markdown. Bekijk de wiki voor meer informatie.</sys:String>
+
+    <sys:String x:Key="PublishSelectMarkdownTitle">Selecteer een Markdown Bestand (*.md).</sys:String>
+    <sys:String x:Key="PublishSelectMarkdownTypeName">Markdown Bestand</sys:String>
+
+    <!-- Update 1.20.0: Revamped Downloads Menu -->
+    <sys:String x:Key="DownloadsMenuNuGetButton">NuGet</sys:String>
+
+    <sys:String x:Key="DownloadsPackagePreviewProjectUrl">Project Website</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewClose">Sluiten</sys:String>
+
+    <sys:String x:Key="DownloadsPackageSourceTooltip">Mod van: </sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewModAuthorTooltip">Mod Auteur</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewLikeCountTooltip">Leuk Hoeveelheid</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewDownloadCountTooltip">Download Hoeveelheid</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewViewCountTooltip">Kijkers Hoeveelheid</sys:String> <!-- Number of Views -->
+    <sys:String x:Key="DownloadsPackagePreviewPublishDateTooltip">Voor Het Laatst Geupdated</sys:String> <!-- Shows on hover -->
+
+    <!-- Update 1.20.0: Self Runtime Update -->
+    <sys:String x:Key="RuntimeUpdateRequiredTitle">Runtime Update Benodigd</sys:String>
+    <sys:String x:Key="RuntimeUpdateRequiredDescription">Een .NET runtime update is benodigd voor de nieuwe versie van reloaded.&#x0a;De download zal gestart worden nadat deze venster gesloten wordt.&#x0a;Klik alstublieft op 'yes' als er een User Account Control tekst komt.</sys:String>
+
+    <!-- Update 1.20.0: Extended Mod Update Dialog -->
+    <sys:String x:Key="UpdateModModName">Mod Naam</sys:String>
+    <sys:String x:Key="UpdateModModEnabled">Update?</sys:String>
+
+    <!-- Update 1.20.0: Adding Project URL -->
+    <sys:String x:Key="CreateModDialogProjectUrl">Website</sys:String>
+    <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">Volledige HTTP(s) link naar je website.</sys:String> <!-- Shown as a placeholder -->
+    <sys:String x:Key="ModManagerContextVisitWebsite">Bezoek Website</sys:String>
+
+    <!-- Update 1.21.0: Mod Packs: Dialog -->
+    <sys:String x:Key="CreateModPackTitle">Creëer Mod Verzameling</sys:String>
+
+    <sys:String x:Key="CreateModPackNote1">Alleen Geschikte Mods krijgt u te zien.</sys:String>
+    <sys:String x:Key="CreateModPackNote2">Mods Moeten Ondersteuning voor Updates hebben om in aanmerking te komen.</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <!-- Update 1.21.0: Mod Packs: Editor -->
+    <sys:String x:Key="EditModPackTitle">Pas Mod Verzameling Aan</sys:String>
+
+    <sys:String x:Key="ModPackImageTooltip">Opgelet: Plaatjes in deze carousel zullen op juiste grootte gebracht worden tijdens installatie.&#x0a;Je kan beeldverhouding problemen negeren.</sys:String>
+    <sys:String x:Key="ModPackImageCaption">Plaatje Tekst</sys:String>
+
+    <sys:String x:Key="ModPackClickToEdit">Klik Om Te Bewerken</sys:String>
+    <sys:String x:Key="ModPackAddMod">Voeg Mod Toe</sys:String>
+    <sys:String x:Key="ModPackAddModTooltip">Voegt mod toe aan een verzameling.&#x0a;Let op: Dit kan een tijdje duren als er veel plaatjes zijn.</sys:String>
+    <sys:String x:Key="ModPackRemoveMod">Verwijder Mod</sys:String>
+    <sys:String x:Key="ModPackRemoveModTooltip">Verwijder de laatst geselecteerde mod van deze verzameling.</sys:String>
+    <sys:String x:Key="ModPackSaveReadme">Sla Readme Op</sys:String>
+    <sys:String x:Key="ModPackSetReadme">Selecteer Readme</sys:String>
+    <sys:String x:Key="ModPackAddImage">Voeg Plaatje Toe</sys:String>
+    <sys:String x:Key="ModPackRemoveImage">Verwijder Plaatje</sys:String>
+    <sys:String x:Key="ModPackLoadExisting">Laad Bestaande Verzameling</sys:String>
+    <sys:String x:Key="ModPackSavePack">Sla Verzameling Op</sys:String>
+    <sys:String x:Key="ModPackPreviewPack">Test Verzameling</sys:String>
+
+    <sys:String x:Key="ModPackPackNameTooltip">Naam van de verzameling, zoals het getoond wordt tijdens een installatie.</sys:String>
+    <sys:String x:Key="ModPackModNameTooltip">Naam van de mod, zoals het getoond wordt tijdens een installatie.</sys:String>
+    <sys:String x:Key="ModPackImageAddTooltip">Voegt een nieuw plaatje toe aan de verzameling/mod.</sys:String>
+    <sys:String x:Key="ModPackImageRemoveTooltip">Verwijderd het huidig zichtbare plaatje.</sys:String>
+    <sys:String x:Key="ModPackDescriptionTooltip">Korte beschrijving van de mod. 1 Zin. De gebruiker kan de volledige readme openen tijdens installatie.</sys:String>
+    <sys:String x:Key="ModPackSetReadmeTooltip">Updatet de volledige readme van de mod/verzameling. Readme gebruikt Markdown (.md) formaat.</sys:String>
+    <sys:String x:Key="ModPackSaveReadmeTooltip">Slaat de readme op terug op de schijf zodat het bewerkt kan worden met een externe editor.</sys:String>
+
+    <sys:String x:Key="ModPackSelectExistingTitle">Selecteer een Mod Verzameling (*.r2pack).</sys:String>
+    <sys:String x:Key="ModPackSelectExistingTypeName">R2 Mod Verzameling</sys:String>
+    <sys:String x:Key="ErrorFailedToSaveModPack">Gefaald om Mod Verzameling Op te Slaan</sys:String>
+
+    <!-- Update 1.21.0: Mod Packs: Installer -->
+    <sys:String x:Key="InstallModPackTitle">Installeer Mod Verzameling</sys:String>
+
+    <sys:String x:Key="InstallModPackEnableHeader">Download?</sys:String>
+    <sys:String x:Key="InstallModPackErrorDownloadFail">Een paar Mods konden niet Gedownload worden</sys:String>
+
+    <sys:String x:Key="InstallModPackConfirmTitle">Keur Mods goed om te Downloaden</sys:String>
+    <sys:String x:Key="InstallModPackConfirmDescription">Zodra u hebt nagekeken wat u wilt, start de download.</sys:String>
+
+    <sys:String x:Key="InstallModPackDownloading">Download {0}...</sys:String> <!-- {0} is replaced by mod name -->
+    <sys:String x:Key="InstallModPackStart">Start</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackPrevious">Ga Terug</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackStartDownload">Start Te Downloaden</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackInstall">Installeer Deze Mod</sys:String> <!-- Advances Page -->
+    <sys:String x:Key="InstallModPackSkip">Sla Deze Mod Over</sys:String> <!-- Advances Page -->
+
+    <!-- Update 1.21.0: Generic Image Selector -->
+    <sys:String x:Key="ImageSelectorTitle">Selecteer een plaatje.</sys:String>
+    <sys:String x:Key="ImageSelectorFilter">Plaatje</sys:String>
+
+    <!-- Update 1.22.0: Download Package Settings -->
+    <sys:String x:Key="DownloadPackagesSettingHide">Verberg Geïnstalleerde</sys:String>
+    <sys:String x:Key="DownloadPackagesSettingHideTooltip">Als het mogelijk is worden al geïnstaleerde mods verborgen.&#x0a;(Ondersteund NuGet &amp; 'Publiceer' geëxporteerde mods.)</sys:String>
+
+    <!-- Update 1.22.6: Errors -->
+    <sys:String x:Key="ErrorAddApplicationCantReadSymlink">Mislukt om het laatste pad van het bestand te vinden (symlink gedetecteerd).
+Je zou tegen een error aan kunnen lopen door DRM of door een apart FileSystem geval. Als dat gebeurt, kopieer dan het EXE pad van de loader log naar de Bewerk Applicatie menu.</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGetVersionInfo">Mislukt om de metadata/versie info te krijgen van de schijf. Ik zal wat uitproberen.
+(Dit zou kunnen gebeuren door exotische netwerk configuraties [bv. CIFS] als je niet tegen meer problemen aan loopt, zou het prima moeten zijn).</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGeneral">Errors kwamen naar boven tijdens het toevoegen van de applicaties: Dit kan komen door...
+- Ongebruikelijke FileSystem setup (applicatie op een gedeelde netwerk enz.)
+- Je mist de rechten om toegang te krijgen tot het bestand.
+- Microsoft DRM (MS Store/GamePass).</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFile">Mislukt om het EXE bestand te lezen. Dit kan door verschillende dingen komen.
+- DRM (Microsoft Store/GamePass).
+- Je mist de rechten om toegang te krijgen tot het EXE bestand.
+- De locatie van het bestand is aangepast.
+
+Als het probleem ontstaat door MS Store/GamePass, dan je moet je waarschijnlijk DE ASI LADER HANDMATIG STARTEN door DRM (encryptie!!) 
+en dan start je het programma direct met de EXE. Vraag om hulp van de community als het nodig is.
+
+DRM: 'Je zult niks in bezit hebben, maar wel gelukkig zijn.'
+</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">Mislukt om het EXE bestand te lezen door het starten van ASI Lader. Dit kan komen door verschillende dingen.
+- DRM (Microsoft Store/GamePass).
+- Je mist de rechten om toegang te krijgen tot het EXE bestand.
+- De locatie van het bestand is aangepast.</sys:String>
+
+    <!-- Update 1.23.0: Mod Packs Extras -->
+    <sys:String x:Key="InstallModPackInstallAll">Installeer Alle Mods</sys:String> <!-- Click and it installs all. -->
+    
+    <!-- Update 1.23.0: Search Sorting Options -->
+    <sys:String x:Key="SearchOptionSortNone">Geen</sys:String> 
+    <sys:String x:Key="SearchOptionSortLastModified">Voor Het Laatst Aangepast</sys:String> 
+    <sys:String x:Key="SearchOptionSortDownloads">Downloads</sys:String> 
+    <sys:String x:Key="SearchOptionSortLikes">Likes</sys:String> 
+    <sys:String x:Key="SearchOptionSortViews">Kijkers</sys:String> 
+    
+    <sys:String x:Key="SearchOptionAscending">Oplopend</sys:String> 
+    <sys:String x:Key="SearchOptionDescending">Afnemend</sys:String> 
+    
+    <sys:String x:Key="SearchOptionsTooltip">Let op dat sommige download locaties niet sorteren/filteren ondersteunen.</sys:String> 
+    
+    <!-- Update 1.23.0: Publish Important Note -->
+    <sys:String x:Key="PublishModNotice">Upload ALLE bestanden zoals ze gecreeerd zijn door de uitgever, verander niet de namen.
+Voor meer informatie, bekijk de tutorial. Vergeet niet om de correcte Publish doelwit te kiezen.</sys:String> 
+    
+    <!-- Note for translators: Please update ErrorPathToApplicationInvalid if you get down this far, message was updated. -->
+
+    <!-- Update 1.23.0: Tags -->
+    <sys:String x:Key="EditModAddTag">Voeg Tag Toe</sys:String> 
+    <sys:String x:Key="EditModSelectPresetTagTooltip">Selecteer een Preset Tag</sys:String> 
+    <sys:String x:Key="EditModAddTagPlaceHolder">Tag Naam Hier (of selecteer preset 👉)</sys:String> 
+    <sys:String x:Key="ConfigureModsSelectTagTooltip">Filter Met Tag</sys:String> 
 </ResourceDictionary>
