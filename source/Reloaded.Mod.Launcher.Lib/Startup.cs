@@ -84,7 +84,7 @@ public static class Startup
         if (application != null)
             arguments = $"{arguments} {application.Config.AppArguments}";
 
-        _commandLineArguments.TryGetValue(Constants.ParameterArguments, out var workingDirectory);
+        _commandLineArguments.TryGetValue(Constants.ParameterWorkingDirectory, out var workingDirectory);
 
         // Show warning for Wine users.
         if (Shared.Environment.IsWine)
