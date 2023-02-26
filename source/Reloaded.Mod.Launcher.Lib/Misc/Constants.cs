@@ -9,6 +9,7 @@ public static class Constants
     public const string ParameterKill = "--kill";
     public const string ParameterLaunch = "--launch";
     public const string ParameterArguments = "--arguments";
+    public const string ParameterWorkingDirectory = "--working-directory";
     public const string ParameterDownload  = "--download";
     public const string ParameterR2Pack = "--r2pack";
     public const string ParameterR2PackDownload = "--r2packdl";

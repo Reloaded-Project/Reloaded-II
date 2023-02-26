@@ -1,3 +1,4 @@
+using System.Linq;
 using Button = Sewer56.UI.Controller.Core.Enums.Button;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages.ApplicationSubPages;

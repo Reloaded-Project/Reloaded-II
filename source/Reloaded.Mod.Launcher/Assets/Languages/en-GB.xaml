@@ -686,5 +686,9 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="EditModSelectPresetTagTooltip">Select a Preset Tag</sys:String> 
     <sys:String x:Key="EditModAddTagPlaceHolder">Tag Name Here (or select preset 👉)</sys:String> 
     <sys:String x:Key="ConfigureModsSelectTagTooltip">Filter By Tag</sys:String> 
+    
+    
+    <!-- Update 1.23.8: Tags -->
+    <sys:String x:Key="AddAppWorkingDirectory">Working Directory</sys:String>
    
 </ResourceDictionary>
