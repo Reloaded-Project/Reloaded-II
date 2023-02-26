@@ -35,7 +35,7 @@ public class ApplicationLauncher
     /// </summary>
     public static ApplicationLauncher FromApplicationConfig(PathTuple<ApplicationConfig> config)
     {
-        return FromLocationAndArguments($"{ApplicationConfig.GetAbsoluteAppLocation(config)}", config.Config.WorkingDirectory, $"{config.Config.AppArguments}");
+        return FromLocationAndArguments($"{ApplicationConfig.GetAbsoluteAppLocation(config)}", $"{config.Config.AppArguments}", config.Config.WorkingDirectory);
     }
 
     /// <summary>
