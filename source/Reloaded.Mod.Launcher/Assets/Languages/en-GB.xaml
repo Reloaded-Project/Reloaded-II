@@ -36,7 +36,6 @@
     <sys:String x:Key="AddAppName">Application Name</sys:String>
     <sys:String x:Key="AddAppLocation">Executable Location</sys:String>
     <sys:String x:Key="AddAppArguments">Commandline Arguments</sys:String>
-    <sys:String x:Key="AddAppWorkingDirectory">Working Directory</sys:String>
 
     <sys:String x:Key="AddAppAdvancedOptions">Advanced Tools &amp; Options</sys:String>
     <sys:String x:Key="AddAppCreateShortcut">Create Shortcut</sys:String>
@@ -687,5 +686,9 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="EditModSelectPresetTagTooltip">Select a Preset Tag</sys:String> 
     <sys:String x:Key="EditModAddTagPlaceHolder">Tag Name Here (or select preset 👉)</sys:String> 
     <sys:String x:Key="ConfigureModsSelectTagTooltip">Filter By Tag</sys:String> 
+    
+    
+    <!-- Update 1.23.8: Tags -->
+    <sys:String x:Key="AddAppWorkingDirectory">Working Directory</sys:String>
    
 </ResourceDictionary>
