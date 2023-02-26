@@ -6,7 +6,8 @@ namespace Reloaded.Mod.Launcher.Lib.Utility;
 public class ApplicationLauncher
 {
     private string _location = "";
-    private string? _arguments = "";
+    private string _arguments = "";
+    private string _workingDirectory = "";
 
     /// <summary/>
     private ApplicationLauncher() { }
@@ -14,12 +15,13 @@ public class ApplicationLauncher
     /// <summary>
     /// Creates an <see cref="ApplicationLauncher"/> from a whole commandline, i.e. path and arguments.
     /// </summary>
-    public static ApplicationLauncher FromLocationAndArguments(string location, string? arguments)
+    public static ApplicationLauncher FromLocationAndArguments(string location, string? workingDirectory, string? arguments)
     {
         var launcher = new ApplicationLauncher
         {
-            _arguments = arguments,
-            _location = location
+            _arguments = arguments ?? "",
+            _location = location,
+            _workingDirectory = workingDirectory ?? Path.GetDirectoryName(location)!
         };
 
         if (!File.Exists(launcher._location))
@@ -33,7 +35,7 @@ public class ApplicationLauncher
     /// </summary>
     public static ApplicationLauncher FromApplicationConfig(PathTuple<ApplicationConfig> config)
     {
-        return FromLocationAndArguments($"{ApplicationConfig.GetAbsoluteAppLocation(config)}", $"{config.Config.AppArguments}");
+        return FromLocationAndArguments($"{ApplicationConfig.GetAbsoluteAppLocation(config)}", config.Config.WorkingDirectory, $"{config.Config.AppArguments}");
     }
 
     /// <summary>
@@ -52,7 +54,7 @@ public class ApplicationLauncher
 
         bool success = Native.CreateProcessW(null, $"\"{_location}\" {_arguments}", ref lpProcessAttributes,
             ref lpThreadAttributes, false, Native.ProcessCreationFlags.CREATE_SUSPENDED,
-            IntPtr.Zero, Path.GetDirectoryName(_location)!, ref startupInfo, ref processInformation);
+            IntPtr.Zero, _workingDirectory, ref startupInfo, ref processInformation);
 
         if (!success)
         {

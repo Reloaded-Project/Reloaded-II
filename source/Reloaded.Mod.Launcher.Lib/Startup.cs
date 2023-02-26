@@ -84,16 +84,18 @@ public static class Startup
         if (application != null)
             arguments = $"{arguments} {application.Config.AppArguments}";
 
+        _commandLineArguments.TryGetValue(Constants.ParameterArguments, out var workingDirectory);
+
         // Show warning for Wine users.
         if (Shared.Environment.IsWine)
         {
             // Set up UI Resources, since they're needed for the dialog.
             if (CompatibilityDialogs.WineShowLaunchDialog())
-                StartGame(applicationToLaunch, arguments);
+                StartGame(applicationToLaunch, arguments, workingDirectory);
         }
         else
         {
-            StartGame(applicationToLaunch, arguments);
+            StartGame(applicationToLaunch, arguments, workingDirectory);
         }
     }
 
@@ -139,10 +141,10 @@ public static class Startup
 
     private static void InitControllerSupport() => Actions.InitControllerSupport();
 
-    private static void StartGame(string applicationToLaunch, string arguments)
+    private static void StartGame(string applicationToLaunch, string arguments, string? workingDirectory = null)
     {
         // Launch the application.
-        var launcher = ApplicationLauncher.FromLocationAndArguments(applicationToLaunch, arguments);
+        var launcher = ApplicationLauncher.FromLocationAndArguments(applicationToLaunch, arguments, workingDirectory);
         launcher.Start();
     }
     

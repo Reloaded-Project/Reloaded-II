@@ -101,6 +101,18 @@
                         MinWidth="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Stretch" 
                         VerticalAlignment="Center"/>
+                
+                <TextBox 
+                    x:Name="WorkingDirectory"
+                    Style="{DynamicResource TextboxWithPlaceholder}" 
+                        Text="{Binding Application.Config.WorkingDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Tag="{DynamicResource AddAppWorkingDirectory}" 
+                        ToolTip="{DynamicResource AddAppWorkingDirectory}"
+                        ToolTipService.InitialShowDelay="0"
+                        Margin="{DynamicResource CommonItemVerticalMargin}" 
+                        MinWidth="{StaticResource DetailsColumnWidth}"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Center"/>
 
                 <!-- Package Resolver Options. -->
                 <controls:PopupLabel ButtonText="{DynamicResource AddAppModSources}"

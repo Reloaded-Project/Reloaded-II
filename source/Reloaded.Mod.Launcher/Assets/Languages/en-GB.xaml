@@ -36,6 +36,7 @@
     <sys:String x:Key="AddAppName">Application Name</sys:String>
     <sys:String x:Key="AddAppLocation">Executable Location</sys:String>
     <sys:String x:Key="AddAppArguments">Commandline Arguments</sys:String>
+    <sys:String x:Key="AddAppWorkingDirectory">Working Directory</sys:String>
 
     <sys:String x:Key="AddAppAdvancedOptions">Advanced Tools &amp; Options</sys:String>
     <sys:String x:Key="AddAppCreateShortcut">Create Shortcut</sys:String>
