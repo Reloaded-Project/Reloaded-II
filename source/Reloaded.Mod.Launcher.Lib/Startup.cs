@@ -152,6 +152,13 @@ public static class Startup
     {
         string[] args = Environment.GetCommandLineArgs();
         for (int index = 1; index < args.Length; index += 2)
-            _commandLineArguments.Add(args[index], args[index + 1]);
+            _commandLineArguments.Add(args[index], args[index + 1].Trim('"'));
+
+        // Reason for trimming, see:
+        // https://developercommunity.visualstudio.com/t/environmentgetcommandlineargs-and-myapplicationcom/473717#T-N503552
+        // https://bytes.com/topic/c-sharp/answers/238413-problem-environment-getcommandlineargs
+        // TLDR;
+        // Ending backslashes - as commonly used to differantiate files and folders - cause Environment.GetCommandLineArgs() to escape the ending qutoation mark.
+        // Just trim it off.
     }
 }

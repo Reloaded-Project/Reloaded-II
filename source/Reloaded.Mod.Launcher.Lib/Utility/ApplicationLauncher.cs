@@ -15,7 +15,7 @@ public class ApplicationLauncher
     /// <summary>
     /// Creates an <see cref="ApplicationLauncher"/> from a whole commandline, i.e. path and arguments.
     /// </summary>
-    public static ApplicationLauncher FromLocationAndArguments(string location, string? workingDirectory, string? arguments)
+    public static ApplicationLauncher FromLocationAndArguments(string location, string? arguments, string? workingDirectory)
     {
         var launcher = new ApplicationLauncher
         {
