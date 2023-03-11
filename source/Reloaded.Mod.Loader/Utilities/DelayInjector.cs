@@ -22,11 +22,14 @@ public unsafe class DelayInjector
 
         // Allocate space for code to identify entry point from hooks.
         // DO NOT CHANGE, UNLESS ALSO CHANGING ASSEMBLY BELOW
-        _asmEntryDllOrdinal = (int*)NativeMemory.Alloc(sizeof(int) * 2);
-        _asmEntryFunctionOrdinal = _asmEntryDllOrdinal + 1;
+        var utils = hooks.Utilities;
+        
+        // An implementation detail is this will allocate in 0-2GB range needed for our ASM to work.
+        _asmEntryDllOrdinal = (int*)utils.WritePointer(0);
+        _asmEntryFunctionOrdinal = (int*)utils.WritePointer(0);
 
         var assemblyFolder = Path.GetDirectoryName(typeof(DelayInjector).Assembly.Location);
-        var predefinedDllPath = Path.Combine(assemblyFolder, "DelayInjectHooks.json");
+        var predefinedDllPath = Path.Combine(assemblyFolder!, "DelayInjectHooks.json");
 
         _method = action;
         _dlls = JsonSerializer.Deserialize<List<DllEntry>>(File.ReadAllText(predefinedDllPath));
@@ -106,7 +109,6 @@ public unsafe class DelayInjector
             hook.Disable();
 
         _wrappers.Clear();
-        NativeMemory.Free(_asmEntryDllOrdinal);
     }
 
     private struct DllEntry
