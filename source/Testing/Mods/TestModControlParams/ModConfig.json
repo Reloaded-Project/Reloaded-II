@@ -1,0 +1,21 @@
+{
+  "ModId": "TestModControlParams",
+  "ModName": "TestModControlParams",
+  "ModAuthor": "Reloaded-II",
+  "ModVersion": "1.0.0",
+  "ModDescription": "Test Mod for validating custom controls for configuration",
+  "ModDll": "TestModControlParams.dll",
+  "ModIcon": "Preview.png",
+  "ModR2RManagedDll32": "x86/TestModControlParams.dll",
+  "ModR2RManagedDll64": "x64/TestModControlParams.dll",
+  "ModNativeDll32": "",
+  "ModNativeDll64": "",
+  "IsLibrary": false,
+  "ReleaseMetadataFileName": "TestModControlParams.ReleaseMetadata.json",
+  "PluginData": {},
+  "IsUniversalMod": true,
+  "ModDependencies": [ ],
+  "OptionalDependencies": [],
+  "SupportedAppId": [],
+  "ProjectUrl": ""
+}
