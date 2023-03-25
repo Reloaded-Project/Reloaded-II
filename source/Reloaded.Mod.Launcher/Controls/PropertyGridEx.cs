@@ -1,3 +1,4 @@
+using Reloaded.Mod.Interfaces.Structs;
 using Color = System.Windows.Media.Color;
 using PropertyItem = HandyControl.Controls.PropertyItem;
 using TextBox = System.Windows.Controls.TextBox;
@@ -20,6 +21,7 @@ public class PropertyGridEx : PropertyGrid
     protected override PropertyItem CreatePropertyItem(PropertyDescriptor propertyDescriptor, object component, string category,
         int hierarchyLevel)
     {
+        ((PropertyResolverEx)PropertyResolver).Descriptor = propertyDescriptor;
         var item = base.CreatePropertyItem(propertyDescriptor, component, category, hierarchyLevel);
         _properties.Add(item);
         _propertyDescriptors.Add(propertyDescriptor);
@@ -63,6 +65,7 @@ public class PropertyGridEx : PropertyGrid
 public class PropertyResolverEx : PropertyResolver
 {
     public PropertyGridEx PropertyGrid { get; set; }
+    public PropertyDescriptor? Descriptor { get; set; }
 
     public PropertyResolverEx(PropertyGridEx grid)
     {
@@ -71,6 +74,17 @@ public class PropertyResolverEx : PropertyResolver
 
     public override PropertyEditorBase CreateDefaultEditor(Type type)
     {
+        // First check for a user supplied control type
+        var controlParam = Descriptor?.Attributes.OfType<ICustomControlAttribute>().FirstOrDefault();
+        switch (controlParam)
+        {
+            default: // if null
+                break;
+            case SliderControlParamsAttribute:
+                var t = (SliderControlParamsAttribute)controlParam;
+                return new SliderPropertyEditor(t.Minimum, t.Maximum, t.SmallChange, t.LargeChange, t.TickFrequency, t.IsSnapToTickEnabled, t.TickPlacement, this);
+        }
+
         if (type == typeof(string)) return new PlainTextPropertyEditor(this);
         
         // Numbers
@@ -390,3 +404,70 @@ public class DateTimePropertyEditor : PropertyEditorBase
 
     public override DependencyProperty GetDependencyProperty() => DateTimePicker.SelectedDateTimeProperty;
 }
+
+public static class SliderTickPlacementEnumConvert
+{
+    public static TickPlacement ToTickPlacement(SliderControlTickPlacement tickPlacement)
+    {
+        switch (tickPlacement)
+        {
+            default: return TickPlacement.None;
+            case SliderControlTickPlacement.None: return TickPlacement.None;
+            case SliderControlTickPlacement.TopLeft: return TickPlacement.TopLeft;
+            case SliderControlTickPlacement.BottomRight: return TickPlacement.BottomRight;
+            case SliderControlTickPlacement.Both: return TickPlacement.Both;
+        }
+    }
+}
+
+public class SliderPropertyEditor : PropertyEditorBase
+{
+    public PropertyResolverEx Owner { get; internal set; }
+
+    public SliderPropertyEditor(
+        double minimum,
+        double maximum,
+        double smallChange,
+        double largeChange,
+        int tickFrequency,
+        bool isSnapToTickEnabled,
+        SliderControlTickPlacement sliderControlTickPlacement,
+        PropertyResolverEx propertyResolverEx)
+    {
+        Minimum = minimum;
+        Maximum = maximum;
+        SmallChange = smallChange;
+        LargeChange = largeChange;
+        TickFrequency = tickFrequency;
+        IsSnapToTickEnabled = isSnapToTickEnabled;
+        TickPlacement = sliderControlTickPlacement;
+        Owner = propertyResolverEx;
+    }
+
+    public double Minimum { get; }
+    public double Maximum { get; }
+    public double SmallChange { get; }
+    public double LargeChange { get; }
+    public int TickFrequency { get; }
+    public bool IsSnapToTickEnabled { get; }
+    public SliderControlTickPlacement TickPlacement { get; }
+
+    public override FrameworkElement CreateElement(PropertyItem propertyItem)
+    {
+        propertyItem.AttachTooltipAdder(Owner);
+        return new Slider
+        {
+            Minimum = Minimum,
+            Maximum = Maximum,
+            SmallChange = SmallChange,
+            LargeChange = LargeChange,
+            TickFrequency = TickFrequency,
+            IsSnapToTickEnabled = IsSnapToTickEnabled,
+            TickPlacement = SliderTickPlacementEnumConvert.ToTickPlacement(TickPlacement)
+        };
+    }
+
+    public override DependencyProperty GetDependencyProperty() => Slider.ValueProperty;
+}
+
+
