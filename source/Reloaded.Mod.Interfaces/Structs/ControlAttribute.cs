@@ -81,7 +81,7 @@ public class FilePickerParamsAttribute : Attribute, ICustomControlAttribute
         bool restoreDirectory = false,
         bool addToRecent = false
     ) {
-        InitialDirectory = initialDirectory == null ? initialDirectory : Environment.GetFolderPath(initialFolderPath);
+        InitialDirectory = initialDirectory != null ? initialDirectory : Environment.GetFolderPath(initialFolderPath);
         InitialFolderPath = initialFolderPath;
         ChooseFileButtonLabel = chooseFileButtonLabel;
         UserCanEditPathText = userCanEditPathText;
@@ -121,7 +121,7 @@ public class FolderPickerParamsAttribute : Attribute, ICustomControlAttribute
         bool multiSelect = false,
         bool forceFileSystem = false
     ) {
-        InitialDirectory = initialDirectory == null ? initialDirectory : Environment.GetFolderPath(InitialFolderPath);
+        InitialDirectory = initialDirectory != null ? initialDirectory : Environment.GetFolderPath(InitialFolderPath);
         InitialFolderPath = initialFolderPath;
         ChooseFolderButtonLabel = chooseFolderButtonLabel;
         UserCanEditPathText = userCanEditPathText;

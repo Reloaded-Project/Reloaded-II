@@ -508,7 +508,7 @@ public abstract class PathPropertyEditor : PropertyEditorBase
     public PropertyResolverEx Owner { get; internal set; }
     public string ButtonLabel { get; }
     public bool CanEditPathText { get; }
-    private TextBox _textbox;
+    protected TextBox _textbox;
 
     public PathPropertyEditor(string buttonLabel, bool canEditPathText, PropertyResolverEx propertyResolverEx)
     {
@@ -581,10 +581,11 @@ public class FilePropertyEditor : PathPropertyEditor
 
     protected override DialogResult ShowDialog()
     {
+        var initPath = !string.IsNullOrEmpty(_textbox.Text) ? _textbox.Text : _filePickerParams.InitialDirectory;
         _openFileDialog = new OpenFileDialog
         {
             Filter = _filePickerParams.Filter,
-            InitialDirectory = _filePickerParams.InitialDirectory,
+            InitialDirectory = initPath,
             Title = _filePickerParams.Title,
             FilterIndex = _filePickerParams.FilterIndex,
             Multiselect = _filePickerParams.Multiselect,
@@ -620,9 +621,10 @@ public class FolderPropertyEditor : PathPropertyEditor
     protected override DialogResult ShowDialog()
     {
         var window = System.Windows.Window.GetWindow(Owner.PropertyGrid);
+        var initPath = !string.IsNullOrEmpty(_textbox.Text) ? _textbox.Text : _folderPickerParams.InitialDirectory;
         _folderPicker = new FolderPicker
         {
-            InputPath = _folderPickerParams.InitialDirectory,
+            InputPath = initPath,
             Title = _folderPickerParams.Title,
             OkButtonLabel = _folderPickerParams.OkButtonLabel,
             FileNameLabel = _folderPickerParams.FileNameLabel,
