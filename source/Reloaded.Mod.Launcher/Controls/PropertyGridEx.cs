@@ -430,6 +430,8 @@ public class SliderPropertyEditor : PropertyEditorBase
     public SliderControlParamsAttribute SliderControlParams { get; }
     public PropertyResolverEx Owner { get; internal set; }
 
+    private Slider _slider;
+
     public SliderPropertyEditor(
         SliderControlParamsAttribute sliderControlParams,
         PropertyResolverEx propertyResolverEx)
@@ -441,7 +443,9 @@ public class SliderPropertyEditor : PropertyEditorBase
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
     {
         propertyItem.AttachTooltipAdder(Owner);
-        return new Slider
+
+        var panel = new DockPanel();
+        _slider = new Slider
         {
             Minimum = SliderControlParams.Minimum,
             Maximum = SliderControlParams.Maximum,
@@ -451,9 +455,52 @@ public class SliderPropertyEditor : PropertyEditorBase
             IsSnapToTickEnabled = SliderControlParams.IsSnapToTickEnabled,
             TickPlacement = SliderTickPlacementEnumConvert.ToTickPlacement(SliderControlParams.TickPlacement)
         };
+
+        if (SliderControlParams.ShowTextField)
+        {
+            var textbox = new TextBox
+            {
+                IsReadOnly = !SliderControlParams.IsTextFieldEditable,
+                IsEnabled = SliderControlParams.IsTextFieldEditable,
+                MinWidth = 10,
+            };
+            textbox.SetBinding(TextBox.TextProperty, new Binding()
+            {
+                Source = _slider,
+                Path = new PropertyPath("Value"),
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            });
+            if (SliderControlParams.TextValidationRegex != null)
+            {
+                var validate = new System.Text.RegularExpressions.Regex(SliderControlParams.TextValidationRegex);
+                textbox.PreviewTextInput += (object sender, TextCompositionEventArgs e) =>
+                {
+                    // Prevent the event from processing any further
+                    e.Handled = !validate.IsMatch(e.Text);
+                };
+            }
+            DockPanel.SetDock(textbox, Dock.Left);
+            panel.Children.Add(textbox);
+        }
+        DockPanel.SetDock(_slider, Dock.Right);
+        panel.Children.Add(_slider);
+        return panel;
     }
 
-    public override DependencyProperty GetDependencyProperty() => Slider.ValueProperty;
+    public override void CreateBinding(PropertyItem propertyItem, DependencyObject element)
+    {
+        BindingOperations.SetBinding(_slider, Slider.ValueProperty, new Binding(propertyItem.PropertyName ?? "")
+        {
+            Source = propertyItem.Value,
+            Mode = GetBindingMode(propertyItem),
+            UpdateSourceTrigger = GetUpdateSourceTrigger(propertyItem),
+            Converter = GetConverter(propertyItem)
+        });
+    }
+
+    // Since we override CreateBinding directly, this is unused but still needs overridden.
+    public override DependencyProperty GetDependencyProperty() => throw new NotImplementedException();
 }
 
 public abstract class PathPropertyEditor : PropertyEditorBase
@@ -489,6 +536,8 @@ public abstract class PathPropertyEditor : PropertyEditorBase
             if (ShowDialog() == DialogResult.OK)
             {
                 _textbox.Text = GetResult();
+                // Scroll the position of the text in the textbox to the end in case the path is long
+                // so we focus on the final file/folder in the path instead
                 _textbox.ScrollToHorizontalOffset(_textbox.ExtentWidth);
             }
         };

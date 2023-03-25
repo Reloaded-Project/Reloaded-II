@@ -9,7 +9,17 @@ namespace TestModControlParams.Configuration
         [DisplayName("Int Slider")]
         [Description("This is a int that uses a slider control similar to a volume control slider.")]
         [DefaultValue(100)]
-        [SliderControlParams(minimum: 0.0, maximum: 100.0, smallChange: 1.0, largeChange: 10.0, tickFrequency: 10, isSnapToTickEnabled: false, tickPlacement:SliderControlTickPlacement.BottomRight)]
+        [SliderControlParams(
+            minimum: 0.0,
+            maximum: 100.0,
+            smallChange: 1.0,
+            largeChange: 10.0,
+            tickFrequency: 10,
+            isSnapToTickEnabled: false,
+            tickPlacement:SliderControlTickPlacement.BottomRight,
+            showTextField: true,
+            isTextFieldEditable: true,
+            textValidationRegex: "\\d{1-4}")]
         public int IntSlider { get; set; } = 100;
 
         [DisplayName("Double Slider")]

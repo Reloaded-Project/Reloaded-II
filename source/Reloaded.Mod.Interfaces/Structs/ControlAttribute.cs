@@ -20,7 +20,10 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
     public int TickFrequency { get; }
     public bool IsSnapToTickEnabled { get; }
     public SliderControlTickPlacement TickPlacement { get; }
-    
+    public bool ShowTextField { get; }
+    public bool IsTextFieldEditable { get; }
+    public string TextValidationRegex { get; }
+
     public SliderControlParamsAttribute(
         double minimum = 0.0,
         double maximum = 1.0,
@@ -28,7 +31,10 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
         double largeChange = 1.0,
         int tickFrequency = 10,
         bool isSnapToTickEnabled = false,
-        SliderControlTickPlacement tickPlacement = SliderControlTickPlacement.None
+        SliderControlTickPlacement tickPlacement = SliderControlTickPlacement.None,
+        bool showTextField = false,
+        bool isTextFieldEditable = true,
+        string textValidationRegex = ""
     ) {
         Minimum = minimum;
         Maximum = maximum;
@@ -37,6 +43,9 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
         TickFrequency = tickFrequency;
         IsSnapToTickEnabled = isSnapToTickEnabled;
         TickPlacement = tickPlacement;
+        ShowTextField = showTextField;
+        IsTextFieldEditable = isTextFieldEditable;
+        TextValidationRegex = textValidationRegex;
     }
 }
 
