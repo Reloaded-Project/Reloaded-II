@@ -72,6 +72,25 @@ public class Config : Configurable<Config>
     [DefaultValue(0.5)]
     [SliderControlParams(minimum:0.0, maximum:1.0)]
     public double DoubleSlider { get; set; } = 0.5;
+
+    [DisplayName("File Picker")]
+    [Description("This is a sample file picker.")]
+    [DefaultValue("")]
+    [FilePickerParams(title:"Choose a File to load from")]
+    public string File { get; set; } = "";
+
+    [DisplayName("Folder Picker")]
+    [Description("Opens a file picker but locked to only allow folder selections.")]
+    [DefaultValue("")]
+    [FolderPickerParams(
+        initialFolderPath: Environment.SpecialFolder.Desktop,
+        userCanEditPathText: false,
+        title: "Custom Folder Select",
+        okButtonLabel: "Choose Folder",
+        fileNameLabel: "ModFolder",
+        multiSelect: true,
+        forceFileSystem: true)]
+    public string Folder { get; set; } = "";
 }
 
 /// <summary>

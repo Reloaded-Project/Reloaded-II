@@ -29,6 +29,7 @@ namespace TestModControlParams.Configuration
         [DefaultValue("")]
         [FolderPickerParams(
             initialFolderPath: Environment.SpecialFolder.Desktop,
+            userCanEditPathText: false,
             title: "Custom Folder Select",
             okButtonLabel: "Choose Folder",
             fileNameLabel: "ModFolder",

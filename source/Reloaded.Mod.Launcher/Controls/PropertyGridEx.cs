@@ -460,12 +460,14 @@ public abstract class PathPropertyEditor : PropertyEditorBase
 {
     public PropertyResolverEx Owner { get; internal set; }
     public string ButtonLabel { get; }
+    public bool CanEditPathText { get; }
     private TextBox _textbox;
 
-    public PathPropertyEditor(string buttonLabel, PropertyResolverEx propertyResolverEx)
+    public PathPropertyEditor(string buttonLabel, bool canEditPathText, PropertyResolverEx propertyResolverEx)
     {
         Owner = propertyResolverEx;
         ButtonLabel = buttonLabel;
+        CanEditPathText = canEditPathText;
     }
 
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
@@ -473,7 +475,10 @@ public abstract class PathPropertyEditor : PropertyEditorBase
         propertyItem.AttachTooltipAdder(Owner);
         var panel = new DockPanel{ };
 
-        _textbox = new TextBox { IsReadOnly = propertyItem.IsReadOnly, HorizontalAlignment = HorizontalAlignment.Stretch };
+        _textbox = new TextBox {
+            IsReadOnly = !CanEditPathText,
+            IsEnabled = CanEditPathText,
+        };
 
         var button = new System.Windows.Controls.Button {
             Style = (Style)panel.FindResource("ButtonPrimary"),
@@ -482,14 +487,16 @@ public abstract class PathPropertyEditor : PropertyEditorBase
         button.Click += (object sender, RoutedEventArgs e) =>
         {
             if (ShowDialog() == DialogResult.OK)
+            {
                 _textbox.Text = GetResult();
+                _textbox.ScrollToHorizontalOffset(_textbox.ExtentWidth);
+            }
         };
 
-        DockPanel.SetDock(_textbox, Dock.Left);
-        panel.Children.Add(_textbox);
         DockPanel.SetDock(button, Dock.Right);
         panel.Children.Add(button);
-
+        DockPanel.SetDock(_textbox, Dock.Left);
+        panel.Children.Add(_textbox);
         return panel;
     }
 
@@ -509,78 +516,79 @@ public abstract class PathPropertyEditor : PropertyEditorBase
     }
 
     // Since we override CreateBinding directly, this is unused but still needs overridden.
-    public override DependencyProperty GetDependencyProperty() => throw new Exception();
+    public override DependencyProperty GetDependencyProperty() => throw new NotImplementedException();
 }
 
 public class FilePropertyEditor : PathPropertyEditor
 {
-    private OpenFileDialog _openFileDialog;
+    private OpenFileDialog? _openFileDialog;
     private FilePickerParamsAttribute _filePickerParams { get; }
 
     public FilePropertyEditor(FilePickerParamsAttribute filePickerParams, PropertyResolverEx propertyResolverEx)
-        : base(filePickerParams.ChooseFileButtonLabel, propertyResolverEx)
+        : base(filePickerParams.ChooseFileButtonLabel, filePickerParams.UserCanEditPathText, propertyResolverEx)
     {
         _filePickerParams = filePickerParams;
-        _openFileDialog = new OpenFileDialog
-        {
-            Filter = filePickerParams.Filter,
-            InitialDirectory = filePickerParams.InitialDirectory,
-            Title = filePickerParams.Title,
-            FilterIndex = filePickerParams.FilterIndex,
-            Multiselect = filePickerParams.Multiselect,
-            SupportMultiDottedExtensions = filePickerParams.SupportMultiDottedExtensions,
-            ShowHiddenFiles = filePickerParams.ShowHiddenFiles,
-            RestoreDirectory = filePickerParams.RestoreDirectory,
-            AddToRecent = filePickerParams.AddToRecent,
-            ShowPreview = filePickerParams.ShowPreview
-        };
     }
 
     protected override DialogResult ShowDialog()
     {
+        _openFileDialog = new OpenFileDialog
+        {
+            Filter = _filePickerParams.Filter,
+            InitialDirectory = _filePickerParams.InitialDirectory,
+            Title = _filePickerParams.Title,
+            FilterIndex = _filePickerParams.FilterIndex,
+            Multiselect = _filePickerParams.Multiselect,
+            SupportMultiDottedExtensions = _filePickerParams.SupportMultiDottedExtensions,
+            ShowHiddenFiles = _filePickerParams.ShowHiddenFiles,
+            RestoreDirectory = _filePickerParams.RestoreDirectory,
+            AddToRecent = _filePickerParams.AddToRecent,
+            ShowPreview = _filePickerParams.ShowPreview
+        };
         return _openFileDialog.ShowDialog();
     }
 
     protected override string GetResult()
     {
         if (_filePickerParams.Multiselect)
-            return string.Join(",", _openFileDialog.FileNames);
+            return string.Join(";", _openFileDialog!.FileNames);
         else
-            return _openFileDialog.FileName;
+            return _openFileDialog!.FileName;
     }
 }
 
 public class FolderPropertyEditor : PathPropertyEditor
 {
-    private FolderPicker _folderPicker;
+    private FolderPicker? _folderPicker;
     private FolderPickerParamsAttribute _folderPickerParams { get; }
 
     public FolderPropertyEditor(FolderPickerParamsAttribute folderPickerParams, PropertyResolverEx propertyResolverEx)
-        : base(folderPickerParams.ChooseFolderButtonLabel, propertyResolverEx)
+        : base(folderPickerParams.ChooseFolderButtonLabel, folderPickerParams.UserCanEditPathText, propertyResolverEx)
     {
         _folderPickerParams = folderPickerParams;
-        _folderPicker = new FolderPicker
-        {
-            InputPath = folderPickerParams.InitialDirectory,
-            Title = folderPickerParams.Title,
-            OkButtonLabel = folderPickerParams.OkButtonLabel,
-            FileNameLabel = folderPickerParams.FileNameLabel,
-            Multiselect = folderPickerParams.Multiselect,
-            ForceFileSystem = folderPickerParams.ForceFileSystem,
-        };
     }
 
     protected override DialogResult ShowDialog()
     {
-        return _folderPicker.ShowDialog();
+        var window = System.Windows.Window.GetWindow(Owner.PropertyGrid);
+        _folderPicker = new FolderPicker
+        {
+            InputPath = _folderPickerParams.InitialDirectory,
+            Title = _folderPickerParams.Title,
+            OkButtonLabel = _folderPickerParams.OkButtonLabel,
+            FileNameLabel = _folderPickerParams.FileNameLabel,
+            Multiselect = _folderPickerParams.Multiselect,
+            ForceFileSystem = _folderPickerParams.ForceFileSystem,
+        };
+        return _folderPicker.ShowDialog(window);
     }
 
     protected override string GetResult()
     {
         if (_folderPickerParams.Multiselect)
-            return string.Join(",", _folderPicker.ResultNames);
+            return string.Join(";", _folderPicker!.ResultNames);
         else
-            return _folderPicker.ResultName;
+            return _folderPicker!.ResultName;
     }
 }
 

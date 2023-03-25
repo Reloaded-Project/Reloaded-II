@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Reloaded.Mod.Interfaces.Structs;
+﻿namespace Reloaded.Mod.Interfaces.Structs;
 
 public enum SliderControlTickPlacement
 {
@@ -50,6 +46,7 @@ public class FilePickerParamsAttribute : Attribute, ICustomControlAttribute
     public string InitialDirectory { get; }
     public Environment.SpecialFolder InitialFolderPath { get; }
     public string ChooseFileButtonLabel { get; }
+    public bool UserCanEditPathText { get; }
     public string Title { get; }
     public string Filter { get; }
     public int FilterIndex { get; }
@@ -64,6 +61,7 @@ public class FilePickerParamsAttribute : Attribute, ICustomControlAttribute
         string initialDirectory = null,
         Environment.SpecialFolder initialFolderPath = Environment.SpecialFolder.Personal,
         string chooseFileButtonLabel = "Choose File",
+        bool userCanEditPathText = true,
         string title = "",
         string filter = "All files (*.*)|*.*",
         int filterIndex = 0,
@@ -77,6 +75,7 @@ public class FilePickerParamsAttribute : Attribute, ICustomControlAttribute
         InitialDirectory = initialDirectory == null ? initialDirectory : Environment.GetFolderPath(initialFolderPath);
         InitialFolderPath = initialFolderPath;
         ChooseFileButtonLabel = chooseFileButtonLabel;
+        UserCanEditPathText = userCanEditPathText;
         Title = title;
         Filter = filter;
         FilterIndex = filterIndex;
@@ -95,6 +94,7 @@ public class FolderPickerParamsAttribute : Attribute, ICustomControlAttribute
     public string InitialDirectory { get; }
     public Environment.SpecialFolder InitialFolderPath { get; }
     public string ChooseFolderButtonLabel { get; }
+    public bool UserCanEditPathText { get; }
     public string Title { get; }
     public string OkButtonLabel { get; }
     public string FileNameLabel { get; }
@@ -105,6 +105,7 @@ public class FolderPickerParamsAttribute : Attribute, ICustomControlAttribute
         string initialDirectory = null,
         Environment.SpecialFolder initialFolderPath = Environment.SpecialFolder.Personal,
         string chooseFolderButtonLabel = "Choose Folder",
+        bool userCanEditPathText = true,
         string title = "",
         string okButtonLabel = "Ok",
         string fileNameLabel = "",
@@ -114,6 +115,7 @@ public class FolderPickerParamsAttribute : Attribute, ICustomControlAttribute
         InitialDirectory = initialDirectory == null ? initialDirectory : Environment.GetFolderPath(InitialFolderPath);
         InitialFolderPath = initialFolderPath;
         ChooseFolderButtonLabel = chooseFolderButtonLabel;
+        UserCanEditPathText = userCanEditPathText;
         Title = title;
         OkButtonLabel = okButtonLabel;
         FileNameLabel = fileNameLabel;
