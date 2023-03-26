@@ -19,7 +19,7 @@ namespace TestModControlParams.Configuration
             tickPlacement:SliderControlTickPlacement.BottomRight,
             showTextField: true,
             isTextFieldEditable: true,
-            textValidationRegex: "\\d{1-4}")]
+            textValidationRegex: "\\d{1-3}")]
         public int IntSlider { get; set; } = 100;
 
         [DisplayName("Double Slider")]
