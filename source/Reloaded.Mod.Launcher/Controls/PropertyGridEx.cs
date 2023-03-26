@@ -430,7 +430,7 @@ public class SliderPropertyEditor : PropertyEditorBase
     public SliderControlParamsAttribute SliderControlParams { get; }
     public PropertyResolverEx Owner { get; internal set; }
 
-    private Slider _slider;
+    private Slider? _slider;
 
     public SliderPropertyEditor(
         SliderControlParamsAttribute sliderControlParams,
@@ -463,6 +463,7 @@ public class SliderPropertyEditor : PropertyEditorBase
                 IsReadOnly = !SliderControlParams.IsTextFieldEditable,
                 IsEnabled = SliderControlParams.IsTextFieldEditable,
                 MinWidth = 10,
+                Margin = new Thickness(0, 0, 5, 0),
             };
             textbox.SetBinding(TextBox.TextProperty, new Binding()
             {
@@ -508,7 +509,7 @@ public abstract class PathPropertyEditor : PropertyEditorBase
     public PropertyResolverEx Owner { get; internal set; }
     public string ButtonLabel { get; }
     public bool CanEditPathText { get; }
-    protected TextBox _textbox;
+    protected TextBox? _textbox;
 
     public PathPropertyEditor(string buttonLabel, bool canEditPathText, PropertyResolverEx propertyResolverEx)
     {
@@ -520,11 +521,12 @@ public abstract class PathPropertyEditor : PropertyEditorBase
     public override FrameworkElement CreateElement(PropertyItem propertyItem)
     {
         propertyItem.AttachTooltipAdder(Owner);
-        var panel = new DockPanel{ };
+        var panel = new DockPanel();
 
         _textbox = new TextBox {
             IsReadOnly = !CanEditPathText,
             IsEnabled = CanEditPathText,
+            Margin = new Thickness(0, 0, 5, 0),
         };
 
         var button = new System.Windows.Controls.Button {
