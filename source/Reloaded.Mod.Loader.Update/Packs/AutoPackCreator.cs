@@ -64,6 +64,7 @@ public static class AutoPackCreator
         var imageDownloader = new ImageCacheService();
         var itemBuilder = builder.AddModItem(config.ModId);
         itemBuilder.SetName(config.ModName);
+        itemBuilder.SetReleaseMetadataFileName(config.ReleaseMetadataFileName);
         itemBuilder.SetPluginData(config.PluginData);
 
         var bestPkg = await GetBestPackageForTemplateAsync(config.ModId, config.ModName, packageProviders, token);
