@@ -26,6 +26,11 @@ public class ReloadedPackItemBuilder
     public string Summary { get; private set; } = string.Empty;
 
     /// <summary>
+    /// The file name associated with the release metadata for the mod.
+    /// </summary>
+    public string ReleaseMetadataFileName { get; set; } = string.Empty;
+
+    /// <summary>
     /// List of images held by this item builder.
     /// </summary>
     public Dictionary<string, object> PluginData { get; private set; } = new();
@@ -63,7 +68,7 @@ public class ReloadedPackItemBuilder
         Readme = readme;
         return this;
     }
-    
+
     /// <summary>
     /// Sets the summary (1 line) for this pack item.
     /// </summary>
@@ -72,7 +77,16 @@ public class ReloadedPackItemBuilder
         Summary = summary;
         return this;
     }
-    
+
+    /// <summary>
+    /// Sets the file name associated with the release metadata for the mod.
+    /// </summary>
+    public ReloadedPackItemBuilder SetReleaseMetadataFileName(string releaseMetadataFileName)
+    {
+        ReleaseMetadataFileName = releaseMetadataFileName;
+        return this;
+    }
+
     /// <summary>
     /// Sets the plugin data for this package item.
     /// This is usually just copied from <see cref="ModConfig.PluginData"/>.
@@ -103,6 +117,7 @@ public class ReloadedPackItemBuilder
         item.Readme = Readme;
         item.ModId = ModId;
         item.Summary = Summary;
+        item.ReleaseMetadataFileName = ReleaseMetadataFileName;
         item.PluginData = PluginData;
         
         // Pack images.

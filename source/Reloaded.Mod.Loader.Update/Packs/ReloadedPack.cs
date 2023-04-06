@@ -51,6 +51,11 @@ public class ReloadedPack : IConfig
             var item  = items[x];
             var slice = slicer.Slice(singleItemProgress);
             currentItemCallback?.Invoke(item);
+
+            if (updaterData.CommonPackageResolverSettings.MetadataFileName != item.ReleaseMetadataFileName)
+            {
+                updaterData.CommonPackageResolverSettings.MetadataFileName = item.ReleaseMetadataFileName;
+            }
             var downloadResult = await item.TryDownloadAsync(Path.Combine(outFolder, item.ModId), updaterData, slice, token);
             
             if (!downloadResult.Success)

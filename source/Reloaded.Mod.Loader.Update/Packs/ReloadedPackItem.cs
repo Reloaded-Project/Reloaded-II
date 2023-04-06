@@ -24,11 +24,16 @@ public class ReloadedPackItem
     /// Short description of the mod. 1 sentence.
     /// </summary>
     public string Summary { get; set; } = String.Empty;
-    
+
     /// <summary>
     /// Readme for this mod, in markdown format.
     /// </summary>
     public string Readme { get; set; } = String.Empty;
+
+    /// <summary>
+    /// The file name associated with the release metadata for the mod.
+    /// </summary>
+    public string ReleaseMetadataFileName { get; set; } = String.Empty;
 
     /// <summary>
     /// List of preview image files belonging to this item.
@@ -55,7 +60,8 @@ public class ReloadedPackItem
         var mod = new PathTuple<ModConfig>(Path.Combine(outFolder, ModConfig.ConfigFileName), new ModConfig()
         {
             ModId = ModId,
-            PluginData = PluginData
+            PluginData = PluginData,
+            ReleaseMetadataFileName = ReleaseMetadataFileName,
         });
         
         try
