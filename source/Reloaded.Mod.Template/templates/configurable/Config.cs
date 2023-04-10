@@ -1,6 +1,7 @@
 ﻿#if (IncludeConfig)
 using System.ComponentModel;
 using Reloaded.Mod.Template.Template.Configuration;
+using Reloaded.Mod.Interfaces.Structs;
 
 namespace Reloaded.Mod.Template.Configuration;
 
