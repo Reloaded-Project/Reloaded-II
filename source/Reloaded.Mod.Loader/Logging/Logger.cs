@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Reloaded.Mod.Loader.Logging;
 
 public class Logger : ILogger
@@ -16,6 +18,8 @@ public class Logger : ILogger
     private BlockingCollection<LogMessage> _messages = new BlockingCollection<LogMessage>();
     private Thread _loggingThread;
     private CancellationTokenSource _cancellationToken = new CancellationTokenSource();
+
+    private StringBuilder writeCache = new();
 
     public Logger()
     {
@@ -40,13 +44,22 @@ public class Logger : ILogger
     public void Write(string message)                       => Write(message, TextColor);
     public void WriteLine(string message, Color color)
     {
-        OnPrintMessage?.Invoke(this, message);
+        if (writeCache.Length > 0)
+        {
+            OnPrintMessage?.Invoke(this, $"{writeCache}{message}");
+            writeCache.Clear();
+        }
+        else
+        {
+            OnPrintMessage?.Invoke(this, message);
+        }
+
         OnWriteLine?.Invoke(this, (message, color));
     }
 
     public void Write(string message, Color color)
     {
-        OnPrintMessage?.Invoke(this, message);
+        writeCache.Append(message);
         OnWrite?.Invoke(this, (message, color));
     }
 

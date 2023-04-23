@@ -69,6 +69,7 @@ public static class Setup
         logCompressor.DeleteOldFiles(TimeSpan.FromHours(loaderConfig.LogFileDeleteHours));
 
         // Crashdumps (delete)
+        Directory.CreateDirectory(Paths.CrashDumpPath);
         var dumpFolders = Directory.GetDirectories(Paths.CrashDumpPath);
         var now = DateTime.UtcNow;
         foreach (var folder in dumpFolders)
