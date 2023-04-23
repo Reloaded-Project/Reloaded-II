@@ -19,8 +19,6 @@ public class Logger : ILogger
     private Thread _loggingThread;
     private CancellationTokenSource _cancellationToken = new CancellationTokenSource();
 
-    private StringBuilder writeCache = new();
-
     public Logger()
     {
         _loggingThread = new Thread(ProcessQueue) { IsBackground = true };
@@ -44,22 +42,13 @@ public class Logger : ILogger
     public void Write(string message)                       => Write(message, TextColor);
     public void WriteLine(string message, Color color)
     {
-        if (writeCache.Length > 0)
-        {
-            OnPrintMessage?.Invoke(this, $"{writeCache}{message}");
-            writeCache.Clear();
-        }
-        else
-        {
-            OnPrintMessage?.Invoke(this, message);
-        }
-
+        OnPrintMessage?.Invoke(this, message);
         OnWriteLine?.Invoke(this, (message, color));
     }
 
     public void Write(string message, Color color)
     {
-        writeCache.Append(message);
+        OnPrintMessage?.Invoke(this, message);
         OnWrite?.Invoke(this, (message, color));
     }
 
