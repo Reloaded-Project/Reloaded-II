@@ -97,7 +97,7 @@ public class LogWriter : IDisposable
         if (_logItems.Count == MaxBufferLength)
             Flush();
 
-        if(_writeCache.Length == 0)
+        if (_writeCache.Length == 0)
         {
             _logItems.Add($"[{DateTime.Now:HH:mm:ss}] {e.text}");
         }
