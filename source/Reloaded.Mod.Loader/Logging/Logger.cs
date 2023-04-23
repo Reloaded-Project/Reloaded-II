@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace Reloaded.Mod.Loader.Logging;
 
 public class Logger : ILogger
