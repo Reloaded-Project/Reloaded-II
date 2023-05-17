@@ -62,7 +62,7 @@ public class ApplicationInjector
         }
         catch (Exception e)
         {
-            ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
+            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
             {
                 Errors.HandleException(new Exception(Resources.ErrorFailedToObtainPort.Get(), e));
             });
