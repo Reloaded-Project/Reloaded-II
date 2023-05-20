@@ -1,0 +1,270 @@
+﻿override Reloaded.Mod.Interfaces.Structs.ModInfo.Equals(object obj) -> bool
+override Reloaded.Mod.Interfaces.Structs.ModInfo.GetHashCode() -> int
+Reloaded.Mod.Interfaces.ConfiguratorContext
+Reloaded.Mod.Interfaces.ConfiguratorContext.Application -> Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1
+Reloaded.Mod.Interfaces.ConfiguratorContext.ApplicationConfigPath -> string
+Reloaded.Mod.Interfaces.ConfiguratorContext.ConfiguratorContext() -> void
+Reloaded.Mod.Interfaces.ConfiguratorContext.ModConfigPath -> string
+Reloaded.Mod.Interfaces.ExportsContext
+Reloaded.Mod.Interfaces.ExportsContext.ApplicationConfig.get -> Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1
+Reloaded.Mod.Interfaces.ExportsContext.ApplicationConfig.set -> void
+Reloaded.Mod.Interfaces.ExportsContext.ExportsContext() -> void
+Reloaded.Mod.Interfaces.IApplicationConfig
+Reloaded.Mod.Interfaces.IConfigurable
+Reloaded.Mod.Interfaces.IConfigurable.ConfigName.get -> string
+Reloaded.Mod.Interfaces.IConfigurable.Save.get -> System.Action
+Reloaded.Mod.Interfaces.IConfigurator
+Reloaded.Mod.Interfaces.IConfiguratorV1
+Reloaded.Mod.Interfaces.IConfiguratorV1.GetConfigurations() -> Reloaded.Mod.Interfaces.IConfigurable[]
+Reloaded.Mod.Interfaces.IConfiguratorV1.SetModDirectory(string modDirectory) -> void
+Reloaded.Mod.Interfaces.IConfiguratorV1.TryRunCustomConfiguration() -> bool
+Reloaded.Mod.Interfaces.IConfiguratorV2
+Reloaded.Mod.Interfaces.IConfiguratorV2.Migrate(string oldDirectory, string newDirectory) -> void
+Reloaded.Mod.Interfaces.IConfiguratorV2.SetConfigDirectory(string configDirectory) -> void
+Reloaded.Mod.Interfaces.IConfiguratorV3
+Reloaded.Mod.Interfaces.IConfiguratorV3.SetContext(in Reloaded.Mod.Interfaces.ConfiguratorContext context) -> void
+Reloaded.Mod.Interfaces.IExports
+Reloaded.Mod.Interfaces.IExports.GetTypes() -> System.Type[]
+Reloaded.Mod.Interfaces.IExports.GetTypesEx(in Reloaded.Mod.Interfaces.ExportsContext context) -> System.Type[]
+Reloaded.Mod.Interfaces.ILogger
+Reloaded.Mod.Interfaces.IMod
+Reloaded.Mod.Interfaces.IModConfig
+Reloaded.Mod.Interfaces.IModLoader
+Reloaded.Mod.Interfaces.IModUserConfig
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.AppArguments.get -> string
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.AppArguments.set -> void
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.AppIcon.get -> string
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.AppIcon.set -> void
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.AppId.get -> string
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.AppId.set -> void
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.AppLocation.get -> string
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.AppLocation.set -> void
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.AppName.get -> string
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.AppName.set -> void
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.EnabledMods.get -> string[]
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1.EnabledMods.set -> void
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV2
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV2.PluginData.get -> System.Collections.Generic.Dictionary<string, object>
+Reloaded.Mod.Interfaces.Internal.IApplicationConfigV2.PluginData.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.BackgroundColor.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.BackgroundColor.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorBlue.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorBlue.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorBlueLight.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorBlueLight.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorGreen.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorGreen.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorGreenLight.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorGreenLight.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorLightBlue.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorLightBlue.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorLightBlueLight.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorLightBlueLight.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorPink.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorPink.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorPinkLight.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorPinkLight.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorRed.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorRed.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorRedLight.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorRedLight.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorYellow.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorYellow.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorYellowLight.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.ColorYellowLight.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.OnPrintMessage -> System.EventHandler<string>
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.PrintMessage(string message, System.Drawing.Color color) -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.TextColor.get -> System.Drawing.Color
+Reloaded.Mod.Interfaces.Internal.ILoggerV1.TextColor.set -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV2
+Reloaded.Mod.Interfaces.Internal.ILoggerV2.Write(string message) -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV2.Write(string message, System.Drawing.Color color) -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV2.WriteLine(string message) -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV2.WriteLine(string message, System.Drawing.Color color) -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV3
+Reloaded.Mod.Interfaces.Internal.ILoggerV3.WaitForConsoleInit(System.Threading.CancellationToken token) -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV3.WriteAsync(string message) -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV3.WriteAsync(string message, System.Drawing.Color color) -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV3.WriteLineAsync(string message) -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV3.WriteLineAsync(string message, System.Drawing.Color color) -> void
+Reloaded.Mod.Interfaces.Internal.ILoggerV4
+Reloaded.Mod.Interfaces.Internal.ILoggerV4.OnWrite -> System.EventHandler<(string text, System.Drawing.Color color)>
+Reloaded.Mod.Interfaces.Internal.ILoggerV4.OnWriteLine -> System.EventHandler<(string text, System.Drawing.Color color)>
+Reloaded.Mod.Interfaces.Internal.IModConfigV1
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModAuthor.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModAuthor.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModDependencies.get -> string[]
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModDependencies.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModDescription.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModDescription.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModDll.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModDll.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModIcon.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModIcon.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModId.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModId.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModName.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModName.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModVersion.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.ModVersion.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.SupportedAppId.get -> string[]
+Reloaded.Mod.Interfaces.Internal.IModConfigV1.SupportedAppId.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV2
+Reloaded.Mod.Interfaces.Internal.IModConfigV2.OptionalDependencies.get -> string[]
+Reloaded.Mod.Interfaces.Internal.IModConfigV2.OptionalDependencies.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV3
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.GetDllPath(string configPath) -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.GetManagedDllPath(string configPath) -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.GetNativeDllPath(string configPath) -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.IsNativeMod(string configPath) -> bool
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.IsR2R(string configPath) -> bool
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.ModNativeDll32.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.ModNativeDll32.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.ModNativeDll64.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.ModNativeDll64.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.ModR2RManagedDll32.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.ModR2RManagedDll32.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.ModR2RManagedDll64.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.ModR2RManagedDll64.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV3.TryGetIconPath(string configPath, out string iconPath) -> bool
+Reloaded.Mod.Interfaces.Internal.IModConfigV4
+Reloaded.Mod.Interfaces.Internal.IModConfigV4.IsLibrary.get -> bool
+Reloaded.Mod.Interfaces.Internal.IModConfigV4.IsLibrary.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV5
+Reloaded.Mod.Interfaces.Internal.IModConfigV5.IsUniversalMod.get -> bool
+Reloaded.Mod.Interfaces.Internal.IModConfigV5.IsUniversalMod.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV5.PluginData.get -> System.Collections.Generic.Dictionary<string, object>
+Reloaded.Mod.Interfaces.Internal.IModConfigV5.PluginData.set -> void
+Reloaded.Mod.Interfaces.Internal.IModConfigV5.ReleaseMetadataFileName.get -> string
+Reloaded.Mod.Interfaces.Internal.IModConfigV5.ReleaseMetadataFileName.set -> void
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.AddOrReplaceController<T>(Reloaded.Mod.Interfaces.Internal.IModV1 owner, T instance) -> void
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.GetActiveMods() -> Reloaded.Mod.Interfaces.Internal.ModGenericTuple<Reloaded.Mod.Interfaces.Internal.IModConfigV1>[]
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.GetAppConfig() -> Reloaded.Mod.Interfaces.Internal.IApplicationConfigV1
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.GetController<T>() -> System.WeakReference<T>
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.GetLoaderVersion() -> System.Version
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.GetLogger() -> Reloaded.Mod.Interfaces.Internal.ILoggerV1
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.MakeInterfaces<T>() -> System.WeakReference<T>[]
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.ModLoaded.get -> System.Action<Reloaded.Mod.Interfaces.Internal.IModV1, Reloaded.Mod.Interfaces.Internal.IModConfigV1>
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.ModLoaded.set -> void
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.ModLoading.get -> System.Action<Reloaded.Mod.Interfaces.Internal.IModV1, Reloaded.Mod.Interfaces.Internal.IModConfigV1>
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.ModLoading.set -> void
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.ModUnloading.get -> System.Action<Reloaded.Mod.Interfaces.Internal.IModV1, Reloaded.Mod.Interfaces.Internal.IModConfigV1>
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.ModUnloading.set -> void
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.OnModLoaderInitialized.get -> System.Action
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.OnModLoaderInitialized.set -> void
+Reloaded.Mod.Interfaces.Internal.IModLoaderV1.RemoveController<T>() -> void
+Reloaded.Mod.Interfaces.Internal.IModLoaderV2
+Reloaded.Mod.Interfaces.Internal.IModLoaderV2.GetDirectoryForModId(string modId) -> string
+Reloaded.Mod.Interfaces.Internal.IModLoaderV3
+Reloaded.Mod.Interfaces.Internal.IModLoaderV3.GetModConfigDirectory(string modId) -> string
+Reloaded.Mod.Interfaces.Internal.IModLoaderV4
+Reloaded.Mod.Interfaces.Internal.IModLoaderV4.GetLoadedMods() -> Reloaded.Mod.Interfaces.Structs.ModInfo[]
+Reloaded.Mod.Interfaces.Internal.IModLoaderV4.LoadMod(string modId) -> void
+Reloaded.Mod.Interfaces.Internal.IModLoaderV4.ResumeMod(string modId) -> void
+Reloaded.Mod.Interfaces.Internal.IModLoaderV4.SuspendMod(string modId) -> void
+Reloaded.Mod.Interfaces.Internal.IModLoaderV4.UnloadMod(string modId) -> void
+Reloaded.Mod.Interfaces.Internal.IModUserConfigV1
+Reloaded.Mod.Interfaces.Internal.IModUserConfigV1.AllowPrereleases.get -> bool?
+Reloaded.Mod.Interfaces.Internal.IModUserConfigV1.AllowPrereleases.set -> void
+Reloaded.Mod.Interfaces.Internal.IModUserConfigV1.IsUniversalMod.get -> bool
+Reloaded.Mod.Interfaces.Internal.IModUserConfigV1.IsUniversalMod.set -> void
+Reloaded.Mod.Interfaces.Internal.IModUserConfigV1.ModId.get -> string
+Reloaded.Mod.Interfaces.Internal.IModUserConfigV1.ModId.set -> void
+Reloaded.Mod.Interfaces.Internal.IModUserConfigV1.PluginData.get -> System.Collections.Generic.Dictionary<string, object>
+Reloaded.Mod.Interfaces.Internal.IModUserConfigV1.PluginData.set -> void
+Reloaded.Mod.Interfaces.Internal.IModV1
+Reloaded.Mod.Interfaces.Internal.IModV1.CanSuspend() -> bool
+Reloaded.Mod.Interfaces.Internal.IModV1.CanUnload() -> bool
+Reloaded.Mod.Interfaces.Internal.IModV1.Disposing.get -> System.Action
+Reloaded.Mod.Interfaces.Internal.IModV1.Resume() -> void
+Reloaded.Mod.Interfaces.Internal.IModV1.Start(Reloaded.Mod.Interfaces.Internal.IModLoaderV1 loader) -> void
+Reloaded.Mod.Interfaces.Internal.IModV1.Suspend() -> void
+Reloaded.Mod.Interfaces.Internal.IModV1.Unload() -> void
+Reloaded.Mod.Interfaces.Internal.IModV2
+Reloaded.Mod.Interfaces.Internal.IModV2.StartEx(Reloaded.Mod.Interfaces.Internal.IModLoaderV1 loader, Reloaded.Mod.Interfaces.Internal.IModConfigV1 config) -> void
+Reloaded.Mod.Interfaces.Internal.IPluginConfigV1
+Reloaded.Mod.Interfaces.Internal.IPluginConfigV1.Author.get -> string
+Reloaded.Mod.Interfaces.Internal.IPluginConfigV1.Author.set -> void
+Reloaded.Mod.Interfaces.Internal.IPluginConfigV1.Description.get -> string
+Reloaded.Mod.Interfaces.Internal.IPluginConfigV1.Description.set -> void
+Reloaded.Mod.Interfaces.Internal.IPluginConfigV1.Name.get -> string
+Reloaded.Mod.Interfaces.Internal.IPluginConfigV1.Name.set -> void
+Reloaded.Mod.Interfaces.Internal.IPluginConfigV1.Version.get -> string
+Reloaded.Mod.Interfaces.Internal.IPluginConfigV1.Version.set -> void
+Reloaded.Mod.Interfaces.Internal.ModGenericTuple<T>
+Reloaded.Mod.Interfaces.Internal.ModGenericTuple<T>.Generic.get -> T
+Reloaded.Mod.Interfaces.Internal.ModGenericTuple<T>.Generic.set -> void
+Reloaded.Mod.Interfaces.Internal.ModGenericTuple<T>.Mod.get -> Reloaded.Mod.Interfaces.Internal.IModV1
+Reloaded.Mod.Interfaces.Internal.ModGenericTuple<T>.Mod.set -> void
+Reloaded.Mod.Interfaces.Internal.ModGenericTuple<T>.ModGenericTuple(Reloaded.Mod.Interfaces.Internal.IModV1 mod, T generic) -> void
+Reloaded.Mod.Interfaces.IPluginConfig
+Reloaded.Mod.Interfaces.IUpdatableConfigurable
+Reloaded.Mod.Interfaces.IUpdatableConfigurable.ConfigurationUpdated -> System.Action<Reloaded.Mod.Interfaces.IUpdatableConfigurable>
+Reloaded.Mod.Interfaces.Structs.Enums.ModState
+Reloaded.Mod.Interfaces.Structs.Enums.ModState.Running = 0 -> Reloaded.Mod.Interfaces.Structs.Enums.ModState
+Reloaded.Mod.Interfaces.Structs.Enums.ModState.Suspended = 1 -> Reloaded.Mod.Interfaces.Structs.Enums.ModState
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.AddToRecent.get -> bool
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.ChooseFileButtonLabel.get -> string
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.FilePickerParamsAttribute(string initialDirectory = null, System.Environment.SpecialFolder initialFolderPath = System.Environment.SpecialFolder.MyDocuments, string chooseFileButtonLabel = "Choose File", bool userCanEditPathText = true, string title = "", string filter = "All files (*.*)|*.*", int filterIndex = 0, bool multiselect = false, bool supportMultiDottedExtensions = false, bool showHiddenFiles = false, bool showPreview = false, bool restoreDirectory = false, bool addToRecent = false) -> void
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.Filter.get -> string
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.FilterIndex.get -> int
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.InitialDirectory.get -> string
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.InitialFolderPath.get -> System.Environment.SpecialFolder
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.Multiselect.get -> bool
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.RestoreDirectory.get -> bool
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.ShowHiddenFiles.get -> bool
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.ShowPreview.get -> bool
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.SupportMultiDottedExtensions.get -> bool
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.Title.get -> string
+Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute.UserCanEditPathText.get -> bool
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute.ChooseFolderButtonLabel.get -> string
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute.FileNameLabel.get -> string
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute.FolderPickerParamsAttribute(string initialDirectory = null, System.Environment.SpecialFolder initialFolderPath = System.Environment.SpecialFolder.MyDocuments, string chooseFolderButtonLabel = "Choose Folder", bool userCanEditPathText = true, string title = "", string okButtonLabel = "Ok", string fileNameLabel = "", bool multiSelect = false, bool forceFileSystem = false) -> void
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute.ForceFileSystem.get -> bool
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute.InitialDirectory.get -> string
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute.InitialFolderPath.get -> System.Environment.SpecialFolder
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute.Multiselect.get -> bool
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute.OkButtonLabel.get -> string
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute.Title.get -> string
+Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute.UserCanEditPathText.get -> bool
+Reloaded.Mod.Interfaces.Structs.ICustomControlAttribute
+Reloaded.Mod.Interfaces.Structs.ModInfo
+Reloaded.Mod.Interfaces.Structs.ModInfo.CanSendResume.get -> bool
+Reloaded.Mod.Interfaces.Structs.ModInfo.CanSendSuspend.get -> bool
+Reloaded.Mod.Interfaces.Structs.ModInfo.CanSuspend.get -> bool
+Reloaded.Mod.Interfaces.Structs.ModInfo.CanSuspend.set -> void
+Reloaded.Mod.Interfaces.Structs.ModInfo.CanUnload.get -> bool
+Reloaded.Mod.Interfaces.Structs.ModInfo.CanUnload.set -> void
+Reloaded.Mod.Interfaces.Structs.ModInfo.Config.get -> Reloaded.Mod.Interfaces.IModConfig
+Reloaded.Mod.Interfaces.Structs.ModInfo.Config.set -> void
+Reloaded.Mod.Interfaces.Structs.ModInfo.Equals(Reloaded.Mod.Interfaces.Structs.ModInfo other) -> bool
+Reloaded.Mod.Interfaces.Structs.ModInfo.ModId.get -> string
+Reloaded.Mod.Interfaces.Structs.ModInfo.ModInfo() -> void
+Reloaded.Mod.Interfaces.Structs.ModInfo.ModInfo(Reloaded.Mod.Interfaces.Structs.Enums.ModState state, Reloaded.Mod.Interfaces.IModConfig modConfig, bool canSuspend, bool canUnload) -> void
+Reloaded.Mod.Interfaces.Structs.ModInfo.State.get -> Reloaded.Mod.Interfaces.Structs.Enums.ModState
+Reloaded.Mod.Interfaces.Structs.ModInfo.State.set -> void
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.IsSnapToTickEnabled.get -> bool
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.IsTextFieldEditable.get -> bool
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.LargeChange.get -> double
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.Maximum.get -> double
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.Minimum.get -> double
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.ShowTextField.get -> bool
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.SliderControlParamsAttribute(double minimum = 0, double maximum = 1, double smallChange = 0.1, double largeChange = 1, int tickFrequency = 10, bool isSnapToTickEnabled = false, Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement tickPlacement = Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement.None, bool showTextField = false, bool isTextFieldEditable = true, string textValidationRegex = ".*", string textFieldFormat = "") -> void
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.SmallChange.get -> double
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.TextFieldFormat.get -> string
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.TextValidationRegex.get -> string
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.TickFrequency.get -> int
+Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute.TickPlacement.get -> Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement
+Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement
+Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement.Both = 3 -> Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement
+Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement.BottomRight = 2 -> Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement
+Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement.None = 0 -> Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement
+Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement.TopLeft = 1 -> Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement
+Reloaded.Mod.Interfaces.Utilities.Extensions
+static Reloaded.Mod.Interfaces.Utilities.Extensions.TryGetValue<T>(this System.Collections.Generic.Dictionary<string, object> pluginData, string key, out T result) -> bool

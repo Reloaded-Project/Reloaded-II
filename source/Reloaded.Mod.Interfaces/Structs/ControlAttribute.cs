@@ -66,6 +66,21 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
     /// </summary>
     public string TextFieldFormat { get; }
 
+    // 2.4.0 BACKCOMPAT OVERLOAD -- DO NOT TOUCH
+    public SliderControlParamsAttribute(
+    double minimum,
+    double maximum,
+    double smallChange,
+    double largeChange,
+    int tickFrequency,
+    bool isSnapToTickEnabled,
+    SliderControlTickPlacement tickPlacement,
+    bool showTextField,
+    bool isTextFieldEditable,
+    string textValidationRegex
+) : this(minimum, maximum, smallChange, largeChange, tickFrequency, isSnapToTickEnabled, tickPlacement, showTextField, isTextFieldEditable, textValidationRegex, textFieldFormat: "")
+    {}
+
     public SliderControlParamsAttribute(
         double minimum = 0.0,
         double maximum = 1.0,
