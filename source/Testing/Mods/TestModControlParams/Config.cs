@@ -25,7 +25,7 @@ namespace TestModControlParams.Configuration
         [DisplayName("Double Slider")]
         [Description("This is a double that uses a slider control without any frills.")]
         [DefaultValue(0.5)]
-        [SliderControlParams(minimum: 0.0, maximum: 1.0)]
+        [SliderControlParams(minimum: 0.0, maximum: 1.0, showTextField: true, textFieldFormat: "{0:#,0.000}")]
         public double DoubleSlider { get; set; } = 0.5;
 
         [DisplayName("File Picker")]

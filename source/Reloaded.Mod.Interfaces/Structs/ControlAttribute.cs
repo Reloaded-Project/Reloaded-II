@@ -60,6 +60,11 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
     /// any characters that do NOT match it.
     /// </summary>
     public string TextValidationRegex { get; }
+    /// <summary>
+    /// If the text field is visible, apply this format string to the contents. This is recommended for
+    /// non-integral sliders otherwise the slider can behave erratically.
+    /// </summary>
+    public string TextFieldFormat { get; }
 
     public SliderControlParamsAttribute(
         double minimum = 0.0,
@@ -71,7 +76,8 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
         SliderControlTickPlacement tickPlacement = SliderControlTickPlacement.None,
         bool showTextField = false,
         bool isTextFieldEditable = true,
-        string textValidationRegex = ".*"
+        string textValidationRegex = ".*",
+        string textFieldFormat = ""
     ) {
         Minimum = minimum;
         Maximum = maximum;
@@ -83,6 +89,7 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
         ShowTextField = showTextField;
         IsTextFieldEditable = isTextFieldEditable;
         TextValidationRegex = textValidationRegex;
+        TextFieldFormat = textFieldFormat;
     }
 }
 

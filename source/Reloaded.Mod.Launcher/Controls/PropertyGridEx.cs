@@ -470,7 +470,8 @@ public class SliderPropertyEditor : PropertyEditorBase
                 Source = _slider,
                 Path = new PropertyPath("Value"),
                 Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                StringFormat = SliderControlParams.TextFieldFormat ?? ""
             });
             if (SliderControlParams.TextValidationRegex != null)
             {
