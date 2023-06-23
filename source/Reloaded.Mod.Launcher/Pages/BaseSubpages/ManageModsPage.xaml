@@ -187,6 +187,11 @@
                                     <TextBlock Text="{Binding Config.ModName}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
+                            <ListView.Resources>
+                                <Style TargetType="ScrollBar">
+                                    <Setter Property="Width" Value="50"/>
+                                </Style>
+                            </ListView.Resources>
                         </ListView>
                     </Grid>
                 </Grid>
