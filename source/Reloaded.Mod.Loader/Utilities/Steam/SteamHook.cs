@@ -79,10 +79,22 @@ public class SteamHook
 
     private bool RestartAppIfNecessaryImpl(uint appid)
     {
-        // Write the Steam AppID to a local file if not dropped by the other method.
+        //Check if API passes 0 for appid and obtain the ID from SteamAppsManager.
+        if (appid == 0)
+        {
+            var manager = new SteamAppsManager();
+            foreach (var app in manager.SteamApps)
+            {
+                if (!_applicationFolder.Contains(app.InstallDir))
+                    continue;
+
+                appid = (uint)app.AppID;
+                break; // We found a valid app ID, so exit the loop.
+            }
+        }
+        // Write the Steam AppID to a local file and proceed with the original function call.
         SteamAppId.WriteToDirectory(_applicationFolder, (int)appid);
         _restartAppIfNecessaryHook.OriginalFunction(appid);
-
         return false;
     }
 
