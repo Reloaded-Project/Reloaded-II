@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
 	  <LangVersion>preview</LangVersion>
     <AssemblyTitle>Reloaded.Mod.Loader</AssemblyTitle>
 	  <UseWindowsForms>true</UseWindowsForms>
@@ -11,13 +11,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU1605;NU1701</NoWarn>
-	  <Version>1.24.3</Version>
+	  <Version>1.25.0</Version>
     <Platforms>x86;x64</Platforms>
     <GenerateDepsJson>false</GenerateDepsJson>
 
     <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
     <!-- If you set this to true, trimming will be enabled when you publish the Mod Loader. -->
-    <RobustILLink>true</RobustILLink>
+    <RobustILLink>false</RobustILLink>
   </PropertyGroup>
 
   <ItemGroup>
