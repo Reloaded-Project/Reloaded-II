@@ -36,6 +36,11 @@ public class AppItem
     public string? AppName { get; set; }
 
     /// <summary>
+    /// Command line arguments when running from launcher.
+    /// </summary>
+    public string? AppArguments { get; set; }
+
+    /// <summary>
     /// Game Id for GameBanana. Accept if non-zero.
     /// </summary>
     public long GameBananaId { get; set; }
