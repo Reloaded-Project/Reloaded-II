@@ -36,6 +36,11 @@ public class AppItem
     public string? AppName { get; set; }
 
     /// <summary>
+    /// ID of the application.
+    /// </summary>
+    public string? AppArguments { get; set; }
+
+    /// <summary>
     /// Game Id for GameBanana. Accept if non-zero.
     /// </summary>
     public long GameBananaId { get; set; }

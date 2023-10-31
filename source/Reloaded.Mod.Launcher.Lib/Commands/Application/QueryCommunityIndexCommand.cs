@@ -106,6 +106,8 @@ public class QueryCommunityIndexCommand : ICommand
             var viewModel = new AddApplicationWarningDialogViewModel(errors);
             Actions.ShowApplicationWarningDialog(viewModel);
         }
+
+        pathTuple.Config.AppArguments = indexApp.AppArguments;
     }
 
     /// <inheritdoc />
