@@ -36,7 +36,7 @@ public class AppItem
     public string? AppName { get; set; }
 
     /// <summary>
-    /// ID of the application.
+    /// Command line arguments when running from launcher.
     /// </summary>
     public string? AppArguments { get; set; }
 
