@@ -48,6 +48,7 @@ public class SteamHook
         }
     }
 
+    // This is a hack and only applies to UE4 games (leaving as is until R3)
     private bool TryFindUnrealSteamApi(out string steamApiPath)
     {
         steamApiPath = null;
