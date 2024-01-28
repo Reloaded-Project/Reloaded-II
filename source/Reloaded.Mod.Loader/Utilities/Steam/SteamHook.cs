@@ -22,7 +22,7 @@ public class SteamHook
     {
         _applicationFolder = applicationFolder;
         var steamApiPath = Environment.Is64BitProcess ? Path.GetFullPath(SteamAPI64) : Path.GetFullPath(SteamAPI32);
-        if (!File.Exists(steamApiPath))
+        if (!File.Exists(steamApiPath) && !TryFindUnrealSteamApi(out steamApiPath))
             return;
 
         // Hook relevant functions
@@ -46,6 +46,19 @@ public class SteamHook
             logger.SteamWriteLineAsync($"{functionName} hooked successfully.", logger.ColorSuccess);
             return hooks.CreateHook<T>(handler, (long)functionPtr).Activate();
         }
+    }
+
+    private bool TryFindUnrealSteamApi(out string steamApiPath)
+    {
+        steamApiPath = null;
+        
+        // Assuming consistent folder structure is used for Unreal Engine games
+        var steamWorksPath = Path.Combine(_applicationFolder, @"..\..\..\Engine\Binaries\ThirdParty\SteamWorks");
+        if (!Directory.Exists(steamWorksPath))
+            return false;
+        
+        steamApiPath = Directory.EnumerateFiles(steamWorksPath, "steam_api??.dll", SearchOption.AllDirectories).FirstOrDefault();
+        return steamApiPath != null;
     }
 
     private void DropSteamAppId(Logger logger)
