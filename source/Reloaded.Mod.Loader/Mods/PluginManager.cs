@@ -252,35 +252,44 @@ public class PluginManager : IDisposable
 
     private LoadContext LoadModPlugin(PathTuple<ModConfig> mod, string dllPath, bool searchForExports, out Type? entryPointType, out Type? exportsType)
     {
-        // If we don't know if we have exports, we need to make it unloadable, such that if we do actually have exports we can unload.
-        var config = mod.Config;
-        var loadContext = LoadContext.BuildModLoadContext(dllPath, config.HasExports.GetValueOrDefault(true) | config.CanUnload.GetValueOrDefault(false),
-            GetExportsForModConfig(mod.Config), _sharedContext.Context);
-        var defaultAssembly = loadContext.LoadDefaultAssembly();
-        var types = defaultAssembly.GetTypes();
-
-        // Find entry point and exports.
-        entryPointType = null;
-        exportsType = null;
-        foreach (var type in types)
+        try
         {
-            if (type.IsAbstract)
-                continue;
+            // If we don't know if we have exports, we need to make it unloadable, such that if we do actually have exports we can unload.
+            var config = mod.Config;
+            var loadContext = LoadContext.BuildModLoadContext(dllPath,
+                config.HasExports.GetValueOrDefault(true) | config.CanUnload.GetValueOrDefault(false),
+                GetExportsForModConfig(mod.Config), _sharedContext.Context);
+            var defaultAssembly = loadContext.LoadDefaultAssembly();
+            var types = defaultAssembly.GetTypes();
 
-            if (typeof(IModV1).IsAssignableFrom(type))
+            // Find entry point and exports.
+            entryPointType = null;
+            exportsType = null;
+            foreach (var type in types)
             {
-                entryPointType = type;
-                if (!searchForExports)
-                    return loadContext;
-            }
-            
-            if (typeof(IExports).IsAssignableFrom(type))
-                exportsType = type;
-            
-            // Most mods don't define exports, so no point adding a check here if we found both when searching for both.
-        }
+                if (type.IsAbstract)
+                    continue;
 
-        return loadContext;
+                if (typeof(IModV1).IsAssignableFrom(type))
+                {
+                    entryPointType = type;
+                    if (!searchForExports)
+                        return loadContext;
+                }
+
+                if (typeof(IExports).IsAssignableFrom(type))
+                    exportsType = type;
+
+                // Most mods don't define exports, so no point adding a check here if we found both when searching for both.
+            }
+
+            return loadContext;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error loading Mod with ModId '{mod.Config.ModId}'. " +
+                                $"Normally this shouldn't happen, maybe your mod files are borked\n{ex.Message}", ex);
+        }
     }
 
     private ModInstance PrepareNativeMod(PathTuple<ModConfig> tuple)
