@@ -5,61 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Release (1.24) Highlights
+## Changelog (1.25.3)
 
-This is a very small feature update mostly consisting of community PRs.
-
-### Custom Controls for Mod Configurations
-
-@jroweboy added the ability additional controls developers can use in their mods ![image](https://user-images.githubusercontent.com/952515/227748620-6b25b471-12c9-461b-9c8b-d387a716d54f.png); 
-
-The 3 new custom controls are:
-```
-Slider: Horizontal Slider with an optional textbox to display the value
-FilePicker: Textbox with a button to open a `OpenFileDialog`.
-FolderPicker: Textbox with a button to open a custom `FolderSelectDialog`.
-```
-
-Example usage:
-
-```csharp
-[DisplayName("Int Slider")]
-[Description("This is a int that uses a slider control similar to a volume control slider.")]
-[DefaultValue(100)]
-[SliderControlParams(/* Settings here */)]
-public int IntSlider { get; set; } = 100;
-
-[DisplayName("Double Slider")]
-[Description("This is a double that uses a slider control without any frills.")]
-[DefaultValue(0.5)]
-[SliderControlParams(minimum: 0.0, maximum: 1.0)]
-public double DoubleSlider { get; set; } = 0.5;
-
-[DisplayName("File Picker")]
-[Description("This is a sample file picker.")]
-[DefaultValue("")]
-[FilePickerParams(title:"Choose a File to load from")]
-public string File { get; set; } = "";
-
-[DisplayName("Folder Picker")]
-[Description("Opens a file picker but locked to only allow folder selections.")]
-[DefaultValue("")]
-[FolderPickerParams(/* Settings here */)]
-public string Folder { get; set; } = "";
-```
-
-### Added Localization for Traditional Chinese (TW)
-
-@EditorKos contributed a localization for `zh-TW` locale.
-
-### Fixes
-
-- Mod Packs can now use custom `ReleaseMetadataFileName(s)`. (thanks @jroweboy)
-- Mods from GameBanana which specify custom additional contributors/authors no longer breaks mod search.
-  - GameBanana (probably unintentionally) made a change to how one of the fields is returned.
-  - And that broke things... so I added a workaround.
-  - I also need to update the cache server; please give it a moment after the update goes live.
-- Log files no longer incorrectly produce newlines for `Write()` (thanks @gurrenm3)
+- Unreal Engine 4 games will no longer reboot via Steam if launched from launcher (thanks to a Hack from @AnimatedSwine37).
+- Updated ASI Loader version.
+- Added mod which caused load error on fail to load DLL mod.
 
 ## Complete Changes
 
