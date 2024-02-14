@@ -111,6 +111,7 @@ public static class Startup
         _ = viewModel.StartDownloadAsync();
 
         Actions.ShowFetchPackageDialog(viewModel);
+        Update.ResolveMissingPackages();
         Actions.DisplayMessagebox(Resources.PackageDownloaderDownloadCompleteTitle.Get(), Resources.PackageDownloaderDownloadCompleteDescription.Get(), new Actions.DisplayMessageBoxParams()
         {
             Type = Actions.MessageBoxType.Ok,

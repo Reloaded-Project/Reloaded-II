@@ -162,44 +162,79 @@ public static class Update
         if (!HasInternetConnection)
             return;
         
-        ModDependencyResolveResult resolveResult = null!;
+        ModDependencyResolveResult resolveResult;
 
         do
         {
-            // Get missing dependencies for this update loop.
-            var missingDeps = CheckMissingDependencies();
-
-            // Get Dependencies
-            var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
-            
-            var results = new List<Task<ModDependencyResolveResult>>();
-            foreach (var dependencyItem in missingDeps.Items)
-            foreach (var dependency in dependencyItem.Dependencies)
-                results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod.PluginData, token));
-
-            await Task.WhenAll(results);
-
-            // Merge Results
-            resolveResult = ModDependencyResolveResult.Combine(results.Select(x => x.Result));
+            resolveResult = await GetMissingDependenciesToDownload(token);
             DownloadPackages(resolveResult, token);
         } 
         while (resolveResult.FoundDependencies.Count > 0);
 
         if (resolveResult.NotFoundDependencies.Count > 0)
+            ShowMissingPackagesDialog(resolveResult);
+    }
+    
+    /// <summary>
+    /// Resolves a list of missing packages.
+    /// </summary>
+    public static void ResolveMissingPackages()
+    {
+        if (!HasInternetConnection)
+            return;
+        
+        ModDependencyResolveResult resolveResult;
+
+        do
         {
-            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
-            {
-                Actions.DisplayMessagebox(Resources.ErrorMissingDependency.Get(),
-                    $"{Resources.FetchNugetNotFoundMessage.Get()}\n\n" +
-                    $"{string.Join('\n', resolveResult.NotFoundDependencies)}\n\n" +
-                    $"{Resources.FetchNugetNotFoundAdvice.Get()}",
-                    new Actions.DisplayMessageBoxParams()
-                    {
-                        Type = Actions.MessageBoxType.Ok,
-                        StartupLocation = Actions.WindowStartupLocation.CenterScreen
-                    });
-            });
-        }
+            resolveResult = Task.Run(async () => await GetMissingDependenciesToDownload(default)).GetAwaiter().GetResult();
+            DownloadPackages(resolveResult);
+        } 
+        while (resolveResult.FoundDependencies.Count > 0);
+
+        if (resolveResult.NotFoundDependencies.Count > 0)
+            ShowMissingPackagesDialog(resolveResult);
+    }
+
+    /// <summary>
+    /// Displays the dialog indicating missing packages/dependencies.
+    /// </summary>
+    public static void ShowMissingPackagesDialog(ModDependencyResolveResult resolveResult)
+    {
+        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+        {
+            Actions.DisplayMessagebox(Resources.ErrorMissingDependency.Get(),
+                $"{Resources.FetchNugetNotFoundMessage.Get()}\n\n" +
+                $"{string.Join('\n', resolveResult.NotFoundDependencies)}\n\n" +
+                $"{Resources.FetchNugetNotFoundAdvice.Get()}",
+                new Actions.DisplayMessageBoxParams()
+                {
+                    Type = Actions.MessageBoxType.Ok,
+                    StartupLocation = Actions.WindowStartupLocation.CenterScreen
+                });
+        });
+    }
+
+    /// <summary>
+    ///     Gets all missing dependencies to be downloaded.
+    /// </summary>
+    public static async Task<ModDependencyResolveResult> GetMissingDependenciesToDownload(CancellationToken token)
+    {
+        // Get missing dependencies for this update loop.
+        var missingDeps = CheckMissingDependencies();
+
+        // Get Dependencies
+        var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
+            
+        var results = new List<Task<ModDependencyResolveResult>>();
+        foreach (var dependencyItem in missingDeps.Items)
+        foreach (var dependency in dependencyItem.Dependencies)
+            results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod.PluginData, token));
+
+        await Task.WhenAll(results);
+
+        // Merge Results
+        return ModDependencyResolveResult.Combine(results.Select(x => x.Result));;
     }
 
     /// <summary>
