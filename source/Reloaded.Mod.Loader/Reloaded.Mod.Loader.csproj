@@ -11,7 +11,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU1605;NU1701</NoWarn>
-	  <Version>1.25.3</Version>
+	  <Version>1.25.4</Version>
     <Platforms>x86;x64</Platforms>
     <GenerateDepsJson>false</GenerateDepsJson>
 
