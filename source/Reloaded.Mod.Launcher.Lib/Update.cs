@@ -168,6 +168,9 @@ public static class Update
         {
             resolveResult = await GetMissingDependenciesToDownload(token);
             DownloadPackages(resolveResult, token);
+            
+            if (IsOneDrive())
+                await Task.Delay(100, token);
         } 
         while (resolveResult.FoundDependencies.Count > 0);
 
@@ -184,11 +187,15 @@ public static class Update
             return;
         
         ModDependencyResolveResult resolveResult;
+        var isOneDrive = IsOneDrive();
 
         do
         {
             resolveResult = Task.Run(async () => await GetMissingDependenciesToDownload(default)).GetAwaiter().GetResult();
             DownloadPackages(resolveResult);
+            
+            if (IsOneDrive())
+                Thread.Sleep(100);
         } 
         while (resolveResult.FoundDependencies.Count > 0);
 
@@ -304,5 +311,17 @@ public static class Update
         }
 
         return false;
+    }
+    
+    /// <summary>
+    /// On Windows 11, Microsoft defaults some accounts to sync via OneDrive.
+    /// Unfortunately their implementation has issues, files that were downloaded can't immediately be seen by FileSystem.
+    ///
+    /// We 'hack' around this (poorly), but our solution is far from ideal. 
+    /// </summary>
+    private static bool IsOneDrive()
+    {
+        var conf = IoC.Get<LoaderConfig>();
+        return conf.GetModConfigDirectory().Contains("OneDrive", StringComparison.OrdinalIgnoreCase);
     }
 }
