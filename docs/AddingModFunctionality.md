@@ -33,7 +33,7 @@ We've already done Step A by adding the dependency; let's follow the rest of thi
 
 ![OpenModFolder](./Images/OpenModFolder.png)
 
-Go to the folder where your mod is stored, this can be done by simply clicking the `Open Fodler` button.  
+Go to the folder where your mod is stored, this can be done by simply clicking the `Open Folder` button.  
 
 ### Add Some Files
 
