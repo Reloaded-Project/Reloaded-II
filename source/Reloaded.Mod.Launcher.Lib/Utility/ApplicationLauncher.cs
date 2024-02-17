@@ -21,7 +21,7 @@ public class ApplicationLauncher
         {
             _arguments = arguments ?? "",
             _location = location,
-            _workingDirectory = workingDirectory ?? Path.GetDirectoryName(location)!
+            _workingDirectory = string.IsNullOrEmpty(workingDirectory) ? Path.GetDirectoryName(location)! : workingDirectory
         };
 
         if (!File.Exists(launcher._location))
