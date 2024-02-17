@@ -1,3 +1,5 @@
+using System.IO.Compression;
+using System.Net.Http;
 using static Reloaded.Mod.Installer.DependencyInstaller.DependencyInstaller;
 using MessageBox = System.Windows.MessageBox;
 using Path = System.IO.Path;
@@ -50,7 +52,7 @@ public class MainWindowViewModel : ObservableObject
 
             // 0.20
             CurrentStepNo = 1;
-            await ExtractReloadedAsync(settings.InstallLocation, downloadLocation, progressSlicer.Slice(0.05));
+            ExtractReloaded(settings.InstallLocation, downloadLocation, progressSlicer.Slice(0.05));
             if (CancellationToken.IsCancellationRequested)
                 throw new TaskCanceledException();
 
@@ -82,23 +84,10 @@ public class MainWindowViewModel : ObservableObject
         catch (Exception e)
         {
             IOEx.TryDeleteDirectory(settings.InstallLocation);
-            var isGitHubRateLimit = e.Message.Contains("rate limit exceeded");
-            if (isGitHubRateLimit)
-            {
-                MessageBox.Show("There was an error in installing Reloaded.\n" +
-                                $"You are being limited by GitHub's arbitrary 60 requests/hour limitation.\n" + 
-                                $"Please wait up to an hour, or manually install: https://github.com/Reloaded-Project/Reloaded-II/releases/download/latest/Release.zip\n" +
-                                $"Feel free to open an issue on github.com/Reloaded-Project/Reloaded-II if you require further support.\n" +
-                                $"Message: {e.Message}\n" +
-                                $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded");
-            }
-            else
-            {
-                MessageBox.Show("There was an error in installing Reloaded.\n" +
-                                $"Feel free to open an issue on github.com/Reloaded-Project/Reloaded-II if you require support.\n" +
-                                $"Message: {e.Message}\n" +
-                                $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded");
-            }
+            MessageBox.Show("There was an error in installing Reloaded.\n" +
+                            $"Feel free to open an issue on github.com/Reloaded-Project/Reloaded-II if you require support.\n" +
+                            $"Message: {e.Message}\n" +
+                            $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded");
         }
     }
 
@@ -114,27 +103,37 @@ public class MainWindowViewModel : ObservableObject
         file.Save(shortcutPath, false);
     }
 
-    private async Task ExtractReloadedAsync(string extractFolderPath, string downloadedPackagePath, IProgress<double> slice)
+    private static async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)
     {
-        CurrentStepDescription = "Extracting Reloaded II";
-        var extractor = new ZipPackageExtractor();
-        await extractor.ExtractPackageAsync(downloadedPackagePath, extractFolderPath, slice, CancellationToken.Token);
+        using var client = new HttpClient();
+        using var response = await client.GetAsync("https://github.com/Reloaded-Project/Reloaded-II/releases/latest/download/Release.zip", HttpCompletionOption.ResponseHeadersRead);
+        response.EnsureSuccessStatusCode();
 
-        if (Native.IsDirectoryEmpty(extractFolderPath))
-            throw new Exception($"Reloaded failed to download (downloaded archive was not properly extracted).");
-
-        IOEx.TryDeleteFile(downloadedPackagePath);
-    }
-
-    private async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)
-    {
-        CurrentStepDescription = "Downloading Reloaded II";
-        var resolver = new GithubPackageResolver("Reloaded-Project", "Reloaded-II", "Release.zip");
-        var versions = await resolver.GetPackageVersionsAsync();
-        var latestVersion = versions.First();
-        await resolver.DownloadPackageAsync(latestVersion, downloadLocation, downloadProgress, CancellationToken.Token);
+        var totalBytes = response.Content.Headers.ContentLength ?? 0L;
+        var totalReadBytes = 0L;
+        int readBytes;
+        var buffer = new byte[128 * 1024];
+        
+        using var contentStream = await response.Content.ReadAsStreamAsync();
+        using var fileStream = new FileStream(downloadLocation, FileMode.Create, FileAccess.Write, FileShare.None, buffer.Length, true);
+        while ((readBytes = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+        {
+            await fileStream.WriteAsync(buffer, 0, readBytes);
+            totalReadBytes += readBytes;
+            downloadProgress?.Report(totalReadBytes * 1d / totalBytes);
+        }
 
         if (!File.Exists(downloadLocation))
-            throw new Exception($"Reloaded failed to download (no file was written to disk).");
+            throw new Exception("Reloaded failed to download (no file was written to disk).");
+    }
+
+    private static void ExtractReloaded(string extractFolderPath, string downloadedPackagePath, IProgress<double> slice)
+    {
+        ZipFile.ExtractToDirectory(downloadedPackagePath, extractFolderPath);
+        if (Directory.GetFiles(extractFolderPath).Length == 0)
+            throw new Exception($"Reloaded failed to download (downloaded archive was not properly extracted).");
+
+        File.Delete(downloadedPackagePath);
+        slice.Report(1);
     }
 }
