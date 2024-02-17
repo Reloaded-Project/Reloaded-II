@@ -25,13 +25,12 @@ public class MainWindowViewModel : ObservableObject
     /// <summary>
     /// A cancellation token allowing you to cancel the download operation.
     /// </summary>
-    public CancellationTokenSource CancellationToken { get; set; } = new CancellationTokenSource();
+    public CancellationTokenSource CancellationToken { get; } = new();
 
-    public async Task InstallReloadedAsync(string? installFolder = null, bool createShortcut = true, bool startReloaded = true)
+    public async Task InstallReloadedAsync(Settings settings)
     {
         // Step
-        installFolder ??= Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II");
-        Directory.CreateDirectory(installFolder);
+        Directory.CreateDirectory(settings.InstallLocation);
 
         using var tempDownloadDir = new TemporaryFolderAllocation();
         var progressSlicer = new ProgressSlicer(new Progress<double>(d =>
@@ -51,21 +50,21 @@ public class MainWindowViewModel : ObservableObject
 
             // 0.20
             CurrentStepNo = 1;
-            await ExtractReloadedAsync(installFolder, downloadLocation, progressSlicer.Slice(0.05));
+            await ExtractReloadedAsync(settings.InstallLocation, downloadLocation, progressSlicer.Slice(0.05));
             if (CancellationToken.IsCancellationRequested)
                 throw new TaskCanceledException();
 
             // 1.00
             CurrentStepNo = 2;
-            await CheckAndInstallMissingRuntimesAsync(installFolder, tempDownloadDir.FolderPath,
+            await CheckAndInstallMissingRuntimesAsync(settings.InstallLocation, tempDownloadDir.FolderPath,
                 progressSlicer.Slice(0.8),
                 s => { CurrentStepDescription = s; }, CancellationToken.Token);
 
             var executableName = IntPtr.Size == 8 ? "Reloaded-II.exe" : "Reloaded-II32.exe";
-            var executablePath = Path.Combine(installFolder, executableName);
+            var executablePath = Path.Combine(settings.InstallLocation, executableName);
             var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II.lnk");
 
-            if (createShortcut)
+            if (settings.CreateShortcut)
             {
                 CurrentStepDescription = "Creating Shortcut";
                 MakeShortcut(shortcutPath, executablePath);
@@ -73,20 +72,33 @@ public class MainWindowViewModel : ObservableObject
 
             CurrentStepDescription = "All Set";
             
-            if (startReloaded)
+            if (settings.StartReloaded)
                 Process.Start(executablePath);
         }
         catch (TaskCanceledException)
         {
-            IOEx.TryDeleteDirectory(installFolder);
+            IOEx.TryDeleteDirectory(settings.InstallLocation);
         }
         catch (Exception e)
         {
-            IOEx.TryDeleteDirectory(installFolder);
-            MessageBox.Show("There was an error in installing Reloaded.\n" +
-                            $"Feel free to open an issue on github.com/Reloaded-Project/Reloaded-II if you require support.\n" +
-                            $"Message: {e.Message}\n" +
-                            $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded");
+            IOEx.TryDeleteDirectory(settings.InstallLocation);
+            var isGitHubRateLimit = e.Message.Contains("rate limit exceeded");
+            if (isGitHubRateLimit)
+            {
+                MessageBox.Show("There was an error in installing Reloaded.\n" +
+                                $"You are being limited by GitHub's arbitrary 60 requests/hour limitation.\n" + 
+                                $"Please wait up to an hour, or manually install: https://github.com/Reloaded-Project/Reloaded-II/releases/download/latest/Release.zip\n" +
+                                $"Feel free to open an issue on github.com/Reloaded-Project/Reloaded-II if you require further support.\n" +
+                                $"Message: {e.Message}\n" +
+                                $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded");
+            }
+            else
+            {
+                MessageBox.Show("There was an error in installing Reloaded.\n" +
+                                $"Feel free to open an issue on github.com/Reloaded-Project/Reloaded-II if you require support.\n" +
+                                $"Message: {e.Message}\n" +
+                                $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded");
+            }
         }
     }
 

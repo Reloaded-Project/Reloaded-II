@@ -10,7 +10,7 @@ namespace Reloaded.Mod.Launcher.Lib;
 /// </summary>
 public static class Startup
 {
-    private static Dictionary<string, string> _commandLineArguments = new Dictionary<string, string>();
+    private static Dictionary<string, string> _commandLineArguments = new();
 
     /// <summary>
     /// Populates Command Lin
