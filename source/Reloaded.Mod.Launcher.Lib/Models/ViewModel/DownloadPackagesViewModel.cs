@@ -297,13 +297,16 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
             _canExecute = false;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             
-            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+            ActionWrappers.ExecuteWithApplicationDispatcher(async () =>
             {
                 var viewModel = new DownloadPackageViewModel(_package!, IoC.Get<LoaderConfig>());
-                _ = viewModel.StartDownloadAsync(); // Fire and forget.
+                var dl = viewModel.StartDownloadAsync(); // Fire and forget.
                 Actions.ShowFetchPackageDialog(viewModel);
+
+                await dl;
+                await Update.ResolveMissingPackagesAsync();
             });
-            
+
             _canExecute = true;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
