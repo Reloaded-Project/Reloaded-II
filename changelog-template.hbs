@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Changelog (1.25.8)
+
+- Downloading a mod in App now automatically downloads dependencies.
+
+Reported by @AnimatedSwine37 , it was previously possible for the user to edit a mod they just downloaded,
+causing missing dependencies to be dropped. 
+
+Although auto-downloading dependencies is not a fool-proof fix, it is a sufficiently good workaround for
+the time being. 
+
+Some very edge cases may still exist of course, such as user's internet connection may drop while 
+downloading dependencies, and then the user edits the mod via dialog. 
+
+More fixes for these edge cases may ship in future, but for now, this is being hot-patched, 
+i.e. this bug was reported less than 1 hour ago, and there's already a released patch to work around it.
+
 ## Changelog (1.25.7)
 - No more 'Rate Limited' by GitHub fail on `Setup.exe`.
 
