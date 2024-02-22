@@ -40,7 +40,7 @@
     <sys:String x:Key="AddAppAdvancedOptions">Erweiterte Werkzeuge &amp; Optionen</sys:String>
     <sys:String x:Key="AddAppCreateShortcut">Verknüpfung erstellen</sys:String>
     <sys:String x:Key="AddAppAutoInject">Auto-Injektion</sys:String>
-    <sys:String x:Key="AddAppAutoInjectMessage">Hinweis: Auto-Injektion wird bereitgestellt, aber nicht empfohlen, da keine Garantie gegeben werden kann, dass Mods den Code vor der Anwendung ausführen.&#x0a;Bitte verwende stattdessen reguläres "Anwendung starten" von Reloaded oder die "DLL Lader" methode beschrieben in der GitHub-Dokumentation.&#x0a;Bitte reiche keine Fehler für Mods ein, die nicht im Auto-Injektionsmodus funktionieren.</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage">Hinweis: Auto-Injektion wird bereitgestellt, aber nicht empfohlen, da keine Garantie gegeben werden kann, dass Mods den Code vor der Anwendung ausführen.&#x0a;Bitte verwende stattdessen reguläres "Anwendung starten" von Reloaded oder die "DLL Lader"-methode beschrieben in der GitHub-Dokumentation.&#x0a;Bitte reiche keine Fehler für Mods ein, die nicht im Auto-Injektionsmodus funktionieren.</sys:String>
 
     <sys:String x:Key="AddAppExecutableTitle">Wähle eine Anwendung aus, für die eine Konfiguration erstellt werden soll.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">Ausführbare Anwendungsdatei</sys:String>
@@ -75,7 +75,7 @@
     <sys:String x:Key="CreateModDialogImageSelectorFilter">Bild</sys:String>
 
     <sys:String x:Key="TitleCreateModNonUniqueId">Nicht eindeutige ID</sys:String>
-    <sys:String x:Key="MessageCreateModNonUniqueId">Die ModId für den Mod, den Sie erstellen, ist nicht eindeutig.&#x0a;Bitte machen Sie die ModId eindeutig.</sys:String>
+    <sys:String x:Key="MessageCreateModNonUniqueId">Die ModID für den Mod, den du erstellst, ist nicht eindeutig.&#x0a;Bitte mach die ModID eindeutig.</sys:String>
 
     <!-- Mod Loader Settings -->
     <sys:String x:Key="LoaderSettingsCleanup">Bereinigungskonfigurationen</sys:String>
@@ -100,11 +100,11 @@
 
     <!-- First Launch | Unused, Superseeded by 1.12.0 - New First Launch Experience -->
     <sys:String x:Key="TitleFirstLaunch">Willkommen bei Reloaded II</sys:String> <!-- Unused as of 1.12.0 -->
-    <sys:String x:Key="FirstLaunchLineOne">Es ist Ihr erstes Mal, dass Sie Reloaded II verwenden.</sys:String>
-    <sys:String x:Key="FirstLaunchLineTwo">Bevor Sie beginnen, sollten Sie einen Blick auf die folgenden Links werfen:</sys:String>
+    <sys:String x:Key="FirstLaunchLineOne">Es ist dein erstes Mal, dass du Reloaded II verwendst.</sys:String>
+    <sys:String x:Key="FirstLaunchLineTwo">Bevor du beginnst, solltest du einen Blick auf die folgenden Links werfen:</sys:String>
     <sys:String x:Key="FirstLaunchLineDocumentation">Dokumentation</sys:String>
     <sys:String x:Key="FirstLaunchLineUserguide">Benutzerhandbuch</sys:String>
-    <sys:String x:Key="FirstLaunchLineThree">Möglicherweise finden Sie diese Links später in den [Mod Lader-Einstellungen].</sys:String>
+    <sys:String x:Key="FirstLaunchLineThree">Möglicherweise findest du diese Links später in den [Mod Lader-Einstellungen].</sys:String>
 
     <!-- Dialogs -->
     <sys:String x:Key="MessageBoxButtonOK">OK</sys:String>
@@ -113,9 +113,9 @@
     <!-- Non-Reloaded Process -->
     <sys:String x:Key="TitleNonReloadedProcess">Nicht neu geladener Prozess</sys:String>
     <sys:String x:Key="NonReloadedProcessMessageOne">Reloaded verwaltet nicht diesen speziellen Prozess.</sys:String>
-    <sys:String x:Key="NonReloadedProcessMessageTwo">Sie können Reloaded laden, indem Sie auf die folgende Schaltfläche unten klicken.</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageTwo">Du kannst Reloaded laden, indem du auf die folgende Schaltfläche unten klickst.</sys:String>
     <sys:String x:Key="NonReloadedProcessInject">Injizieren</sys:String>
-    <sys:String x:Key="NonReloadedProcessInjectWarning">Hinweis: Möglicherweise funktionieren nicht alle Mods wie erwartet, wenn sie geladen werden, während die Anwendung ausgeführt und nicht angehalten wird. Bitte reichen Sie keine Fehler für Mods ein, die mit dieser Funktion nicht funktionieren.</sys:String>
+    <sys:String x:Key="NonReloadedProcessInjectWarning">Hinweis: Möglicherweise funktionieren nicht alle Mods wie erwartet, wenn sie geladen werden, während die Anwendung ausgeführt und nicht angehalten wird. Bitte reiche keine Fehler für Mods ein, die mit dieser Funktion nicht funktionieren.</sys:String>
 
     <!-- Reloaded Process -->
     <sys:String x:Key="TitleReloadedProcess">Reloaded Prozess</sys:String>
@@ -124,8 +124,8 @@
     <sys:String x:Key="TitleConfigureMods">Mods konfigurieren</sys:String>
     <sys:String x:Key="ApplicationLaunch">Anwendung starten</sys:String>
 
-    <sys:String x:Key="ConfigureModsListItemTooltip">Ziehen Sie Elemente per Ziehen-und-Ablegen, um die Ladereihenfolge von Mods zu ändern. Mods werden geladen, beginnend mit dem oberen Mod zuerst und dem unteren Mod zuletzt.</sys:String>
-    <sys:String x:Key="ConfigureModsDummyText">Verwendet Reloaded, um Ihnen mitzuteilen, dass Sie sich einige Mods besorgen sollen. Reloaded-II ist cool! Niedlichkeit ist Gerechtigkeit, Es ist das Gesetz!.</sys:String> <!-- Unused for now, will be used down the road. -->
+    <sys:String x:Key="ConfigureModsListItemTooltip">Ziehe Elemente per Ziehen-und-Ablegen, um die Ladereihenfolge von Mods zu ändern. Mods werden geladen, beginnend mit dem oberen Mod zuerst und dem unteren Mod zuletzt.</sys:String>
+    <sys:String x:Key="ConfigureModsDummyText">Verwendet Reloaded um dir mitzuteilen, dass du dir einige Mods besorgen sollst. Reloaded-II ist cool! Niedlichkeit ist Gerechtigkeit, Es ist das Gesetz!.</sys:String> <!-- Unused for now, will be used down the road. -->
     <sys:String x:Key="ConfigureModsConfigure">Mod konfigurieren</sys:String>
     <sys:String x:Key="ConfigureModsOpenFolder">Ordner öffnen</sys:String>
 
@@ -136,8 +136,8 @@
 
     <!-- Obsolete as of 1.12.0 onwards -->
     <sys:String x:Key="LoadModSetIncompatibleTitle">Kompatibilitätswarnung</sys:String>
-    <sys:String x:Key="LoadModSetIncompatibleMessage">Sie haben Mods aktiviert, die als "nicht mit Ihrer Anwendung kompatibel" markiert sind:</sys:String>
-    <sys:String x:Key="LoadModSetIncompatibleMessage2">Durch Drücken von „OK“ werden die Mods für Ihre Anwendung aktiviert. Durch Drücken von „Abbrechen“ werden die Mods deaktiviert.</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage">Du hast Mods aktiviert, die als "nicht mit deiner Anwendung kompatibel" markiert sind:</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage2">Durch Drücken von „OK“ werden die Mods für deine Anwendung aktiviert. Durch Drücken von „Abbrechen“ werden die Mods deaktiviert.</sys:String>
 
     <!-- Reloaded Process -->
     <sys:String x:Key="ReloadedProcessResume">Wieder aufnehmen</sys:String>
