@@ -18,9 +18,11 @@
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+	  <DebugType>portable</DebugType>
   </PropertyGroup>
 	
   <ItemGroup>
+	<PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Equals.Fody" Version="4.0.2">
 	  <PrivateAssets>all</PrivateAssets>
 	</PackageReference>

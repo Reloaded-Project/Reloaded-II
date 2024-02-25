@@ -11,6 +11,7 @@
     <ApplicationIcon>appicon.ico</ApplicationIcon>
     <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
     <StartupObject>Reloaded.Mod.Installer.Program</StartupObject>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="ConsoleProgressBar" Version="2.0.0" />
     <PackageReference Include="Costura.Fody" Version="5.7.0">
       <PrivateAssets>all</PrivateAssets>

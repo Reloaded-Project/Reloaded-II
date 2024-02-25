@@ -18,9 +18,11 @@
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="AnyOf" Version="0.3.0" />
     <PackageReference Include="LiteNetLib" Version="1.0.0-rc.3" />
     <PackageReference Include="Mapster" Version="7.3.0" />

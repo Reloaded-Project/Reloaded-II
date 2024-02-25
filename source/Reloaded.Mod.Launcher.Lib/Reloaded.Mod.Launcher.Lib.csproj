@@ -8,9 +8,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="dll_syringe.Net.Sys" Version="0.16.0" />
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="IoC.Container" Version="1.3.7" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="2.0.0-beta.0" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />

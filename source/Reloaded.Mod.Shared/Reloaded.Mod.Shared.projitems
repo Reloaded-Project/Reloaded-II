@@ -11,7 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)EntryPointParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Environment.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SharedConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Usings.cs" />
   </ItemGroup>
 </Project>

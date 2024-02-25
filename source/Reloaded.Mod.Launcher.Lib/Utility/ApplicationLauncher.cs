@@ -64,7 +64,7 @@ public class ApplicationLauncher
 
         // DLL Injection
         var process         = Process.GetProcessById((int) processInformation.dwProcessId);
-        var injector        = new ApplicationInjector(process);
+        using var injector  = new ApplicationInjector(process);
 
         try
         {
