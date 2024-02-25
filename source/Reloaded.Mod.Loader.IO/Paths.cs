@@ -8,7 +8,6 @@ namespace Reloaded.Mod.Loader.IO;
 public class Paths
 {
     private const string BootstrapperDllName = "Reloaded.Mod.Loader.Bootstrapper.dll";
-    private const string Kernel32AddressDumperRelativePath = "Loader/Kernel32AddressDumper.exe";
 
     /// <summary>
     /// Set to true if the currently executing application is the Reloaded launcher.
@@ -74,12 +73,6 @@ public class Paths
     public static readonly string GameBananaManifestCachePath = Path.Combine(CachePath, "GameBananaReleaseManifests.db");
 
     // UTILITY METHODS //
-
-    /// <summary>
-    /// Gets the name of the Kernel32 Address Dumper; a tool which extracts the address of Kernel32 and shares it using mapped files.
-    /// </summary>
-    /// <param name="launcherPath">Path to the launcher folder.</param>
-    public static string GetKernel32AddressDumperPath(string launcherPath) => Path.Combine(launcherPath, Kernel32AddressDumperRelativePath);
 
     /// <summary>
     /// Gets the path of the AnyCPU Reloaded Loader Folder.
