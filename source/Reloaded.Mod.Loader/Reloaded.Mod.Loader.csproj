@@ -14,7 +14,8 @@
 	  <Version>1.25.8</Version>
     <Platforms>x86;x64</Platforms>
     <GenerateDepsJson>false</GenerateDepsJson>
-
+    <DebugType>portable</DebugType>
+    
     <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
     <!-- If you set this to true, trimming will be enabled when you publish the Mod Loader. -->
     <RobustILLink>false</RobustILLink>
@@ -87,6 +88,7 @@
     <ProjectReference Include="..\Reloaded.Mod.Loader.IO\Reloaded.Mod.Loader.IO.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.5" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="2.0.0-beta.0" />

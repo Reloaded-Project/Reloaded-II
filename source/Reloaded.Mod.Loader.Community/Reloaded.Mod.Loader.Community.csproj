@@ -19,6 +19,7 @@
     <Nullable>enable</Nullable>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
     <Title>Reloaded II Community API</Title>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Standart.Hash.xxHash" Version="3.1.0" />
   </ItemGroup>
 
