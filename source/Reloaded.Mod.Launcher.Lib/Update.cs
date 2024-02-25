@@ -162,17 +162,29 @@ public static class Update
         if (!HasInternetConnection)
             return;
         
+        ModDependencyResolveResult? lastResolveResult = default;
         ModDependencyResolveResult resolveResult;
 
+        var isOneDrive = IsOneDrive();
         do
         {
             resolveResult = await GetMissingDependenciesToDownload(token);
+            if (resolveResult.FoundDependencies.Count <= 0)
+                break;
+
+            if (IsSameAsLast(resolveResult, lastResolveResult))
+            {
+                ShowStuckInDownloadLoopDialog(resolveResult);
+                break;
+            }
+
+            lastResolveResult = resolveResult;
             DownloadPackages(resolveResult, token);
             
-            if (IsOneDrive())
-                await Task.Delay(100, token);
+            // Very terrible hack, caused by a FileSystem bug on MSFT's end somewhere.
+            if (isOneDrive) await Task.Delay(1000, token);
         } 
-        while (resolveResult.FoundDependencies.Count > 0);
+        while (true);
 
         if (resolveResult.NotFoundDependencies.Count > 0)
             ShowMissingPackagesDialog(resolveResult);
@@ -186,18 +198,29 @@ public static class Update
         if (!HasInternetConnection)
             return;
         
+        ModDependencyResolveResult? lastResolveResult = default;
         ModDependencyResolveResult resolveResult;
         var isOneDrive = IsOneDrive();
 
         do
         {
             resolveResult = Task.Run(async () => await GetMissingDependenciesToDownload(default)).GetAwaiter().GetResult();
-            DownloadPackages(resolveResult);
+            if (resolveResult.FoundDependencies.Count <= 0)
+                break;
             
-            if (IsOneDrive())
-                Thread.Sleep(100);
+            if (IsSameAsLast(resolveResult, lastResolveResult))
+            {
+                ShowStuckInDownloadLoopDialog(resolveResult);
+                break;
+            }
+
+            DownloadPackages(resolveResult);
+            lastResolveResult = resolveResult;    
+            
+            // Very terrible hack, caused by a FileSystem bug on MSFT's end somewhere.
+            if (isOneDrive) Thread.Sleep(1000);
         } 
-        while (resolveResult.FoundDependencies.Count > 0);
+        while (true);
 
         if (resolveResult.NotFoundDependencies.Count > 0)
             ShowMissingPackagesDialog(resolveResult);
@@ -323,5 +346,49 @@ public static class Update
     {
         var conf = IoC.Get<LoaderConfig>();
         return conf.GetModConfigDirectory().Contains("OneDrive", StringComparison.OrdinalIgnoreCase);
+    }
+
+    // TODO: This is a temporary hack to get people unstuck.
+    private static bool IsSameAsLast(ModDependencyResolveResult thisItem, ModDependencyResolveResult? lastItem)
+    {
+        if (lastItem == null)
+            return false;
+
+        if (thisItem.FoundDependencies.Count != lastItem.FoundDependencies.Count)
+            return false;
+
+        // Assert whether they changed.
+        // We will always have ID as we resolve deps by ID.
+        var thisIds = new HashSet<string>(thisItem.FoundDependencies.Select(x => x.Id)!);
+        var otherIds = new HashSet<string>(lastItem.FoundDependencies.Select(x => x.Id)!);
+        return thisIds.SetEquals(otherIds);
+    }
+
+    private static void ShowStuckInDownloadLoopDialog(ModDependencyResolveResult result)
+    {
+        var message = new StringBuilder("We got stuck in a dependency download loop.\n" +
+                                        "This bug is tracked at:\n" +
+                                        "https://github.com/Reloaded-Project/Reloaded-II/issues/226\n\n" +
+                                        "Here's a list of mods that's stuck:\n");
+
+        foreach (var item in result.FoundDependencies)
+        {
+            message.AppendLine($"Id: {item.Id} | Name: {item.Name} | Version: {item.Version} | Source: {item.Source}");
+        }
+
+        message.AppendLine($"\nSometimes this can happen due to a mod incorrectly published/uploaded,\n" +
+                           $"or a file being removed by a mod author of a dependency.\n\n" +
+                           $"In some very rare cases, this can happen on any mod for completely unknown reasons.\n\n" +
+                           $"Please report this issue to the link above if you encounter it.\n" +
+                           $"In the meantime, download the required mods manually (you should " +
+                           $"hopefully find it by ID or Name).\n\n" +
+                           $"Sorry for the pain.");
+
+        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+        {
+            Actions.DisplayMessagebox.Invoke("Stuck in Download Loop", message.ToString(), new Actions.DisplayMessageBoxParams(){
+                StartupLocation = Actions.WindowStartupLocation.CenterScreen
+            });
+        });
     }
 }
