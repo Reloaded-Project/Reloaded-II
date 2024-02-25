@@ -1,34 +1,88 @@
-# Changelog
+## Changelog (1.25.9) | Defender Mitigation
 
-All notable changes to this project will be documented in this file.
+This release is dedicated to Windows Defender. I'll try to keep it short.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+In the past week alone, ***I've seen over 300 reports*** of false positive virus detections 
+affecting users. At peak, around ***4 issue reports an hour***. 
 
-## Changelog (1.25.8)
+This is because Defender suddenly started flagging a small part of Reloaded related to DLL Injection 
+that I wrote (and haven't changed at all) in almost 4 years.
 
-- Downloading a mod in App now automatically downloads dependencies.
+This was not easy for anyone. I respond to all issues, usually within 10 minutes if awake.
+Likewise, volunteers in game specific modding servers also take their time out of their day to help 
+troubleshoot users' issues. It was a heavy burden on everyone.
 
-Reported by @AnimatedSwine37 , it was previously possible for the user to edit a mod they just downloaded,
-causing missing dependencies to be dropped. 
+As this coincided with 2 game releases, where people starting Reloaded, the timing could not have been
+any more unfortunate. Many new users had to experience an absolute trainwreck of a first impression;
+whether it be due to defender, some longstanding rare bugs, or silent antivirus treatment.
 
-Although auto-downloading dependencies is not a fool-proof fix, it is a sufficiently good workaround for
-the time being. 
+Worseover, I could not even fix these bugs. Because the virus detections were made by the 'machine learning' 
+side of Defender, releasing ***ANY UPDATE AT ALL*** means that 1000s of users would get new false positives.
 
-Some very edge cases may still exist of course, such as user's internet connection may drop while 
-downloading dependencies, and then the user edits the mod via dialog. 
+This was a result of the releases not being 'deterministic', the files in each Reloaded build/version 
+would change, even if the code didn't, and Defender would flag it. Reporting a false positive therefore
+would be ineffective; defender would see it as a 'different file'. ***I COULD NOT RELEASE ANY UPDATES AT ALL***.
 
-More fixes for these edge cases may ship in future, but for now, this is being hot-patched, 
-i.e. this bug was reported less than 1 hour ago, and there's already a released patch to work around it.
+Needless to say, the situation was so dire, I booked a day off work and spent around 50 hours this week
+so far towards fixing the issue (10+ hours per day). I've spent almost every hour of every day out 
+of my bed getting this resolved.
 
-## Changelog (1.25.7)
-- No more 'Rate Limited' by GitHub fail on `Setup.exe`.
+-----
 
-## Changelog (1.25.6)
-- Made error for GitHub rate limiting in Setup friendlier.
+So here's what's up:
 
-## Changelog (1.25.5)
-- Fixed an oversight where empty working directory was not defaulting to EXE folder.
+## Replaced DLL Injection logic
+
+R2 now uses my fork of [dll-syringe](https://github.com/Sewer56/dll-syringe), a Rust library based 
+on my old [Reloaded.Injector](https://github.com/Reloaded-Project/Reloaded.Injector).
+
+Extra care has been taken to ensure this hopefully works as expected. 
+
+For the people running on Linux, I've even *found, reported and worked around* two new WINE bugs 
+[#56357](https://bugs.winehq.org/show_bug.cgi?id=56357), [#56362](https://bugs.winehq.org/show_bug.cgi?id=56362).
+
+Hopefully, by replacing the entire DLL Injection logic, we can avoid any false positives for the time being.
+I pray the next build does not give people false positives.
+
+-----
+
+***Note:*** The work there is not 'Reloaded3 Quality' yet, notably, performance wise. 
+The library is 300kB, when it could be ~40kB (unacceptable!!), and error handling could be better. 
+But it's good enough for a hotfix release. In the coming weeks, hopefully, I'll polish the rest up.
+
+## Deterministic Builds
+
+I've made as many components of Reloaded-II as deterministic as possible. If the code doesn't change, 
+the actual files in the releases won't change. 
+
+This hopefully means that if a file gets a false positive virus detection, releasing an update won't 
+cause it to be flagged again.
+
+### Download Loops
+
+[Note] Historically this has been a very rare occurrence, but has been sighted more commonly recently.
+
+Some people get stuck downloading dependencies. This usually manifests itself as a download window 
+appearing and disappearing endlessly on loop.
+
+For the time being, I've added 'bare minimum' workaround. If Reloaded gets stuck, in a loop, it'll
+inform you what it's failing to download, and ask you to install manually.
+
+It's a very awful hack, but it's the best I can do for now. I could never reproduce this issue myself,
+so fixing it is a shot in the dark. I'll eventually need to borrow someone inflicted by this bug.
+
+----------------
+
+In the future, say, with Reloaded3, I may invest in code signing certificate (i.e. legal form of 
+extortion to avoid false positives), but for now, I'm doing what I can.
+
+I'm sorry for the inconvenience caused, and I want to thank all the volunteers who helped out with troubleshooting.
+
+I'm aware some other issues are still present, I hope to get to them soon. However, I'm just a single 
+person, and there's only so much I can do...
+
+(Note: Most big modding frameworks/loaders/managers are maintained by teams of people. 
+Unfortunately, I'm not that fortunate, it's all done solo here.)
 
 ## Complete Changes
 
