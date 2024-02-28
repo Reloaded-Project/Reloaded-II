@@ -459,7 +459,7 @@ Usually this can happen because:
     <sys:String x:Key="ConfigureModDialogResetDescription">Resets the configuration values to their defaults.&#x0a;[Note: Requires mod support, contact author if doesn't work]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
-    <sys:String x:Key="LoaderSettingsControllerBtn">Controller Configuration [Beta]</sys:String>
+    <sys:String x:Key="LoaderSettingsControllerBtn">Controller Configuration</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneName">None</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneDescription">Does nothing.</sys:String>
 
@@ -505,7 +505,7 @@ Usually this can happen because:
     <sys:String x:Key="ConfiguratorCustomStringMainConfig">Main Config</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
     <sys:String x:Key="ConfiguratorCustomStringTrigger">Trigger</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
     <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Use This if Mapping to Controller Trigger</sys:String> <!-- Displays in description of trigger bindings. -->
-    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Controller Configuration [Beta]</sys:String> <!-- Name of the input configurator window. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Controller Configuration</sys:String> <!-- Name of the input configurator window. -->
 
     <sys:String x:Key="ConfiguratorLibCustomStringNew">New</sys:String> <!-- "New" Used for button that adds values. -->
     <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Left click assigns a new binding.&#x0a;Middle click inverts the value.&#x0a;Right click clears the mapping!&#x0a;! indicates the value is inverted.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->

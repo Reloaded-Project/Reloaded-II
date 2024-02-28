@@ -292,7 +292,7 @@
     <sys:String x:Key="ConfigureModDialogReset">Resetar</sys:String>
     
     <!-- Update 1.19.0: Controller Support -->
-    <sys:String x:Key="LoaderSettingsControllerBtn">Configuração de Controle [Beta]</sys:String>
+    <sys:String x:Key="LoaderSettingsControllerBtn">Configuração de Controle</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneName">Nenhum</sys:String>
     
     <!-- Update 1.20.0: Revamped Downloads Menu -->

@@ -503,7 +503,7 @@ This window will automatically close in a few seconds.</sys:String>
 [note: Requires mod support, contact author if doesn&apos;t work]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
-    <sys:String x:Key="LoaderSettingsControllerBtn">Controller configuration [beta]</sys:String>
+    <sys:String x:Key="LoaderSettingsControllerBtn">Controller configuration</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneName">None</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneDescription">Does nothing.</sys:String>
 
@@ -550,7 +550,7 @@ E.g. Mod+up can be used to re-order th&apos; mod order.</sys:String>
     <sys:String x:Key="ConfiguratorCustomStringMainConfig">Main config</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
     <sys:String x:Key="ConfiguratorCustomStringTrigger">Trigger</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
     <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Use this if mapping to controller trigger</sys:String> <!-- Displays in description of trigger bindings. -->
-    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded controller configuration [beta]</sys:String> <!-- Name of the input configurator window. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded controller configuration</sys:String> <!-- Name of the input configurator window. -->
 
     <sys:String x:Key="ConfiguratorLibCustomStringNew">New</sys:String> <!-- "New" Used for button that adds values. -->
     <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Left click assigns a new binding.

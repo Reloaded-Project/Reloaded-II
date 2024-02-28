@@ -454,7 +454,7 @@
     <sys:String x:Key="ConfigureModDialogResetDescription" xml:space="preserve">Reset de huidige configuratie waarden naar de standaard waarden.&#x0a;[Let op: Dit benodigd mod ondersteuning, zoek contact op met de auteur als dit niet werkt]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
-    <sys:String x:Key="LoaderSettingsControllerBtn">Controller Configuratie [Beta]</sys:String>
+    <sys:String x:Key="LoaderSettingsControllerBtn">Controller Configuratie</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneName">Geen</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneDescription">Doet niks.</sys:String>
 
@@ -500,7 +500,7 @@
     <sys:String x:Key="ConfiguratorCustomStringMainConfig">Hoofd Configuratie</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
     <sys:String x:Key="ConfiguratorCustomStringTrigger">Trigger</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
     <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Gebruik Dit om de Controller Trigger in te stellen</sys:String> <!-- Displays in description of trigger bindings. -->
-    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Controller Configuratie [Beta]</sys:String> <!-- Name of the input configurator window. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Controller Configuratie</sys:String> <!-- Name of the input configurator window. -->
 
     <sys:String x:Key="ConfiguratorLibCustomStringNew">Nieuw</sys:String> <!-- "New" Used for button that adds values. -->
     <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Links klikken wijst een nieuwe verbinding toe.&#x0a;Middel klik inverteert het getal.&#x0a;Rechts klik verwijdert de toewijzing!&#x0a;! geeft aan dat het getal is geinverteert.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->

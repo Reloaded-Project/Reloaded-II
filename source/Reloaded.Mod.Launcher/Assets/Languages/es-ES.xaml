@@ -456,7 +456,7 @@
     <sys:String x:Key="ConfigureModDialogResetDescription">Reinicia la configuración a sus valores predeterminados.&#x0a;[Nota: no funciona si el mod no es compatible con esta función, contacta con el autor si es así]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
-    <sys:String x:Key="LoaderSettingsControllerBtn">Configuración de mandos [Beta]</sys:String>
+    <sys:String x:Key="LoaderSettingsControllerBtn">Configuración de mandos</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneName">Nada</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneDescription">No hace nada.</sys:String>
 
@@ -502,7 +502,7 @@
     <sys:String x:Key="ConfiguratorCustomStringMainConfig">Configuración principal</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
     <sys:String x:Key="ConfiguratorCustomStringTrigger">Gatillo</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
     <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Usa esta opción para asignar el gatillo de un mando</sys:String> <!-- Displays in description of trigger bindings. -->
-    <sys:String x:Key="ConfiguratorCustomStringWindowName">Configuración de mandos para Reloaded [Beta]</sys:String> <!-- Name of the input configurator window. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Configuración de mandos para Reloaded</sys:String> <!-- Name of the input configurator window. -->
 
     <sys:String x:Key="ConfiguratorLibCustomStringNew">Nueva</sys:String> <!-- "New" Used for button that adds values. -->
     <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Haz clic izquierdo para crear una asignación nueva.&#x0a;Haz clic central para invertir el valor.&#x0a;Haz clic derecho para eliminar la asignación.&#x0a;«!» indica que el valor está invertido.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
