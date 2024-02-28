@@ -1,6 +1,14 @@
-## Changelog (1.25.9) | Defender Mitigation
+## Changelog (1.25.10) | Misc Hotfixes
 
-This release is dedicated to Windows Defender. I'll try to keep it short.
+- Fixed bug introduced in last update 32-bit Reloaded Launcher (`Reloaded-II32.exe`) couldn't DLL inject on 64-bit operating systems.  
+- Slightly redesigned settings menu, to better expose language selection.  
+
+Also thanks to @Sencaid for German Translation, I missed that in last changelog >w<
+Expect more minor bugfixes over weekend, this is just all I can do after work hours so far this week.
+
+## Defender Mitigation Announcement | Changelog (1.25.9)
+
+This release (1.25.9) is dedicated to Windows Defender. I'll try to keep it short.
 
 In the past week alone, ***I've seen over 300 reports*** of false positive virus detections 
 affecting users. At peak, around ***4 issue reports an hour***. 
@@ -12,12 +20,15 @@ This was not easy for anyone. I respond to all issues, usually within 10 minutes
 Likewise, volunteers in game specific modding servers also take their time out of their day to help 
 troubleshoot users' issues. It was a heavy burden on everyone.
 
+### This was Rough
+
 As this coincided with 2 game releases, where people starting Reloaded, the timing could not have been
 any more unfortunate. Many new users had to experience an absolute trainwreck of a first impression;
 whether it be due to defender, some longstanding rare bugs, or silent antivirus treatment.
 
 Worseover, I could not even fix these bugs. Because the virus detections were made by the 'machine learning' 
 side of Defender, releasing ***ANY UPDATE AT ALL*** means that 1000s of users would get new false positives.
+[Dolphin Emulator was in the same predicament a few years ago](https://dolphin-emu.org/blog/2019/11/07/dolphin-progress-report-october-2019/#windows-defender-yelling-at-a-cloud-ai).
 
 This was a result of the releases not being 'deterministic', the files in each Reloaded build/version 
 would change, even if the code didn't, and Defender would flag it. Reporting a false positive therefore
@@ -29,7 +40,7 @@ of my bed getting this resolved.
 
 -----
 
-So here's what's up:
+# So what's been done so far to mitigate this issue?
 
 ## Replaced DLL Injection logic
 
@@ -58,9 +69,10 @@ the actual files in the releases won't change.
 This hopefully means that if a file gets a false positive virus detection, releasing an update won't 
 cause it to be flagged again.
 
-### Download Loops
+## Download Loops
 
-[Note] Historically this has been a very rare occurrence, but has been sighted more commonly recently.
+> [!NOTE] 
+> Historically this has been a very rare occurrence, but has been sighted more commonly recently.
 
 Some people get stuck downloading dependencies. This usually manifests itself as a download window 
 appearing and disappearing endlessly on loop.
@@ -71,7 +83,7 @@ inform you what it's failing to download, and ask you to install manually.
 It's a very awful hack, but it's the best I can do for now. I could never reproduce this issue myself,
 so fixing it is a shot in the dark. I'll eventually need to borrow someone inflicted by this bug.
 
-----------------
+# That's All
 
 In the future, say, with Reloaded3, I may invest in code signing certificate (i.e. legal form of 
 extortion to avoid false positives), but for now, I'm doing what I can.
@@ -81,8 +93,9 @@ I'm sorry for the inconvenience caused, and I want to thank all the volunteers w
 I'm aware some other issues are still present, I hope to get to them soon. However, I'm just a single 
 person, and there's only so much I can do...
 
-(Note: Most big modding frameworks/loaders/managers are maintained by teams of people. 
-Unfortunately, I'm not that fortunate, it's all done solo here.)
+> [!NOTE]
+> Most big modding frameworks/loaders/managers are maintained by teams of people. Unfortunately, I'm not that fortunate, it's all done solo here.
+
 
 ## Complete Changes
 
