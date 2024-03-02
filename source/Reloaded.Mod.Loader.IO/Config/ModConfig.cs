@@ -121,6 +121,16 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
         return HasDllPath(this);
     }
 
+    /// <summary>
+    /// Refresh the sub directories of the mod, and by extension also the Mod Display Name.
+    /// </summary>
+    public void RefreshSubdirectoryPaths(string configDirectory, string modPath)
+    {
+        var relativePath = Path.GetRelativePath(configDirectory, modPath);
+        var subDirectories = relativePath.Split(Path.DirectorySeparatorChar)[..^2];
+        ModSubDirs = subDirectories;
+    }
+
     /*
        ---------
        Utilities
@@ -255,7 +265,13 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
         if (modDirectory == null)
             modDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).GetModConfigDirectory();
 
-        return ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, int.MaxValue, 2);
+        var modConfigs = ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, int.MaxValue, 2);
+        foreach (var cfg in modConfigs)
+        {
+            cfg.Config.RefreshSubdirectoryPaths(modDirectory, cfg.Path);
+        }
+
+        return modConfigs;
     }
 
     /// <summary>

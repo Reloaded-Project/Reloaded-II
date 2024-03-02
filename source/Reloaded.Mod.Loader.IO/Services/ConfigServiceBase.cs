@@ -216,7 +216,7 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
         }
     }
 
-    private void AddItem(PathTuple<TConfigType> itemTuple)
+    protected virtual void AddItem(PathTuple<TConfigType> itemTuple)
     {
         // Check for existing item.
         bool alreadyHasItem = ItemsByPath.TryGetValue(itemTuple.Path, out var existing);
