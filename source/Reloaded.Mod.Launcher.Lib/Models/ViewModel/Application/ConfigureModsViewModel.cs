@@ -134,25 +134,33 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     private List<ModEntry> GetInitialModSet(PathTuple<ModConfig>[] modsForThisApp, PathTuple<ApplicationConfig> applicationTuple)
     {
         // Note: Must put items in top to bottom load order.
-        var enabledModIds   = applicationTuple.Config.EnabledMods;
 
         // Get dictionary of mods for this app by Mod ID
         var modDictionary  = new Dictionary<string, PathTuple<ModConfig>>();
         foreach (var mod in modsForThisApp)
             modDictionary[mod.Config.ModId] = mod;
 
-        // Add enabled mods.
         var totalModList = new List<ModEntry>(modsForThisApp.Length);
-        foreach (var enabledModId in enabledModIds)
+        var enabledModIds = applicationTuple.Config.EnabledMods.Where(modDictionary.ContainsKey).Distinct();
+        var sortedModIds = applicationTuple.Config.SortedMods.Where(modDictionary.ContainsKey).Distinct();
+
+        // Add sorted mods.
+        foreach (var sortedModId in sortedModIds)
         {
-            if (modDictionary.ContainsKey(enabledModId))
-                totalModList.Add(MakeSaveSubscribedModEntry(true, modDictionary[enabledModId]));
+            totalModList.Add(MakeSaveSubscribedModEntry(enabledModIds.Contains(sortedModId), modDictionary[sortedModId]));
         }
 
-        // Add disabled mods.
-        var enabledModIdSet = applicationTuple.Config.EnabledMods.ToHashSet();
-        var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
-        totalModList.AddRange(disabledMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
+        // Add enabled mods that were not in the sorted mod collection. Should be empty but necessary for older configuration files.
+        foreach (var enabledModId in enabledModIds.Where(x => !sortedModIds.Contains(x)))
+        {
+            totalModList.Add(MakeSaveSubscribedModEntry(true, modDictionary[enabledModId]));
+        }
+
+        // Add the remaining mods on the bottom of the list as disabled. These are mods that were added to the Mod folder while the application was closed.
+        var addedModIdSet = applicationTuple.Config.EnabledMods.Concat(applicationTuple.Config.SortedMods).Distinct().ToHashSet();
+        var remainingMods = modsForThisApp.Where(x => !addedModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
+        totalModList.AddRange(remainingMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
+
         return totalModList;
     }
 
