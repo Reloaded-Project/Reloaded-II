@@ -20,6 +20,7 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     public string AppIcon               { get; set; } = DefaultIcon;
     public bool   AutoInject            { get; set; } = false;
     public string[] EnabledMods         { get; set; }
+    public string[] SortedMods          { get; set; }
     public string WorkingDirectory      { get; set; }
 
     // V2
@@ -43,6 +44,7 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
         AppName = appName;
         AppLocation = appLocation;
         EnabledMods = EmptyArray<string>.Instance;
+        SortedMods = EmptyArray<string>.Instance;
         WorkingDirectory = workingDirectory;
     }
 
@@ -213,6 +215,7 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     public void SanitizeConfig()
     {
         EnabledMods ??= EmptyArray<string>.Instance;
+        SortedMods ??= EmptyArray<string>.Instance;
     }
 
     public override int GetHashCode() => (AppId != null ? AppId.GetHashCode() : 0);

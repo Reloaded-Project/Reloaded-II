@@ -207,6 +207,7 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
         try
         {
+            ApplicationTuple.Config.SortedMods = AllMods!.Select(x => x.Tuple.Config.ModId).ToArray();
             ApplicationTuple.Config.EnabledMods = AllMods!.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
             await ApplicationTuple.SaveAsync(_saveToken.Token);
         }
