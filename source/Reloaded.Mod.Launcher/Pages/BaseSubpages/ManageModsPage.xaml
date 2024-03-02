@@ -21,7 +21,7 @@
             <!-- Sort the mod list -->
             <CollectionViewSource x:Key="SortedMods" Source="{Binding ModConfigService.Items, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                 <CollectionViewSource.SortDescriptions>
-                    <componentModel:SortDescription PropertyName="Config.ModName"/>
+                    <componentModel:SortDescription PropertyName="Config.ModNameDisplay" />
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
@@ -184,7 +184,7 @@
                             VerticalContentAlignment="Top">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Config.ModName}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                                    <TextBlock Text="{Binding Config.ModNameDisplay}"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
