@@ -59,11 +59,11 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
         ItemFileName    = itemFileName;
         _getAllConfigs  = getAllConfigs;
         _renameWatcher          = Create(ConfigDirectory, null, OnRename, FileSystemWatcherEvents.Renamed, true, "*.json", useBigBuffers);
-        _createFolderWatcher    = Create(ConfigDirectory, OnCreateFolder, null, FileSystemWatcherEvents.Created, false, "*.*", useBigBuffers);
+        _createFolderWatcher    = Create(ConfigDirectory, OnCreateFolder, null, FileSystemWatcherEvents.Created, true, "*.*", useBigBuffers);
         _createFileWatcher      = Create(ConfigDirectory, OnCreateFile, null, FileSystemWatcherEvents.Created, true, "*.json", useBigBuffers);
         _changedWatcher         = Create(ConfigDirectory, OnUpdateFile, null, FileSystemWatcherEvents.Changed, true, "*.json", useBigBuffers);
-        _deleteFileWatcher      = Create(ConfigDirectory, OnDeleteFile, null, FileSystemWatcherEvents.Deleted, useBigBuffers);
-        _deleteDirectoryWatcher = Create(ConfigDirectory, OnDeleteDirectory, null, FileSystemWatcherEvents.Deleted, false, "*.*", useBigBuffers);
+        _deleteFileWatcher      = Create(ConfigDirectory, OnDeleteFile, null, FileSystemWatcherEvents.Deleted, true, useBigBuffers: useBigBuffers);
+        _deleteDirectoryWatcher = Create(ConfigDirectory, OnDeleteDirectory, null, FileSystemWatcherEvents.Deleted, true, "*.*", useBigBuffers);
         GetItems(executeImmediately);
     }
 
