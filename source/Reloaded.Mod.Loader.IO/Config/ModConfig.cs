@@ -34,6 +34,12 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public bool   IsLibrary         { get; set; } = false;
     public string ReleaseMetadataFileName { get; set; } = "Sewer56.Update.ReleaseMetadata.json";
 
+    [JsonIgnore]
+    public string[] ModSubDirs { get; set; } = [];
+
+    [JsonIgnore]
+    public string ModNameDisplay => !ModSubDirs.Any() ? ModName : $"{string.Join(" - ", ModSubDirs)} - {ModName}";
+
     /// <summary>
     /// Data stored by plugins. Maps a unique string key to arbitrary data.
     /// </summary>
