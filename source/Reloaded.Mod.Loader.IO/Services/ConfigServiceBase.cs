@@ -209,8 +209,21 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
 
     private bool IsFileInItemFolder(string filePath)
     {
+        var cfgPath = ConfigDirectory;
         var pathContainingFolder = Path.GetDirectoryName(Path.GetDirectoryName(filePath));
-        return pathContainingFolder.Equals(ConfigDirectory, StringComparison.OrdinalIgnoreCase);
+
+        // Get paths with a trailing slash so that the Contains call will work correctly for mods in subdirectories.
+        if (!Path.EndsInDirectorySeparator(cfgPath))
+        {
+            cfgPath += Path.DirectorySeparatorChar;
+        }
+
+        if (!Path.EndsInDirectorySeparator(pathContainingFolder))
+        {
+            pathContainingFolder += Path.DirectorySeparatorChar;
+        }
+
+        return pathContainingFolder.Contains(cfgPath, StringComparison.OrdinalIgnoreCase);
     }
 
     private bool IsFileConfigFile(string filePath)
