@@ -249,7 +249,7 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
         if (modDirectory == null)
             modDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).GetModConfigDirectory();
 
-        return ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, 2, 2);
+        return ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, int.MaxValue, 2);
     }
 
     /// <summary>
