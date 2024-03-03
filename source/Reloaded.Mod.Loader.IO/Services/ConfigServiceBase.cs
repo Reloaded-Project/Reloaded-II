@@ -127,23 +127,47 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
         if (!Directory.Exists(e.FullPath))
             return;
 
-        var configFullPath = Path.Combine(e.FullPath, ItemFileName);
-        if (!File.Exists(configFullPath))
-            return;
-
-        var config = IConfig<TConfigType>.FromPath(configFullPath);
-        _context.Post(() => AddItem(new PathTuple<TConfigType>(configFullPath, config)));
+        // Read configurations from subdirectories within the current path.
+        var configs = ConfigReader<TConfigType>.ReadConfigurations(Path.TrimEndingDirectorySeparator(e.FullPath), ItemFileName, maxDepth: int.MaxValue);
+        foreach (var config in configs)
+        {
+            _context.Post(() => AddItem(config));
+        }
     }
 
     private void OnCreateFile(object sender, FileSystemEventArgs e) => CreateFileHandler(e.FullPath);
 
     private void OnDeleteDirectory(object sender, FileSystemEventArgs e)
     {
-        if (ItemsByFolder.TryGetValue(e.FullPath, out var deletedMod))
+        var deletedPath = e.FullPath;
+
+        // Get paths with a trailing slash so that the Contains call will work correctly for subdirectories.
+        if (!Path.EndsInDirectorySeparator(deletedPath))
+        {
+            deletedPath += Path.DirectorySeparatorChar;
+        }
+
+        // Check for mods in subdirectories.
+        var deletedMods = ItemsByFolder.Where(x =>
+        {
+            var pathContainingFolder = x.Key;
+
+            // Get paths with a trailing slash so that the Contains call will work correctly for mods in subdirectories.
+            if (!Path.EndsInDirectorySeparator(pathContainingFolder))
+            {
+                pathContainingFolder += Path.DirectorySeparatorChar;
+            }
+
+            // Check if the current path contains the deleted path, meaning that it is also deleted.
+            return pathContainingFolder.Contains(deletedPath)
+                && !Directory.Exists(pathContainingFolder);
+        });
+
+        foreach (var item in deletedMods)
         {
             _context.Post(() =>
             {
-                RemoveItem(deletedMod);
+                RemoveItem(item.Value);
             });
         }
     }
