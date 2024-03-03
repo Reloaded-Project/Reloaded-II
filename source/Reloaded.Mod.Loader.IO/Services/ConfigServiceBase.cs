@@ -39,6 +39,7 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
     private FileSystemWatcher _createFileWatcher;
     private FileSystemWatcher _deleteFileWatcher;
     private FileSystemWatcher _deleteDirectoryWatcher;
+    private FileSystemWatcher _renameDirectoryWatcher;
     private SynchronizationContext _context = SynchronizationContext.Current;
     private Func<List<PathTuple<TConfigType>>> _getAllConfigs;
 
@@ -64,6 +65,7 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
         _changedWatcher         = Create(ConfigDirectory, OnUpdateFile, null, FileSystemWatcherEvents.Changed, true, "*.json", useBigBuffers);
         _deleteFileWatcher      = Create(ConfigDirectory, OnDeleteFile, null, FileSystemWatcherEvents.Deleted, true, useBigBuffers: useBigBuffers);
         _deleteDirectoryWatcher = Create(ConfigDirectory, OnDeleteDirectory, null, FileSystemWatcherEvents.Deleted, true, "*.*", useBigBuffers);
+        _renameDirectoryWatcher = Create(ConfigDirectory, null, OnRenameDirectory, FileSystemWatcherEvents.Renamed, true, "*.*", useBigBuffers);
         GetItems(executeImmediately);
     }
 
@@ -120,6 +122,18 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
         // Remove item if renamed from valid config file.
         if (ItemsByPath.TryGetValue(e.OldFullPath, out var mod))
             _context.Post(() => RemoveItem(mod));
+    }
+
+    private void OnRenameDirectory(object sender, RenamedEventArgs e)
+    {
+        if (!Directory.Exists(e.FullPath) || Directory.Exists(e.OldFullPath))
+            return;
+
+        // Trigger the deletion of the previous folder.
+        OnDeleteDirectory(sender, new FileSystemEventArgs(WatcherChangeTypes.Deleted, e.OldFullPath, null));
+
+        // Trigger the creation of the new folder.
+        OnCreateFolder(sender, new FileSystemEventArgs(WatcherChangeTypes.Created, e.FullPath, null));
     }
 
     private void OnCreateFolder(object sender, FileSystemEventArgs e)
