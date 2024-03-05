@@ -142,21 +142,24 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
         if (applicationTuple.Config.PreserveDisabledModOrder)
         {
-            // Modern Behaviour: Disabled Mod Order is Preserved
+            // Modern Behaviour: Mod Order is Preserved
             var enabledModIds = applicationTuple.Config.EnabledMods.Where(modDictionary.ContainsKey).Distinct().ToArray();
             var sortedModIds = applicationTuple.Config.SortedMods.Where(modDictionary.ContainsKey).Distinct().ToArray();
 
+            var enabledModIdSet = enabledModIds.ToHashSet();
+            var sortedModIdSet = sortedModIds.ToHashSet();
+
             // Add sorted mods.
             foreach (var sortedModId in sortedModIds)
-                totalModList.Add(MakeSaveSubscribedModEntry(enabledModIds.Contains(sortedModId), modDictionary[sortedModId]));
+                totalModList.Add(MakeSaveSubscribedModEntry(enabledModIdSet.Contains(sortedModId), modDictionary[sortedModId]));
 
             // Add enabled mods that were not in the sorted mod collection.
-            foreach (var enabledModId in enabledModIds.Where(x => !sortedModIds.Contains(x)))
+            // This can happen in case of config upgrade from an older version.
+            foreach (var enabledModId in enabledModIds.Where(x => !sortedModIdSet.Contains(x)))
                 totalModList.Add(MakeSaveSubscribedModEntry(true, modDictionary[enabledModId]));
 
             // Add the remaining mods on the bottom of the list as disabled.
-            var addedModIdSet = enabledModIds.Concat(sortedModIds).Distinct().ToHashSet();
-            var remainingMods = modsForThisApp.Where(x => !addedModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
+            var remainingMods = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId) && !sortedModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
             totalModList.AddRange(remainingMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
         }
         else
