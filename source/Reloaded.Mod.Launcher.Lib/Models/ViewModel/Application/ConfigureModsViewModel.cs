@@ -141,8 +141,8 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
             modDictionary[mod.Config.ModId] = mod;
 
         var totalModList = new List<ModEntry>(modsForThisApp.Length);
-        var enabledModIds = applicationTuple.Config.EnabledMods.Where(modDictionary.ContainsKey).Distinct();
-        var sortedModIds = applicationTuple.Config.SortedMods.Where(modDictionary.ContainsKey).Distinct();
+        var enabledModIds = applicationTuple.Config.EnabledMods.Where(modDictionary.ContainsKey).Distinct().ToArray();
+        var sortedModIds = applicationTuple.Config.SortedMods.Where(modDictionary.ContainsKey).Distinct().ToArray();
 
         // Add sorted mods.
         foreach (var sortedModId in sortedModIds)
