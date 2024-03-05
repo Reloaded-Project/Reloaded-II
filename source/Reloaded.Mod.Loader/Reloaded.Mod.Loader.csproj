@@ -18,7 +18,7 @@
     
     <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
     <!-- If you set this to true, trimming will be enabled when you publish the Mod Loader. -->
-    <RobustILLink>false</RobustILLink>
+    <RobustILLink>true</RobustILLink>
   </PropertyGroup>
 
   <ItemGroup>
@@ -92,6 +92,7 @@
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.5" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="2.0.0-beta.0" />
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="8.0.2" />
     <PackageReference Include="Reloaded.SharedLib.Hooks" Version="1.9.0" ExcludeAssets="runtime" />
   </ItemGroup>
   <ItemGroup>
