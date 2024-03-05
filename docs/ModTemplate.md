@@ -71,6 +71,10 @@ You can read more about R2R in the following web resources:
 
     Incorrect use of trimming *can* and *will* break your mods. When using trimming you should test your mods thoroughly.  
 
+!!! warning
+
+    You may need to add [Microsoft.NET.ILLink.Tasks](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks) for this to work when running .NET SDK 8 or newer.  
+
 *Assembly trimming* allows you to remove unused code from your mods (and their dependencies), often significantly shrinking the size of the generated DLLs. This in turn improves load times, download size and runtime memory use. At the time of writing, the Reloaded Loader itself and most official & creator made mods use trimming.
 
 ### Testing Trimming

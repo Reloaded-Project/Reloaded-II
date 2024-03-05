@@ -69,6 +69,7 @@ public static class Setup
         logCompressor.DeleteOldFiles(TimeSpan.FromHours(loaderConfig.LogFileDeleteHours));
 
         // Crashdumps (delete)
+        Directory.CreateDirectory(Paths.CrashDumpPath);
         var dumpFolders = Directory.GetDirectories(Paths.CrashDumpPath);
         var now = DateTime.UtcNow;
         foreach (var folder in dumpFolders)
@@ -300,6 +301,7 @@ public static class Setup
     /// </summary>
     private static async Task CheckForUpdatesAsync()
     {
+        await CheckForMissingModDependenciesAsync(); // in case DependencyMetadataWriterFactory deletes one after unsuccessful pull from 1 click
         await DependencyMetadataWriterFactory.ExecuteAllAsync(IoC.Get<ModConfigService>());
         await Update.CheckForLoaderUpdatesAsync();
         await Task.Run(Update.CheckForModUpdatesAsync);

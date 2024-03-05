@@ -101,6 +101,26 @@
                         MinWidth="{StaticResource DetailsColumnWidth}"
                         HorizontalAlignment="Stretch" 
                         VerticalAlignment="Center"/>
+                
+                <TextBox 
+                    x:Name="WorkingDirectory"
+                    Style="{DynamicResource TextboxWithPlaceholder}" 
+                        Text="{Binding Application.Config.WorkingDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Tag="{DynamicResource AddAppWorkingDirectory}" 
+                        ToolTip="{DynamicResource AddAppWorkingDirectory}"
+                        ToolTipService.InitialShowDelay="0"
+                        Margin="{DynamicResource CommonItemVerticalMargin}" 
+                        MinWidth="{StaticResource DetailsColumnWidth}"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Center"/>
+
+                <!-- Preserve Disabled Mod Order -->
+                <CheckBox DockPanel.Dock="Left" HorizontalAlignment="Center" 
+                              Margin="{DynamicResource CommonItemCombinedMargin}"
+                              IsChecked="{Binding Application.Config.PreserveDisabledModOrder}"
+                              Content="{DynamicResource PreserveDisabledModOrder}"
+                              ToolTip="{DynamicResource PreserveDisabledModOrderTooltip}" ToolTipService.InitialShowDelay="0"
+                              Style="{DynamicResource DefaultCheckBox}" />
 
                 <!-- Package Resolver Options. -->
                 <controls:PopupLabel ButtonText="{DynamicResource AddAppModSources}"

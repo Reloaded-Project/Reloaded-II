@@ -22,7 +22,7 @@ public class SteamHook
     {
         _applicationFolder = applicationFolder;
         var steamApiPath = Environment.Is64BitProcess ? Path.GetFullPath(SteamAPI64) : Path.GetFullPath(SteamAPI32);
-        if (!File.Exists(steamApiPath))
+        if (!File.Exists(steamApiPath) && !TryFindUnrealSteamApi(out steamApiPath))
             return;
 
         // Hook relevant functions
@@ -46,6 +46,20 @@ public class SteamHook
             logger.SteamWriteLineAsync($"{functionName} hooked successfully.", logger.ColorSuccess);
             return hooks.CreateHook<T>(handler, (long)functionPtr).Activate();
         }
+    }
+
+    // This is a hack and only applies to UE4 games (leaving as is until R3)
+    private bool TryFindUnrealSteamApi(out string steamApiPath)
+    {
+        steamApiPath = null;
+        
+        // Assuming consistent folder structure is used for Unreal Engine games
+        var steamWorksPath = Path.Combine(_applicationFolder, @"..\..\..\Engine\Binaries\ThirdParty\SteamWorks");
+        if (!Directory.Exists(steamWorksPath))
+            return false;
+        
+        steamApiPath = Directory.EnumerateFiles(steamWorksPath, "steam_api??.dll", SearchOption.AllDirectories).FirstOrDefault();
+        return steamApiPath != null;
     }
 
     private void DropSteamAppId(Logger logger)
@@ -79,10 +93,22 @@ public class SteamHook
 
     private bool RestartAppIfNecessaryImpl(uint appid)
     {
-        // Write the Steam AppID to a local file if not dropped by the other method.
+        //Check if API passes 0 for appid and obtain the ID from SteamAppsManager.
+        if (appid == 0)
+        {
+            var manager = new SteamAppsManager();
+            foreach (var app in manager.SteamApps)
+            {
+                if (!_applicationFolder.Contains(app.InstallDir))
+                    continue;
+
+                appid = (uint)app.AppID;
+                break; // We found a valid app ID, so exit the loop.
+            }
+        }
+        // Write the Steam AppID to a local file and proceed with the original function call.
         SteamAppId.WriteToDirectory(_applicationFolder, (int)appid);
         _restartAppIfNecessaryHook.OriginalFunction(appid);
-
         return false;
     }
 

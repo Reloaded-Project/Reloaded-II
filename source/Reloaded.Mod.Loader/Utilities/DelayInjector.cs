@@ -1,3 +1,8 @@
+using Reloaded.Hooks.Definitions.Enums;
+using static Reloaded.Mod.Loader.Utilities.Native.Kernel32;
+using static Reloaded.Mod.Loader.Utilities.Native.Kernel32.MEM_PROTECTION;
+using static Reloaded.Mod.Loader.Utilities.Native.Kernel32.MEM_STATE;
+
 namespace Reloaded.Mod.Loader.Utilities;
 
 /// <summary>
@@ -22,11 +27,14 @@ public unsafe class DelayInjector
 
         // Allocate space for code to identify entry point from hooks.
         // DO NOT CHANGE, UNLESS ALSO CHANGING ASSEMBLY BELOW
-        _asmEntryDllOrdinal = (int*)NativeMemory.Alloc(sizeof(int) * 2);
-        _asmEntryFunctionOrdinal = _asmEntryDllOrdinal + 1;
+        var utils = hooks.Utilities;
+        
+        // An implementation detail is this will allocate in 0-2GB range needed for our ASM to work.
+        _asmEntryDllOrdinal = (int*)utils.WritePointer(0);
+        _asmEntryFunctionOrdinal = (int*)utils.WritePointer(0);
 
         var assemblyFolder = Path.GetDirectoryName(typeof(DelayInjector).Assembly.Location);
-        var predefinedDllPath = Path.Combine(assemblyFolder, "DelayInjectHooks.json");
+        var predefinedDllPath = Path.Combine(assemblyFolder!, "DelayInjectHooks.json");
 
         _method = action;
         _dlls = JsonSerializer.Deserialize<List<DllEntry>>(File.ReadAllText(predefinedDllPath));
@@ -34,17 +42,25 @@ public unsafe class DelayInjector
         for (var x = 0; x < _dlls.Count; x++)
         {
             var dll = _dlls[x];
-            var handle = Native.Kernel32.GetModuleHandle(dll.Name);
+            var handle = GetModuleHandle(dll.Name);
             if (handle == IntPtr.Zero)
                 continue;
 
             for (var y = 0; y < dll.Functions.Length; y++)
             {
-                var functionAddr = Native.Kernel32.GetProcAddress(handle, dll.Functions[y]);
+                var functionAddr = GetProcAddress(handle, dll.Functions[y]);
                 if (functionAddr == IntPtr.Zero)
                     continue;
 
-                _hooks.Add(CreateHook((long) functionAddr, x, y, hooks));
+                // Before hooking, assert that our functions are executable. 
+                MEMORY_BASIC_INFORMATION mi = default;
+                VirtualQuery((nuint)functionAddr, &mi, (nuint)sizeof(MEMORY_BASIC_INFORMATION));
+                var isExecutable =
+                    (mi.Protect & (PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE |
+                                   PAGE_EXECUTE_WRITECOPY)) != 0;
+
+                if (mi.State == COMMIT && isExecutable)
+                    _hooks.Add(CreateHook((ulong)functionAddr, x, y, hooks));
             }
         }
     }
@@ -56,10 +72,10 @@ public unsafe class DelayInjector
     /// <param name="dllOrdinal">Index of the DLL in the DLL list.</param>
     /// <param name="functionOrdinal">Index of the function in the DLL's function list.</param>
     /// <param name="hooks">The hooking library to use.</param>
-    private unsafe IAsmHook CreateHook(long address, int dllOrdinal, int functionOrdinal, IReloadedHooks hooks)
+    private unsafe IAsmHook CreateHook(ulong address, int dllOrdinal, int functionOrdinal, IReloadedHooks hooks)
     {
         var utilities = hooks.Utilities;
-            
+        
         // Assumes function uses Microsoft call convention on x64.
         var asmCode = new string[]
         {
@@ -70,8 +86,8 @@ public unsafe class DelayInjector
             $"{Macros.PushAll}",
             Macros.Is64Bit ? Macros.PushSseCallConvRegistersx64 : "", // Push Microsoft Call Convention SSE Float Registers
 
-            $"mov dword [dword 0x{(long)_asmEntryDllOrdinal:X}], {dllOrdinal}",
-            $"mov dword [dword 0x{(long)_asmEntryFunctionOrdinal:X}], {functionOrdinal}",
+            $"mov dword [dword 0x{(ulong)_asmEntryDllOrdinal:X}], {dllOrdinal}",
+            $"mov dword [dword 0x{(ulong)_asmEntryFunctionOrdinal:X}], {functionOrdinal}",
 
             utilities.GetAbsoluteCallMnemonics<Macros.AsmAction>(HookImpl, out var wrapper),
 
@@ -82,7 +98,18 @@ public unsafe class DelayInjector
         };
 
         _wrappers.Add(wrapper);
-        return hooks.CreateAsmHook(asmCode, address).Activate();
+
+        // The current Reloaded.Hooks library has some shortcomings with handling invalid bytes leftover from
+        // previous hooks. While we wait for the much more advanced Rust rewrite, `reloaded-hooks-rs`, requesting a
+        // relative jump should be sufficient.
+        return hooks.CreateAsmHook(asmCode, (long)address, new AsmHookOptions()
+        {
+            Behaviour = AsmHookBehaviour.ExecuteFirst,
+            PreferRelativeJump = true,
+            MaxOpcodeSize = 5,
+            hookLength = -1,
+        }).Activate();
+        // dw 'address' is still unsigned, it's signed in API for backcompat
     }
 
     /// <summary>
@@ -106,7 +133,6 @@ public unsafe class DelayInjector
             hook.Disable();
 
         _wrappers.Clear();
-        NativeMemory.Free(_asmEntryDllOrdinal);
     }
 
     private struct DllEntry

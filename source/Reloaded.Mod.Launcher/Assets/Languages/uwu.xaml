@@ -503,7 +503,7 @@ This &gt;_&lt; w-window wiww automaticawwy c-cwose in a f-few seconds.</sys:Stri
 [-[Nyote: Wequiwes mod suppowt, contact authow if doesn&apos;t wowk]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
-    <sys:String x:Key="LoaderSettingsControllerBtn">&gt;w&lt; C-Contwowwew Configuwation [Beta]</sys:String>
+    <sys:String x:Key="LoaderSettingsControllerBtn">&gt;w&lt; C-Contwowwew Configuwation</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneName">N-Nyonye</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneDescription">D-Does &gt;w&lt; n-nyothing.</sys:String>
 
@@ -550,7 +550,7 @@ This &gt;_&lt; w-window wiww automaticawwy c-cwose in a f-few seconds.</sys:Stri
     <sys:String x:Key="ConfiguratorCustomStringMainConfig">Main Config</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
     <sys:String x:Key="ConfiguratorCustomStringTrigger">Twiggew</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
     <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Use This if Mapping to &gt;w&lt; C-Contwowwew Twiggew</sys:String> <!-- Displays in description of trigger bindings. -->
-    <sys:String x:Key="ConfiguratorCustomStringWindowName">Wewoaded &gt;w&lt; C-Contwowwew Configuwation [Beta]</sys:String> <!-- Name of the input configurator window. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Wewoaded &gt;w&lt; C-Contwowwew Configuwation</sys:String> <!-- Name of the input configurator window. -->
 
     <sys:String x:Key="ConfiguratorLibCustomStringNew">Nyew</sys:String> <!-- "New" Used for button that adds values. -->
     <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Weft cwick a-assigns a nyew binding.

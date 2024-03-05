@@ -1,0 +1,149 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <!--
+      Originally inspired by https://github.com/space-wizards/RobustToolbox , under the MIT License
+      Modified by Sewer56 to include support for .NET6 IsTrimmable property.
+  -->
+
+  <!--
+      Stuff for using ILLink trimming without self-contained deployments.
+      This is not something officially supported by the .NET SDK currently, but we can simply run ILLink ourselves.
+  
+      A lot of stuff taken from Microsoft.NET.ILLink.targets in the SDK files.
+  -->
+
+  <ItemDefinitionGroup>
+    <ReloadedLinkRoots>
+      <Visible>false</Visible>
+    </ReloadedLinkRoots>
+    <ReloadedLinkAssemblies>
+      <Visible>false</Visible>
+    </ReloadedLinkAssemblies>
+  </ItemDefinitionGroup>
+
+  <Target Name="ReloadedILLink"
+          BeforeTargets="ILLink"
+          Condition="'$(PublishTrimmed)' != 'true' And
+                       '$(ReloadedILLink)' == 'true'"
+          DependsOnTargets="_ComputeAssembliesToPostprocessOnPublish">
+
+    <!-- Original Target: ComputeManagedAssemblyToLink -->
+    <ComputeManagedAssemblies Assemblies="@(ResolvedFileToPublish->WithMetadataValue('PostprocessAssembly', 'true'))">
+      <Output TaskParameter="ManagedAssemblies" ItemName="ManagedAssemblyToLink" />
+    </ComputeManagedAssemblies>
+
+    <ItemGroup>
+      <!-- The linker implicitly picks up PDBs next to input assemblies. We will filter these out of the publish set. -->
+      <__PDBToLink Include="@(ResolvedFileToPublish)" Exclude="@(ManagedAssemblyToLink->'%(RelativeDir)%(Filename).pdb')" />
+      <_PDBToLink Include="@(ResolvedFileToPublish)" Exclude="@(__PDBToLink)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_LinkedResolvedFileToPublishCandidate Include="@(ManagedAssemblyToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)')" />
+      <_LinkedResolvedFileToPublishCandidate Include="@(_PDBToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)')" />
+    </ItemGroup>
+
+    <!-- Original Target: PrepareForILLink -->
+    <!-- Set IsTrimmable for any assemblies that already have customized TrimMode. -->
+    <ItemGroup>
+      <ManagedAssemblyToLink Condition=" '%(ManagedAssemblyToLink.TrimMode)' != '' ">
+        <IsTrimmable>true</IsTrimmable>
+      </ManagedAssemblyToLink>
+    </ItemGroup>
+
+    <PropertyGroup>
+      <TrimMode Condition=" '$(TrimMode)' == '' ">link</TrimMode>
+      <!-- For .NET 6+, assemblies without IsTrimmable attribute get the "copy" action. -->
+      <TrimmerDefaultAction Condition=" '$(TrimmerDefaultAction)' == '' ">copy</TrimmerDefaultAction>
+      <ILLinkTreatWarningsAsErrors Condition=" '$(ILLinkTreatWarningsAsErrors)' == '' ">$(TreatWarningsAsErrors)</ILLinkTreatWarningsAsErrors>
+      <_ExtraTrimmerArgs>--skip-unresolved true $(_ExtraTrimmerArgs)</_ExtraTrimmerArgs>
+      <TrimmerSingleWarn Condition=" '$(TrimmerSingleWarn)' == '' ">true</TrimmerSingleWarn>
+    </PropertyGroup>
+
+    <!-- SetIsTrimmable for any assemblies listed in TrimmableAssembly.
+         TrimmableAssembly -> ReloadedLinkAssemblies
+     -->
+    <JoinItems Left="@(ManagedAssemblyToLink)" LeftKey="FileName" LeftMetadata="*"
+               Right="@(ReloadedLinkAssemblies)"
+               ItemSpecToUse="Left">
+      <Output TaskParameter="JoinResult" ItemName="_TrimmableManagedAssemblyToLink" />
+    </JoinItems>
+    <ItemGroup>
+      <!-- Set trimmable for assemblies which we wish to trim. -->
+      <ManagedAssemblyToLink Remove="@(_TrimmableManagedAssemblyToLink)" />
+      <ManagedAssemblyToLink Include="@(_TrimmableManagedAssemblyToLink)" IsTrimmable="true" />
+    </ItemGroup>
+
+    <!-- Root the main assembly, whether or not it has IsTrimmable set. -->
+    <ItemGroup>
+      <ReloadedLinkRoots Include="@(IntermediateAssembly)" />
+    </ItemGroup>
+
+    <!-- In .NET6+, set the action explicitly for any with IsTrimmable MSBuild metadata -->
+    <ItemGroup>
+      <ManagedAssemblyToLink Condition=" '%(ManagedAssemblyToLink.IsTrimmable)' == 'false' And '%(ManagedAssemblyToLink.TrimMode)' == '' ">
+        <TrimMode>$(TrimmerDefaultAction)</TrimMode>
+      </ManagedAssemblyToLink>
+
+      <ManagedAssemblyToLink Condition=" '%(ManagedAssemblyToLink.IsTrimmable)' == 'true' And '%(ManagedAssemblyToLink.TrimMode)' == '' ">
+        <TrimMode>$(TrimMode)</TrimMode>
+      </ManagedAssemblyToLink>
+    </ItemGroup>
+
+
+    <!-- Custom: Print assemblies for trimming. -->
+    <ItemGroup>
+      <TrimmingItemsToPrint Include="@(ManagedAssemblyToLink)">
+        <Text>Input Assembly: %(filename) [Mode: %(ManagedAssemblyToLink.TrimMode)]</Text>
+      </TrimmingItemsToPrint>
+    </ItemGroup>
+
+    <Message Text="%(TrimmingItemsToPrint.Text)" Importance="high" />
+
+    <!-- Do the trimming. -->
+    <Delete Files="@(_LinkedResolvedFileToPublishCandidate)" />
+    <ILLink AssemblyPaths="@(ManagedAssemblyToLink)"
+            ReferenceAssemblyPaths="@(ReferencePath)"
+            RootAssemblyNames="@(ReloadedLinkRoots)"
+            TrimMode="$(TrimMode)"
+            DefaultAction="$(TrimmerDefaultAction)"
+            RemoveSymbols="false"
+            FeatureSettings="@(_TrimmerFeatureSettings)"
+            CustomData="@(_TrimmerCustomData)"
+
+            BeforeFieldInit="$(_TrimmerBeforeFieldInit)"
+            OverrideRemoval="$(_TrimmerOverrideRemoval)"
+            UnreachableBodies="$(_TrimmerUnreachableBodies)"
+            UnusedInterfaces="$(_TrimmerUnusedInterfaces)"
+            IPConstProp="$(_TrimmerIPConstProp)"
+            Sealer="$(_TrimmerSealer)"
+
+            Warn="$(ILLinkWarningLevel)"
+            NoWarn="$(NoWarn)"
+            TreatWarningsAsErrors="$(ILLinkTreatWarningsAsErrors)"
+            WarningsAsErrors="$(WarningsAsErrors)"
+            WarningsNotAsErrors="$(WarningsNotAsErrors)"
+            SingleWarn="$(TrimmerSingleWarn)"
+
+            CustomSteps="@(_TrimmerCustomSteps)"
+            RootDescriptorFiles="@(TrimmerRootDescriptor)"
+            OutputDirectory="$(IntermediateLinkDir)"
+            DumpDependencies="$(_TrimmerDumpDependencies)"
+            ExtraArgs="$(_ExtraTrimmerArgs)"
+            ToolExe="$(_DotNetHostFileName)"
+            ToolPath="$(_DotNetHostDirectory)"
+            ContinueOnError="ErrorAndContinue">
+      <Output TaskParameter="ExitCode" PropertyName="_ILLinkExitCode" />
+    </ILLink>
+
+    <Touch Files="$(_LinkSemaphore)" AlwaysCreate="true" Condition=" '$(_ILLinkExitCode)' == '0' " />
+
+    <!-- Original Target: ILLink -->
+    <ItemGroup>
+      <_LinkedResolvedFileToPublish Include="@(_LinkedResolvedFileToPublishCandidate)" Condition="Exists('%(Identity)')" />
+      <ResolvedFileToPublish Remove="@(ManagedAssemblyToLink)" />
+      <ResolvedFileToPublish Remove="@(_PDBToLink)" />
+      <ResolvedFileToPublish Include="@(_LinkedResolvedFileToPublish)" />
+    </ItemGroup>
+
+  </Target>
+</Project>

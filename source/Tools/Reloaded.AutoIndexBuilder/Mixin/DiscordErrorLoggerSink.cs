@@ -30,12 +30,14 @@ public class DiscordErrorLoggerSink : ILogEventSink
             case LogEventLevel.Error:
                 embedBuilder.Color = Color.Red;
                 embedBuilder.Description = $"Error!! {logEvent.RenderMessage()}\n" +
-                                           $"{logEvent.Exception}";
+                                           $"{logEvent.Exception}\n" +
+                                           $"<@{_settings.DiscordOwnerId}>";
                 break;
             case LogEventLevel.Fatal:
                 embedBuilder.Color = Color.DarkRed;
                 embedBuilder.Description = $"Fatal!! {logEvent.RenderMessage()}\n" +
-                                           $"{logEvent.Exception}";
+                                           $"{logEvent.Exception}"+
+                                           $"<@{_settings.DiscordOwnerId}>";
                 break;
 
             default:

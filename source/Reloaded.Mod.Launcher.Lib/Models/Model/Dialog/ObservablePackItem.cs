@@ -25,6 +25,11 @@ public class ObservablePackItem : ObservableObject
     public string Summary { get; set; } = String.Empty;
 
     /// <summary>
+    /// The file name associated with the release metadata for the mod.
+    /// </summary>
+    public string ReleaseMetadataFileName { get; set; } = string.Empty;
+
+    /// <summary>
     /// List of preview image files belonging to this item.
     /// May be PNG, JPEG and JXL (JPEG XL).
     /// </summary>
@@ -64,6 +69,7 @@ public class ObservablePackItem : ObservableObject
         Name = builder.Name;
         Readme = builder.Readme;
         Summary = builder.Summary;
+        ReleaseMetadataFileName = builder.ReleaseMetadataFileName;
 
         ModId = builder.ModId;
         PluginData = builder.PluginData;
@@ -82,6 +88,7 @@ public class ObservablePackItem : ObservableObject
         itemBuilder.SetReadme(Readme);
         itemBuilder.SetPluginData(PluginData);
         itemBuilder.SetSummary(Summary);
+        itemBuilder.SetReleaseMetadataFileName(ReleaseMetadataFileName);
 
         foreach (var image in Images)
         {

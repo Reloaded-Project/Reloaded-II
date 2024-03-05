@@ -162,44 +162,109 @@ public static class Update
         if (!HasInternetConnection)
             return;
         
-        ModDependencyResolveResult resolveResult = null!;
+        ModDependencyResolveResult? lastResolveResult = default;
+        ModDependencyResolveResult resolveResult;
+
+        var isOneDrive = IsOneDrive();
+        do
+        {
+            resolveResult = await GetMissingDependenciesToDownload(token);
+            if (resolveResult.FoundDependencies.Count <= 0)
+                break;
+
+            if (IsSameAsLast(resolveResult, lastResolveResult))
+            {
+                ShowStuckInDownloadLoopDialog(resolveResult);
+                break;
+            }
+
+            lastResolveResult = resolveResult;
+            DownloadPackages(resolveResult, token);
+            
+            // Very terrible hack, caused by a FileSystem bug on MSFT's end somewhere.
+            if (isOneDrive) await Task.Delay(1000, token);
+        } 
+        while (true);
+
+        if (resolveResult.NotFoundDependencies.Count > 0)
+            ShowMissingPackagesDialog(resolveResult);
+    }
+    
+    /// <summary>
+    /// Resolves a list of missing packages.
+    /// </summary>
+    public static void ResolveMissingPackages()
+    {
+        if (!HasInternetConnection)
+            return;
+        
+        ModDependencyResolveResult? lastResolveResult = default;
+        ModDependencyResolveResult resolveResult;
+        var isOneDrive = IsOneDrive();
 
         do
         {
-            // Get missing dependencies for this update loop.
-            var missingDeps = CheckMissingDependencies();
-
-            // Get Dependencies
-            var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
+            resolveResult = Task.Run(async () => await GetMissingDependenciesToDownload(default)).GetAwaiter().GetResult();
+            if (resolveResult.FoundDependencies.Count <= 0)
+                break;
             
-            var results = new List<Task<ModDependencyResolveResult>>();
-            foreach (var dependencyItem in missingDeps.Items)
-            foreach (var dependency in dependencyItem.Dependencies)
-                results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod.PluginData, token));
+            if (IsSameAsLast(resolveResult, lastResolveResult))
+            {
+                ShowStuckInDownloadLoopDialog(resolveResult);
+                break;
+            }
 
-            await Task.WhenAll(results);
-
-            // Merge Results
-            resolveResult = ModDependencyResolveResult.Combine(results.Select(x => x.Result));
-            DownloadPackages(resolveResult, token);
+            DownloadPackages(resolveResult);
+            lastResolveResult = resolveResult;    
+            
+            // Very terrible hack, caused by a FileSystem bug on MSFT's end somewhere.
+            if (isOneDrive) Thread.Sleep(1000);
         } 
-        while (resolveResult.FoundDependencies.Count > 0);
+        while (true);
 
         if (resolveResult.NotFoundDependencies.Count > 0)
+            ShowMissingPackagesDialog(resolveResult);
+    }
+
+    /// <summary>
+    /// Displays the dialog indicating missing packages/dependencies.
+    /// </summary>
+    public static void ShowMissingPackagesDialog(ModDependencyResolveResult resolveResult)
+    {
+        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
         {
-            ActionWrappers.ExecuteWithApplicationDispatcher(() =>
-            {
-                Actions.DisplayMessagebox(Resources.ErrorMissingDependency.Get(),
-                    $"{Resources.FetchNugetNotFoundMessage.Get()}\n\n" +
-                    $"{string.Join('\n', resolveResult.NotFoundDependencies)}\n\n" +
-                    $"{Resources.FetchNugetNotFoundAdvice.Get()}",
-                    new Actions.DisplayMessageBoxParams()
-                    {
-                        Type = Actions.MessageBoxType.Ok,
-                        StartupLocation = Actions.WindowStartupLocation.CenterScreen
-                    });
-            });
-        }
+            Actions.DisplayMessagebox(Resources.ErrorMissingDependency.Get(),
+                $"{Resources.FetchNugetNotFoundMessage.Get()}\n\n" +
+                $"{string.Join('\n', resolveResult.NotFoundDependencies)}\n\n" +
+                $"{Resources.FetchNugetNotFoundAdvice.Get()}",
+                new Actions.DisplayMessageBoxParams()
+                {
+                    Type = Actions.MessageBoxType.Ok,
+                    StartupLocation = Actions.WindowStartupLocation.CenterScreen
+                });
+        });
+    }
+
+    /// <summary>
+    ///     Gets all missing dependencies to be downloaded.
+    /// </summary>
+    public static async Task<ModDependencyResolveResult> GetMissingDependenciesToDownload(CancellationToken token)
+    {
+        // Get missing dependencies for this update loop.
+        var missingDeps = CheckMissingDependencies();
+
+        // Get Dependencies
+        var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
+            
+        var results = new List<Task<ModDependencyResolveResult>>();
+        foreach (var dependencyItem in missingDeps.Items)
+        foreach (var dependency in dependencyItem.Dependencies)
+            results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod.PluginData, token));
+
+        await Task.WhenAll(results);
+
+        // Merge Results
+        return ModDependencyResolveResult.Combine(results.Select(x => x.Result));;
     }
 
     /// <summary>
@@ -269,5 +334,61 @@ public static class Update
         }
 
         return false;
+    }
+    
+    /// <summary>
+    /// On Windows 11, Microsoft defaults some accounts to sync via OneDrive.
+    /// Unfortunately their implementation has issues, files that were downloaded can't immediately be seen by FileSystem.
+    ///
+    /// We 'hack' around this (poorly), but our solution is far from ideal. 
+    /// </summary>
+    private static bool IsOneDrive()
+    {
+        var conf = IoC.Get<LoaderConfig>();
+        return conf.GetModConfigDirectory().Contains("OneDrive", StringComparison.OrdinalIgnoreCase);
+    }
+
+    // TODO: This is a temporary hack to get people unstuck.
+    private static bool IsSameAsLast(ModDependencyResolveResult thisItem, ModDependencyResolveResult? lastItem)
+    {
+        if (lastItem == null)
+            return false;
+
+        if (thisItem.FoundDependencies.Count != lastItem.FoundDependencies.Count)
+            return false;
+
+        // Assert whether they changed.
+        // We will always have ID as we resolve deps by ID.
+        var thisIds = new HashSet<string>(thisItem.FoundDependencies.Select(x => x.Id)!);
+        var otherIds = new HashSet<string>(lastItem.FoundDependencies.Select(x => x.Id)!);
+        return thisIds.SetEquals(otherIds);
+    }
+
+    private static void ShowStuckInDownloadLoopDialog(ModDependencyResolveResult result)
+    {
+        var message = new StringBuilder("We got stuck in a dependency download loop.\n" +
+                                        "This bug is tracked at:\n" +
+                                        "https://github.com/Reloaded-Project/Reloaded-II/issues/226\n\n" +
+                                        "Here's a list of mods that's stuck:\n");
+
+        foreach (var item in result.FoundDependencies)
+        {
+            message.AppendLine($"Id: {item.Id} | Name: {item.Name} | Version: {item.Version} | Source: {item.Source}");
+        }
+
+        message.AppendLine($"\nSometimes this can happen due to a mod incorrectly published/uploaded,\n" +
+                           $"or a file being removed by a mod author of a dependency.\n\n" +
+                           $"In some very rare cases, this can happen on any mod for completely unknown reasons.\n\n" +
+                           $"Please report this issue to the link above if you encounter it.\n" +
+                           $"In the meantime, download the required mods manually (you should " +
+                           $"hopefully find it by ID or Name).\n\n" +
+                           $"Sorry for the pain.");
+
+        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
+        {
+            Actions.DisplayMessagebox.Invoke("Stuck in Download Loop", message.ToString(), new Actions.DisplayMessageBoxParams(){
+                StartupLocation = Actions.WindowStartupLocation.CenterScreen
+            });
+        });
     }
 }

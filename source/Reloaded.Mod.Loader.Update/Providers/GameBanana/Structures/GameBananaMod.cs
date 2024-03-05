@@ -260,7 +260,11 @@ public class GameBananaCredit
 
             while (reader.TokenType != JsonTokenType.EndArray)
             {
-                values.Add(reader.GetString()!);
+                if (reader.TokenType == JsonTokenType.Number)
+                    values.Add(reader.GetInt64()!.ToString());
+                else
+                    values.Add(reader.GetString()!);
+
                 reader.Read();
             }
 

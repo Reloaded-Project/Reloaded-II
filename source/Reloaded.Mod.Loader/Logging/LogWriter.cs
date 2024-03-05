@@ -1,3 +1,4 @@
+using System.Text;
 using Environment = System.Environment;
 
 namespace Reloaded.Mod.Loader.Logging;
@@ -18,6 +19,7 @@ public class LogWriter : IDisposable
     private StreamWriter  _textStream;
     private Logger        _logger;
     private List<string>  _logItems;
+    private StringBuilder _writeCache;
 
     /// <summary>
     /// Intercepts logs from the console and provides the ability to flush them to a file in the event of a crash.
@@ -32,7 +34,8 @@ public class LogWriter : IDisposable
 
         _logItems = new List<string>(MaxBufferLength + 1);
         _logger  = logger;
-        _logger.OnPrintMessage += OnPrintMessage;
+        _logger.OnWrite += OnWrite;
+        _logger.OnWriteLine += OnWriteLine;
 
         // Add integer to file path in case there is another instance of same process launched at the same time.
         string GetLogFilePath()
@@ -57,6 +60,7 @@ public class LogWriter : IDisposable
         _textStream = File.CreateText(FlushPath);
         _textStream.AutoFlush = false;
         _autoFlushThread = new Timer(AutoFlush, null, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(250));
+        _writeCache = new();
     }
 
     /// <summary>
@@ -82,18 +86,33 @@ public class LogWriter : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.Synchronized)]
-    private void OnPrintMessage(object sender, string message)
+    private void OnWrite(object sender, (string text, Color color) e)
+    {
+        _writeCache.Append(e.text);
+    }
+
+    [MethodImpl(MethodImplOptions.Synchronized)]
+    private void OnWriteLine(object sender, (string text, Color color) e)
     {
         if (_logItems.Count == MaxBufferLength)
             Flush();
 
-        _logItems.Add($"[{DateTime.Now:HH:mm:ss}] {message}");
+        if (_writeCache.Length == 0)
+        {
+            _logItems.Add($"[{DateTime.Now:HH:mm:ss}] {e.text}");
+        }
+        else
+        {
+            _logItems.Add($"[{DateTime.Now:HH:mm:ss}] {$"{_writeCache}{e.text}"}");
+            _writeCache.Clear();
+        }
     }
 
     /// <inheritdoc />
     public void Dispose()
     {
-        _logger.OnPrintMessage -= OnPrintMessage;
+        _logger.OnWrite -= OnWrite;
+        _logger.OnWriteLine -= OnWriteLine;
         _autoFlushThread.Dispose();
         _textStream.Dispose();
     }

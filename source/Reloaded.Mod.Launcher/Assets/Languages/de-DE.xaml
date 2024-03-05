@@ -1,0 +1,694 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xml:space="preserve">
+
+    <!-- This file contains the English Language Text for Reloaded II -->
+    <!--  allows for new line. &#x0a; is new line (ASCII character). -->
+
+    <!-- Page Titles -->
+    <sys:String x:Key="TitleAddApplication">Anwendung hinzufügen</sys:String>
+    <sys:String x:Key="TitleEditApplication">Anwendung bearbeiten</sys:String>
+    <sys:String x:Key="TitleManageMods">Mods verwalten</sys:String>
+    <sys:String x:Key="TitleDownloadMods">Mods herunterladen</sys:String>
+    <sys:String x:Key="TitleLoaderSettings">Mod Lader-Einstellungen</sys:String>
+    <sys:String x:Key="TitleMainPage">Hauptseite</sys:String>
+    <sys:String x:Key="TitleSearchApplications">Anwendungen suchen/filtern</sys:String> <!-- Sidebar button to search applications. Removed. Might be brought back someday. -->
+    <sys:String x:Key="TitleSplashPage">Reloaded II wird vorbereitet..</sys:String>
+
+    <!-- Splash Screen: Progress Messages -->
+    <sys:String x:Key="SplashCreatingDefaultConfig">Standardkonfiguration wird erstellt</sys:String>
+    <sys:String x:Key="SplashCleaningConfigurations">App-/Lader-/Mod-Konfigurationen bereinigen</sys:String>
+    <sys:String x:Key="SplashPreparingResources">Ressourcen einrichten</sys:String>
+    <sys:String x:Key="SplashLoadCompleteIn">Vollständig geladen in:</sys:String>
+    <sys:String x:Key="SplashCreatingTemplates">Erstellen von Vorlagen</sys:String> <!-- Unused as of 1.8.0 -->
+    <sys:String x:Key="SplashCheckingForUpdates">Nach Updates suchen</sys:String>
+    <sys:String x:Key="SplashRunningSanityChecks">Durchführung von Sanitätsprüfungen</sys:String>
+
+    <!-- Add Application Page -->
+    <sys:String x:Key="AddAppImageTooltip">Klicke auf dieses Bild, um ein benutzerdefiniertes Logo zu importieren.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Wählen das Bild aus, das als Symbol verwendet werden soll.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorFilter">Bild</sys:String>
+
+    <sys:String x:Key="AddAppNewButton">Neu</sys:String>
+    <sys:String x:Key="AddAppDeleteButton">Löschen</sys:String>
+
+    <sys:String x:Key="AddAppName">Anwendungsname</sys:String>
+    <sys:String x:Key="AddAppLocation">Speicherort der Ausführung</sys:String>
+    <sys:String x:Key="AddAppArguments">Kommandozeilenargumente</sys:String>
+
+    <sys:String x:Key="AddAppAdvancedOptions">Erweiterte Werkzeuge &amp; Optionen</sys:String>
+    <sys:String x:Key="AddAppCreateShortcut">Verknüpfung erstellen</sys:String>
+    <sys:String x:Key="AddAppAutoInject">Auto-Injektion</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage">Hinweis: Auto-Injektion wird bereitgestellt, aber nicht empfohlen, da keine Garantie gegeben werden kann, dass Mods den Code vor der Anwendung ausführen.&#x0a;Bitte verwende stattdessen reguläres "Anwendung starten" von Reloaded oder die "DLL Lader"-methode beschrieben in der GitHub-Dokumentation.&#x0a;Bitte reiche keine Fehler für Mods ein, die nicht im Auto-Injektionsmodus funktionieren.</sys:String>
+
+    <sys:String x:Key="AddAppExecutableTitle">Wähle eine Anwendung aus, für die eine Konfiguration erstellt werden soll.</sys:String>
+    <sys:String x:Key="AddAppExecutableFilter">Ausführbare Anwendungsdatei</sys:String>
+
+    <sys:String x:Key="AddAppShortcutCreatedTitle">Verknüpfung erstellt</sys:String>
+    <sys:String x:Key="AddAppShortcutCreatedMessage">Verknüpfung erstellt bei:</sys:String>
+
+    <!-- Mod Manager Page -->
+    <sys:String x:Key="ModManagerSearchMods">Mods suchen</sys:String>
+    <sys:String x:Key="ModManagerSearchApps">Apps suchen</sys:String>
+    <sys:String x:Key="ModManagerExtraOptions">Extra Optionen</sys:String>
+    <sys:String x:Key="ModManagerOpenModDirectory">Mod-Verzeichnis öffnen</sys:String>
+    <sys:String x:Key="ModManagerConvertToNuget">In das NuGet-Format konvertieren</sys:String>
+    <sys:String x:Key="ModManagerManageDependencies">Abhängigkeiten verwalten</sys:String>
+    <sys:String x:Key="ModManagerSelectMod">Wähle den Mod aus, dessen Details geändert werden soll.</sys:String>
+    <sys:String x:Key="ModManagerSelectApp">Wähle die Anwendungen aus, die mit diesem Mod kompatibel sind.</sys:String>
+
+    <!-- Mod Manager: Set Dependencies -->
+    <sys:String x:Key="TitleSetDependenciesDialog">Abhängigkeiten für Mod festlegen</sys:String>
+
+    <!-- Mod Manager: Create Mod Page | Edit Mod Page since 1.12.0 -->
+    <sys:String x:Key="TitleCreateModDialog">Mod erstellen</sys:String>
+    <sys:String x:Key="CreateModDialogSave">Mod erstellen</sys:String>
+    <sys:String x:Key="CreateModDialogId">Eindeutige ID</sys:String>
+    <sys:String x:Key="CreateModDialogName">Name</sys:String>
+    <sys:String x:Key="CreateModDialogAuthor">Autor</sys:String>
+    <sys:String x:Key="CreateModDialogVersion">Version</sys:String>
+    <sys:String x:Key="CreateModDialogDescription">Kurze Beschreibung</sys:String>
+    <sys:String x:Key="CreateModDialogDependencies">Mod-Abhängigkeiten</sys:String>
+
+    <sys:String x:Key="CreateModDialogImageSelectorTitle">Wähle ein benutzerdefiniertes Logo für den Mod.</sys:String>
+    <sys:String x:Key="CreateModDialogImageSelectorFilter">Bild</sys:String>
+
+    <sys:String x:Key="TitleCreateModNonUniqueId">Nicht eindeutige ID</sys:String>
+    <sys:String x:Key="MessageCreateModNonUniqueId">Die ModID für den Mod, den du erstellst, ist nicht eindeutig.&#x0a;Bitte mach die ModID eindeutig.</sys:String>
+
+    <!-- Mod Loader Settings -->
+    <sys:String x:Key="LoaderSettingsCleanup">Bereinigungskonfigurationen</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupWarning">Der folgende Vorgang führt die Verwaltung verschiedener Konfigurationen durch (App, Mod etc.).&#x0a;Zu den Verwaltungsfunktionen gehören Dinge wie das Entfernen nicht vorhandener Mods aus der Liste der Abhängigkeiten eines Mods.&#x0a;Bitte beachte, dass fehlende Abhängigkeiten, unterstützte Anwendungen usw. aus den Konfigurationsdateien entfernt werden.</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupComplete">Bereinigung abgeschlossen</sys:String>
+
+    <sys:String x:Key="LoaderSettingsAppsInstalled">Installierte Anwendungen:</sys:String>
+    <sys:String x:Key="LoaderSettingsModsInstalled">Mods installiert:</sys:String>
+    <sys:String x:Key="LoaderSettingsCompileDate">Kompiliert am:</sys:String>
+    <sys:String x:Key="LoaderSettingsAndDocumentation">Benutzerhandbuch + Dokumente.</sys:String>
+    <sys:String x:Key="LoaderSettingsCopyright">Reloaded II ist freie Software, die unter der GNU GPL V3 lizenziert ist</sys:String>
+    <sys:String x:Key="LoaderSettingsEnableAutomaticUpdates">Automatische Aktualisierungen</sys:String>
+    <sys:String x:Key="LoaderSettingsShowConsole">Konsole anzeigen</sys:String>
+    <sys:String x:Key="LoaderSettingsLoadAsynchronously">Asynchron laden</sys:String>
+    <sys:String x:Key="LoaderSettingsWarning">Reloaded II ist eine leistungsstarke Software, die die Ausführung beliebigen/benutzerdefinierten Codes ermöglicht. Die Nutzung erfolgt auf eigene Gefahr.</sys:String>
+
+    <!-- Application Entry -->
+    <sys:String x:Key="TitleApplication">Anwendungs-Hub</sys:String>
+    <sys:String x:Key="ApplicationTotalMods">Gesamtzahl der Mods</sys:String>
+    <sys:String x:Key="ApplicationOtherInstances">Andere Instanzen</sys:String>       <!-- Unused as of 1.7.0 -->
+    <sys:String x:Key="ApplicationReloadedInstances">Neu geladene Instanzen</sys:String> <!-- Unused as of 1.7.0 -->
+
+    <!-- First Launch | Unused, Superseeded by 1.12.0 - New First Launch Experience -->
+    <sys:String x:Key="TitleFirstLaunch">Willkommen bei Reloaded II</sys:String> <!-- Unused as of 1.12.0 -->
+    <sys:String x:Key="FirstLaunchLineOne">Es ist dein erstes Mal, dass du Reloaded II verwendst.</sys:String>
+    <sys:String x:Key="FirstLaunchLineTwo">Bevor du beginnst, solltest du einen Blick auf die folgenden Links werfen:</sys:String>
+    <sys:String x:Key="FirstLaunchLineDocumentation">Dokumentation</sys:String>
+    <sys:String x:Key="FirstLaunchLineUserguide">Benutzerhandbuch</sys:String>
+    <sys:String x:Key="FirstLaunchLineThree">Möglicherweise findest du diese Links später in den [Mod Lader-Einstellungen].</sys:String>
+
+    <!-- Dialogs -->
+    <sys:String x:Key="MessageBoxButtonOK">OK</sys:String>
+    <sys:String x:Key="MessageBoxButtonCancel">Abbrechen</sys:String>
+
+    <!-- Non-Reloaded Process -->
+    <sys:String x:Key="TitleNonReloadedProcess">Nicht neu geladener Prozess</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageOne">Reloaded verwaltet nicht diesen speziellen Prozess.</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageTwo">Du kannst Reloaded laden, indem du auf die folgende Schaltfläche unten klickst.</sys:String>
+    <sys:String x:Key="NonReloadedProcessInject">Injizieren</sys:String>
+    <sys:String x:Key="NonReloadedProcessInjectWarning">Hinweis: Möglicherweise funktionieren nicht alle Mods wie erwartet, wenn sie geladen werden, während die Anwendung ausgeführt und nicht angehalten wird. Bitte reiche keine Fehler für Mods ein, die mit dieser Funktion nicht funktionieren.</sys:String>
+
+    <!-- Reloaded Process -->
+    <sys:String x:Key="TitleReloadedProcess">Reloaded Prozess</sys:String>
+
+    <!-- Application & SubMenus -->
+    <sys:String x:Key="TitleConfigureMods">Mods konfigurieren</sys:String>
+    <sys:String x:Key="ApplicationLaunch">Anwendung starten</sys:String>
+
+    <sys:String x:Key="ConfigureModsListItemTooltip">Ziehe Elemente per Ziehen-und-Ablegen, um die Ladereihenfolge von Mods zu ändern. Mods werden geladen, beginnend mit dem oberen Mod zuerst und dem unteren Mod zuletzt.</sys:String>
+    <sys:String x:Key="ConfigureModsDummyText">Verwendet Reloaded um dir mitzuteilen, dass du dir einige Mods besorgen sollst. Reloaded-II ist cool! Niedlichkeit ist Gerechtigkeit, Es ist das Gesetz!.</sys:String> <!-- Unused for now, will be used down the road. -->
+    <sys:String x:Key="ConfigureModsConfigure">Mod konfigurieren</sys:String>
+    <sys:String x:Key="ConfigureModsOpenFolder">Ordner öffnen</sys:String>
+
+    <sys:String x:Key="LoadModSet">Mod-Set laden</sys:String>
+    <sys:String x:Key="SaveModSet">Mod-Set speichern</sys:String>
+    <sys:String x:Key="LoadModSetDialogTitle">Wähle die Datei aus, aus der die Liste der Mods geladen werden soll.</sys:String>
+    <sys:String x:Key="SaveModSetDialogTitle">Wähle den Pfad aus, in dem die Liste der Mods gespeichert werden soll.</sys:String>
+
+    <!-- Obsolete as of 1.12.0 onwards -->
+    <sys:String x:Key="LoadModSetIncompatibleTitle">Kompatibilitätswarnung</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage">Du hast Mods aktiviert, die als "nicht mit deiner Anwendung kompatibel" markiert sind:</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage2">Durch Drücken von „OK“ werden die Mods für deine Anwendung aktiviert. Durch Drücken von „Abbrechen“ werden die Mods deaktiviert.</sys:String>
+
+    <!-- Reloaded Process -->
+    <sys:String x:Key="ReloadedProcessResume">Wieder aufnehmen</sys:String>
+    <sys:String x:Key="ReloadedProcessSuspend">Aussetzen</sys:String>
+    <sys:String x:Key="ReloadedProcessUnload">Entladen</sys:String>
+    <sys:String x:Key="ReloadedProcessRefresh">Aktualisieren</sys:String>
+    <sys:String x:Key="ReloadedProcessLoadMod">Mod laden</sys:String>
+    <sys:String x:Key="ReloadedProcessNotice">Hinweis: Dieses Menü ist in erster Linie für die Verwendung durch Entwickler gedacht.</sys:String>
+
+    <!-- Update Mod Dialog -->
+    <sys:String x:Key="UpdateModTitle">Mod-Updates verfügbar</sys:String>
+    <sys:String x:Key="UpdateModDownload">Herunterladen</sys:String>
+    <sys:String x:Key="UpdateModModId">Mod Id</sys:String>
+    <sys:String x:Key="UpdateModSize">Größe (MB)</sys:String>
+    <sys:String x:Key="UpdateModOldVersion">Alte Version</sys:String>
+    <sys:String x:Key="UpdateModNewVersion">Neue Version</sys:String>
+
+    <!-- Update Mod Confirmation Dialog -->
+    <sys:String x:Key="UpdateModConfirmTitle">Anwendungen werden ausgeführt</sys:String>
+    <sys:String x:Key="UpdateModConfirmMessage">Du hast derzeit Anwendungen, die Reloaded ausführen.&#x0a;Updates werden heruntergeladen, jedoch erst angewendet, wenn alle Anwendungen geschlossen sind.</sys:String>
+
+    <!-- Update Loader Dialog -->
+    <sys:String x:Key="UpdateLoaderTitle">Update verfügbar</sys:String>
+    <sys:String x:Key="UpdateLoaderCurrentVersion">Aktuelle Version</sys:String>
+    <sys:String x:Key="UpdateLoaderNewVersion">Neue Version</sys:String>
+
+    <sys:String x:Key="UpdateLoaderChangelogUnavailable">Kein Änderungsprotokoll verfügbar</sys:String>
+    <sys:String x:Key="UpdateLoaderChangelog">Änderungsprotokoll auf GitHub ansehen</sys:String>
+    <sys:String x:Key="UpdateLoaderUpdate">Update</sys:String>
+
+    <sys:String x:Key="UpdateLoaderRunningTitle">Anwendungen werden ausgeführt</sys:String>
+    <sys:String x:Key="UpdateLoaderRunningMessage">Du hast derzeit Anwendungen, die Reloaded ausführen.&#x0a;Das Update kann nicht durchgeführt werden. Bitte schließe alle Anwendungen.</sys:String>
+    <sys:String x:Key="UpdateLoaderProcessList">Prozessliste</sys:String>
+
+    <!-- Download Mods Page -->
+    <sys:String x:Key="DownloadModsDownload">Herunterladen</sys:String>
+    <sys:String x:Key="DownloadModsDownloading">Wird heruntergeladen</sys:String>
+    <sys:String x:Key="DownloadModsAlreadyDownloaded">Bereits heruntergeladen</sys:String>
+
+    <sys:String x:Key="DownloadModsVisitWebsite">Webseite besuchen</sys:String>
+    <sys:String x:Key="DownloadModsCheckUpdatesAndDependencies">Auf Updates prüfen &amp; Abhängigkeiten</sys:String>
+
+    <!-- No Update Dialog -->
+    <sys:String x:Key="NoUpdateDialogTitle">Hurra!</sys:String>
+    <sys:String x:Key="NoUpdateDialogMessage">Hier gibt es nichts zu tun. Alle Mods in Ordnung!</sys:String>
+
+    <!-- Fetch Nuget Dialog | Obsolete since 1.12.0 but some strings still used. -->
+    <sys:String x:Key="FetchNugetTitle">Pakete herunterladen</sys:String>
+    <sys:String x:Key="FetchNugetMessage">Die folgenden Pakete werden installiertd:</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundMessage">Die folgenden Pakete wurden nicht gefunden:</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundAdvice">Du musst sie selbst finden :/</sys:String>
+
+    <!-- Startup Failure -->
+    <sys:String x:Key="FailedToLaunchTitle">Oof!</sys:String>
+    <sys:String x:Key="FailedToLaunchMessage">Beim Versuch, Reloaded-II zu laden, ist ein Fehler aufgetreten.</sys:String>
+
+    <!-- Download Mod Archive -->
+    <sys:String x:Key="DownloadModArchiveTitle">Mod-Archiv herunterladen</sys:String>
+    <sys:String x:Key="DownloadModArchiveName">Dateiname</sys:String>
+
+    <!-- WMI Administrator Message -->
+    <sys:String x:Key="RunAsAdminMessage">Du musst diese Anwendung als Administrator ausführen.&#x0a;Um Anwendungsstart-/-beendigungsereignisse von Windows Management Instrumentation (WMI) zu empfangen, sind Administratorrechte erforderlich. Entwickler: Führe deine Lieblings-IDE, z. B. Visual Studio, als Administrator aus.</sys:String>
+
+    <!-- Configure Mod Dialog -->
+    <sys:String x:Key="ConfigureModDialogTitle">Mod konfigurieren</sys:String>
+    <sys:String x:Key="ConfigureModDialogSave">Speichern</sys:String>
+
+    <!-- Errors -->
+    <sys:String x:Key="ErrorError">Fehler</sys:String> <!-- Just the word "Error" in native language. -->
+    <sys:String x:Key="ErrorUnknown">Unbekannter Fehler</sys:String>
+    <sys:String x:Key="ErrorPathNullOrEmpty">Der Pfad zu dieser Anwendung ist entweder null oder leer. Bitte korrigiere den Pfad.</sys:String>
+    <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">Das Verzeichnis des zu löschenden Mods konnte nicht abgerufen werden.</sys:String>
+    <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">Das Verzeichnis der zu löschenden Anwendung konnte nicht abgerufen werden.</sys:String>
+    <sys:String x:Key="ErrorLoaderNotFound">wurde nicht gefunden. Dies kann dadurch verursacht werden, dass Antivirensoftware Änderungen im GitHub-Repository löscht und/oder unterbricht.</sys:String> <!-- Loader DLL Name displays before this message -->
+    <sys:String x:Key="ErrorFailedToStartProcess">Der Vorgang konnte nicht gestartet werden. Dies geschieht im Allgemeinen aufgrund eines der drei Probleme:&#x0a;- Der Pfad zur EXE-Datei ist falsch (Hast du die Anwendung verschoben?)&#x0a;- Das Programm ist für die Ausführung als Administrator konfiguriert (Rechtsklick -> Eigenschaften) aber Reloaded läuft im Benutzermodus.&#x0a;- Störungen z.B durch Antivirensoftware. Überprüfe deine Protokolle.&#x0a;Hier ist der von Windows zurückgegebene Fehler: </sys:String>
+    <sys:String x:Key="ErrorDllInjectionFailed">Die DLL konnte nicht in den Anwendungsprozess eingefügt werden.</sys:String>
+    <sys:String x:Key="ErrorPathToApplicationInvalid">Reloaded kann die EXE-Datei für dieses Programm nicht finden.
+Erwäge eine Aktualisierung unter `Anwendung bearbeiten` -> `Update`.
+Normalerweise kann dies passieren, weil:
+- Du hast deinen Anwendungsordner verschoben.
+- App-Ordner wurde nach einem Update verschoben (kann bei GamePass/UWP passieren).</sys:String>
+    <sys:String x:Key="ErrorCheckUpdatesFailed">Die Suche nach Updates ist fehlgeschlagen. Entweder unterliegen wir einer Ratenbegrenzung durch GitHub oder sind nicht mit dem Internet verbunden.</sys:String>
+    <sys:String x:Key="ErrorGetProcAddress32Failed">Warnung: Wahrscheinlich fehlt dir die x86-Version von .NET Core, 32-Bit-Anwendungen funktionieren nicht.&#x0a;Bitte überprüfe noch einmal die auf der Download-Seite aufgeführten Anforderungen.&#x0a;Tatsächlicher Fehler: Adresse von GetProcAddress für x86 konnte nicht abgerufen werden.</sys:String>
+
+    <!-- Asi Loader -->
+    <sys:String x:Key="AsiLoaderInstall">ASI Lader bereitstellen</sys:String>
+    <sys:String x:Key="AsiLoaderDialogTitle">ASI Lader Bereitstellung</sys:String>
+    <sys:String x:Key="AsiLoaderDialogDescription">Der Ultimate ASI Loader (DLL-Loader eines Drittanbieters) von ThirteenAG kann bei Bedarf für Reloaded bereitgestellt werden&#x0a;automatisch gestartet werden, ohne einen Launcher oder eine Verknüpfung zu verwenden. Möchtest du diesen Loader bereitstellen?</sys:String>
+    <sys:String x:Key="AsiLoaderDialogLoaderDeployed">ASI Lader erfolgreich bereitgestellt: </sys:String>
+    <sys:String x:Key="AsiLoaderDialogBootstrapperDeployed">Reloaded Bootstrapper bereitgestellt für: </sys:String>
+    <sys:String x:Key="ErrorAsiNotSupported">Kein kompatibler DLL-Name zum Hinzufügen von Ultimate ASI Lader gefunden.</sys:String> <!-- Unused at the moment, may be used in the future. -->
+
+    <!-- Missing Dependencies Dialog -->
+    <sys:String x:Key="MissingDependenciesTitle">Fehlende Anforderungen</sys:String>
+    <sys:String x:Key="MissingDependenciesText">Es scheint, dass bestimmte Voraussetzungen für die Ausführung von Reloaded auf Ihrem System fehlen. Der Launcher hat die folgenden fehlenden Anforderungen gefunden:</sys:String>
+    <sys:String x:Key="MissingDependenciesText2">Bitte lade die oben angegebenen Anforderungen herunter und schließe das Fenster.</sys:String>
+
+    <!-- Categories: Main Menu Screen -->
+    <sys:String x:Key="AppCategoryMain">Haupt</sys:String>
+    <sys:String x:Key="AppCategoryActions">Aktionen</sys:String>
+    <sys:String x:Key="AppCategoryProcesses">Prozesse</sys:String>
+    <sys:String x:Key="AppCategorySummary">Zusammenfassung</sys:String>
+
+    <!-- Update 1.7.0: Loader Settings Icons -->
+    <sys:String x:Key="LoaderSettingsTwitter">Tweete mir</sys:String>
+    <sys:String x:Key="LoaderSettingsDonate">Sponser mich auf GitHub</sys:String>
+    <sys:String x:Key="LoaderSettingsDiscord">Tritt dem Discord Server bei</sys:String>
+
+    <!-- Update 1.7.0: NuGet Feeds -->
+    <sys:String x:Key="TitleConfigNuGetFeeds">NuGet-Quellen konfigurieren</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsButton">Quellen konfigurieren</sys:String> <!-- Button in Download Mods Menu -->
+
+    <sys:String x:Key="ConfigNuGetFeedsName">Name (Erforderlich)</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURL">URL (Erforderlich)</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURLTooltip">Beispiel: http://167.71.128.50:5000/v3/index.json</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsDescription">Beschreibung</sys:String>
+
+    <!-- Update 1.7.9: Wine Compatibility Notes -->
+    <sys:String x:Key="WineCompatibilityNoticeTitle">Wine Kompatibilitätshinweis</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeText">Es scheint, dass du versuchst, eine Anwendung mit dem Launcher in Wine auszuführen.&#x0a;Dieser Vorgang schlägt wahrscheinlich fehl, da die Zielanwendung spezielle Tricks zur Ausführung erfordert oder isoliert ist (wie zum Beispiel unterschiedliche Wine-präfixe) die die Dll Injezierung verhindern.&#x0a;&#x0a;Unter Wine laufen zu lassen, Es wird empfohlen, den ASI Lader bereitzustellen (Siehe: Menü „Anwendung bearbeiten“.) und führe das Spiel außerhalb des Launchers aus.&#x0a;Bitte beachte, dass Reloaded nicht häufig unter Wine getestet wird.</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeOk">Trotzdem versuchen</sys:String>
+
+    <!-- Update 1.8.0: Configuration -->
+    <sys:String x:Key="LoaderSettingsConfigPopup">Reloaded Einstellungen</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigLanguage">Sprache</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigTheme">Thema</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigLog">Protokolldateien anzeigen</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigFile">Konfigurationsdatei öffnen</sys:String>
+
+    <!-- Update 1.8.0: Extra Error(s) -->
+    <sys:String x:Key="ErrorFailedToObtainPort">Entweder ist die Anwendung abgestürzt, Reloaded konnte nicht geladen werden oder Reloaded wurde nicht innerhalb des Auszeit-Limits initialisiert.&#x0a;&#x0a;Die folgenden Vorgänge könnten hilfreich sein:&#x0a;- Schließe diesen Fehler, warte einige Sekunden und versuche es erneut.&#x0a;- Schließe andere Kopien der Anwendung, wenn diese bereits ausgeführt werden. (Task-Manager verwenden)&#x0a;- Starte deinen Computer neu.&#x0a;&#x0a;Dies ist eine Warnung. Wenn deine Anwendung wie erwartet funktioniert, kannst du diese Meldung ignorieren.&#x0a;&#x0a;Tatsächlicher Fehler:&#x0a;Der Port für die im Prozess ausgeführte Reloaded-Instanz konnte nicht abgerufen werden.</sys:String>
+
+    <!-- Update 1.10.0: Reloaded Bootstrapper Update -->
+    <sys:String x:Key="BootstrapperUpdateTitle">Bootstrapper aktualisiert</sys:String>
+    <sys:String x:Key="BootstrapperUpdateDescription">Reloaded Bootstrapper wurde für die folgenden Programme automatisch aktualisiert:&#x0a;{0}</sys:String>
+
+    <!-- Update 1.10.1: Reloaded Bootstrapper Hotfix -->
+    <sys:String x:Key="BootstrapperCreateDirectoryError">Das Verzeichnis zum Bereitstellen des Bootstrappers konnte nicht erstellt werden. Erwäge Reloaded als Administrator auszuführen.&#x0a;Tatsächlicher Fehler: {0}</sys:String>
+
+    <!-- Update 1.12.0: New First Launch Experience -->
+    <sys:String x:Key="TitleFirstLaunchEx">Reloaded II Tutorial</sys:String>
+
+    <sys:String x:Key="FirstLaunchExStepAddApplication">Anwendung hinzufügen</sys:String>
+    <sys:String x:Key="FirstLaunchExStepExtractMod">Mods extrahieren</sys:String>
+    <sys:String x:Key="FirstLaunchExStepConfigureMod">Mods konfigurieren</sys:String>
+    <sys:String x:Key="FirstLaunchExStepEnableMod">Mods aktivieren</sys:String>
+    <sys:String x:Key="FirstLaunchExStepComplete">Fertig</sys:String>
+
+    <sys:String x:Key="FirstLaunchExAddApplicationButton">Anwendung hinzufügen</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationSkipTutorialButton">Das Tutorial überspringen</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationSkipStepButton">Diesen Schritt überspringen</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription1">Der erste Schritt zum Einstieg in Reloaded besteht darin, eine Anwendung hinzuzufügen, die du modifizieren möchtest.&#x0a;(Normalerweise auf der Schaltfläche „+“ unten links im Launcher zu finden)</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription2">Stelle sicher, dass du die App und nicht den Launcher hinzufügst, wie oben gezeigt.</sys:String>
+
+    <sys:String x:Key="FirstLaunchExAddModExtractDescription1">Um Mods zu installieren, Extrahiere einfach eine heruntergeladene Zip-Datei in den Ordner 'Mods'..</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractDescription2">Wenn im heruntergeladenen Mod kein einzelner Ordner vorhanden ist, erstelle selbst einen.</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractPrev">Vorherige</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractNext">Nächste</sys:String>
+
+    <sys:String x:Key="FirstLaunchExConfigureModDescription1">Einige Mods unterstützen möglicherweise zusätzliche Konfigurationen, sodass du Dinge optimieren kannst.</sys:String>
+    <sys:String x:Key="FirstLaunchExConfigureModDescription2">Wenn „Mod konfigurieren“ rot ist, wenn der Mod markiert ist, kann er konfiguriert werden.</sys:String>
+
+    <sys:String x:Key="FirstLaunchExEnableModDescription1">Um Mods zu aktivieren, drück einfach das quadratische Kontrollkästchen.</sys:String>
+    <sys:String x:Key="FirstLaunchExEnableModDescription2">Ein Mod ist aktiviert, wenn das Kontrollkästchen rot ist, deaktiviert, wenn es grau ist.</sys:String>
+
+    <sys:String x:Key="FirstLaunchExCompleteDescription1">Vielen Dank, dass du Reloaded II ausprobierst.</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription2">Möglicherweise findest du auch die folgenden Links hilfreich:</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription3">Du findest diese Links auch in [Mod Lader-Einstellungen].</sys:String>
+
+    <!-- Update 1.12.0: Context Menu for Application Mod Items -->
+    <sys:String x:Key="ModManagerContextPublish">Veröffentlichen</sys:String>
+    <sys:String x:Key="ModManagerContextEdit">Bearbeiten</sys:String>
+    <sys:String x:Key="ModManagerContextEditMod">Mod bearbeiten</sys:String>
+    <sys:String x:Key="ModManagerContextEditModUser">Benutzerkonfiguration</sys:String>
+    <sys:String x:Key="ModManagerContextOpenFolder">Ordner öffnen</sys:String>
+    <sys:String x:Key="ModManagerContextConfigure">Konfigurieren</sys:String>
+
+    <!-- Update 1.12.0: Edit Mod Dialog -->
+    <sys:String x:Key="TitleEditModDialog">Mod bearbeiten</sys:String>
+
+    <!-- Update 1.12.0: Additional Errors -->
+    <sys:String x:Key="ErrorUnableDetermineVersion">Fehler: Reloaded II-Version konnte nicht ermittelt werden</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUseTitle">Mod(s) im Einsatz</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUse">Du hast derzeit Anwendungen, die Reloaded ausführen.&#x0a;Updates werden heruntergeladen, jedoch erst angewendet, wenn alle Anwendungen geschlossen sind.</sys:String>
+    <sys:String x:Key="ErrorMissingDependency">Fehlende Abhängigkeiten</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionTitle">Ungültige Versionsnummer</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionDescription">Die vom Mod verwendete Versionsnummer entspricht nicht dem Standard `Semantische Versionierung` (SemVer) und kann keine Updates erhalten.&#x0a;Bitte aktualisiere die Versionsnummer deines Mods, um SemVer zu verwenden.&#x0a;Beispiele: `1.0.0`, `1.0`, `2.0-alpha`.</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Mod -->
+    <sys:String x:Key="CreateModDialogDescriptionShort">Beschreibung</sys:String>
+
+    <sys:String x:Key="EditModStepMain">Allgemeine Details</sys:String>
+    <sys:String x:Key="EditModStepDependencies">Mod-Abhängigkeiten</sys:String>
+    <sys:String x:Key="EditModStepUpdates">Update-Unterstützung</sys:String>
+    <sys:String x:Key="EditModStepComplete">Fertigstellung</sys:String>
+
+    <sys:String x:Key="EditModDependenciesDescription">Wenn dein Mod die Anwesenheit eines anderen Mods erfordert, wähle ihn hier aus.</sys:String>
+
+    <sys:String x:Key="EditModUniversalMod">Universeller Mod</sys:String>
+    <sys:String x:Key="EditModUniversalModDescription">Wenn aktiviert, ist der Mod standardmäßig in jeder Anwendung sichtbar.</sys:String>
+
+    <sys:String x:Key="EditModLibrary">Bibliothek</sys:String>
+    <sys:String x:Key="EditModLibraryDescription">Wenn aktiviert, kann der Mod nicht explizit vom Benutzer aktiviert werden. Kann nur als Abhängigkeit aktiviert werden.</sys:String>
+
+    <sys:String x:Key="EditModSave">Speichern</sys:String>
+    <sys:String x:Key="EditModAppsDescription">Wähle Anwendungen aus, für die der Mod verfügbar sein soll.</sys:String>
+
+    <sys:String x:Key="EditModMetadataNameTooltip">Name der JSON-Metadatendatei.&#x0a;Ändere dies nur, wenn du mehrere Mods auf derselben Seite veröffentlichst.</sys:String>
+
+    <!-- Update 1.12.0: Extended Application Configuration -->
+    <sys:String x:Key="ConfigureModsRightClickAdvice">Rechtsklick auf den Mod, um weitere Optionen anzuzeigen</sys:String>
+
+    <!-- Update 1.12.0: Create Mod Dialog -->
+    <sys:String x:Key="CreateModDialogIdDesc1">Eindeutige Mod-ID</sys:String>
+    <sys:String x:Key="CreateModDialogIdDesc2">Bitte leg eine eindeutige Mod-ID im Format "game.type.name" fest.. Zum Beispiel: `sonicheroes.skins.seasidehillmidnight`. Sobald die ID festgelegt ist, kann sie nicht mehr geändert werden.</sys:String>
+
+    <!-- Update 1.12.0: Edit Application Ex -->
+    <sys:String x:Key="AddAppId">Anwendungs-ID</sys:String>
+    <sys:String x:Key="AddAppUpdate">Update</sys:String>
+
+    <sys:String x:Key="AddAppWarningTitle">Ausführbarer Name Warnung</sys:String>
+    <sys:String x:Key="AddAppWarning">Der ausführbare Name der hinzugefügten Anwendung unterscheidet sich vom Original.&#x0a;Wenn du eine weitere Anwendung hinzufügst, solltest du diese als neue Anwendung hinzufügen.</sys:String>
+
+    <!-- Update 1.12.0: Publish Mod Dialog -->
+    <sys:String x:Key="TitlePublishModDialog">Mod veröffentlichen</sys:String>
+    <sys:String x:Key="PublishModTarget">Ziel veröffentlichen</sys:String>
+    <sys:String x:Key="PublishModTargetTooltip">Verwende die Standardeinstellung, es sei denn, es gibt eine Option für die Orte, an denen du veröffentlichst.&#x0a;Aktiviert/deaktiviert bestimmte Verhaltensweisen.</sys:String>
+
+    <sys:String x:Key="PublishModExcludeTitle">Dateien ausschließen</sys:String>
+    <sys:String x:Key="PublishModIncludeTitle">Dateien einschließen</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsTitle">Vorherige Version(en)</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsDescription">Die Bereitstellung früherer Versionen deines Mods ermöglicht die Verwendung der Delta-Komprimierung, eine Möglichkeit, kleinere Downloadgrößen zu ermöglichen, wenn du von einer früheren Version auf eine neuere Version eines Mods aktualisierst.</sys:String>
+    <sys:String x:Key="PublishModButtonText">Veröffentlichen</sys:String>
+
+    <sys:String x:Key="PublishSelectConfigTitle">Wähle eine Mod-Konfiguration aus (ModConfig.json).</sys:String>
+    <sys:String x:Key="PublishSelectConfigFileTypeName">Konfiguration</sys:String>
+
+    <sys:String x:Key="ErrorInvalidModConfigTitle">Ungültige Mod-Konfiguration</sys:String>
+    <sys:String x:Key="ErrorInvalidModConfigDescription">Die bereitgestellte Datei stellt keine gültige Mod-Konfiguration dar.</sys:String>
+
+    <sys:String x:Key="ErrorNewerModConfigVersionTitle">Ungültige Mod-Version</sys:String>
+    <sys:String x:Key="ErrorNewerModConfigVersionDescription">Die bereitgestellte Mod-Version ist neuer oder entspricht bereits der zu veröffentlichenden Version.</sys:String>
+
+    <sys:String x:Key="ErrorPublishModIdMismatch">Ungültige Mod-ID</sys:String>
+    <sys:String x:Key="ErrorPublishModIdDescription">Die angegebene Mod-ID stimmt nicht mit der ID des zu veröffentlichenden Mods überein.</sys:String>
+
+    <sys:String x:Key="PublishModRegexSectionTitle">Dateieinschlüsse &amp; Ausschlüsse</sys:String>
+    <sys:String x:Key="PublishModRegexTitle">Regulärer Ausdruck</sys:String>
+    <sys:String x:Key="PublishModRegexTest">Regulären Ausdrücke testen</sys:String>
+    <sys:String x:Key="PublishModRegexDialogTitle">Ausgeschlossene Dateien</sys:String>
+
+    <sys:String x:Key="PublishModCompSettings">Komprimierungseinstellungen</sys:String>
+    <sys:String x:Key="PublishModCompLevel">Komprimierungsstufe</sys:String>
+    <sys:String x:Key="PublishModCompMethod">Komprimierungsmethode</sys:String>
+
+    <sys:String x:Key="PublishOutputFolder">Ausgabeordner</sys:String>
+    <sys:String x:Key="PublishSetOutputFolder">Ausgabeordner festlegen</sys:String>
+
+    <sys:String x:Key="PublishAutoDelta">Automatisches Delta</sys:String>
+    <sys:String x:Key="PublishAutoDeltaDescription">Erstellt automatisch ein Delta-Paket aus der letzten Version.&#x0a;Vergiss nicht, den Ausgabepfad auf den einer vorhandenen Version festzulegen.</sys:String>
+
+    <sys:String x:Key="PublishAutoDeltaWarningTitle">Automatische Delta-Warnung</sys:String>
+    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat">Die Release-Metadatendatei wurde im Ausgabeordner nicht gefunden. Erwäge ggf. eine Umbenennung der Datei.&#x0a;Erwarteter Dateiname: {0}.</sys:String>
+
+    <sys:String x:Key="PublishFileNameTooltip">Name der generierten .7z-Paketdatei</sys:String>
+
+    <sys:String x:Key="PublishModTutorial">Publishing Tutorial</sys:String>
+    <sys:String x:Key="PublishModWarningTitle">Update Support Warnung</sys:String>
+    <sys:String x:Key="PublishModWarningDescription">Für diesen Mod sind keine Update-Einstellungen konfiguriert, was bedeutet, dass er keine automatischen Updates erhalten kann.&#x0a;Lies vor der Veröffentlichung bitte das „Tutorial zum Veröffentlichen“, um herauszufinden, wie du dies einrichten kannst.</sys:String>
+
+    <!-- Update 1.12.0: Edit Mod User Config -->
+    <sys:String x:Key="TitleEditModUserConfig">Benutzerkonfiguration bearbeiten</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleases">Betaversionen erlauben</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleasesTooltip">Ermöglicht das Herunterladen früherer Versionen des Mods.</sys:String>
+
+    <!-- Update 1.12.0: Fast Package Download Experience -->
+    <sys:String x:Key="PackageDownloaderDownloadCompleteTitle">Download abgeschlossen</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadCompleteDescription">Download abgeschlossen.&#x0a;Dieses Fenster wird in wenigen Sekunden automatisch geschlossen.</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadingDependencies">Abhängigkeiten werden herunterladen</sys:String>
+
+    <!-- Update 1.12.0: Extended Download Mods Menu -->
+    <sys:String x:Key="DownloadPackagesSource">Quelle</sys:String>
+    <sys:String x:Key="DownloadPackagesAll">Alle Quellen</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Application -->
+    <sys:String x:Key="AddAppModSources">Mod-Download-Quellen</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Application -->
+    <sys:String x:Key="AddAppRepoBadExecutable">Falsche ausführbare Datei</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashTitle">Nicht übereinstimmender Hash</sys:String>
+    <sys:String x:Key="AddAppRepoWarningTitle">Warnung</sys:String>
+
+    <sys:String x:Key="AddAppRepoBadHashDesc1">Die ausführbare Hauptdatei (EXE) der Anwendung ist geändert oder hat eine andere Version als erwartet.</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashDesc2">Bitte beachte, dass sich möglicherweise nicht alle Mods wie erwartet verhalten. Erwäge die in der obigen Nachricht enthaltenen Anweisungen (falls vorhanden) zu befolgen.</sys:String>
+
+    <sys:String x:Key="AddAppRepoWarningDesc1">Ein schneller Scan des Spieleverzeichnisses hat die folgenden Warnungen ergeben:</sys:String>
+    <sys:String x:Key="AddAppRepoWarningDesc2">Bitte beachte, dass sich möglicherweise nicht alle Mods wie erwartet verhalten. Befolge gegebenenfalls die Anweisungen in den obigen Warnungen (falls vorhanden)..</sys:String>
+
+    <sys:String x:Key="AddAppRepoSelectGameDialogTitle">Spiel auswählen</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc1">Bitte wähle dein gewünschtes Spiel aus der folgenden Liste aus und drücke OK.</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc2">Wenn dein Spiel nicht in der Liste enthalten ist, wähle bitte „Anderes Spiel“ aus.</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogOtherGame">Anderes Spiel</sys:String>
+
+    <sys:String x:Key="AddAppRepoTestButton">Community Konfiguration testen</sys:String>
+    <sys:String x:Key="AddAppRepoTestButtonTooltip">Ermöglicht dir, die Anwendungskonfiguration zu testen, bevor du sie an den Reloaded Community-Index sendest.</sys:String>
+
+    <sys:String x:Key="AddAppRepoTestJsonSelectTitle">JSON-Datei auswählen</sys:String>
+    <sys:String x:Key="AddAppRepoTestJsonSelectFilter">Community Konfiguration</sys:String>
+
+    <!-- Update 1.18.0: Application Menu Tooltips -->
+    <sys:String x:Key="ApplicationTooltipCreateShortcutDescription">Speichert eine Verknüpfung, die zum Starten der modifizierten App ohne Reloaded Launcher verwendet werden kann.</sys:String>
+    <sys:String x:Key="ApplicationTooltipLoadModSet">Lädt eine Liste der aktivierten Mods.</sys:String>
+    <sys:String x:Key="ApplicationTooltipSaveModSet">Speichert die aktuelle Liste der aktivierten Mods.</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessSysDescription">Du kannst mich verwenden, um Reloaded in dieses Programm zu laden.</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessRldDescription">Du kannst mich verwenden, um aktuell geladene Mods zu verwalten.</sys:String>
+
+    <!-- Update 1.19.0: Configure Mod Menu Reset -->
+    <sys:String x:Key="ConfigureModDialogReset">Zurücksetzen</sys:String>
+    <sys:String x:Key="ConfigureModDialogResetDescription">Setzt die Konfigurationswerte auf ihre Standardwerte zurück.&#x0a;[Hinweis: Erfordert Mod-Unterstützung, kontaktiere den Autor, wenn es nicht funktioniert]</sys:String>
+
+    <!-- Update 1.19.0: Controller Support -->
+    <sys:String x:Key="LoaderSettingsControllerBtn">Controller-Konfiguration</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneName">Keine</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneDescription">Tut nichts.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnUpName">Hoch</sys:String>
+    <sys:String x:Key="ConfiguratorBtnUpDescription">Navigiert im Menü nach oben.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDownName">Runter</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDownDescription">Navigiert im Menü nach unten.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLeftName">Links</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLeftDescription">Navigiert im Menü nach links.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnRightName">Rechts</sys:String>
+    <sys:String x:Key="ConfiguratorBtnRightDescription">Navigiert im Menü nach rechts.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnAcceptName">Akzeptieren</sys:String>
+    <sys:String x:Key="ConfiguratorBtnAcceptDescription">Klickt auf eine Schaltfläche.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDeclineName">Rückgang</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDeclineDescription">Schließt das aktuelle Nicht-Hauptfenster.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnNextPageName">Nächste Seite</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNextPageDescription">Navigiert in Fenstern mit mehreren Seiten zur nächsten Seite.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLastPageName">Letzte Seite</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLastPageDescription">Navigiert in Fenstern mit mehreren Seiten zur vorherigen Seite.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnIncrementName">Inkrement</sys:String>
+    <sys:String x:Key="ConfiguratorBtnIncrementDescription">Addiert +1 zum aktuellen Wert eines UI-Elements.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDecrementName">Verringern</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDecrementDescription">Entfernt 1 vom aktuellen Wert eines UI-Elements.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnModifierName">Modifikator</sys:String>
+    <sys:String x:Key="ConfiguratorBtnModifierDescription">Ermöglicht alternatives Verhalten für einige UI-Elemente.&#x0a;Beispielsweise kann Mod+Auf verwendet werden, um die Mod-Reihenfolge neu zu ordnen.</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightName">Menü links/rechts [Stick]</sys:String>
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightDescription">Navigiert im Menü nach links/rechts</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownName">Menü auf/ab [Stick]</sys:String>
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownDescription">Navigiert im Menü nach oben/unten</sys:String>
+
+    <sys:String x:Key="ConfiguratorCustomStringMainConfig">Hauptkonfiguration</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
+    <sys:String x:Key="ConfiguratorCustomStringTrigger">Trigger</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
+    <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Verwende dies bei Zuordnung zum Controller-Trigger</sys:String> <!-- Displays in description of trigger bindings. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Controller Konfiguration</sys:String> <!-- Name of the input configurator window. -->
+
+    <sys:String x:Key="ConfiguratorLibCustomStringNew">Neu</sys:String> <!-- "New" Used for button that adds values. -->
+    <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Linksklick weist eine neue Bindung zu.&#x0a;Mittelklick kehrt den Wert um.&#x0a;Rechtsklick löscht die Zuordnung!&#x0a;! zeigt an, dass der Wert invertiert ist.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
+    <sys:String x:Key="ConfiguratorLibCustomStringTimeout">Auszeit</sys:String> <!-- Name of the input configurator window. -->
+
+    <!-- Update 1.20.0: Server as Separate Mod -->
+    <sys:String x:Key="ReloadedProcessNoticeNew">Erfordert die Aktivierung des Mods „Reloaded II Server“ mit dem LiteNetLib-Host.&#x0a;Lade es über das Menü „Mods herunterladen“ herunter.</sys:String>
+    <sys:String x:Key="ReloadedProcessState">Status</sys:String> <!-- Is the mod running or paused? -->
+
+    <!-- Update 1.20.0: New Wine Run Dialog -->
+    <sys:String x:Key="WineCompatibilityNoticeTitleNew">Von Wine starten</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeHeader_1">Wenn du Reloaded in Wine ausführst, beachte bitte Folgendes:</sys:String>
+    
+    <sys:String x:Key="WineCompatibilityNoticeList_1">- Das Spiel wird mit derselben Wine/Proton-Konfiguration wie dieser Launcher gestartet.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_2_1">- Wenn dies nicht gewünscht ist</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_2_2">ASI Lader bereitstellen</sys:String> <!-- Hyperlink-->
+    <sys:String x:Key="WineCompatibilityNoticeList_2_3">und starte dein Spiel von außerhalb des Launchers.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_3_1">- Das Ausführen mit Proton erfordert einige zusätzliche Schritte,</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_3_2">Bitte beachte das Wiki.</sys:String> <!-- Hyperlink-->
+
+    <sys:String x:Key="WineCompatibilityNoticeFooter_1">Für weitere Hilfe, bitte</sys:String> <!-- Start of footer, continued below. -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_2">sieh im Wiki nach</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_3">oder</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeFooter_4">spreche ein Problem auf GitHub an.</sys:String>  <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <sys:String x:Key="WineCompatibilityNoticeOkNew">Anwendung starten</sys:String>
+
+    <!-- Update 1.20.0: Extended Publish Options -->
+    <sys:String x:Key="PublishModReadmeSectionTitle">Liesmich &amp; Änderungsprotokoll</sys:String>
+    <sys:String x:Key="PublishModReadmeSet">Liesmich-Datei festlegen</sys:String>
+    <sys:String x:Key="PublishModReadmeTooltip">Ermöglicht dir die Angabe einer Liesmich-Datei.&#x0a;Für die Beschreibung im Menü „Mods herunterladen“ werden Liesmich-Dateien verwendet.&#x0a;Verwendet Markdown. Weitere Informationen findest du im Wiki.</sys:String> <!-- Displays on Hover -->
+    <sys:String x:Key="PublishModChangelogSet">Änderungsprotokoll-Datei festlegen</sys:String>
+    <sys:String x:Key="PublishModChangelogTooltip">Ermöglicht dir die Angabe einer Änderungsprotokolldatei.&#x0a;Änderungsprotokolle werden im Menü „Mods herunterladen“ und im Update-Dialog verwendet.&#x0a;Verwendet Markdown. Weitere Informationen findest du im Wiki.</sys:String>
+
+    <sys:String x:Key="PublishSelectMarkdownTitle">Markdown-Datei auswählen (*.md).</sys:String>
+    <sys:String x:Key="PublishSelectMarkdownTypeName">Markdown Datei</sys:String>
+
+    <!-- Update 1.20.0: Revamped Downloads Menu -->
+    <sys:String x:Key="DownloadsMenuNuGetButton">NuGet</sys:String>
+
+    <sys:String x:Key="DownloadsPackagePreviewProjectUrl">Projektseite</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewClose">Schließen</sys:String>
+
+    <sys:String x:Key="DownloadsPackageSourceTooltip">Mod von: </sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewModAuthorTooltip">Mod Autor</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewLikeCountTooltip">Gefällt mir Anzahl</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewDownloadCountTooltip">Download Anzahl</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewViewCountTooltip">Ansichten</sys:String> <!-- Number of Views -->
+    <sys:String x:Key="DownloadsPackagePreviewPublishDateTooltip">Letzte Aktualisierung</sys:String> <!-- Shows on hover -->
+
+    <!-- Update 1.20.0: Self Runtime Update -->
+    <sys:String x:Key="RuntimeUpdateRequiredTitle">Laufzeit Update Erforderlich</sys:String>
+    <sys:String x:Key="RuntimeUpdateRequiredDescription">Für die neue Version von reloaded ist ein .NET-Laufzeit-Update erforderlich.&#x0a;Der Download beginnt, nachdem dieses Feld geschlossen wurde.&#x0a;Klicke bitte auf „Ja“, wenn Dialogfelder zur Benutzerkontensteuerung angezeigt werden.</sys:String>
+
+    <!-- Update 1.20.0: Extended Mod Update Dialog -->
+    <sys:String x:Key="UpdateModModName">Mod-Name</sys:String>
+    <sys:String x:Key="UpdateModModEnabled">Update?</sys:String>
+
+    <!-- Update 1.20.0: Adding Project URL -->
+    <sys:String x:Key="CreateModDialogProjectUrl">Webseite</sys:String>
+    <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">Vollständiger HTTP(s)-Link zu Ihrer Website.</sys:String> <!-- Shown as a placeholder -->
+    <sys:String x:Key="ModManagerContextVisitWebsite">Webseite besuchen</sys:String>
+
+    <!-- Update 1.21.0: Mod Packs: Dialog -->
+    <sys:String x:Key="CreateModPackTitle">Mod-Pack erstellen</sys:String>
+
+    <sys:String x:Key="CreateModPackNote1">Es werden nur berechtigte Mods angezeigt.</sys:String>
+    <sys:String x:Key="CreateModPackNote2">Mods müssen Updates unterstützen, um berechtigt zu sein.</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <!-- Update 1.21.0: Mod Packs: Editor -->
+    <sys:String x:Key="EditModPackTitle">Mod-Pack bearbeiten</sys:String>
+
+    <sys:String x:Key="ModPackImageTooltip">Hinweis: Die Bilder in diesem Karussell werden während der Installation in der richtigen Größe angezeigt.&#x0a;Du kannst alle Aspektprobleme ignorieren.</sys:String>
+    <sys:String x:Key="ModPackImageCaption">Bildbeschreibung</sys:String>
+
+    <sys:String x:Key="ModPackClickToEdit">Zum Bearbeiten anklicken</sys:String>
+    <sys:String x:Key="ModPackAddMod">Mod hinzufügen</sys:String>
+    <sys:String x:Key="ModPackAddModTooltip">Fügt diesem Paket einen Mod hinzu.&#x0a;Hinweis: Dies kann eine Weile dauern, wenn viele Bilder vorhanden sind.</sys:String>
+    <sys:String x:Key="ModPackRemoveMod">Mod entfernen</sys:String>
+    <sys:String x:Key="ModPackRemoveModTooltip">Entfernt den zuletzt ausgewählten Mod aus diesem Paket.</sys:String>
+    <sys:String x:Key="ModPackSaveReadme">Liesmich speichern</sys:String>
+    <sys:String x:Key="ModPackSetReadme">Liesmich festlegen</sys:String>
+    <sys:String x:Key="ModPackAddImage">Bild hinzufügen</sys:String>
+    <sys:String x:Key="ModPackRemoveImage">Bild entfernen</sys:String>
+    <sys:String x:Key="ModPackLoadExisting">Vorhandenes Paket laden</sys:String>
+    <sys:String x:Key="ModPackSavePack">Paket speichern</sys:String>
+    <sys:String x:Key="ModPackPreviewPack">Paket testen</sys:String>
+
+    <sys:String x:Key="ModPackPackNameTooltip">Name des Pakets, wie er während der Installation angezeigt wird.</sys:String>
+    <sys:String x:Key="ModPackModNameTooltip">Name des Mods, wie er während der Installation angezeigt wird.</sys:String>
+    <sys:String x:Key="ModPackImageAddTooltip">Fügt dem Pack/Mod ein neues Bild hinzu.</sys:String>
+    <sys:String x:Key="ModPackImageRemoveTooltip">Entfernt das aktuell sichtbare Bild.</sys:String>
+    <sys:String x:Key="ModPackDescriptionTooltip">Kurze Beschreibung des Mods erste Zeile. Der Benutzer kann während der Installation erweitern, um die vollständige Liesmich-Datei anzuzeigen.</sys:String>
+    <sys:String x:Key="ModPackSetReadmeTooltip">Aktualisiert die vollständige Liesmich-Datei des Mods/Pakets. Die Liesmich-Datei verwendet das Markdown-Format (.md)..</sys:String>
+    <sys:String x:Key="ModPackSaveReadmeTooltip">Speichert die Liesmich-Datei zur Bearbeitung in einem externen Editor auf der Festplatte.</sys:String>
+
+    <sys:String x:Key="ModPackSelectExistingTitle">Mod Pack auswählen (*.r2pack).</sys:String>
+    <sys:String x:Key="ModPackSelectExistingTypeName">R2 Mod Pack</sys:String>
+    <sys:String x:Key="ErrorFailedToSaveModPack">Mod Pack konnte nicht gespeichert werden</sys:String>
+
+    <!-- Update 1.21.0: Mod Packs: Installer -->
+    <sys:String x:Key="InstallModPackTitle">Mod Pack installieren</sys:String>
+
+    <sys:String x:Key="InstallModPackEnableHeader">Herunterladen?</sys:String>
+    <sys:String x:Key="InstallModPackErrorDownloadFail">Einige Mods konnten nicht heruntergeladen werden</sys:String>
+
+    <sys:String x:Key="InstallModPackConfirmTitle">Mods zum herunterladen bestätigen</sys:String>
+    <sys:String x:Key="InstallModPackConfirmDescription">Nachdem du noch einmal überprüft hast was du möchtest, starte den Download.</sys:String>
+
+    <sys:String x:Key="InstallModPackDownloading">wird heruntergeladen {0}...</sys:String> <!-- {0} is replaced by mod name -->
+    <sys:String x:Key="InstallModPackStart">Start</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackPrevious">Zurückgehen</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackStartDownload">Herunterladen starten</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackInstall">Diesen Mod installieren</sys:String> <!-- Advances Page -->
+    <sys:String x:Key="InstallModPackSkip">Diesen Mod überspringen</sys:String> <!-- Advances Page -->
+
+    <!-- Update 1.21.0: Generic Image Selector -->
+    <sys:String x:Key="ImageSelectorTitle">Bild auswählen.</sys:String>
+    <sys:String x:Key="ImageSelectorFilter">Bild</sys:String>
+
+    <!-- Update 1.22.0: Download Package Settings -->
+    <sys:String x:Key="DownloadPackagesSettingHide">Installierte ausblenden</sys:String>
+    <sys:String x:Key="DownloadPackagesSettingHideTooltip">Versteckt nach Möglichkeit bereits installierte Mods.&#x0a;(Unterstützt NuGet &amp; 'Veröffentliche' exportierte Mods.)</sys:String>
+
+    <!-- Update 1.22.6: Errors -->
+    <sys:String x:Key="ErrorAddApplicationCantReadSymlink">Der endgültige Pfad der Datei konnte nicht aufgelöst werden (Symlink-Erkennung).
+Aufgrund von DRM oder seltsamen Dateisystem-Spielereien könnte ein Fehler auftreten. Kopiere in diesem Fall den EXE-Pfad aus dem Loader-Protokoll in das Menü „Anwendung bearbeiten“..</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGetVersionInfo">Datei-Metadaten/Versionsinformationen konnten nicht von der Festplatte abgerufen werden. Wir werden unser Bestes geben, um etwas zu erraten.
+(Berichten zufolge kann dies bei einigen exotischen Netzwerkkonfigurationen [z.B CIFS] passieren. Wenn keine weiteren Probleme auftreten, sollte alles in Ordnung sein.).</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGeneral">Beim Hinzufügen der Anwendung sind Fehler aufgetreten: Mögliche Ursachen sind:
+- Ungewöhnliches Dateisystem-Setup (Anwendung auf Netzwerkfreigabe usw.)
+- Du hast nicht das Recht, auf die Datei zuzugreifen.
+- Microsoft DRM (MS Store/GamePass).</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFile">Die EXE-Datei konnte nicht gelesen werden. Dies kann verschiedene Gründe haben.
+- DRM (Microsoft Store/GamePass).
+- Du hast nicht das Recht, auf die EXE-Datei zuzugreifen.
+- Die Datei wurde von ihrem ursprünglichen Speicherort verschoben.
+
+Wenn du mit MS Store/GamePass arbeitest, musst du den ASI LOADER aufgrund von DRM (Verschlüsselung!!) höchstwahrscheinlich manuell bereitstellen.
+und starte dann das Programm direkt per EXE. Frag deine Community, wenn du weitere Hilfe benötigst.
+
+DRM: 'Du wirst nichts besitzen und glücklich sein.'
+</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">Die EXE-Datei konnte nicht gelesen werden, wenn ASI Loader bereitgestellt werden kann. Dies kann verschiedene Gründe haben.
+- DRM (Microsoft Store/GamePass).
+- Du hast nicht das Recht, auf die EXE-Datei zuzugreifen.
+- Die Datei wurde von ihrem ursprünglichen Speicherort verschoben.</sys:String>
+
+    <!-- Update 1.23.0: Mod Packs Extras -->
+    <sys:String x:Key="InstallModPackInstallAll">Alle Mods installieren</sys:String> <!-- Click and it installs all. -->
+    
+    <!-- Update 1.23.0: Search Sorting Options -->
+    <sys:String x:Key="SearchOptionSortNone">Keine</sys:String> 
+    <sys:String x:Key="SearchOptionSortLastModified">Zuletzt bearbeitet</sys:String> 
+    <sys:String x:Key="SearchOptionSortDownloads">Downloads</sys:String> 
+    <sys:String x:Key="SearchOptionSortLikes">Gefällt mir</sys:String> 
+    <sys:String x:Key="SearchOptionSortViews">Ansichten</sys:String> 
+    
+    <sys:String x:Key="SearchOptionAscending">Aufsteigend</sys:String> 
+    <sys:String x:Key="SearchOptionDescending">Absteigend</sys:String> 
+    
+    <sys:String x:Key="SearchOptionsTooltip">Bitte beachte, dass einige Downloadquellen das Sortieren/Filtern möglicherweise nicht unterstützen.</sys:String> 
+    
+    <!-- Update 1.23.0: Publish Important Note -->
+    <sys:String x:Key="PublishModNotice">Lade ALLE Dateien so hoch, wie sie vom Herausgeber erstellt wurden. Benenne keine davon um.
+Weitere Informationen findest du im Tutorial. Vergiss nicht, das richtige Veröffentlichungsziel festzulegen.</sys:String> 
+    
+    <!-- Note for translators: Please update ErrorPathToApplicationInvalid if you get down this far, message was updated. -->
+
+    <!-- Update 1.23.0: Tags -->
+    <sys:String x:Key="EditModAddTag">Etikett hinzufügen</sys:String> 
+    <sys:String x:Key="EditModSelectPresetTagTooltip">Ein voreingestelltes Etikett auswählen</sys:String> 
+    <sys:String x:Key="EditModAddTagPlaceHolder">Etikettname hier (oder Voreinstellung auswählen 👉)</sys:String> 
+    <sys:String x:Key="ConfigureModsSelectTagTooltip">Nach Etikett filtern</sys:String> 
+    
+    
+    <!-- Update 1.23.8: Tags -->
+    <sys:String x:Key="AddAppWorkingDirectory">Arbeitsverzeichnis</sys:String>
+   
+</ResourceDictionary>

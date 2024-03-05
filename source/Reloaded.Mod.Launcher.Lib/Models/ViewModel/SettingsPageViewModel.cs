@@ -33,11 +33,6 @@ public class SettingsPageViewModel : ObservableObject
     public string Copyright { get; set; }
 
     /// <summary>
-    /// The .NET Runtime version the Launcher is running on.
-    /// </summary>
-    public string RuntimeVersion { get; set; }
-
-    /// <summary>
     /// Configuration for the mod loader.
     /// </summary>
     public LoaderConfig LoaderConfig { get; set; }
@@ -73,8 +68,10 @@ public class SettingsPageViewModel : ObservableObject
         }
         catch (Exception) { /* Non-critical, could happen on CIFS file share, we can ignore. */ }
         
-        Copyright = Regex.Replace(copyRightStr, @"\|.*", $"| {Version.GetReleaseVersion()!.ToNormalizedString()}");
-        RuntimeVersion = $"Core: {RuntimeInformation.FrameworkDescription}";
+        copyRightStr = Regex.Replace(copyRightStr, @"\|.*", $"| {Version.GetReleaseVersion()!.ToNormalizedString()}");
+        copyRightStr += $" | {RuntimeInformation.FrameworkDescription}";
+        Copyright = copyRightStr;
+
         ActionWrappers.ExecuteWithApplicationDispatcher(() =>
         {
             SelectCurrentLanguage();

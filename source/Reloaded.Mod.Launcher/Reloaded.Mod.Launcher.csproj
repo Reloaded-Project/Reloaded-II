@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
 	  <LangVersion>preview</LangVersion>
 	  <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
-    <Version>1.23.7</Version>
+    <Version>1.25.11</Version>
     <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.ToString("s")) | $(Version)</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
@@ -17,6 +17,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <NoWarn>CS0067</NoWarn>
+      <DebugType>portable</DebugType>
   </PropertyGroup>
 	
   <ItemGroup>
@@ -63,6 +64,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="gong-wpf-dragdrop" Version="3.1.1" />
     <PackageReference Include="HandyControl" Version="3.2.0-reloaded-1.1.0" />
     <PackageReference Include="HandyControl.Lang.en" Version="3.3.0" />

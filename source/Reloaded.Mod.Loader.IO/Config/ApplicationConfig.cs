@@ -20,6 +20,7 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     public string AppIcon               { get; set; } = DefaultIcon;
     public bool   AutoInject            { get; set; } = false;
     public string[] EnabledMods         { get; set; }
+    public string WorkingDirectory      { get; set; }
 
     // V2
 
@@ -27,6 +28,10 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     /// Data stored by plugins. Maps a unique string key to arbitrary data.
     /// </summary>
     public Dictionary<string, object> PluginData { get; set; } = new Dictionary<string, object>();
+
+    // V3 (Launcher only right now)
+    public string[] SortedMods { get; set; }
+    public bool PreserveDisabledModOrder { get; set; } = true; // <= default to 'true' for new configs, and 'false' for configs on older versions.
 
     /*
        --------------
@@ -36,15 +41,17 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
 
     public ApplicationConfig() { }
 
-    public ApplicationConfig(string appId, string appName, string appLocation)
+    public ApplicationConfig(string appId, string appName, string appLocation, string workingDirectory = null)
     {
         AppId = appId;
         AppName = appName;
         AppLocation = appLocation;
-        EnabledMods = EmptyArray<string>.Instance; 
+        EnabledMods = EmptyArray<string>.Instance;
+        SortedMods = EmptyArray<string>.Instance;
+        WorkingDirectory = workingDirectory;
     }
 
-    public ApplicationConfig(string appId, string appName, string appLocation, string[] enabledMods) : this(appId, appName, appLocation)
+    public ApplicationConfig(string appId, string appName, string appLocation, string[] enabledMods, string workingDirectory = null) : this(appId, appName, appLocation, workingDirectory)
     {
         EnabledMods = enabledMods;
     }
@@ -184,6 +191,8 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
         return Path.GetFullPath(finalPath);
     }
 
+
+
     // Reflection-less JSON
     public static JsonTypeInfo<ApplicationConfig> GetJsonTypeInfo(out bool supportsSerialize)
     {
@@ -209,6 +218,7 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     public void SanitizeConfig()
     {
         EnabledMods ??= EmptyArray<string>.Instance;
+        SortedMods ??= EmptyArray<string>.Instance;
     }
 
     public override int GetHashCode() => (AppId != null ? AppId.GetHashCode() : 0);
