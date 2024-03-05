@@ -265,7 +265,7 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
         if (modDirectory == null)
             modDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).GetModConfigDirectory();
 
-        var modConfigs = ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, int.MaxValue, 2);
+        var modConfigs = ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, int.MaxValue, 2).GroupBy(x => x.Config.ModId).Select(x => x.First()).ToList();
         foreach (var cfg in modConfigs)
         {
             cfg.Config.RefreshSubdirectoryPaths(modDirectory, cfg.Path);
