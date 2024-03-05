@@ -1,0 +1,694 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xml:space="preserve">
+
+    <!-- This file contains the Chinese Language Text for Reloaded II -->
+    <!--  allows for new line. &#x0a; is new line (ASCII character). -->
+
+    <!-- Page Titles -->
+    <sys:String x:Key="TitleAddApplication">添加应用程序</sys:String>
+    <sys:String x:Key="TitleEditApplication">编辑应用程序</sys:String>
+    <sys:String x:Key="TitleManageMods">管理 Mods</sys:String>
+    <sys:String x:Key="TitleDownloadMods">下载 Mods</sys:String>
+    <sys:String x:Key="TitleLoaderSettings">Mod 加载器设置</sys:String>
+    <sys:String x:Key="TitleMainPage">主页面</sys:String>
+    <sys:String x:Key="TitleSearchApplications">搜索/筛选应用程序</sys:String> <!-- Sidebar button to search applications. Removed. Might be brought back someday. -->
+    <sys:String x:Key="TitleSplashPage">准备 Reloaded II..</sys:String>
+
+    <!-- Splash Screen: Progress Messages -->
+    <sys:String x:Key="SplashCreatingDefaultConfig">正在创建默认配置</sys:String>
+    <sys:String x:Key="SplashCleaningConfigurations">正在清除应用程序/加载器/Mod 配置</sys:String>
+    <sys:String x:Key="SplashPreparingResources">正在配置资源</sys:String>
+    <sys:String x:Key="SplashLoadCompleteIn">加载完成于：</sys:String>
+    <sys:String x:Key="SplashCreatingTemplates">正在创建模板</sys:String> <!-- Unused as of 1.8.0 -->
+    <sys:String x:Key="SplashCheckingForUpdates">正在检查更新</sys:String>
+    <sys:String x:Key="SplashRunningSanityChecks">正在进行检查</sys:String>
+
+    <!-- Add Application Page -->
+    <sys:String x:Key="AddAppImageTooltip">点击此图片来导入一个自定义的 LOGO。</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">选择要用作图标的图片。</sys:String>
+    <sys:String x:Key="AddAppImageSelectorFilter">图片</sys:String>
+
+    <sys:String x:Key="AddAppNewButton">新增</sys:String>
+    <sys:String x:Key="AddAppDeleteButton">删除</sys:String>
+
+    <sys:String x:Key="AddAppName">应用程序名称</sys:String>
+    <sys:String x:Key="AddAppLocation">可执行文件位置</sys:String>
+    <sys:String x:Key="AddAppArguments">命令行参数</sys:String>
+
+    <sys:String x:Key="AddAppAdvancedOptions">高级工具与选项</sys:String>
+    <sys:String x:Key="AddAppCreateShortcut">创建快捷方式</sys:String>
+    <sys:String x:Key="AddAppAutoInject">自动注入</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage">注意：虽然提供了自动注入功能，但不推荐使用，因为无法保证 Mod 会在应用程序之前执行代码。&#x0a;请改用 Reloaded 的常规「启动应用程序」功能或 GitHub 文档中描述的「DLL 加载器」方法。&#x0a;如果使用自动注入模式，Mod 不工作的相关错误报告请勿提交。</sys:String>
+
+    <sys:String x:Key="AddAppExecutableTitle">选择一个应用程序来创建配置。</sys:String>
+    <sys:String x:Key="AddAppExecutableFilter">应用程序可执行文件</sys:String>
+
+    <sys:String x:Key="AddAppShortcutCreatedTitle">已创建快捷方式</sys:String>
+    <sys:String x:Key="AddAppShortcutCreatedMessage">快捷方式已创建于：</sys:String>
+
+    <!-- Mod Manager Page -->
+    <sys:String x:Key="ModManagerSearchMods">搜索 Mods</sys:String>
+    <sys:String x:Key="ModManagerSearchApps">搜索应用程序</sys:String>
+    <sys:String x:Key="ModManagerExtraOptions">额外选项</sys:String>
+    <sys:String x:Key="ModManagerOpenModDirectory">打开 Mod 目录</sys:String>
+    <sys:String x:Key="ModManagerConvertToNuget">转换为 NuGet 格式</sys:String>
+    <sys:String x:Key="ModManagerManageDependencies">管理依赖项</sys:String>
+    <sys:String x:Key="ModManagerSelectMod">选择要修改详情的 Mod。</sys:String>
+    <sys:String x:Key="ModManagerSelectApp">选择与此 Mod 兼容的应用程序。</sys:String>
+
+    <!-- Mod Manager: Set Dependencies -->
+    <sys:String x:Key="TitleSetDependenciesDialog">设置 Mod 依赖项</sys:String>
+
+    <!-- Mod Manager: Create Mod Page | Edit Mod Page since 1.12.0 -->
+    <sys:String x:Key="TitleCreateModDialog">创建 Mod</sys:String>
+    <sys:String x:Key="CreateModDialogSave">创建 Mod</sys:String>
+    <sys:String x:Key="CreateModDialogId">唯一 Mod ID</sys:String>
+    <sys:String x:Key="CreateModDialogName">名称</sys:String>
+    <sys:String x:Key="CreateModDialogAuthor">作者</sys:String>
+    <sys:String x:Key="CreateModDialogVersion">版本</sys:String>
+    <sys:String x:Key="CreateModDialogDescription">简短描述</sys:String>
+    <sys:String x:Key="CreateModDialogDependencies">Mod 依赖项</sys:String>
+
+    <sys:String x:Key="CreateModDialogImageSelectorTitle">为 Mod 选择一个自定义的 Logo</sys:String>
+    <sys:String x:Key="CreateModDialogImageSelectorFilter">图片</sys:String>
+
+    <sys:String x:Key="TitleCreateModNonUniqueId">非唯一 Mod ID</sys:String>
+    <sys:String x:Key="MessageCreateModNonUniqueId">您正在创建的 Mod 的 ModId 不是唯一的。&#x0a;请确保 ModId 的唯一性。</sys:String>
+
+    <!-- Mod Loader Settings -->
+    <sys:String x:Key="LoaderSettingsCleanup">清理配置</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupWarning">此操作对各种配置（应用、Mod 等）进行整理。&#x0a;整理功能包括从 Mod 的依赖项列表中移除不存在的 Mod 等。&#x0a;请注意，如果缺少任何依赖项、支持的应用程序等，它们将从配置文件中移除。</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupComplete">清理完成</sys:String>
+
+    <sys:String x:Key="LoaderSettingsAppsInstalled">已安装的应用程序：</sys:String>
+    <sys:String x:Key="LoaderSettingsModsInstalled">已安装的 Mods：</sys:String>
+    <sys:String x:Key="LoaderSettingsCompileDate">编译于：</sys:String>
+    <sys:String x:Key="LoaderSettingsAndDocumentation">用户指南 + 文档。</sys:String>
+    <sys:String x:Key="LoaderSettingsCopyright">Reloaded II 是一款根据 GNU GPL V3 许可证授权的自由软件</sys:String>
+    <sys:String x:Key="LoaderSettingsEnableAutomaticUpdates">自动更新</sys:String>
+    <sys:String x:Key="LoaderSettingsShowConsole">显示控制台</sys:String>
+    <sys:String x:Key="LoaderSettingsLoadAsynchronously">异步加载</sys:String>
+    <sys:String x:Key="LoaderSettingsWarning">Reloaded 是一款功能强大的软件，支持执行任意/自定义代码。请自行承担使用风险。</sys:String>
+
+    <!-- Application Entry -->
+    <sys:String x:Key="TitleApplication">应用中心</sys:String>
+    <sys:String x:Key="ApplicationTotalMods">Mods 总数</sys:String>
+    <sys:String x:Key="ApplicationOtherInstances">其他实例</sys:String>       <!-- Unused as of 1.7.0 -->
+    <sys:String x:Key="ApplicationReloadedInstances">Reloaded 实例</sys:String> <!-- Unused as of 1.7.0 -->
+
+    <!-- First Launch | Unused, Superseeded by 1.12.0 - New First Launch Experience -->
+    <sys:String x:Key="TitleFirstLaunch">欢迎使用 Reloaded II</sys:String> <!-- Unused as of 1.12.0 -->
+    <sys:String x:Key="FirstLaunchLineOne">这是您首次使用 Reloaded II。</sys:String>
+    <sys:String x:Key="FirstLaunchLineTwo">在开始之前，您可以考虑查看以下链接：</sys:String>
+    <sys:String x:Key="FirstLaunchLineDocumentation">文档</sys:String>
+    <sys:String x:Key="FirstLaunchLineUserguide">用户指南</sys:String>
+    <sys:String x:Key="FirstLaunchLineThree">您之后可以在 [Mod 加载器设置] 中找到这些链接。</sys:String>
+
+    <!-- Dialogs -->
+    <sys:String x:Key="MessageBoxButtonOK">确定</sys:String>
+    <sys:String x:Key="MessageBoxButtonCancel">取消</sys:String>
+
+    <!-- Non-Reloaded Process -->
+    <sys:String x:Key="TitleNonReloadedProcess">非 Reloaded 进程</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageOne">Reloaded 不管理这一特定进程。</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageTwo">您可以点击下面的按钮加载 Reloaded。</sys:String>
+    <sys:String x:Key="NonReloadedProcessInject">注入</sys:String>
+    <sys:String x:Key="NonReloadedProcessInjectWarning">注意：如果在应用程序运行且未暂停的情况下加载 Mod，可能并非所有Mod都能按预期工作。请不要因使用此功能而导致 Mod 无法工作而提交错误报告。</sys:String>
+
+    <!-- Reloaded Process -->
+    <sys:String x:Key="TitleReloadedProcess">Reloaded 进程</sys:String>
+
+    <!-- Application & SubMenus -->
+    <sys:String x:Key="TitleConfigureMods">Mods 配置</sys:String>
+    <sys:String x:Key="ApplicationLaunch">启动应用程序</sys:String>
+
+    <sys:String x:Key="ConfigureModsListItemTooltip">拖放项目以更改 Mod 的加载顺序。会依序从顶部至底部的方式开始依次加载。</sys:String>
+    <sys:String x:Key="ConfigureModsDummyText">使用 Reloaded 告诉您要下载一些 Mod。Reloaded-II 超酷！可爱即是正义，这是铁律！</sys:String>     <!-- Unused for now, will be used down the road. -->
+    <sys:String x:Key="ConfigureModsConfigure">Mod 配置</sys:String>
+    <sys:String x:Key="ConfigureModsOpenFolder">打开文件夹</sys:String>
+
+    <sys:String x:Key="LoadModSet">加载 Mod 集</sys:String>
+    <sys:String x:Key="SaveModSet">保存 Mod 集</sys:String>
+    <sys:String x:Key="LoadModSetDialogTitle">选择文件以加载 Mod 列表。</sys:String>
+    <sys:String x:Key="SaveModSetDialogTitle">选择路径以保存 Mod 列表。</sys:String>
+
+    <!-- Obsolete as of 1.12.0 onwards -->
+    <sys:String x:Key="LoadModSetIncompatibleTitle">兼容性警告</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage">您启用了与您的应用程序不兼容的 Mod:</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage2">点击「确定」将会启用这些 Mods。点击「取消」将会禁用这些 Mods。</sys:String>
+
+    <!-- Reloaded Process -->
+    <sys:String x:Key="ReloadedProcessResume">继续</sys:String>
+    <sys:String x:Key="ReloadedProcessSuspend">暂停</sys:String>
+    <sys:String x:Key="ReloadedProcessUnload">卸载</sys:String>
+    <sys:String x:Key="ReloadedProcessRefresh">刷新</sys:String>
+    <sys:String x:Key="ReloadedProcessLoadMod">加载 Mod</sys:String>
+    <sys:String x:Key="ReloadedProcessNotice">注意：此菜单主要供开发者使用。</sys:String>
+
+    <!-- Update Mod Dialog -->
+    <sys:String x:Key="UpdateModTitle">可用的 Mod 更新</sys:String>
+    <sys:String x:Key="UpdateModDownload">下载</sys:String>
+    <sys:String x:Key="UpdateModModId">Mod ID</sys:String>
+    <sys:String x:Key="UpdateModSize">大小（MB）</sys:String>
+    <sys:String x:Key="UpdateModOldVersion">旧版本</sys:String>
+    <sys:String x:Key="UpdateModNewVersion">新版本</sys:String>
+
+    <!-- Update Mod Confirmation Dialog -->
+    <sys:String x:Key="UpdateModConfirmTitle">应用程序运行中</sys:String>
+    <sys:String x:Key="UpdateModConfirmMessage">您目前有正在运行 Reloaded 的应用程序。&#x0a;更新将会下载，但是直到关闭所有应用程序之后才会应用。</sys:String>
+
+    <!-- Update Loader Dialog -->
+    <sys:String x:Key="UpdateLoaderTitle">更新可用</sys:String>
+    <sys:String x:Key="UpdateLoaderCurrentVersion">当前版本</sys:String>
+    <sys:String x:Key="UpdateLoaderNewVersion">新版本</sys:String>
+
+    <sys:String x:Key="UpdateLoaderChangelogUnavailable">没有可用的更新日志</sys:String>
+    <sys:String x:Key="UpdateLoaderChangelog">在 GitHub 上查看更新日志</sys:String>
+    <sys:String x:Key="UpdateLoaderUpdate">更新</sys:String>
+
+    <sys:String x:Key="UpdateLoaderRunningTitle">应用程序正在运行</sys:String>
+    <sys:String x:Key="UpdateLoaderRunningMessage">您有应用程序目前正在 Reloaded 中运行。&#x0a;无法进行更新，请关闭所有应用程序。</sys:String>
+    <sys:String x:Key="UpdateLoaderProcessList">进程列表</sys:String>
+
+    <!-- Download Mods Page -->
+    <sys:String x:Key="DownloadModsDownload">下载</sys:String>
+    <sys:String x:Key="DownloadModsDownloading">下载中</sys:String>
+    <sys:String x:Key="DownloadModsAlreadyDownloaded">已下载</sys:String>
+
+    <sys:String x:Key="DownloadModsVisitWebsite">访问网站</sys:String>
+    <sys:String x:Key="DownloadModsCheckUpdatesAndDependencies">检查更新和依赖项</sys:String>
+
+    <!-- No Update Dialog -->
+    <sys:String x:Key="NoUpdateDialogTitle">好耶！</sys:String>
+    <sys:String x:Key="NoUpdateDialogMessage">没有需要更新的 Mod！</sys:String>
+
+    <!-- Fetch Nuget Dialog | Obsolete since 1.12.0 but some strings still used. -->
+    <sys:String x:Key="FetchNugetTitle">下载包</sys:String>
+    <sys:String x:Key="FetchNugetMessage">以下包将会被安装：</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundMessage">以下包未找到：</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundAdvice">您需要自己找到它们 :/</sys:String>
+
+    <!-- Startup Failure -->
+    <sys:String x:Key="FailedToLaunchTitle">糟糕！</sys:String>
+    <sys:String x:Key="FailedToLaunchMessage">尝试加载 Reloaded-II 时发生错误。</sys:String>
+
+    <!-- Download Mod Archive -->
+    <sys:String x:Key="DownloadModArchiveTitle">下载 Mod 压缩包</sys:String>
+    <sys:String x:Key="DownloadModArchiveName">文件名称</sys:String>
+
+    <!-- WMI Administrator Message -->
+    <sys:String x:Key="RunAsAdminMessage">您需要以系统管理员权限执行此应用程序。&#x0a;需要管理员权限才能从 Windows 管理工具 (WMI) 接收应用程序启动/退出事件。&#x0a;开发者：以管理员身份运行您喜欢的集成开发环境（IDE），例如 Visual Studio。</sys:String>
+
+    <!-- Configure Mod Dialog -->
+    <sys:String x:Key="ConfigureModDialogTitle">Mod 配置</sys:String>
+    <sys:String x:Key="ConfigureModDialogSave">保存</sys:String>
+
+    <!-- Errors -->
+    <sys:String x:Key="ErrorError">错误</sys:String>     <!-- Just the word "Error" in native language. -->
+    <sys:String x:Key="ErrorUnknown">未知错误</sys:String>
+    <sys:String x:Key="ErrorPathNullOrEmpty">此应用程序的路径为空或未设置。请修正路径。</sys:String>
+    <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">无法获取要删除的 Mod 目录。</sys:String>
+    <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">无法获取要删除的应用程序目录。</sys:String>
+    <sys:String x:Key="ErrorLoaderNotFound">未找到。这可能是由于杀毒软件删除和/或在 GitHub 仓库中进行了破坏性更改所致。</sys:String> <!-- Loader DLL Name displays before this message -->
+    <sys:String x:Key="ErrorFailedToStartProcess">启动进程失败。这通常是由以下 3 个问题之一引起的：&#x0a;- EXE 的路径不正确（您是否移动了应用程序？）&#x0a;- 程序配置为以管理员身份运行（右键 -> 属性），但 Reloaded 正在用户模式下运行。&#x0a;- 来自例如防病毒软件的干扰。检查您的日志。&#x0a;以下是 Windows 返回的错误： </sys:String>
+    <sys:String x:Key="ErrorDllInjectionFailed">DLL 注入应用程序进程失败。</sys:String>
+    <sys:String x:Key="ErrorPathToApplicationInvalid">Reloaded 无法找到此程序的 EXE 文件。
+请考虑在「编辑应用程序」->「更新」中更新它。
+通常，这可能是因为：
+- 您移动了应用程序文件夹。
+- 应用程序文件夹已在更新后移动 (可能发生在 GamePass/UWP)。</sys:String>
+    <sys:String x:Key="ErrorCheckUpdatesFailed">检查更新失败。我们可能被 GitHub 限制，或者未连接到互联网。</sys:String>
+    <sys:String x:Key="ErrorGetProcAddress32Failed">警告：您可能缺少 x86 版本的 .NET Core，32 位应用程序将无法工作。&#x0a;请重新检查下载页面上列出的要求。&#x0a;实际错误：获取 x86 的 GetProcAddress 地址失败。</sys:String>
+
+    <!-- Asi Loader -->
+    <sys:String x:Key="AsiLoaderInstall">部署 ASI Loader</sys:String>
+    <sys:String x:Key="AsiLoaderDialogTitle">ASI Loader 部署</sys:String>
+    <sys:String x:Key="AsiLoaderDialogDescription">如果您希望 Reloaded 能够在不使用启动器或快捷方式的情况下自动启动，可以部署 ThirteenAG 的 Ultimate ASI Loader（第三方 DLL 加载器）。您想要部署这个加载器吗？</sys:String>
+    <sys:String x:Key="AsiLoaderDialogLoaderDeployed">ASI Loader 成功部署到： </sys:String>
+    <sys:String x:Key="AsiLoaderDialogBootstrapperDeployed">Reloaded 引导程序已部署至：</sys:String>
+    <sys:String x:Key="ErrorAsiNotSupported">未找到合适的 DLL 名称以添加 Ultimate ASI Loader。</sys:String> <!-- Unused at the moment, may be used in the future. -->
+
+    <!-- Missing Dependencies Dialog -->
+    <sys:String x:Key="MissingDependenciesTitle">缺少依赖项</sys:String>
+    <sys:String x:Key="MissingDependenciesText">看来您的系统缺少运行 Reloaded 所需的某些依赖项。启动器发现了以下缺少的依赖项：</sys:String>
+    <sys:String x:Key="MissingDependenciesText2">请下载上面提供的必要依赖项，然后关闭窗口。</sys:String>
+
+    <!-- Categories: Main Menu Screen -->
+    <sys:String x:Key="AppCategoryMain">主要</sys:String>
+    <sys:String x:Key="AppCategoryActions">操作</sys:String>
+    <sys:String x:Key="AppCategoryProcesses">进度</sys:String>
+    <sys:String x:Key="AppCategorySummary">概要</sys:String>
+
+    <!-- Update 1.7.0: Loader Settings Icons -->
+    <sys:String x:Key="LoaderSettingsTwitter">发推文给我</sys:String>
+    <sys:String x:Key="LoaderSettingsDonate">在 GitHub 上赞助我</sys:String>
+    <sys:String x:Key="LoaderSettingsDiscord">加入 Discord 服务器</sys:String>
+
+    <!-- Update 1.7.0: NuGet Feeds -->
+    <sys:String x:Key="TitleConfigNuGetFeeds">配置 NuGet 源</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsButton">配置源</sys:String>     <!-- Button in Download Mods Menu -->
+
+    <sys:String x:Key="ConfigNuGetFeedsName">名称（必填）</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURL">URL（必填）</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURLTooltip">示例：http://167.71.128.50:5000/v3/index.json</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsDescription">描述</sys:String>
+
+    <!-- Update 1.7.9: Wine Compatibility Notes -->
+    <sys:String x:Key="WineCompatibilityNoticeTitle">Wine 兼容性提示</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeText">看起来您正尝试通过 Wine 在启动器内运行一个应用程序。&#x0a;这一操作可能会失败，因为目标应用程序需要特殊的技巧来运行，或者隔离（如不同的 wine 前缀）阻止了 DLL 注入。&#x0a;&#x0a;果要在 Wine 中执行，建议你部署 ASI Loader（参见：「编辑应用程序」菜单）并在启动器外运行游戏。&#x0a;请注意，Reloaded 不经常在 Wine 下进行测试。</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeOk">继续尝试</sys:String>
+
+    <!-- Update 1.8.0: Configuration -->
+    <sys:String x:Key="LoaderSettingsConfigPopup">Reloaded 设置</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigLanguage">语言</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigTheme">主题</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigLog">查看日志文件</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigFile">打开配置文件</sys:String>
+
+    <!-- Update 1.8.0: Extra Error(s) -->
+    <sys:String x:Key="ErrorFailedToObtainPort">应用程序可能已经崩溃、Reloaded 加载失败，或 Reloaded 在超时限制内未初始化。&#x0a;&#x0a;以下操作可能有帮助：&#x0a;- 关闭此错误消息，等待几秒钟，然后再试一次。&#x0a;- 如果应用程序的其他副本正在运行，请关闭它们。（使用任务管理器）&#x0a;- 重启您的计算机。&#x0a;&#x0a;这是一个警告，如果您的应用程序按预期工作，您可以忽略此消息。&#x0a;&#x0a;未能获取在进程内运行的 Reloaded 实例的端口。</sys:String>
+
+    <!-- Update 1.10.0: Reloaded Bootstrapper Update -->
+    <sys:String x:Key="BootstrapperUpdateTitle">引导程序已更新</sys:String>
+    <sys:String x:Key="BootstrapperUpdateDescription">Reloaded 引导程序已为以下程序自动更新：&#x0a;{0}</sys:String>
+
+    <!-- Update 1.10.1: Reloaded Bootstrapper Hotfix -->
+    <sys:String x:Key="BootstrapperCreateDirectoryError">无法创建目录以部署引导程序。请考虑以系统管理员身份运行 Reloaded。&#x0a;实际错误讯息: {0}</sys:String>
+
+    <!-- Update 1.12.0: New First Launch Experience -->
+    <sys:String x:Key="TitleFirstLaunchEx">Reloaded II 教程</sys:String>
+
+    <sys:String x:Key="FirstLaunchExStepAddApplication">添加应用程序</sys:String>
+    <sys:String x:Key="FirstLaunchExStepExtractMod">提取 Mods</sys:String>
+    <sys:String x:Key="FirstLaunchExStepConfigureMod">Mods 配置</sys:String>
+    <sys:String x:Key="FirstLaunchExStepEnableMod">启用 Mods</sys:String>
+    <sys:String x:Key="FirstLaunchExStepComplete">完成</sys:String>
+
+    <sys:String x:Key="FirstLaunchExAddApplicationButton">添加应用程序</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationSkipTutorialButton">跳过教程</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationSkipStepButton">跳过此步骤</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription1">开始使用 Reloaded 的第一步是添加您要修改的应用程序。&#x0a;（通常可以在启动器左下角的 + 按钮中找到）</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription2">确保添加的是应用程序，而不是启动器，如上所示。</sys:String>
+
+    <sys:String x:Key="FirstLaunchExAddModExtractDescription1">要安装 Mod，只需将下载的 zip 文件解压到 'Mods' 文件夹中即可。</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractDescription2">如果下载的 Mod 中没有单独的文件夹，请自行创建一个。</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractPrev">上一步</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractNext">下一步</sys:String>
+
+    <sys:String x:Key="FirstLaunchExConfigureModDescription1">一些 Mod 可能支持额外的配置，允许你进行调整。</sys:String>
+    <sys:String x:Key="FirstLaunchExConfigureModDescription2">如果当 Mod 被高亮显示时，「Mod 配置」选项变为红色，代表该 Mod 可以进行配置。</sys:String>
+
+    <sys:String x:Key="FirstLaunchExEnableModDescription1">要启用 Mods，只需点击方形复选框即可。</sys:String>
+    <sys:String x:Key="FirstLaunchExEnableModDescription2">如果复选框是红色的，则表示 Mod 已启用；如果是灰色的，则表示 Mod 已禁用。</sys:String>
+
+    <sys:String x:Key="FirstLaunchExCompleteDescription1">感谢您使用 Reloaded II。</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription2">您可能也会发现以下链接有用：</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription3">这些链接也可以在 [Mod 加载器设置] 中找到。</sys:String>
+
+    <!-- Update 1.12.0: Context Menu for Application Mod Items -->
+    <sys:String x:Key="ModManagerContextPublish">发布</sys:String>
+    <sys:String x:Key="ModManagerContextEdit">编辑</sys:String>
+    <sys:String x:Key="ModManagerContextEditMod">编辑 Mod</sys:String>
+    <sys:String x:Key="ModManagerContextEditModUser">用户配置</sys:String>
+    <sys:String x:Key="ModManagerContextOpenFolder">打开文件夹</sys:String>
+    <sys:String x:Key="ModManagerContextConfigure">配置</sys:String>
+
+    <!-- Update 1.12.0: Edit Mod Dialog -->
+    <sys:String x:Key="TitleEditModDialog">编辑 Mod</sys:String>
+
+    <!-- Update 1.12.0: Additional Errors -->
+    <sys:String x:Key="ErrorUnableDetermineVersion">错误：无法确定 Reloaded II 版本</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUseTitle">Mod(s) 使用中</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUse">您目前有正在运行 Reloaded 的应用程序。&#x0a;更新将会下载，但是直到关闭所有应用程序之后才会应用。</sys:String>
+    <sys:String x:Key="ErrorMissingDependency">缺失的依赖项</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionTitle">版本号无效</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionDescription">Mod 使用的版本号不符合 `Semantic Versioning` (SemVer) 标准，因此无法接收更新。&#x0a;请更新您的 Mod 版本号以使用 SemVer。&#x0a;示例：`1.0.0`，`1.0`，`2.0-alpha`。</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Mod -->
+    <sys:String x:Key="CreateModDialogDescriptionShort">描述</sys:String>
+
+    <sys:String x:Key="EditModStepMain">一般详情</sys:String>
+    <sys:String x:Key="EditModStepDependencies">Mod 依赖项</sys:String>
+    <sys:String x:Key="EditModStepUpdates">更新支持</sys:String>
+    <sys:String x:Key="EditModStepComplete">完成</sys:String>
+
+    <sys:String x:Key="EditModDependenciesDescription">如果您的 Mod 需要其他 Mod 才能运行，请在此处选择它们。</sys:String>
+
+    <sys:String x:Key="EditModUniversalMod">通用 Mod</sys:String>
+    <sys:String x:Key="EditModUniversalModDescription">如果启用，该 Mod 默认在每个应用程序中都可见。</sys:String>
+
+    <sys:String x:Key="EditModLibrary">库</sys:String>
+    <sys:String x:Key="EditModLibraryDescription">如果启用，这个 Mod 将不能被用户显式启用。只能作为依赖项被启用。</sys:String>
+
+    <sys:String x:Key="EditModSave">保存</sys:String>
+    <sys:String x:Key="EditModAppsDescription">选择哪些应用程序可以使用该 Mod。</sys:String>
+
+    <sys:String x:Key="EditModMetadataNameTooltip">JSON 元数据文件的名称。&#x0a;如果您在同一个页面上发布多个 Mods，才需要更改此名称。</sys:String>
+
+    <!-- Update 1.12.0: Extended Application Configuration -->
+    <sys:String x:Key="ConfigureModsRightClickAdvice">右键点击 Mod 以获取更多选项</sys:String>
+
+    <!-- Update 1.12.0: Create Mod Dialog -->
+    <sys:String x:Key="CreateModDialogIdDesc1">唯一 Mod ID</sys:String>
+    <sys:String x:Key="CreateModDialogIdDesc2">请按照 "game.type.name" 的格式设置一个唯一的 Mod ID。例如：`sonicheroes.skins.seasidehillmidnight`。一旦设置了 ID，就无法更改。</sys:String>
+
+    <!-- Update 1.12.0: Edit Application Ex -->
+    <sys:String x:Key="AddAppId">应用程序 ID</sys:String>
+    <sys:String x:Key="AddAppUpdate">更新</sys:String>
+
+    <sys:String x:Key="AddAppWarningTitle">可执行文件名称警告</sys:String>
+    <sys:String x:Key="AddAppWarning">应用程序添加的可执行文件名称与原始名称不同。&#x0a;如果您正在添加另一个应用程序，您应该将其作为新应用程序添加。</sys:String>
+
+    <!-- Update 1.12.0: Edit Application Ex -->
+    <sys:String x:Key="TitlePublishModDialog">发布 Mod</sys:String>
+    <sys:String x:Key="PublishModTarget">发布目标</sys:String>
+    <sys:String x:Key="PublishModTargetTooltip">除非发布地点有特定选项，否则使用默认配置。&#x0a;启用/禁用某些行为。</sys:String>
+
+    <sys:String x:Key="PublishModExcludeTitle">排除文件</sys:String>
+    <sys:String x:Key="PublishModIncludeTitle">包含文件</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsTitle">之前的版本</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsDescription">提供您的 Mod 的早期版本可以使用增量压缩技术，这是一种在从早期版本升级到后期版本时能够减小下载大小的方法。</sys:String>
+    <sys:String x:Key="PublishModButtonText">发布</sys:String>
+
+    <sys:String x:Key="PublishSelectConfigTitle">选择一个 Mod 配置文件 (ModConfig.json)。</sys:String>
+    <sys:String x:Key="PublishSelectConfigFileTypeName">Configuration</sys:String>
+
+    <sys:String x:Key="ErrorInvalidModConfigTitle">无效的 Mod 配置</sys:String>
+    <sys:String x:Key="ErrorInvalidModConfigDescription">提供的文件不代表一个有效的 Mod 配置。</sys:String>
+
+    <sys:String x:Key="ErrorNewerModConfigVersionTitle">无效的 Mod 版本</sys:String>
+    <sys:String x:Key="ErrorNewerModConfigVersionDescription">提供的 Mod 版本高于或已等同于即将发布的版本。</sys:String>
+
+    <sys:String x:Key="ErrorPublishModIdMismatch">无效的 Mod ID</sys:String>
+    <sys:String x:Key="ErrorPublishModIdDescription">提供的 Mod ID 与即将发布的 Mod ID 不符。</sys:String>
+
+    <sys:String x:Key="PublishModRegexSectionTitle">文件包含 &amp; 排除</sys:String>
+    <sys:String x:Key="PublishModRegexTitle">正则表达式</sys:String>
+    <sys:String x:Key="PublishModRegexTest">测试正则表达式</sys:String>
+    <sys:String x:Key="PublishModRegexDialogTitle">排除的文件</sys:String>
+
+    <sys:String x:Key="PublishModCompSettings">压缩设置</sys:String>
+    <sys:String x:Key="PublishModCompLevel">压缩等级</sys:String>
+    <sys:String x:Key="PublishModCompMethod">压缩方法</sys:String>
+
+    <sys:String x:Key="PublishOutputFolder">输出文件夹</sys:String>
+    <sys:String x:Key="PublishSetOutputFolder">设置输出文件夹</sys:String>
+
+    <sys:String x:Key="PublishAutoDelta">自动增量</sys:String>
+    <sys:String x:Key="PublishAutoDeltaDescription">自动从上一个版本创建增量包。&#x0a;不要忘记将输出路径设置为现有发布的路径。</sys:String>
+
+    <sys:String x:Key="PublishAutoDeltaWarningTitle">自动增量警告</sys:String>
+    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat">在输出文件夹中未找到发布元数据文件。如果需要，请考虑重命名文件。&#x0a;预期文件名：{0}。</sys:String>
+
+    <sys:String x:Key="PublishFileNameTooltip">生成的 .7z 压缩包文件名称</sys:String>
+
+    <sys:String x:Key="PublishModTutorial">发布教程</sys:String>
+    <sys:String x:Key="PublishModWarningTitle">更新支持警告</sys:String>
+    <sys:String x:Key="PublishModWarningDescription">此 Mod 没有配置更新设置，这意味着它将无法接收自动更新。&#x0a;发布前，请查看「发布教程」以了解如何设置。</sys:String>
+
+    <!-- Update 1.12.0: Edit Mod User Config -->
+    <sys:String x:Key="TitleEditModUserConfig">编辑用户配置</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleases">允许 Beta 版本</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleasesTooltip">允许下载 Mod 的早期版本。</sys:String>
+
+    <!-- Update 1.12.0: Fast Package Download Experience -->
+    <sys:String x:Key="PackageDownloaderDownloadCompleteTitle">下载完成</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadCompleteDescription">下载已完成。此窗口将在几秒钟内自动关闭。</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadingDependencies">正在下载依赖项</sys:String>
+
+    <!-- Update 1.12.0: Extended Download Mods Menu -->
+    <sys:String x:Key="DownloadPackagesSource">来源</sys:String>
+    <sys:String x:Key="DownloadPackagesAll">所有来源</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Application -->
+    <sys:String x:Key="AddAppModSources">Mod 下载源</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Application -->
+    <sys:String x:Key="AddAppRepoBadExecutable">错误的可执行文件</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashTitle">哈希值不匹配</sys:String>
+    <sys:String x:Key="AddAppRepoWarningTitle">警告</sys:String>
+
+    <sys:String x:Key="AddAppRepoBadHashDesc1">该应用程序的主要可执行文件 (EXE) 已被修改或与预期版本不同。</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashDesc2">请注意，并非所有的 Mod 都可能按预期工作。请考虑遵循上方消息中提供的指导（如果有）。</sys:String>
+
+    <sys:String x:Key="AddAppRepoWarningDesc1">快速扫描游戏目录产生了以下警告：</sys:String>
+    <sys:String x:Key="AddAppRepoWarningDesc2">请注意，并非所有的 Mod 都可能按预期工作。请考虑遵循上方警告中提供的指导（如果有）。</sys:String>
+
+    <sys:String x:Key="AddAppRepoSelectGameDialogTitle">选择游戏</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc1">请从以下列表中选择您想要的游戏，然后点击「确定」。</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc2">如果您的游戏不在列表中，请选择「其他游戏」。</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogOtherGame">其他游戏</sys:String>
+
+    <sys:String x:Key="AddAppRepoTestButton">测试社区配置</sys:String>
+    <sys:String x:Key="AddAppRepoTestButtonTooltip">允许您在提交到 Reloaded 社区索引之前测试应用程序配置。</sys:String>
+
+    <sys:String x:Key="AddAppRepoTestJsonSelectTitle">选择 JSON 文件</sys:String>
+    <sys:String x:Key="AddAppRepoTestJsonSelectFilter">社区配置</sys:String>
+
+    <!-- Update 1.18.0: Application Menu Tooltips -->
+    <sys:String x:Key="ApplicationTooltipCreateShortcutDescription">保存一个快捷方式，可用于在不使用 Reloaded 启动器的情况下启动已修改的应用程序。</sys:String>
+    <sys:String x:Key="ApplicationTooltipLoadModSet">加载已启用的 Mods 列表。</sys:String>
+    <sys:String x:Key="ApplicationTooltipSaveModSet">保存当前已启用的 Mods 列表。</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessSysDescription">你可以使用我将 Reloaded 加载到此程序中。</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessRldDescription">你可以使用我来管理当前加载的 Mods。</sys:String>
+
+    <!-- Update 1.19.0: Configure Mod Menu Reset -->
+    <sys:String x:Key="ConfigureModDialogReset">重置</sys:String>
+    <sys:String x:Key="ConfigureModDialogResetDescription">将配置值重置为默认值。&#x0a;[注意：需要 Mod 支持，如果不起作用请联系作者]</sys:String>
+
+    <!-- Update 1.19.0: Controller Support -->
+    <sys:String x:Key="LoaderSettingsControllerBtn">控制器配置</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneName">无</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneDescription">无任何操作。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnUpName">上</sys:String>
+    <sys:String x:Key="ConfiguratorBtnUpDescription">向上导航菜单。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDownName">下</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDownDescription">向下导航菜单。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLeftName">左</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLeftDescription">向左导航菜单。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnRightName">右</sys:String>
+    <sys:String x:Key="ConfiguratorBtnRightDescription">向右导航菜单。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnAcceptName">确定</sys:String>
+    <sys:String x:Key="ConfiguratorBtnAcceptDescription">点击按钮。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDeclineName">拒绝</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDeclineDescription">关闭当前非主要窗口。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnNextPageName">下一页</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNextPageDescription">在含有多个页面的窗口中导航到下一页。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLastPageName">上一页</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLastPageDescription">在含有多个页面的窗口中导航到上一页。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnIncrementName">增加</sys:String>
+    <sys:String x:Key="ConfiguratorBtnIncrementDescription">将 UI 元素的目前值加上 1。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDecrementName">减少</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDecrementDescription">将 UI 元素的目前值减去 1。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnModifierName">修改器</sys:String>
+    <sys:String x:Key="ConfiguratorBtnModifierDescription">允许某些 UI 元素进行替代操作。&#x0a;例如，使用 Mod+Up 可以重新排序 Mod 顺序。</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightName">菜单左/右 [摇杆]</sys:String>
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightDescription">在菜单中左/右导航</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownName">菜单上/下 [摇杆]</sys:String>
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownDescription">在菜单中上下移动</sys:String>
+
+    <sys:String x:Key="ConfiguratorCustomStringMainConfig">主配置</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
+    <sys:String x:Key="ConfiguratorCustomStringTrigger">触发器</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
+    <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">如果要映射到控制器的触发器上，请使用此选项</sys:String> <!-- Displays in description of trigger bindings. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded 控制器配置</sys:String> <!-- Name of the input configurator window. -->
+
+    <sys:String x:Key="ConfiguratorLibCustomStringNew">新增</sys:String> <!-- "New" Used for button that adds values. -->
+    <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">左键点击分配新的绑定。&#x0a;中键点击反转值。&#x0a;右键点击清除映射！&#x0a;! 表示值被反转。</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
+    <sys:String x:Key="ConfiguratorLibCustomStringTimeout">超时</sys:String> <!-- Name of the input configurator window. -->
+
+    <!-- Update 1.20.0: Server as Separate Mod -->
+    <sys:String x:Key="ReloadedProcessNoticeNew">需要启用 'Reloaded II Server' Mod 并配合 LiteNetLib 主机。&#x0a;可从「下载 Mod」菜单中下载。</sys:String>
+    <sys:String x:Key="ReloadedProcessState">状态</sys:String> <!-- Is the mod running or paused? -->
+
+    <!-- Update 1.20.0: New Wine Run Dialog -->
+    <sys:String x:Key="WineCompatibilityNoticeTitleNew">从 Wine 启动</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeHeader_1">您正在 Wine 中运行 Reloaded，请注意以下事项：</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_1">- 游戏将使用与此启动器相同的 Wine/Proton 配置启动。</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_2_1">- 如果这不是您所希望的，</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_2_2">部署 ASI Loader</sys:String> <!-- Hyperlink-->
+    <sys:String x:Key="WineCompatibilityNoticeList_2_3">并从启动器外部启动您的游戏。</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_3_1">- 使用 Proton 需要一些额外步骤，</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_3_2">请参阅 Wiki。</sys:String> <!-- Hyperlink-->
+
+    <sys:String x:Key="WineCompatibilityNoticeFooter_1">如需额外帮助，请</sys:String> <!-- Start of footer, continued below. -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_2">参阅 Wiki</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_3">或</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeFooter_4">在 GitHub 上提交问题。</sys:String>  <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <sys:String x:Key="WineCompatibilityNoticeOkNew">启动应用程序</sys:String>
+
+    <!-- Update 1.20.0: Extended Publish Options -->
+    <sys:String x:Key="PublishModReadmeSectionTitle">Readme &amp; 更新日志</sys:String>
+    <sys:String x:Key="PublishModReadmeSet">指定 Readme 文件</sys:String>
+    <sys:String x:Key="PublishModReadmeTooltip">这允许你指定一个 Readme 文件。&#x0a;Readme 文件用于在「下载 Mod」菜单中的描述。&#x0a;使用 Markdown 格式。更多信息请参考 Wiki。</sys:String> <!-- Displays on Hover -->
+    <sys:String x:Key="PublishModChangelogSet">指定更新日志文件</sys:String>
+    <sys:String x:Key="PublishModChangelogTooltip">这允许你指定一个更新日志 (Changelog) 文件。&#x0a;更新日志在「下载 Mod」菜单和更新对话框中使用。&#x0a;使用 Markdown 格式。更多信息请参考 Wiki。</sys:String>
+
+    <sys:String x:Key="PublishSelectMarkdownTitle">选择一个 Markdown 文件 (*.md).</sys:String>
+    <sys:String x:Key="PublishSelectMarkdownTypeName">Markdown 文件</sys:String>
+
+    <!-- Update 1.20.0: Revamped Downloads Menu -->
+    <sys:String x:Key="DownloadsMenuNuGetButton">NuGet</sys:String>
+
+    <sys:String x:Key="DownloadsPackagePreviewProjectUrl">项目网站</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewClose">关闭</sys:String>
+
+    <sys:String x:Key="DownloadsPackageSourceTooltip">Mod 来自： </sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewModAuthorTooltip">Mod 作者</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewLikeCountTooltip">点赞数</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewDownloadCountTooltip">下载次数</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewViewCountTooltip">浏览次数</sys:String> <!-- Number of Views -->
+    <sys:String x:Key="DownloadsPackagePreviewPublishDateTooltip">最近更新时间</sys:String> <!-- Shows on hover -->
+
+    <!-- Update 1.20.0: Self Runtime Update -->
+    <sys:String x:Key="RuntimeUpdateRequiredTitle">需要运行时更新</sys:String>
+    <sys:String x:Key="RuntimeUpdateRequiredDescription">新版本的 reloaded 需要进行 .NET 运行时更新。&#x0a;在关闭此对话框后将会开始下载。&#x0a;如果出现任何用户账户控制 (UAC) 对话框，请点击“是”以继续。</sys:String>
+
+    <!-- Update 1.20.0: Extended Mod Update Dialog -->
+    <sys:String x:Key="UpdateModModName">Mod 名称</sys:String>
+    <sys:String x:Key="UpdateModModEnabled">更新？</sys:String>
+
+    <!-- Update 1.20.0: Adding Project URL -->
+    <sys:String x:Key="CreateModDialogProjectUrl">网站</sys:String>
+    <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">您的网站的完整 HTTP(s) 链接。</sys:String> <!-- Shown as a placeholder -->
+    <sys:String x:Key="ModManagerContextVisitWebsite">访问网站</sys:String>
+
+    <!-- Update 1.21.0: Mod Packs: Dialog -->
+    <sys:String x:Key="CreateModPackTitle">创建 Mod 包</sys:String>
+
+    <sys:String x:Key="CreateModPackNote1">仅显示符合条件的 Mod。</sys:String>
+    <sys:String x:Key="CreateModPackNote2">Mod 必须支持更新才能符合条件。 </sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <!-- Update 1.21.0: Mod Packs: Editor -->
+    <sys:String x:Key="EditModPackTitle">编辑 Mod 包</sys:String>
+
+    <sys:String x:Key="ModPackImageTooltip">注意：此轮播中的图片在安装期间会被正确调整大小。&#x0a;您可以忽略任何比例问题。 </sys:String>
+    <sys:String x:Key="ModPackImageCaption">图片标题</sys:String>
+
+    <sys:String x:Key="ModPackClickToEdit">点击以编辑</sys:String>
+    <sys:String x:Key="ModPackAddMod">添加 Mod</sys:String>
+    <sys:String x:Key="ModPackAddModTooltip">将一个 Mod 添加到此 Mod 包中。&#x0a;注意：如果存在大量图片，这可能需要一些时间。</sys:String>
+    <sys:String x:Key="ModPackRemoveMod">移除 Mod</sys:String>
+    <sys:String x:Key="ModPackRemoveModTooltip">从此 Mod 包中移除最后选择的 Mod。</sys:String>
+    <sys:String x:Key="ModPackSaveReadme">保存 Readme</sys:String>
+    <sys:String x:Key="ModPackSetReadme">设置 Readme</sys:String>
+    <sys:String x:Key="ModPackAddImage">添加图片</sys:String>
+    <sys:String x:Key="ModPackRemoveImage">移除图片</sys:String>
+    <sys:String x:Key="ModPackLoadExisting">加载现有的 Mod 包</sys:String>
+    <sys:String x:Key="ModPackSavePack">保存 Mod 包</sys:String>
+    <sys:String x:Key="ModPackPreviewPack">测试 Mod 包</sys:String>
+
+    <sys:String x:Key="ModPackPackNameTooltip">Mod 包的名称，在安装时显示。</sys:String>
+    <sys:String x:Key="ModPackModNameTooltip">Mod 的名称，在安装时显示。</sys:String>
+    <sys:String x:Key="ModPackImageAddTooltip">向 Mod 包/Mod 中添加新图片。</sys:String>
+    <sys:String x:Key="ModPackImageRemoveTooltip">移除目前正在显示的图片。</sys:String>
+    <sys:String x:Key="ModPackDescriptionTooltip">Mod 的简短说明。1 行。用户可以在安装过程中展开以显示完整的 Readme 文件。</sys:String>
+    <sys:String x:Key="ModPackSetReadmeTooltip">更新 Mod/Mod 包的完整 Readme 文件。Readme 文件使用 Markdown (.md) 格式。</sys:String>
+    <sys:String x:Key="ModPackSaveReadmeTooltip">将 Readme 文件保存回磁盘，以便在外部编辑器中编辑。</sys:String>
+
+    <sys:String x:Key="ModPackSelectExistingTitle">选择一个 Mod 包 (*.r2pack)。</sys:String>
+    <sys:String x:Key="ModPackSelectExistingTypeName">R2 Mod 包</sys:String>
+    <sys:String x:Key="ErrorFailedToSaveModPack">无法保存 Mod 包</sys:String>
+
+    <!-- Update 1.21.0: Mod Packs: Installer -->
+    <sys:String x:Key="InstallModPackTitle">安装 Mod 包</sys:String>
+
+    <sys:String x:Key="InstallModPackEnableHeader">下载？</sys:String>
+    <sys:String x:Key="InstallModPackErrorDownloadFail">一些 Mod 下载失败</sys:String>
+
+    <sys:String x:Key="InstallModPackConfirmTitle">确认要下载的 Mod</sys:String>
+    <sys:String x:Key="InstallModPackConfirmDescription">在您仔细检查并确认想要下载的内容后，开始下载。</sys:String>
+
+    <sys:String x:Key="InstallModPackDownloading">正在下载 {0}...</sys:String> <!-- {0} is replaced by mod name -->
+    <sys:String x:Key="InstallModPackStart">开始</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackPrevious">返回</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackStartDownload">开始下载</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackInstall">安装此 Mod</sys:String> <!-- Advances Page -->
+    <sys:String x:Key="InstallModPackSkip">跳过此 Mod</sys:String> <!-- Advances Page -->
+
+    <!-- Update 1.21.0: Generic Image Selector -->
+    <sys:String x:Key="ImageSelectorTitle">选择图片</sys:String>
+    <sys:String x:Key="ImageSelectorFilter">图片</sys:String>
+
+    <!-- Update 1.22.0: Download Package Settings -->
+    <sys:String x:Key="DownloadPackagesSettingHide">隐藏已安装</sys:String>
+    <sys:String x:Key="DownloadPackagesSettingHideTooltip">隐藏已安装的 Mod（如果可能）。&#x0a;(支持 NuGet &amp; “发布”导出的 Mod。)</sys:String>
+
+    <!-- Update 1.22.6: Errors -->
+    <sys:String x:Key="ErrorAddApplicationCantReadSymlink">解析文件最终路径失败（符号链接检测）。
+可能由于 DRM 或一些奇怪的文件系统操作导致错误。如果发生这种情况，请从加载器日志中复制 EXE 路径到「编辑应用程序」菜单。</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGetVersionInfo">从磁盘获取文件元数据/版本信息失败。我们会尽力猜测相关信息。
+（据报告，在某些特殊的网络配置下可能会发生这种情况 [例如 CIFS]，如果你没有遇到更多问题，那么你应该是没问题的。）</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGeneral">添加应用程序时发生错误，原因可能包括：
+- 不常见的文件系统设置（例如，应用程序位于网络共享上）
+- 您没有访问文件的权限。
+- 微软的 DRM（微软商店/GamePass）</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFile">无法读取 EXE 文件。这可能由多种原因引起。
+- DRM（微软商店/GamePass）。
+- 您没有权限访问该 EXE 文件。
+- 文件已经从其原始位置移动。
+
+若涉及微软商店/GamePass，可能需手动部署 ASI LOADER 以解决 DRM（加密！！）问题，
+然后直接通过 EXE 启动程序。如需更多帮助，请咨询社区。
+
+DRM：“你将一无所有，并感到幸福。”
+</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">无法读取 EXE 档案以部署 ASI Loader。这可能有多种原因。
+- DRM（微软商店/GamePass）。
+- 您没有权限访问该 EXE 文件。
+- 文件已经从其原始位置移动。</sys:String>
+
+    <!-- Update 1.23.0: Mod Packs Extras -->
+    <sys:String x:Key="InstallModPackInstallAll">安装所有 Mods</sys:String> <!-- Click and it installs all. -->
+
+    <!-- Update 1.23.0: Search Sorting Options -->
+    <sys:String x:Key="SearchOptionSortNone">无</sys:String>
+    <sys:String x:Key="SearchOptionSortLastModified">最后修改时间</sys:String>
+    <sys:String x:Key="SearchOptionSortDownloads">下载次数</sys:String>
+    <sys:String x:Key="SearchOptionSortLikes">点赞数</sys:String>
+    <sys:String x:Key="SearchOptionSortViews">浏览次数</sys:String>
+
+    <sys:String x:Key="SearchOptionAscending">升序</sys:String>
+    <sys:String x:Key="SearchOptionDescending">降序</sys:String>
+
+    <sys:String x:Key="SearchOptionsTooltip">请注意，某些下载源可能不支持排序/筛选功能。</sys:String>
+
+    <!-- Update 1.23.0: Publish Important Note -->
+    <sys:String x:Key="PublishModNotice">上传所有文件时请保留原文件名，不要对它们进行重命名。
+更多信息，请参考教程。不要忘记设置正确的发布目标。</sys:String>
+
+    <!-- Note for translators: Please update ErrorPathToApplicationInvalid if you get down this far, message was updated. -->
+
+    <!-- Update 1.23.0: Tags -->
+    <sys:String x:Key="EditModAddTag">添加标签</sys:String>
+    <sys:String x:Key="EditModSelectPresetTagTooltip">选择预设标签</sys:String>
+    <sys:String x:Key="EditModAddTagPlaceHolder">在此输入标签名称（或选择预设 👉）</sys:String>
+    <sys:String x:Key="ConfigureModsSelectTagTooltip">按标签筛选</sys:String>
+
+
+    <!-- Update 1.23.8: Tags -->
+    <sys:String x:Key="AddAppWorkingDirectory">工作目录</sys:String>
+
+</ResourceDictionary>
