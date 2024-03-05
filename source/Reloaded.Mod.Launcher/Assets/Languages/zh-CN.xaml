@@ -79,7 +79,7 @@
 
     <!-- Mod Loader Settings -->
     <sys:String x:Key="LoaderSettingsCleanup">清理配置</sys:String>
-    <sys:String x:Key="LoaderSettingsCleanupWarning">此操作对各种配置（应用、Mod 等）进行整理。&#x0a;整理功能包括从 Mod 的依赖项列表中移除不存在的 Mod 等。&#x0a;请注意，如果缺少任何依赖项、支持的应用程序等，它们将从配置文件中移除。</sy  s:String>
+    <sys:String x:Key="LoaderSettingsCleanupWarning">此操作对各种配置（应用、Mod 等）进行整理。&#x0a;整理功能包括从 Mod 的依赖项列表中移除不存在的 Mod 等。&#x0a;请注意，如果缺少任何依赖项、支持的应用程序等，它们将从配置文件中移除。</sys:String>
     <sys:String x:Key="LoaderSettingsCleanupComplete">清理完成</sys:String>
 
     <sys:String x:Key="LoaderSettingsAppsInstalled">已安装的应用程序：</sys:String>
