@@ -215,7 +215,11 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
         try
         {
-            ApplicationTuple.Config.SortedMods = AllMods!.Select(x => x.Tuple.Config.ModId).ToArray();
+            // Don't update this if user doesn't want to preserve their order, in
+            // case the user wants to backtrack and revert. 'e.g. I want to 'try' the other option'.
+            if (ApplicationTuple.Config.PreserveDisabledModOrder)
+                ApplicationTuple.Config.SortedMods = AllMods!.Select(x => x.Tuple.Config.ModId).ToArray();
+
             ApplicationTuple.Config.EnabledMods = AllMods!.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
             await ApplicationTuple.SaveAsync(_saveToken.Token);
         }
