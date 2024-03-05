@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xml:space="preserve">
 
     <!-- Dit bestand bevat de Nederlandse tekst voor Reloaded II, bewerkt door Sonicfreak, origineel geschreven door Sewer56 -->
     <!-- xml:space="preserve" allows for new line. &#x0a; is new line (ASCII character). -->
@@ -213,7 +214,11 @@
     <sys:String x:Key="ErrorLoaderNotFound">niet gevonden. Dit zou kunnen worden veroorzaakt doordat de Antivirus software veranderingen in de GitHub repository verwijderd of beschadigd.</sys:String> <!-- Loader DLL Name displays before this message -->
     <sys:String x:Key="ErrorFailedToStartProcess" xml:space="preserve">Gefaald om het process te starten. In het algemeen wordt dit veroorzaakt door één van de volgende 3 problemen:&#x0a;- Het pad naar de EXE klopt niet (heeft u de applicatie verplaatst?)&#x0a;- De applicatie is ingesteld om als een admin uitgevoerd te worden (rechtermuisknop -> eigenschappen) maar Reloaded wordt uitgevoerd in gebruiker mode.&#x0a;- Storing van bv. Antivirus software. Controleer uw logs.&#x0a;Hier is de error terug gegeven door Windows: </sys:String>
     <sys:String x:Key="ErrorDllInjectionFailed">Gefaald om DLL inject uittevoeren in de applicatie process.</sys:String>
-    <sys:String x:Key="ErrorPathToApplicationInvalid">Het pad naar de applicatie die uitgevoerd moet worden klop niet. Controleer alstublieft de applicatie configuratie.</sys:String>
+    <sys:String x:Key="ErrorPathToApplicationInvalid">Reloaded kan het EXE bestand voor dit programma niet vinden.
+Overweeg om dit aan te passen in `Bewerk Applicatie` -> `Update`.
+Dit kan voorkomen omdat:
+- Je de applicatie folder hebt verplaatst.
+- De App folder was verplaatst na een update (dit kan gebeuren met GamePass/UWP).</sys:String>
     <sys:String x:Key="ErrorCheckUpdatesFailed">Gefaald om te controleren voor updates. We worden momenteel begrenst door GitHub or zijn niet verbonden met het internet.</sys:String>
     <sys:String x:Key="ErrorGetProcAddress32Failed" xml:space="preserve">Waarschuwing: Je mist waarschijnlijk de x86 versie van .NET Core, 32-bit applicatie zullen niet werken.&#x0a;Bekijk opnieuw de benodigdheden op de download pagina.&#x0a;Echte Error: Gefaald om het adres van GetProcAddress for x86 te verkrijgen.</sys:String>
 
@@ -681,4 +686,12 @@ Voor meer informatie, bekijk de tutorial. Vergeet niet om de correcte Publish do
     <sys:String x:Key="EditModSelectPresetTagTooltip">Selecteer een Preset Tag</sys:String> 
     <sys:String x:Key="EditModAddTagPlaceHolder">Tag Naam Hier (of selecteer preset 👉)</sys:String> 
     <sys:String x:Key="ConfigureModsSelectTagTooltip">Filter Met Tag</sys:String> 
+
+    <!-- Update 1.23.8: Tags -->
+    <sys:String x:Key="AddAppWorkingDirectory">Werk Folder</sys:String>
+   
+    <!-- Update 1.26.0: Preserve Disabled Mod Order -->
+    <sys:String x:Key="PreserveDisabledModOrder">Hou Mod Volgorde Instant Ongeacht Opnieuw Opstarten</sys:String>
+    <sys:String x:Key="PreserveDisabledModOrderTooltip">Als dit AAN staat, dan wordt de volgorde van de mods in stand gehouden, ongeacht herstarten.&#x0a;Als het UIT staat, staan 'geactiveerde' mods aan de top met de laad volgorde en 'uitgezette' mods onderaan, in alfabetische volgorde.&#x0a;(Standaard staat dit 'AAN' om gebruikersfeedback te ontvangen, maar dit kan veranderen in de toekomst.)</sys:String>
+    
 </ResourceDictionary>
