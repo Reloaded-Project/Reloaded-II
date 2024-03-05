@@ -133,33 +133,49 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// </summary>
     private List<ModEntry> GetInitialModSet(PathTuple<ModConfig>[] modsForThisApp, PathTuple<ApplicationConfig> applicationTuple)
     {
-        // Note: Must put items in top to bottom load order.
-
         // Get dictionary of mods for this app by Mod ID
-        var modDictionary  = new Dictionary<string, PathTuple<ModConfig>>();
+        var modDictionary = new Dictionary<string, PathTuple<ModConfig>>();
         foreach (var mod in modsForThisApp)
             modDictionary[mod.Config.ModId] = mod;
 
         var totalModList = new List<ModEntry>(modsForThisApp.Length);
-        var enabledModIds = applicationTuple.Config.EnabledMods.Where(modDictionary.ContainsKey).Distinct().ToArray();
-        var sortedModIds = applicationTuple.Config.SortedMods.Where(modDictionary.ContainsKey).Distinct().ToArray();
 
-        // Add sorted mods.
-        foreach (var sortedModId in sortedModIds)
+        if (applicationTuple.Config.PreserveDisabledModOrder)
         {
-            totalModList.Add(MakeSaveSubscribedModEntry(enabledModIds.Contains(sortedModId), modDictionary[sortedModId]));
-        }
+            // Modern Behaviour: Disabled Mod Order is Preserved
+            var enabledModIds = applicationTuple.Config.EnabledMods.Where(modDictionary.ContainsKey).Distinct().ToArray();
+            var sortedModIds = applicationTuple.Config.SortedMods.Where(modDictionary.ContainsKey).Distinct().ToArray();
 
-        // Add enabled mods that were not in the sorted mod collection. Should be empty but necessary for older configuration files.
-        foreach (var enabledModId in enabledModIds.Where(x => !sortedModIds.Contains(x)))
+            // Add sorted mods.
+            foreach (var sortedModId in sortedModIds)
+                totalModList.Add(MakeSaveSubscribedModEntry(enabledModIds.Contains(sortedModId), modDictionary[sortedModId]));
+
+            // Add enabled mods that were not in the sorted mod collection.
+            foreach (var enabledModId in enabledModIds.Where(x => !sortedModIds.Contains(x)))
+                totalModList.Add(MakeSaveSubscribedModEntry(true, modDictionary[enabledModId]));
+
+            // Add the remaining mods on the bottom of the list as disabled.
+            var addedModIdSet = enabledModIds.Concat(sortedModIds).Distinct().ToHashSet();
+            var remainingMods = modsForThisApp.Where(x => !addedModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
+            totalModList.AddRange(remainingMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
+        }
+        else
         {
-            totalModList.Add(MakeSaveSubscribedModEntry(true, modDictionary[enabledModId]));
-        }
+            // Classic Behaviour: Disabled Mods are Alphabetical by Name
+            var enabledModIds = applicationTuple.Config.EnabledMods;
 
-        // Add the remaining mods on the bottom of the list as disabled. These are mods that were added to the Mod folder while the application was closed.
-        var addedModIdSet = applicationTuple.Config.EnabledMods.Concat(applicationTuple.Config.SortedMods).Distinct().ToHashSet();
-        var remainingMods = modsForThisApp.Where(x => !addedModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
-        totalModList.AddRange(remainingMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
+            // Add enabled mods.
+            foreach (var enabledModId in enabledModIds)
+            {
+                if (modDictionary.ContainsKey(enabledModId))
+                    totalModList.Add(MakeSaveSubscribedModEntry(true, modDictionary[enabledModId]));
+            }
+
+            // Add disabled mods.
+            var enabledModIdSet = enabledModIds.ToHashSet();
+            var disabledMods = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
+            totalModList.AddRange(disabledMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
+        }
 
         return totalModList;
     }
