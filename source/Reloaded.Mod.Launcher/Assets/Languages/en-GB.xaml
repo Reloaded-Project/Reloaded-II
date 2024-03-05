@@ -686,9 +686,12 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="EditModSelectPresetTagTooltip">Select a Preset Tag</sys:String> 
     <sys:String x:Key="EditModAddTagPlaceHolder">Tag Name Here (or select preset 👉)</sys:String> 
     <sys:String x:Key="ConfigureModsSelectTagTooltip">Filter By Tag</sys:String> 
-    
-    
+
     <!-- Update 1.23.8: Tags -->
     <sys:String x:Key="AddAppWorkingDirectory">Working Directory</sys:String>
    
+    <!-- Update 1.26.0: Preserve Disabled Mod Order -->
+    <sys:String x:Key="PreserveDisabledModOrder">Preserve Mod Order Across Restarts</sys:String>
+    <sys:String x:Key="PreserveDisabledModOrderTooltip">When ENABLED, order of all mods is preserved across App restarts.&#x0a;When DISABLED, 'enabled' mods are at the top in load order and 'disabled' mods at bottom, in alphabetical order.&#x0a;(Default is 'ENABLED' to gauge user feedback, but may change in future.)</sys:String>
+    
 </ResourceDictionary>
