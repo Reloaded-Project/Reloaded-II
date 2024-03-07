@@ -27,7 +27,7 @@ public class BasicPeParser : IDisposable
     /// <summary>
     /// Reader for the underlying stream this class was created with.
     /// </summary>
-    public BufferedStreamReader Stream { get; private set; }
+    public BufferedStreamReader<Stream> Stream { get; private set; }
 
     /// <summary>
     /// Start of the underlying stream the class was created with.
@@ -78,7 +78,7 @@ public class BasicPeParser : IDisposable
     private void FromStream(Stream stream)
     {
         // Read in the DLL or EXE and get the timestamp.
-        Stream = new BufferedStreamReader(stream, 4096);
+        Stream = new BufferedStreamReader<Stream>(stream, 4096);
         StreamStart = stream.Position;
 
         Stream.Read<IMAGE_DOS_HEADER>(out _dosHeader);
@@ -101,7 +101,7 @@ public class BasicPeParser : IDisposable
 
         _imageSectionHeaders = new IMAGE_SECTION_HEADER[FileHeader.NumberOfSections];
         for (int x = 0; x < ImageSectionHeaders.Length; ++x)
-            Stream.Read<IMAGE_SECTION_HEADER>(out ImageSectionHeaders[x], true);
+            ImageSectionHeaders[x] = Stream.ReadMarshalled<IMAGE_SECTION_HEADER>();
 
         PopulateImportDescriptors(Stream);
     }
@@ -189,14 +189,14 @@ public class BasicPeParser : IDisposable
     }
 
     /* Data Parsing */
-    private void PopulateDataDirectories(BufferedStreamReader reader, long numberOfEntries)
+    private void PopulateDataDirectories(BufferedStreamReader<Stream> reader, long numberOfEntries)
     {
         _dataDirectories = new IMAGE_DATA_DIRECTORY[numberOfEntries];
         for (int x = 0; x < numberOfEntries; x++)
             reader.Read<IMAGE_DATA_DIRECTORY>(out _dataDirectories[x]);
     }
 
-    private unsafe void PopulateImportDescriptors(BufferedStreamReader reader)
+    private unsafe void PopulateImportDescriptors(BufferedStreamReader<Stream> reader)
     {
         var directory = DataDirectories[(int) DataDirectoryType.ImportTable];
         var numberOfEntries = directory.Size / sizeof(IMAGE_IMPORT_DESCRIPTOR);
