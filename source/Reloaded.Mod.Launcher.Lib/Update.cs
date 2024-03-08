@@ -165,7 +165,6 @@ public static class Update
         ModDependencyResolveResult? lastResolveResult = default;
         ModDependencyResolveResult resolveResult;
 
-        var isOneDrive = IsOneDrive();
         do
         {
             resolveResult = await GetMissingDependenciesToDownload(token);
@@ -180,9 +179,6 @@ public static class Update
 
             lastResolveResult = resolveResult;
             DownloadPackages(resolveResult, token);
-            
-            // Very terrible hack, caused by a FileSystem bug on MSFT's end somewhere.
-            if (isOneDrive) await Task.Delay(1000, token);
         } 
         while (true);
 
@@ -200,7 +196,6 @@ public static class Update
         
         ModDependencyResolveResult? lastResolveResult = default;
         ModDependencyResolveResult resolveResult;
-        var isOneDrive = IsOneDrive();
 
         do
         {
@@ -215,10 +210,7 @@ public static class Update
             }
 
             DownloadPackages(resolveResult);
-            lastResolveResult = resolveResult;    
-            
-            // Very terrible hack, caused by a FileSystem bug on MSFT's end somewhere.
-            if (isOneDrive) Thread.Sleep(1000);
+            lastResolveResult = resolveResult;
         } 
         while (true);
 
@@ -334,18 +326,6 @@ public static class Update
         }
 
         return false;
-    }
-    
-    /// <summary>
-    /// On Windows 11, Microsoft defaults some accounts to sync via OneDrive.
-    /// Unfortunately their implementation has issues, files that were downloaded can't immediately be seen by FileSystem.
-    ///
-    /// We 'hack' around this (poorly), but our solution is far from ideal. 
-    /// </summary>
-    private static bool IsOneDrive()
-    {
-        var conf = IoC.Get<LoaderConfig>();
-        return conf.GetModConfigDirectory().Contains("OneDrive", StringComparison.OrdinalIgnoreCase);
     }
 
     // TODO: This is a temporary hack to get people unstuck.

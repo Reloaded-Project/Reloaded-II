@@ -75,6 +75,15 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
     {
         throw new NotImplementedException("This feature will be implemented in the future.");
     }
+    
+    /// <summary>
+    /// Populates the mod list governed by <see cref="Items"/>.
+    /// </summary>
+    protected void ForceRefresh()
+    {
+        bool executeImmediately = _context == null;
+        GetItems(executeImmediately);
+    }
 
     /// <summary>
     /// Populates the mod list governed by <see cref="Items"/>.

@@ -34,6 +34,11 @@ public class ModConfigService : ConfigServiceBase<ModConfig>
     /// </summary>
     public DependencyResolutionResult GetMissingDependencies(IEnumerable<ModConfig> modsToResolve)
     {
+        // Force a refresh of all mods.
+        // On some FileSystems, you can't get reliable notifications on FS changes.
+        // This includes OneDrive, which is now enabled by default on Windows 11 installs (unfortunately).
+        ForceRefresh();
+        
         // Get list of all mods.
         var allMods = Items.ToArray();
         var allModIds = new HashSet<string>(allMods.Length);
