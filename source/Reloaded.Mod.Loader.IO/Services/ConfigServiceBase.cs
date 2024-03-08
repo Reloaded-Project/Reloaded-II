@@ -157,8 +157,21 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
     {
         var deletedPath = e.FullPath;
 
-        // Check for mods in subdirectories.
-        // Note: This is slow-ish for 1000+ mod setups (longer than 10ms), but mod removal is a very rare operation.
+        // Fast path: If we're directly deleting a known folder, then there can not be any subfolders,
+        // as we don't allow mods inside mods.
+        var isDirectFolder = ItemsByFolder.TryGetValue(deletedPath, out var directMod);
+        if (isDirectFolder)
+        {
+            _context.Post(() =>
+            {
+                RemoveItem(directMod);
+            });
+            return;
+        }
+        
+        // Otherwise iterate over all possible subfolders.
+        // This is a bit inefficient, but with nested mods, it's the only way (without creating a whole tree of nodes).
+        // Can rack up upwards of 20ms in huge mod directories.
         foreach (var item in ItemsByFolder)
         {
             var modFolder = item.Key;
