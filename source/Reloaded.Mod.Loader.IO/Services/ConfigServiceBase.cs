@@ -155,22 +155,10 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
     {
         var deletedPath = e.FullPath;
 
-        // Get paths with a trailing slash so that the Contains call will work correctly for subdirectories.
-        if (!Path.EndsInDirectorySeparator(deletedPath))
-        {
-            deletedPath += Path.DirectorySeparatorChar;
-        }
-
         // Check for mods in subdirectories.
         var deletedMods = ItemsByFolder.Where(x =>
         {
             var pathContainingFolder = x.Key;
-
-            // Get paths with a trailing slash so that the Contains call will work correctly for mods in subdirectories.
-            if (!Path.EndsInDirectorySeparator(pathContainingFolder))
-            {
-                pathContainingFolder += Path.DirectorySeparatorChar;
-            }
 
             // Check if the current path contains the deleted path, meaning that it is also deleted.
             return pathContainingFolder.Contains(deletedPath)
