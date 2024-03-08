@@ -282,10 +282,19 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
         if (modDirectory == null)
             modDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).GetModConfigDirectory();
 
-        var modConfigs = ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, int.MaxValue, 2)
-            .GroupBy(x => x.Config.ModId).Select(x => x.First())
-            .ToList();
+        var modConfigs =
+            ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, int.MaxValue, 2, false);
+        var existingConfigs = new HashSet<string>();
 
+        // Remove duplicate mods. 
+        // Hopefully user doesn't have any, but if they do, this will delete them.
+        for (var x = modConfigs.Count - 1; x >= 0; x--)
+        {
+            var alreadyExists = existingConfigs.Add(modConfigs[x].Config.ModId);
+            if (!alreadyExists)
+                modConfigs.RemoveAt(x);
+        }
+        
         foreach (var cfg in modConfigs)
         {
             cfg.Config.RefreshSubdirectoryPaths(modDirectory, cfg.Path);

@@ -20,11 +20,12 @@ public static class ConfigReader<TConfigType> where TConfigType : IConfig<TConfi
     /// <param name="token">Cancels the task if necessary.</param>
     /// <param name="maxDepth">Maximum depth (inclusive) in directories to get files from where 1 is only this directory.</param>
     /// <param name="minDepth">Minimum depth (inclusive) in directories to get files from where 1 is this directory.</param>
+    /// <param name="recurseOnFound">Continues to search in subdirectories even if <see cref="fileName"/> is found.</param>
     /// <returns>Tuples containing the path the configurations was loaded from and the corresponding config class.</returns>
-    public static List<PathTuple<TConfigType>> ReadConfigurations(string directory, string fileName, CancellationToken token = default, int maxDepth = 1, int minDepth = 1)
+    public static List<PathTuple<TConfigType>> ReadConfigurations(string directory, string fileName, CancellationToken token = default, int maxDepth = 1, int minDepth = 1, bool recurseOnFound = true)
     {
         // Get all config files to load.
-        var configurationPaths = Utility.IOEx.GetFilesEx(directory, fileName, maxDepth, minDepth);
+        var configurationPaths = IOEx.GetFilesEx(directory, fileName, maxDepth, minDepth, recurseOnFound);
 
         // Configurations to be returned
         var configurations = new List<PathTuple<TConfigType>>(configurationPaths.Count);
