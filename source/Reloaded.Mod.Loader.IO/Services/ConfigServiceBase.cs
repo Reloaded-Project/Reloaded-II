@@ -169,12 +169,22 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
             return;
         }
         
+        // We need paths with trailing slashes in the case of:
+        // - Mod A/ModZ
+        // - Mod A Extra/ModZ
+        // We don't want to match 'Mod A Extra' when we're looking for 'Mod A'.
+        if (!Path.EndsInDirectorySeparator(deletedPath))
+            deletedPath += Path.DirectorySeparatorChar;
+        
         // Otherwise iterate over all possible subfolders.
         // This is a bit inefficient, but with nested mods, it's the only way (without creating a whole tree of nodes).
         // Can rack up upwards of 20ms in huge mod directories.
         foreach (var item in ItemsByFolder)
         {
             var modFolder = item.Key;
+            if (!Path.EndsInDirectorySeparator(modFolder))
+                modFolder += Path.DirectorySeparatorChar;
+            
             var shouldRemove = modFolder.StartsWith(deletedPath, StringComparison.OrdinalIgnoreCase);
             if (shouldRemove)
             { 
@@ -247,8 +257,20 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
 
     private bool IsFileInItemFolder(string filePath)
     {
+        var cfgPath = ConfigDirectory;
         var pathContainingFolder = Path.GetDirectoryName(Path.GetDirectoryName(filePath));
-        return pathContainingFolder.StartsWith(ConfigDirectory, StringComparison.OrdinalIgnoreCase);
+
+        // We need paths with trailing slashes in the case of:
+        // - Mod A/ModZ
+        // - Mod A Extra/ModZ
+        // We don't want to match 'Mod A Extra' when we're looking for 'Mod A'.
+        if (!Path.EndsInDirectorySeparator(cfgPath))
+            cfgPath += Path.DirectorySeparatorChar;
+
+        if (!Path.EndsInDirectorySeparator(pathContainingFolder))
+            pathContainingFolder += Path.DirectorySeparatorChar;
+
+        return pathContainingFolder.StartsWith(cfgPath, StringComparison.OrdinalIgnoreCase);
     }
 
     private bool IsFileConfigFile(string filePath)
