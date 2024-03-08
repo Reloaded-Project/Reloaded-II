@@ -134,6 +134,8 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
 
         // Trigger the creation of the new folder.
         OnCreateFolder(sender, new FileSystemEventArgs(WatcherChangeTypes.Created, e.FullPath, null));
+        
+        // Handling this in this way is needed as mods can be nested.
     }
 
     private void OnCreateFolder(object sender, FileSystemEventArgs e)
@@ -156,21 +158,18 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
         var deletedPath = e.FullPath;
 
         // Check for mods in subdirectories.
-        var deletedMods = ItemsByFolder.Where(x =>
+        // Note: This is slow-ish for 1000+ mod setups (longer than 10ms), but mod removal is a very rare operation.
+        foreach (var item in ItemsByFolder)
         {
-            var pathContainingFolder = x.Key;
-
-            // Check if the current path contains the deleted path, meaning that it is also deleted.
-            return pathContainingFolder.Contains(deletedPath)
-                && !Directory.Exists(pathContainingFolder);
-        });
-
-        foreach (var item in deletedMods)
-        {
-            _context.Post(() =>
-            {
-                RemoveItem(item.Value);
-            });
+            var modFolder = item.Key;
+            var shouldRemove = modFolder.StartsWith(deletedPath, StringComparison.OrdinalIgnoreCase);
+            if (shouldRemove)
+            { 
+                _context.Post(() =>
+                {
+                    RemoveItem(item.Value);
+                });
+            }
         }
     }
 
