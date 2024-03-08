@@ -8,7 +8,6 @@ global using NuGet.Versioning;
 global using Octokit;
 global using Ookii.Dialogs.Wpf;
 global using PropertyChanged;
-global using Reloaded.Memory.Sources;
 global using Reloaded.Mod.Interfaces;
 global using Reloaded.Mod.Launcher.Lib.Commands.Application;
 global using Reloaded.Mod.Launcher.Lib.Commands.Download;
