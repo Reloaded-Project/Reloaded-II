@@ -142,7 +142,7 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
             return;
 
         // Read configurations from subdirectories within the current path.
-        var configs = ConfigReader<TConfigType>.ReadConfigurations(Path.TrimEndingDirectorySeparator(e.FullPath), ItemFileName, maxDepth: int.MaxValue);
+        var configs = ConfigReader<TConfigType>.ReadConfigurations(Path.TrimEndingDirectorySeparator(e.FullPath), ItemFileName, maxDepth: int.MaxValue, recurseOnFound: false);
         foreach (var config in configs)
         {
             _context.Post(() => AddItem(config));
