@@ -33,6 +33,7 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     public string[] SortedMods { get; set; }
     public bool PreserveDisabledModOrder { get; set; } = true; // <= default to 'true' for new configs, and 'false' for configs on older versions.
     public bool DontInject { get; set; } = false; // don't inject loader, start game via regular process launch.
+    public bool IsMsStore { get; set; } = false; // attempts to unprotect this binary on every launch.
 
     /*
        --------------

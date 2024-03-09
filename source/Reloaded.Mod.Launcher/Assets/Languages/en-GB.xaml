@@ -658,7 +658,8 @@ DRM: 'You will own nothing and you will be happy.'
     <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">Failed to read EXE file for if can deploy ASI Loader. This might happen for a variety of reasons.
 - DRM (Microsoft Store/GamePass).
 - You don't have the right to access the EXE file.
-- The file has moved from its original location.</sys:String>
+- The file has moved from its original location.
+</sys:String>
 
     <!-- Update 1.23.0: Mod Packs Extras -->
     <sys:String x:Key="InstallModPackInstallAll">Install All Mods</sys:String> <!-- Click and it installs all. -->

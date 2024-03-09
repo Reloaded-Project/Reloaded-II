@@ -150,7 +150,16 @@ public static class Setup
         // Needs to be ran after SetupViewModelsAsync
         var apps = IoC.GetConstant<ApplicationConfigService>().Items;
         var mods = IoC.GetConstant<ModConfigService>().Items.ToArray();
-
+        
+        // Unprotect all MS Store titles if needed.
+        foreach (var app in apps)
+        {
+            if (app.Config.IsMsStore)
+            {
+                TryUnprotectGamePassGame.TryIgnoringErrors(app.Config.AppLocation);
+            }
+        }
+        
         // Enforce compatibility non-async, since this is unlikely to do anything.
         foreach (var app in apps)
             EnforceModCompatibility(app, mods);

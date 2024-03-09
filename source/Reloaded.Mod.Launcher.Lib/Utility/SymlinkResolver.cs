@@ -46,7 +46,7 @@ public static class SymlinkResolver
         // Special Case for UWP/MSStore.
         var h = CreateFile(path, FILE_READ_EA, FileShare.ReadWrite | FileShare.Delete, IntPtr.Zero, FileMode.Open, FILE_FLAG_BACKUP_SEMANTICS, IntPtr.Zero);
         if (h == INVALID_HANDLE_VALUE)
-            throw new Win32Exception();
+            return path;
 
         try
         {

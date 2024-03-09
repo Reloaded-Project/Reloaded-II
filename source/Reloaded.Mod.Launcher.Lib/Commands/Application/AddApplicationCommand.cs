@@ -62,7 +62,7 @@ public class AddApplicationCommand : ICommand
         try { exePath = SymlinkResolver.GetFinalPathName(exePath); }
         catch (Exception e) { Errors.HandleException(e, Resources.ErrorAddApplicationCantReadSymlink.Get()); }
 
-        TryUnprotectGamePassGame.TryIt(exePath);
+        var isMsStore = TryUnprotectGamePassGame.TryIt(exePath);
         var config = new ApplicationConfig(Path.GetFileName(exePath).ToLower(), GetProductName(exePath), exePath, Path.GetDirectoryName(exePath));
 
         // Set AppName if empty & Ensure no duplicate ID.
@@ -103,6 +103,7 @@ public class AddApplicationCommand : ICommand
         }
         
         // Write file to disk.
+        config.IsMsStore = isMsStore;
         Directory.CreateDirectory(applicationDirectory);
         IConfig<ApplicationConfig>.ToPath(config, applicationConfigFile);
 

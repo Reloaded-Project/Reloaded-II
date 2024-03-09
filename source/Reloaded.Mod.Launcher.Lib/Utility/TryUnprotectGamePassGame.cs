@@ -51,8 +51,12 @@ public static class TryUnprotectGamePassGame
             script.AppendLine($"del /f /q \"{movedOldExePath}\"");
         }
         
-        // Execute the script in game context where we have perms to access the files.
+        // Append command to create 'terminate' file indicating script completion.
         using var tempDir = new TemporaryFolderAllocation();
+        var terminateFilePath = Path.Combine(tempDir.FolderPath, "terminate");
+        script.AppendLine($"echo Done > \"{terminateFilePath}\"");
+        
+        // Execute the script in game context where we have perms to access the files.
         var scriptPath = Path.Combine(tempDir.FolderPath, "script.bat");
         File.WriteAllText(scriptPath, script.ToString());
         
@@ -62,13 +66,35 @@ public static class TryUnprotectGamePassGame
         {
             FileName = @"powershell",
             Arguments = command,
-            RedirectStandardOutput = true,
-            CreateNoWindow = true
+            CreateNoWindow = true,
+            WindowStyle = ProcessWindowStyle.Hidden,
         };
         
         using var process = Process.Start(processStartInfo);
+
+        // Poll for the existence of 'terminate' file.
+        // Invoke-CommandInDesktopPackage seems to make it so you can't wait for child process to finish,
+        // so we have to improvise here.
+        while (!File.Exists(terminateFilePath))
+            Thread.Sleep(16);
+        
         process?.WaitForExit();
         return true;
+    }
+    
+    /// <summary/>
+    /// <param name="exePath">Path to the main game binary.</param>
+    /// <returns>True if this was auto-unprotected.</returns>
+    public static bool TryIgnoringErrors(string exePath)
+    {
+        try
+        {
+            return TryIt(exePath);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     private static bool GetAppXManifestPath(string exePath, [MaybeNullWhen(false)] out string appManifest)
