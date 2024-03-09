@@ -75,6 +75,7 @@ public class PluginManager : IDisposable
             return;
 
         var watch = Stopwatch.StartNew();
+        Logger?.LogWriteLineAsync($"Loading {modPaths.Count} Mod(s).");
         foreach (var mod in modPaths)
         {
             watch.Restart();
