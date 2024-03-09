@@ -99,7 +99,8 @@ public class AddApplicationCommand : ICommand
         else
         {
             // For GamePass, we can't dll inject, so we need to throw error to user screen.
-            Actions.DisplayMessagebox.Invoke(Resources.AsiLoaderDialogTitle.Get(), Resources.AsiLoaderGamePassAutoInstallFail.Get());
+            if (isMsStore)
+                Actions.DisplayMessagebox.Invoke(Resources.AsiLoaderDialogTitle.Get(), Resources.AsiLoaderGamePassAutoInstallFail.Get());
         }
         
         // Write file to disk.
