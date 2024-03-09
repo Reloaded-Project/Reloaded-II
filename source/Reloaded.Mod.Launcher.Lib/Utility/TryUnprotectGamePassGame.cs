@@ -32,11 +32,8 @@ public static class TryUnprotectGamePassGame
         var contentFolder = Path.GetDirectoryName(manifestPath);
         var exeFiles = Directory.GetFiles(contentFolder!, "*.exe", SearchOption.AllDirectories);
 
-        // Make a CMD script to copy
+        // Make a CMD script to unprotect all binaries.
         var script = new StringBuilder();
-        
-        // Make something like 
-        // "copy /b "C:\XboxGames\Persona 3 Reload\Content\P3R\Binaries\WinGDK\P3R.exe" "C:\XboxGames\Persona 3 Reload\Content\P3R\Binaries\WinGDK\P3R-new.exe" /y"
         foreach (var exeFile in exeFiles)
         {
             // Copy exe to strip protection.
