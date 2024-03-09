@@ -17,13 +17,6 @@ public partial class SettingsPage : ReloadedIIPage, IDisposable
         InitializeComponent();
         ViewModel = Lib.IoC.GetConstant<SettingsPageViewModel>();
         Lib.IoC.Get<MainWindow>().Closing += OnMainWindowExit;
-        
-        // Hack, to make sure selected by default.
-        Loaded += (_, _) =>
-        {
-            ViewModel.SelectCurrentLanguage();
-            ViewModel.SelectCurrentTheme();
-        };
     }
 
     public void Dispose()

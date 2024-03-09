@@ -36,6 +36,21 @@ public class XamlFileSelector : ResourceDictionary, IResourceFileSelector
         this.PropertyChanged += OnPropertyChanged;
         PopulateXamlFiles();
     }
+    
+    /// <summary>
+    ///     Selects an existing available XAML file with a matching file name.
+    /// </summary>
+    public void SelectXamlFileByName(string fileName)
+    {
+        foreach (var file in Files)
+        {
+            if (Path.GetFileName(file) != fileName) 
+                continue;
+                
+            File = file;
+            break;
+        }
+    }
 
     private void PopulateXamlFiles()
     {

@@ -19,4 +19,9 @@ public interface IResourceFileSelector : INotifyPropertyChanged
     /// Executed after a new XAML file has been set as the source.
     /// </summary>
     event Action NewFileSet;
+
+    /// <summary>
+    ///     Selects an existing available XAML file with a matching file name.
+    /// </summary>
+    void SelectXamlFileByName(string fileName);
 }
