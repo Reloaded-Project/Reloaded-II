@@ -658,7 +658,8 @@ DRM: 'You will own nothing and you will be happy.'
     <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">Failed to read EXE file for if can deploy ASI Loader. This might happen for a variety of reasons.
 - DRM (Microsoft Store/GamePass).
 - You don't have the right to access the EXE file.
-- The file has moved from its original location.</sys:String>
+- The file has moved from its original location.
+</sys:String>
 
     <!-- Update 1.23.0: Mod Packs Extras -->
     <sys:String x:Key="InstallModPackInstallAll">Install All Mods</sys:String> <!-- Click and it installs all. -->
@@ -694,4 +695,9 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="PreserveDisabledModOrder">Preserve Mod Order Across Restarts</sys:String>
     <sys:String x:Key="PreserveDisabledModOrderTooltip">When ENABLED, order of all mods is preserved across App restarts.&#x0a;When DISABLED, 'enabled' mods are at the top in load order and 'disabled' mods at bottom, in alphabetical order.&#x0a;(Default is 'ENABLED' to gauge user feedback, but may change in future.)</sys:String>
     
+    <!-- Update 1.26.0: GamePass ASI Loader Auto Deploy -->
+    <sys:String x:Key="AsiLoaderGamePassAutoInstallFail">This GamePass title cannot be Auto Setup, sorry. You'll need a manual install of ASI Loader or other shim.</sys:String>
+    <sys:String x:Key="EditModDontInject">Don't Inject Loader</sys:String>
+    <sys:String x:Key="EditModDontInjectTooltip">When ENABLED, doesn't inject loader. Use this when you are loading Reloaded via an external shim like ASI Loader.&#x0a;When DISABLED, injects loader as usual.</sys:String>
+
 </ResourceDictionary>
