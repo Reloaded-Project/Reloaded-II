@@ -70,6 +70,8 @@ public static class TryUnprotectGamePassGame
             WindowStyle = ProcessWindowStyle.Hidden,
         };
         
+        // TODO: Need to write a custom program/binary here to do our deed,
+        // so we can avoid spawning a window.
         using var process = Process.Start(processStartInfo);
 
         // Poll for the existence of 'terminate' file.
