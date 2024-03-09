@@ -98,7 +98,7 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
             var launcher  = ApplicationLauncher.FromApplicationConfig(appTuple);
 
             if (!Environment.IsWine || (Environment.IsWine && CompatibilityDialogs.WineShowLaunchDialog()))
-                launcher.Start();
+                launcher.Start(!appTuple.Config.DontInject);
         }
         catch (Exception ex)
         {

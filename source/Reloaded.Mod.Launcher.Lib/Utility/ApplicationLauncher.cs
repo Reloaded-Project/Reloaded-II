@@ -41,7 +41,7 @@ public class ApplicationLauncher
     /// <summary>
     /// Starts the application, injecting Reloaded into it.
     /// </summary>
-    public void Start()
+    public void Start(bool inject = true)
     {
         // Start up the process
         Native.STARTUPINFO startupInfo                  = new Native.STARTUPINFO();
@@ -66,14 +66,17 @@ public class ApplicationLauncher
         var process         = Process.GetProcessById((int) processInformation.dwProcessId);
         using var injector  = new ApplicationInjector(process);
 
-        try
+        if (inject)
         {
-            injector.Inject();
-        }
-        catch (Exception)
-        {
-            Native.ResumeThread(processInformation.hThread);
-            throw;
+            try
+            {
+                injector.Inject();
+            }
+            catch (Exception)
+            {
+                Native.ResumeThread(processInformation.hThread);
+                throw;
+            }
         }
 
         Native.ResumeThread(processInformation.hThread);

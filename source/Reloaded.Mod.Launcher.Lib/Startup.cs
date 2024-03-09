@@ -22,13 +22,19 @@ public static class Startup
         PopulateCommandLineArgs();
 
         // Check if Kill Process
+        bool forceInject = false;
         if (_commandLineArguments.TryGetValue(Constants.ParameterKill, out string? processId))
+        {
             KillProcessWithId(processId);
+            // for outdated bootstrappers, assume injection is required when kill specified.
+            // otherwise follow regular setting
+            forceInject = true; 
+        }
 
         // Check if Launch
         if (_commandLineArguments.TryGetValue(Constants.ParameterLaunch, out string? applicationToLaunch))
         {
-            LaunchApplicationAndExit(applicationToLaunch);
+            LaunchApplicationAndExit(applicationToLaunch, forceInject);
             result = true;
         }
 
@@ -69,7 +75,7 @@ public static class Startup
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static void LaunchApplicationAndExit(string applicationToLaunch)
+    private static void LaunchApplicationAndExit(string applicationToLaunch, bool forceInject)
     {
         // Acquire arguments
         var loaderConfig = IoC.Get<LoaderConfig>();
@@ -85,17 +91,18 @@ public static class Startup
             arguments = $"{arguments} {application.Config.AppArguments}";
 
         _commandLineArguments.TryGetValue(Constants.ParameterWorkingDirectory, out var workingDirectory);
-
+        var inject = !application!.Config.DontInject | forceInject;
+        
         // Show warning for Wine users.
         if (Shared.Environment.IsWine)
         {
             // Set up UI Resources, since they're needed for the dialog.
             if (CompatibilityDialogs.WineShowLaunchDialog())
-                StartGame(applicationToLaunch, arguments, workingDirectory);
+                StartGame(applicationToLaunch, arguments, workingDirectory, inject);
         }
         else
         {
-            StartGame(applicationToLaunch, arguments, workingDirectory);
+            StartGame(applicationToLaunch, arguments, workingDirectory, inject);
         }
     }
 
@@ -142,11 +149,11 @@ public static class Startup
 
     private static void InitControllerSupport() => Actions.InitControllerSupport();
 
-    private static void StartGame(string applicationToLaunch, string arguments, string? workingDirectory = null)
+    private static void StartGame(string applicationToLaunch, string arguments, string? workingDirectory, bool inject)
     {
         // Launch the application.
         var launcher = ApplicationLauncher.FromLocationAndArguments(applicationToLaunch, arguments, workingDirectory);
-        launcher.Start();
+        launcher.Start(inject);
     }
     
     private static void PopulateCommandLineArgs()
