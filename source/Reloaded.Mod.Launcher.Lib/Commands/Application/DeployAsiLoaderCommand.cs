@@ -31,7 +31,12 @@ public class DeployAsiLoaderCommand : WithCanExecuteChanged, ICommand
             return;
 
         _deployer.DeployAsiLoader(out string? loaderPath, out string bootstrapperPath);
-        string deployedBootstrapper = $"{Resources.AsiLoaderDialogBootstrapperDeployed.Get()} {bootstrapperPath}";
+        PrintDeployedAsiLoaderInfo(bootstrapperPath, loaderPath);
+    }
+
+    internal static void PrintDeployedAsiLoaderInfo(string bootstrapperPath, string? loaderPath)
+    {
+        var deployedBootstrapper = $"{Resources.AsiLoaderDialogBootstrapperDeployed.Get()} {bootstrapperPath}";
         if (loaderPath == null)
         {
             // Installed Bootstrapper but not loader.
@@ -39,7 +44,7 @@ public class DeployAsiLoaderCommand : WithCanExecuteChanged, ICommand
         }
         else
         {
-            string deployedLoader = $"{Resources.AsiLoaderDialogLoaderDeployed.Get()} {loaderPath}";
+            var deployedLoader = $"{Resources.AsiLoaderDialogLoaderDeployed.Get()} {loaderPath}";
             Actions.DisplayMessagebox.Invoke(Resources.AsiLoaderDialogTitle.Get(), $"{deployedLoader}\n{deployedBootstrapper}");
         }
     }

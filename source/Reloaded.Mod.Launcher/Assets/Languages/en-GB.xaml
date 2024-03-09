@@ -694,4 +694,7 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="PreserveDisabledModOrder">Preserve Mod Order Across Restarts</sys:String>
     <sys:String x:Key="PreserveDisabledModOrderTooltip">When ENABLED, order of all mods is preserved across App restarts.&#x0a;When DISABLED, 'enabled' mods are at the top in load order and 'disabled' mods at bottom, in alphabetical order.&#x0a;(Default is 'ENABLED' to gauge user feedback, but may change in future.)</sys:String>
     
+    <!-- Update 1.26.0: GamePass ASI Loader Auto Deploy -->
+    <sys:String x:Key="AsiLoaderGamePassAutoInstallFail">This GamePass title cannot be Auto Setup, sorry. You'll need a manual install of ASI Loader or other shim.</sys:String>
+
 </ResourceDictionary>
