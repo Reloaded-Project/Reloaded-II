@@ -223,11 +223,24 @@ public static class Update
     /// </summary>
     public static void ShowMissingPackagesDialog(ModDependencyResolveResult resolveResult)
     {
+        // Note: This is slow, but it's ok in this rare case.
+        var notFoundDeps = resolveResult.NotFoundDependencies;
+        var list = new List<string>();
+        var modConfigService = IoC.Get<ModConfigService>();
+        
+        foreach (var notFound in notFoundDeps)
+        foreach (var item in modConfigService.Items)
+        {
+            var conf = item.Config;
+            if (conf.ModDependencies.Contains(notFound)) 
+                list.Add($"{notFound} | Required by: {conf.ModId}");
+        }
+        
         ActionWrappers.ExecuteWithApplicationDispatcher(() =>
         {
             Actions.DisplayMessagebox(Resources.ErrorMissingDependency.Get(),
                 $"{Resources.FetchNugetNotFoundMessage.Get()}\n\n" +
-                $"{string.Join('\n', resolveResult.NotFoundDependencies)}\n\n" +
+                $"{string.Join('\n', list)}\n\n" +
                 $"{Resources.FetchNugetNotFoundAdvice.Get()}",
                 new Actions.DisplayMessageBoxParams()
                 {
