@@ -696,5 +696,7 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     
     <!-- Update 1.26.0: GamePass ASI Loader Auto Deploy -->
     <sys:String x:Key="AsiLoaderGamePassAutoInstallFail">This GamePass title cannot be Auto Setup, sorry. You'll need a manual install of ASI Loader or other shim.</sys:String>
+    <sys:String x:Key="EditModDontInject">Don't Inject Loader</sys:String>
+    <sys:String x:Key="EditModDontInjectTooltip">When ENABLED, doesn't inject loader. Use this when you are loading Reloaded via an external shim like ASI Loader.&#x0a;When DISABLED, injects loader as usual.</sys:String>
 
 </ResourceDictionary>
