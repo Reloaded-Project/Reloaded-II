@@ -32,6 +32,7 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
     // V3 (Launcher only right now)
     public string[] SortedMods { get; set; }
     public bool PreserveDisabledModOrder { get; set; } = true; // <= default to 'true' for new configs, and 'false' for configs on older versions.
+    public bool DontInject { get; set; } = false;
 
     /*
        --------------
