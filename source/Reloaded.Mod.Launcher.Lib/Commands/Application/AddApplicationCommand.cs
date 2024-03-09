@@ -62,7 +62,7 @@ public class AddApplicationCommand : ICommand
         try { exePath = SymlinkResolver.GetFinalPathName(exePath); }
         catch (Exception e) { Errors.HandleException(e, Resources.ErrorAddApplicationCantReadSymlink.Get()); }
 
-        var isGamePass = TryUnprotectGamePassGame.TryIt(exePath);
+        TryUnprotectGamePassGame.TryIt(exePath);
         var config = new ApplicationConfig(Path.GetFileName(exePath).ToLower(), GetProductName(exePath), exePath, Path.GetDirectoryName(exePath));
 
         // Set AppName if empty & Ensure no duplicate ID.
@@ -99,8 +99,7 @@ public class AddApplicationCommand : ICommand
         else
         {
             // For GamePass, we can't dll inject, so we need to throw error to user screen.
-            if (isGamePass)
-                Actions.DisplayMessagebox.Invoke(Resources.AsiLoaderDialogTitle.Get(), Resources.AsiLoaderGamePassAutoInstallFail.Get());
+            Actions.DisplayMessagebox.Invoke(Resources.AsiLoaderDialogTitle.Get(), Resources.AsiLoaderGamePassAutoInstallFail.Get());
         }
         
         // Write file to disk.

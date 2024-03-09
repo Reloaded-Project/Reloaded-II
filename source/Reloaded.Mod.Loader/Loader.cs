@@ -214,7 +214,17 @@ public class Loader : IDisposable
             if (fullAppLocation.Equals(fullPath, StringComparison.OrdinalIgnoreCase))
                 return application;
         }
-
+        
+        // In case of GamePass, binary locations can change after App updates (thanks Microsoft!)
+        // So as last resort, we'll match against the AppId.
+        Logger.LogWriteLineAsync($"Can't match by App Path, Matching by AppId!", Logger.ColorWarning);
+        var expectedAppId = Path.GetFileName(fullPath)!.ToLower();
+        foreach (var configuration in configurations)
+        {
+            if (configuration.Config.AppId.Equals(expectedAppId, StringComparison.OrdinalIgnoreCase))
+                return configuration.Config;
+        }
+        
         return null;
     }
 
