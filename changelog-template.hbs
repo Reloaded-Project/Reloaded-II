@@ -1,14 +1,207 @@
-## Changelog (1.25.11)
+## Changelog (1.26.0)
 
-Fixes booting with Steam DRM and local install of Special K <= 24.3.1.6
-Special K >= 24.3.2 is unaffected.
+1.26.0 is a small feature update, bringing small features and bugfixes intended to make Reloaded-II
+better work 'out of the box' for various different kinds of users. (i.e. Reliability)
 
-You can find a [technical writeup about the issue here](https://github.com/Reloaded-Project/Reloaded-II/issues/308#issuecomment-1974231147).
+Through most of its life, Reloaded-II has been a 'solo' project, so this update focuses on making R2
+last just a little bit longer while I spend the next ~2 years working on Reloaded3.
 
-On Reloaded's end there's a workaround to fix errors with `Special K <= 24.3.1.6`, and `Special K >= 24.3.2`
-contains a fix for the core issue in Special K itself.
+Below is a small 'Progress Report'.
+Community contributions are always welcome, and as usual, thanks for using this software.
 
-## Complete Changes
+### Win32 Microsoft Store (i.e. GamePass) Games should now work 'Out of the Box'
+
+In short: They should be as simple to set up as games on other launchers.
+(If you're interested in the details, read on, otherwise skip.)
+
+For a very long time, GamePass games have been a pain to set up.  
+
+Due to Copy Protection (DRM) that Microsoft employs at the Operating System level, 
+you're not allowed to read all of the game files, even if you 'own' the game.
+
+This is problematic, because:
+- We can't inject code into game directly, as it needs to be started via `gamelaunchhelper.exe`.
+  - So you can have working cloud saves, etc.
+- We can't install a shim (e.g. ASI Loader), because we can't read the EXE files.
+  - They're encrypted on disk, and only decrypted when the game is ran.
+  - So we can't figure out how to install a shim.
+
+Unfortunately, as a result, this meant that we just had to say 'figure it out yourself' for a while. 
+As Reloaded-II has historically mostly been a solo effort, and I don't use Windows outside of debugging mods, 
+I've never really had opportunities to investigate further.
+
+That was until @Aemony gave me a hint by linking the [following post](https://github.com/ianpatt/sfse/issues/10#issuecomment-1732552638). 
+
+So I bought GamePass from my own pocket, and started investigating.
+Turns out that if you spawn a process in the 'AppX' context of the game via [Invoke-CommandInDesktopPackage](https://learn.microsoft.com/en-us/powershell/module/appx/invoke-commandindesktoppackage?view=windowsserver2022-ps),
+ or via `IDesktopAppxActivator` COM interface, you can read the normally encrypted files just fine. 
+
+With that in mind, I've written some code to dump unencrypted game files, and then replace the originals
+with them, so Reloaded-II can work as expected. The process is multi step, and error prone to some 
+degree, however all games on GamePass that are frequently used with Reloaded seem to work just fine for now.
+[Source Code](https://github.com/Reloaded-Project/Reloaded-II/blob/master/source/Reloaded.Mod.Launcher.Lib/Utility/TryUnprotectGamePassGame.cs). The code I wrote should work on Win10 21H2 and above, no guarantees for older
+Windows builds.
+
+An additional set of patches were made to ensure:
+- GamePass games survive 'Verify Game Files' functionality.
+- GamePass games survive updates (hopefully).
+  - Note: GamePass games can change their *real* EXE location (not the fake one in your game folder) after an update.
+  - If this happens Reloaded-II should still work now.
+
+When finding a GamePass game, Reloaded-II will now auto-unprotect it for you, and install ASI Loader.
+When you launch from the launcher, it'll boot `gamelaunchhelper.exe`, to ensure your cloud saves work,
+and the ASI Loader shim will handle loading Reloaded itself when the actual game boots.
+
+Things should hopefully work 'just fine', for now.
+
+PS. If you're unfortunate enough to have a Denuvo game on GamePass, your game start times should 
+now be ~3 seconds faster on a typical PC. You're welcome. Unfortunately, this is just another 
+case of how anti-piracy tech unfortunately always hurts the paying customer the most. 
+
+### Mod Subfolders
+
+(Originally contributed by @ItsKaa, thanks!)
+
+You can now store mods in subfolders of Mods folder.
+
+Example `Reloaded-II/Mods` folder:
+```
+Mods
+├── FlatOut
+│   ├── flatout2.packs.goofyahhmod
+│   ├── flatout2.utils.modloader
+│   ├── flatout2.utils.mpnamechange
+│   ├── flatout2.utils.richpresence
+│   └── flatout2.utils.zpatch
+├── <other unrelated mod 1>
+├── <other unrelated mod 2>
+└── <other unrelated mod 3>
+```
+
+![Image](./Subfolders.png)
+
+If you're a fan of manual mod organization, say in the style of Stardew Valley, this is for you.
+Should make you feel more at home.
+
+### Preserve Mod Order
+
+(Contributed by @ItsKaa, thanks!)
+
+The order of mods in the launcher is now fully preserved across restarts. 
+Previously, the enabled mods would show first in load order, and disabled ones would show after
+in alphabetical order.
+
+For newly added games, this is now the default (may change depending on feedback). For games
+people previously added before this update, this is opt-in.
+
+![Image](./PreserveModOrder.png)
+
+In either case, you can change this setting at any time according to your preference.
+
+### Reloaded-II now defaults to DLL Hijacking as opposed to DLL Injection
+
+i.e. Reloaded-II now uses ASI Loader by default, instead of DLL Injection for newly added games.
+
+Many Steam users have been reporting that ***their Steam clients render their controllers absolutely 
+unusable for anything that wasn't launched by Steam***. Unfortunately, I don't think this will be
+fixed any time soon either.
+
+In order to reduce tech support requests of `I launched via Reloaded and my controller doesn't work`,
+I decided to (unfortunately) bend over to Valve and make using a shim for launching Reloaded's 
+Loader the default.
+
+Although I ***really, really, really*** don't like modifying game folders (they should be untouched!!),
+I'm unfortunately forced to make this change to avoid end user issues.
+
+### Improving 'Missing Dependencies' Experience
+
+![Image](./RequiredMod.png)
+
+In some rare cases, mods which depend on other mods don't have the required update information to
+download the other mod.
+
+As Reloaded doesn't have a central package server, we copy the update info of each dependency into
+each mod that depends on it. That update info is then used to download the needed dependencies in
+lieu of a lack of a central package server. Reloaded updates this info on every reboot of the launcher. 
+
+In some cases, a modder may for example, forget to add update info to their mod, and some other mod
+may set a dependency on it. Or the author of the mod that depends on it may have added the dependency 
+with a text editor, before hitting 'Publish'. In both these cases, the update info may be missing,
+and dependency cannot be auto downloaded.
+
+In this Release, 2 changes have been made to improve this experience:  
+- Hitting 'Publish' triggers the action to copy dependency info.  
+- Missing Dependency Dialog shows which mod's dependency is missing.  
+
+With these two changes, the likelyhood of a missing dependency error is reduced. And if it occurs,
+it's easy to figure out which package was incorrectly uploaded/packaged or is missing update info.
+
+### Automatic Language Selection on First Boot
+
+![Image](./DefaultLanguage.png)
+
+Bing Chilling!
+
+This is very long overdue, and a simple change. When you first boot Reloaded-II, it'll
+auto select the language for you. So if your system display language is 中文(简体), Reloaded
+will auto select `zh-CN.xaml` on first boot.
+
+### Drag & Drop Mod Installation
+
+![Image](./DragDrop.png)
+
+Mods can now be installed by dragging them over the Reloaded-II window.
+
+This is intended to make mod installation easier in the cases where you're downloading a mod from
+a place that doesn't provide you a '1 click install' button. (e.g. GitHub, Nexus, that certain
+kinky mod site etc.)
+
+### Loader Logging Change
+
+A small change to how the loader logs mods that are about to be loaded.
+
+Old logs:
+```
+[Reloaded] Loaded: FlatOut2.Utils.ModLoader in 118ms
+[Reloaded] Loaded: FlatOut2.Utils.RichPresence in 9ms
+[Reloaded] Loaded: FlatOut2.Utils.ZPatch in 3ms
+```
+
+New logs:
+```
+[Reloaded] Loading 3 Mod(s).
+[Reloaded]
+[Reloaded] Loading: FlatOut 2 Mod Loader
+[Reloaded] - AppId   : FlatOut2.Utils.ModLoader
+[Reloaded] - LoadTime: 112ms
+[Reloaded]
+[Reloaded] Loading: FlatOut 2 Discord Rich Presence
+[Reloaded] - AppId   : FlatOut2.Utils.RichPresence
+[Reloaded] - LoadTime: 9ms
+[Reloaded]
+[Reloaded] Loading: ZPatch
+[Reloaded] - AppId   : FlatOut2.Utils.ZPatch
+[Reloaded] - LoadTime: 3ms
+```
+Although more verbose, this change should make it easier for troubleshooting.
+You can identify if a mod is stuck/deadlocked by the fact `LoadTime` doesn't appear.
+And you can more easily match up mod IDs to user friendly mod names.
+
+### Miscellaneous Changes
+- Loader and Launcher now filter out duplicate mods (in a predictable manner).
+- Updated translations.
+- Loader saves ~150KB of RAM again, with trimming re-enabled.
+
+### Bug Fixes
+- Added a minimum height in mod update dialog.
+- Fixed a bug where updating multiple outdated copies of the same mod at once would cause the launcher to crash.
+- Added an explicit full config refresh during dependency resolution.
+  - Should make the 'Download Loop' issue less common on networked drives, maybe even OneDrive. 
+
+End of human written changelog.
+------------------------------------
+
+## Complete Changes (Autogenerated)
 
 {{#each releases}}
   {{#if href}}
