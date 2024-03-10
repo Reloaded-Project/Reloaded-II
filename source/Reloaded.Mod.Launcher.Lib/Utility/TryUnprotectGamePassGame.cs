@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Xml;
 using Reloaded.Mod.Installer.DependencyInstaller.IO;
 using FileMode = System.IO.FileMode;
@@ -23,45 +24,29 @@ public static class TryUnprotectGamePassGame
         var read = CanRead(exePath);
         if (read)
             return !read;
-        
+
         // If we can't read it, try finding an AppxManifest.xml file by going up directories.
         if (!GetAppXManifestPath(exePath, out var manifestPath)) 
             return false;
 
         ExtractInfoFromUWPAppManifest(manifestPath!, out var appId, out var packageFamilyName);
+
         var contentFolder = Path.GetDirectoryName(manifestPath);
         var exeFiles = Directory.GetFiles(contentFolder!, "*.exe", SearchOption.AllDirectories);
 
-        // Make a CMD script to unprotect all binaries.
-        var script = new StringBuilder();
-        foreach (var exeFile in exeFiles)
-        {
-            // Copy exe to strip protection.
-            var newExePath = Path.Combine(Path.GetDirectoryName(exePath), Path.GetFileName(exeFile) + ".new");
-            script.AppendLine($"copy /y \"{exeFile}\" \"{newExePath}\"");
-            
-            // Move old exe to .old
-            var movedOldExePath = Path.Combine(Path.GetDirectoryName(exePath), Path.GetFileName(exeFile) + ".old");
-            script.AppendLine($"move /y \"{exeFile}\" \"{movedOldExePath}\"");
-            
-            // Replace old exe with new exe
-            script.AppendLine($"move /y \"{newExePath}\" \"{exeFile}\"");
-            
-            // Delete old exe
-            script.AppendLine($"del /f /q \"{movedOldExePath}\"");
-        }
-        
+        // Load custom binary that does file copying to handle the decryption.
+        var libraryDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location);
+        var compressedLoaderPath = $"{libraryDirectory}/Assets/replace-files-with-itself.exe";
+
         // Append command to create 'terminate' file indicating script completion.
         using var tempDir = new TemporaryFolderAllocation();
-        var terminateFilePath = Path.Combine(tempDir.FolderPath, "terminate");
-        script.AppendLine($"echo Done > \"{terminateFilePath}\"");
-        
+
         // Execute the script in game context where we have perms to access the files.
-        var scriptPath = Path.Combine(tempDir.FolderPath, "script.bat");
-        File.WriteAllText(scriptPath, script.ToString());
-        
+        var scriptPath = Path.Combine(tempDir.FolderPath, "files.txt");
+        File.WriteAllLines(scriptPath, exeFiles, Encoding.UTF8);
+
         // Run the script
-        var command = $"Invoke-CommandInDesktopPackage -PackageFamilyName \"{packageFamilyName}\" -AppId \"{appId}\" -Command \"cmd.exe\" -Args '/c \"{scriptPath}\"'";
+        var command = $"Invoke-CommandInDesktopPackage -PackageFamilyName \"{packageFamilyName}\" -AppId \"{appId}\" -Command \"{compressedLoaderPath}\" -Args '\"{scriptPath}\"'";
         var processStartInfo = new ProcessStartInfo
         {
             FileName = @"powershell",
@@ -69,18 +54,15 @@ public static class TryUnprotectGamePassGame
             CreateNoWindow = true,
             WindowStyle = ProcessWindowStyle.Hidden,
         };
-        
-        // TODO: Need to write a custom program/binary here to do our deed,
-        // so we can avoid spawning a window.
-        using var process = Process.Start(processStartInfo);
 
-        // Poll for the existence of 'terminate' file.
-        // Invoke-CommandInDesktopPackage seems to make it so you can't wait for child process to finish,
-        // so we have to improvise here.
-        while (!File.Exists(terminateFilePath))
-            Thread.Sleep(16);
-        
+        using var process = Process.Start(processStartInfo);
         process?.WaitForExit();
+        
+        // Wait until process named 'replace-files-with-itself' is terminated.
+        var processName = "replace-files-with-itself";
+        while (Process.GetProcessesByName(processName).Length > 0)
+            Thread.Sleep(1);
+        
         return true;
     }
     
