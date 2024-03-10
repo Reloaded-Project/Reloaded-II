@@ -12,6 +12,9 @@
         Width="1000"
         MinWidth="700"
         MinHeight="500"
+        AllowDrop="True"
+        DragOver="InstallMod_DragOver" 
+        Drop="InstallMod_Drop"
         Style="{DynamicResource ReloadedWindow}">
 
     <!-- Window Content -->

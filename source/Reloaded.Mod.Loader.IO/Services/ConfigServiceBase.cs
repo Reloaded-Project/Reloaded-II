@@ -81,7 +81,7 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
     /// <summary>
     /// Populates the mod list governed by <see cref="Items"/>.
     /// </summary>
-    protected void ForceRefresh()
+    public virtual void ForceRefresh()
     {
         bool executeImmediately = _context == null;
         GetItems(executeImmediately);

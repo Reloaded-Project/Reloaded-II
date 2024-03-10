@@ -11,6 +11,7 @@
       mc:Ignorable="d"              
       d:DesignHeight="600" 
       d:DesignWidth="756"
+      AllowDrop="True"
       Title="{DynamicResource TitleApplication}">
 
     <Grid DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">

@@ -200,4 +200,8 @@ public static class Resources
 
     // Update 1.26.0: GamePass ASI Loader Auto Deploy
     public static IDictionaryResource<string> AsiLoaderGamePassAutoInstallFail { get; set; }
+    
+    // Update 1.26.0: Drag & Drop Mods
+    public static IDictionaryResource<string> DragDropInstalledModsTitle { get; set; }
+    public static IDictionaryResource<string> DragDropInstalledModsDescription { get; set; }
 }

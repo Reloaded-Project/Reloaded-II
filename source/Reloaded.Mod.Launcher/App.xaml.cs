@@ -60,8 +60,7 @@ public partial class App : Application
         
         themeSelector.SelectXamlFileByName(Path.GetFileName(conf.ThemeFile));
         languageSelector.SelectXamlFileByName(Path.GetFileName(conf.LanguageFile));
-        
-        
+
         LibraryBindings.Init(languageSelector, themeSelector);
 
         // Ideally this should be in Setup, however the download dialogs should be localized.

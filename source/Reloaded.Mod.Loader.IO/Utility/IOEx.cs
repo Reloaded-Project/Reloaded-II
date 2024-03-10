@@ -25,6 +25,9 @@ public static class IOEx
 
             while (File.Exists(destFilePath) && !CheckFileAccess(destFilePath, FileMode.Open, FileAccess.Write))
                 Thread.Sleep(100);
+            
+            while (File.Exists(sourceFilePath) && !CheckFileAccess(sourceFilePath, FileMode.Open, FileAccess.Write))
+                Thread.Sleep(100);
 
             if (File.Exists(destFilePath))
                 File.Delete(destFilePath);

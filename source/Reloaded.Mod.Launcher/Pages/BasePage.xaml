@@ -11,6 +11,7 @@
              xmlns:properties="clr-namespace:Reloaded.Mod.Launcher.Controls.Properties"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800"
+             AllowDrop="True"
              Title="{DynamicResource TitleMainPage}">
 
     <Grid x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">

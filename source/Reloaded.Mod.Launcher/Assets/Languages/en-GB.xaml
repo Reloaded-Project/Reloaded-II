@@ -700,4 +700,8 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="EditModDontInject">Don't Inject Loader</sys:String>
     <sys:String x:Key="EditModDontInjectTooltip">When ENABLED, doesn't inject loader. Use this when you are loading Reloaded via an external shim like ASI Loader.&#x0a;When DISABLED, injects loader as usual.</sys:String>
 
+    <!-- Update 1.26.0: Drag & Drop Install Mods -->
+    <sys:String x:Key="DragDropInstalledModsTitle">Installed Mods via Drag &amp; Drop</sys:String>
+    <sys:String x:Key="DragDropInstalledModsDescription">Installed {0} Mod(s)</sys:String>
+
 </ResourceDictionary>

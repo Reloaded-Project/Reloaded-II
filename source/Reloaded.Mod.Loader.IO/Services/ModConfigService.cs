@@ -65,6 +65,12 @@ public class ModConfigService : ConfigServiceBase<ModConfig>
 
         return resolutionResult;
     }
+    
+    public override void ForceRefresh()
+    {
+        base.ForceRefresh();
+        SetItemsById();
+    }
 
     private void SetItemsById()
     {
