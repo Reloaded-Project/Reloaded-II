@@ -46,7 +46,7 @@ public static class TryUnprotectGamePassGame
         File.WriteAllLines(scriptPath, exeFiles, Encoding.UTF8);
 
         // Run the script
-        var command = $"Invoke-CommandInDesktopPackage -PackageFamilyName \"{packageFamilyName}\" -AppId \"{appId}\" -Command \"{compressedLoaderPath}\" -Args '\"{scriptPath}\"'";
+        var command = $"-NoProfile -ExecutionPolicy ByPass -Command \"Invoke-CommandInDesktopPackage -PackageFamilyName '{packageFamilyName}' -AppId '{appId}' -Command '{compressedLoaderPath}' -Args '{scriptPath}'\"";
         var processStartInfo = new ProcessStartInfo
         {
             FileName = @"powershell",
