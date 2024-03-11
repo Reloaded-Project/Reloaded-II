@@ -43,16 +43,19 @@ public static class TryUnprotectGamePassGame
 
         // Execute the script in game context where we have perms to access the files.
         var scriptPath = Path.Combine(tempDir.FolderPath, "files.txt");
+        var scriptFile = Path.Combine(tempDir.FolderPath, "script.ps1");
+        var scriptContents = $"Invoke-CommandInDesktopPackage -PackageFamilyName '{packageFamilyName}' -AppId '{appId}' -Command '{compressedLoaderPath}' -Args \"`\"{scriptPath}`\"\"";
         File.WriteAllLines(scriptPath, exeFiles, Encoding.UTF8);
+        File.WriteAllText(scriptFile, scriptContents, Encoding.UTF8);
 
         // Run the script
-        var command = $"-NoProfile -ExecutionPolicy ByPass -Command \"Invoke-CommandInDesktopPackage -PackageFamilyName '{packageFamilyName}' -AppId '{appId}' -Command '{compressedLoaderPath}' -Args '{scriptPath}'\"";
+        var command = $"-NoProfile -ExecutionPolicy ByPass -File \"{scriptFile}\"";
         var processStartInfo = new ProcessStartInfo
         {
             FileName = @"powershell",
             Arguments = command,
             CreateNoWindow = true,
-            WindowStyle = ProcessWindowStyle.Hidden,
+            WindowStyle = ProcessWindowStyle.Hidden
         };
 
         using var process = Process.Start(processStartInfo);
@@ -62,7 +65,7 @@ public static class TryUnprotectGamePassGame
         var processName = "replace-files-with-itself";
         while (Process.GetProcessesByName(processName).Length > 0)
             Thread.Sleep(1);
-        
+
         return true;
     }
     
