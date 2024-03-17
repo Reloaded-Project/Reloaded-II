@@ -193,7 +193,17 @@ public class ApplicationConfig : ObservableObject, IApplicationConfig, IConfig<A
         return Path.GetFullPath(finalPath);
     }
 
-
+    /// <summary>
+    /// Replaces the current Application ID with a known alias.
+    /// </summary>
+    public static string AliasAppId(string input)
+    {
+        return input switch
+        {
+            "p4pc_dt_mc.exe" => "p4g.exe", // Persona 4 Golden 64-bit (MS Store)
+            _ => input
+        };
+    }
 
     // Reflection-less JSON
     public static JsonTypeInfo<ApplicationConfig> GetJsonTypeInfo(out bool supportsSerialize)

@@ -63,7 +63,8 @@ public class AddApplicationCommand : ICommand
         catch (Exception e) { Errors.HandleException(e, Resources.ErrorAddApplicationCantReadSymlink.Get()); }
 
         var isMsStore = TryUnprotectGamePassGame.TryIt(exePath);
-        var config = new ApplicationConfig(Path.GetFileName(exePath).ToLower(), GetProductName(exePath), exePath, Path.GetDirectoryName(exePath));
+        var appId = ApplicationConfig.AliasAppId(Path.GetFileName(exePath).ToLower());
+        var config = new ApplicationConfig(appId, GetProductName(exePath), exePath, Path.GetDirectoryName(exePath));
 
         // Set AppName if empty & Ensure no duplicate ID.
         if (string.IsNullOrEmpty(config.AppName))
