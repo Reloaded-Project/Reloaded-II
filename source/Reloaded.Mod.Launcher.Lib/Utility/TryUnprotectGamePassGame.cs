@@ -1,6 +1,6 @@
-using System.Windows;
 using System.Xml;
 using Reloaded.Mod.Installer.DependencyInstaller.IO;
+using static Reloaded.Mod.Launcher.Lib.Utility.DesktopAppxActivateOptions;
 using FileMode = System.IO.FileMode;
 
 namespace Reloaded.Mod.Launcher.Lib.Utility;
@@ -40,35 +40,61 @@ public static class TryUnprotectGamePassGame
 
         // Append command to create 'terminate' file indicating script completion.
         using var tempDir = new TemporaryFolderAllocation();
+        var scriptPath = Path.Combine(tempDir.FolderPath, "files.txt");
+        File.WriteAllLines(scriptPath, exeFiles, Encoding.UTF8);
 
         // Execute the script in game context where we have perms to access the files.
-        var scriptPath = Path.Combine(tempDir.FolderPath, "files.txt");
-        var scriptFile = Path.Combine(tempDir.FolderPath, "script.ps1");
-        var scriptContents = $"Invoke-CommandInDesktopPackage -PackageFamilyName '{packageFamilyName}' -AppId '{appId}' -Command '{compressedLoaderPath}' -Args \"`\"{scriptPath}`\"\"";
-        File.WriteAllLines(scriptPath, exeFiles, Encoding.UTF8);
-        File.WriteAllText(scriptFile, scriptContents, Encoding.UTF8);
+        // ReSharper disable once SuspiciousTypeConversion.Global
+        TryActivate(
+            packageFamilyName + "!" + appId,
+            compressedLoaderPath,
+            $"\"{scriptPath}\""
+        );
 
-        // Run the script
-        var command = $"-NoProfile -ExecutionPolicy ByPass -File \"{scriptFile}\"";
-        var processStartInfo = new ProcessStartInfo
-        {
-            FileName = @"powershell",
-            Arguments = command,
-            CreateNoWindow = true,
-            WindowStyle = ProcessWindowStyle.Hidden
-        };
-
-        using var process = Process.Start(processStartInfo);
-        process?.WaitForExit();
-        
-        // Wait until process named 'replace-files-with-itself' is terminated.
+        // Wait until 'replace-files-with-itself' is terminated.
         var processName = "replace-files-with-itself";
         while (Process.GetProcessesByName(processName).Length > 0)
             Thread.Sleep(1);
 
         return true;
     }
-    
+
+    [SuppressMessage("ReSharper", "SuspiciousTypeConversion.Global")]
+    private static void TryActivate(string packageFamilyName, string compressedLoaderPath, string scriptPath)
+    {
+        // Note: `Get-Command Invoke-CommandInDesktopPackage | Format-List *` in powershell
+        //       and decompile with dnSpy, etc. to check current OS impl.
+        try
+        {
+            var act = (IDesktopAppxActivatorWin11)new DesktopAppxActivator();
+            act.ActivateWithOptions(
+                packageFamilyName, 
+                compressedLoaderPath, 
+                scriptPath,
+                (uint)(CentennialProcess | NonPackagedExeProcessTree),
+                0,
+                out _);
+            return;
+        }
+        catch (Exception) { /* ignored */ }
+
+        try
+        {
+            var act = (IDesktopAppxActivatorWin10)new DesktopAppxActivator();
+            act.ActivateWithOptions(
+                packageFamilyName, 
+                compressedLoaderPath, 
+                scriptPath,
+                (uint)(CentennialProcess | NonPackagedExeProcessTree),
+                0,
+                out _);
+            return;
+        }
+        catch (Exception) { /* ignored */ }
+
+        throw new Exception("Can't make use of DesktopAppxActivator. Your OS may be too recent. Please report this.");
+    }
+
     /// <summary/>
     /// <param name="exePath">Path to the main game binary.</param>
     /// <returns>True if this was auto-unprotected.</returns>
@@ -150,4 +176,83 @@ public static class TryUnprotectGamePassGame
             return false;
         }
     }
+}
+
+// Enum for activation options
+[Flags]
+internal enum DesktopAppxActivateOptions
+{
+    None = 0,
+    Elevate = 1,
+    NonPackagedExe = 2,
+    NonPackagedExeProcessTree = 4,
+    NonPackagedExeFlags = 6,
+    NoErrorUI = 8,
+    CheckForAppInstallerUpdates = 16,
+    CentennialProcess = 32,
+    UniversalProcess = 64,
+    Win32AlaCarteProcess = 128,
+    RuntimeBehaviorFlags = 224,
+    PartialTrust = 256,
+    UniversalConsole = 512,
+    AppSilo = 1024,
+    TrustLevelFlags = 1280,
+}
+
+// COM interface for activating desktop applications
+[Guid("F158268A-D5A5-45CE-99CF-00D6C3F3FC0A")]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+internal interface IDesktopAppxActivatorWin11
+{
+    void Activate(
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string applicationUserModelId,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string packageRelativeExecutable,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string arguments,
+        out IntPtr processHandle);
+
+    void ActivateWithOptions(
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string applicationUserModelId,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string executable,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string arguments,
+        uint activationOptions,
+        uint parentProcessId,
+        out IntPtr processHandle);
+}
+
+[Guid("72e3a5b0-8fea-485c-9f8b-822b16dba17f")]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+internal interface IDesktopAppxActivatorWin10
+{
+    void Activate(
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string applicationUserModelId,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string packageRelativeExecutable,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string arguments,
+        out IntPtr processHandle);
+
+    void ActivateWithOptions(
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string applicationUserModelId,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string executable,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string arguments,
+        uint activationOptions,
+        uint parentProcessId,
+        out IntPtr processHandle);
+}
+
+[ComImport]
+[Guid("168EB462-775F-42AE-9111-D714B2306C2E")]
+class DesktopAppxActivator
+{
+    
 }
