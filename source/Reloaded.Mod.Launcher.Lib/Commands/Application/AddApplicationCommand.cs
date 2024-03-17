@@ -63,7 +63,8 @@ public class AddApplicationCommand : ICommand
         catch (Exception e) { Errors.HandleException(e, Resources.ErrorAddApplicationCantReadSymlink.Get()); }
 
         var isMsStore = TryUnprotectGamePassGame.TryIt(exePath);
-        var config = new ApplicationConfig(Path.GetFileName(exePath).ToLower(), GetProductName(exePath), exePath, Path.GetDirectoryName(exePath));
+        var appId = ApplicationConfig.AliasAppId(Path.GetFileName(exePath).ToLower());
+        var config = new ApplicationConfig(appId, GetProductName(exePath), exePath, Path.GetDirectoryName(exePath));
 
         // Set AppName if empty & Ensure no duplicate ID.
         if (string.IsNullOrEmpty(config.AppName))
@@ -89,18 +90,20 @@ public class AddApplicationCommand : ICommand
         }
 
         // Try to auto deploy ASI Loader.
-        var deployer = new AsiLoaderDeployer(new PathTuple<ApplicationConfig>(applicationConfigFile, config));
-        if (deployer.CanDeploy())
+        if (isMsStore)
         {
-            deployer.DeployAsiLoader(out var loaderPath, out var bootstrapperPath);
-            DeployAsiLoaderCommand.PrintDeployedAsiLoaderInfo(loaderPath!, bootstrapperPath);
-            config.DontInject = true;
-        }
-        else
-        {
-            // For GamePass, we can't dll inject, so we need to throw error to user screen.
-            if (isMsStore)
+            var deployer = new AsiLoaderDeployer(new PathTuple<ApplicationConfig>(applicationConfigFile, config));
+            if (deployer.CanDeploy())
+            {
+                deployer.DeployAsiLoader(out var loaderPath, out var bootstrapperPath);
+                DeployAsiLoaderCommand.PrintDeployedAsiLoaderInfo(loaderPath!, bootstrapperPath);
+                config.DontInject = true;
+            }
+            else
+            {
+                // For GamePass, we can't dll inject, so we need to throw error to user screen.
                 Actions.DisplayMessagebox.Invoke(Resources.AsiLoaderDialogTitle.Get(), Resources.AsiLoaderGamePassAutoInstallFail.Get());
+            }
         }
         
         // Write file to disk.
