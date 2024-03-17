@@ -14,7 +14,7 @@ public struct EntryPointParameters
     /// <summary>
     /// Current version of parameters.
     /// </summary>
-    public const int CurrentVersion = 7;
+    public const int CurrentVersion = 8;
 
     // Version 1
     /// <summary>
@@ -30,6 +30,11 @@ public struct EntryPointParameters
     // Version 2
     // ...
 
+    /// <summary>
+    /// Contains the path to the native DLL which loaded the loader.
+    /// </summary>
+    public unsafe char* DllPath;
+    
     /// <summary>
     /// Checks if struct is using latest version.
     /// </summary>
@@ -55,9 +60,19 @@ public struct EntryPointParameters
             result.Version = pointer->Version;
             result.Flags = pointer->Flags;
         }
+        
+        if (pointer->Version >= 8)
+        {
+            result.DllPath = pointer->DllPath;
+        }
 
         return result;
     }
+    
+    /// <summary>
+    /// True if reading the DLL path is supported.
+    /// </summary>
+    public bool SupportsDllPath => Version >= 8;
 }
 
 /// <summary>

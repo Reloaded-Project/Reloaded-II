@@ -92,10 +92,18 @@ public static class EntryPoint
 
         var setupHooksTask = Task.Run(() => ExecuteTimed("Setting Up Hooks (Async)", () => SetupHooks(hooks)));
         InitialiseParameters(parameters);
+        if (_parameters.SupportsDllPath && _parameters.DllPath != null)
+        {
+            var reloadedPath = Marshal.PtrToStringUni((nint)_parameters.DllPath);
+            Logger!.LogWriteLineAsync($"Loaded via: {reloadedPath}", Logger.ColorInformation);
+            if (reloadedPath!.EndsWith(".asi"))
+                Logger!.LogWriteLineAsync($"Remove the above `.asi` file to uninstall. (Should be in your app/game folder)", Logger.ColorInformation);
+        }
+            
         ExecuteTimed("Loading Mods (Total)", () => LoadMods(hooks));
 
         setupHooksTask.Wait();
-        Logger?.LogWriteLineAsync($"Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
+        Logger!.LogWriteLineAsync($"Total Loader Initialization Time: {_stopWatch.ElapsedMilliseconds}ms");
         _stopWatch.Reset();
     }
 
