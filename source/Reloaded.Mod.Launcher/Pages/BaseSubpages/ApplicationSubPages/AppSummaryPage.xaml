@@ -126,6 +126,11 @@
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                <ListView.Resources>
+                    <Style TargetType="ScrollBar">
+                        <Setter Property="Width" Value="50"/>
+                    </Style>
+                </ListView.Resources>
             </ListView>
         </Grid>
 
