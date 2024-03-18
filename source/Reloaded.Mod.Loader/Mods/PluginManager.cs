@@ -95,6 +95,7 @@ public class PluginManager : IDisposable
             Logger?.LogWriteLineAsync(String.Empty);
             Logger?.LogWriteLineAsync($"Loading: {mod.Config.ModName}");
             Logger?.LogWriteLineAsync($"- AppId   : {mod.Config.ModId}");
+            Logger?.LogWriteLineAsync($"- Location: {mod.Path}");
             StartMod(instance);
             Logger?.LogWriteLineAsync($"- LoadTime: {watch.ElapsedMilliseconds}ms");
         }

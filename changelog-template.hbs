@@ -1,22 +1,24 @@
 ## Changelog (1.26.2)
 
 - Fixed: Automated Builds not including new language options.
+- Added: Logging mod install location in loader.
+    - We're logging this so it's easier to detect the 'user installed source code, not the mod' scenario.
 
 ## Changelog (1.26.1)
 
 - Microsoft Store unprotecting no longer uses PowerShell.
-  - We now use internal Windows COM interfaces.
-  - Improves reliability where access to script running in PowerShell is restricted out of the box. (Admin setting, etc.)
-  - This may more likely break with future Windows versions.
-    - However updating the code be very easy (~10 mins) should it come to that. 
+    - We now use internal Windows COM interfaces.
+    - Improves reliability where access to script running in PowerShell is restricted out of the box. (Admin setting, etc.)
+    - This may more likely break with future Windows versions.
+      - However updating the code be very easy (~10 mins) should it come to that. 
 
 - ASI Loader deployment now places `Reloaded.Mod.Bootstrapper.asi` in game folder, instead of `scripts` subfolder.
-  - Makes uninstall easier for end users.
+    - Makes uninstall easier for end users.
 
 - Changed: Persona 4 Golden (MS Store) now aliases to Persona 4 Golden (Steam).
-  - The devs used a different EXE name, which resulted in a different `AppId`, despite being the same game.
-  - This meant end users won't see downloaded mods easily.
-  - So an alias directly inside the code was added.
+    - The devs used a different EXE name, which resulted in a different `AppId`, despite being the same game.
+    - This meant end users won't see downloaded mods easily.
+    - So an alias directly inside the code was added.
 
 ## Changelog (1.26.0)
 
