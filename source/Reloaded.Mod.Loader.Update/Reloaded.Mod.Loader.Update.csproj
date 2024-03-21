@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <NoWarn>CS0067</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Version>2.1.4</Version>
+    <Version>2.2.0</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Sewer56</Authors>
