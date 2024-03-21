@@ -257,7 +257,9 @@ public static class Update
     {
         // Get missing dependencies for this update loop.
         var missingDeps = CheckMissingDependencies();
-
+        if (missingDeps.AllAvailable)
+            return ModDependencyResolveResult.Combine(Enumerable.Empty<ModDependencyResolveResult>());
+        
         // Get Dependencies
         var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
             
