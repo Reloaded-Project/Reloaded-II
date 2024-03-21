@@ -86,7 +86,10 @@ public class IndexBuilder
 
         await Task.WhenAll(tasks);
         if (writeToFile)
+        {
             await WriteToDiskAsync(index);
+            await WriteToDiskAsync(index.BaseUrl, await index.GetPackagesFromAllSourcesAsync());
+        }
 
         index.BaseUrl = new Uri(outputFolder, UriKind.Absolute);
         return index;
@@ -102,16 +105,27 @@ public class IndexBuilder
         await File.WriteAllBytesAsync(Path.Combine(index.BaseUrl.LocalPath, Routes.Index), compressedIndex);
     }
 
+    /// <summary>
+    /// Writes an existing package list to disk, in a specified folder.
+    /// </summary>
+    /// <param name="list">The list containing all packages.</param>
+    /// <param name="baseUrl">The 'base URL' where the Index is contained.</param>
+    public async Task WriteToDiskAsync(Uri baseUrl, PackageList list)
+    {
+        var compressedPackageList = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(list, Serializer.Options));
+        await File.WriteAllBytesAsync(Path.Combine(baseUrl.LocalPath, Routes.AllPackages), compressedPackageList);
+    }
+
     private async Task BuildNuGetSourceAsync(Structures.Index index, IndexSourceEntry indexSourceEntry,
         string outputFolder)
     {
         // Number of items to grab at once.
-        const int Take = 500;
+        const int take = 500;
 
         var provider = new NuGetPackageProvider(NugetRepository.FromSourceUrl(indexSourceEntry.NuGetUrl!), null, false);
 
         var packagesList = PackageList.Create();
-        await SearchForAllResults(Take, provider, packagesList);
+        await SearchForAllResults(take, provider, packagesList);
 
         var relativePath = Routes.Build.GetNuGetPackageListPath(indexSourceEntry.NuGetUrl!);
         var path = Path.Combine(outputFolder, relativePath);
@@ -121,7 +135,8 @@ public class IndexBuilder
         index.Sources[Routes.Source.GetNuGetIndexKey(indexSourceEntry.NuGetUrl!)] = relativePath;
     }
 
-    private async Task BuildGameBananaSourceAsync(Structures.Index index, IndexSourceEntry indexSourceEntry, string outputFolder)
+    private async Task BuildGameBananaSourceAsync(Structures.Index index, IndexSourceEntry indexSourceEntry,
+        string outputFolder)
     {
         // Max for GameBanana
         const int take = 50;

@@ -17,6 +17,26 @@ public class Index
     [JsonIgnore]
     public Uri BaseUrl { get; internal set; } = null!;
 
+    
+    /// <summary>
+    /// [Slow if over network/internet !!]
+    /// Retrieves all the packages from all the sources.
+    /// </summary>
+    public async Task<PackageList> GetPackagesFromAllSourcesAsync()
+    {
+        var result = new List<Package>();
+        foreach (var source in Sources)
+        {
+            var fromSource = await Web.DownloadAndDeserialize<PackageList>(new Uri(BaseUrl, source.Value));
+            result.AddRange(fromSource.Packages);
+        }
+
+        return new PackageList
+        {
+            Packages = result
+        };
+    }
+    
     /// <summary>
     /// Tries to get the package list for a given NuGet URL.
     /// </summary>
