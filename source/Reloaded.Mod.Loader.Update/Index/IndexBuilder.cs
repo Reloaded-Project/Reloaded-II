@@ -22,7 +22,7 @@ public class IndexBuilder
         Directory.CreateDirectory(outputFolder);
         var index     = new Structures.Index();
         index.BaseUrl = new Uri($"{outputFolder}/");
-        return await UpdateAsync(index);
+        return await UpdateAsync(index, writeToFile);
     }
 
     /// <summary>
