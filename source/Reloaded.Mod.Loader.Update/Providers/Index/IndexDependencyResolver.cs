@@ -19,7 +19,7 @@ public class IndexDependencyResolver : IDependencyResolver
         Task.Run(async () =>
         {
             var indexApi = new IndexApi();
-            _packages = await indexApi.GetAllPackagesAsync();
+            _packages = await indexApi.GetAllDependenciesAsync();
         }).Wait();
     }
 

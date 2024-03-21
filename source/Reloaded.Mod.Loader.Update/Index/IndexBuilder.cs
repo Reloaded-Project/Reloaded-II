@@ -88,7 +88,10 @@ public class IndexBuilder
         if (writeToFile)
         {
             await WriteToDiskAsync(index);
-            await WriteToDiskAsync(index.BaseUrl, await index.GetPackagesFromAllSourcesAsync());
+            var allPackages = await index.GetPackagesFromAllSourcesAsync();
+            await WriteToDiskAsync(index.BaseUrl, allPackages, Routes.AllPackages);
+            allPackages.RemoveNonDependencyInfo();
+            await WriteToDiskAsync(index.BaseUrl, allPackages, Routes.AllDependencies);
         }
 
         index.BaseUrl = new Uri(outputFolder, UriKind.Absolute);
@@ -110,10 +113,11 @@ public class IndexBuilder
     /// </summary>
     /// <param name="list">The list containing all packages.</param>
     /// <param name="baseUrl">The 'base URL' where the Index is contained.</param>
-    public async Task WriteToDiskAsync(Uri baseUrl, PackageList list)
+    /// <param name="route">The route where this package list goes.</param>
+    public async Task WriteToDiskAsync(Uri baseUrl, PackageList list, string route)
     {
         var compressedPackageList = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(list, Serializer.Options));
-        await File.WriteAllBytesAsync(Path.Combine(baseUrl.LocalPath, Routes.AllPackages), compressedPackageList);
+        await File.WriteAllBytesAsync(Path.Combine(baseUrl.LocalPath, route), compressedPackageList);
     }
 
     private async Task BuildNuGetSourceAsync(Structures.Index index, IndexSourceEntry indexSourceEntry,
