@@ -125,7 +125,7 @@ public static class Setup
     /// Quickly checks for any missing dependencies amongst available mods
     /// and opens a menu allowing to download if mods are unavailable.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>True if there are missing deps, else false.</returns>
     public static async Task CheckForMissingModDependenciesAsync()
     {
         var deps = Update.CheckMissingDependencies();
@@ -310,8 +310,12 @@ public static class Setup
     /// </summary>
     private static async Task CheckForUpdatesAsync()
     {
-        await CheckForMissingModDependenciesAsync(); // in case DependencyMetadataWriterFactory deletes one after unsuccessful pull from 1 click
-        await DependencyMetadataWriterFactory.ExecuteAllAsync(IoC.Get<ModConfigService>());
+        // The action below is destructive.
+        // It may remove update metadata for missing dependencies.
+        // Don't run this unless we have all the mods.
+        if (Update.CheckMissingDependencies().AllAvailable)
+            await DependencyMetadataWriterFactory.ExecuteAllAsync(IoC.Get<ModConfigService>());
+
         await Update.CheckForLoaderUpdatesAsync();
         await Task.Run(Update.CheckForModUpdatesAsync);
         await CheckForMissingModDependenciesAsync();
