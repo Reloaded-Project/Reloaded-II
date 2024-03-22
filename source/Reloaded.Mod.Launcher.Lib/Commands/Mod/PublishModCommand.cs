@@ -21,6 +21,9 @@ public class PublishModCommand : WithCanExecuteChanged, ICommand
     /// <inheritdoc />
     public void Execute(object? parameter)
     {
+        if (Update.CheckMissingDependencies().AllAvailable)
+            Task.Run(async () => await DependencyMetadataWriterFactory.ExecuteAllAsync(IoC.Get<ModConfigService>())).Wait();
+        
         if (!NuGetVersion.TryParse(_modTuple!.Config.ModVersion, out var version))
         {
             Actions.DisplayMessagebox(Resources.ErrorInvalidModConfigTitle.Get(), Resources.ErrorInvalidModConfigDescription.Get());
