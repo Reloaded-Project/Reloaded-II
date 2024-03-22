@@ -61,6 +61,10 @@ public class ModDependencyResolveResult
                 returnValue.NotFoundDependencies.Add(notFound);
         }
 
+        // Remove dependencies that were found from the notFound set.
+        foreach (var found in idToNewestVersion.Keys)
+            returnValue.NotFoundDependencies.Remove(found);
+        
         returnValue.FoundDependencies.AddRange(idToNewestVersion.Values);
         return returnValue;
     }
