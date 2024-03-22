@@ -15,8 +15,7 @@ public static class DependencyResolverFactory
         return new AggregateDependencyResolver([
             new NuGetDependencyResolver(repository),
             new GameBananaDependencyResolver(),
-            new GitHubDependencyResolver(),
-            new IndexDependencyResolver()
+            new GitHubDependencyResolver()
         ]);
     }
 }
