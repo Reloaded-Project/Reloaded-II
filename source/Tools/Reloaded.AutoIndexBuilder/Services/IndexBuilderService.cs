@@ -120,7 +120,7 @@ public class IndexBuilderService : IJob
         // Update Index
         var indexApi = new IndexApi(_settings.GitRepoPath);
         var index    = await indexApi.GetOrCreateLocalIndexAsync();
-        index = await builder.UpdateAsync(index, false);
+        index = await builder.UpdateAsync(index);
 
         // Delete Unused
         var cleanupBuilder = new IndexBuilder();

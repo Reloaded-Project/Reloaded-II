@@ -1,4 +1,5 @@
 using Reloaded.Mod.Loader.Update.Providers.GitHub;
+using Reloaded.Mod.Loader.Update.Providers.Index;
 using Constants = Reloaded.Mod.Launcher.Lib.Misc.Constants;
 using Version = Reloaded.Mod.Launcher.Lib.Utility.Version;
 
@@ -257,7 +258,9 @@ public static class Update
     {
         // Get missing dependencies for this update loop.
         var missingDeps = CheckMissingDependencies();
-
+        if (missingDeps.AllAvailable)
+            return ModDependencyResolveResult.Combine(Enumerable.Empty<ModDependencyResolveResult>());
+        
         // Get Dependencies
         var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
             
@@ -269,7 +272,18 @@ public static class Update
         await Task.WhenAll(results);
 
         // Merge Results
-        return ModDependencyResolveResult.Combine(results.Select(x => x.Result));;
+        var result = ModDependencyResolveResult.Combine(results.Select(x => x.Result));;
+        if (result.NotFoundDependencies.Count <= 0)
+            return result;
+
+        // Fallback to using Index Resolver if we couldn't find the package otherwise.
+        var indexResolver = new IndexDependencyResolver();
+        var indexResults = new List<ModDependencyResolveResult>();
+        foreach (var notFound in result.NotFoundDependencies)
+            indexResults.Add(await indexResolver.ResolveAsync(notFound, null, token));
+
+        indexResults.Add(result);
+        return ModDependencyResolveResult.Combine(indexResults);
     }
 
     /// <summary>

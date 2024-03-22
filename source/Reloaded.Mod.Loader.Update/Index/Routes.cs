@@ -19,6 +19,19 @@ public static class Routes
     /// Link to the index containing the mappings
     /// </summary>
     public const string Index = $"Index{FileExtension}{CompressionExtension}";
+    
+    /// <summary>
+    /// Link to the index containing all packages
+    /// </summary>
+    public const string AllPackages = $"AllPackages{FileExtension}{CompressionExtension}";
+
+    /// <summary>
+    /// Link to the index containing all dependencies
+    /// </summary>
+    /// <remarks>
+    ///     This is same as <see cref="AllPackages"/> but with information omitted to reduce bandwidth.
+    /// </remarks>
+    public const string AllDependencies = $"AllDependencies{FileExtension}{CompressionExtension}";
 
     /// <summary>
     /// Contains the code to determine locations of output files
