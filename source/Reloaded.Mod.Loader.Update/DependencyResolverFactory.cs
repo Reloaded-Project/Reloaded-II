@@ -13,9 +13,9 @@ public static class DependencyResolverFactory
     public static IDependencyResolver GetInstance(AggregateNugetRepository repository)
     {
         return new AggregateDependencyResolver([
-            new NuGetDependencyResolver(repository),
-            new GameBananaDependencyResolver(),
-            new GitHubDependencyResolver()
+            new GitHubDependencyResolver(), // has CDN, so fastest
+            new NuGetDependencyResolver(repository), // slower by default for most users, but reliable
+            new GameBananaDependencyResolver(), // Fast these days, but sometimes unreliable
         ]);
     }
 }
