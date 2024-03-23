@@ -14,8 +14,13 @@ public static class DependencyResolverFactory
     {
         return new AggregateDependencyResolver([
             new GitHubDependencyResolver(), // has CDN, so fastest
-            new NuGetDependencyResolver(repository), // slower by default for most users, but reliable
-            new GameBananaDependencyResolver(), // Fast these days, but sometimes unreliable
+            
+            // slower by default for most users, but reliable.
+            // we put this 2nd as a fallback for security reasons
+            new NuGetDependencyResolver(repository),
+
+            // Fast these days, but sometimes unreliable.
+            new GameBananaDependencyResolver(), 
         ]);
     }
 }
