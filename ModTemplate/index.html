@@ -1,0 +1,2122 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://reloaded-project.github.io/Reloaded-II/ModTemplate/">
+      
+      
+        <link rel="prev" href="../DependencyInjection_HowItReallyWork/">
+      
+      
+        <link rel="next" href="../NativeMods/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+    
+    
+      
+        <title>Mod Template Features - Reloaded II Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../Custom/Stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="red">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mod-template-features" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Reloaded II Documentation" class="md-header__button md-logo" aria-label="Reloaded II Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reloaded II Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Mod Template Features
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Reloaded-Project/Reloaded-II" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Reloaded-Project/Reloaded-II
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Reloaded II Documentation" class="md-nav__button md-logo" aria-label="Reloaded II Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Reloaded II Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Reloaded-Project/Reloaded-II" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Reloaded-Project/Reloaded-II
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" tabindex="0" aria-expanded="false">
+          For Users
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="For Users" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          For Users
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QuickStart/" class="md-nav__link">
+        Quick Start
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        Frequently Asked Questions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LinuxSetupGuide/" class="md-nav__link">
+        Linux Setup Guide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../InstallingModPacks/" class="md-nav__link">
+        Installing Mod Packs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2_5" type="checkbox" id="__nav_2_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" tabindex="0" aria-expanded="false">
+          Advanced
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Advanced" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Advanced
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NuGetSources/" class="md-nav__link">
+        NuGet Sources
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../InjectionMethods/" class="md-nav__link">
+        Injection Methods
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ExperimentalFeatures/" class="md-nav__link">
+        Misc & Experimental Features
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" tabindex="0" aria-expanded="false">
+          For Modders
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="For Modders" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          For Modders
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1" tabindex="0" aria-expanded="false">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CreatingMods/" class="md-nav__link">
+        1. Creating Your Mod
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AddingModFunctionality/" class="md-nav__link">
+        2. Adding Functionality
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_2" tabindex="0" aria-expanded="false">
+          Releasing Mods
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Releasing Mods" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Releasing Mods
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EnablingUpdateSupport/" class="md-nav__link">
+        1. Enabling Update Support
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CreatingRelease/" class="md-nav__link">
+        2. Creating a Release
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CreatingReleaseExtras/" class="md-nav__link">
+        Extras (Optional)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CreatingModPacks/" class="md-nav__link">
+        Creating Mod Packs
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" tabindex="0" aria-expanded="true">
+          For Programmers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="For Programmers" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          For Programmers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_1" tabindex="0" aria-expanded="false">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DevelopmentEnvironmentSetup/" class="md-nav__link">
+        1. Setting Up Development Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ProjectSetup/" class="md-nav__link">
+        2. Creating a New Project
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_2" tabindex="0" aria-expanded="false">
+          Cheat Sheet
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Cheat Sheet" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Cheat Sheet
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CheatSheet/MemoryManipulation/" class="md-nav__link">
+        1. Memory Manipulation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CheatSheet/CallingHookingGameFunctions/" class="md-nav__link">
+        2. Calling & Hooking Game Functions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CheatSheet/SignatureScanning/" class="md-nav__link">
+        3. Signature Scanning
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CheatSheet/ReloadedIIApi/" class="md-nav__link">
+        4. Reloaded API
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_3" tabindex="0" aria-expanded="false">
+          Dependency Injection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Dependency Injection" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Dependency Injection
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DependencyInjection_HowItWork/" class="md-nav__link">
+        1. How Does it Work?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DependencyInjection_Consumer/" class="md-nav__link">
+        2. How to Consume Dependencies
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DependencyInjection_Publisher/" class="md-nav__link">
+        3. How to Publish Dependencies
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4_3_4" type="checkbox" id="__nav_4_3_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_3_4" tabindex="0" aria-expanded="false">
+          Extra
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Extra" data-md-level="3">
+        <label class="md-nav__title" for="__nav_4_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          Extra
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DependencyInjection_ExtraFeatures/" class="md-nav__link">
+        Extra Features
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DependencyInjection_HowItReallyWork/" class="md-nav__link">
+        How does it Really Work
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Mod Template Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Mod Template Features
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#publish-script" class="md-nav__link">
+    Publish Script
+  </a>
+  
+    <nav class="md-nav" aria-label="Publish Script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delta-updates" class="md-nav__link">
+    Delta Updates
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publishing-as-readytorun" class="md-nav__link">
+    Publishing as ReadyToRun
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assembly-trimming-support" class="md-nav__link">
+    Assembly Trimming Support
+  </a>
+  
+    <nav class="md-nav" aria-label="Assembly Trimming Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-trimming" class="md-nav__link">
+    Testing Trimming
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-trimming" class="md-nav__link">
+    Configuring Trimming
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-trimming-behaviour" class="md-nav__link">
+    Default Trimming Behaviour
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#general-trimming-guidance" class="md-nav__link">
+    General Trimming Guidance
+  </a>
+  
+    <nav class="md-nav" aria-label="General Trimming Guidance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trimming-the-remainder" class="md-nav__link">
+    Trimming the Remainder
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automated-builds" class="md-nav__link">
+    Automated Builds
+  </a>
+  
+    <nav class="md-nav" aria-label="Automated Builds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accessing-build-results" class="md-nav__link">
+    Accessing Build Results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automatic-publishing" class="md-nav__link">
+    Automatic Publishing
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic Publishing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#publishing-to-nuget" class="md-nav__link">
+    Publishing to NuGet
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-mods-per-repository" class="md-nav__link">
+    Multiple Mods Per Repository
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updating-the-mod-template" class="md-nav__link">
+    Updating the Mod Template
+  </a>
+  
+    <nav class="md-nav" aria-label="Updating the Mod Template">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updating-from-old-template-layout" class="md-nav__link">
+    Updating from Old Template Layout
+  </a>
+  
+    <nav class="md-nav" aria-label="Updating from Old Template Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-default-imod-programcs-settings" class="md-nav__link">
+    Check Default IMod (Program.cs) Settings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move-user-code-from-imod-programcs" class="md-nav__link">
+    Move User Code from IMod (Program.cs)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-migration" class="md-nav__link">
+    Configuration Migration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../NativeMods/" class="md-nav__link">
+        Writing Native Mods
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4_6" type="checkbox" id="__nav_4_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_6" tabindex="0" aria-expanded="false">
+          Internal Libraries
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Internal Libraries" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          Internal Libraries
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../InternalLibrariesIntro/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../InternalLibrariesIO/" class="md-nav__link">
+        I/O Library
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../InternalLibrariesCommunity/" class="md-nav__link">
+        Community Index
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../InternalLibrariesPackaging/" class="md-nav__link">
+        Packaging
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../InternalLibrariesUpdate/" class="md-nav__link">
+        Update
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../InternalLibrariesServer/" class="md-nav__link">
+        Server
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4_7" type="checkbox" id="__nav_4_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_7" tabindex="0" aria-expanded="false">
+          Miscellaneous
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Miscellaneous" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_7">
+          <span class="md-nav__icon md-icon"></span>
+          Miscellaneous
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../AddingUpdateSupport/" class="md-nav__link">
+        Adding Mod Update Support
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../APIOverview/" class="md-nav__link">
+        API Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OptimizingMods/" class="md-nav__link">
+        Optimizing Mods
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sewer56/Reloaded.SharedLib.Hooks" class="md-nav__link">
+        Shared Libraries
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sewer56/Reloaded.SharedLib.Hooks#supporting-actively-developed-applications" class="md-nav__link">
+        Writing Mods for Actively Developed Games/Apps
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Troubleshooting/" class="md-nav__link">
+        Troubleshooting
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" tabindex="0" aria-expanded="false">
+          For Contributors
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="For Contributors" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          For Contributors
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../BuildingReloaded/" class="md-nav__link">
+        Building Reloaded
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ProjectStructure/" class="md-nav__link">
+        Project Structure
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Reloaded-II-Architecture/" class="md-nav__link">
+        High Level Architecture
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LocalizingReloaded/" class="md-nav__link">
+        Translating Reloaded
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5_5" type="checkbox" id="__nav_5_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_5" tabindex="0" aria-expanded="false">
+          Miscellaneous
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Miscellaneous" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_5">
+          <span class="md-nav__icon md-icon"></span>
+          Miscellaneous
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Reloaded-vs-Reloaded-II/" class="md-nav__link">
+        Reloaded vs Reloaded II
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" tabindex="0" aria-expanded="false">
+          Wiki
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Wiki" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Wiki
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ContributingLocally/" class="md-nav__link">
+        Contributing Locally
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ContributingOnline/" class="md-nav__link">
+        Contributing Online
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#publish-script" class="md-nav__link">
+    Publish Script
+  </a>
+  
+    <nav class="md-nav" aria-label="Publish Script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delta-updates" class="md-nav__link">
+    Delta Updates
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publishing-as-readytorun" class="md-nav__link">
+    Publishing as ReadyToRun
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assembly-trimming-support" class="md-nav__link">
+    Assembly Trimming Support
+  </a>
+  
+    <nav class="md-nav" aria-label="Assembly Trimming Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-trimming" class="md-nav__link">
+    Testing Trimming
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-trimming" class="md-nav__link">
+    Configuring Trimming
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-trimming-behaviour" class="md-nav__link">
+    Default Trimming Behaviour
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#general-trimming-guidance" class="md-nav__link">
+    General Trimming Guidance
+  </a>
+  
+    <nav class="md-nav" aria-label="General Trimming Guidance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trimming-the-remainder" class="md-nav__link">
+    Trimming the Remainder
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automated-builds" class="md-nav__link">
+    Automated Builds
+  </a>
+  
+    <nav class="md-nav" aria-label="Automated Builds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accessing-build-results" class="md-nav__link">
+    Accessing Build Results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automatic-publishing" class="md-nav__link">
+    Automatic Publishing
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic Publishing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#publishing-to-nuget" class="md-nav__link">
+    Publishing to NuGet
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-mods-per-repository" class="md-nav__link">
+    Multiple Mods Per Repository
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updating-the-mod-template" class="md-nav__link">
+    Updating the Mod Template
+  </a>
+  
+    <nav class="md-nav" aria-label="Updating the Mod Template">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updating-from-old-template-layout" class="md-nav__link">
+    Updating from Old Template Layout
+  </a>
+  
+    <nav class="md-nav" aria-label="Updating from Old Template Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check-default-imod-programcs-settings" class="md-nav__link">
+    Check Default IMod (Program.cs) Settings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#move-user-code-from-imod-programcs" class="md-nav__link">
+    Move User Code from IMod (Program.cs)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-migration" class="md-nav__link">
+    Configuration Migration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="mod-template-features">Mod Template Features</h1>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Some features are only available on newer versions of the template.  </p>
+</div>
+<h2 id="publish-script">Publish Script</h2>
+<p>This template features a built-in publish script that can be used to create releases of your mod.  </p>
+<p>To run it, open a Powershell prompt in your mod folder and execute the script as such:<br />
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">Publish</span><span class="p">.</span><span class="n">ps1</span>
+</code></pre></div></p>
+<p>Once the script completes, ready to upload packages will be output to the <code>Publish/ToUpload</code>.  </p>
+<p>For extended help with the script and examples, consider running:<br />
+<div class="highlight"><pre><span></span><code><span class="nb">Get-Help</span> <span class="p">.\</span><span class="n">Publish</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Detailed</span>
+</code></pre></div></p>
+<h3 id="delta-updates">Delta Updates</h3>
+<p>Reloaded allows for the creation and usage of delta updates.</p>
+<p>A delta update is an update that only requires the user to download the code and data that has changed, not the whole mod all over. It significantly saves on time and bandwidth usage.</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Publish using GitHub Releases as the delta source.</span>
+<span class="p">./</span><span class="n">Publish</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-MakeDelta</span> <span class="n">true</span> <span class="n">-UseGitHubDelta</span> <span class="n">true</span> <span class="n">-GitHubUserName</span> <span class="n">Sewer56</span> <span class="n">-GitHubRepoName</span> <span class="n">Reloaded</span><span class="p">.</span><span class="n">SharedLib</span><span class="p">.</span><span class="n">Hooks</span><span class="p">.</span><span class="n">ReloadedII</span> <span class="n">-GitHubFallbackPattern</span> <span class="n">reloaded</span><span class="p">.</span><span class="n">sharedlib</span><span class="p">.</span><span class="n">hooks</span><span class="p">.</span><span class="n">zip</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c"># Publish using NuGet as the delta source.</span>
+<span class="p">./</span><span class="n">Publish</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-MakeDelta</span> <span class="n">true</span> <span class="n">-UseNuGetDelta</span> <span class="n">true</span> <span class="n">-NuGetPackageId</span> <span class="n">reloaded</span><span class="p">.</span><span class="n">sharedlib</span><span class="p">.</span><span class="n">hooks</span> <span class="n">-NuGetFeedUrl</span> <span class="n">http</span><span class="p">://</span><span class="n">packages</span><span class="p">.</span><span class="n">sewer56</span><span class="p">.</span><span class="n">moe</span><span class="p">:</span><span class="n">5000</span><span class="p">/</span><span class="n">v3</span><span class="p">/</span><span class="n">index</span><span class="p">.</span><span class="n">json</span>
+</code></pre></div>
+<p>See <a href="./PublishingMods/#delta-updates">Delta Updates</a> on more information about the topic.</p>
+<h3 id="publishing-as-readytorun">Publishing as ReadyToRun</h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using ReadyToRun is incompatible with unloadable mods due to a runtime limitation.<br />
+If you are using ReadyToRun, you should return <code>false</code> in <code>CanUnload()</code>.</p>
+</div>
+<p>If your mod has a lot of code that is executed at startup, consider using <code>ReadyToRun</code> in order to reduce the startup time.  </p>
+<p>To use <code>ReadyToRun</code> set the <code>BuildR2R</code> flag to true when using the build script.  </p>
+<div class="highlight"><pre><span></span><code><span class="p">.\</span><span class="n">Publish</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-BuildR2R</span> <span class="n">true</span>
+</code></pre></div>
+<p>R2R is a new type of officially supported file format, which gives a considerable improvement to startup times by shipping native code alongside standard .NET IL code; at the expense of assembly (DLL) size.  </p>
+<p>You can read more about R2R in the following web resources:</p>
+<ul>
+<li><a href="https://devblogs.microsoft.com/dotnet/conversation-about-ready-to-run/">Conversation about ReadyToRun</a>  </li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/core/deploying/ready-to-run">ReadyToRun Compilation</a>  </li>
+</ul>
+<h2 id="assembly-trimming-support">Assembly Trimming Support</h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Trimming framework-dependent code is <em>not an officially supported .NET feature</em>.<br />
+Trimming in Reloaded is a custom feature that uses existing .NET SDK components under the hood.  </p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Incorrect use of trimming <em>can</em> and <em>will</em> break your mods. When using trimming you should test your mods thoroughly.  </p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You may need to add <a href="https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks">Microsoft.NET.ILLink.Tasks</a> for this to work when running .NET SDK 8 or newer.  </p>
+</div>
+<p><em>Assembly trimming</em> allows you to remove unused code from your mods (and their dependencies), often significantly shrinking the size of the generated DLLs. This in turn improves load times, download size and runtime memory use. At the time of writing, the Reloaded Loader itself and most official &amp; creator made mods use trimming.</p>
+<h3 id="testing-trimming">Testing Trimming</h3>
+<p>Testing trimming is performed with included <code>BuildLinked.ps1</code> in the mod template.<br />
+This script will fully wipe the mod output folder and build with trimming.<br />
+When the build is done, go test your mod.  </p>
+<p>Sample output:<br />
+<div class="highlight"><pre><span></span><code>Input Assembly: Reloaded.Hooks.Definitions [Mode: link]
+Input Assembly: Reloaded.Mod.Interfaces [Mode: link]
+Input Assembly: Reloaded.Hooks.ReloadedII.Interfaces [Mode: link]
+Input Assembly: Reloaded.Mod.Template [Mode: link]
+</code></pre></div></p>
+<p><code>link</code> indicates the assembly is being trimmed.<br />
+<code>` (empty) means trim if</code>IsTrimmable` == true, else use default trimmer setting [copy].  </p>
+<h3 id="configuring-trimming">Configuring Trimming</h3>
+<p>Trimming can be configured by modifying your <code>.csproj</code> file. The following properties can be used to control the trimming process.  </p>
+<table>
+<thead>
+<tr>
+<th>Reloaded Property</th>
+<th>Purpose</th>
+<th>Replacement for.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ReloadedILLink</td>
+<td>Enables trimming at publish time.</td>
+<td>PublishTrimmed</td>
+</tr>
+<tr>
+<td>ReloadedLinkRoots</td>
+<td>Specifies a DLL/Assembly to be preserved in its entirety.</td>
+<td>TrimmerRootAssembly</td>
+</tr>
+<tr>
+<td>ReloadedLinkAssemblies</td>
+<td>Specifies a DLL/Assembly to be force trimmed.</td>
+<td>ManagedAssemblyToLink</td>
+</tr>
+</tbody>
+</table>
+<p>Other officially supported properties can be used. For example you could supply an <a href="https://github.com/dotnet/linker/blob/main/docs/data-formats.md#descriptor-format">XML Root Descriptor</a> with <code>TrimmerRootDescriptor</code> for more granular control.  </p>
+<h3 id="default-trimming-behaviour">Default Trimming Behaviour</h3>
+<p>The default trimming behaviour used in Reloaded mods replicates the behaviour from .NET 6 (not .NET 7+).<br />
+The following general rules apply:  </p>
+<ul>
+<li>Only assemblies marked <code>IsTrimmable</code> are trimmed by default.  </li>
+<li>Default trimming mode (<code>TrimMode</code>) is <code>link</code> (remove unused assemblies + code).  </li>
+</ul>
+<h3 id="general-trimming-guidance">General Trimming Guidance</h3>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This is general guidance from personal experience with developing Reloaded.  </p>
+</div>
+<p>Doing the following steps is advised for enabling trimming:  </p>
+<ul>
+<li>Build with <code>BuildLinked.ps1</code>.  </li>
+<li>Add all assemblies with trim warnings to <code>ReloadedLinkAssemblies</code>.  </li>
+<li>Build again and test.  </li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you have marked an assembly to not be trimmed with <code>ReloadedLinkAssemblies</code>, but it still displays a trim warning, feel free to ignore the warning.</p>
+</div>
+<p>Basic trimming now works. </p>
+<h4 id="trimming-the-remainder">Trimming the Remainder</h4>
+<p>To further optimise your mod, you can now force trimming on individual libraries.<br />
+To do so, perform the following.  </p>
+<ul>
+<li>
+<p>Inspect the build output:<br />
+<div class="highlight"><pre><span></span><code># Sample Output
+Input Assembly: Reloaded.Hooks.Definitions [Mode: link]
+Input Assembly: Reloaded.Mod.Interfaces [Mode: link]
+Input Assembly: Deez.Nutz.Library [Mode: copy]
+</code></pre></div></p>
+</li>
+<li>
+<p>For each library where <code>Mode != link</code>.  </p>
+</li>
+<li>Enable trimming for library (using <code>ReloadedLinkAssemblies</code>).  </li>
+<li>Build and test the mod.  </li>
+<li>If the mod does not run correctly, remove library from <code>ReloadedLinkAssemblies</code>.  </li>
+</ul>
+<h2 id="automated-builds">Automated Builds</h2>
+<p>If you are using <code>GitHub</code> to host your project, the mod template contains a script for automatically building and uploading your mod for others to download.  </p>
+<p>It has the following features:<br />
+- Automatically build mod for <code>GameBanana</code>, <code>GitHub</code> &amp; <code>NuGet</code>.<br />
+- Automatically create changelog (using <code>git</code> commits).<br />
+- Automatically upload your mod on tags (releases).<br />
+    - Creates GitHub Release.<br />
+    - Uploads to NuGet (if configured).<br />
+    - If configured correctly, end users will automatically receive update.  </p>
+<p>You can find and/or modify the script at <code>.github/workflows/reloaded.yml</code>.  </p>
+<h3 id="accessing-build-results">Accessing Build Results</h3>
+<p>To access your automated builds, click the <code>Actions</code> button, select the latest ran <code>workflow</code> and scroll down until you see the <code>Artifacts</code> section.  </p>
+<p><img alt="Build 1" src="../Images/GitHubActions1.png" /><br />
+<img alt="Build 2" src="../Images/GitHubActions2.png" /><br />
+<img alt="Build 3" src="../Images/GitHubActions3.png" />  </p>
+<p>Please note the <code>Artifacts</code> have a limited lifespan, usually GitHub deletes them after around 30 days.  </p>
+<h3 id="automatic-publishing">Automatic Publishing</h3>
+<p>In order to publish (upload) your mod, simply push a <code>tag</code> to the remote GitHub repository.  When the automated build finishes, the script will create a GitHub release and upload the mod to NuGet (if configured).</p>
+<p>Example of an automated release:  </p>
+<p><img alt="Release" src="../Images/GitHubCiCdRelease.png" />  </p>
+<h4 id="publishing-to-nuget">Publishing to NuGet</h4>
+<p>Publishing to NuGet requires additional configuration.<br />
+- Set a NuGet Feed URL<br />
+- Set a NuGet API Key</p>
+<p>To set the NuGet feed, open <code>workflows/reloaded.yml</code> and change the <code>NUGET_URL</code> variable. The default is <code>http://packages.sewer56.moe:5000/v3/index.json</code> in which points to the official <a href="http://packages.sewer56.moe:5000">Reloaded II NuGet repository</a>.  </p>
+<p>To set the API Key, add a <a href="https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository">Secret</a> named <code>RELOADED_NUGET_KEY</code>.  </p>
+<h3 id="multiple-mods-per-repository">Multiple Mods Per Repository</h3>
+<p>If you want to use the same repository for multiple mods, it is recommended you create a <code>PublishAll.ps1</code> that runs the publish script multiple times with different parameters.  </p>
+<p>Here is an example:  </p>
+<div class="highlight"><pre><span></span><code><span class="c"># Set Working Directory</span>
+<span class="nb">Split-Path</span> <span class="nv">$MyInvocation</span><span class="p">.</span><span class="n">MyCommand</span><span class="p">.</span><span class="n">Path</span> <span class="p">|</span> <span class="nb">Push-Location</span>
+<span class="no">[Environment]</span><span class="p">::</span><span class="n">CurrentDirectory</span> <span class="p">=</span> <span class="nv">$PWD</span>
+
+<span class="p">./</span><span class="n">Publish</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-ProjectPath</span> <span class="s2">&quot;Reloaded.Universal.Redirector/Reloaded.Universal.Redirector.csproj&quot;</span> <span class="p">`</span>
+              <span class="n">-PackageName</span> <span class="s2">&quot;Reloaded.Universal.Redirector&quot;</span> <span class="p">`</span>
+              <span class="n">-PublishOutputDir</span> <span class="s2">&quot;Publish/ToUpload/Redirector&quot;</span> 
+
+<span class="p">./</span><span class="n">Publish</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-ProjectPath</span> <span class="s2">&quot;Reloaded.Universal.Monitor/Reloaded.Universal.Monitor.csproj&quot;</span> <span class="p">`</span>
+              <span class="n">-PackageName</span> <span class="s2">&quot;Reloaded.Universal.Monitor&quot;</span> <span class="p">`</span>
+              <span class="n">-PublishOutputDir</span> <span class="s2">&quot;Publish/ToUpload/Monitor&quot;</span> 
+
+<span class="p">./</span><span class="n">Publish</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-ProjectPath</span> <span class="s2">&quot;Reloaded.Universal.RedirectorMonitor/Reloaded.Universal.RedirectorMonitor.csproj&quot;</span> <span class="p">`</span>
+              <span class="n">-PackageName</span> <span class="s2">&quot;Reloaded.Universal.RedirectorMonitor&quot;</span> <span class="p">`</span>
+              <span class="n">-PublishOutputDir</span> <span class="s2">&quot;Publish/ToUpload/RedirectorMonitor&quot;</span> 
+
+<span class="c"># Restore Working Directory  </span>
+<span class="nb">Pop-Location</span>
+</code></pre></div>
+<p>Then modify <code>workflows/reloaded.yml</code> to call <code>PublishAll.ps1</code> script instead of <code>Publish.ps1</code> script.  </p>
+<p>Example repositories with this setup:<br />
+- <a href="https://github.com/Reloaded-Project/reloaded.universal.redirector">Reloaded.Universal.Redirector</a><br />
+- <a href="https://github.com/Sewer56/Heroes.Controller.Hook.ReloadedII">Heroes.Controller.Hook</a><br />
+- <a href="https://github.com/Sewer56/Riders.Controller.Hook">Riders.Controller.Hook</a>  </p>
+<h2 id="updating-the-mod-template">Updating the Mod Template</h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To update the template, you can run the command <a href="https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new-update">dotnet new update</a>.  </p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If your mod was created using a template older than August 2022, [consider using the following guidance.] (#updating-from-old-template-layout).  </p>
+</div>
+<p>To update the mod template, do the following actions:<br />
+- Create a new dummy mod (using the same project name as your existing mod).<br />
+- Copy all files that aren't <code>Mod.cs</code> and <code>Config.json</code> to your existing mod.<br />
+- Update <code>Reloaded.Mod.Interfaces</code> NuGet Package.<br />
+- [Optional] Look inside <code>ModConfig.json</code> and <code>.csproj</code> for new fields/properties (for example, <code>ProjectUrl</code> was added in August 2022). </p>
+<p>You are done. </p>
+<h3 id="updating-from-old-template-layout">Updating from Old Template Layout</h3>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Older versions of the mod template (pre Sep. 2022) encouraged editing of the template directly, newer templates take a different approach. Templates can now be swapped out and new features can be applied in <code>Mod.cs</code> and <code>Config.cs</code>.<br />
+While not exhaustive, the following guidance can be used to help migrate to the new template format.  </p>
+</div>
+<h4 id="check-default-imod-programcs-settings">Check Default IMod (Program.cs) Settings</h4>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Older versions of the mod template (pre Sep. 2022) encouraged editing of the template directly, newer templates take a different approach. Templates can now be swapped out and new features can be applied in <code>Mod.cs</code> and <code>Config.cs</code>.<br />
+While not exhaustive, the following guidance can be used to help migrate to the new template format.  </p>
+</div>
+<p>Old Defaults:<br />
+- <code>CanSuspend</code>: false<br />
+- <code>CanUnload</code>: false<br />
+- <code>Suspend()</code>, <code>Unload()</code>, <code>Resume()</code>, <code>Disposing()</code>: Empty.<br />
+- <code>OnConfigurationUpdated()</code>: Prints to console and assigns to field.  </p>
+<p>If any of these are non-default in the old <code>IMod</code> implementation (<code>Program.cs</code>), you should move the non-default values to <code>Mod.cs</code> in the new template.<br />
+Mod.cs inherits from <code>ModBase</code> which exposes the old methods as overridable virtual functions.  </p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Add to Mod.cs to override old CanSuspend.</span>
+<span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">CanSuspend</span><span class="p">()</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="k">true</span><span class="p">;</span>
+</code></pre></div>
+<h4 id="move-user-code-from-imod-programcs">Move User Code from IMod (Program.cs)</h4>
+<p>The old layout suggested placing custom code under the line which reads:  </p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Please put your mod code (in the class) below</span>
+</code></pre></div>
+<p>If you encounter this line, move the code below this line into the constructor of <code>Mod.cs</code> in the new template.  </p>
+<h3 id="configuration-migration">Configuration Migration</h3>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If your mod was created before 2022, you will need to migrate where your configurations are stored when using the newer templates.</p>
+</div>
+<p>Previously mods would store configurations in their own folders, however in newer versions a separate dedicated folder is now used.<br />
+(You can find it in a mod's right click menu in the launcher).  </p>
+<p>To migrate your configurations, locate the <code>ConfiguratorMixin</code> class (usually in <code>Config.cs</code>), and add the following method.</p>
+<div class="highlight"><pre><span></span><code><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Migrate</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">oldDirectory</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">newDirectory</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Replace Config.json with your original config file name.</span>
+<span class="w">    </span><span class="n">TryMoveFile</span><span class="p">(</span><span class="s">&quot;Config.json&quot;</span><span class="p">);</span>
+
+<span class="cp">#pragma warning disable CS8321</span>
+<span class="w">    </span><span class="k">void</span><span class="w"> </span><span class="nf">TryMoveFile</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">fileName</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">File</span><span class="p">.</span><span class="n">Move</span><span class="p">(</span><span class="n">Path</span><span class="p">.</span><span class="n">Combine</span><span class="p">(</span><span class="n">oldDirectory</span><span class="p">,</span><span class="w"> </span><span class="n">fileName</span><span class="p">),</span><span class="w"> </span><span class="n">Path</span><span class="p">.</span><span class="n">Combine</span><span class="p">(</span><span class="n">newDirectory</span><span class="p">,</span><span class="w"> </span><span class="n">fileName</span><span class="p">));</span><span class="w"> </span><span class="p">}</span>
+<span class="w">        </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* Ignored */</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#pragma warning restore CS8321</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>This process can also be used to handle migration for other config modifications such as when <code>TryRunCustomConfiguration() == true</code>.  </p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/Sewer56" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/TheSewer56" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
+</html>
