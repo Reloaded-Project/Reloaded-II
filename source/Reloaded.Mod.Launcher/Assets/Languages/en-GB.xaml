@@ -704,4 +704,11 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="DragDropInstalledModsTitle">Installed Mods via Drag &amp; Drop</sys:String>
     <sys:String x:Key="DragDropInstalledModsDescription">Installed {0} Mod(s)</sys:String>
 
+    <!-- Update 1.27.0: Updating 'First Launch' Experience a Bit -->
+    <!-- These replace FirstLaunchExAddModExtractDescription -->
+    <sys:String x:Key="FirstLaunchExStepInstallMod">Install Mods</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall1">Mods can be installed by dragging them over the Reloaded window.</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall_2_1">Alternatively, you can</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall_2_2">Install Mods Manually</sys:String> <!-- Hyperlink-->
+
 </ResourceDictionary>

@@ -97,3 +97,11 @@ If your existing mod is tied with a specific mod loader (e.g. using some kind of
 Please note that config files may be dropped in game directory for mods originally meant for ASI loaders, unless the mod explicitly checks DLL directory; you might need to make minor changes to your mods to account for that.
 
 You will still need to generate a mod configuration as per the guide.
+
+## How can I Install Mods Manually?
+
+To install mods manually, simply extract a downloaded `zip` or `7z` file to the `Mods` folder.  
+
+![Install Mod](./Images/InstallMod.gif)  
+
+If there is no single folder inside the downloaded mod, create one yourself.  

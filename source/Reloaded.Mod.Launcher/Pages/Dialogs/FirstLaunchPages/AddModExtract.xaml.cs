@@ -1,3 +1,5 @@
+using System.Windows.Navigation;
+
 namespace Reloaded.Mod.Launcher.Pages.Dialogs.FirstLaunchPages;
 
 /// <summary>
@@ -9,4 +11,7 @@ public partial class AddModExtract : VideoTutorialPage
     {
         InitializeComponent();
     }
+
+    private void OpenHyperlink(object sender, RequestNavigateEventArgs e)
+        => ProcessExtensions.OpenFileWithDefaultProgram(e.Uri.ToString());
 }
