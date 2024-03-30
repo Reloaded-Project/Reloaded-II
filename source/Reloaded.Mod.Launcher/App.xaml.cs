@@ -45,10 +45,22 @@ public partial class App : Application
 
     private void SetupResources()
     {
-        var launcherFolder   = AppContext.BaseDirectory;
+        var launcherFolder= AppContext.BaseDirectory;
         var languageSelector = new XamlFileSelector($"{launcherFolder}\\Assets\\Languages");
         var themeSelector    = new XamlFileSelector($"{launcherFolder}\\Theme");
         
+        var conf = Lib.IoC.GetConstant<LoaderConfig>();
+        if (conf.FirstLaunch)
+        {
+            // Default the language to user's system language.
+            // e.g. en-GB.xaml
+            var currentCulture = Thread.CurrentThread.CurrentUICulture + ".xaml";
+            conf.LanguageFile = languageSelector.Files.FirstOrDefault(x => Path.GetFileName(x) == currentCulture) ?? conf.LanguageFile; 
+        }
+        
+        themeSelector.SelectXamlFileByName(Path.GetFileName(conf.ThemeFile));
+        languageSelector.SelectXamlFileByName(Path.GetFileName(conf.LanguageFile));
+
         LibraryBindings.Init(languageSelector, themeSelector);
 
         // Ideally this should be in Setup, however the download dialogs should be localized.

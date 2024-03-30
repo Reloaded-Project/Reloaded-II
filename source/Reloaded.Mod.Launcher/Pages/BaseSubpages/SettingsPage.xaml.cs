@@ -1,3 +1,4 @@
+using System.Windows.Forms;
 using Window = System.Windows.Window;
 
 namespace Reloaded.Mod.Launcher.Pages.BaseSubpages;

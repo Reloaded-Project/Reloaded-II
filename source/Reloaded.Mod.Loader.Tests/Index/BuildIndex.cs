@@ -42,6 +42,26 @@ public class IndexBuildTests : IndexTestCommon
         Assert.True(index.TryGetGameBananaSourcePath(heroesGameId, out _));
         Assert.True(Directory.Exists(index.BaseUrl.LocalPath));
     }
+    
+    [Fact]
+    public async Task BuildAllPackages()
+    {
+        const string outputFolder = "BuildAllPackagesTest";
+        const int heroesGameId = 6061;
+
+        // Arrange
+        var builder = new IndexBuilder();
+        builder.Sources.Add(new IndexSourceEntry(TestNuGetFeedUrl));
+        builder.Sources.Add(new IndexSourceEntry(heroesGameId));
+
+        // Act
+        var index = await builder.BuildAsync(outputFolder);
+
+        // Assert
+        var api = new IndexApi(index.BaseUrl.ToString());
+        var packages = await api.GetAllPackagesAsync();
+        Assert.True(packages.Packages.Count > 0);
+    }
 
     [Fact]
     public async Task BuildGbIndex()

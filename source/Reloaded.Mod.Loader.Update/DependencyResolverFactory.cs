@@ -1,3 +1,5 @@
+using Reloaded.Mod.Loader.Update.Providers.Index;
+
 namespace Reloaded.Mod.Loader.Update;
 
 /// <summary>
@@ -10,11 +12,15 @@ public static class DependencyResolverFactory
     /// </summary>
     public static IDependencyResolver GetInstance(AggregateNugetRepository repository)
     {
-        return new AggregateDependencyResolver(new IDependencyResolver[]
-        {
+        return new AggregateDependencyResolver([
+            new GitHubDependencyResolver(), // has CDN, so fastest
+            
+            // slower by default for most users, but reliable.
+            // we put this 2nd as a fallback for security reasons
             new NuGetDependencyResolver(repository),
-            new GameBananaDependencyResolver(),
-            new GitHubDependencyResolver()
-        });
+
+            // Fast these days, but sometimes unreliable.
+            new GameBananaDependencyResolver(), 
+        ]);
     }
 }

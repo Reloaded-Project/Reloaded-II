@@ -180,6 +180,10 @@ bool load_reloaded(ReloadedPaths& reloadedPaths)
 		throw std::exception("Failed to load .NET assembly.");
 	}
 
+	// Set path to current dll
+	// Using GetModuleFileNameW
+	entryPointParameters.dll_path = new wchar_t[MAX_PATH];
+	GetModuleFileNameW(thisProcessModule, entryPointParameters.dll_path, MAX_PATH);
 	initialize(&entryPointParameters, sizeof(EntryPointParameters));
 	return true;
 }

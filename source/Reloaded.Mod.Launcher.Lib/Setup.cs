@@ -125,7 +125,7 @@ public static class Setup
     /// Quickly checks for any missing dependencies amongst available mods
     /// and opens a menu allowing to download if mods are unavailable.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>True if there are missing deps, else false.</returns>
     public static async Task CheckForMissingModDependenciesAsync()
     {
         var deps = Update.CheckMissingDependencies();
@@ -150,7 +150,16 @@ public static class Setup
         // Needs to be ran after SetupViewModelsAsync
         var apps = IoC.GetConstant<ApplicationConfigService>().Items;
         var mods = IoC.GetConstant<ModConfigService>().Items.ToArray();
-
+        
+        // Unprotect all MS Store titles if needed.
+        foreach (var app in apps)
+        {
+            if (app.Config.IsMsStore)
+            {
+                TryUnprotectGamePassGame.TryIgnoringErrors(app.Config.AppLocation);
+            }
+        }
+        
         // Enforce compatibility non-async, since this is unlikely to do anything.
         foreach (var app in apps)
             EnforceModCompatibility(app, mods);
@@ -301,7 +310,12 @@ public static class Setup
     /// </summary>
     private static async Task CheckForUpdatesAsync()
     {
-        await DependencyMetadataWriterFactory.ExecuteAllAsync(IoC.Get<ModConfigService>());
+        // The action below is destructive.
+        // It may remove update metadata for missing dependencies.
+        // Don't run this unless we have all the mods.
+        if (Update.CheckMissingDependencies().AllAvailable)
+            await DependencyMetadataWriterFactory.ExecuteAllAsync(IoC.Get<ModConfigService>());
+
         await Update.CheckForLoaderUpdatesAsync();
         await Task.Run(Update.CheckForModUpdatesAsync);
         await CheckForMissingModDependenciesAsync();

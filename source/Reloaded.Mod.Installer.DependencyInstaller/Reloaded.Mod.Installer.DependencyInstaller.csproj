@@ -3,9 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>preview</LangVersion>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.0" />
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
   </ItemGroup>

@@ -33,11 +33,6 @@ public class SettingsPageViewModel : ObservableObject
     public string Copyright { get; set; }
 
     /// <summary>
-    /// The .NET Runtime version the Launcher is running on.
-    /// </summary>
-    public string RuntimeVersion { get; set; }
-
-    /// <summary>
     /// Configuration for the mod loader.
     /// </summary>
     public LoaderConfig LoaderConfig { get; set; }
@@ -73,13 +68,9 @@ public class SettingsPageViewModel : ObservableObject
         }
         catch (Exception) { /* Non-critical, could happen on CIFS file share, we can ignore. */ }
         
-        Copyright = Regex.Replace(copyRightStr, @"\|.*", $"| {Version.GetReleaseVersion()!.ToNormalizedString()}");
-        RuntimeVersion = $"Core: {RuntimeInformation.FrameworkDescription}";
-        ActionWrappers.ExecuteWithApplicationDispatcher(() =>
-        {
-            SelectCurrentLanguage();
-            SelectCurrentTheme();
-        });
+        copyRightStr = Regex.Replace(copyRightStr, @"\|.*", $"| {Version.GetReleaseVersion()!.ToNormalizedString()}");
+        copyRightStr += $" | {RuntimeInformation.FrameworkDescription}";
+        Copyright = copyRightStr;
     }
 
     /// <summary>
@@ -111,21 +102,11 @@ public class SettingsPageViewModel : ObservableObject
         {
             LoaderConfig.ThemeFile = ThemeSelector.File;
             await SaveConfigAsync();
-
+            
             // TODO: This is a bug workaround for where the language ComboBox gets reset after a theme change.
-            SelectCurrentLanguage();
+            LanguageSelector!.SelectXamlFileByName(Path.GetFileName(LoaderConfig.LanguageFile!));
         }
     }
-
-    /// <summary>
-    /// Auto selects the desired language file from a list based on path.
-    /// </summary>
-    public void SelectCurrentLanguage() => SelectXamlFile(LanguageSelector, LoaderConfig.LanguageFile);
-
-    /// <summary>
-    /// Auto selects the desired theme file from a list based on path.
-    /// </summary>
-    public void SelectCurrentTheme()    => SelectXamlFile(ThemeSelector, LoaderConfig.ThemeFile);
 
     /// <summary>
     /// Opens the location where the log files are stored.
@@ -137,20 +118,7 @@ public class SettingsPageViewModel : ObservableObject
     /// </summary>
     public void OpenConfigFile() => ProcessExtensions.OpenFileWithDefaultProgram(Paths.LoaderConfigPath);
 
-    private void SelectXamlFile(IResourceFileSelector? selector, string fileName)
-    {
-        if (selector == null)
-            return;
 
-        foreach (var file in selector.Files)
-        {
-            if (file != fileName) 
-                continue;
-                
-            selector.File = file;
-            break;
-        }
-    }
 
     /* Functions */
     private void UpdateTotalApplicationsInstalled() => TotalApplicationsInstalled = AppConfigService.Items.Count;

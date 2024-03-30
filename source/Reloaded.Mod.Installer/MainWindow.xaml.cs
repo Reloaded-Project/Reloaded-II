@@ -17,7 +17,7 @@ public partial class MainWindow : GlowWindow
     
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        InstallTask = ViewModel.InstallReloadedAsync();
+        InstallTask = ViewModel.InstallReloadedAsync(Program.Settings);
         await InstallTask.ConfigureAwait(false);
         Application.Current.Shutdown(0);
     }

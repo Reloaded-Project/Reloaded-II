@@ -39,6 +39,7 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
     private FileSystemWatcher _createFileWatcher;
     private FileSystemWatcher _deleteFileWatcher;
     private FileSystemWatcher _deleteDirectoryWatcher;
+    private FileSystemWatcher _renameDirectoryWatcher;
     private SynchronizationContext _context = SynchronizationContext.Current;
     private Func<List<PathTuple<TConfigType>>> _getAllConfigs;
 
@@ -59,11 +60,12 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
         ItemFileName    = itemFileName;
         _getAllConfigs  = getAllConfigs;
         _renameWatcher          = Create(ConfigDirectory, null, OnRename, FileSystemWatcherEvents.Renamed, true, "*.json", useBigBuffers);
-        _createFolderWatcher    = Create(ConfigDirectory, OnCreateFolder, null, FileSystemWatcherEvents.Created, false, "*.*", useBigBuffers);
+        _createFolderWatcher    = Create(ConfigDirectory, OnCreateFolder, null, FileSystemWatcherEvents.Created, true, "*.*", useBigBuffers);
         _createFileWatcher      = Create(ConfigDirectory, OnCreateFile, null, FileSystemWatcherEvents.Created, true, "*.json", useBigBuffers);
         _changedWatcher         = Create(ConfigDirectory, OnUpdateFile, null, FileSystemWatcherEvents.Changed, true, "*.json", useBigBuffers);
-        _deleteFileWatcher      = Create(ConfigDirectory, OnDeleteFile, null, FileSystemWatcherEvents.Deleted, useBigBuffers);
-        _deleteDirectoryWatcher = Create(ConfigDirectory, OnDeleteDirectory, null, FileSystemWatcherEvents.Deleted, false, "*.*", useBigBuffers);
+        _deleteFileWatcher      = Create(ConfigDirectory, OnDeleteFile, null, FileSystemWatcherEvents.Deleted, true, useBigBuffers: useBigBuffers);
+        _deleteDirectoryWatcher = Create(ConfigDirectory, OnDeleteDirectory, null, FileSystemWatcherEvents.Deleted, true, "*.*", useBigBuffers);
+        _renameDirectoryWatcher = Create(ConfigDirectory, null, OnRenameDirectory, FileSystemWatcherEvents.Renamed, true, "*.*", useBigBuffers);
         GetItems(executeImmediately);
     }
 
@@ -74,6 +76,15 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
     public void MoveFolder(string newDirectory)
     {
         throw new NotImplementedException("This feature will be implemented in the future.");
+    }
+    
+    /// <summary>
+    /// Populates the mod list governed by <see cref="Items"/>.
+    /// </summary>
+    public virtual void ForceRefresh()
+    {
+        bool executeImmediately = _context == null;
+        GetItems(executeImmediately);
     }
 
     /// <summary>
@@ -122,29 +133,75 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
             _context.Post(() => RemoveItem(mod));
     }
 
+    private void OnRenameDirectory(object sender, RenamedEventArgs e)
+    {
+        if (!Directory.Exists(e.FullPath) || Directory.Exists(e.OldFullPath))
+            return;
+
+        // Trigger the deletion of the previous folder.
+        OnDeleteDirectory(sender, new FileSystemEventArgs(WatcherChangeTypes.Deleted, e.OldFullPath, null));
+
+        // Trigger the creation of the new folder.
+        OnCreateFolder(sender, new FileSystemEventArgs(WatcherChangeTypes.Created, e.FullPath, null));
+        
+        // Handling this in this way is needed as mods can be nested.
+    }
+
     private void OnCreateFolder(object sender, FileSystemEventArgs e)
     {
         if (!Directory.Exists(e.FullPath))
             return;
 
-        var configFullPath = Path.Combine(e.FullPath, ItemFileName);
-        if (!File.Exists(configFullPath))
-            return;
-
-        var config = IConfig<TConfigType>.FromPath(configFullPath);
-        _context.Post(() => AddItem(new PathTuple<TConfigType>(configFullPath, config)));
+        // Read configurations from subdirectories within the current path.
+        var configs = ConfigReader<TConfigType>.ReadConfigurations(Path.TrimEndingDirectorySeparator(e.FullPath), ItemFileName, maxDepth: int.MaxValue, recurseOnFound: false);
+        foreach (var config in configs)
+        {
+            _context.Post(() => AddItem(config));
+        }
     }
 
     private void OnCreateFile(object sender, FileSystemEventArgs e) => CreateFileHandler(e.FullPath);
 
     private void OnDeleteDirectory(object sender, FileSystemEventArgs e)
     {
-        if (ItemsByFolder.TryGetValue(e.FullPath, out var deletedMod))
+        var deletedPath = e.FullPath;
+
+        // Fast path: If we're directly deleting a known folder, then there can not be any subfolders,
+        // as we don't allow mods inside mods.
+        var isDirectFolder = ItemsByFolder.TryGetValue(deletedPath, out var directMod);
+        if (isDirectFolder)
         {
             _context.Post(() =>
             {
-                RemoveItem(deletedMod);
+                RemoveItem(directMod);
             });
+            return;
+        }
+        
+        // We need paths with trailing slashes in the case of:
+        // - Mod A/ModZ
+        // - Mod A Extra/ModZ
+        // We don't want to match 'Mod A Extra' when we're looking for 'Mod A'.
+        if (!Path.EndsInDirectorySeparator(deletedPath))
+            deletedPath += Path.DirectorySeparatorChar;
+        
+        // Otherwise iterate over all possible subfolders.
+        // This is a bit inefficient, but with nested mods, it's the only way (without creating a whole tree of nodes).
+        // Can rack up upwards of 20ms in huge mod directories.
+        foreach (var item in ItemsByFolder)
+        {
+            var modFolder = item.Key;
+            if (!Path.EndsInDirectorySeparator(modFolder))
+                modFolder += Path.DirectorySeparatorChar;
+            
+            var shouldRemove = modFolder.StartsWith(deletedPath, StringComparison.OrdinalIgnoreCase);
+            if (shouldRemove)
+            { 
+                _context.Post(() =>
+                {
+                    RemoveItem(item.Value);
+                });
+            }
         }
     }
 
@@ -178,7 +235,7 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
         }
     }
 
-    private void AddItem(PathTuple<TConfigType> itemTuple)
+    protected virtual void AddItem(PathTuple<TConfigType> itemTuple)
     {
         // Check for existing item.
         bool alreadyHasItem = ItemsByPath.TryGetValue(itemTuple.Path, out var existing);
@@ -209,8 +266,20 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
 
     private bool IsFileInItemFolder(string filePath)
     {
+        var cfgPath = ConfigDirectory;
         var pathContainingFolder = Path.GetDirectoryName(Path.GetDirectoryName(filePath));
-        return pathContainingFolder.Equals(ConfigDirectory, StringComparison.OrdinalIgnoreCase);
+
+        // We need paths with trailing slashes in the case of:
+        // - Mod A/ModZ
+        // - Mod A Extra/ModZ
+        // We don't want to match 'Mod A Extra' when we're looking for 'Mod A'.
+        if (!Path.EndsInDirectorySeparator(cfgPath))
+            cfgPath += Path.DirectorySeparatorChar;
+
+        if (!Path.EndsInDirectorySeparator(pathContainingFolder))
+            pathContainingFolder += Path.DirectorySeparatorChar;
+
+        return pathContainingFolder.StartsWith(cfgPath, StringComparison.OrdinalIgnoreCase);
     }
 
     private bool IsFileConfigFile(string filePath)

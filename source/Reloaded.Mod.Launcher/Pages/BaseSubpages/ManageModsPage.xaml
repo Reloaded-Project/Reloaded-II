@@ -10,6 +10,7 @@
              xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="756"
+             AllowDrop="True"
              Title="{DynamicResource TitleManageMods}">
 
     <Grid Margin="{DynamicResource PageMargin}" x:Name="Contents" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
@@ -21,7 +22,7 @@
             <!-- Sort the mod list -->
             <CollectionViewSource x:Key="SortedMods" Source="{Binding ModConfigService.Items, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                 <CollectionViewSource.SortDescriptions>
-                    <componentModel:SortDescription PropertyName="Config.ModName"/>
+                    <componentModel:SortDescription PropertyName="Config.ModDisplayName" />
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
@@ -184,7 +185,7 @@
                             VerticalContentAlignment="Top">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Config.ModName}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                                    <TextBlock Text="{Binding Config.ModDisplayName}"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>

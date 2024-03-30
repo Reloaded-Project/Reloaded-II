@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <NoWarn>CS0067</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Version>2.1.4</Version>
+    <Version>2.2.0</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Sewer56</Authors>
@@ -21,9 +21,11 @@
     <LangVersion>preview</LangVersion>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="DeepCloner" Version="0.10.4" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
     <PackageReference Include="Mapster" Version="7.3.0" />

@@ -459,7 +459,7 @@
     <sys:String x:Key="ConfigureModDialogResetDescription">將設定數據重設為其預設值。&#x0a;[注意：需要Mod支援，如果無法使用請聯繫作者]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
-    <sys:String x:Key="LoaderSettingsControllerBtn">控制器設定 [Beta]</sys:String>
+    <sys:String x:Key="LoaderSettingsControllerBtn">控制器設定</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneName">無</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneDescription">沒有任何動作。</sys:String>
 
@@ -505,7 +505,7 @@
     <sys:String x:Key="ConfiguratorCustomStringMainConfig">主要設定</sys:String>      <!-- Name of main controller configuration. Likely the only configuration. -->
     <sys:String x:Key="ConfiguratorCustomStringTrigger">觸發器</sys:String>     <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
     <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">如果要映射到控制器觸發器，請使用此選項</sys:String>     <!-- Displays in description of trigger bindings. -->
-    <sys:String x:Key="ConfiguratorCustomStringWindowName">重新載入的控制器設定 [Beta]</sys:String>     <!-- Name of the input configurator window. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">重新載入的控制器設定</sys:String>     <!-- Name of the input configurator window. -->
 
     <sys:String x:Key="ConfiguratorLibCustomStringNew">新增</sys:String>     <!-- "New" Used for button that adds values. -->
     <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">左鍵指定新的綁定。&#x0a;中鍵翻轉值。&#x0a;右鍵清除映射！&#x0a;! 表示值已翻轉。</sys:String>     <!-- "The description of the tooltip that appears on buttons". -->

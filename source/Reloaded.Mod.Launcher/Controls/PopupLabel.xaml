@@ -14,7 +14,7 @@
         <StackPanel>
             <Button Style="{DynamicResource LabelButton}"
                     Focusable="True"                        
-                    Content="{Binding ButtonText}"
+                    Content="{Binding ButtonText, Mode=TwoWay, NotifyOnSourceUpdated=True}"
                     Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"
                     FontFamily="{Binding Path=FontFamily, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"
                     FontStyle="{Binding Path=FontStyle, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"

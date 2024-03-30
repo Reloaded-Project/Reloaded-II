@@ -1,3 +1,4 @@
+using Reloaded.Memory.Extensions;
 using Image = System.Drawing.Image;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -91,7 +92,7 @@ public class Imaging
     /// </summary>
     /// <param name="inputBitmap">The input image.</param>
     /// <param name="output">The output stream.</param>
-    public static bool TryConvertToIcon(Bitmap inputBitmap, Stream output)
+    public unsafe static bool TryConvertToIcon(Bitmap inputBitmap, Stream output)
     {
         if (inputBitmap == null)
             return false;
@@ -111,7 +112,7 @@ public class Imaging
             streams.Add(imageStream);
         }
 
-        using var iconWriter = new ExtendedMemoryStream();
+        using var iconWriter = new MemoryStream();
             
         // Write ICO header.
         iconWriter.Write(new IcoHeader()
@@ -121,7 +122,7 @@ public class Imaging
         });
 
         // Make Image Headers
-        var imageDataOffset = Struct.GetSize<IcoHeader>() + (Struct.GetSize<IcoEntry>() * sizes.Length);
+        var imageDataOffset = sizeof(IcoHeader) + (sizeof(IcoEntry) * sizes.Length);
         for (int x = 0; x < sizes.Length; x++)
         {
             iconWriter.Write(new IcoEntry()

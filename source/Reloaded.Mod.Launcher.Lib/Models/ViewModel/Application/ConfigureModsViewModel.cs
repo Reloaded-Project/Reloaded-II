@@ -133,26 +133,53 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
     /// </summary>
     private List<ModEntry> GetInitialModSet(PathTuple<ModConfig>[] modsForThisApp, PathTuple<ApplicationConfig> applicationTuple)
     {
-        // Note: Must put items in top to bottom load order.
-        var enabledModIds   = applicationTuple.Config.EnabledMods;
-
         // Get dictionary of mods for this app by Mod ID
-        var modDictionary  = new Dictionary<string, PathTuple<ModConfig>>();
+        var modDictionary = new Dictionary<string, PathTuple<ModConfig>>();
         foreach (var mod in modsForThisApp)
             modDictionary[mod.Config.ModId] = mod;
 
-        // Add enabled mods.
         var totalModList = new List<ModEntry>(modsForThisApp.Length);
-        foreach (var enabledModId in enabledModIds)
+
+        if (applicationTuple.Config.PreserveDisabledModOrder)
         {
-            if (modDictionary.ContainsKey(enabledModId))
+            // Modern Behaviour: Mod Order is Preserved
+            var enabledModIds = applicationTuple.Config.EnabledMods.Where(modDictionary.ContainsKey).Distinct().ToArray();
+            var sortedModIds = applicationTuple.Config.SortedMods.Where(modDictionary.ContainsKey).Distinct().ToArray();
+
+            var enabledModIdSet = enabledModIds.ToHashSet();
+            var sortedModIdSet = sortedModIds.ToHashSet();
+
+            // Add sorted mods.
+            foreach (var sortedModId in sortedModIds)
+                totalModList.Add(MakeSaveSubscribedModEntry(enabledModIdSet.Contains(sortedModId), modDictionary[sortedModId]));
+
+            // Add enabled mods that were not in the sorted mod collection.
+            // This can happen in case of config upgrade from an older version.
+            foreach (var enabledModId in enabledModIds.Where(x => !sortedModIdSet.Contains(x)))
                 totalModList.Add(MakeSaveSubscribedModEntry(true, modDictionary[enabledModId]));
+
+            // Add the remaining mods on the bottom of the list as disabled.
+            var remainingMods = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId) && !sortedModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
+            totalModList.AddRange(remainingMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
+        }
+        else
+        {
+            // Classic Behaviour: Disabled Mods are Alphabetical by Name
+            var enabledModIds = applicationTuple.Config.EnabledMods;
+
+            // Add enabled mods.
+            foreach (var enabledModId in enabledModIds)
+            {
+                if (modDictionary.ContainsKey(enabledModId))
+                    totalModList.Add(MakeSaveSubscribedModEntry(true, modDictionary[enabledModId]));
+            }
+
+            // Add disabled mods.
+            var enabledModIdSet = enabledModIds.ToHashSet();
+            var disabledMods = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
+            totalModList.AddRange(disabledMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
         }
 
-        // Add disabled mods.
-        var enabledModIdSet = applicationTuple.Config.EnabledMods.ToHashSet();
-        var disabledMods    = modsForThisApp.Where(x => !enabledModIdSet.Contains(x.Config.ModId)).OrderBy(x => x.Config.ModName);
-        totalModList.AddRange(disabledMods.Select(x => MakeSaveSubscribedModEntry(false, x)));
         return totalModList;
     }
 
@@ -207,6 +234,11 @@ public class ConfigureModsViewModel : ObservableObject, IDisposable
 
         try
         {
+            // Don't update this if user doesn't want to preserve their order, in
+            // case the user wants to backtrack and revert. 'e.g. I want to 'try' the other option'.
+            if (ApplicationTuple.Config.PreserveDisabledModOrder)
+                ApplicationTuple.Config.SortedMods = AllMods!.Select(x => x.Tuple.Config.ModId).ToArray();
+
             ApplicationTuple.Config.EnabledMods = AllMods!.Where(x => x.Enabled == true).Select(x => x.Tuple.Config.ModId).ToArray();
             await ApplicationTuple.SaveAsync(_saveToken.Token);
         }

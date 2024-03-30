@@ -106,7 +106,7 @@
                                       Focusable="False"
                                       IsThreeState="False" />
 
-                            <TextBlock Text="{Binding Tuple.Config.ModName, UpdateSourceTrigger=PropertyChanged}" 
+                            <TextBlock Text="{Binding Tuple.Config.ModDisplayName, UpdateSourceTrigger=PropertyChanged}" 
                                        VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" 
                                        Margin="{DynamicResource ListEntryItemMarginSmall}"

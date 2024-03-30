@@ -18,7 +18,7 @@ public partial class NonReloadedProcessPage : ApplicationSubPage
         var process = ViewModel.ApplicationViewModel.SelectedProcess;
         if (!process!.HasExited)
         {
-            var injector = new ApplicationInjector(ViewModel.ApplicationViewModel.SelectedProcess!);
+            using var injector = new ApplicationInjector(ViewModel.ApplicationViewModel.SelectedProcess!);
             injector.Inject();
 
             // Exit page.

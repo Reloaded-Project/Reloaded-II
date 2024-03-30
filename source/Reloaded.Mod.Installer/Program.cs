@@ -4,9 +4,14 @@ namespace Reloaded.Mod.Installer;
 
 internal class Program
 {
+    public static Settings Settings;
+    
     [STAThread]
     public static void Main(string[] args)
     {
+        // Note: This code is kind of jank, mostly hackily put together. Sorry!
+        Settings = GetSettings(args);
+        
         // Handle special case of dependency only install.
         foreach (var arg in args)
         {
@@ -34,14 +39,17 @@ internal class Program
         using var progressBar = SetupCliInstall("Installing (Dependencies Only)", model);
         using var temporaryFolder = new TemporaryFolderAllocation();
         Console.WriteLine($"Using Temporary Folder: {temporaryFolder.FolderPath}");
-        Task.Run(() => model.InstallReloadedAsync(temporaryFolder.FolderPath, false, false)).Wait();
+        Settings.InstallLocation = temporaryFolder.FolderPath; // Ensure Legacy Behaviour
+        Settings.CreateShortcut = false;
+        Settings.StartReloaded = false;
+        Task.Run(() => model.InstallReloadedAsync(Settings)).Wait();
     }
 
     private static void InstallNoGui()
     {
         var model = new MainWindowViewModel();
         using var progressBar = SetupCliInstall("Installing (No GUI)", model);
-        Task.Run(() => model.InstallReloadedAsync()).Wait();
+        Task.Run(() => model.InstallReloadedAsync(Settings)).Wait();
     }
 
     private static ProgressBar SetupCliInstall(string progressText, MainWindowViewModel model)
@@ -56,5 +64,18 @@ internal class Program
         };
 
         return progressBar;
+    }
+    
+    private static Settings GetSettings(string[] args)
+    {
+        var settings = new Settings();
+        for (int x = 0; x < args.Length - 1; x++)
+        {
+            if (args[x] == "--installdir") settings.InstallLocation = args[x + 1];
+            if (args[x] == "--nocreateshortcut") settings.CreateShortcut = false;
+            if (args[x] == "--nostartreloaded") settings.StartReloaded = false;
+        }
+
+        return settings;
     }
 }

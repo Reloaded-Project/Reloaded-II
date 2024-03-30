@@ -459,7 +459,7 @@ Usually this can happen because:
     <sys:String x:Key="ConfigureModDialogResetDescription">Resets the configuration values to their defaults.&#x0a;[Note: Requires mod support, contact author if doesn't work]</sys:String>
 
     <!-- Update 1.19.0: Controller Support -->
-    <sys:String x:Key="LoaderSettingsControllerBtn">Controller Configuration [Beta]</sys:String>
+    <sys:String x:Key="LoaderSettingsControllerBtn">Controller Configuration</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneName">None</sys:String>
     <sys:String x:Key="ConfiguratorBtnNoneDescription">Does nothing.</sys:String>
 
@@ -505,7 +505,7 @@ Usually this can happen because:
     <sys:String x:Key="ConfiguratorCustomStringMainConfig">Main Config</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
     <sys:String x:Key="ConfiguratorCustomStringTrigger">Trigger</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
     <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Use This if Mapping to Controller Trigger</sys:String> <!-- Displays in description of trigger bindings. -->
-    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Controller Configuration [Beta]</sys:String> <!-- Name of the input configurator window. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Controller Configuration</sys:String> <!-- Name of the input configurator window. -->
 
     <sys:String x:Key="ConfiguratorLibCustomStringNew">New</sys:String> <!-- "New" Used for button that adds values. -->
     <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Left click assigns a new binding.&#x0a;Middle click inverts the value.&#x0a;Right click clears the mapping!&#x0a;! indicates the value is inverted.</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
@@ -658,7 +658,8 @@ DRM: 'You will own nothing and you will be happy.'
     <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">Failed to read EXE file for if can deploy ASI Loader. This might happen for a variety of reasons.
 - DRM (Microsoft Store/GamePass).
 - You don't have the right to access the EXE file.
-- The file has moved from its original location.</sys:String>
+- The file has moved from its original location.
+</sys:String>
 
     <!-- Update 1.23.0: Mod Packs Extras -->
     <sys:String x:Key="InstallModPackInstallAll">Install All Mods</sys:String> <!-- Click and it installs all. -->
@@ -686,9 +687,28 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="EditModSelectPresetTagTooltip">Select a Preset Tag</sys:String> 
     <sys:String x:Key="EditModAddTagPlaceHolder">Tag Name Here (or select preset 👉)</sys:String> 
     <sys:String x:Key="ConfigureModsSelectTagTooltip">Filter By Tag</sys:String> 
-    
-    
+
     <!-- Update 1.23.8: Tags -->
     <sys:String x:Key="AddAppWorkingDirectory">Working Directory</sys:String>
    
+    <!-- Update 1.26.0: Preserve Disabled Mod Order -->
+    <sys:String x:Key="PreserveDisabledModOrder">Preserve Mod Order Across Restarts</sys:String>
+    <sys:String x:Key="PreserveDisabledModOrderTooltip">When ENABLED, order of all mods is preserved across App restarts.&#x0a;When DISABLED, 'enabled' mods are at the top in load order and 'disabled' mods at bottom, in alphabetical order.&#x0a;(Default is 'ENABLED' to gauge user feedback, but may change in future.)</sys:String>
+    
+    <!-- Update 1.26.0: GamePass ASI Loader Auto Deploy -->
+    <sys:String x:Key="AsiLoaderGamePassAutoInstallFail">This GamePass title cannot be Auto Setup, sorry. You'll need a manual install of ASI Loader or other shim.</sys:String>
+    <sys:String x:Key="EditModDontInject">Don't Inject Loader</sys:String>
+    <sys:String x:Key="EditModDontInjectTooltip">When ENABLED, doesn't inject loader. Use this when you are loading Reloaded via an external shim like ASI Loader.&#x0a;When DISABLED, injects loader as usual.</sys:String>
+
+    <!-- Update 1.26.0: Drag & Drop Install Mods -->
+    <sys:String x:Key="DragDropInstalledModsTitle">Installed Mods via Drag &amp; Drop</sys:String>
+    <sys:String x:Key="DragDropInstalledModsDescription">Installed {0} Mod(s)</sys:String>
+
+    <!-- Update 1.27.0: Updating 'First Launch' Experience a Bit -->
+    <!-- These replace FirstLaunchExAddModExtractDescription -->
+    <sys:String x:Key="FirstLaunchExStepInstallMod">Install Mods</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall1">Mods can be installed by dragging them over the Reloaded window.</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall_2_1">Alternatively, you can</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall_2_2">Install Mods Manually</sys:String> <!-- Hyperlink-->
+
 </ResourceDictionary>

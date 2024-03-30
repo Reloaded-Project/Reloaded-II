@@ -230,6 +230,7 @@ public class AsiLoaderDeployer
 
     private static readonly string[] AsiCommonDirectories = 
     {
+        "", // root folder
         "scripts",
         "plugins"
     };

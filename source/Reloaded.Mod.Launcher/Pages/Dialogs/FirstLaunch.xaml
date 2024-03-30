@@ -26,7 +26,7 @@
                             DockPanel.Dock="Top"
                             StepIndex="{Binding FirstLaunchPage, Converter={x:Static converters:FirstLaunchPageToIntConverter.Instance}}">
                     <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepAddApplication}"/>
-                    <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepExtractMod}"/>
+                    <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepInstallMod}"/>
                     <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepConfigureMod}"/>
                     <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepEnableMod}"/>
                     <hc:StepBarItem Content="{DynamicResource FirstLaunchExStepComplete}"/>

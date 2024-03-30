@@ -22,7 +22,7 @@ public class IndexBuilder
         Directory.CreateDirectory(outputFolder);
         var index     = new Structures.Index();
         index.BaseUrl = new Uri($"{outputFolder}/");
-        return await UpdateAsync(index);
+        return await UpdateAsync(index, writeToFile);
     }
 
     /// <summary>
@@ -86,7 +86,13 @@ public class IndexBuilder
 
         await Task.WhenAll(tasks);
         if (writeToFile)
+        {
             await WriteToDiskAsync(index);
+            var allPackages = await index.GetPackagesFromAllSourcesAsync();
+            await WriteToDiskAsync(index.BaseUrl, allPackages, Routes.AllPackages);
+            allPackages.RemoveNonDependencyInfo();
+            await WriteToDiskAsync(index.BaseUrl, allPackages, Routes.AllDependencies);
+        }
 
         index.BaseUrl = new Uri(outputFolder, UriKind.Absolute);
         return index;
@@ -102,16 +108,28 @@ public class IndexBuilder
         await File.WriteAllBytesAsync(Path.Combine(index.BaseUrl.LocalPath, Routes.Index), compressedIndex);
     }
 
+    /// <summary>
+    /// Writes an existing package list to disk, in a specified folder.
+    /// </summary>
+    /// <param name="list">The list containing all packages.</param>
+    /// <param name="baseUrl">The 'base URL' where the Index is contained.</param>
+    /// <param name="route">The route where this package list goes.</param>
+    public async Task WriteToDiskAsync(Uri baseUrl, PackageList list, string route)
+    {
+        var compressedPackageList = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(list, Serializer.Options));
+        await File.WriteAllBytesAsync(Path.Combine(baseUrl.LocalPath, route), compressedPackageList);
+    }
+
     private async Task BuildNuGetSourceAsync(Structures.Index index, IndexSourceEntry indexSourceEntry,
         string outputFolder)
     {
         // Number of items to grab at once.
-        const int Take = 500;
+        const int take = 500;
 
         var provider = new NuGetPackageProvider(NugetRepository.FromSourceUrl(indexSourceEntry.NuGetUrl!), null, false);
 
         var packagesList = PackageList.Create();
-        await SearchForAllResults(Take, provider, packagesList);
+        await SearchForAllResults(take, provider, packagesList);
 
         var relativePath = Routes.Build.GetNuGetPackageListPath(indexSourceEntry.NuGetUrl!);
         var path = Path.Combine(outputFolder, relativePath);
@@ -121,7 +139,8 @@ public class IndexBuilder
         index.Sources[Routes.Source.GetNuGetIndexKey(indexSourceEntry.NuGetUrl!)] = relativePath;
     }
 
-    private async Task BuildGameBananaSourceAsync(Structures.Index index, IndexSourceEntry indexSourceEntry, string outputFolder)
+    private async Task BuildGameBananaSourceAsync(Structures.Index index, IndexSourceEntry indexSourceEntry,
+        string outputFolder)
     {
         // Max for GameBanana
         const int take = 50;

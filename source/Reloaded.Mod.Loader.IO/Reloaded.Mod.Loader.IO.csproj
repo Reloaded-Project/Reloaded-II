@@ -18,16 +18,18 @@
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageIcon>NuGet-Icon.png</PackageIcon>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+	  <DebugType>portable</DebugType>
   </PropertyGroup>
 	
   <ItemGroup>
+	<PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Equals.Fody" Version="4.0.2">
 	  <PrivateAssets>all</PrivateAssets>
 	</PackageReference>
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Reloaded.Memory" Version="7.0.0" />
+    <PackageReference Include="Reloaded.Memory" Version="9.4.0" />
     <PackageReference Include="System.Text.Json" Version="7.0.0-rc.2.22472.3" Condition="'$(TargetFramework)' == 'net5.0'" />
   </ItemGroup>
 

@@ -21,7 +21,7 @@ public class ApplicationLauncher
         {
             _arguments = arguments ?? "",
             _location = location,
-            _workingDirectory = workingDirectory ?? Path.GetDirectoryName(location)!
+            _workingDirectory = string.IsNullOrEmpty(workingDirectory) ? Path.GetDirectoryName(location)! : workingDirectory
         };
 
         if (!File.Exists(launcher._location))
@@ -41,7 +41,7 @@ public class ApplicationLauncher
     /// <summary>
     /// Starts the application, injecting Reloaded into it.
     /// </summary>
-    public void Start()
+    public void Start(bool inject = true)
     {
         // Start up the process
         Native.STARTUPINFO startupInfo                  = new Native.STARTUPINFO();
@@ -64,16 +64,19 @@ public class ApplicationLauncher
 
         // DLL Injection
         var process         = Process.GetProcessById((int) processInformation.dwProcessId);
-        var injector        = new ApplicationInjector(process);
+        using var injector  = new ApplicationInjector(process);
 
-        try
+        if (inject)
         {
-            injector.Inject();
-        }
-        catch (Exception)
-        {
-            Native.ResumeThread(processInformation.hThread);
-            throw;
+            try
+            {
+                injector.Inject();
+            }
+            catch (Exception)
+            {
+                Native.ResumeThread(processInformation.hThread);
+                throw;
+            }
         }
 
         Native.ResumeThread(processInformation.hThread);

@@ -34,6 +34,11 @@ public class ModConfigService : ConfigServiceBase<ModConfig>
     /// </summary>
     public DependencyResolutionResult GetMissingDependencies(IEnumerable<ModConfig> modsToResolve)
     {
+        // Force a refresh of all mods.
+        // On some FileSystems, you can't get reliable notifications on FS changes.
+        // This includes OneDrive, which is now enabled by default on Windows 11 installs (unfortunately).
+        ForceRefresh();
+        
         // Get list of all mods.
         var allMods = Items.ToArray();
         var allModIds = new HashSet<string>(allMods.Length);
@@ -60,6 +65,12 @@ public class ModConfigService : ConfigServiceBase<ModConfig>
 
         return resolutionResult;
     }
+    
+    public override void ForceRefresh()
+    {
+        base.ForceRefresh();
+        SetItemsById();
+    }
 
     private void SetItemsById()
     {
@@ -70,6 +81,14 @@ public class ModConfigService : ConfigServiceBase<ModConfig>
     private void OnRemoveItemHandler(PathTuple<ModConfig> obj) => ItemsById.Remove(obj.Config.ModId);
 
     private void OnAddItemHandler(PathTuple<ModConfig> obj) => ItemsById[obj.Config.ModId] = obj;
+
+    protected override void AddItem(PathTuple<ModConfig> obj)
+    {
+        // Update the subdirectory paths before adding it to the config service collection.
+        // Required to get the display name to show up correctly after editing a mod when it's bound to the Items collection.
+        obj.Config.RefreshSubdirectoryPaths(ConfigDirectory, obj.Path);
+        base.AddItem(obj);
+    }
 
     private List<PathTuple<ModConfig>> GetAllConfigs() => ModConfig.GetAllMods(base.ConfigDirectory);
 }

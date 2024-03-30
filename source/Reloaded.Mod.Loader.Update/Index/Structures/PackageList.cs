@@ -22,4 +22,15 @@ public struct PackageList
             Packages = new List<Package>()
         };
     }
+
+    /// <summary>
+    /// Removes the info that is not needed for dependency resolution.
+    /// </summary>
+    public void RemoveNonDependencyInfo()
+    {
+        foreach (var package in Packages)
+        {
+            package.RemoveNonDependencyInfo();
+        }
+    }
 }

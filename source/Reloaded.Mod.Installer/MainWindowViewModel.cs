@@ -1,3 +1,5 @@
+using System.IO.Compression;
+using System.Net.Http;
 using static Reloaded.Mod.Installer.DependencyInstaller.DependencyInstaller;
 using MessageBox = System.Windows.MessageBox;
 using Path = System.IO.Path;
@@ -25,13 +27,12 @@ public class MainWindowViewModel : ObservableObject
     /// <summary>
     /// A cancellation token allowing you to cancel the download operation.
     /// </summary>
-    public CancellationTokenSource CancellationToken { get; set; } = new CancellationTokenSource();
+    public CancellationTokenSource CancellationToken { get; } = new();
 
-    public async Task InstallReloadedAsync(string? installFolder = null, bool createShortcut = true, bool startReloaded = true)
+    public async Task InstallReloadedAsync(Settings settings)
     {
         // Step
-        installFolder ??= Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II");
-        Directory.CreateDirectory(installFolder);
+        Directory.CreateDirectory(settings.InstallLocation);
 
         using var tempDownloadDir = new TemporaryFolderAllocation();
         var progressSlicer = new ProgressSlicer(new Progress<double>(d =>
@@ -51,21 +52,21 @@ public class MainWindowViewModel : ObservableObject
 
             // 0.20
             CurrentStepNo = 1;
-            await ExtractReloadedAsync(installFolder, downloadLocation, progressSlicer.Slice(0.05));
+            ExtractReloaded(settings.InstallLocation, downloadLocation, progressSlicer.Slice(0.05));
             if (CancellationToken.IsCancellationRequested)
                 throw new TaskCanceledException();
 
             // 1.00
             CurrentStepNo = 2;
-            await CheckAndInstallMissingRuntimesAsync(installFolder, tempDownloadDir.FolderPath,
+            await CheckAndInstallMissingRuntimesAsync(settings.InstallLocation, tempDownloadDir.FolderPath,
                 progressSlicer.Slice(0.8),
                 s => { CurrentStepDescription = s; }, CancellationToken.Token);
 
             var executableName = IntPtr.Size == 8 ? "Reloaded-II.exe" : "Reloaded-II32.exe";
-            var executablePath = Path.Combine(installFolder, executableName);
+            var executablePath = Path.Combine(settings.InstallLocation, executableName);
             var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II.lnk");
 
-            if (createShortcut)
+            if (settings.CreateShortcut)
             {
                 CurrentStepDescription = "Creating Shortcut";
                 MakeShortcut(shortcutPath, executablePath);
@@ -73,16 +74,16 @@ public class MainWindowViewModel : ObservableObject
 
             CurrentStepDescription = "All Set";
             
-            if (startReloaded)
+            if (settings.StartReloaded)
                 Process.Start(executablePath);
         }
         catch (TaskCanceledException)
         {
-            IOEx.TryDeleteDirectory(installFolder);
+            IOEx.TryDeleteDirectory(settings.InstallLocation);
         }
         catch (Exception e)
         {
-            IOEx.TryDeleteDirectory(installFolder);
+            IOEx.TryDeleteDirectory(settings.InstallLocation);
             MessageBox.Show("There was an error in installing Reloaded.\n" +
                             $"Feel free to open an issue on github.com/Reloaded-Project/Reloaded-II if you require support.\n" +
                             $"Message: {e.Message}\n" +
@@ -102,27 +103,37 @@ public class MainWindowViewModel : ObservableObject
         file.Save(shortcutPath, false);
     }
 
-    private async Task ExtractReloadedAsync(string extractFolderPath, string downloadedPackagePath, IProgress<double> slice)
+    private static async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)
     {
-        CurrentStepDescription = "Extracting Reloaded II";
-        var extractor = new ZipPackageExtractor();
-        await extractor.ExtractPackageAsync(downloadedPackagePath, extractFolderPath, slice, CancellationToken.Token);
+        using var client = new HttpClient();
+        using var response = await client.GetAsync("https://github.com/Reloaded-Project/Reloaded-II/releases/latest/download/Release.zip", HttpCompletionOption.ResponseHeadersRead);
+        response.EnsureSuccessStatusCode();
 
-        if (Native.IsDirectoryEmpty(extractFolderPath))
-            throw new Exception($"Reloaded failed to download (downloaded archive was not properly extracted).");
-
-        IOEx.TryDeleteFile(downloadedPackagePath);
-    }
-
-    private async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)
-    {
-        CurrentStepDescription = "Downloading Reloaded II";
-        var resolver = new GithubPackageResolver("Reloaded-Project", "Reloaded-II", "Release.zip");
-        var versions = await resolver.GetPackageVersionsAsync();
-        var latestVersion = versions.First();
-        await resolver.DownloadPackageAsync(latestVersion, downloadLocation, downloadProgress, CancellationToken.Token);
+        var totalBytes = response.Content.Headers.ContentLength ?? 0L;
+        var totalReadBytes = 0L;
+        int readBytes;
+        var buffer = new byte[128 * 1024];
+        
+        using var contentStream = await response.Content.ReadAsStreamAsync();
+        using var fileStream = new FileStream(downloadLocation, FileMode.Create, FileAccess.Write, FileShare.None, buffer.Length, true);
+        while ((readBytes = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+        {
+            await fileStream.WriteAsync(buffer, 0, readBytes);
+            totalReadBytes += readBytes;
+            downloadProgress?.Report(totalReadBytes * 1d / totalBytes);
+        }
 
         if (!File.Exists(downloadLocation))
-            throw new Exception($"Reloaded failed to download (no file was written to disk).");
+            throw new Exception("Reloaded failed to download (no file was written to disk).");
+    }
+
+    private static void ExtractReloaded(string extractFolderPath, string downloadedPackagePath, IProgress<double> slice)
+    {
+        ZipFile.ExtractToDirectory(downloadedPackagePath, extractFolderPath);
+        if (Directory.GetFiles(extractFolderPath).Length == 0)
+            throw new Exception($"Reloaded failed to download (downloaded archive was not properly extracted).");
+
+        File.Delete(downloadedPackagePath);
+        slice.Report(1);
     }
 }

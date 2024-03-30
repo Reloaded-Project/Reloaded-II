@@ -36,6 +36,24 @@ public class IndexApi
         index.BaseUrl = IndexUrl;
         return index;
     }
+    
+    /// <summary>
+    /// Returns all packages from the index.
+    /// </summary>
+    public async Task<PackageList> GetAllPackagesAsync()
+    {
+        var uri = new Uri(IndexUrl, Routes.AllPackages);
+        return await Web.DownloadAndDeserialize<PackageList>(uri);
+    }
+    
+    /// <summary>
+    /// Returns all packages from the index.
+    /// </summary>
+    public async Task<PackageList> GetAllDependenciesAsync()
+    {
+        var uri = new Uri(IndexUrl, Routes.AllDependencies);
+        return await Web.DownloadAndDeserialize<PackageList>(uri);
+    }
 }
 
 /// <summary>

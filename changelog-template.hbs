@@ -1,67 +1,103 @@
-# Changelog
+## Changelog (1.27.0)
 
-All notable changes to this project will be documented in this file.
+[Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/347).  
+[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.26.2).  
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+This is a longer 'Progress Report' kind of post. Consider reading in a browser.
 
-## Release (1.24) Highlights
+## Dependency Resolution Update
 
-This is a very small feature update mostly consisting of community PRs.
+This update is focused on more reliable resolution of missing dependencies, notably, reducing the amount of time that the following message is seen:
 
-### Custom Controls for Mod Configurations
+![311567942-ab36118e-8a0b-40f3-a0d5-db3490a247f3](https://github.com/Reloaded-Project/Reloaded-II/assets/6697380/c75aa428-d579-46f1-b18f-c7fc3505b364)
 
-@jroweboy added the ability additional controls developers can use in their mods ![image](https://user-images.githubusercontent.com/952515/227748620-6b25b471-12c9-461b-9c8b-d387a716d54f.png); 
+**A fix for end users:**
+- Launching Reloaded without Internet after a mod download will no longer render missing dependencies undownloadable.
+    - We now ensure we don't remove unused dependency metadata if we're missing dependencies.
+- Fixed a very rare edge where it was technically possible the launcher incorrectly reports a missing dependency.
+    - This would happen if a mod had multiple download locations (e.g. GameBanana+GitHub), but was removed from 1 location.
 
-The 3 new custom controls are:
-```
-Slider: Horizontal Slider with an optional textbox to display the value
-FilePicker: Textbox with a button to open a `OpenFileDialog`.
-FolderPicker: Textbox with a button to open a custom `FolderSelectDialog`.
-```
+**A fix for mod authors:**
+- A launcher restart is no longer required to update mod dependency info.
+    - This info is what's used to download missing dependencies.
+    - *You can now safely add/edit a mod in launcher, set dependency, add some files and publish*.
+    - Previously a launcher restart was required to ensure dependency info was embedded in your mod.
+    - We now update the dependency data before publish, ensuring mod authors don't pack mod with missing dependencies.
+    
+**An Automated Error Handler for Edge Cases:**
+- We now use the [Search Index](https://github.com/Reloaded-Project/Reloaded-II.Index) as a fallback, if all else fails.
+    - The search index is what normally makes your mod searches in App super fast.
+    - But it also knows the unique `ModId` of each uploaded mod.
+    - So we can use this to find missing mods.
+    - This currently works for 11 games that use Reloaded-II on GameBanana (I don't index any other sites currently).
+    - Enabling this has some security implications. This is only used as a last resort fallback, when all else fails.
 
-Example usage:
+This should hopefully help in getting cases where users experience missing dependencies closer to 0.
+***Especially*** in situations where a dependency is hosted only in 1 location, e.g. `Only <This Mod Site>`
 
-```csharp
-[DisplayName("Int Slider")]
-[Description("This is a int that uses a slider control similar to a volume control slider.")]
-[DefaultValue(100)]
-[SliderControlParams(/* Settings here */)]
-public int IntSlider { get; set; } = 100;
+## Updated Docs
 
-[DisplayName("Double Slider")]
-[Description("This is a double that uses a slider control without any frills.")]
-[DefaultValue(0.5)]
-[SliderControlParams(minimum: 0.0, maximum: 1.0)]
-public double DoubleSlider { get; set; } = 0.5;
+Documentation and in-launcher tutorial has been updated to feature installing via drag-and-drop as a method of installation.
 
-[DisplayName("File Picker")]
-[Description("This is a sample file picker.")]
-[DefaultValue("")]
-[FilePickerParams(title:"Choose a File to load from")]
-public string File { get; set; } = "";
+![image](https://github.com/Reloaded-Project/Reloaded-II/assets/6697380/d2834ba8-9a6b-43d0-aff8-f067007358c8)
 
-[DisplayName("Folder Picker")]
-[Description("Opens a file picker but locked to only allow folder selections.")]
-[DefaultValue("")]
-[FolderPickerParams(/* Settings here */)]
-public string Folder { get; set; } = "";
-```
+(Hint: It's animated in the launcher)
 
-### Added Localization for Traditional Chinese (TW)
+## Infrastructure Update
 
-@EditorKos contributed a localization for `zh-TW` locale.
+The open [1st party package server](http://packages.sewer56.moe:5000/about) is an unsung hero ensuring your modding experience is as smooth as possible. This is the place where ***critical*** code mods are fetched from automatically when the primary source (like GitHub) hits its limits - a common scenario given GitHub's restrictions of 60 requests per hour per IP. 
 
-### Fixes
+Given Reloaded's modular nature, you'll typically hit that limit restarting the launcher around 4 times. Now imagine you have a family, or are in a hotel room, or just troubleshooting, this limit may already be exhausted. Now you download a new mod, which requires some framework/critical component and suddenly you're told...
 
-- Mod Packs can now use custom `ReleaseMetadataFileName(s)`. (thanks @jroweboy)
-- Mods from GameBanana which specify custom additional contributors/authors no longer breaks mod search.
-  - GameBanana (probably unintentionally) made a change to how one of the fields is returned.
-  - And that broke things... so I added a workaround.
-  - I also need to update the cache server; please give it a moment after the update goes live.
-- Log files no longer incorrectly produce newlines for `Write()` (thanks @gurrenm3)
+![311567942-ab36118e-8a0b-40f3-a0d5-db3490a247f3](https://github.com/Reloaded-Project/Reloaded-II/assets/6697380/c75aa428-d579-46f1-b18f-c7fc3505b364)
 
-## Complete Changes
+Not ideal.
+
+With the surge of users, traffic on this server has risen drastically. In the past 20 days we have ***transferred 6TB of data***. Month started with approximately 5MB/s and is now 7.5MB/s. This is especially surprising, as the critical code mods stored here are typically under 0.5MB in size. 
+
+![pulse-browser_Qw41LjD9KC](https://github.com/Reloaded-Project/Reloaded-II/assets/6697380/f118f2fe-4eed-4ce4-9422-9660681bdaa0)
+
+![pulse-browser_7lQjhXQXIB](https://github.com/Reloaded-Project/Reloaded-II/assets/6697380/1102d5fe-e625-4175-a2c0-b1dc1b9c2129)
+
+I only found out a few days ago, as I was looking into why the server was unresponsive. Sometimes queries randomly took ~2-3 seconds to respond, and I was rather flabbergasted.
+
+The Package server runs on a *very minimal-effort* fork of [BaGet](https://github.com/loic-sharma/BaGet/), renamed as [BaGet-Reloaded](https://github.com/Sewer56/BaGet-ReloadedII) to avoid confusion with the original project. Using the Sqlite3 backend.
+
+To the best of my knowledge, the delays in responses were caused by a combination of:
+- A lot of writes to the DB, which blocks reads in Sqlite out of the box.
+  - Notably, BaGet increments the 'download count' every time a package is returned via search.
+- Sustained load on a shared CPU (a.k.a. 'vCPU'). [to a very, very small extent]
+
+I changed the settings on Sqlite3 to use [WAL](https://www.sqlite.org/wal.html) and `synchronous=NORMAL`. This allows us to perform reads during writes, thus fixing up the performance. In addition, I bumped the server specs a bit, just in case the load continues to climb. Currently the server is completely responsive again.
+
+### A Thank You
+
+Services like the `Package Server` are supported by your donations.
+They also help cover occasional game purchases.
+Recent Example: [Fixing Compatibility with Special K in presence of Steam Copy Protection/DRM](https://github.com/Reloaded-Project/Reloaded-II/issues/308#issuecomment-1973715264) for games like Granblue Relink
+
+In the ~4 years I've been accepting donations so far, I've received a total of ***£358.87 (and 4 games)***. This has helped cover most of the costs involved. e.g. Package Server, Server Backups, Discord Bot(s), Search Index, Services for some Online Mods, Domain (Website Name) Costs etc. 
+
+With these donations I can almost break even. I don't have any concrete numbers (hard to calculate), but based on some quick maths, I've probably spent around £450-500 on Reloaded related things so far.
+
+Thank you.
+
+### About the Future
+
+Please remember. For most of its life, Reloaded has been a solo project.
+Not just the Manager, but the Loader and many of the core components used across your popular mods.
+
+In any case, the work on the successor continues, albeit slowly.
+
+Every week, I spend around 24-30 hours on Reloaded things, ***on top of my fulltime job***. Hopefully in 2 years, we'll live in a future where users can start experimenting with porting core components from Reloaded-II to Reloaded3. This is not easy to do, but I will relentlessly keep going, until it is done.
+
+The intent of the recent reliability/bug-fix patches is to allow me to step back from maintaining Reloaded-II for a longer time and let me focus on the successor.
+
+If you are a programmer, I should hopefully have a ['Specification'](https://reloaded-project.github.io/Reloaded-III/) ready not too long from now. The work on this is resuming today, after a long hiatus, so various core parts of Reloaded3 will be open to community contributions. Until then, hang tight.
+
+------------------------------------
+
+## Complete Changes (Autogenerated)
 
 {{#each releases}}
   {{#if href}}
@@ -101,3 +137,101 @@ public string Folder { get; set; } = "";
 {{#unless options.hideCredit}}
   Reloaded changelogs are generated by [`auto-changelog`](https://github.com/CookPete/auto-changelog) 😇.
 {{/unless}}
+
+## Previous Changelog (1.25.10) | Misc Hotfixes
+
+- Fixed bug introduced in last update 32-bit Reloaded Launcher (`Reloaded-II32.exe`) couldn't DLL inject on 64-bit operating systems.  
+- Slightly redesigned settings menu, to better expose language selection.  
+
+Also thanks to @Sencaid for German Translation, I missed that in last changelog >w<
+Expect more minor bugfixes over weekend, this is just all I can do after work hours so far this week.
+
+## Defender Mitigation Announcement | Changelog (1.25.9)
+
+This release (1.25.9) is dedicated to Windows Defender. I'll try to keep it short.
+
+In the past week alone, ***I've seen over 300 reports*** of false positive virus detections 
+affecting users. At peak, around ***4 issue reports an hour***. 
+
+This is because Defender suddenly started flagging a small part of Reloaded related to DLL Injection 
+that I wrote (and haven't changed at all) in almost 4 years.
+
+This was not easy for anyone. I respond to all issues, usually within 10 minutes if awake.
+Likewise, volunteers in game specific modding servers also take their time out of their day to help 
+troubleshoot users' issues. It was a heavy burden on everyone.
+
+### This was Rough
+
+As this coincided with 2 game releases, where people starting Reloaded, the timing could not have been
+any more unfortunate. Many new users had to experience an absolute trainwreck of a first impression;
+whether it be due to defender, some longstanding rare bugs, or silent antivirus treatment.
+
+Worseover, I could not even fix these bugs. Because the virus detections were made by the 'machine learning' 
+side of Defender, releasing ***ANY UPDATE AT ALL*** means that 1000s of users would get new false positives.
+[Dolphin Emulator was in the same predicament a few years ago](https://dolphin-emu.org/blog/2019/11/07/dolphin-progress-report-october-2019/#windows-defender-yelling-at-a-cloud-ai).
+
+This was a result of the releases not being 'deterministic', the files in each Reloaded build/version 
+would change, even if the code didn't, and Defender would flag it. Reporting a false positive therefore
+would be ineffective; defender would see it as a 'different file'. ***I COULD NOT RELEASE ANY UPDATES AT ALL***.
+
+Needless to say, the situation was so dire, I booked a day off work and spent around 50 hours this week
+so far towards fixing the issue (10+ hours per day). I've spent almost every hour of every day out 
+of my bed getting this resolved.
+
+-----
+
+# So what's been done so far to mitigate this issue?
+
+## Replaced DLL Injection logic
+
+R2 now uses my fork of [dll-syringe](https://github.com/Sewer56/dll-syringe), a Rust library based 
+on my old [Reloaded.Injector](https://github.com/Reloaded-Project/Reloaded.Injector).
+
+Extra care has been taken to ensure this hopefully works as expected. 
+
+For the people running on Linux, I've even *found, reported and worked around* two new WINE bugs 
+[#56357](https://bugs.winehq.org/show_bug.cgi?id=56357), [#56362](https://bugs.winehq.org/show_bug.cgi?id=56362).
+
+Hopefully, by replacing the entire DLL Injection logic, we can avoid any false positives for the time being.
+I pray the next build does not give people false positives.
+
+-----
+
+***Note:*** The work there is not 'Reloaded3 Quality' yet, notably, performance wise. 
+The library is 300kB, when it could be ~40kB (unacceptable!!), and error handling could be better. 
+But it's good enough for a hotfix release. In the coming weeks, hopefully, I'll polish the rest up.
+
+## Deterministic Builds
+
+I've made as many components of Reloaded-II as deterministic as possible. If the code doesn't change, 
+the actual files in the releases won't change. 
+
+This hopefully means that if a file gets a false positive virus detection, releasing an update won't 
+cause it to be flagged again.
+
+## Download Loops
+
+> [!NOTE] 
+> Historically this has been a very rare occurrence, but has been sighted more commonly recently.
+
+Some people get stuck downloading dependencies. This usually manifests itself as a download window 
+appearing and disappearing endlessly on loop.
+
+For the time being, I've added 'bare minimum' workaround. If Reloaded gets stuck, in a loop, it'll
+inform you what it's failing to download, and ask you to install manually.
+
+It's a very awful hack, but it's the best I can do for now. I could never reproduce this issue myself,
+so fixing it is a shot in the dark. I'll eventually need to borrow someone inflicted by this bug.
+
+# That's All
+
+In the future, say, with Reloaded3, I may invest in code signing certificate (i.e. legal form of 
+extortion to avoid false positives), but for now, I'm doing what I can.
+
+I'm sorry for the inconvenience caused, and I want to thank all the volunteers who helped out with troubleshooting.
+
+I'm aware some other issues are still present, I hope to get to them soon. However, I'm just a single 
+person, and there's only so much I can do...
+
+> [!NOTE]
+> Most big modding frameworks/loaders/managers are maintained by teams of people. Unfortunately, I'm not that fortunate, it's all done solo here.

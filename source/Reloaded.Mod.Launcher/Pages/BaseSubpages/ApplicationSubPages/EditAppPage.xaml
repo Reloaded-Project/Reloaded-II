@@ -114,6 +114,14 @@
                         HorizontalAlignment="Stretch" 
                         VerticalAlignment="Center"/>
 
+                <!-- Preserve Disabled Mod Order -->
+                <CheckBox DockPanel.Dock="Left" HorizontalAlignment="Center" 
+                              Margin="{DynamicResource CommonItemCombinedMargin}"
+                              IsChecked="{Binding Application.Config.PreserveDisabledModOrder}"
+                              Content="{DynamicResource PreserveDisabledModOrder}"
+                              ToolTip="{DynamicResource PreserveDisabledModOrderTooltip}" ToolTipService.InitialShowDelay="0"
+                              Style="{DynamicResource DefaultCheckBox}" />
+                
                 <!-- Package Resolver Options. -->
                 <controls:PopupLabel ButtonText="{DynamicResource AddAppModSources}"
                                      FontSize="{DynamicResource FontSizeSmall}"
@@ -152,6 +160,14 @@
                     <controls:PopupLabel.HiddenContent>
                         <StackPanel>
 
+                            <!-- Don't Inject -->
+                            <CheckBox DockPanel.Dock="Left" HorizontalAlignment="Center" 
+                                      Margin="{DynamicResource CommonItemVerticalMargin}"
+                                      IsChecked="{Binding Application.Config.DontInject}"
+                                      Content="{DynamicResource EditModDontInject}"
+                                      ToolTip="{DynamicResource EditModDontInjectTooltip}" ToolTipService.InitialShowDelay="0"
+                                      Style="{DynamicResource DefaultCheckBox}" />
+                            
                             <Button Margin="{DynamicResource CommonItemVerticalMargin}"
                                     Content="{DynamicResource AsiLoaderInstall}"
                                     Command="{Binding DeployAsiLoaderCommand}"/>

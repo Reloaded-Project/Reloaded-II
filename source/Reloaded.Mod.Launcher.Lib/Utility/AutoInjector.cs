@@ -27,7 +27,7 @@ public class AutoInjector
             var config = _configService.Items.FirstOrDefault(x => string.Equals(ApplicationConfig.GetAbsoluteAppLocation(x), fullPath, StringComparison.OrdinalIgnoreCase));
             if (config != null && config.Config.AutoInject)
             {
-                var appInjector = new ApplicationInjector(newProcess);
+                using var appInjector = new ApplicationInjector(newProcess);
                 appInjector.Inject();
             }
         }

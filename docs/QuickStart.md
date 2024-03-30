@@ -10,12 +10,13 @@ This can be found on the bottom left corner of the launcher, with the `+` button
 
 Make sure to add the App and not the app's launcher.
 
-## Extract Mods
-To install mods, simply extract a downloaded `zip` or `7z` file to the `Mods` folder.  
+## Install a Mod
 
-![Install Mod](./Images/InstallMod.gif)  
+Mods can be installed by dragging them over the Reloaded window.
 
-If there is no single folder inside the downloaded mod, create one yourself.  
+![Add An Application 2](./Images/InstallModNew.gif)
+
+If this doesn't work for you, you can also [install them manually](./FAQ.md#how-can-i-install-mods-manually).
 
 ## Configure Mods
 

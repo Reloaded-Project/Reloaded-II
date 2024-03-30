@@ -25,6 +25,9 @@ public static class IOEx
 
             while (File.Exists(destFilePath) && !CheckFileAccess(destFilePath, FileMode.Open, FileAccess.Write))
                 Thread.Sleep(100);
+            
+            while (File.Exists(sourceFilePath) && !CheckFileAccess(sourceFilePath, FileMode.Open, FileAccess.Write))
+                Thread.Sleep(100);
 
             if (File.Exists(destFilePath))
                 File.Delete(destFilePath);
@@ -179,14 +182,15 @@ public static class IOEx
     /// <param name="fileName">The name of the file to load. The filename can contain wildcards * but not regex.</param>
     /// <param name="maxDepth">Maximum depth (inclusive) to search in with 1 indicating only current directory.</param>
     /// <param name="minDepth">Minimum depth (inclusive) to search in with 1 indicating current directory.</param>
-    public static List<string> GetFilesEx(string directory, string fileName, int maxDepth = 1, int minDepth = 1)
+    /// <param name="recurseOnFound">Continues to search in subdirectories even if <see cref="fileName"/> is found.</param>
+    public static List<string> GetFilesEx(string directory, string fileName, int maxDepth = 1, int minDepth = 1, bool recurseOnFound = true)
     {
         var files = new List<string>();
 
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            GetFilesExDirectories_Generic(directory, fileName, maxDepth, minDepth, 0, files);
+            GetFilesExDirectories_Generic(directory, fileName, maxDepth, minDepth, 0, files, recurseOnFound);
         else
-            GetFilesExDirectories_Windows(directory, fileName, maxDepth, minDepth, 0, files);
+            GetFilesExDirectories_Windows(directory, fileName, maxDepth, minDepth, 0, files, recurseOnFound);
 
         return files;
     }
@@ -251,19 +255,23 @@ public static class IOEx
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void GetFilesExDirectories_Windows(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files)
+    private static void GetFilesExDirectories_Windows(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files, bool recurseOnFound = false)
     {
 #pragma warning disable CA1416 // Validate platform compatibility
         var listFileInfo = new List<NtQueryDirectoryFileSearcher.FileInformation>();
         var listDirInfo = new List<NtQueryDirectoryFileSearcher.DirectoryInformation>();
-        GetFilesExDirectories_Windows_Internal(directory, fileName, maxDepth, minDepth, currentDepth, files, listFileInfo, listDirInfo);
+        GetFilesExDirectories_Windows_Internal(directory, fileName, maxDepth, minDepth, currentDepth, files, listFileInfo, listDirInfo, recurseOnFound);
 #pragma warning restore CA1416 // Validate platform compatibility
     }
 
     [SupportedOSPlatform("windows5.1.2600")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void GetFilesExDirectories_Windows_Internal(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files, List<NtQueryDirectoryFileSearcher.FileInformation> fileInfoBuffer, List<NtQueryDirectoryFileSearcher.DirectoryInformation> dirInfoBuffer)
+    private static void GetFilesExDirectories_Windows_Internal(string directory, string fileName, int maxDepth,
+        int minDepth, int currentDepth, List<string> files,
+        List<NtQueryDirectoryFileSearcher.FileInformation> fileInfoBuffer,
+        List<NtQueryDirectoryFileSearcher.DirectoryInformation> dirInfoBuffer, bool recurseOnFound)
     {
+        var stopSearch = false;
         fileInfoBuffer.Clear();
         dirInfoBuffer.Clear();
         
@@ -274,24 +282,32 @@ public static class IOEx
             foreach (var fileInfo in fileInfoBuffer)
             {
                 if (fileInfo.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    stopSearch = !recurseOnFound;
                     files.Add(Path.Combine(fileInfo.DirectoryPath, fileInfo.FileName));
+                }
             }
         }
 
-        if (currentDepth + 1 >= maxDepth)
+        if (currentDepth + 1 >= maxDepth || stopSearch)
             return;
 
         foreach (var subdir in dirInfoBuffer.ToArray())
-            GetFilesExDirectories_Windows_Internal(subdir.FullPath, fileName, maxDepth, minDepth, currentDepth + 1, files, fileInfoBuffer, dirInfoBuffer);
+            GetFilesExDirectories_Windows_Internal(subdir.FullPath, fileName, maxDepth, minDepth, currentDepth + 1, files, fileInfoBuffer, dirInfoBuffer, recurseOnFound);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-    private static void GetFilesExDirectories_Generic(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files)
+    private static void GetFilesExDirectories_Generic(string directory, string fileName, int maxDepth, int minDepth, int currentDepth, List<string> files, bool recurseOnFound = false)
     {
+        var stopSearch = false;
         if (currentDepth >= minDepth - 1 && currentDepth < maxDepth)
-            files.AddRange(GetFilesInDirectory(directory, fileName));
+        {
+            var foundFiles = GetFilesInDirectory(directory, fileName);
+            stopSearch = foundFiles.Length > 0 && !recurseOnFound;
+            files.AddRange(foundFiles);
+        }
 
-        if (currentDepth + 1 >= maxDepth) 
+        if (currentDepth + 1 >= maxDepth || stopSearch) 
             return;
 
         foreach (var subdir in Directory.GetDirectories(directory))

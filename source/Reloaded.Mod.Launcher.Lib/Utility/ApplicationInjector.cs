@@ -1,25 +1,36 @@
+using dll_syringe.Net.Sys;
+
 namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
 /// Class that can be used to inject Reloaded into an active process.
 /// </summary>
-public class ApplicationInjector
+public unsafe class ApplicationInjector : IDisposable
 {
     private readonly int _modLoaderSetupTimeout;
     private readonly int _modLoaderSetupSleepTime;
 
     private Process _process;
-    private BasicDllInjector _injector;
+    private CSyringe* _syringe;
 
     /// <summary/>
     public ApplicationInjector(Process process)
     {
         _process  = process;
-        _injector = new BasicDllInjector(process);
+        _syringe = NativeMethods.syringe_for_suspended_process((uint)_process.Id);
 
         var loaderConfig = IoC.Get<LoaderConfig>();
         _modLoaderSetupTimeout   = loaderConfig.LoaderSetupTimeout;
         _modLoaderSetupSleepTime = loaderConfig.LoaderSetupSleeptime;
+    }
+    
+    ~ApplicationInjector() => Dispose();
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        NativeMethods.syringe_free(_syringe);
+        GC.SuppressFinalize(this);
     }
 
     /// <summary>
@@ -28,8 +39,20 @@ public class ApplicationInjector
     /// <exception cref="ArgumentException">DLL Injection failed, likely due to bad DLL or application.</exception>
     public void Inject()
     {
-        long handle = _injector.Inject(GetBootstrapperPath(_process));
-        if (handle == 0)
+        // TODO: This is slow and wasteful, change this when we change encoding in injector.
+        var bootstrapperPath = GetBootstrapperPath(_process);
+        var bootstrapperPathBytes = Encoding.UTF8.GetBytes(bootstrapperPath);
+        var bootstrapperPathWithNull = new byte[bootstrapperPathBytes.Length + 1];
+        Array.Copy(bootstrapperPathBytes, bootstrapperPathWithNull, bootstrapperPathBytes.Length);
+        bootstrapperPathWithNull[bootstrapperPathBytes.Length] = 0;
+
+        bool success;
+        fixed(byte* bootstrapperPathPtr = bootstrapperPathWithNull)
+        {
+            success = NativeMethods.syringe_inject(_syringe, bootstrapperPathPtr);
+        }
+        
+        if (!success)
             throw new ArgumentException(Resources.ErrorDllInjectionFailed.Get());
 
         try

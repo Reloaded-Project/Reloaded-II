@@ -19,13 +19,23 @@
 
     <Grid>
         <StackPanel>
-            <TextBlock Text="{DynamicResource FirstLaunchExAddModExtractDescription1}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource RIIDefaultTextBlock}"/>
+            <TextBlock Text="{DynamicResource FirstLaunchExDragDropInstall1}" 
+                       Margin="{DynamicResource CommonItemVerticalMargin}" 
+                       TextWrapping="Wrap" 
+                       Style="{DynamicResource RIIDefaultTextBlock}"/>
+
             <MediaElement Source="{Binding Path=Data, Source={StaticResource VideoExtractProxy}, Converter={x:Static converters:StringToUriConverter.Instance}}" 
                           MaxWidth="600"
                           LoadedBehavior="Play"
                           UnloadedBehavior="Play"
                           MediaEnded="OnMediaEnded"/>
-            <TextBlock Text="{DynamicResource FirstLaunchExAddModExtractDescription2}" Margin="{DynamicResource CommonItemVerticalMargin}" TextWrapping="Wrap" Style="{DynamicResource RIIDefaultTextBlock}"/>
+
+            <TextBlock TextWrapping="Wrap" Style="{DynamicResource RIIDefaultTextBlock}" Margin="{DynamicResource CommonItemVerticalMargin}">
+                    <Run Text="{DynamicResource FirstLaunchExDragDropInstall_2_1}"/>
+                    <Hyperlink NavigateUri="https://reloaded-project.github.io/Reloaded-II/FAQ/#how-can-i-install-mods-manually" RequestNavigate="OpenHyperlink">
+                        <Run Text="{DynamicResource FirstLaunchExDragDropInstall_2_2}"/>
+                    </Hyperlink>
+            </TextBlock>
 
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

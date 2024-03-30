@@ -88,4 +88,23 @@ public class Package : IDownloadablePackage
         this.Adapt(webPackage);
         return await webPackage.DownloadAsync(packageFolder, progress, token);
     }
+
+    /// <summary>
+    /// Removes all information that is not needed in dependency resolution.
+    /// </summary>
+    public void RemoveNonDependencyInfo()
+    {
+        Authors = null;
+        Submitter = null;
+        Description = null;
+        MarkdownReadme = null;
+        Images = null;
+        ProjectUri = null;
+        LikeCount = null;
+        ViewCount = null;
+        DownloadCount = null;
+        Published = null;
+        Changelog = null;
+        Tags = null;
+    }
 }

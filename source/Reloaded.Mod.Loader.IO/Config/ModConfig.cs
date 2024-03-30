@@ -1,3 +1,5 @@
+using Reloaded.Memory.Extensions;
+
 namespace Reloaded.Mod.Loader.IO.Config;
 
 [Equals(DoNotAddEqualityOperators = true, DoNotAddGetHashCode = true)]
@@ -33,6 +35,12 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public bool?  HasExports        { get; set; } = null;
     public bool   IsLibrary         { get; set; } = false;
     public string ReleaseMetadataFileName { get; set; } = "Sewer56.Update.ReleaseMetadata.json";
+
+    [JsonIgnore]
+    public string ModSubDirs { get; set; } = string.Empty;
+
+    [JsonIgnore]
+    public string ModDisplayName => ModSubDirs.Length <= 0 ? ModName : $"{ModSubDirs}/{ModName}";
 
     /// <summary>
     /// Data stored by plugins. Maps a unique string key to arbitrary data.
@@ -113,6 +121,31 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public bool HasDllPath()
     {
         return HasDllPath(this);
+    }
+
+    /// <summary>
+    /// Refresh the sub directories of the mod, and by extension also the Mod Display Name.
+    /// </summary>
+    public void RefreshSubdirectoryPaths(string configDirectory, string modPath)
+    {
+        var relativePath = Path.GetRelativePath(configDirectory, modPath);
+        unsafe
+        {
+            fixed (char* ptr = relativePath)
+            {
+                var chars = new Span<char>(ptr, relativePath.Length);
+                chars.Replace('\\', '/', chars);
+                
+                // Find the index for the start of the second-to-last directory to be removed
+                var lastSlashIndex = chars.LastIndexOf('/');
+                if (lastSlashIndex > 0)
+                    lastSlashIndex  = chars.SliceFast(0, lastSlashIndex - 1).LastIndexOf('/');
+
+                ModSubDirs = lastSlashIndex > 0 
+                    ? chars.SliceFast(0, lastSlashIndex).ToString() 
+                    : ""; // no folder prefix
+            }
+        }
     }
 
     /*
@@ -249,7 +282,25 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
         if (modDirectory == null)
             modDirectory = IConfig<LoaderConfig>.FromPathOrDefault(Paths.LoaderConfigPath).GetModConfigDirectory();
 
-        return ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, 2, 2);
+        var modConfigs =
+            ConfigReader<ModConfig>.ReadConfigurations(modDirectory, ConfigFileName, token, int.MaxValue, 2, false);
+        var existingConfigs = new HashSet<string>();
+
+        // Remove duplicate mods. 
+        // Hopefully user doesn't have any, but if they do, this will delete them.
+        for (var x = modConfigs.Count - 1; x >= 0; x--)
+        {
+            var alreadyExists = existingConfigs.Add(modConfigs[x].Config.ModId);
+            if (!alreadyExists)
+                modConfigs.RemoveAt(x);
+        }
+        
+        foreach (var cfg in modConfigs)
+        {
+            cfg.Config.RefreshSubdirectoryPaths(modDirectory, cfg.Path);
+        }
+
+        return modConfigs;
     }
 
     /// <summary>
