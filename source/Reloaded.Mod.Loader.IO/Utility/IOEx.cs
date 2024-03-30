@@ -22,17 +22,7 @@ public static class IOEx
             // Get destination file path
             var destFileName = Path.GetFileName(sourceFilePath);
             var destFilePath = Path.Combine(target, destFileName);
-
-            while (File.Exists(destFilePath) && !CheckFileAccess(destFilePath, FileMode.Open, FileAccess.Write))
-                Thread.Sleep(100);
-            
-            while (File.Exists(sourceFilePath) && !CheckFileAccess(sourceFilePath, FileMode.Open, FileAccess.Write))
-                Thread.Sleep(100);
-
-            if (File.Exists(destFilePath))
-                File.Delete(destFilePath);
-
-            File.Move(sourceFilePath, destFilePath);
+            MoveFile(sourceFilePath, destFilePath);
         }
 
         // Get all subdirectories in source directory.
