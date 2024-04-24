@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Xml;
 using Reloaded.Mod.Installer.DependencyInstaller.IO;
 using static Reloaded.Mod.Launcher.Lib.Utility.DesktopAppxActivateOptions;
@@ -136,30 +137,21 @@ public static class TryUnprotectGamePassGame
 
         var tag = document.GetElementsByTagName("Identity")[0]!;
         var packageName = tag!.Attributes!["Name"]!.Value;
+        var publisherName = tag!.Attributes!["Publisher"]!.Value;
         var applicationTag = document.GetElementsByTagName("Application")[0]!;
         
         appId = applicationTag!.Attributes!["Id"]!.Value;
-        packageFamilyName = GetPowershellPackageFamilyName(packageName);
+        packageFamilyName = $"{packageName}_{GetPublisherHash(publisherName)}";
     }
-
-    private static string GetPowershellPackageFamilyName(string packageName)
+    
+    // Credits: https://gist.github.com/marcinotorowski/6a51023600160fcceef9ceea341bbc4a
+    private static string GetPublisherHash(string publisherId)
     {
-        // I wish I could use WinRT APIs but support is removed from runtime and the
-        // official way cuts off support for Win7/8.1 in main app.
-        var processStartInfo = new ProcessStartInfo
-        {
-            FileName = @"powershell",
-            Arguments = $"(Get-AppxPackage {packageName}).PackageFamilyName",
-            RedirectStandardOutput = true,
-            CreateNoWindow = true
-        };
-        using var process = Process.Start(processStartInfo);
-        process?.WaitForExit();
-        var output = process?.StandardOutput.ReadToEnd().TrimEnd();
-        if (output == null)
-            throw new Exception("Failed to get Package Family Name via PowerShell.");
-        
-        return output;
+        using var sha = SHA256.Create();
+        var encoded = sha.ComputeHash(Encoding.Unicode.GetBytes(publisherId));
+        var binaryString = string.Concat(encoded.Take(8).Select(c => Convert.ToString(c, 2).PadLeft(8, '0'))) + '0'; // representing 65-bits = 13 * 5
+        var encodedPublisherId = string.Concat(Enumerable.Range(0, binaryString.Length / 5).Select(i => "0123456789abcdefghjkmnpqrstvwxyz".Substring(Convert.ToInt32(binaryString.Substring(i * 5, 5), 2), 1)));
+        return encodedPublisherId;
     }
 
     private static bool CanRead(string exePath)
