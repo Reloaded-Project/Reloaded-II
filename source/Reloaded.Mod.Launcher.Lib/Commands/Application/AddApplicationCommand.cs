@@ -90,6 +90,22 @@ public class AddApplicationCommand : ICommand
         }
 
         // Try to auto deploy ASI Loader.
+        HandleAddedMsStoreBinary(isMsStore, applicationConfigFile, config);
+        
+        // Write file to disk.
+        Directory.CreateDirectory(applicationDirectory);
+        IConfig<ApplicationConfig>.ToPath(config, applicationConfigFile);
+
+        // Listen to event for when the new application is discovered.
+        _newConfig = config;
+        _configService.Items.CollectionChanged += ApplicationsChanged;
+
+        // Set return value
+        param.ResultCreatedApplication = true;
+    }
+
+    internal static void HandleAddedMsStoreBinary(bool isMsStore, string applicationConfigFile, ApplicationConfig config)
+    {
         if (isMsStore)
         {
             var deployer = new AsiLoaderDeployer(new PathTuple<ApplicationConfig>(applicationConfigFile, config));
@@ -105,18 +121,8 @@ public class AddApplicationCommand : ICommand
                 Actions.DisplayMessagebox.Invoke(Resources.AsiLoaderDialogTitle.Get(), Resources.AsiLoaderGamePassAutoInstallFail.Get());
             }
         }
-        
-        // Write file to disk.
+
         config.IsMsStore = isMsStore;
-        Directory.CreateDirectory(applicationDirectory);
-        IConfig<ApplicationConfig>.ToPath(config, applicationConfigFile);
-
-        // Listen to event for when the new application is discovered.
-        _newConfig = config;
-        _configService.Items.CollectionChanged += ApplicationsChanged;
-
-        // Set return value
-        param.ResultCreatedApplication = true;
     }
 
     private void ApplicationsChanged(object? sender, NotifyCollectionChangedEventArgs e)

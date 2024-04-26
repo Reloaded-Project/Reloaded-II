@@ -123,11 +123,14 @@ public class EditAppViewModel : ObservableObject
         if (string.IsNullOrEmpty(result))
             return;
 
+        var isMsStore = TryUnprotectGamePassGame.TryIt(result);
         result = SymlinkResolver.GetFinalPathName(result);
         if (!Path.GetFileName(Application.Config.AppLocation).Equals(Path.GetFileName(result), StringComparison.OrdinalIgnoreCase))
             Actions.DisplayMessagebox(Resources.AddAppWarningTitle.Get(), Resources.AddAppWarning.Get());
 
         Application.Config.AppLocation = result;
+        AddApplicationCommand.HandleAddedMsStoreBinary(isMsStore, Application.Path, Application.Config);
+        Application.Save();
     }
 
     /// <summary>
@@ -163,7 +166,10 @@ public class EditAppViewModel : ObservableObject
 
     private string SelectEXEFile()
     {
-        var dialog = new VistaOpenFileDialog();
+        // This is a Save dialog because Open dialog checks read privileges,
+        // and that will not work with read protected MS Store/Gamepass executables.
+        var dialog = new VistaSaveFileDialog();
+        dialog.OverwritePrompt = false;
         dialog.Title = Resources.AddAppExecutableTitle.Get();
         dialog.Filter = $"{Resources.AddAppExecutableFilter.Get()} (*.exe)|*.exe";
         dialog.FileName = ApplicationConfig.GetAbsoluteAppLocation(Application);
