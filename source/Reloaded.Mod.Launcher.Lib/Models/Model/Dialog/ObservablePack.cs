@@ -55,6 +55,7 @@ public class ObservablePack : ObservableObject
             obItem.Name = item.Name;
             obItem.Readme = item.Readme;
             obItem.Summary = item.Summary;
+            obItem.ReleaseMetadataFileName = item.ReleaseMetadataFileName;
             foreach (var image in item.ImageFiles)
             {
                 var data = new MemoryStream(packReader.GetImage(image.Path));
