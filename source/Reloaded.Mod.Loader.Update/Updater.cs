@@ -1,3 +1,5 @@
+using Polly;
+
 namespace Reloaded.Mod.Loader.Update;
 
 /// <summary>
@@ -89,17 +91,31 @@ public class Updater
         var progressMixer      = new ProgressSlicer(progressHandler);
         var singleItemProgress = 1.0 / summary.ManagerModResultPairs.Count;
 
-        for (var x = 0; x < summary.ManagerModResultPairs.Count; x++)
+        var retryPolicy = Policy
+            .Handle<Exception>()
+            .WaitAndRetryAsync(
+                retryCount: 5,
+                sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt))
+            );
+
+        var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = 4 };
+        // Note: We don't have a 'ForEachAsync' in .NET 5
+        await Task.Run(() =>
         {
-            var slice   = progressMixer.Slice(singleItemProgress);
-            var pair    = summary.ManagerModResultPairs[x];
-            var manager = pair.Manager;
-            var version  = pair.Result.LastVersion;
-            
-            await manager.PrepareUpdateAsync(version!, slice);
-            await manager.StartUpdateAsync(version!, new OutOfProcessOptions(), new UpdateOptions() { CleanupAfterUpdate = true });
-            manager.Dispose();
-        }
+            Parallel.ForEach(summary.ManagerModResultPairs, parallelOptions, pair =>
+            {
+                var slice = progressMixer.Slice(singleItemProgress);
+                var manager = pair.Manager;
+                var version = pair.Result.LastVersion;
+
+                retryPolicy.ExecuteAsync(async () =>
+                {
+                    await manager.PrepareUpdateAsync(version!, slice);
+                    await manager.StartUpdateAsync(version!, new OutOfProcessOptions(), new UpdateOptions() { CleanupAfterUpdate = true });
+                    manager.Dispose();
+                }).GetAwaiter().GetResult();
+            });
+        });
     }
 
     private List<ResolverModPair> GetResolvers()

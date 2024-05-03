@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <NoWarn>CS0067</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Version>2.2.0</Version>
+    <Version>2.2.1</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Sewer56</Authors>
@@ -33,6 +33,7 @@
     <PackageReference Include="NuGet.Packaging" Version="6.3.0" />
     <PackageReference Include="NuGet.Packaging.Core" Version="6.3.0" />
     <PackageReference Include="NuGet.Protocol" Version="6.3.0" />
+    <PackageReference Include="Polly" Version="8.3.1" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
