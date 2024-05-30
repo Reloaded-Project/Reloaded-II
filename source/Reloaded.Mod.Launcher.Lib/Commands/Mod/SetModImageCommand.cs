@@ -32,7 +32,9 @@ public class SetModImageCommand : ICommand
             string iconPath = Path.Combine(modDirectory, iconFileName);
 
             // Copy image and set config file path.
-            File.Copy(imagePath, iconPath, true);
+            if (!imagePath.Equals(iconPath, StringComparison.OrdinalIgnoreCase))
+                File.Copy(imagePath, iconPath, true);
+
             _modTuple.Config.ModIcon = iconFileName;
             _modTuple.Save();
         }
