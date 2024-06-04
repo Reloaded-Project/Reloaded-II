@@ -28,8 +28,6 @@ public partial class MainWindow : ReloadedWindow
         Lib.IoC.BindToConstant(this);
     }
 
-    protected override AutomationPeer OnCreateAutomationPeer() => new EmptyAutomationPeer(this);
-
     private void InstallMod_DragOver(object sender, DragEventArgs e)
     {
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
