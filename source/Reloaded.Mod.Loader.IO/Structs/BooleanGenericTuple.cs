@@ -12,4 +12,11 @@ public class BooleanGenericTuple<TGeneric> : ObservableObject
         Enabled = enabled;
         Generic = generic;
     }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        // For Debugging and Screen Readers
+        return $"Enabled: {Enabled}, Item: {Generic}";
+    }
 }

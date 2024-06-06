@@ -45,12 +45,14 @@
                       ItemsSource="{Binding AllTags}"
                       Margin="{DynamicResource CommonItemHorizontalMarginLeft}"
                       ToolTip="{DynamicResource ConfigureModsSelectTagTooltip}" 
+                      AutomationProperties.Name="{DynamicResource ConfigureModsSelectTagTooltip}"
                       ToolTipService.InitialShowDelay="0" 
                       Width="130" />
 
             <TextBox x:Name="ModsFilter" 
                      Style="{DynamicResource TextboxWithPlaceholder}" 
-                     Tag="{DynamicResource ModManagerSearchMods}" 
+                     Tag="{DynamicResource ModManagerSearchMods}"
+                     AutomationProperties.Name="{DynamicResource ModManagerSearchMods}"
                      TextChanged="ModsFilter_TextChanged"/>
 
         </DockPanel>

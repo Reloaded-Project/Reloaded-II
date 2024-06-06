@@ -121,6 +121,7 @@
                               SelectedItem="{Binding ThemeSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                               ItemsSource="{Binding ThemeSelector.Files, UpdateSourceTrigger=PropertyChanged}"
                               MaxWidth="{StaticResource ComboBoxWidth}" Width="{StaticResource ComboBoxWidth}" 
+                              AutomationProperties.Name="{DynamicResource LoaderSettingsConfigTheme}"
                               SelectionChanged="ThemeChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -141,6 +142,7 @@
                               SelectedItem="{Binding LanguageSelector.File, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                               ItemsSource="{Binding LanguageSelector.Files, UpdateSourceTrigger=PropertyChanged}"
                               MaxWidth="{StaticResource ComboBoxWidth}" Width="{StaticResource ComboBoxWidth}" 
+                              AutomationProperties.Name="{DynamicResource LoaderSettingsConfigLanguage}"
                               SelectionChanged="LanguageChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>

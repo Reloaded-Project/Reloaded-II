@@ -711,4 +711,9 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="FirstLaunchExDragDropInstall_2_1">Alternatively, you can</sys:String>
     <sys:String x:Key="FirstLaunchExDragDropInstall_2_2">Install Mods Manually</sys:String> <!-- Hyperlink-->
 
+    <!-- Update 1.27.10: Accessibility Text for Visually Impaired -->
+    <sys:String x:Key="DownloadPackagesSettingsBtn">Search Settings</sys:String>
+    <sys:String x:Key="DownloadPackagesPrevious">Previous</sys:String>
+    <sys:String x:Key="DownloadPackagesNext">Next</sys:String>
+
 </ResourceDictionary>

@@ -52,4 +52,11 @@ public class PathTuple<TGeneric> : ObservableObject where TGeneric : IConfig<TGe
     {
         return HashCode.Combine(Path, Config);
     }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        // For debugging and screen readers.
+        return "Config: {" + Config + "}. Path: {" + Path + "}";
+    }
 }

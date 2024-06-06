@@ -107,6 +107,7 @@
                       IsSynchronizedWithCurrentItem="True"
                       SelectedItem="{Binding CurrentPackageProvider, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                       ItemsSource="{Binding PackageProviders, UpdateSourceTrigger=PropertyChanged}"
+                      AutomationProperties.Name="{DynamicResource DownloadPackagesSource}"
                       MaxHeight="{Binding ActualHeight, ElementName=TextBox}"
                       Width="150" >
                 <ComboBox.ItemTemplate>
@@ -122,6 +123,7 @@
                 Grid.Column="1"
                 Style="{DynamicResource TextboxWithPlaceholder}" 
                 Tag="{DynamicResource ModManagerSearchMods}"
+                AutomationProperties.Name="{DynamicResource ModManagerSearchMods}"
                 Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Margin="{DynamicResource CommonItemHorizontalMarginSmaller}"
                 FontSize="{DynamicResource FontSizeLarger}"
@@ -142,12 +144,14 @@
                     <TextBlock Text="{Binding DownloadPackageStatus, Converter={x:Static converters:DownloadModStatusToString.Instance}, FallbackValue='Download'}" 
                                Name="DownloadBtnText"
                                FontSize="{DynamicResource FontSizeLarger}"
+                               AutomationProperties.Name="{DynamicResource UpdateModDownload}"
                                Style="{DynamicResource DefaultTextBlock}" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 
             <!-- Settings Popup -->
             <ToggleButton Grid.Column="3" x:Name="SettingsBtn"
+                          AutomationProperties.Name="{DynamicResource DownloadPackagesSettingsBtn}"
                           Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
                           IsHitTestVisible="{Binding ElementName=OptionsPopup, Path=IsOpen, Mode=OneWay, Converter={x:Static converters:BooleanInverterConverter.Instance}}"
                           Style="{DynamicResource PopupToggleButton}">
@@ -163,6 +167,7 @@
             <!-- Note: VS Preview doesn't get height right for these buttons, it's ok at runtime, dw -->
             <Button Style="{DynamicResource UnpaddedButton}" Height="Auto"
                     Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+                    AutomationProperties.Name="{DynamicResource DownloadPackagesPrevious}"
                     Grid.Column="4"
                     Click="Last_Click"
                     Visibility="{Binding CanGoToLastPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"
@@ -176,6 +181,7 @@
 
             <Button Style="{DynamicResource UnpaddedButton}" Height="Auto"
                     Margin="{DynamicResource CommonItemHorizontalMarginSmaller}" 
+                    AutomationProperties.Name="{DynamicResource DownloadPackagesNext}"
                     Grid.Column="5"
                     Click="Next_Click"
                     Visibility="{Binding CanGoToNextPage, Converter={x:Static converters:BooleanToVisibilityConverter.InstanceCollapsed}}"

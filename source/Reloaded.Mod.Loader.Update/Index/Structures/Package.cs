@@ -107,4 +107,11 @@ public class Package : IDownloadablePackage
         Changelog = null;
         Tags = null;
     }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        // Friendly ToString, for screen readers and debugging.
+        return Name;
+    }
 }

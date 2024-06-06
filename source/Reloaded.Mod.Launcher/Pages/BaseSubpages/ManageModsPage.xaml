@@ -159,7 +159,8 @@
                     
                     <TextBox x:Name="ModsFilter" Style="{DynamicResource TextboxWithPlaceholder}" 
                              Margin="{DynamicResource PanelMargin}"
-                             Tag="{DynamicResource ModManagerSearchMods}" 
+                             Tag="{DynamicResource ModManagerSearchMods}"
+                             AutomationProperties.Name="{DynamicResource ModManagerSearchMods}"
                              TextChanged="ModsFilter_TextChanged" 
                              Grid.Column="0" 
                              Grid.Row="0"/>
@@ -168,6 +169,7 @@
                              Margin="{DynamicResource PanelMargin}"
                              Style="{DynamicResource TextboxWithPlaceholder}" 
                              Tag="{DynamicResource ModManagerSearchApps}"
+                             AutomationProperties.Name="{DynamicResource ModManagerSearchApps}"
                              TextChanged="AppsFilter_TextChanged" 
                              Grid.Column="1" 
                              Grid.Row="0"/>
