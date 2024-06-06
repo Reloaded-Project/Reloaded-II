@@ -135,7 +135,7 @@ export WINEPREFIX="/home/<YOUR_USERNAME>/.local/share/Steam/steamapps/compatdata
 wine Setup.exe --dependenciesOnly
 
 ## Create Symbolic Link for Mod Loader Settings.
-ln -s "/home/<YOUR_USERNAME>/.wine/drive_c/users/<USERNAME>/AppData/Roaming/Reloaded-Mod-Loader-II/" "/home/<YOUR_USERNAME>/.local/share/Steam/steamapps/compatdata/<APPID>/pfx/drive_c/users/steamuser/AppData/Roaming/Reloaded-Mod-Loader-II/"
+ln -s "/home/<YOUR_USERNAME>/.wine/drive_c/users/<USERNAME>/AppData/Roaming/Reloaded-Mod-Loader-II" "/home/<YOUR_USERNAME>/.local/share/Steam/steamapps/compatdata/<APPID>/pfx/drive_c/users/steamuser/AppData/Roaming/Reloaded-Mod-Loader-II"
 ```
 
 Once you are done, launch the Reloaded launcher and [Deploy ASI Loader](#using-asi-loader).  
