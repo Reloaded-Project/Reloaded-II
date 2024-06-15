@@ -1,3 +1,4 @@
+using Polly;
 using IPackageResolver = Sewer56.Update.Interfaces.IPackageResolver;
 
 namespace Reloaded.Mod.Loader.Update.Providers.Update;
@@ -95,10 +96,19 @@ public class UpdateDownloadablePackage : IDownloadablePackage
         var tempDownloadPath      = Path.Combine(tempDownloadDir.FolderPath, Path.GetRandomFileName());
 
         var progressSlicer = new ProgressSlicer(progress);
-
+        var retryPolicy = Policy
+            .Handle<Exception>()
+            .WaitAndRetryAsync(
+                retryCount: 4,
+                sleepDurationProvider: attempt => TimeSpan.FromSeconds(Math.Pow(2, attempt))
+            );
+        
         // Download Package
         var downloadSlice = progressSlicer.Slice(0.9f);
-        await PackageResolver.DownloadPackageAsync(Version!, tempDownloadPath, new ReleaseMetadataVerificationInfo() { FolderPath = tempDownloadPath }, downloadSlice, token);
+        await retryPolicy.ExecuteAsync(async () =>
+        {
+            await PackageResolver.DownloadPackageAsync(Version!, tempDownloadPath, new ReleaseMetadataVerificationInfo() { FolderPath = tempDownloadPath }, downloadSlice, token);
+        });
 
         // Extract package.
         var extractSlice = progressSlicer.Slice(0.1f);
