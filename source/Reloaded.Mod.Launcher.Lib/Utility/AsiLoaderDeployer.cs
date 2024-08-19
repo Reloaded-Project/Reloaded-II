@@ -223,9 +223,9 @@ public class AsiLoaderDeployer
     {
         "winmm.dll",
         "wininet.dll",
-        "version.dll",
         "dsound.dll",
-        "dinput8.dll"
+        "dinput8.dll",
+        "version.dll"
     };
 
     private static readonly string[] AsiCommonDirectories = 
