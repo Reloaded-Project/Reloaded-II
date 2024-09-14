@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>1.6.2</PackageVersion>
+    <PackageVersion>1.6.3</PackageVersion>
     <PackageId>Reloaded.Mod.Templates</PackageId>
     <Title>Reloaded-II Mod Templates</Title>
     <Authors>Sewer56</Authors>
