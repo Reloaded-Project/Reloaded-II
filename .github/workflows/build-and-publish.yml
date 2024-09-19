@@ -14,6 +14,7 @@ env:
   TOOLS_PATH: ./source/Publish/Tools.zip
   PUBLISH_CHOCO_PATH: ./source/Publish/Chocolatey
   PUBLISH_INSTALLER_PATH: ./source/Publish/Installer/Setup.exe 
+  PUBLISH_INSTALLER_STATIC_PATH: ./source/Publish/Installer-Static/Setup-Linux.exe 
   PUBLISH_CHANGELOG_PATH: ./source/Publish/Changelog.md 
   PUBLISH_PACKAGES_PATH: ./source/Publish/Packages
   PUBLISH_RELEASE_FOLDER: ./source/Publish/Release
@@ -141,7 +142,9 @@ jobs:
         # Artifact name
         name: Installer
         # A file, directory or wildcard pattern that describes what to upload
-        path: ${{ env.PUBLISH_INSTALLER_PATH }}
+        path: |
+          ${{ env.PUBLISH_INSTALLER_PATH }}
+          ${{ env.PUBLISH_INSTALLER_STATIC_PATH }}
         retention-days: 0
          
     - name: Upload NuGet Artifacts
@@ -182,6 +185,7 @@ jobs:
           ${{ env.PUBLISH_RELEASE_FOLDER }}/*
           ${{ env.TOOLS_PATH }}
           ${{ env.PUBLISH_INSTALLER_PATH }}
+          ${{ env.PUBLISH_INSTALLER_STATIC_PATH }}
         
     - name: Upload to NuGet (on Tag)
       env: 

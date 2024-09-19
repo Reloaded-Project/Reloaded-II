@@ -37,7 +37,6 @@ $bootstrapperPath = "Reloaded.Mod.Loader.Bootstrapper/Reloaded.Mod.Bootstrapper.
 $installerProjectPath = "./Reloaded.Mod.Installer/Reloaded.Mod.Installer.csproj"
 $launcherProjectPath = "Reloaded.Mod.Launcher/Reloaded.Mod.Launcher.csproj"
 $loaderProjectPath = "Reloaded.Mod.Loader/Reloaded.Mod.Loader.csproj"
-$addressDumperProjectPath = "Reloaded.Mod.Launcher.Kernel32AddressDumper/Reloaded.Mod.Launcher.Kernel32AddressDumper.csproj"
 $templateProjectPath = "Reloaded.Mod.Template/Reloaded.Mod.Template.NuGet.csproj"
 
 $communityProjectPath = "Tools/Reloaded.Community.Tool/Reloaded.Community.Tool.csproj"
@@ -48,6 +47,7 @@ $publisherProjectPath = "Tools/Reloaded.Publisher/Reloaded.Publisher.csproj"
 $publishDirectory = "Publish"
 $chocoPublishDirectory = "$publishDirectory/Chocolatey"
 $installerPublishDirectory = "$publishDirectory/Installer"
+$installerStaticPublishDirectory = "$publishDirectory/Installer-Static"
 $templatePublishDirectory = "$publishDirectory/ModTemplate"
 $releaseFolder = "/Release"
 $toolsReleaseFileName = "/Tools.zip"
@@ -62,7 +62,6 @@ Get-ChildItem "$chocoPath" -Include *.nupkg -Recurse -ErrorAction SilentlyContin
 
 # Build using Visual Studio
 msbuild $bootstrapperPath /p:Configuration=Release /p:Platform=x64 /p:OutDir="$loaderOutputPath"
-dotnet publish "$addressDumperProjectPath" -c Release -r win-x86 --self-contained false -o "$loaderOutputPath"
 
 # Build AnyCPU, and then copy 32-bit AppHost. 
 dotnet publish "$launcherProjectPath" -c Release --self-contained false -o "$outputPath"
@@ -78,7 +77,11 @@ dotnet publish "$publisherProjectPath" -c Release -r win-x64 --self-contained fa
 dotnet publish "$communityProjectPath" -c Release -r win-x64 --self-contained false -o "$toolsPath" /p:PublishSingleFile=true
 
 # Build Installer
-dotnet publish "$installerProjectPath" -o "$installerPublishDirectory"
+dotnet publish "$installerProjectPath" -f net472 -o "$installerPublishDirectory"
+
+# Build Installer (Static/Linux)
+dotnet publish "$installerProjectPath" -f net8.0-windows -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:EnableCompressionInSingleFile=true --self-contained true -o "$installerStaticPublishDirectory"
+Move-Item -Path "$installerStaticPublishDirectory/Setup.exe" -Destination "$installerStaticPublishDirectory/Setup-Linux.exe"
 
 # Build Templates
 dotnet pack "$templateProjectPath" -o "$templatePublishDirectory"
