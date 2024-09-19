@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>NET472</TargetFramework>
+    <TargetFrameworks>NET472;net8.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <LangVersion>preview</LangVersion>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -14,6 +14,15 @@
     <DebugType>portable</DebugType>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <WeaverConfiguration>
+      <Weavers>
+        <Costura IncludeDebugSymbols='false' Condition="'$(TargetFramework)' == 'net472'" />
+        <PropertyChanged/>
+      </Weavers>
+    </WeaverConfiguration>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Content Include="appicon.ico" />
   </ItemGroup>
@@ -21,7 +30,7 @@
   <ItemGroup>
     <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="ConsoleProgressBar" Version="2.0.0" />
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
+    <PackageReference Include="Costura.Fody" Condition="'$(TargetFramework)' == 'net472'" Version="5.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
