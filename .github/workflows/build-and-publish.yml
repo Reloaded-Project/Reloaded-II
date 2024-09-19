@@ -185,6 +185,7 @@ jobs:
           ${{ env.PUBLISH_RELEASE_FOLDER }}/*
           ${{ env.TOOLS_PATH }}
           ${{ env.PUBLISH_INSTALLER_PATH }}
+          ${{ env.PUBLISH_INSTALLER_STATIC_PATH }}
         
     - name: Upload to NuGet (on Tag)
       env: 
