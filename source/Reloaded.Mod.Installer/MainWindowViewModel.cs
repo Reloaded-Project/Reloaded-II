@@ -35,6 +35,19 @@ public class MainWindowViewModel : ObservableObject
 
     public async Task InstallReloadedAsync(Settings settings)
     {
+        // Check for existing installation
+        if (Directory.Exists(settings.InstallLocation) && Directory.GetFiles(settings.InstallLocation).Length > 0)
+        {
+            // ReSharper disable InconsistentNaming
+            const uint MB_OK = 0x0;
+            const uint MB_ICONINFORMATION = 0x40;
+            // ReSharper restore InconsistentNaming
+            Native.MessageBox(IntPtr.Zero, $"An existing installation has been detected at:\n{settings.InstallLocation}\n\n" +
+                                           $"To prevent data loss, installation will be aborted.\n" +
+                                           $"If you wish to reinstall, delete or move the existing installation.", "Existing Installation", MB_OK | MB_ICONINFORMATION);
+            return;
+        }
+        
         // Step
         Directory.CreateDirectory(settings.InstallLocation);
 
