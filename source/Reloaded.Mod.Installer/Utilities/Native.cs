@@ -2,6 +2,6 @@ namespace Reloaded.Mod.Installer.Utilities;
 
 public static class Native
 {
-    [DllImport("Shlwapi.dll", EntryPoint = "PathIsDirectoryEmptyW", CharSet = CharSet.Unicode)]
-    public static extern bool IsDirectoryEmpty(string directory);
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    public static extern int MessageBox(IntPtr hWnd, string text, string caption, uint type);
 }

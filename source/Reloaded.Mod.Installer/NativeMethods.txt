@@ -1,0 +1,12 @@
+SaferCreateLevel
+SaferComputeTokenFromLevel
+SaferCloseLevel
+SAFER_SCOPEID_*
+SAFER_LEVELID_*
+SAFER_LEVEL_*
+CreateProcessAsUser
+TOKEN_MANDATORY_LABEL
+SE_GROUP_INTEGRITY
+ConvertStringSidToSid
+SetTokenInformation
+LocalFree

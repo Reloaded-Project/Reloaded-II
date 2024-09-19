@@ -1,5 +1,9 @@
 using System.IO.Compression;
 using System.Net.Http;
+using System.Security.Principal;
+using Windows.Win32.Security;
+using Windows.Win32.System.Threading;
+using static Windows.Win32.PInvoke;
 using static Reloaded.Mod.Installer.DependencyInstaller.DependencyInstaller;
 using MessageBox = System.Windows.MessageBox;
 using Path = System.IO.Path;
@@ -31,6 +35,19 @@ public class MainWindowViewModel : ObservableObject
 
     public async Task InstallReloadedAsync(Settings settings)
     {
+        // Check for existing installation
+        if (Directory.Exists(settings.InstallLocation) && Directory.GetFiles(settings.InstallLocation).Length > 0)
+        {
+            // ReSharper disable InconsistentNaming
+            const uint MB_OK = 0x0;
+            const uint MB_ICONINFORMATION = 0x40;
+            // ReSharper restore InconsistentNaming
+            Native.MessageBox(IntPtr.Zero, $"An existing installation has been detected at:\n{settings.InstallLocation}\n\n" +
+                                           $"To prevent data loss, installation will be aborted.\n" +
+                                           $"If you wish to reinstall, delete or move the existing installation.", "Existing Installation", MB_OK | MB_ICONINFORMATION);
+            return;
+        }
+        
         // Step
         Directory.CreateDirectory(settings.InstallLocation);
 
@@ -73,9 +90,13 @@ public class MainWindowViewModel : ObservableObject
             }
 
             CurrentStepDescription = "All Set";
-            
+
             if (settings.StartReloaded)
-                Process.Start(executablePath);
+            {
+                // We're in an admin process; but we want to de-escalate as Reloaded-II is not
+                // meant to be used in admin mode.
+                StartProcessWithReducedPrivileges(executablePath);
+            }
         }
         catch (TaskCanceledException)
         {
@@ -135,5 +156,60 @@ public class MainWindowViewModel : ObservableObject
 
         File.Delete(downloadedPackagePath);
         slice.Report(1);
+    }
+    
+    private static unsafe void StartProcessWithReducedPrivileges(string executablePath)
+    {
+        SAFER_LEVEL_HANDLE saferHandle = default;
+        try
+        {
+            // 1. Create a new new access token
+            if (!SaferCreateLevel(SAFER_SCOPEID_USER, SAFER_LEVELID_NORMALUSER,
+                    SAFER_LEVEL_OPEN, &saferHandle, null))
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            if (!SaferComputeTokenFromLevel(saferHandle, null, out var newAccessToken, 0, null))
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            // Set the token to medium integrity because SaferCreateLevel doesn't reduce the
+            // integrity level of the token and keep it as high.
+            if (!ConvertStringSidToSid("S-1-16-8192", out var psid))
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            TOKEN_MANDATORY_LABEL tml = default;
+            tml.Label.Attributes = SE_GROUP_INTEGRITY;
+            tml.Label.Sid = (PSID)psid.DangerousGetHandle();
+
+            var length = (uint)Marshal.SizeOf(tml);
+            if (!SetTokenInformation(newAccessToken, TOKEN_INFORMATION_CLASS.TokenIntegrityLevel, &tml, length))
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            // 2. Start process using the new access token
+            // Cannot use Process.Start as there is no way to set the access token to use
+            fixed (char* commandLinePtr = executablePath)
+            {
+                STARTUPINFOW si = default;
+                Span<char> span = new Span<char>(commandLinePtr, executablePath.Length);
+                if (CreateProcessAsUser(newAccessToken, null, ref span, null, null, bInheritHandles: false, default,
+                        null, null, in si, out var pi))
+                {
+                    CloseHandle(pi.hProcess);
+                    CloseHandle(pi.hThread);
+                }
+            }
+
+        }
+        catch
+        {
+            // In case of WINE, or some other unexpected event.
+            Process.Start(executablePath);
+        }
+        finally
+        {
+            if (saferHandle != default)
+            {
+                SaferCloseLevel(saferHandle);
+            }
+        }
     }
 }
