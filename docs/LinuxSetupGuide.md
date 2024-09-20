@@ -1,8 +1,11 @@
-# Linux Setup Guide
+# Linux Setup Guide (Legacy)
 
 !!! info "This is the *legacy* setup guide."
 
-    This shows you how to run Reloaded in a setup that involves.
+    This shows you how to run Reloaded in a setup that involves running the launcher via Wine
+    and games via Wine/Proton. This is a bit more flexible but can be a hassle to set up.
+
+    For a more streamlined guide, see [Linux Setup Guide (New)](LinuxSetupGuideNew.md).
 
 !!! help "Help Needed"
 

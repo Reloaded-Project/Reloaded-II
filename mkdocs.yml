@@ -79,7 +79,10 @@ nav:
   - For Users:
     - Quick Start: QuickStart.md
     - Frequently Asked Questions: FAQ.md
-    - Linux Setup Guide: LinuxSetupGuide.md
+    - Linux Guides:
+      - Linux Setup Guide: LinuxSetupGuideNew.md
+      - Linux Setup Guide (Extra): LinuxSetupGuideNewExtra.md
+      - Linux Setup Guide (Legacy): LinuxSetupGuide.md
     - Installing Mod Packs: InstallingModPacks.md
     - Advanced:
       - NuGet Sources: NuGetSources.md
