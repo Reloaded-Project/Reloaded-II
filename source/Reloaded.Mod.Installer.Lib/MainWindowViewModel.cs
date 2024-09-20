@@ -35,15 +35,17 @@ public class MainWindowViewModel : ObservableObject
 
     public async Task InstallReloadedAsync(Settings settings)
     {
+        // Note: All of this code is terrible, I don't have the time to make it good.
+        
         // ReSharper disable InconsistentNaming
         const uint MB_OK = 0x0;
         const uint MB_ICONINFORMATION = 0x40;
         // ReSharper restore InconsistentNaming
         
-        // Add suffix if needed
+        // Handle Proton specific customizations.
         var protonTricksSuffix = GetProtontricksSuffix();
         var isProton = !string.IsNullOrEmpty(protonTricksSuffix);
-        OverrideInstallLocationForProton(settings, protonTricksSuffix, out var nativePath);
+        OverrideInstallLocationForProton(settings, protonTricksSuffix, out var nativeInstallFolder, out var userName);
         
         // Check for existing installation
         if (Directory.Exists(settings.InstallLocation) && Directory.GetFiles(settings.InstallLocation).Length > 0)
@@ -87,16 +89,20 @@ public class MainWindowViewModel : ObservableObject
 
             var executableName = IntPtr.Size == 8 ? "Reloaded-II.exe" : "Reloaded-II32.exe";
             var executablePath = Path.Combine(settings.InstallLocation, executableName);
+            var nativeExecutablePath = Path.Combine(nativeInstallFolder, executableName);
             var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II.lnk");
 
-            // For Proton, create a shortcut up one folder above install location.
+            // For Proton/Wine, create a shortcut up one folder above install location.
             if (!string.IsNullOrEmpty(protonTricksSuffix))
                 shortcutPath = Path.Combine(Path.GetDirectoryName(settings.InstallLocation)!, "Reloaded-II - " + protonTricksSuffix + ".lnk");
             
             if (settings.CreateShortcut)
             {
                 CurrentStepDescription = "Creating Shortcut";
-                NativeShellLink.MakeShortcut(shortcutPath, executablePath);
+                if (!isProton)
+                    NativeShellLink.MakeShortcut(shortcutPath, executablePath);
+                else
+                    MakeProtonShortcut(userName, protonTricksSuffix, shortcutPath, nativeExecutablePath);
             }
 
             CurrentStepDescription = "All Set";
@@ -111,7 +117,7 @@ public class MainWindowViewModel : ObservableObject
             }
 
             if (!settings.HideNonErrorGuiMessages && isProton)
-                Native.MessageBox(IntPtr.Zero, $"Reloaded was installed via Proton to your Desktop.\nYou can find it at: {nativePath}", "Installation Complete", MB_OK | MB_ICONINFORMATION);
+                Native.MessageBox(IntPtr.Zero, $"Reloaded was installed via Proton to your Desktop.\nYou can find it at: {nativeInstallFolder}", "Installation Complete", MB_OK | MB_ICONINFORMATION);
             
             if (settings.StartReloaded)
             {
@@ -133,12 +139,60 @@ public class MainWindowViewModel : ObservableObject
                               $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded", MB_OK);
         }
     }
-    private static void OverrideInstallLocationForProton(Settings settings, string protonTricksSuffix, out string nativeInstallPath)
+    private void MakeProtonShortcut(string? userName, string protonTricksSuffix, string shortcutPath, string nativeExecutablePath)
     {
-        nativeInstallPath = "";
+        nativeExecutablePath = nativeExecutablePath.Replace('\\', '/');
+        var desktopFile = 
+"""
+[Desktop Entry]
+Name=Reloaded-II ({SUFFIX})
+Exec=protontricks-launch --appid {APPID} "{NATIVEPATH}"
+Type=Application
+StartupNotify=true
+Comment=Reloaded II installation for {SUFFIX}
+Path={RELOADEDFOLDER}
+Icon={RELOADEDFOLDER}/Mods/reloaded.sharedlib.hooks/Preview.png
+StartupWMClass=reloaded-ii.exe
+""";
+        // reloaded.sharedlib.hooks is present in all Reloaded installs after boot, so we can use that... for now.
+        desktopFile = desktopFile.Replace("{USER}", userName);
+        desktopFile = desktopFile.Replace("{APPID}", Environment.GetEnvironmentVariable("STEAM_APPID"));
+        desktopFile = desktopFile.Replace("{SUFFIX}", protonTricksSuffix);
+        desktopFile = desktopFile.Replace("{RELOADEDFOLDER}", Path.GetDirectoryName(nativeExecutablePath)!.Replace('\\', '/'));
+        desktopFile = desktopFile.Replace("{NATIVEPATH}", nativeExecutablePath);
+        shortcutPath = shortcutPath.Replace(".lnk", ".desktop");
+        
+        File.WriteAllText(shortcutPath, desktopFile);
+
+        // Write `.desktop` file that integrates into shell.
+        var shellShortcutPath = $@"Z:\home\{userName}\.local\share\applications\{Path.GetFileName(shortcutPath)}";
+        File.WriteAllText(shellShortcutPath, desktopFile);
+        
+        // Mark as executable.
+        LinuxTryMarkAsExecutable(shortcutPath);
+        LinuxTryMarkAsExecutable(shellShortcutPath);
+    }
+
+    private static void LinuxTryMarkAsExecutable(string windowsPath)
+    {
+        windowsPath = windowsPath.Replace('\\', '/');
+        windowsPath = windowsPath.Replace("Z:", "");
+        try { Process.Start($"chmod +x \"{windowsPath}\""); }
+        catch (Exception) { /* ignored */ }
+    }
+
+    private static void OverrideInstallLocationForProton(Settings settings, string protonTricksSuffix, out string nativeInstallFolder, out string? userName)
+    {
+        nativeInstallFolder = "";
+        userName = "";
         if (settings.IsManuallyOverwrittenLocation) return;
         if (string.IsNullOrEmpty(protonTricksSuffix)) return;
-        settings.InstallLocation = Path.Combine(GetHomeDesktopDirectoryOnProton(out nativeInstallPath), $"Reloaded-II - {protonTricksSuffix}");
+
+        var desktopDir = GetHomeDesktopDirectoryOnProton(out nativeInstallFolder, out userName);
+        var folderName = $"Reloaded-II - {protonTricksSuffix}";
+
+        settings.InstallLocation = Path.Combine(desktopDir, folderName);
+        nativeInstallFolder = Path.Combine(nativeInstallFolder, folderName);
     }
 
     private static async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)
@@ -266,14 +320,14 @@ public class MainWindowViewModel : ObservableObject
     /// <summary>
     /// This suffix is appended to shortcut name and install folder.
     /// </summary>
-    private static string GetHomeDesktopDirectoryOnProton(out string linuxPath)
+    private static string GetHomeDesktopDirectoryOnProton(out string linuxPath, out string? userName)
     {
-        var user = Environment.GetEnvironmentVariable("LOGNAME");
-        if (user != null)
+        userName = Environment.GetEnvironmentVariable("LOGNAME");
+        if (userName != null)
         {
             // TODO: This is a terrible hack.
-            linuxPath = $"/home/{user}/Desktop";
-            return @$"Z:\home\{user}\Desktop";
+            linuxPath = $"/home/{userName}/Desktop";
+            return @$"Z:\home\{userName}\Desktop";
         }
 
         Native.MessageBox(IntPtr.Zero, "Cannot determine username for proton installation.\n" +
