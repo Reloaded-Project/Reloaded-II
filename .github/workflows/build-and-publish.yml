@@ -75,7 +75,10 @@ jobs:
     
     - name: Get Dotnet Info
       run: dotnet --info
-      
+
+    - name: Test
+      run: dotnet test -c Release ./source/Reloaded.Mod.Loader.Tests/Reloaded.Mod.Loader.Tests.csproj
+
     - name: Publish
       run: |
         if ($env:IS_RELEASE -eq 'true') 
@@ -92,9 +95,6 @@ jobs:
       run: |
         echo "$env:RELEASE_TAG" > "version.txt"
         Compress-Archive -update "version.txt" "$env:PUBLISH_RELEASE_PATH" 
-      
-    - name: Test
-      run: dotnet test -c Release ./source/Reloaded.Mod.Loader.Tests/Reloaded.Mod.Loader.Tests.csproj
      
     - name: Create NuGet Package Artifacts
       run: |
