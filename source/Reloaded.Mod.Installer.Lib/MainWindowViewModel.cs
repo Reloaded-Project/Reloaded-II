@@ -132,7 +132,7 @@ public class MainWindowViewModel : ObservableObject
     {
         if (settings.IsManuallyOverwrittenLocation) return;
         if (string.IsNullOrEmpty(protonTricksSuffix)) return;
-        settings.InstallLocation = Path.Combine(GetHomeDirectoryOnProton(), $"Reloaded-II - {protonTricksSuffix}");
+        settings.InstallLocation = Path.Combine(GetHomeDesktopDirectoryOnProton(), $"Reloaded-II - {protonTricksSuffix}");
     }
 
     private static async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)
@@ -259,12 +259,12 @@ public class MainWindowViewModel : ObservableObject
     /// <summary>
     /// This suffix is appended to shortcut name and install folder.
     /// </summary>
-    private static string GetHomeDirectoryOnProton()
+    private static string GetHomeDesktopDirectoryOnProton()
     {
         var user = Environment.GetEnvironmentVariable("LOGNAME");
         if (user != null) 
             // TODO: This is a terrible hack.
-            return @"Z:\home\" + user;
+            return @$"Z:\home\{user}\Desktop";
 
         Native.MessageBox(IntPtr.Zero, "Cannot determine username for proton installation.\n" +
                                        "Please make sure that 'LOGNAME' environment variable is set.", 
