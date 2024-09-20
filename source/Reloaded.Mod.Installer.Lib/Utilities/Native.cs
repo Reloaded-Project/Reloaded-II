@@ -1,4 +1,4 @@
-namespace Reloaded.Mod.Installer.Utilities;
+namespace Reloaded.Mod.Installer.Lib.Utilities;
 
 public static class Native
 {

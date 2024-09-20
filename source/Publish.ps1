@@ -35,6 +35,7 @@ $chocoToolsPath = "$chocoPath/tools"
 # Project Paths
 $bootstrapperPath = "Reloaded.Mod.Loader.Bootstrapper/Reloaded.Mod.Bootstrapper.vcxproj"
 $installerProjectPath = "./Reloaded.Mod.Installer/Reloaded.Mod.Installer.csproj"
+$installerCliProjectPath = "./Reloaded.Mod.Installer.Cli/Reloaded.Mod.Installer.Cli.csproj"
 $launcherProjectPath = "Reloaded.Mod.Launcher/Reloaded.Mod.Launcher.csproj"
 $loaderProjectPath = "Reloaded.Mod.Loader/Reloaded.Mod.Loader.csproj"
 $templateProjectPath = "Reloaded.Mod.Template/Reloaded.Mod.Template.NuGet.csproj"
@@ -80,8 +81,7 @@ dotnet publish "$communityProjectPath" -c Release -r win-x64 --self-contained fa
 dotnet publish "$installerProjectPath" -f net472 -o "$installerPublishDirectory"
 
 # Build Installer (Static/Linux)
-dotnet publish "$installerProjectPath" -f net8.0-windows -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:EnableCompressionInSingleFile=true --self-contained true -o "$installerStaticPublishDirectory"
-Move-Item -Path "$installerStaticPublishDirectory/Setup.exe" -Destination "$installerStaticPublishDirectory/Setup-Linux.exe"
+dotnet publish "$installerCliProjectPath" -f net8.0-windows -r win-x64 -o "$installerStaticPublishDirectory"
 
 # Build Templates
 dotnet pack "$templateProjectPath" -o "$templatePublishDirectory"

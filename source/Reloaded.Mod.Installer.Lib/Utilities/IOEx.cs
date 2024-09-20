@@ -1,4 +1,4 @@
-namespace Reloaded.Mod.Installer.Utilities
+namespace Reloaded.Mod.Installer.Lib.Utilities
 {
     // ReSharper disable once InconsistentNaming
     public static class IOEx

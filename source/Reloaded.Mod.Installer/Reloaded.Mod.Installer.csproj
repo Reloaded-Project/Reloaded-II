@@ -50,7 +50,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Reloaded.Mod.Installer.DependencyInstaller\Reloaded.Mod.Installer.DependencyInstaller.csproj" />
+    <ProjectReference Include="..\Reloaded.Mod.Installer.Cli\Reloaded.Mod.Installer.Cli.csproj" />
+    <ProjectReference Include="..\Reloaded.Mod.Installer.Lib\Reloaded.Mod.Installer.Lib.csproj" />
   </ItemGroup>
 
 </Project>
