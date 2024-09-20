@@ -42,7 +42,8 @@ public class MainWindowViewModel : ObservableObject
         
         // Add suffix if needed
         var protonTricksSuffix = GetProtontricksSuffix();
-        OverrideInstallLocationForProton(settings, protonTricksSuffix);
+        var isProton = !string.IsNullOrEmpty(protonTricksSuffix);
+        OverrideInstallLocationForProton(settings, protonTricksSuffix, out var nativePath);
         
         // Check for existing installation
         if (Directory.Exists(settings.InstallLocation) && Directory.GetFiles(settings.InstallLocation).Length > 0)
@@ -107,6 +108,9 @@ public class MainWindowViewModel : ObservableObject
                 SetEnvironmentVariable("DOTNET_ROOT", "%ProgramFiles%\\dotnet");
                 SetEnvironmentVariable("DOTNET_BUNDLE_EXTRACT_BASE_DIR", "%TEMP%\\.net");
             }
+
+            if (!settings.HideNonErrorGuiMessages && isProton)
+                Native.MessageBox(IntPtr.Zero, $"Reloaded was installed via Proton to your Desktop.\nYou can find it at: {nativePath}", "Installation Complete", MB_OK | MB_ICONINFORMATION);
             
             if (settings.StartReloaded)
             {
@@ -128,11 +132,12 @@ public class MainWindowViewModel : ObservableObject
                               $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded", MB_OK);
         }
     }
-    private static void OverrideInstallLocationForProton(Settings settings, string protonTricksSuffix)
+    private static void OverrideInstallLocationForProton(Settings settings, string protonTricksSuffix, out string nativeInstallPath)
     {
+        nativeInstallPath = "";
         if (settings.IsManuallyOverwrittenLocation) return;
         if (string.IsNullOrEmpty(protonTricksSuffix)) return;
-        settings.InstallLocation = Path.Combine(GetHomeDesktopDirectoryOnProton(), $"Reloaded-II - {protonTricksSuffix}");
+        settings.InstallLocation = Path.Combine(GetHomeDesktopDirectoryOnProton(out nativeInstallPath), $"Reloaded-II - {protonTricksSuffix}");
     }
 
     private static async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)
@@ -259,12 +264,15 @@ public class MainWindowViewModel : ObservableObject
     /// <summary>
     /// This suffix is appended to shortcut name and install folder.
     /// </summary>
-    private static string GetHomeDesktopDirectoryOnProton()
+    private static string GetHomeDesktopDirectoryOnProton(out string linuxPath)
     {
         var user = Environment.GetEnvironmentVariable("LOGNAME");
-        if (user != null) 
+        if (user != null)
+        {
             // TODO: This is a terrible hack.
+            linuxPath = $"/home/{user}/Desktop";
             return @$"Z:\home\{user}\Desktop";
+        }
 
         Native.MessageBox(IntPtr.Zero, "Cannot determine username for proton installation.\n" +
                                        "Please make sure that 'LOGNAME' environment variable is set.", 
