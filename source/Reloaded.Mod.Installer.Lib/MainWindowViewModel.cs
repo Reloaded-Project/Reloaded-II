@@ -231,6 +231,7 @@ public class MainWindowViewModel : ObservableObject
     
     private static void SetEnvironmentVariable(string name, string value)
     {
+        Environment.SetEnvironmentVariable(name, value, EnvironmentVariableTarget.Process);
         using var key = Registry.CurrentUser.OpenSubKey("Environment", true);
         if (key != null)
         {
