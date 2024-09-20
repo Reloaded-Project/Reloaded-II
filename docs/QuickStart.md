@@ -2,7 +2,7 @@
 
 ## Download Reloaded
 
-!!! info "First you need to download Reloaded itself"
+First you need to download Reloaded itself:
 
 - ***Windows***: [Run the Installer][windows-installer].
 

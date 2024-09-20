@@ -21,6 +21,7 @@ hide:
 </div>
 
 It is an ***extensible*** and ***modular*** framework that allows you to create your own mods for any game.  
+For installation instructions, see [Quick Start Guide](./QuickStart.md).
 
 ## Mod Loader
 
@@ -179,7 +180,7 @@ It is an ***extensible*** and ***modular*** framework that allows you to create 
 		</p>
 		<hr class="pillarseparator" />
         <p>
-			Install Reloaded &amp; Runtimes with a single click.<br/> 
+			Install Reloaded &amp; Runtimes <a href="QuickStart">with a single click.</a><br/> 
 			Very fast, completes in under 30 seconds.
 		</p>
     </div>
