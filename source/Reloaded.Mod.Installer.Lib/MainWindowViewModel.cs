@@ -41,12 +41,8 @@ public class MainWindowViewModel : ObservableObject
         // ReSharper restore InconsistentNaming
         
         // Add suffix if needed
-        var installSuffix = GetInstallSuffix();
-        if (!settings.IsManuallyOverwrittenLocation)
-        {
-            if (!string.IsNullOrEmpty(installSuffix))
-                settings.InstallLocation += " - " + installSuffix;
-        }
+        var protonTricksSuffix = GetProtontricksSuffix();
+        OverrideInstallLocationForProton(settings, protonTricksSuffix);
         
         // Check for existing installation
         if (Directory.Exists(settings.InstallLocation) && Directory.GetFiles(settings.InstallLocation).Length > 0)
@@ -92,8 +88,9 @@ public class MainWindowViewModel : ObservableObject
             var executablePath = Path.Combine(settings.InstallLocation, executableName);
             var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II.lnk");
 
-            if (!string.IsNullOrEmpty(installSuffix))
-                shortcutPath = Path.Combine(Path.GetDirectoryName(shortcutPath)!, "Reloaded-II - " + installSuffix + ".lnk");
+            // For Proton, create a shortcut up one folder above install location.
+            if (!string.IsNullOrEmpty(protonTricksSuffix))
+                shortcutPath = Path.Combine(Path.GetDirectoryName(settings.InstallLocation)!, "Reloaded-II - " + protonTricksSuffix + ".lnk");
             
             if (settings.CreateShortcut)
             {
@@ -130,6 +127,15 @@ public class MainWindowViewModel : ObservableObject
                               $"Message: {e.Message}\n" +
                               $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded", MB_OK);
         }
+    }
+    private static void OverrideInstallLocationForProton(Settings settings, string protonTricksSuffix)
+    {
+        if (settings.IsManuallyOverwrittenLocation) return;
+        if (string.IsNullOrEmpty(protonTricksSuffix)) return;
+
+        settings.InstallLocation += " - " + protonTricksSuffix;
+        var folderName = Path.GetFileName(settings.InstallLocation);
+        settings.InstallLocation = Path.Combine(GetHomeDirectoryOnProton(), folderName);
     }
 
     private static async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)
@@ -238,7 +244,7 @@ public class MainWindowViewModel : ObservableObject
     /// <summary>
     /// This suffix is appended to shortcut name and install folder.
     /// </summary>
-    private static string GetInstallSuffix()
+    private static string GetProtontricksSuffix()
     {
         try
         {
@@ -251,5 +257,21 @@ public class MainWindowViewModel : ObservableObject
         {
             return "";
         }
+    }
+    
+    /// <summary>
+    /// This suffix is appended to shortcut name and install folder.
+    /// </summary>
+    private static string GetHomeDirectoryOnProton()
+    {
+        var user = Environment.GetEnvironmentVariable("LOGNAME");
+        if (user != null) 
+            // TODO: This is a terrible hack.
+            return @"Z:\home\" + user;
+
+        Native.MessageBox(IntPtr.Zero, "Cannot determine username for proton installation.\n" +
+                                       "Please make sure that 'LOGNAME' environment variable is set.", 
+            "Error in Installing Reloaded", 0x0);
+        throw new Exception("Terminated because cannot find username.");
     }
 }
