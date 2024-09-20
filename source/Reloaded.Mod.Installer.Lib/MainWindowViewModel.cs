@@ -2,6 +2,7 @@ using System.IO.Compression;
 using System.Net.Http;
 using Windows.Win32.Security;
 using Windows.Win32.System.Threading;
+using Microsoft.Win32;
 using Reloaded.Mod.Installer.Lib.Utilities;
 using static Windows.Win32.PInvoke;
 using static Reloaded.Mod.Installer.DependencyInstaller.DependencyInstaller;
@@ -91,6 +92,13 @@ public class MainWindowViewModel : ObservableObject
 
             CurrentStepDescription = "All Set";
 
+            // On WINE, overwrite 
+            if (WineDetector.IsWine())
+            {
+                SetEnvironmentVariable("DOTNET_ROOT", "");
+                SetEnvironmentVariable("DOTNET_BUNDLE_EXTRACT_BASE_DIR", "");
+            }
+            
             if (settings.StartReloaded)
             {
                 // We're in an admin process; but we want to de-escalate as Reloaded-II is not
@@ -198,6 +206,20 @@ public class MainWindowViewModel : ObservableObject
             {
                 SaferCloseLevel(saferHandle);
             }
+        }
+    }
+    
+    private static void SetEnvironmentVariable(string name, string value)
+    {
+        using var key = Registry.CurrentUser.OpenSubKey("Environment", true);
+        if (key != null)
+        {
+            key.SetValue(name, value);
+            Console.WriteLine($"Environment variable '{name}' set to '{value}'");
+        }
+        else
+        {
+            Console.WriteLine("Failed to open Environment key in registry");
         }
     }
 }
