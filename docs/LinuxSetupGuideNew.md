@@ -46,6 +46,8 @@ This will install to your desktop:
 
 ![OnWine-InstallsToDesktop](./Images/OnWine-InstallsToDesktop.png)
 
+You can then start the game via the shortcut on your desktop, or from the start menu.
+
 !!! note "The Linux installer does not have a GUI"
 
     Installation may take a minute, please be patient.
