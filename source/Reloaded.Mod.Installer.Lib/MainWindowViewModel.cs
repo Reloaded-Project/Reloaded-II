@@ -40,6 +40,14 @@ public class MainWindowViewModel : ObservableObject
         const uint MB_ICONINFORMATION = 0x40;
         // ReSharper restore InconsistentNaming
         
+        // Add suffix if needed
+        var installSuffix = GetInstallSuffix();
+        if (!settings.IsManuallyOverwrittenLocation)
+        {
+            if (!string.IsNullOrEmpty(installSuffix))
+                settings.InstallLocation += " - " + installSuffix;
+        }
+        
         // Check for existing installation
         if (Directory.Exists(settings.InstallLocation) && Directory.GetFiles(settings.InstallLocation).Length > 0)
         {
@@ -84,6 +92,9 @@ public class MainWindowViewModel : ObservableObject
             var executablePath = Path.Combine(settings.InstallLocation, executableName);
             var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II.lnk");
 
+            if (!string.IsNullOrEmpty(installSuffix))
+                shortcutPath = Path.Combine(Path.GetDirectoryName(shortcutPath)!, "Reloaded-II - " + installSuffix + ".lnk");
+            
             if (settings.CreateShortcut)
             {
                 CurrentStepDescription = "Creating Shortcut";
@@ -221,6 +232,24 @@ public class MainWindowViewModel : ObservableObject
         else
         {
             Console.WriteLine("Failed to open Environment key in registry");
+        }
+    }
+
+    /// <summary>
+    /// This suffix is appended to shortcut name and install folder.
+    /// </summary>
+    private static string GetInstallSuffix()
+    {
+        try
+        {
+            // Note: Steam games are usually installed in a folder which is a friendly name
+            //       for the game. If the user is running in Protontricks, there's a high
+            //       chance that the folder will be named just right, e.g. 'Persona 5 Royal'.
+            return Path.GetFileName(Environment.GetEnvironmentVariable("STEAM_APP_PATH")) ?? string.Empty;
+        }
+        catch (Exception)
+        {
+            return "";
         }
     }
 }

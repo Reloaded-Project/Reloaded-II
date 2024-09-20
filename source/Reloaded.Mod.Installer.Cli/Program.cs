@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Reloaded.Mod.Installer.DependencyInstaller.IO;
 using Reloaded.Mod.Installer.Lib;
