@@ -1,6 +1,18 @@
 # Quick Start
 
+## Download Reloaded
+
+First you need to download Reloaded itself:
+
+- ***Windows***: [Run the Installer][windows-installer].
+
+- ***Linux***: Use the [Linux Setup Guide][linux-setup-guide].
+    - Come back once you're booted into Reloaded launcher.
+
+The program will install into your desktop by default.
+
 ## Add an Application
+
 First step to getting started with Reloaded is to add an Application you'll be modifying.  
 This can be found on the bottom left corner of the launcher, with the `+` button.  
 
@@ -42,3 +54,7 @@ Reloaded uses `.exe` name to determine which mods should automatically be assign
 
 If a mod does not show in the application, click the 3 gear button (`Manage Mods`).
 From there, select the mod that you have just extracted from the list and check your game on the list below.
+
+
+[windows-installer]: https://github.com/Reloaded-Project/Reloaded-II/releases/latest/download/Setup.exe
+[linux-setup-guide]: ./LinuxSetupGuideNew.md

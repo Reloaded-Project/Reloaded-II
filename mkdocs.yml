@@ -16,7 +16,11 @@ markdown_extensions:
   - tables
   - pymdownx.details
   - pymdownx.highlight
-  - pymdownx.superfences 
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tasklist
   - def_list
   - meta
@@ -26,8 +30,15 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+theme:
+  name: material
+  palette:
+    scheme: reloaded-slate
+  features:
+    - navigation.instant
 
 extra_css:
   - Custom/Stylesheets/extra.css
@@ -41,6 +52,18 @@ plugins:
         'PublishingMods.md': 'EnablingUpdateSupport.md'
         'InterModCommunication.md': 'DependencyInjection_HowItWork.md'
         'DependencyInjection.md': 'DependencyInjection_HowItWork.md'
+  - exclude-unused-files:
+      file_types_to_check: [ "psd", "7z", "kra" ]
+      file_types_override_mode: append
+      enabled: true
+  - exclude:
+      # Exclude the Theme's own files.
+      glob:
+        - Reloaded/Pages/*
+        - Reloaded/docs/*
+        - Reloaded/Readme.md
+        - Reloaded/LICENSE
+        - Reloaded/mkdocs.yml
 
 theme:
   name: material
@@ -56,7 +79,10 @@ nav:
   - For Users:
     - Quick Start: QuickStart.md
     - Frequently Asked Questions: FAQ.md
-    - Linux Setup Guide: LinuxSetupGuide.md
+    - Linux Guides:
+      - Linux Setup Guide: LinuxSetupGuideNew.md
+      - Linux Setup Guide (Extra): LinuxSetupGuideNewExtra.md
+      - Linux Setup Guide (Legacy): LinuxSetupGuide.md
     - Installing Mod Packs: InstallingModPacks.md
     - Advanced:
       - NuGet Sources: NuGetSources.md

@@ -1,3 +1,4 @@
+using Environment = Reloaded.Mod.Shared.Environment;
 namespace Reloaded.Mod.Launcher.Lib.Misc;
 
 /// <summary>
@@ -12,7 +13,7 @@ public static class CompatibilityDialogs
     public static bool WineShowLaunchDialog()
     {
         var loaderSettings = IoC.Get<LoaderConfig>();
-        if (loaderSettings.SkipWineLaunchWarning)
+        if (loaderSettings.SkipWineLaunchWarning || !Environment.RequiresWineLaunchDialog)
             return true;
 
         return Actions.ShowRunAppViaWineDialog();

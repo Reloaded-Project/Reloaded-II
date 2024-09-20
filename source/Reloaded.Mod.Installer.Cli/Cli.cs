@@ -49,7 +49,7 @@ public static class Cli
         Task.Run(() => model.InstallReloadedAsync(Settings)).Wait();
     }
 
-    private static void InstallInCli()
+    internal static void InstallInCli()
     {
         var model = new MainWindowViewModel();
         using var progressBar = SetupCliInstall("Installing (No GUI)", model);

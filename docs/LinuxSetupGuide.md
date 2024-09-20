@@ -1,4 +1,11 @@
-# Linux Setup Guide
+# Linux Setup Guide (Legacy)
+
+!!! info "This is the *legacy* setup guide."
+
+    This shows you how to run Reloaded in a setup that involves running the launcher via Wine
+    and games via Wine/Proton. This is a bit more flexible but can be a hassle to set up.
+
+    For a more streamlined guide, see [Linux Setup Guide (New)](LinuxSetupGuideNew.md).
 
 !!! help "Help Needed"
 
@@ -35,7 +42,7 @@ You can then download the Reloaded Installer (`Setup.exe`) [from the downloads p
 
     If the installer has issues, you can try running it without GUI `wine Setup.exe --nogui`.  
     
-!!! note 
+!!! note
 
     If you have the native version of .NET installed on your machine, it is possible that in some  
     cases the native version might be executed by Wine as opposed to the installed Windows version.  

@@ -1,1 +1,3 @@
 mkdocs-redirects
+mkdocs-exclude-unused-files
+mkdocs-exclude
