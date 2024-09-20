@@ -177,8 +177,30 @@ StartupWMClass=reloaded-ii.exe
     {
         windowsPath = windowsPath.Replace('\\', '/');
         windowsPath = windowsPath.Replace("Z:", "");
-        try { Process.Start($"chmod +x \"{windowsPath}\""); }
-        catch (Exception) { /* ignored */ }
+        var processInfo = new ProcessStartInfo
+        {
+            FileName = "cmd.exe",
+            Arguments = $"/c start Z:/bin/chmod +x \"{windowsPath}\"",
+            UseShellExecute = true,
+            CreateNoWindow = true
+        };
+        try 
+        { 
+            Process.Start(processInfo); 
+        }
+        catch (Exception) 
+        { 
+            // If the first attempt fails, try with the alternative path
+            processInfo.Arguments = $"/c start Z:/usr/bin/chmod +x \"{windowsPath}\"";
+            try 
+            { 
+                Process.Start(processInfo); 
+            }
+            catch (Exception) 
+            { 
+                // Both attempts failed
+            }
+        }
     }
 
     private static void OverrideInstallLocationForProton(Settings settings, string protonTricksSuffix, out string nativeInstallFolder, out string? userName)
