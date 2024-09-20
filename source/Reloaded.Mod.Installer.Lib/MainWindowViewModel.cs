@@ -1,14 +1,13 @@
 using System.IO.Compression;
 using System.Net.Http;
-using System.Security.Principal;
 using Windows.Win32.Security;
 using Windows.Win32.System.Threading;
+using Reloaded.Mod.Installer.Lib.Utilities;
 using static Windows.Win32.PInvoke;
 using static Reloaded.Mod.Installer.DependencyInstaller.DependencyInstaller;
-using MessageBox = System.Windows.MessageBox;
 using Path = System.IO.Path;
 
-namespace Reloaded.Mod.Installer;
+namespace Reloaded.Mod.Installer.Lib;
 
 public class MainWindowViewModel : ObservableObject
 {
@@ -35,13 +34,14 @@ public class MainWindowViewModel : ObservableObject
 
     public async Task InstallReloadedAsync(Settings settings)
     {
+        // ReSharper disable InconsistentNaming
+        const uint MB_OK = 0x0;
+        const uint MB_ICONINFORMATION = 0x40;
+        // ReSharper restore InconsistentNaming
+        
         // Check for existing installation
         if (Directory.Exists(settings.InstallLocation) && Directory.GetFiles(settings.InstallLocation).Length > 0)
         {
-            // ReSharper disable InconsistentNaming
-            const uint MB_OK = 0x0;
-            const uint MB_ICONINFORMATION = 0x40;
-            // ReSharper restore InconsistentNaming
             Native.MessageBox(IntPtr.Zero, $"An existing installation has been detected at:\n{settings.InstallLocation}\n\n" +
                                            $"To prevent data loss, installation will be aborted.\n" +
                                            $"If you wish to reinstall, delete or move the existing installation.", "Existing Installation", MB_OK | MB_ICONINFORMATION);
@@ -86,7 +86,7 @@ public class MainWindowViewModel : ObservableObject
             if (settings.CreateShortcut)
             {
                 CurrentStepDescription = "Creating Shortcut";
-                MakeShortcut(shortcutPath, executablePath);
+                NativeShellLink.MakeShortcut(shortcutPath, executablePath);
             }
 
             CurrentStepDescription = "All Set";
@@ -105,23 +105,11 @@ public class MainWindowViewModel : ObservableObject
         catch (Exception e)
         {
             IOEx.TryDeleteDirectory(settings.InstallLocation);
-            MessageBox.Show("There was an error in installing Reloaded.\n" +
-                            $"Feel free to open an issue on github.com/Reloaded-Project/Reloaded-II if you require support.\n" +
-                            $"Message: {e.Message}\n" +
-                            $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded");
+            Native.MessageBox(IntPtr.Zero, "There was an error in installing Reloaded.\n" +
+                              $"Feel free to open an issue on github.com/Reloaded-Project/Reloaded-II if you require support.\n" +
+                              $"Message: {e.Message}\n" +
+                              $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded", MB_OK);
         }
-    }
-
-    private void MakeShortcut(string shortcutPath, string executablePath)
-    {
-        var shell = (IShellLink)new ShellLink();
-        shell.SetDescription($"Reloaded II");
-        shell.SetPath($"\"{executablePath}\"");
-        shell.SetWorkingDirectory(Path.GetDirectoryName(executablePath));
-
-        // Save Shortcut
-        var file = (IPersistFile)shell;
-        file.Save(shortcutPath, false);
     }
 
     private static async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)

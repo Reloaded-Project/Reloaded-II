@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>NET472;net8.0-windows</TargetFrameworks>
+        <LangVersion>preview</LangVersion>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AssemblyName>Setup-Linux</AssemblyName>
+        <Nullable>enable</Nullable>
+        <ApplicationIcon>appicon.ico</ApplicationIcon>
+        <DebugType>portable</DebugType>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0-windows'))">
+        <PublishAot>true</PublishAot>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="appicon.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
+        <PackageReference Include="ConsoleProgressBar" Version="2.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Reloaded.Mod.Installer.Lib\Reloaded.Mod.Installer.Lib.csproj" />
+    </ItemGroup>
+
+</Project>

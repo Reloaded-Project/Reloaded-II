@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>NET472;net8.0-windows</TargetFrameworks>
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0-windows'))">
+        <PublishAot>true</PublishAot>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <WeaverConfiguration>
+            <Weavers>
+                <PropertyChanged />
+            </Weavers>
+        </WeaverConfiguration>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="appicon.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.106">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Reloaded.Mod.Installer.DependencyInstaller\Reloaded.Mod.Installer.DependencyInstaller.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="NativeMethods.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="System.Net.Http" />
+    </ItemGroup>
+
+</Project>

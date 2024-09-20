@@ -29,7 +29,7 @@
     <PackageReference Include="DeepCloner" Version="0.10.4" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
     <PackageReference Include="Mapster" Version="7.3.0" />
-    <PackageReference Include="NetCoreInstallChecker" Version="3.0.2" />
+    <PackageReference Include="NetCoreInstallChecker" Version="3.0.4" />
     <PackageReference Include="NuGet.Packaging" Version="6.3.0" />
     <PackageReference Include="NuGet.Packaging.Core" Version="6.3.0" />
     <PackageReference Include="NuGet.Protocol" Version="6.3.0" />

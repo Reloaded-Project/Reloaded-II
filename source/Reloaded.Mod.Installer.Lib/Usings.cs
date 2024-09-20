@@ -1,4 +1,3 @@
-global using HandyControl.Controls;
 global using Reloaded.Mod.Installer.DependencyInstaller;
 global using Reloaded.Mod.Installer.DependencyInstaller.IO;
 global using System;
@@ -10,4 +9,3 @@ global using System.Runtime.InteropServices.ComTypes;
 global using System.Text;
 global using System.Threading;
 global using System.Threading.Tasks;
-global using System.Windows;

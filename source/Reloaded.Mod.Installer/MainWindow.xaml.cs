@@ -1,3 +1,5 @@
+using Reloaded.Mod.Installer.Lib;
+
 namespace Reloaded.Mod.Installer;
 
 /// <summary>
@@ -17,9 +19,12 @@ public partial class MainWindow : GlowWindow
     
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        InstallTask = ViewModel.InstallReloadedAsync(Program.Settings);
+        InstallTask = ViewModel.InstallReloadedAsync(Cli.Cli.Settings);
         await InstallTask.ConfigureAwait(false);
-        Application.Current.Shutdown(0);
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            Application.Current.Shutdown(0);
+        });
     }
 
     private async void OnClosing(object sender, CancelEventArgs e)

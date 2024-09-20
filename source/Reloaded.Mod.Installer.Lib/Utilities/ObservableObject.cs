@@ -1,4 +1,4 @@
-namespace Reloaded.Mod.Installer.Utilities;
+namespace Reloaded.Mod.Installer.Lib.Utilities;
 
 /// <summary>
 /// An abstract class that implements the bare minimum of the INotifyPropertyChanged interface.
