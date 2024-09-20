@@ -105,6 +105,7 @@ public class MainWindowViewModel : ObservableObject
             // from host permanently.
             if (WineDetector.IsWine())
             {
+                ShowDotFilesInWine();
                 SetEnvironmentVariable("DOTNET_ROOT", "%ProgramFiles%\\dotnet");
                 SetEnvironmentVariable("DOTNET_BUNDLE_EXTRACT_BASE_DIR", "%TEMP%\\.net");
             }
@@ -279,5 +280,22 @@ public class MainWindowViewModel : ObservableObject
                                        "Please make sure that 'LOGNAME' environment variable is set.", 
             "Error in Installing Reloaded", 0x0);
         throw new Exception("Terminated because cannot find username.");
+    }
+
+    private static void ShowDotFilesInWine()
+    {
+        try
+        {
+            using RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Wine", true)!;
+            // Set the ShowDotFiles value to "Y"
+            key.SetValue("ShowDotFiles", "Y", RegistryValueKind.String);
+            Console.WriteLine("Successfully set ShowDotFiles to Y in the Wine registry.");
+        }
+        catch (Exception)
+        {
+            Native.MessageBox(IntPtr.Zero, "Failed to auto-unhide dot files in Wine.\n" +
+                                           "You'll need to enter `winecfg` and check `show dot files` manually yourself.", 
+                "Error in Configuring WINE", 0x0);
+        }
     }
 }
