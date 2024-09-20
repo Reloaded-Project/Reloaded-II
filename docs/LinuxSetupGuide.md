@@ -1,5 +1,9 @@
 # Linux Setup Guide
 
+!!! info "This is the *legacy* setup guide."
+
+    This shows you how to run Reloaded in a setup that involves.
+
 !!! help "Help Needed"
 
     This documentation page could be improved, it only covers the barebones information.  
@@ -35,7 +39,7 @@ You can then download the Reloaded Installer (`Setup.exe`) [from the downloads p
 
     If the installer has issues, you can try running it without GUI `wine Setup.exe --nogui`.  
     
-!!! note 
+!!! note
 
     If you have the native version of .NET installed on your machine, it is possible that in some  
     cases the native version might be executed by Wine as opposed to the installed Windows version.  

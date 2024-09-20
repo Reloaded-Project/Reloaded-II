@@ -36,7 +36,7 @@ A delta update is an update that only requires the user to download the code and
 ./Publish.ps1 -MakeDelta true -UseNuGetDelta true -NuGetPackageId reloaded.sharedlib.hooks -NuGetFeedUrl http://packages.sewer56.moe:5000/v3/index.json
 ```
 
-See [Delta Updates](./PublishingMods/#delta-updates) on more information about the topic.
+See [Delta Updates](./CreatingRelease.md#add-delta-update) on more information about the topic.
 
 ### Publishing as ReadyToRun
 

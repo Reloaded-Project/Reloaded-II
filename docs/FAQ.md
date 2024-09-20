@@ -82,7 +82,7 @@ Anything labelled as `accepted` is up for grabs by anyone, unless assigned to a 
 Just make sure to follow the coding style in the existing projects and try to write good code. 
 If the code isn't up to scruff, you might be asked to make changes.
 
-Instructions for building Reloaded, and some of the details of its internal workings are also [available as part of the documentation](./index.md#reloaded-for-potential-contributors)
+Instructions for building Reloaded, and some of the details of its internal workings are also [available as part of the documentation](./BuildingReloaded.md)
 
 **Documentation, especially one that benefits the end user is just as valuable as any code.**
 
