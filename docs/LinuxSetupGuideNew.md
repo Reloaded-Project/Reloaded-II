@@ -8,10 +8,6 @@
     This is a generic guide for any game. For more specific info, consider looking up
     a ***game specific guide***.
 
-!!! help "Help Needed"
-
-    This documentation page could be improved, contributions would be very welcome.
-
 ## Install and Run your game via Steam
 
 If you have a Steam game, install it and run it at least once.
