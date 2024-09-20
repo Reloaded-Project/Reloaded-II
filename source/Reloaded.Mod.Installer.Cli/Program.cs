@@ -12,6 +12,10 @@ public class Program
     
     public static void Main(string[] args)
     {
+        Console.WriteLine("Reloaded-II CLI Installer\n" +
+                          "Mode flags:\n" +
+                          "--dependenciesOnly: Don't install Reloaded, just install runtimes.");
+        
         if (!TryRunCli(args))
             InstallInCli();
     }

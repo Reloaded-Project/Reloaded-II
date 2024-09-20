@@ -92,11 +92,12 @@ public class MainWindowViewModel : ObservableObject
 
             CurrentStepDescription = "All Set";
 
-            // On WINE, overwrite 
+            // On WINE, overwrite environment variables that may be inherited
+            // from host permanently.
             if (WineDetector.IsWine())
             {
-                SetEnvironmentVariable("DOTNET_ROOT", "");
-                SetEnvironmentVariable("DOTNET_BUNDLE_EXTRACT_BASE_DIR", "");
+                SetEnvironmentVariable("DOTNET_ROOT", "%ProgramFiles%\\dotnet");
+                SetEnvironmentVariable("DOTNET_BUNDLE_EXTRACT_BASE_DIR", "%TEMP%\\.net");
             }
             
             if (settings.StartReloaded)
