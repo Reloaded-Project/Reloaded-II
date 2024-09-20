@@ -1,6 +1,58 @@
 ***If you are viewing on GitHub, you can find the downloads at the bottom of this post.***
 
-## Changelog (1.27.13)
+***1.27.14: NativeAOT Installer for Linux & Install Documentation***
+
+The general docs have been updated with easier to access install instructions; outside of that, it's all improvements for Linux.
+
+## Improved Linux Install Experience
+
+[Includes a new, more streamlined guide](https://reloaded-project.github.io/Reloaded-II/LinuxSetupGuideNew/)
+
+![image](https://github.com/user-attachments/assets/14e64b13-32d5-432d-b4eb-aefbbf95f53d)
+
+This update improves the CLI Installer for Wine (Linux) added in the previous release.
+
+### Faster Install Time
+
+Installing on Linux is now slightly faster, thanks to `NativeAOT` and a smaller `.exe` size.
+
+### Reduced Installer Size
+
+Reduced size of the CLI installer to 7.8MB (from 70MB) as a result of the above.
+
+### Fixed Reloaded Not Booting with native .NET SDK is Installed
+
+The Reloaded CLI installer no longer requires `DOTNET_ROOT` to be set when the native Linux SDK is installed.
+
+In addition, the installer will automatically override `DOTNET_ROOT` and `DOTNET_BUNDLE_EXTRACT_BASE_DIR` in the registry, making sure that you can just doubleclick the `Reloaded-II` exe and it'll work 'just fine'. No terminya~l needed.
+
+### Unique Install Locations for Protontricks
+
+![image](https://github.com/user-attachments/assets/b3eac014-43e1-46c7-8118-e0a82a5795d4)
+
+If you install Reloaded via Protontricks, you'll now get a unique install path for each game; allowing you to isolate your Reloaded installations for cleanliness.
+
+### Automatic Shortcut Creation
+
+Installing via `Protontricks` will now automatically create shortcut to launch the program.
+As seen above. This means you can easily launch it after installation.
+
+It (should) even show up in your start menu.
+
+### Installer Informs you of Install Location
+
+The installer will now inform you it installed on the desktop upon finishing.
+
+### Skip Wine Launch Dialog
+
+![DisableLaunchFromWine](https://github.com/user-attachments/assets/706781a1-8a25-4b58-a835-a6b21ddeb650)
+
+If Reloaded is ran from `protontricks`, the `Wine Launch Dialog` will now be auto-skipped.
+It will be presumed you're running in the correct environment for the given game.
+
+------------------------------------
+
+## Previous Changelog (1.27.13)
 
 *Miscellaneous Installer Improvements*
 
@@ -312,7 +364,7 @@ If you are a programmer, I should hopefully have a ['Specification'](https://rel
 (Below this text, on GitHub)
 
 `Setup.exe`: This is a 1 click installer for Windows.
-`Setup-Linux.exe`: This is a version of `Setup.exe` for easier use in WINE / Proton.
+`Setup-Linux.exe`: This is a version of `Setup.exe` for easier use in WINE / Proton. Use [Linux Setup Guide](https://reloaded-project.github.io/Reloaded-II/LinuxSetupGuideNew/).
 `Release.zip`: For people who prefer to install manually without an installer.
 `Tools.zip`: Tools for mod authors and developers.
 
