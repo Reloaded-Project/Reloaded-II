@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -12,6 +12,11 @@
     <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
     <StartupObject>Reloaded.Mod.Installer.Program</StartupObject>
     <DebugType>portable</DebugType>
+    <_SuppressWpfTrimError>true</_SuppressWpfTrimError>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0-windows'))">
+    <PublishAot>true</PublishAot>
   </PropertyGroup>
 
   <PropertyGroup>
