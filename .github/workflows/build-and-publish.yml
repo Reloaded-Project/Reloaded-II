@@ -76,9 +76,6 @@ jobs:
     - name: Get Dotnet Info
       run: dotnet --info
 
-    - name: Test
-      run: dotnet test -c Release ./source/Reloaded.Mod.Loader.Tests/Reloaded.Mod.Loader.Tests.csproj
-
     - name: Publish
       run: |
         if ($env:IS_RELEASE -eq 'true') 
@@ -173,7 +170,10 @@ jobs:
         # A file, directory or wildcard pattern that describes what to upload
         path: ${{ env.TOOLS_PATH }}
         retention-days: 0
-    
+
+    - name: Test
+      run: dotnet test -c Release ./source/Reloaded.Mod.Loader.Tests/Reloaded.Mod.Loader.Tests.csproj
+
     - name: Upload to GitHub Releases
       uses: softprops/action-gh-release@v2
       if: env.IS_RELEASE == 'true'
