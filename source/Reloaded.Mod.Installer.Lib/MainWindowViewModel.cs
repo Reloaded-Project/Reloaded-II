@@ -132,10 +132,7 @@ public class MainWindowViewModel : ObservableObject
     {
         if (settings.IsManuallyOverwrittenLocation) return;
         if (string.IsNullOrEmpty(protonTricksSuffix)) return;
-
-        settings.InstallLocation += " - " + protonTricksSuffix;
-        var folderName = Path.GetFileName(settings.InstallLocation);
-        settings.InstallLocation = Path.Combine(GetHomeDirectoryOnProton(), folderName);
+        settings.InstallLocation = Path.Combine(GetHomeDirectoryOnProton(), $"Reloaded-II - {protonTricksSuffix}");
     }
 
     private static async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)
