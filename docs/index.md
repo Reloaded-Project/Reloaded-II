@@ -21,6 +21,7 @@ hide:
 </div>
 
 It is an ***extensible*** and ***modular*** framework that allows you to create your own mods for any game.  
+
 For installation instructions, see [Quick Start Guide](./QuickStart.md).
 
 ## Mod Loader

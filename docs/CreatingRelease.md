@@ -6,7 +6,9 @@
     *even if you don't plan to ship updates*. Doing so will allow your mod to be included in [Mod Packs](./InstallingModPacks.md) [(How to Create Them)](./CreatingModPacks.md).  
 
 Before uploading a mod, you should first create a `Release`.  
+
 A `Release` consists of 2 files:  
+
 - Compressed version of your mod.  
 - JSON text file containing update information.  
 
