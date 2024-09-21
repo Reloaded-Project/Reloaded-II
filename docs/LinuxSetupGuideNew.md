@@ -18,7 +18,7 @@ If you have a non-Steam game, add it to the Steam launcher and launch it from St
 
 ## Install Protontricks
 
-If you are on a *Steam Deck* or have *FlatPak* pre-installed on your Linux distribution,
+If you are on a ***Steam Deck*** or have ***Flatpak*** pre-installed on your Linux distribution,
 use the [Installing Protontricks via FlatPak][protontricks-flatpak] section.
 
 Otherwise refer to the [Protontricks] documentation for installation info.
@@ -73,6 +73,14 @@ If you wish to auto-inject Reloaded while starting your game via Steam without
 having to go through the launcher, try using the [Using ASI Loader](./LinuxSetupGuide.md#using-asi-loader) step of the legacy setup guide.
 
 -----------------------------
+
+## Notes
+
+!!! note "You can install Reloaded-II via regular `Wine`"
+
+    However it's recommended you install via [Protontricks] if you plan to run your
+    game via Proton. It will make your life much easier; as installing in Wine and running
+    via Proton involves additional steps, outlined in the [Legacy Install Guide](./LinuxSetupGuide.md).
 
 ## Credits
 
