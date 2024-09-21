@@ -12,7 +12,7 @@
 
 If you have a Steam game, install it and run it at least once.
 
-If you have a non-Steam game, add it to the launcher and launch it from Steam.
+If you have a non-Steam game, add it to the Steam launcher and launch it from Steam first.
 
 !!! info "This is required for [Protontricks] to discover the game."
 
