@@ -65,7 +65,7 @@ You can then start the game via the shortcut on your desktop, or from the start 
 Installing via `Protontricks` should have created a shortcut on your desktop.
 Provided you don't move the game folder or Reloaded folder, this shortcut should 'just work'.
 
-You are done.
+You are done. See [Quick Start] for further 'Getting Started' steps.
 
 ## [Optional] Starting Reloaded with your Game via Steam
 
@@ -82,3 +82,4 @@ having to go through the launcher, try using the [Using ASI Loader](./LinuxSetup
 [Protontricks]: https://github.com/Matoking/protontricks
 [Setup-Linux.exe]: https://github.com/Reloaded-Project/Reloaded-II/releases/latest/download/Setup-Linux.exe
 [protontricks-flatpak]: ./LinuxSetupGuideNewExtra.md#installing-protontricks-via-flatpak
+[Quick Start]: ./QuickStart.md
