@@ -42,8 +42,9 @@ Paste these lines into a `terminal` window, and press `enter`.
 
 ## Credits
 
-- `Deck Screenshots`: rudiger
+- `Deck Screenshots`: [rudiger]
 
+[rudiger]: https://x.com/rudiger__tw
 [Discover]: https://apps.kde.org/en-gb/discover/
 [Flatseal]: https://github.com/tchx84/Flatseal
 [Protontricks]: https://github.com/Matoking/protontricks

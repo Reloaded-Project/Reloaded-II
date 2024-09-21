@@ -76,8 +76,9 @@ having to go through the launcher, try using the [Using ASI Loader](./LinuxSetup
 
 ## Credits
 
-- `Deck Screenshots`: rudiger
+- `Deck Screenshots`: [rudiger]
 
+[rudiger]: https://x.com/rudiger__tw
 [Protontricks]: https://github.com/Matoking/protontricks
 [Setup-Linux.exe]: https://github.com/Reloaded-Project/Reloaded-II/releases/latest/download/Setup-Linux.exe
 [protontricks-flatpak]: ./LinuxSetupGuideNewExtra.md#installing-protontricks-via-flatpak
