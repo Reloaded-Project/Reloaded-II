@@ -27,13 +27,12 @@
   <ItemGroup>
     <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="DeepCloner" Version="0.10.4" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.66" />
     <PackageReference Include="Mapster" Version="7.3.0" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.4" />
-    <PackageReference Include="NuGet.Packaging" Version="6.3.0" />
-    <PackageReference Include="NuGet.Packaging.Core" Version="6.3.0" />
-    <PackageReference Include="NuGet.Protocol" Version="6.3.0" />
-    <PackageReference Include="Polly" Version="8.3.1" />
+    <PackageReference Include="NuGet.Packaging" Version="6.11.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.7.1" />
+    <PackageReference Include="Polly" Version="8.4.2" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -41,10 +40,13 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
-    <PackageReference Include="ReverseMarkdown" Version="3.23.1" />
-    <PackageReference Include="Sewer56.Update" Version="4.0.1" />
+    <PackageReference Include="ReverseMarkdown" Version="4.6.0" />
+    <PackageReference Include="Sewer56.Update" Version="4.0.2" />
     <PackageReference Include="Sewer56.Update.Misc" Version="1.1.0" />
-    <PackageReference Include="Sewer56.Update.Resolvers.GitHub" Version="1.5.1" />
+    <PackageReference Include="Sewer56.Update.Resolvers.GitHub" Version="1.5.2" />
+    <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>
