@@ -25,9 +25,7 @@ Scroll through the left column of apps in [Flatseal] until you're able to find a
 
 Scroll down to the "Filesystem" section:
 
-1. Enable `All user files`.
-2. Under `Other files`, add a new entry for "/run/media".
-    - And any other locations you may have Steam titles installed.
+1. Enable `All system files`.
 
 Close Flatseal.
 
@@ -39,6 +37,13 @@ echo "alias protontricks-launch='flatpak run --command=protontricks-launch com.g
 ```
 
 Paste these lines into a `terminal` window, and press `enter`.
+
+!!! note "We enabled full filesystem access for simplicity"
+
+    You can be more granular if you know what you're doing, but for simplicity 
+    we've simply enabled full filesystem access.
+
+    The installer requires access to `/home` and protontricks needs access to Steam library folders.
 
 ## Credits
 
