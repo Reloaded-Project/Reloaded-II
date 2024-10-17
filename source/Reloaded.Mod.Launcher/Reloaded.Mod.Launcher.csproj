@@ -18,6 +18,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <NoWarn>CS0067</NoWarn>
       <DebugType>portable</DebugType>
+      <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 	
   <ItemGroup>

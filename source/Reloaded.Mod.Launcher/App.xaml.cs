@@ -68,6 +68,11 @@ public partial class App : Application
         Resources.MergedDictionaries.Add(themeSelector);
         themeSelector.NewFileSet += OnThemeChanged;
         Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri($"{launcherFolder}\\Theme\\Helpers\\BackwardsCompatibilityHelpers.xaml", UriKind.RelativeOrAbsolute) });
+        
+        // Hack: Disable client side decoration (glow) on Linux
+        // This reduces flicker on XWayland.
+        if (Environment.IsWine)
+            new DictionaryResourceManipulator(Application.Current.Resources).Set("EnableGlow", false);
     }
 
     private void OnThemeChanged()
