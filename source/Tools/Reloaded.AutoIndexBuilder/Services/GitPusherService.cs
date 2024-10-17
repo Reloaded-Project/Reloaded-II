@@ -111,6 +111,7 @@ public class GitPusherService
 
         try
         {
+            RunGitCommand("reflog expire --all --expire=now", _settings.GitRepoPath);
             RunGitCommand("gc", _settings.GitRepoPath);
             _logger.Information("Executed 'git gc' successfully.");
         }
