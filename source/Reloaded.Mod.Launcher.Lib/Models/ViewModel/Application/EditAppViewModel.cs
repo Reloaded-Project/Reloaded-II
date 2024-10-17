@@ -119,18 +119,45 @@ public class EditAppViewModel : ObservableObject
     /// </summary>
     public void SetNewExecutablePath()
     {
-        var result = SelectEXEFile();
-        if (string.IsNullOrEmpty(result))
+        var newFilePath = SelectEXEFile();
+        if (string.IsNullOrEmpty(newFilePath))
             return;
 
-        var isMsStore = TryUnprotectGamePassGame.TryIt(result);
-        result = SymlinkResolver.GetFinalPathName(result);
-        if (!Path.GetFileName(Application.Config.AppLocation).Equals(Path.GetFileName(result), StringComparison.OrdinalIgnoreCase))
+        var isMsStore = TryUnprotectGamePassGame.TryIt(newFilePath);
+        newFilePath = SymlinkResolver.GetFinalPathName(newFilePath);
+        if (!Path.GetFileName(Application.Config.AppLocation)
+                .Equals(Path.GetFileName(newFilePath), StringComparison.OrdinalIgnoreCase))
             Actions.DisplayMessagebox(Resources.AddAppWarningTitle.Get(), Resources.AddAppWarning.Get());
 
-        Application.Config.AppLocation = result;
+        // Update the AppLocation to the new executable path
+        Application.Config.AppLocation = newFilePath;
+        Application.Config.WorkingDirectory = CalculateNewRelativeDirectory(newFilePath);
+
+        // Handle MS store DRM and update.
         AddApplicationCommand.HandleAddedMsStoreBinary(isMsStore, Application.Path, Application.Config);
         Application.Save();
+    }
+
+    private string CalculateNewRelativeDirectory(string newFilePath)
+    {
+        // Store old configuration values
+        var oldWorkingDirectory = Application.Config.WorkingDirectory;
+        var oldAppLocation = Application.Config.AppLocation;
+        var exeParent = Path.GetDirectoryName(newFilePath)!;
+
+        try
+        {
+            var relativePath = Path.GetRelativePath(oldWorkingDirectory, oldAppLocation);
+            // +1 to remove final backslash.
+            var newWorkingDirectory = newFilePath.Substring(0, newFilePath.Length - (relativePath.Length + 1));
+            return Directory.Exists(newWorkingDirectory) 
+                ? newWorkingDirectory
+                : exeParent;
+        }
+        catch (Exception)
+        {
+            return exeParent;
+        }
     }
 
     /// <summary>
