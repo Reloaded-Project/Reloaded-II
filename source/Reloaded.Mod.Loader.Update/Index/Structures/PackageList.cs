@@ -23,6 +23,17 @@ public struct PackageList
         };
     }
 
+    /// <summary/>
+    public void SortByIdAndThenName()
+    {
+        Packages.Sort((x, y) =>
+        {
+            var nameComparison = string.Compare(x.Name, y.Name, StringComparison.Ordinal);
+            // If names are the same, compare by Id, otherwise by name.
+            return nameComparison == 0 ? string.Compare(x.Id, y.Id, StringComparison.Ordinal) : nameComparison;
+        });
+    }
+
     /// <summary>
     /// Removes the info that is not needed for dependency resolution.
     /// </summary>

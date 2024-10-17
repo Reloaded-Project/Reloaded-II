@@ -89,6 +89,7 @@ public class IndexBuilder
         {
             await WriteToDiskAsync(index);
             var allPackages = await index.GetPackagesFromAllSourcesAsync();
+            allPackages.SortByIdAndThenName();
             await WriteToDiskAsync(index.BaseUrl, allPackages, Routes.AllPackages);
             allPackages.RemoveNonDependencyInfo();
             await WriteToDiskAsync(index.BaseUrl, allPackages, Routes.AllDependencies);
@@ -134,6 +135,7 @@ public class IndexBuilder
         var relativePath = Routes.Build.GetNuGetPackageListPath(indexSourceEntry.NuGetUrl!);
         var path = Path.Combine(outputFolder, relativePath);
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        packagesList.SortByIdAndThenName();
         var bytes = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(packagesList, Serializer.Options));
         await File.WriteAllBytesAsync(path, bytes);
         index.Sources[Routes.Source.GetNuGetIndexKey(indexSourceEntry.NuGetUrl!)] = relativePath;
@@ -152,6 +154,7 @@ public class IndexBuilder
         var relativePath = Routes.Build.GetGameBananaPackageListPath(indexSourceEntry.GameBananaId!.Value);
         var fullPath = Path.Combine(outputFolder, relativePath);
         Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+        packagesList.SortByIdAndThenName();
         var bytes = Compression.Compress(JsonSerializer.SerializeToUtf8Bytes(packagesList, Serializer.Options));
         await File.WriteAllBytesAsync(fullPath, bytes);
         index.Sources[Routes.Source.GetGameBananaIndex(indexSourceEntry.GameBananaId!.Value)] = relativePath;
