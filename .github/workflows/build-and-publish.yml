@@ -72,11 +72,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
-
-    - name: Setup Dotnet SDK (9.0)
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '9.0.x'
     
     - name: Get Dotnet Info
       run: dotnet --info
