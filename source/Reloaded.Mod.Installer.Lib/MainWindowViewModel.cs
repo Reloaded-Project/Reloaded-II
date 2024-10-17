@@ -146,7 +146,7 @@ public class MainWindowViewModel : ObservableObject
 """
 [Desktop Entry]
 Name=Reloaded-II ({SUFFIX})
-Exec=protontricks-launch --appid {APPID} "{NATIVEPATH}"
+Exec=bash -ic 'protontricks-launch --appid {APPID} "{NATIVEPATH}"'
 Type=Application
 StartupNotify=true
 Comment=Reloaded II installation for {SUFFIX}
