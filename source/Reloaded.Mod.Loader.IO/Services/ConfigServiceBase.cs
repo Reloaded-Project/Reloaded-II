@@ -188,7 +188,7 @@ public abstract class ConfigServiceBase<TConfigType> : ObservableObject where TC
         // Otherwise iterate over all possible subfolders.
         // This is a bit inefficient, but with nested mods, it's the only way (without creating a whole tree of nodes).
         // Can rack up upwards of 20ms in huge mod directories.
-        foreach (var item in ItemsByFolder)
+        foreach (var item in ItemsByFolder.ToArray())
         {
             var modFolder = item.Key;
             if (!Path.EndsInDirectorySeparator(modFolder))
