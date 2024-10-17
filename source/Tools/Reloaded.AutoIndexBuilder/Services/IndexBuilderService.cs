@@ -141,6 +141,6 @@ public class IndexBuilderService : IJob
         });
 
         // Push to git.
-        _gitPusherService.Push();
+        _gitPusherService.Push(source.FriendlyName);
     }
 }

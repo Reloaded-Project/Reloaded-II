@@ -1,7 +1,3 @@
-using Credentials = LibGit2Sharp.Credentials;
-using Repository = LibGit2Sharp.Repository;
-using Signature = LibGit2Sharp.Signature;
-
 namespace Reloaded.AutoIndexBuilder.Services;
 
 public class GitPusherService
@@ -48,52 +44,54 @@ public class GitPusherService
             var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
             LibGit2Sharp.Commands.Fetch(repo, remote.Name, refSpecs, options, "");
         }
-        
-        // Reset
+
+        // Reset to the latest commit from the tracked branch
         var trackedBranch = repo.Head.TrackedBranch;
-        repo.Reset(ResetMode.Hard, trackedBranch.Commits.OrderByDescending(x => x.Committer.When).First());
+        if (trackedBranch == null)
+        {
+            _logger.Error("No tracked branch found.");
+            throw new InvalidOperationException("No tracked branch found.");
+        }
+
+        repo.Reset(ResetMode.Hard, trackedBranch.Tip);
     }
 
     /// <summary>
     /// Pushes the current repository to git.
     /// </summary>
-    public void Push()
+    public void Push(string friendlyName)
     {
         using var repo = Repository;
 
-        // Select branch
-        var branch = repo.Head;
-
-        // Reset soft to the first commit
-        repo.Reset(ResetMode.Soft, branch.Commits.OrderBy(x => x.Committer.When).First());
-
-        // Stage all changes (git add -A)
+        // Stage all changes (equivalent to 'git add -A')
         LibGit2Sharp.Commands.Stage(repo, "*");
 
         // Check if there are staged changes
-        var status = repo.RetrieveStatus();
-        if (status.IsDirty)
+        var changes = repo.Diff.Compare<TreeChanges>(repo.Head.Tip.Tree, DiffTargets.Index);
+        if (changes.Any())
         {
-            // Amend the previous commit instead of creating a new one
-            var commitOptions = new CommitOptions { AmendPreviousCommit = true };
-            repo.Commit("[Bot] Update Search Index", Signature, Signature, commitOptions);
+            // Create a new commit
+            repo.Commit($"[Bot] Updated: {friendlyName}", Signature, Signature);
+            _logger.Information($"Created a new commit for {friendlyName}.");
+
+            // Push to remote
+            var pushOptions = new PushOptions
+            {
+                CredentialsProvider = GetCredentials
+            };
+
+            var branch = repo.Head;
+            var remote = repo.Network.Remotes.First();
+            repo.Network.Push(remote, $"+{branch.CanonicalName}:{branch.UpstreamBranchCanonicalName}", pushOptions);
+            _logger.Information("Pushed changes to remote repository.");
+            PerformMaintenanceIfNeeded();
         }
         else
         {
-            _logger.Information("No changes to commit.");
+            _logger.Information("No changes to commit. Nothing to push.");
         }
-
-        // Push to remote
-        var pushOptions = new PushOptions
-        {
-            CredentialsProvider = GetCredentials
-        };
-
-        var remote = repo.Network.Remotes.First();
-        repo.Network.Push(remote, $"+{branch.CanonicalName}:{branch.UpstreamBranchCanonicalName}", pushOptions);
-        PerformMaintenanceIfNeeded();
     }
-    
+
     /// <summary>
     /// Performs git gc if a day has passed since the last maintenance.
     /// </summary>
@@ -173,5 +171,10 @@ public class GitPusherService
         }
     }
 
-    private Credentials GetCredentials(string url, string usernameFromUrl, SupportedCredentialTypes types) => new UsernamePasswordCredentials() { Username = _settings.GitUserName, Password = _settings.GitPassword };
+    private Credentials GetCredentials(string url, string usernameFromUrl, SupportedCredentialTypes types) => 
+        new UsernamePasswordCredentials() 
+        { 
+            Username = _settings.GitUserName, 
+            Password = _settings.GitPassword 
+        };
 }
