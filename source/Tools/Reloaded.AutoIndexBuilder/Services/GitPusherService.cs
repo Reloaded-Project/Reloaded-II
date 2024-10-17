@@ -70,6 +70,10 @@ public class GitPusherService
         var changes = repo.Diff.Compare<TreeChanges>(repo.Head.Tip.Tree, DiffTargets.Index);
         if (changes.Any())
         {
+            // Reset branch to first commit, we don't want git history.
+            var branch = repo.Head;
+            repo.Reset(ResetMode.Soft, branch.Commits.OrderBy(x => x.Committer.When).First());
+
             // Create a new commit
             repo.Commit($"[Bot] Updated: {friendlyName}", Signature, Signature);
             _logger.Information($"Created a new commit for {friendlyName}.");
@@ -80,7 +84,6 @@ public class GitPusherService
                 CredentialsProvider = GetCredentials
             };
 
-            var branch = repo.Head;
             var remote = repo.Network.Remotes.First();
             repo.Network.Push(remote, $"+{branch.CanonicalName}:{branch.UpstreamBranchCanonicalName}", pushOptions);
             _logger.Information("Pushed changes to remote repository.");
