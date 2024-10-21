@@ -63,15 +63,13 @@ public class GameBananaMod
     public static async Task<List<GameBananaMod>> GetByNameAllCategoriesAsync(string? searchText, int gameId, int page, int take)
     {
         var tasks = new Task<List<GameBananaMod>>[3];
-        tasks[0] = GetByNameAsync(searchText, gameId, page, take, CategoryMod);
-        tasks[1] = GetByNameAsync(searchText, gameId, page, take, CategorySound);
-        tasks[2] = GetByNameAsync(searchText, gameId, page, take, CategoryWip);
-        await Task.WhenAll(tasks);
+        var result1 = await GetByNameAsync(searchText, gameId, page, take, CategoryMod);
+        var result2 = await GetByNameAsync(searchText, gameId, page, take, CategorySound);
+        var result3 = await GetByNameAsync(searchText, gameId, page, take, CategoryWip);
 
-        var result = tasks[2].Result;
-        result.AddRange(tasks[1].Result);
-        result.AddRange(tasks[0].Result);
-        return result;
+        result1.AddRange(result2);
+        result1.AddRange(result3);
+        return result1;
     }
 
     /// <summary>

@@ -149,7 +149,7 @@ public class IndexBuilder
         var provider = new GameBananaPackageProvider((int)indexSourceEntry.GameBananaId!.Value);
 
         var packagesList = PackageList.Create();
-        await SearchForAllResults(take, provider, packagesList, 8);
+        await SearchForAllResults(take, provider, packagesList, 1);
 
         var relativePath = Routes.Build.GetGameBananaPackageListPath(indexSourceEntry.GameBananaId!.Value);
         var fullPath = Path.Combine(outputFolder, relativePath);

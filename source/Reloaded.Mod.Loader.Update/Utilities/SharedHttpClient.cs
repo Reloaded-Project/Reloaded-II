@@ -55,9 +55,10 @@ public static class SharedHttpClient
 
             _uncachedAndCompressed = new(new HttpClientHandler()
             {
-                AutomaticDecompression = DecompressionMethods.All
+                AutomaticDecompression = DecompressionMethods.All,
             });
 
+            _uncachedAndCompressed.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows; U; MSIE 9.0; Windows NT 9.0; en-US)");
             return _uncachedAndCompressed;
         }
     }
