@@ -5,7 +5,7 @@
 /// </summary>
 public class Settings
 {
-    public string InstallLocation { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II");
+    public string InstallLocation { get; set; } = Path.Combine(GetSafeInstallPath(), "Reloaded-II");
     public bool IsManuallyOverwrittenLocation { get; set; }
     public bool CreateShortcut { get; set; } = true;
     public bool HideNonErrorGuiMessages { get; set; } = false;
@@ -29,5 +29,19 @@ public class Settings
         }
 
         return settings;
+    }
+
+    private static string GetSafeInstallPath()
+    {
+        var installPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+        if (installPath.Contains("OneDrive"))
+        {
+            var driveRoot = Path.GetPathRoot(Environment.SystemDirectory);
+            if (driveRoot == null)
+                // if for some reason we can't determine the root, fallback to Desktop
+                return installPath;
+            return driveRoot;
+        }
+        return installPath;
     }
 }
