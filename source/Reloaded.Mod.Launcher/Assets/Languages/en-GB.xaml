@@ -716,4 +716,8 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="DownloadPackagesPrevious">Previous</sys:String>
     <sys:String x:Key="DownloadPackagesNext">Next</sys:String>
 
+    <!-- Update 1.28.4: Delete Mod Dialog -->
+    <sys:String x:Key="DeleteModDialogTitle">Delete Mod</sys:String>
+    <sys:String x:Key="DeleteModDialogDescription">{0}&#x0a;will be deleted.</sys:String>
+
 </ResourceDictionary>

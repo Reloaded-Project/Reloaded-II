@@ -20,7 +20,15 @@ public class DeleteModCommand : WithCanExecuteChanged, ICommand
     /// <inheritdoc />
     public void Execute(object? parameter)
     {
-        // Delete folder contents.
+        var deleteConfirm = Actions.DisplayMessagebox.Invoke(Resources.DeleteModDialogTitle.Get(), string.Format(Resources.DeleteModDialogDescription.Get(), _modTuple.Config.ModName), new Actions.DisplayMessageBoxParams()
+        {
+            StartupLocation = Actions.WindowStartupLocation.CenterScreen,
+            Type = Actions.MessageBoxType.OkCancel
+        });
+
+        if (!deleteConfirm)
+            return;
+        
         var directory = Path.GetDirectoryName(_modTuple!.Path) ?? throw new InvalidOperationException(Resources.ErrorFailedToGetDirectoryOfMod.Get());
         Directory.Delete(directory, true);
     }
