@@ -62,7 +62,7 @@ public class MakeShortcutCommand : WithCanExecuteChanged, ICommand
 
         // Save the shortcut.
         var file = (IPersistFile) shell;
-        var link = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{_config?.Config.AppName} (Reloaded).lnk");
+        var link = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), $"{_config?.Config.AppName.SanitizeFileName()} (Reloaded).lnk");
         file.Save(link, false);
 
         Actions.DisplayMessagebox?.Invoke(Resources.AddAppShortcutCreatedTitle.Get(), 
