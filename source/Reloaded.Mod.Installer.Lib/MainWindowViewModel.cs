@@ -136,7 +136,9 @@ public class MainWindowViewModel : ObservableObject
             IOEx.TryDeleteDirectory(settings.InstallLocation);
             Native.MessageBox(IntPtr.Zero, "There was an error in installing Reloaded.\n" +
                               $"Feel free to open an issue on github.com/Reloaded-Project/Reloaded-II if you require support.\n" +
+                              $"Exception: {e}\n" +
                               $"Message: {e.Message}\n" +
+                              $"Inner Exception: {e.InnerException}\n" +
                               $"Stack Trace: {e.StackTrace}", "Error in Installing Reloaded", MB_OK);
         }
     }
@@ -163,16 +165,32 @@ StartupWMClass=reloaded-ii.exe
         desktopFile = desktopFile.Replace("{NATIVEPATH}", nativeExecutablePath);
         shortcutPath = shortcutPath.Replace(".lnk", ".desktop");
         shortcutPath = SanitizeFileName(shortcutPath);
-        
-        File.WriteAllText(shortcutPath, desktopFile);
 
-        // Write `.desktop` file that integrates into shell.
-        var shellShortcutPath = $@"Z:\home\{userName}\.local\share\applications\{Path.GetFileName(shortcutPath)}";
-        File.WriteAllText(shellShortcutPath, desktopFile);
-        
-        // Mark as executable.
-        LinuxTryMarkAsExecutable(shortcutPath);
-        LinuxTryMarkAsExecutable(shellShortcutPath);
+        try
+        {
+            File.WriteAllText(shortcutPath, desktopFile);
+
+            // Write `.desktop` file that integrates into shell.
+            var shellShortcutPath = $@"Z:\home\{userName}\.local\share\applications\{Path.GetFileName(shortcutPath)}";
+            File.WriteAllText(shellShortcutPath, desktopFile);
+
+            // Mark as executable.
+            LinuxTryMarkAsExecutable(shortcutPath);
+            LinuxTryMarkAsExecutable(shellShortcutPath);
+        }
+        catch (FileNotFoundException e)
+        {
+            ThrowFailedToCreateShortcut(e);
+        }
+        catch (DirectoryNotFoundException e)
+        {
+            ThrowFailedToCreateShortcut(e);
+        }
+        void ThrowFailedToCreateShortcut(Exception e)
+        {
+            throw new Exception("Failed to create Reloaded shortcut.\n" +
+                                "If you have `protontricks` installed via `flatpak`, you may need to give it FileSystem permission `flatpak override --user --filesystem=host com.github.Matoking.protontricks`", e);
+        }
     }
 
     private static void LinuxTryMarkAsExecutable(string windowsPath)
