@@ -8,12 +8,12 @@ If you are updating from version less than 1.28, install the following first
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
 [Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.28.3).
 
-***1.28.4: Miscellaneous Bug Fixes***
+***1.28.5: More Miscellaneous Bug Fixes***
 
-- @dreamsyntax added [a confirmation dialog for mod deletes](https://github.com/Reloaded-Project/Reloaded-II/pull/499)
-- @dreamsyntax sanitized the [Application name when creating a shortcut](https://github.com/Reloaded-Project/Reloaded-II/pull/499), which should fix making shortcuts for Metaphor.
-- And just in case I (Sewer) sanitized the path for Proton shortcuts.
-- If the installer fails to create a shortcut on Linux, it will hint to the user that their `protontricks` permissions may be incorrect.
+- @dreamsyntax added [a fallback to `C:/Reloaded`](https://github.com/Reloaded-Project/Reloaded-II/pull/504) if the user uses OneDrive for their desktop.
+- @dreamsyntax updated the code to [download Visual C++ 2022 instead of 2019](https://github.com/Reloaded-Project/Reloaded-II/pull/507), if missing.
+- I (Sewer) extended the fallback to `C:/Reloaded` to also apply if the user has non-ASCII characters as that causes problems with some games.
+- Fixed an accidental breaking change from yesterday that caused Proton shortcuts to not be correctly placed.
 
 ------------------------------------
 
