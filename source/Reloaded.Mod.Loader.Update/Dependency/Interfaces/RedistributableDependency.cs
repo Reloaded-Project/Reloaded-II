@@ -26,9 +26,9 @@ public class RedistributableDependency : IDependency
         switch (Architecture)
         {
             case Architecture.Amd64:
-                return Task.FromResult(new []{ "https://aka.ms/vs/16/release/VC_redist.x64.exe" });
+                return Task.FromResult(new []{ "https://aka.ms/vs/17/release/vc_redist.x64.exe" });
             case Architecture.x86:
-                return Task.FromResult(new [] { "https://aka.ms/vs/16/release/VC_redist.x86.exe" });
+                return Task.FromResult(new [] { "https://aka.ms/vs/17/release/vc_redist.x86.exe" });
             default:
                 throw new NotSupportedException();
         }
