@@ -1,4 +1,5 @@
-﻿namespace Reloaded.Mod.Installer.Lib;
+﻿using System.Linq;
+namespace Reloaded.Mod.Installer.Lib;
 
 /// <summary>
 ///     Settings for the installer.
@@ -34,7 +35,8 @@ public class Settings
     private static string GetSafeInstallPath()
     {
         var installPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-        if (installPath.Contains("OneDrive"))
+        bool hasNonAsciiChars = installPath.Any(c => c > 127);
+        if (installPath.Contains("OneDrive") || hasNonAsciiChars)
         {
             var driveRoot = Path.GetPathRoot(Environment.SystemDirectory);
             if (driveRoot == null)
