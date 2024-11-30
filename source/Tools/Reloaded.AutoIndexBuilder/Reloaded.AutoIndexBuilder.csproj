@@ -10,10 +10,10 @@
 
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="3.7.2" />
-    <PackageReference Include="FluentValidation" Version="11.2.0" />
-    <PackageReference Include="LibGit2Sharp" Version="0.27.2" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="LibGit2Sharp" Version="0.30.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Quartz" Version="3.4.0" />
     <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.4.0" />
     <PackageReference Include="Serilog" Version="2.11.0" />

@@ -13,12 +13,12 @@
 
   <ItemGroup>
     <PackageReference Include="dll_syringe.Net.Sys" Version="0.16.0" />
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.25" PrivateAssets="All" />
     <PackageReference Include="IoC.Container" Version="1.3.8" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="2.0.0-beta.0" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="PhotoSauce.NativeCodecs.Libjxl" Version="0.6.1-ci222723" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Management" Version="6.0.0" />
