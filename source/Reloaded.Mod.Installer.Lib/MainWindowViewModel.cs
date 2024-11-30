@@ -89,13 +89,13 @@ public class MainWindowViewModel : ObservableObject
                 s => { CurrentStepDescription = s; }, CancellationToken.Token);
 
             var executableName = IntPtr.Size == 8 ? "Reloaded-II.exe" : "Reloaded-II32.exe";
-            var executablePath = Path.Combine(settings.InstallLocation, executableName);
-            var nativeExecutablePath = Path.Combine(nativeInstallFolder, executableName);
-            var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II.lnk");
+            var executablePath = CombineWithForwardSlash(settings.InstallLocation, executableName);
+            var nativeExecutablePath = CombineWithForwardSlash(nativeInstallFolder, executableName);
+            var shortcutPath = CombineWithForwardSlash(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Reloaded-II.lnk");
 
             // For Proton/Wine, create a shortcut up one folder above install location.
             if (!string.IsNullOrEmpty(protonTricksSuffix))
-                shortcutPath = Path.Combine(Path.GetDirectoryName(settings.InstallLocation)!, "Reloaded-II - " + protonTricksSuffix + ".lnk");
+                shortcutPath = CombineWithForwardSlash(Path.GetDirectoryName(settings.InstallLocation)!, "Reloaded-II - " + SanitizeFileName(protonTricksSuffix) + ".lnk");
             
             if (settings.CreateShortcut)
             {
@@ -161,17 +161,18 @@ StartupWMClass=reloaded-ii.exe
         desktopFile = desktopFile.Replace("{USER}", userName);
         desktopFile = desktopFile.Replace("{APPID}", Environment.GetEnvironmentVariable("STEAM_APPID"));
         desktopFile = desktopFile.Replace("{SUFFIX}", protonTricksSuffix);
-        desktopFile = desktopFile.Replace("{RELOADEDFOLDER}", Path.GetDirectoryName(nativeExecutablePath)!.Replace('\\', '/'));
+        desktopFile = desktopFile.Replace("{RELOADEDFOLDER}", Path.GetDirectoryName(nativeExecutablePath)!);
         desktopFile = desktopFile.Replace("{NATIVEPATH}", nativeExecutablePath);
+        desktopFile = desktopFile.Replace('\\', '/');
+        shortcutPath = shortcutPath.Replace('\\', '/');
         shortcutPath = shortcutPath.Replace(".lnk", ".desktop");
-        shortcutPath = SanitizeFileName(shortcutPath);
 
         try
         {
             File.WriteAllText(shortcutPath, desktopFile);
 
             // Write `.desktop` file that integrates into shell.
-            var shellShortcutPath = $@"Z:\home\{userName}\.local\share\applications\{Path.GetFileName(shortcutPath)}";
+            var shellShortcutPath = $@"Z:/home/{userName}/.local/share/applications/{SanitizeFileName(Path.GetFileName(shortcutPath))}";
             File.WriteAllText(shellShortcutPath, desktopFile);
 
             // Mark as executable.
@@ -233,8 +234,8 @@ StartupWMClass=reloaded-ii.exe
         var desktopDir = GetHomeDesktopDirectoryOnProton(out nativeInstallFolder, out userName);
         var folderName = $"Reloaded-II - {protonTricksSuffix}";
 
-        settings.InstallLocation = Path.Combine(desktopDir, folderName);
-        nativeInstallFolder = Path.Combine(nativeInstallFolder, folderName);
+        settings.InstallLocation = CombineWithForwardSlash(desktopDir, folderName);
+        nativeInstallFolder = CombineWithForwardSlash(nativeInstallFolder, folderName);
     }
 
     private static async Task DownloadReloadedAsync(string downloadLocation, IProgress<double> downloadProgress)
@@ -310,7 +311,6 @@ StartupWMClass=reloaded-ii.exe
                     CloseHandle(pi.hThread);
                 }
             }
-
         }
         catch
         {
@@ -351,7 +351,7 @@ StartupWMClass=reloaded-ii.exe
             // Note: Steam games are usually installed in a folder which is a friendly name
             //       for the game. If the user is running in Protontricks, there's a high
             //       chance that the folder will be named just right, e.g. 'Persona 5 Royal'.
-            return Path.GetFileName(Environment.GetEnvironmentVariable("STEAM_APP_PATH")) ?? string.Empty;
+            return SanitizeFileName(Path.GetFileName(Environment.GetEnvironmentVariable("STEAM_APP_PATH")) ?? string.Empty);
         }
         catch (Exception)
         {
@@ -369,7 +369,7 @@ StartupWMClass=reloaded-ii.exe
         {
             // TODO: This is a terrible hack.
             linuxPath = $"/home/{userName}/Desktop";
-            return @$"Z:\home\{userName}\Desktop";
+            return @$"Z:/home/{userName}/Desktop";
         }
 
         Native.MessageBox(IntPtr.Zero, "Cannot determine username for proton installation.\n" +
@@ -414,4 +414,6 @@ StartupWMClass=reloaded-ii.exe
         (char)21, (char)22, (char)23, (char)24, (char)25, (char)26, (char)27, (char)28, (char)29, (char)30,
         (char)31, ':', '*', '?', '\\', '/'
     ];
+
+    private static string CombineWithForwardSlash(string a, string b) => Path.Combine(a, b).Replace('\\', '/');
 }
