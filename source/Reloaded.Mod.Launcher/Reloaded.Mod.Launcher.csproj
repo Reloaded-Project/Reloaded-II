@@ -65,14 +65,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="gong-wpf-dragdrop" Version="3.1.1" />
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.25" PrivateAssets="All" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
     <PackageReference Include="HandyControl" Version="3.2.0-reloaded-1.1.0" />
     <PackageReference Include="HandyControl.Lang.en" Version="3.3.0" />
     <PackageReference Include="Humanizer.Core" Version="2.14.1" />
     <PackageReference Include="Markdig.Wpf" Version="0.5.0.1" />
     <PackageReference Include="Ninject" Version="3.3.6" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.4.1">
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Reloaded.Input" Version="2.2.0" />

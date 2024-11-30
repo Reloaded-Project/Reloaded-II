@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.25" PrivateAssets="All" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.4" />
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
   </ItemGroup>
