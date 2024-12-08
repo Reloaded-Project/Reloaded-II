@@ -118,11 +118,13 @@
 
                     <!-- Mod Properties -->
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         Foreground="{DynamicResource SecondaryTextBrush}"
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogName}"
                          HorizontalAlignment="Stretch" />
 
                     <TextBox Text="{Binding Path=SelectedModTuple.Config.ModAuthor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Foreground="{DynamicResource SecondaryTextBrush}"
                          Margin="{DynamicResource CommonItemVerticalMargin}" 
                          ToolTip="{DynamicResource CreateModDialogAuthor}"
                          HorizontalAlignment="Stretch" />

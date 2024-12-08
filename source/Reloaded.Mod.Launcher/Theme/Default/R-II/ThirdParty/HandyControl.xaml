@@ -32,7 +32,7 @@
     <Color x:Key="ReverseTextColor">#212121</Color>
     <Color x:Key="TextIconColor">White</Color>
 
-    <!-- <Color x:Key="BorderColor">#3f3f46</Color> -->
+    <Color x:Key="BorderColor">#ff0000</Color>
     <Color x:Key="SecondaryBorderColor">#00000000</Color>
     <!-- <Color x:Key="BackgroundColor">#eeeeee</Color> -->
     <Color x:Key="RegionColor">#1c1c1c</Color>

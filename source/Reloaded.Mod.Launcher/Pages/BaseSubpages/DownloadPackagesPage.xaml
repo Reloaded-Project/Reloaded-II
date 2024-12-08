@@ -104,6 +104,7 @@
             <!-- Source -->
             <ComboBox Grid.Column="0"
                       Margin="{DynamicResource CommonItemHorizontalMarginSmaller}"
+                      Foreground="{DynamicResource SecondaryTextBrush}"
                       IsSynchronizedWithCurrentItem="True"
                       SelectedItem="{Binding CurrentPackageProvider, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                       ItemsSource="{Binding PackageProviders, UpdateSourceTrigger=PropertyChanged}"
