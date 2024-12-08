@@ -153,7 +153,7 @@
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Foreground" Value="{DynamicResource BorderColorBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="">
@@ -184,7 +184,7 @@
 
         <Setter Property="Focusable" Value="True"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="{DynamicResource BorderColorBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="BorderThickness" Value="0"/>
