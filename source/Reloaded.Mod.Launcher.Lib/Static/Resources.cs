@@ -212,4 +212,5 @@ public static class Resources
     // Update 1.28.6: Problematic Path Warnings
     public static IDictionaryResource<string> ProblematicPathTitle { get; set; }
     public static IDictionaryResource<string> ProblematicPathAppDescription { get; set; }
+    public static IDictionaryResource<string> ProblematicPathReloadedDescription { get; set; }
 }
