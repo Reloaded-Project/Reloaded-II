@@ -213,4 +213,5 @@ public static class Resources
     public static IDictionaryResource<string> ProblematicPathTitle { get; set; }
     public static IDictionaryResource<string> ProblematicPathAppDescription { get; set; }
     public static IDictionaryResource<string> ProblematicPathReloadedDescription { get; set; }
+    public static IDictionaryResource<string> ProblematicPathModsDescription { get; set; }
 }

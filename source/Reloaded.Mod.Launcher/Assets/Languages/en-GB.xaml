@@ -724,5 +724,6 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="ProblematicPathTitle">Potentially Problematic Path Detected</sys:String>
     <sys:String x:Key="ProblematicPathAppDescription">The application you selected is in a folder that is managed by OneDrive or contains non-ASCII (special) characters.&#x0a;It is recommended to move the application to a different path, such as "C:\Games\".&#x0a;Using the application in an unsupported path may result in mods not working.&#x0a;&#x0a;Press OK to add the application anyway.</sys:String>
     <sys:String x:Key="ProblematicPathReloadedDescription">Reloaded-II has detected it is installed in a folder that is managed by OneDrive or contains non-ASCII (special) characters.&#x0a;It is recommended to move your Reloaded-II folder to a different path, such as "C:\Reloaded-II\".&#x0a;Keeping Reloaded-II in an unsupported path may result in mods not working.</sys:String>
+    <sys:String x:Key="ProblematicPathModsDescription">Reloaded-II has detected your mods folder is managed by OneDrive or contains non-ASCII (special) characters.&#x0a;It is recommended to move your mods folder to a different path.&#x0a;Keeping mods in an unsupported path may result in problems running mods.</sys:String>
 
 </ResourceDictionary>
