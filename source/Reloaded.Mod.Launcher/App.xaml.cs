@@ -39,13 +39,43 @@ public partial class App : Application
         StartProfileOptimization();
         PrepareWebRequests();
 
+        // Need to construct MainWindow before invoking any dialog, otherwise Shutdown will be called on closing the dialog
         var window = new MainWindow();
+
+        // Warn if OneDrive or NonAsciiChars detected in Reloaded-II directory
+        bool reloadedPathHasNonAsciiChars = AppContext.BaseDirectory.Any(c => c > 127);
+        if (AppContext.BaseDirectory.Contains("OneDrive") || reloadedPathHasNonAsciiChars)
+        {
+            Actions.DisplayMessagebox.Invoke(Lib.Static.Resources.ProblematicPathTitle.Get(), Lib.Static.Resources.ProblematicPathReloadedDescription.Get(), new Actions.DisplayMessageBoxParams()
+            {
+                StartupLocation = Actions.WindowStartupLocation.CenterScreen,
+                Type = Actions.MessageBoxType.Ok
+            });
+        }
+        else // We only do this check if the Reloaded-II directory check passed
+        {
+            // Warn if OneDrive or NonAsciiChars detected in Mods directory
+            var modsDirectory = Lib.IoC.Get<LoaderConfig>().GetModConfigDirectory();
+            if (modsDirectory != null)
+            {
+                bool modsDirectoryPathHasNonAsciiChars = modsDirectory.Any(c => c > 127);
+                if (modsDirectory.Contains("OneDrive") || modsDirectoryPathHasNonAsciiChars)
+                {
+                    Actions.DisplayMessagebox.Invoke(Lib.Static.Resources.ProblematicPathTitle.Get(), Lib.Static.Resources.ProblematicPathModsDescription.Get(), new Actions.DisplayMessageBoxParams()
+                    {
+                        StartupLocation = Actions.WindowStartupLocation.CenterScreen,
+                        Type = Actions.MessageBoxType.Ok
+                    });
+                }
+            }
+        }
+
         window.ShowDialog();
     }
 
     private void SetupResources()
     {
-        var launcherFolder= AppContext.BaseDirectory;
+        var launcherFolder = AppContext.BaseDirectory;
         var languageSelector = new XamlFileSelector($"{launcherFolder}\\Assets\\Languages");
         var themeSelector    = new XamlFileSelector($"{launcherFolder}\\Theme");
         
