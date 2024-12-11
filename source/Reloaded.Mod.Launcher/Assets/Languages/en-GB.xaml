@@ -719,5 +719,9 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <!-- Update 1.28.4: Delete Mod Dialog -->
     <sys:String x:Key="DeleteModDialogTitle">Delete Mod</sys:String>
     <sys:String x:Key="DeleteModDialogDescription">{0}&#x0a;will be deleted.</sys:String>
+    
+    <!-- Update 1.28.6: Problematic Path Warnings -->
+    <sys:String x:Key="ProblematicPathTitle">Potentially Problematic Path Detected</sys:String>
+    <sys:String x:Key="ProblematicPathAppDescription">The application you selected is in a folder that is managed by OneDrive or contains non-ASCII (special) characters.&#x0a;It is recommended to move the application to a different path, such as "C:\Games\".&#x0a;Using the application in an unsupported path may result in mods not working.&#x0a;&#x0a;Press OK to add the application anyway.</sys:String>
 
 </ResourceDictionary>

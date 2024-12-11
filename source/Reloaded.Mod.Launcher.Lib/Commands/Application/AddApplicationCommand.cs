@@ -62,6 +62,23 @@ public class AddApplicationCommand : ICommand
         try { exePath = SymlinkResolver.GetFinalPathName(exePath); }
         catch (Exception e) { Errors.HandleException(e, Resources.ErrorAddApplicationCantReadSymlink.Get()); }
 
+        // Warn if OneDrive or NonAsciiChars detected in Game Path
+        bool hasNonAsciiChars = exePath.Any(c => c > 127);
+        if (exePath.Contains("OneDrive") || hasNonAsciiChars)
+        {
+            var confirmAddAnyway = Actions.DisplayMessagebox.Invoke(Resources.ProblematicPathTitle.Get(), Resources.ProblematicPathAppDescription.Get(), new Actions.DisplayMessageBoxParams()
+            {
+                StartupLocation = Actions.WindowStartupLocation.CenterScreen,
+                Type = Actions.MessageBoxType.OkCancel
+            });
+
+            if (!confirmAddAnyway)
+            {
+                param.ResultCreatedApplication = false;
+                return;
+            }
+        }
+
         var isMsStore = TryUnprotectGamePassGame.TryIt(exePath);
         var appId = ApplicationConfig.AliasAppId(Path.GetFileName(exePath).ToLower());
         var config = new ApplicationConfig(appId, GetProductName(exePath), exePath, Path.GetDirectoryName(exePath));

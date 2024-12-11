@@ -208,4 +208,8 @@ public static class Resources
     // Update 1.28.4: Delete Mod Dialog
     public static IDictionaryResource<string> DeleteModDialogTitle { get; set; }
     public static IDictionaryResource<string> DeleteModDialogDescription { get; set; }
+
+    // Update 1.28.6: Problematic Path Warnings
+    public static IDictionaryResource<string> ProblematicPathTitle { get; set; }
+    public static IDictionaryResource<string> ProblematicPathAppDescription { get; set; }
 }
