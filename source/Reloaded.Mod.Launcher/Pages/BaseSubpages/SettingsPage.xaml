@@ -101,7 +101,7 @@
                                HorizontalAlignment="Center"
                                TextWrapping="Wrap"
                                FontSize="{DynamicResource FontSizeLarge}"
-                               Style="{DynamicResource RIIDefaultTextBlock}"
+                               Style="{DynamicResource TextblockWithColourChange}"
                                Margin="{DynamicResource CommonItemVerticalMargin}"/>
 
                 <!-- Settings -->
