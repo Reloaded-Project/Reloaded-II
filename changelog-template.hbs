@@ -8,12 +8,35 @@ If you are updating from version less than 1.28, install the following first
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
 [Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.28.3).
 
-***1.28.5: More Miscellaneous Bug Fixes***
+# 1.28.6: Path/Location Warnings & Minor Theme Adjustment 
 
-- @dreamsyntax added [a fallback to `C:/Reloaded`](https://github.com/Reloaded-Project/Reloaded-II/pull/504) if the user uses OneDrive for their desktop.
-- @dreamsyntax updated the code to [download Visual C++ 2022 instead of 2019](https://github.com/Reloaded-Project/Reloaded-II/pull/507), if missing.
-- I (Sewer) extended the fallback to `C:/Reloaded` to also apply if the user has non-ASCII characters as that causes problems with some games.
-- Fixed an accidental breaking change from yesterday that caused Proton shortcuts to not be correctly placed.
+- @dreamsyntax added [warnings for when Reloaded and/or the `Mods` folder are placed in OneDrive](https://github.com/Reloaded-Project/Reloaded-II/pull/518), or are placed in a special path.
+
+![image](https://github.com/user-attachments/assets/7ad44f76-8565-4684-9d03-33cb6fd1dde3)
+
+![image](https://github.com/user-attachments/assets/f9d3460c-1f6e-4bad-bf9f-a98040fbc8d5)
+
+OneDrive you want to avoid for performance reasons.
+Special paths you want to avoid because some games don't support them well. Some games may fail to load custom assets out of the mod folders; Reloaded now warns about this indiscriminately.
+
+- @dreamsyntax added [a warning for when a game is places in a path with a special folder](https://github.com/Reloaded-Project/Reloaded-II/pull/516).
+
+![image](https://github.com/user-attachments/assets/a3c0ff36-1231-4149-92f2-e96564ff7417)
+
+Same as above. Sometimes people download old games through 'mysterious ways', place them in a special location and try to mod them before trying even an unmodded game. This way they'll hopefully know that the path may be a problem.
+
+- @dreamsyntax made [a small adjustment on the UI colours](https://github.com/Reloaded-Project/Reloaded-II/issues/500).
+
+Before: 
+
+![image](https://github.com/user-attachments/assets/753085f5-ad64-4a6b-81d5-d7e9990eca3c)
+
+After:
+
+![image](https://github.com/user-attachments/assets/378730d5-f92c-4525-a2b3-738db59060b1)
+
+In the interest of accessibility, and people using monitors with interesting contrast ratios; the following adjustment above was made.
+The Reloaded theme was originally made on a cheap TN panel; however for some IPS displays and beyond, this change makes a lot of sense.
 
 ------------------------------------
 
