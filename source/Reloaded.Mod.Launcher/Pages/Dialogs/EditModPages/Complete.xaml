@@ -1,24 +1,28 @@
-﻿<default:ReloadedPage x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages.Complete"
-              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-              xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages"
-              xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
-              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-              mc:Ignorable="d" 
-              Width="Auto"
-              Height="Auto"
-              Title="Special">
+﻿<default:ReloadedPage
+    x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages.Complete"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+    xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs.EditModPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Special"
+    Width="Auto"
+    Height="Auto"
+    mc:Ignorable="d">
 
     <Grid x:Name="Grid" DataContext="{Binding Path=ViewModel, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}">
 
         <Grid.Resources>
             <ResourceDictionary>
-                <!-- Sort the mod list -->
-                <CollectionViewSource x:Key="SortedApplications" Source="{Binding Applications, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True">
+                <!--  Sort the mod list  -->
+                <CollectionViewSource
+                    x:Key="SortedApplications"
+                    IsLiveSortingRequested="True"
+                    Source="{Binding Applications, UpdateSourceTrigger=PropertyChanged}">
                     <CollectionViewSource.SortDescriptions>
-                        <componentModel:SortDescription PropertyName="Generic.AppName"/>
+                        <componentModel:SortDescription PropertyName="Generic.AppId" />
                     </CollectionViewSource.SortDescriptions>
                 </CollectionViewSource>
             </ResourceDictionary>
@@ -26,46 +30,77 @@
 
         <StackPanel>
 
-            <TextBlock Text="{DynamicResource EditModAppsDescription}" Style="{DynamicResource DefaultTextBlock}" Margin="{DynamicResource CommonItemVerticalMargin}"
-                       HorizontalAlignment="Center" />
+            <TextBlock
+                Margin="{DynamicResource CommonItemVerticalMargin}"
+                HorizontalAlignment="Center"
+                Style="{DynamicResource DefaultTextBlock}"
+                Text="{DynamicResource EditModAppsDescription}" />
 
-            <TextBox Text="{Binding ModsFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Style="{DynamicResource TextboxWithPlaceholder}"
-                     Tag="{DynamicResource ModManagerSearchApps}"
-                     Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                     TextChanged="AppsFilter_TextChanged"/>
+            <TextBox
+                Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                Style="{DynamicResource TextboxWithPlaceholder}"
+                Tag="{DynamicResource ModManagerSearchApps}"
+                Text="{Binding ModsFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextChanged="AppsFilter_TextChanged" />
 
-            <ListView ItemsSource="{Binding Source={StaticResource SortedApplications}}"
-                                          Margin="{DynamicResource CommonItemVerticalMarginSmall}"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Stretch"
-                                          VerticalContentAlignment="Top"
-                                          MinWidth="500"
-                                          Height="150">
+            <ListView
+                Height="150"
+                MinWidth="500"
+                Margin="{DynamicResource CommonItemVerticalMarginSmall}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Top"
+                ItemsSource="{Binding Source={StaticResource SortedApplications}}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                          VerticalAlignment="Center" 
-                                                          HorizontalAlignment="Center"
-                                                          Style="{DynamicResource DefaultCheckBox}" 
-                                                          Height="{DynamicResource ListEntryCheckboxHeightSmall}"/>
-
-                            <TextBlock Text="{Binding Generic.AppName, UpdateSourceTrigger=PropertyChanged}" 
-                                                           VerticalAlignment="Center" 
-                                                           HorizontalAlignment="Center" 
-                                                           Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                            <CheckBox
+                                Height="{DynamicResource ListEntryCheckboxHeightSmall}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{DynamicResource DefaultCheckBox}" />
+                            <TextBlock
+                                Margin="{DynamicResource ListEntryItemMarginSmall}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Text">
+                                            <Setter.Value>
+                                                <MultiBinding StringFormat="{}{0} ({1})">
+                                                    <Binding Path="Generic.AppName" />
+                                                    <Binding Path="Generic.AppId" />
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Generic.AppName, UpdateSourceTrigger=PropertyChanged}" Value="">
+                                                <Setter Property="Text" Value="{Binding Generic.AppId, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
 
-            <CheckBox IsChecked="{Binding Config.IsUniversalMod}" HorizontalAlignment="Left" Content="{DynamicResource EditModUniversalMod}" ToolTip="{DynamicResource EditModUniversalModDescription}" 
-                      Margin="{DynamicResource CommonItemVerticalMarginSmaller}" />
+            <CheckBox
+                Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                HorizontalAlignment="Left"
+                Content="{DynamicResource EditModUniversalMod}"
+                IsChecked="{Binding Config.IsUniversalMod}"
+                ToolTip="{DynamicResource EditModUniversalModDescription}" />
 
-            <CheckBox IsChecked="{Binding Config.IsLibrary}" HorizontalAlignment="Left" Content="{DynamicResource EditModLibrary}" ToolTip="{DynamicResource EditModLibraryDescription}" 
-                      Margin="{DynamicResource CommonItemVerticalMarginSmaller}" />
+            <CheckBox
+                Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                HorizontalAlignment="Left"
+                Content="{DynamicResource EditModLibrary}"
+                IsChecked="{Binding Config.IsLibrary}"
+                ToolTip="{DynamicResource EditModLibraryDescription}" />
 
         </StackPanel>
 
