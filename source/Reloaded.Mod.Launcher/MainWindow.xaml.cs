@@ -26,6 +26,11 @@ public partial class MainWindow : ReloadedWindow
         // Bind other models.
         Lib.IoC.BindToConstant((WPF.Theme.Default.WindowViewModel)DataContext);// Controls window properties.
         Lib.IoC.BindToConstant(this);
+
+        // Allow DragDrop across entire app by using a transparent Border to
+        // capture mouse events first. MouseEnter will fire after DragDrop is finished.
+        this.MouseEnter += (sender, args) => { this.Border_DragDropCapturer.IsHitTestVisible = false; };
+        this.MouseLeave += (sender, args) => { this.Border_DragDropCapturer.IsHitTestVisible = true; };
     }
 
     private void InstallMod_DragOver(object sender, DragEventArgs e)
