@@ -8,6 +8,12 @@ If you are updating from version less than 1.28, install the following first
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
 [Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.28.3).
 
+# 1.28.7: Fix Crash on Load Ordering with Keyboard/Controller
+
+Moving a mod that was already at the end of the list further down (out of bounds) led to a crash.
+
+This was somehow overlooked by everyone for years; it's fixed now.
+
 # 1.28.6: Path/Location Warnings & Minor Theme Adjustment 
 
 - @dreamsyntax added [warnings for when Reloaded and/or the `Mods` folder are placed in OneDrive](https://github.com/Reloaded-Project/Reloaded-II/pull/518), or are placed in a special path.
