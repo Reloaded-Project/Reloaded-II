@@ -20,7 +20,7 @@ internal static class ListViewUtilities
             return false;
 
         var insertIndex = GetInsertIndex(index, offset, list.Count);
-        if (insertIndex == -1)
+        if (insertIndex == -1 || insertIndex >= list.Count)
             return false;
 
         var item = list[index]!;
