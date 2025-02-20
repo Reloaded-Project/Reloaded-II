@@ -27,6 +27,11 @@ public partial class MainWindow : ReloadedWindow
         Lib.IoC.BindToConstant((WPF.Theme.Default.WindowViewModel)DataContext);// Controls window properties.
         Lib.IoC.BindToConstant(this);
 
+#if DEBUG
+        // Hide during dev so dev tools aren't blocked.
+        this.Border_DragDropCapturer.Visibility = Visibility.Collapsed;
+#endif
+
         // Allow DragDrop across entire app by using a transparent Border to
         // capture mouse events first. MouseEnter will fire after DragDrop is finished.
         this.MouseEnter += (sender, args) => { this.Border_DragDropCapturer.IsHitTestVisible = false; };
@@ -50,6 +55,10 @@ public partial class MainWindow : ReloadedWindow
                 e.Handled = true;
                 return;
             }
+        }
+        else
+        {
+            this.Border_DragDropCapturer.IsHitTestVisible = false;
         }
 
         e.Handled = true;
