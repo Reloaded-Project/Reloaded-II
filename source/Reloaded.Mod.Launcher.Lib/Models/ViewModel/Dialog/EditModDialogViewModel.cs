@@ -100,9 +100,9 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
             // Add Unknown Apps from Mods
             foreach (var appId in mod.Config.SupportedAppId)
             {
-                bool isAppEnabled = modTuple.Config.SupportedAppId.Contains(appId, StringComparer.OrdinalIgnoreCase);
                 if (!Applications.Any(x => x.Generic.AppId.Equals(appId, StringComparison.OrdinalIgnoreCase)))
                 {
+                    bool isAppEnabled = modTuple.Config.SupportedAppId.Contains(appId, StringComparer.OrdinalIgnoreCase);
                     Applications.Add(new BooleanGenericTuple<IApplicationConfig>(isAppEnabled, new UnknownApplicationConfig(appId)));
                 }
             }

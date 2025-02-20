@@ -29,7 +29,7 @@
             <!-- Sort the app list -->
             <CollectionViewSource x:Key="SortedApps" Source="{Binding EnabledAppIds, UpdateSourceTrigger=PropertyChanged}" IsLiveSortingRequested="True" IsLiveFilteringRequested="True">
                 <CollectionViewSource.SortDescriptions>
-                    <componentModel:SortDescription PropertyName="Generic.AppName"/>
+                    <componentModel:SortDescription PropertyName="Generic.AppId"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
 
@@ -211,10 +211,27 @@
                                               VerticalAlignment="Center" 
                                               Margin="{DynamicResource ListEntryItemMarginSmall}" />
 
-                                    <TextBlock Text="{Binding Generic.AppName}" 
-                                               VerticalAlignment="Center" 
+                                    <TextBlock VerticalAlignment="Center" 
                                                HorizontalAlignment="Center" 
-                                               Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                                               Margin="{DynamicResource ListEntryItemMarginSmall}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Text">
+                                                    <Setter.Value>
+                                                        <MultiBinding StringFormat="{}{0} ({1})">
+                                                            <Binding Path="Generic.AppName" />
+                                                            <Binding Path="Generic.AppId" />
+                                                        </MultiBinding>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Generic.AppName, UpdateSourceTrigger=PropertyChanged}" Value="">
+                                                        <Setter Property="Text" Value="{Binding Generic.AppId, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>

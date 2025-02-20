@@ -46,7 +46,7 @@ public partial class ManageModsPage : ReloadedIIPage, IDisposable
 
     private void ModsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _modsViewSource.View.Refresh();
     private void AppsFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) => _appsViewSource.View.Refresh();
-    private void AppsViewSourceOnFilter(object sender, FilterEventArgs e) => FilterText(AppsFilter.Text, ((BooleanGenericTuple<ApplicationConfig>)e.Item).Generic.AppName, e);
+    private void AppsViewSourceOnFilter(object sender, FilterEventArgs e) => e.Accepted = ViewModel.FilterApp(AppsFilter.Text, (BooleanGenericTuple<IApplicationConfig>)e.Item);
     private void ModsViewSourceOnFilter(object sender, FilterEventArgs e) => FilterText(ModsFilter.Text, ((PathTuple<ModConfig>)e.Item).Config.ModName, e);
 
     private void FilterText(string textToFind, string textToCheck, FilterEventArgs e)

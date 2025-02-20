@@ -13,7 +13,7 @@ public class ManageModsViewModel : ObservableObject
     /// <summary>
     /// Stores the list of enabled applications for this mod.
     /// </summary>
-    public ObservableCollection<BooleanGenericTuple<ApplicationConfig>> EnabledAppIds { get; set; } = new ObservableCollection<BooleanGenericTuple<ApplicationConfig>>();
+    public ObservableCollection<BooleanGenericTuple<IApplicationConfig>> EnabledAppIds { get; set; } = new ObservableCollection<BooleanGenericTuple<IApplicationConfig>>();
     
     /// <summary>
     /// Provides access to all available modifications.
@@ -68,9 +68,30 @@ public class ManageModsViewModel : ObservableObject
         if (newModTuple == null) 
             return;
 
-        var supportedAppIds = newModTuple.Config.SupportedAppId;
-        var tuples = _appConfigService.Items.Select(x => new BooleanGenericTuple<ApplicationConfig>(supportedAppIds.Contains(x.Config.AppId), x.Config));
-        EnabledAppIds = new ObservableCollection<BooleanGenericTuple<ApplicationConfig>>(tuples);
+        // Available apps.
+        var apps = new ObservableCollection<BooleanGenericTuple<IApplicationConfig>>();
+
+        // Add known apps.
+        foreach (var app in _appConfigService.Items)
+        {
+            bool isAppEnabled = newModTuple.Config.SupportedAppId.Contains(app.Config.AppId, StringComparer.OrdinalIgnoreCase);
+            apps.Add(new BooleanGenericTuple<IApplicationConfig>(isAppEnabled, app.Config));
+        }
+
+        // Add unknown apps from mods.
+        foreach (var mod in ModConfigService.Items)
+        {
+            foreach (var appId in mod.Config.SupportedAppId)
+            {
+                if (!apps.Any(x => x.Generic.AppId.Equals(appId, StringComparison.OrdinalIgnoreCase)))
+                {
+                    bool isAppEnabled = newModTuple.Config.SupportedAppId.Contains(appId, StringComparer.OrdinalIgnoreCase);
+                    apps.Add(new BooleanGenericTuple<IApplicationConfig>(isAppEnabled, new UnknownApplicationConfig(appId)));
+                }
+            }
+        }
+
+        EnabledAppIds = apps;
         CloneCurrentItem();
     }
 
@@ -84,7 +105,21 @@ public class ManageModsViewModel : ObservableObject
 
         oldModTuple.SaveAsync();
     }
-        
+    
+    /// <summary>
+    /// Filters an individual item.
+    /// Returns true if the item should pass by the filter, else false.
+    /// </summary>
+    public bool FilterApp(string filter, BooleanGenericTuple<IApplicationConfig> item)
+    {
+        if (filter.Length <= 0)
+            return true;
+
+        var appNameResult = item.Generic.AppName.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        var appIdResult = item.Generic.AppId.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        return appNameResult || appIdResult;
+    }
+
     /// <summary>
     /// Sets a new mod image.
     /// </summary>
