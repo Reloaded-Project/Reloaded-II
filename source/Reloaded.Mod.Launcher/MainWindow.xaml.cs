@@ -29,7 +29,7 @@ public partial class MainWindow : ReloadedWindow
 
 #if DEBUG
         // Hide during dev so dev tools aren't blocked.
-        this.Border_DragDropCapturer.Visibility = Visibility.Collapsed;
+        this.BorderDragDropCapturer.Visibility = Visibility.Collapsed;
 #endif
 
         // Allow DragDrop across entire app by using a transparent Border to
@@ -58,7 +58,7 @@ public partial class MainWindow : ReloadedWindow
         }
         else
         {
-            this.Border_DragDropCapturer.IsHitTestVisible = false;
+            this.BorderDragDropCapturer.IsHitTestVisible = false;
         }
 
         e.Handled = true;
