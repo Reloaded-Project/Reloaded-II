@@ -61,7 +61,7 @@ internal class Program
             configurator.SchedulerName = "Cool Scheduler";
         });
         
-        collection.AddMediatR(configuration => { configuration.AsSingleton(); }, typeof(Program));
+        collection.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<Program>());
         return collection.BuildServiceProvider();
     }
 
