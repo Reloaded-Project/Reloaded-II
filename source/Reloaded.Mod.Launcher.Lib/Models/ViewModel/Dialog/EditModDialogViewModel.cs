@@ -81,20 +81,31 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
         // Add Tags
         Tags.AddRange(Config.Tags);
 
+        // Add Known Apps
+        var apps = applicationConfigService.Items;
+        foreach (var app in apps)
+        {
+            bool isAppEnabled = modTuple.Config.SupportedAppId.Contains(app.Config.AppId, StringComparer.OrdinalIgnoreCase);
+            Applications.Add(new BooleanGenericTuple<IApplicationConfig>(isAppEnabled, app.Config));
+        }
+
         // Build Dependencies
         var mods = modConfigService.Items; // In case collection changes during window open.
         foreach (var mod in mods)
         {
-            bool isEnabled = modTuple.Config.ModDependencies.Contains(mod.Config.ModId, StringComparer.OrdinalIgnoreCase);
-            Dependencies.Add(new BooleanGenericTuple<IModConfig>(isEnabled, mod.Config));
-        }
+            bool isModEnabled = modTuple.Config.ModDependencies.Contains(mod.Config.ModId, StringComparer.OrdinalIgnoreCase);
+            var dep = new BooleanGenericTuple<IModConfig>(isModEnabled, mod.Config);
+            Dependencies.Add(dep);
 
-        // Build Applications
-        var apps = applicationConfigService.Items;
-        foreach (var app in apps)
-        {
-            bool isEnabled = modTuple.Config.SupportedAppId.Contains(app.Config.AppId, StringComparer.OrdinalIgnoreCase);
-            Applications.Add(new BooleanGenericTuple<IApplicationConfig>(isEnabled, app.Config));
+            // Add Unknown Apps from Mods
+            foreach (var appId in mod.Config.SupportedAppId)
+            {
+                if (!Applications.Any(x => x.Generic.AppId.Equals(appId, StringComparison.OrdinalIgnoreCase)))
+                {
+                    bool isAppEnabled = modTuple.Config.SupportedAppId.Contains(appId, StringComparer.OrdinalIgnoreCase);
+                    Applications.Add(new BooleanGenericTuple<IApplicationConfig>(isAppEnabled, new UnknownApplicationConfig(appId)));
+                }
+            }
         }
 
         // Build Update Configurations
@@ -170,7 +181,9 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
         if (ModsFilter.Length <= 0)
             return true;
 
-        return item.Generic.AppName.IndexOf(ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        var appNameResult = item.Generic.AppName.IndexOf(ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        var appIdResult = item.Generic.AppId.IndexOf(ModsFilter, StringComparison.InvariantCultureIgnoreCase) >= 0;
+        return appNameResult || appIdResult;
     }
 
     /// <summary>
@@ -207,6 +220,7 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
             CanGoToLastPage = Page > EnumValues<EditModPage>.Min;
             CanGoToNextPage = Page < EnumValues<EditModPage>.Max;
             IsOnLastPage = Page == EnumValues<EditModPage>.Max;
+            ModsFilter = string.Empty;
         }
     }
 }
