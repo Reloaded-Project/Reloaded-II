@@ -1,4 +1,4 @@
-﻿using Reloaded.Mod.Launcher.Lib.Utility;
+using Reloaded.Mod.Launcher.Lib.Utility;
 using Reloaded.Mod.Loader.Tests.Update.Pack.Mocks;
 using Reloaded.Mod.Loader.Update.Packs;
 using Sewer56.Update.Resolvers.GameBanana;
@@ -78,7 +78,7 @@ public class AutoPackageCreatorTests
         return new PathTuple<ModConfig>(Path.Combine(folder, ModConfig.ConfigFileName), new ModConfig()
         {
             ModId = "sonicheroes.essentials.graphics",
-            ModName = "Graphics Essentials" // so it finds on GameBanana
+            ModName = "Heroes Essentials: Graphics" // so it finds on GameBanana
         });
     }
     
