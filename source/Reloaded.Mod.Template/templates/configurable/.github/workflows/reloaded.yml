@@ -35,7 +35,7 @@ env:
   RELOADEDIIMODS: .
 
   # Default value is official Reloaded package server.  
-  NUGET_URL: http://packages.sewer56.moe:5000/v3/index.json
+  NUGET_URL: https://packages.sewer56.moe/v3/index.json
   
   IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/') }}
   RELEASE_TAG: ${{ github.ref_name }}
