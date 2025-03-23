@@ -41,7 +41,7 @@ If you wish not to use tags [e.g. you have multiple mods in single GitHub Releas
 
 For NuGet, you should specify the URL of the NuGet V3 server index where the mod should receive updates from. Any NuGet V3 feed is supported.  
 
-Most common feed is the [official Reloaded NuGet Package Server](http://packages.sewer56.moe:5000) `http://packages.sewer56.moe:5000/v3/index.json` as it preconfigured in Reloaded's Launcher out of the box.
+Most common feed is the [official Reloaded NuGet Package Server](http://packages.sewer56.moe:5000) `https://packages.sewer56.moe/v3/index.json` as it preconfigured in Reloaded's Launcher out of the box.
 
 To add a server, right click the empty space beside `DefaultRepositoryUrls` and press `Add`, then click the newly created textbox to add an URL. 
 

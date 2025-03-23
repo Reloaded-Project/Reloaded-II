@@ -95,7 +95,7 @@
 
 .PARAMETER NuGetFeedUrl
     [Use if UseNuGetDelta is true]
-    Example: http://packages.sewer56.moe:5000/v3/index.json
+    Example: https://packages.sewer56.moe/v3/index.json
 
     The URL of the NuGet feed to download the delta from.
 
@@ -170,7 +170,7 @@ param (
     $GameBananaItemId = 333681, # From mod page URL.
 
     $NuGetPackageId = "Reloaded.Utils.Server",
-    $NuGetFeedUrl = "http://packages.sewer56.moe:5000/v3/index.json",
+    $NuGetFeedUrl = "https://packages.sewer56.moe/v3/index.json",
     $NuGetAllowUnlisted = $False,
 
     ## => User: Publish Config

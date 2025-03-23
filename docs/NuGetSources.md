@@ -19,7 +19,7 @@ Example URLs:
 
 - Official NuGet Gallery Index: [https://api.nuget.org/v3/index.json](https://api.nuget.org/v3/index.json)
 - Example MyGet Index URL: [https://www.myget.org/F/reloaded-ii-tests/api/v3/index.json](https://www.myget.org/F/reloaded-ii-tests/api/v3/index.json)
-- Official BaGet Server URL: [http://packages.sewer56.moe:5000/v3/index.json](http://packages.sewer56.moe:5000/v3/index.json)
+- Official BaGet Server URL: [https://packages.sewer56.moe/v3/index.json](https://packages.sewer56.moe/v3/index.json)
 
 ------------
 **Please Note:**

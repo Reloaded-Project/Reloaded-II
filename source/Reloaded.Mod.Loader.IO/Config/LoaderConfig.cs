@@ -16,7 +16,7 @@ public class LoaderConfig : ObservableObject, IConfig<LoaderConfig>
 
     private static readonly NugetFeed[] DefaultFeeds        = new NugetFeed[]
     {
-        new NugetFeed("Official Repository", "http://packages.sewer56.moe:5000/v3/index.json", "Package repository of Sewer56, the developer of Reloaded. " +
+        new NugetFeed("Official Repository", "https://packages.sewer56.moe/v3/index.json", "Package repository of Sewer56, the developer of Reloaded. " +
             "Contains personal and popular community packages."),
     };
 

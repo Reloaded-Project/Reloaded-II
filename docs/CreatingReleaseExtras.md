@@ -25,7 +25,7 @@ The easiest way to upload a package is to install the [.NET SDK](https://dotnet.
 Example:  
 ```
 # Upload package.nupkg to the official Reloaded server.
-dotnet nuget push -s http://packages.sewer56.moe:5000/v3/index.json -k API-KEY package.nupkg
+dotnet nuget push -s https://packages.sewer56.moe/v3/index.json -k API-KEY package.nupkg
 ```
 
 [Upload instructions for the official Reloaded package server](http://packages.sewer56.moe:5000/upload).  
