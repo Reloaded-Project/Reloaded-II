@@ -28,7 +28,7 @@ Example:
 dotnet nuget push -s https://packages.sewer56.moe/v3/index.json -k API-KEY package.nupkg
 ```
 
-[Upload instructions for the official Reloaded package server](http://packages.sewer56.moe:5000/upload).  
+[Upload instructions for the official Reloaded package server](https://packages.sewer56.moe/upload).  
 
 ## Missing 1 Click Install on GameBanana
 

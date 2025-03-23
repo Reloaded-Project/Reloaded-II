@@ -3,7 +3,7 @@
 NuGet is the primary source for downloading mods and searching for missing mod dependencies.
 You can directly download mods from NuGet servers via the `Download Mods` menu.
 
-Reloaded comes preconfigured with a single [official server](http://packages.sewer56.moe:5000/home) intended for hosting code mods.
+Reloaded comes preconfigured with a single [official server](https://packages.sewer56.moe/home) intended for hosting code mods.
 
 ## Adding new Sources
 

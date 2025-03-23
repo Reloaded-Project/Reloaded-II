@@ -188,7 +188,7 @@ Publishing to NuGet requires additional configuration.
 - Set a NuGet Feed URL  
 - Set a NuGet API Key
 
-To set the NuGet feed, open `workflows/reloaded.yml` and change the `NUGET_URL` variable. The default is `https://packages.sewer56.moe/v3/index.json` in which points to the official [Reloaded II NuGet repository](http://packages.sewer56.moe:5000).  
+To set the NuGet feed, open `workflows/reloaded.yml` and change the `NUGET_URL` variable. The default is `https://packages.sewer56.moe/v3/index.json` in which points to the official [Reloaded II NuGet repository](https://packages.sewer56.moe).  
 
 To set the API Key, add a [Secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) named `RELOADED_NUGET_KEY`.  
 
