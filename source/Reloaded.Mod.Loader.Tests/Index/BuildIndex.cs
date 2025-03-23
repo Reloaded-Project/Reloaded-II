@@ -117,6 +117,7 @@ public class IndexBuildTests : IndexTestCommon
 
         var builder = new IndexBuilder();
         builder.Sources.Add(new IndexSourceEntry(TestNuGetFeedUrl));
+        builder.Sources.Add(new IndexSourceEntry(TestNugetFeedLegacy));
         var gbIndex = index.Sources.First(x => x.Key.StartsWith(Routes.Source.IdentifierGameBanana)); // This will be removed.
         var nugetIndex = index.Sources.First(x => x.Key.StartsWith(Routes.Source.IdentifierNuGet));   // This will be preserved.
 
