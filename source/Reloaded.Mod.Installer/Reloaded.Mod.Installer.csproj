@@ -15,7 +15,7 @@
     <_SuppressWpfTrimError>true</_SuppressWpfTrimError>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0-windows'))">
+  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0-windows'))">
     <PublishAot>true</PublishAot>
   </PropertyGroup>
 
