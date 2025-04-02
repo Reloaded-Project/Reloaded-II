@@ -4,9 +4,11 @@ using Reloaded.Mod.Template.Template;
 #if (IncludeConfig)
 using Reloaded.Mod.Template.Configuration;
 #endif
+//-:cnd:noEmit
 #if DEBUG
 using System.Diagnostics;
 #endif
+//+:cnd:noEmit
 
 namespace Reloaded.Mod.Template;
 
@@ -59,10 +61,12 @@ public class Mod : ModBase // <= Do not Remove.
 #endif
         _modConfig = context.ModConfig;
 
+//-:cnd:noEmit
 #if DEBUG
         // Attaches debugger in debug mode; ignored in release.
         Debugger.Launch();
 #endif
+//+:cnd:noEmit
 
         // For more information about this template, please see
         // https://reloaded-project.github.io/Reloaded-II/ModTemplate/
