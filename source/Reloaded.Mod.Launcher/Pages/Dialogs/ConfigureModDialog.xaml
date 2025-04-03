@@ -39,6 +39,7 @@
                                  Margin="{DynamicResource CommonItemVerticalMargin}"
                                  Style="{StaticResource PropertyGridBaseStyle}" 
                                  DefaultSorting="Hierarchy"
+                                 SortByPriority="True"
                                  x:Name="PropertyGridEx" />
 
         <Grid Grid.Row="2">
