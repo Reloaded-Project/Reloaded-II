@@ -4,6 +4,7 @@ using Color = System.Windows.Media.Color;
 using PropertyItem = HandyControl.Controls.PropertyItem;
 using TextBox = System.Windows.Controls.TextBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
+using System.ComponentModel.DataAnnotations;
 
 namespace Reloaded.Mod.Launcher.Controls;
 
@@ -19,12 +20,19 @@ public class PropertyGridEx : PropertyGrid
 
     private List<PropertyItem> _properties = new List<PropertyItem>();
     private List<PropertyDescriptor> _propertyDescriptors = new List<PropertyDescriptor>();
+    private int _currMaxPriority = int.MaxValue;
 
     protected override PropertyItem CreatePropertyItem(PropertyDescriptor propertyDescriptor, object component, string category,
         int hierarchyLevel)
     {
         ((PropertyResolverEx)PropertyResolver).Descriptor = propertyDescriptor;
         var item = base.CreatePropertyItem(propertyDescriptor, component, category, hierarchyLevel);
+
+        /// Uses <see cref="DisplayAttribute.Order"/> for item ordering.
+        /// Unordered items are given a decreasing maximum value to maintain the existing "order" in configs.
+        /// It does means that unordered items will always be at the top, but oh well.
+        item.Priority = propertyDescriptor.Attributes.OfType<DisplayAttribute>().FirstOrDefault()?.Order ?? _currMaxPriority--;
+
         _properties.Add(item);
         _propertyDescriptors.Add(propertyDescriptor);
         return item;

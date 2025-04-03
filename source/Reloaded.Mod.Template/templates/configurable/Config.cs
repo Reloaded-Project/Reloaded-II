@@ -102,6 +102,15 @@ public class Config : Configurable<Config>
         multiSelect: true,
         forceFileSystem: true)]
     public string Folder { get; set; } = "";
+
+    [Display(Order = 3)]
+    public int OrderFirst { get; set; }
+
+    [Display(Order = 2)]
+    public int OrderSecond { get; set; }
+
+    [Display(Order = 1)]
+    public int OrderThird { get; set; }
 }
 
 /// <summary>
