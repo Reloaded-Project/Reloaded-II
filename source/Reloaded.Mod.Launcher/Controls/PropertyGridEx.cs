@@ -352,11 +352,10 @@ public class EnumPropertyEditor : PropertyEditorBase
         };
     }
 
-    private static List<ItemTuple> GetItems(Type type)
+    private static ItemTuple[] GetItems(Type type)
     {
         var items = new List<ItemTuple>();
-        var values = Enum.GetValues(type);
-        foreach (var value in values)
+        foreach (var value in Enum.GetValues(type))
         {
             var name = value.ToString()!;
             name = type.GetMember(name).First().GetCustomAttribute<DisplayAttribute>()?.Name ?? name;
@@ -364,12 +363,12 @@ public class EnumPropertyEditor : PropertyEditorBase
             items.Add(new(name, value));
         }
 
-        return items;
+        return items.ToArray();
     }
 
     public override DependencyProperty GetDependencyProperty() => Selector.SelectedValueProperty;
 
-    private record ItemTuple(string Name, object Value);
+    private record struct ItemTuple(string Name, object Value);
 }
 
 public class NumberPropertyEditor : PropertyEditorBase
