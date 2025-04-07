@@ -49,7 +49,6 @@ public class EditAppViewModel : ObservableObject
     /// <inheritdoc />
     public EditAppViewModel(ApplicationConfigService appConfigService, ApplicationViewModel model)
     {
-        throw new Exception("Here is it in reloaded!");
         Application = model.ApplicationTuple;
         AppConfigService = appConfigService;
         DeleteApplicationCommand = new CallbackCommand(new DeleteApplicationCommand(Application), AfterDeleteApplication);
