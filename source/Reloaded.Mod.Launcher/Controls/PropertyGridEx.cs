@@ -5,6 +5,7 @@ using PropertyItem = HandyControl.Controls.PropertyItem;
 using TextBox = System.Windows.Controls.TextBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace Reloaded.Mod.Launcher.Controls;
 
@@ -348,11 +349,30 @@ public class EnumPropertyEditor : PropertyEditorBase
         return new System.Windows.Controls.ComboBox
         {
             IsEnabled = !propertyItem.IsReadOnly,
-            ItemsSource = Enum.GetValues(propertyItem.PropertyType)
+            ItemsSource = GetItems(propertyItem.PropertyType),
+            DisplayMemberPath = "Name",
+            SelectedValuePath = "Value",
         };
     }
 
+    private static List<ItemTuple> GetItems(Type type)
+    {
+        var items = new List<ItemTuple>();
+        var values = Enum.GetValues(type);
+        foreach (var value in values)
+        {
+            var name = value.ToString()!;
+            name = type.GetMember(name).First().GetCustomAttribute<DisplayAttribute>()?.Name ?? name;
+
+            items.Add(new(name, value));
+        }
+
+        return items;
+    }
+
     public override DependencyProperty GetDependencyProperty() => Selector.SelectedValueProperty;
+
+    private record ItemTuple(string Name, object Value);
 }
 
 public class NumberPropertyEditor : PropertyEditorBase
