@@ -24,7 +24,7 @@ public static class Errors
                 if (Actions.DisplayMessagebox != null)
                 {
                     var logPath = $"{Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Reloaded-Mod-Loader-II", "ApplicationLogs", DateTime.UtcNow.ToString("yyyy-MM-dd HH.mm.ss"))}.txt";
-                    bool result = Actions.DisplayMessagebox.Invoke(Resources.ErrorUnknown.Get(), $"{message}{ex.Message}\nDo you wish to view the stacktrace for more information?", new Actions.DisplayMessageBoxParams
+                    bool result = Actions.DisplayMessagebox.Invoke(Resources.ErrorUnknown.Get(), $"{message}{ex.Message}\n\nDo you wish to view the stacktrace for more information?", new Actions.DisplayMessageBoxParams
                     {
                         Type = Actions.MessageBoxType.OkCancel
                     });
@@ -43,7 +43,7 @@ public static class Errors
                 else
                 {
                     var logPath = $"{Path.Combine(GetFolderPath(SpecialFolder.ApplicationData), "Reloaded-Mod-Loader-II", "ApplicationLogs", DateTime.UtcNow.ToString("yyyy-MM-dd HH.mm.ss"))}.txt";
-                    var result = MessageBox.Show($"{message}{ex.Message}\nDo you wish to view the stacktrace for more information?", Resources.ErrorUnknown.Get(), MessageBoxButton.YesNo, MessageBoxImage.Error);
+                    var result = MessageBox.Show($"{message}{ex.Message}\n\nDo you wish to view the stacktrace for more information?", Resources.ErrorUnknown.Get(), MessageBoxButton.YesNo, MessageBoxImage.Error);
                     if (result == MessageBoxResult.Yes)
                     {
                         Directory.CreateDirectory(Path.GetDirectoryName(logPath)!);
