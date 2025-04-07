@@ -98,7 +98,7 @@ string_t LoaderConfig::get_loader_path()
 		std::string dllFolderPath = converter.to_bytes(GetCurrentModulePath());
 		std::string errorMessage = "Reloaded-II Loader DLL has not been found.\nTo fix this, start the Reloaded launcher.";
 		if (dllFolderPath != "Unable to get address") {
-			errorMessage = "Reloaded-II Loader DLL has not been found.\nTo fix this, start the Reloaded launcher.\n\nIf you intended to uninstall Reloaded, delete:\n-" + dllFolderPath + "\\DSOUND.dll\n-" + dllFolderPath + "\\Reloaded.Mod.Loader.Bootstrapper.asi";
+			errorMessage = "Reloaded-II Loader DLL has not been found.\nTo fix this, start the Reloaded launcher.\n\nIf you intended to uninstall Reloaded, delete:\n-" + dllFolderPath + "\\Reloaded.Mod.Loader.Bootstrapper.asi";
 		}
 		throw std::exception(errorMessage.c_str());
 	}		
