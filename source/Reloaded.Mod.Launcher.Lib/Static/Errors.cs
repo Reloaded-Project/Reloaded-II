@@ -60,6 +60,13 @@ public static class Errors
     private static void CreateAndOpenLogFile(Exception ex, string logPath)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(logPath)!);
+        var text = $"{Resources.ErrorStacktraceTitle.Get()}\n" +
+                   $"{Resources.ErrorStacktraceSubtitle.Get()}\n" +
+                   $"-------------" +
+                   $"Exception:\n" +
+                   $"{ex.Message}\n" +
+                   $"Stacktrace:\n" +
+                   $"{ex.StackTrace}";
         File.WriteAllText(logPath, $"Exception:\n{ex.Message}\nStacktrace:\n{ex.StackTrace}");
         
         ProcessStartInfo logFile = new()

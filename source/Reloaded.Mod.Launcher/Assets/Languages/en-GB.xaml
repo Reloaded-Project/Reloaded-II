@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xml:space="preserve">
@@ -728,4 +728,6 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
 
     <!-- Update 1.29.0: Launcher Error Reporting -->
     <sys:String x:Key="ErrorViewStacktrace">Do you wish to view the stacktrace for more information?</sys:String>
+    <sys:String x:Key="ErrorStacktraceTitle">This is a Reloaded-II launcher error</sys:String>
+    <sys:String x:Key="ErrorStacktraceSubtitle">Report issues to https://github.com/Reloaded-Project/Reloaded-II/issues/new</sys:String>
 </ResourceDictionary>
