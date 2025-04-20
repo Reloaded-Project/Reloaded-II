@@ -28,7 +28,7 @@ public class PropertyGridEx : PropertyGrid
         ((PropertyResolverEx)PropertyResolver).Descriptor = propertyDescriptor;
         var item = base.CreatePropertyItem(propertyDescriptor, component, category, hierarchyLevel);
 
-        /// Uses <see cref="DisplayAttribute.Order"/> for item ordering.
+        // Uses 'DisplayAttribute.Order' for item ordering.
         item.Priority = propertyDescriptor.Attributes.OfType<DisplayAttribute>().FirstOrDefault()?.Order ?? item.Priority;
 
         _properties.Add(item);
@@ -354,16 +354,17 @@ public class EnumPropertyEditor : PropertyEditorBase
 
     private static ItemTuple[] GetItems(Type type)
     {
-        var items = new List<ItemTuple>();
-        foreach (var value in Enum.GetValues(type))
+        var values = Enum.GetValues(type);
+        var items = GC.AllocateUninitializedArray<ItemTuple>(values.Length);
+        for (int x = 0; x < values.Length; x++)
         {
+            var value = values.GetValue(x)!;
             var name = value.ToString()!;
             name = type.GetMember(name).First().GetCustomAttribute<DisplayAttribute>()?.Name ?? name;
-
-            items.Add(new(name, value));
+            items[x] = new(name, value);
         }
 
-        return items.ToArray();
+        return items;
     }
 
     public override DependencyProperty GetDependencyProperty() => Selector.SelectedValueProperty;
