@@ -67,7 +67,7 @@ public static class Errors
                    $"{ex.Message}\n" +
                    $"Stacktrace:\n" +
                    $"{ex.StackTrace}";
-        File.WriteAllText(logPath, $"Exception:\n{ex.Message}\nStacktrace:\n{ex.StackTrace}");
+        File.WriteAllText(logPath, text);
         
         ProcessStartInfo logFile = new()
         {
