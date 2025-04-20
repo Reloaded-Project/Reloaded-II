@@ -55,13 +55,17 @@ public class Config : Configurable<Config>
 
     public enum SampleEnum
     {
+        [Display(Name = "No Opinion 🤷")]
         NoOpinion,
+        [Display(Name = "It's Sucks! 👎")]
         Sucks,
+        [Display(Name = "It's mediocre 😐")]
         IsMediocre,
+        [Display(Name = "It's okay! 👍")]
         IsOk,
+        [Display(Name = "It's cool! 😎")]
         IsCool,
-
-        [Display(Name = "I Love It!!!")]
+        [Display(Name = "I Love It!!! ❤️🔥")]
         ILoveIt,
     }
     
@@ -106,13 +110,13 @@ public class Config : Configurable<Config>
         forceFileSystem: true)]
     public string Folder { get; set; } = "";
 
-    [Display(Order = 3)]
+    [Display(Order = 0)]
     public int OrderFirst { get; set; }
 
-    [Display(Order = 2)]
+    [Display(Order = 1)]
     public int OrderSecond { get; set; }
 
-    [Display(Order = 1)]
+    [Display(Order = 2)]
     public int OrderThird { get; set; }
 }
 

@@ -29,7 +29,7 @@ public class PropertyGridEx : PropertyGrid
         var item = base.CreatePropertyItem(propertyDescriptor, component, category, hierarchyLevel);
 
         // Uses 'DisplayAttribute.Order' for item ordering.
-        item.Priority = propertyDescriptor.Attributes.OfType<DisplayAttribute>().FirstOrDefault()?.Order ?? item.Priority;
+        item.Priority = int.MaxValue - propertyDescriptor.Attributes.OfType<DisplayAttribute>().FirstOrDefault()?.Order ?? item.Priority;
 
         _properties.Add(item);
         _propertyDescriptors.Add(propertyDescriptor);
