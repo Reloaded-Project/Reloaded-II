@@ -216,7 +216,7 @@ public static class Resources
     public static IDictionaryResource<string> ProblematicPathModsDescription { get; set; }
     
     // Update 1.29.0: Launcher Error Reporting
-    public static IDictionaryResource<string> ErrorViewStacktrace { get; set; } // Do you wish to view the stacktrace for more information?
+    public static IDictionaryResource<string> ErrorViewDetails { get; set; }
     public static IDictionaryResource<string> ErrorStacktraceTitle { get; set; }
     public static IDictionaryResource<string> ErrorStacktraceSubtitle { get; set; }
 }

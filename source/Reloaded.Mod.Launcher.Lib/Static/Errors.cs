@@ -23,7 +23,7 @@ public static class Errors
             // ReSharper restore ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (!isUiInitialized) return;
 
-            var errorMessage = $"{message}{ex.Message}\n\n{Resources.ErrorViewStacktrace.Get()}";
+            var errorMessage = $"{message}{ex.Message}\n\n{Resources.ErrorViewDetails.Get()}";
             bool userWantsToSeeStackTrace;
 
             // Just in case of an error before proper UI init.
@@ -62,7 +62,7 @@ public static class Errors
         Directory.CreateDirectory(Path.GetDirectoryName(logPath)!);
         var text = $"{Resources.ErrorStacktraceTitle.Get()}\n" +
                    $"{Resources.ErrorStacktraceSubtitle.Get()}\n" +
-                   $"-------------" +
+                   $"-------------\n" +
                    $"Exception:\n" +
                    $"{ex.Message}\n" +
                    $"Stacktrace:\n" +

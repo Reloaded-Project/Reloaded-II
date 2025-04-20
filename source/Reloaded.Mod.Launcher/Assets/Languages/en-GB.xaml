@@ -727,7 +727,7 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="ProblematicPathModsDescription">Reloaded-II has detected your mods folder is managed by OneDrive or contains non-ASCII (special) characters.&#x0a;It is recommended to move your mods folder to a different path.&#x0a;Keeping mods in an unsupported path may result in problems running mods.</sys:String>
 
     <!-- Update 1.29.0: Launcher Error Reporting -->
-    <sys:String x:Key="ErrorViewStacktrace">Do you wish to view the stacktrace for more information?</sys:String>
+    <sys:String x:Key="ErrorViewDetails">Do you want to view the error details?</sys:String>
     <sys:String x:Key="ErrorStacktraceTitle">This is a Reloaded-II launcher error</sys:String>
     <sys:String x:Key="ErrorStacktraceSubtitle">Report issues to https://github.com/Reloaded-Project/Reloaded-II/issues/new</sys:String>
 </ResourceDictionary>
