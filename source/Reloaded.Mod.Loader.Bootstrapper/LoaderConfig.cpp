@@ -6,15 +6,14 @@
 #include <locale>
 #include <codecvt>
 #include "ReloadedPaths.h"
-#include <Windows.h>
-#include <string>
-#include <fileapi.h>
+
+// Maximum path length supported by Windows extended paths
+constexpr DWORD MAX_PATH_BUFFER_SIZE = 32767;
 
 LoaderConfig::LoaderConfig()
 {
-
 	// Get path to AppData
-	char_t buffer[32767]; // Max Windows10+ path.
+	char_t buffer[MAX_PATH_BUFFER_SIZE]; // Max Windows10+ path.
 	BOOL result = SHGetSpecialFolderPath(nullptr, buffer, CSIDL_APPDATA, false);
 
 	if (!result)
@@ -32,49 +31,70 @@ LoaderConfig::LoaderConfig()
 	config = json::parse(configFile);
 }
 
-string_t GetCurrentModulePath()
+namespace
 {
-	wchar_t rawPath[MAX_PATH];
-	HMODULE hModule = GetModuleHandle(nullptr);
+	bool TryGetCurrentModulePath(string_t& outPath)
+	{
+		const auto raw_path_buffer = std::make_unique<wchar_t[]>(MAX_PATH_BUFFER_SIZE);
+		
+		// Get current module handle using GetModuleHandleEx with GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS
+		// to get the module that contains this function's code address
+		HMODULE hModule = nullptr;
+		if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | 
+								GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+								reinterpret_cast<LPCWSTR>(TryGetCurrentModulePath),
+								&hModule))
+		{
+			return false;
+		}
 
-	if (hModule == nullptr)
-		return L"Unable to get address";
+		// Get module filename with extended path support
+		const DWORD result = GetModuleFileNameW(hModule, raw_path_buffer.get(), MAX_PATH_BUFFER_SIZE);
+		if (result == 0 || result == MAX_PATH_BUFFER_SIZE)
+			return false;
 
-	DWORD result = GetModuleFileNameW(hModule, rawPath, MAX_PATH);
-	if (result == 0 || result == MAX_PATH)
-		return L"Unable to get address";
+		// Normally we would rely on GetModuleFileNameW, but there's this thing called 'Xbox Game Pass', which has some
+		// legacy DRM mechanisms inherited from UWP; it pretends files are in a virtualized location. We must ask Windows
+		// for the real path of a file.
+		const auto final_path_buffer = std::make_unique<wchar_t[]>(MAX_PATH_BUFFER_SIZE);
+		string_t result_path;
 
-	// Open the file to get a handle
-	HANDLE fileHandle = CreateFileW(
-		rawPath,
-		0,
-		FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-		nullptr,
-		OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL,
-		nullptr
-	);
+		// Open the file to get a handle
+		const HANDLE file_handle = CreateFileW(
+			raw_path_buffer.get(),
+			0,
+			FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+			nullptr,
+			OPEN_EXISTING,
+			FILE_ATTRIBUTE_NORMAL,
+			nullptr
+		);
 
-	if (fileHandle == INVALID_HANDLE_VALUE)
-		return string_t(rawPath);
+		if (file_handle != INVALID_HANDLE_VALUE)
+		{
+			// Get the canonical path if the file handle is valid
+			// final_result has length of string.
+			const DWORD final_result = GetFinalPathNameByHandleW(file_handle, final_path_buffer.get(), MAX_PATH_BUFFER_SIZE, FILE_NAME_NORMALIZED);
+			CloseHandle(file_handle);
 
-	wchar_t finalPath[MAX_PATH];
-	DWORD finalResult = GetFinalPathNameByHandleW(fileHandle, finalPath, MAX_PATH, FILE_NAME_NORMALIZED);
-	CloseHandle(fileHandle);
+			// Check that the returned string is in_bounds, if not, use the raw path
+			// Note: It should always be in bounds unless Windows extends file path limits beyond NTFS limits.
+			if (final_result > 0 && final_result < MAX_PATH_BUFFER_SIZE)
+				result_path = final_path_buffer.get();
+			else
+				result_path = raw_path_buffer.get();
+		}
+		else
+			result_path = raw_path_buffer.get();
 
-	if (finalResult == 0 || finalResult >= MAX_PATH)
-		return string_t(rawPath);
+		// Remove the extended path prefix if present
+		const string_t prefix = L"\\\\?\\";
+		if (result_path.rfind(prefix, 0) == 0)
+			result_path = result_path.substr(prefix.length());
 
-	string_t resultPath = finalPath;
-	const string_t prefix = L"\\\\?\\";
-	if (resultPath.rfind(prefix, 0) == 0)
-		resultPath = resultPath.substr(prefix.length());
-
-	size_t lastSlash = resultPath.find_last_of(L"\\/");
-	if (lastSlash != string_t::npos)
-		resultPath = resultPath.substr(0, lastSlash);
-
-	return resultPath;
+		outPath = result_path;
+		return true;
+	}
 }
 
 string_t LoaderConfig::get_loader_path()
@@ -84,7 +104,6 @@ string_t LoaderConfig::get_loader_path()
 	#else
 	const std::string stringLoaderPath = config["LoaderPath32"];
 	#endif
-	
 
 	/* std::string is non-wide and will not handle unicode characters on Windows.
 	 * Need to convert back to wide characters.
@@ -95,13 +114,16 @@ string_t LoaderConfig::get_loader_path()
 	const string_t loaderPath = converter.from_bytes(stringLoaderPath);
 
 	if (!Utilities::file_exists(loaderPath)) {
-		std::string dllFolderPath = converter.to_bytes(GetCurrentModulePath());
 		std::string errorMessage = "Reloaded-II Loader DLL has not been found.\nTo fix this, start the Reloaded launcher.";
-		if (dllFolderPath != "Unable to get address") {
-			errorMessage = "Reloaded-II Loader DLL has not been found.\nTo fix this, start the Reloaded launcher.\n\nIf you intended to uninstall Reloaded, delete:\n-" + dllFolderPath + "\\Reloaded.Mod.Loader.Bootstrapper.asi";
+		
+		string_t modulePath;
+		if (TryGetCurrentModulePath(modulePath)) {
+			std::string dllFolderPath = converter.to_bytes(modulePath);
+			errorMessage = "Reloaded-II Loader DLL has not been found.\nTo fix this, start the Reloaded launcher.\n\nIf you intended to uninstall Reloaded, delete:\n- " + dllFolderPath;
 		}
+
 		throw std::exception(errorMessage.c_str());
-	}		
+	}
 
 	return loaderPath;
 }
