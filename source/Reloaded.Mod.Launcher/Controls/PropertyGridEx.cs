@@ -5,6 +5,7 @@ using PropertyItem = HandyControl.Controls.PropertyItem;
 using TextBox = System.Windows.Controls.TextBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace Reloaded.Mod.Launcher.Controls;
 
@@ -20,7 +21,6 @@ public class PropertyGridEx : PropertyGrid
 
     private List<PropertyItem> _properties = new List<PropertyItem>();
     private List<PropertyDescriptor> _propertyDescriptors = new List<PropertyDescriptor>();
-    private int _currMaxPriority = int.MaxValue;
 
     protected override PropertyItem CreatePropertyItem(PropertyDescriptor propertyDescriptor, object component, string category,
         int hierarchyLevel)
@@ -28,10 +28,8 @@ public class PropertyGridEx : PropertyGrid
         ((PropertyResolverEx)PropertyResolver).Descriptor = propertyDescriptor;
         var item = base.CreatePropertyItem(propertyDescriptor, component, category, hierarchyLevel);
 
-        /// Uses <see cref="DisplayAttribute.Order"/> for item ordering.
-        /// Unordered items are given a decreasing maximum value to maintain the existing "order" in configs.
-        /// It does means that unordered items will always be at the top, but oh well.
-        item.Priority = propertyDescriptor.Attributes.OfType<DisplayAttribute>().FirstOrDefault()?.Order ?? _currMaxPriority--;
+        // Uses 'DisplayAttribute.Order' for item ordering.
+        item.Priority = propertyDescriptor.Attributes.OfType<DisplayAttribute>().FirstOrDefault()?.Order ?? item.Priority;
 
         _properties.Add(item);
         _propertyDescriptors.Add(propertyDescriptor);
@@ -348,11 +346,30 @@ public class EnumPropertyEditor : PropertyEditorBase
         return new System.Windows.Controls.ComboBox
         {
             IsEnabled = !propertyItem.IsReadOnly,
-            ItemsSource = Enum.GetValues(propertyItem.PropertyType)
+            ItemsSource = GetItems(propertyItem.PropertyType),
+            DisplayMemberPath = "Name",
+            SelectedValuePath = "Value",
         };
     }
 
+    private static ItemTuple[] GetItems(Type type)
+    {
+        var values = Enum.GetValues(type);
+        var items = GC.AllocateUninitializedArray<ItemTuple>(values.Length);
+        for (int x = 0; x < values.Length; x++)
+        {
+            var value = values.GetValue(x)!;
+            var name = value.ToString()!;
+            name = type.GetMember(name).First().GetCustomAttribute<DisplayAttribute>()?.Name ?? name;
+            items[x] = new(name, value);
+        }
+
+        return items;
+    }
+
     public override DependencyProperty GetDependencyProperty() => Selector.SelectedValueProperty;
+
+    private record struct ItemTuple(string Name, object Value);
 }
 
 public class NumberPropertyEditor : PropertyEditorBase

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using Reloaded.Mod.Template.Template.Configuration;
 using Reloaded.Mod.Interfaces.Structs;
+using System.ComponentModel.DataAnnotations;
 
 namespace Reloaded.Mod.Template.Configuration;
 
@@ -59,7 +60,9 @@ public class Config : Configurable<Config>
         IsMediocre,
         IsOk,
         IsCool,
-        ILoveIt
+
+        [Display(Name = "I Love It!!!")]
+        ILoveIt,
     }
     
     [DisplayName("Int Slider")]
