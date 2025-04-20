@@ -45,6 +45,11 @@ public class Paths
     /// </summary>
     public static readonly string ArchivedLogPath = Path.Combine(LogPath, "OldLogs.zip");
 
+    /// <summary>
+    /// Location of the launcher errors folder, used to store launcher error logs.
+    /// </summary>
+    public static readonly string LauncherErrorsPath = Path.Combine(ConfigFolder, "LauncherErrors");
+    
     // MACHINE SPECIFIC DATA //
 
     /// <summary>
