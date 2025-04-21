@@ -119,7 +119,7 @@ string_t LoaderConfig::get_loader_path()
 		string_t modulePath;
 		if (TryGetCurrentModulePath(modulePath)) {
 			std::string dllFolderPath = converter.to_bytes(modulePath);
-			errorMessage = "Reloaded-II Loader DLL has not been found.\nTo fix this, start the Reloaded launcher.\n\nIf you intended to uninstall Reloaded, delete:\n- " + dllFolderPath;
+			errorMessage = "Reloaded-II Loader DLL has not been found.\nTo fix this, start the Reloaded launcher.\n\nIf you intended to uninstall Reloaded, delete:\n\n" + dllFolderPath;
 		}
 
 		throw std::exception(errorMessage.c_str());
