@@ -1,64 +1,91 @@
-If you are updating from version less than 1.28, install the following first
-
-- [.NET 9 x64 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-9.0.0-windows-x64-installer)
-- [.NET 9 x86 Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-9.0.0-windows-x86-installer)
-
----------
-
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
-[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.28.7).
+[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.28.8).
 
-# 1.28.8: A set of Bug fixes from @RyoTune
+This release consists of community contributions; cleaned up and merged into the main project.
 
-A fix for drag/drop:
+## User Friendly Enums by @RyoTune 
 
-- Fixed: Drag and Drop now works everywhere on the main window for installing mods.
+Thanks to @RyoTune  it is now possible to give 'enums' user friendly named in mod configs; 
+before you had:
 
-And various improvements to the `Edit Mod` dialog:
+```csharp
+public enum SampleEnum
+{
+    NoOpinion,
+    Sucks,
+    IsMediocre,
+    IsOk,
+    IsCool,
+    ILoveIt,
+}
+```
 
-- Fixed: `unknown apps` (games not added to Reloaded) being removed after a mod is edited via the GUI.
-- Added: Mods can now add support for `unknown apps` (games not added to Reloaded) via the UI.  
-- Fixed: The view filter (search) in the `Edit Mod` dialog is reset on switching pages.
-- Added: You can now see the `AppId` of enabled games in the `Edit Mod` dialog.
+Which produced
 
-And lastly, the default NuGet feed has been updated to https://packages.sewer56.moe/v3/index.json,
-in both the documentation and program.
+![image](https://github.com/user-attachments/assets/b0e7dba7-4380-4e09-b162-1088f496856d)
 
-# 1.28.7: Fix Crash on Load Ordering with Keyboard/Controller
+With the new addition, it's now possible to add user friendly names to each configuration item:
 
-Moving a mod that was already at the end of the list further down (out of bounds) led to a crash.
+```csharp
+public enum SampleEnum
+{
+    [Display(Name = "No Opinion 🤷")]
+    NoOpinion,
+    [Display(Name = "It's Sucks! 👎")]
+    Sucks,
+    [Display(Name = "It's mediocre 😐")]
+    IsMediocre,
+    [Display(Name = "It's okay! 👍")]
+    IsOk,
+    [Display(Name = "It's cool! 😎")]
+    IsCool,
+    [Display(Name = "I Love It!!! ❤️🔥")]
+    ILoveIt,
+}
+```
 
-This was somehow overlooked by everyone for years; it's fixed now.
+![image](https://github.com/user-attachments/assets/c99a1ed1-6b3d-4fa6-928b-b2fecfe2a460)
 
-# 1.28.6: Path/Location Warnings & Minor Theme Adjustment 
+## Explicit Item Ordering by @RyoTune 
 
-- @dreamsyntax added [warnings for when Reloaded and/or the `Mods` folder are placed in OneDrive](https://github.com/Reloaded-Project/Reloaded-II/pull/518), or are placed in a special path.
+![image](https://github.com/user-attachments/assets/466ffc2c-ed19-4ec7-bf05-43d054fbd0e4)
 
-![image](https://github.com/user-attachments/assets/7ad44f76-8565-4684-9d03-33cb6fd1dde3)
+```csharp
+[Display(Order = 0)]
+public int OrderFirst { get; set; }
 
-![image](https://github.com/user-attachments/assets/f9d3460c-1f6e-4bad-bf9f-a98040fbc8d5)
+[Display(Order = 1)]
+public int OrderSecond { get; set; }
 
-OneDrive you want to avoid for performance reasons.
-Special paths you want to avoid because some games don't support them well. Some games may fail to load custom assets out of the mod folders; Reloaded now warns about this indiscriminately.
+[Display(Order = 2)]
+public int OrderThird { get; set; }
+```
 
-- @dreamsyntax added [a warning for when a game is places in a path with a special folder](https://github.com/Reloaded-Project/Reloaded-II/pull/516).
+Lower order means items come first.
 
-![image](https://github.com/user-attachments/assets/a3c0ff36-1231-4149-92f2-e96564ff7417)
+Do note that this is inverted from the original PR; so if you originally wrote your mod against [Reloaded II.5 ReMIX](https://github.com/RyoTune/Reloaded-II.5) fork, it may be the opposite to what you expected.
 
-Same as above. Sometimes people download old games through 'mysterious ways', place them in a special location and try to mod them before trying even an unmodded game. This way they'll hopefully know that the path may be a problem.
+## Launcher Error Reporting by @TheBestAstroNOT + @Sewer56 
 
-- @dreamsyntax made [a small adjustment on the UI colours](https://github.com/Reloaded-Project/Reloaded-II/issues/500).
+![image](https://github.com/user-attachments/assets/83be5235-d6ee-46ee-932d-a2af6cf88c7e)
 
-Before: 
+Launcher errors now give you the option to print the error details to a text file.
 
-![image](https://github.com/user-attachments/assets/753085f5-ad64-4a6b-81d5-d7e9990eca3c)
+![image](https://github.com/user-attachments/assets/4ebf6b82-498d-4c35-b7b0-01870389dc12)
 
-After:
+Hopefully this is a bit friendlier for end users 🤞.
 
-![image](https://github.com/user-attachments/assets/378730d5-f92c-4525-a2b3-738db59060b1)
+## Improved Missing Loader Error by @TheBestAstroNOT + @Sewer56 
 
-In the interest of accessibility, and people using monitors with interesting contrast ratios; the following adjustment above was made.
-The Reloaded theme was originally made on a cheap TN panel; however for some IPS displays and beyond, this change makes a lot of sense.
+Sometimes users do the following:
+
+- Use the `Deploy ASI Loader` feature in Reloaded, and then uninstall Reloaded.
+- Use the `Deploy ASI Loader` feature and then move the Reloaded folder.
+
+![image](https://github.com/user-attachments/assets/24d4bb31-ee41-4bd0-8046-f5619a6d513d)
+
+The error message for missing Mod Loader DLL was updated to account for these situations.
+The user is now explicitly let known how to resolve the error.
 
 ------------------------------------
 
