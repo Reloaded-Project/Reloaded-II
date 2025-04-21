@@ -214,4 +214,9 @@ public static class Resources
     public static IDictionaryResource<string> ProblematicPathAppDescription { get; set; }
     public static IDictionaryResource<string> ProblematicPathReloadedDescription { get; set; }
     public static IDictionaryResource<string> ProblematicPathModsDescription { get; set; }
+    
+    // Update 1.29.0: Launcher Error Reporting
+    public static IDictionaryResource<string> ErrorViewDetails { get; set; }
+    public static IDictionaryResource<string> ErrorStacktraceTitle { get; set; }
+    public static IDictionaryResource<string> ErrorStacktraceSubtitle { get; set; }
 }
