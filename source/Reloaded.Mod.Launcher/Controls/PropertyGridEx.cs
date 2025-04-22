@@ -62,7 +62,7 @@ public class PropertyGridEx : PropertyGrid
         {
             var property = _properties[x];
             if (property.DefaultValue != null)
-                _propertyDescriptors[x].SetValue(property.Value, property.DefaultValue);
+                _propertyDescriptors[x].SetValue(property.Value, Convert.ChangeType(property.DefaultValue, property.PropertyType));
         }
     }
 }
