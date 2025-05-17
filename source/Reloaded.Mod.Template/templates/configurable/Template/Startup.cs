@@ -64,6 +64,8 @@ public class Startup : IMod
         // Need a different name, format or more configurations? Modify the `Configurator`.
         // If you do not want a config, remove Configuration folder and Config class.
         var configurator = new Configurator(_modLoader.GetModConfigDirectory(_modConfig.ModId));
+        configurator.SetContext(new() { Application = _modLoader.GetAppConfig() } );
+
         _configuration = configurator.GetConfiguration<Config>(0);
         _configuration.ConfigurationUpdated += OnConfigurationUpdated;
 #endif
