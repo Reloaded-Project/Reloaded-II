@@ -43,7 +43,6 @@ global using Reloaded.Mod.Loader.Server.Messages.Responses;
 global using Reloaded.Mod.Loader.Server.Messages.Structures;
 global using Reloaded.Mod.Loader.Update;
 global using Reloaded.Mod.Loader.Update.Caching;
-global using Reloaded.Mod.Loader.Update.Dependency;
 global using Reloaded.Mod.Loader.Update.Index.Provider;
 global using Reloaded.Mod.Loader.Update.Interfaces;
 global using Reloaded.Mod.Loader.Update.Providers;

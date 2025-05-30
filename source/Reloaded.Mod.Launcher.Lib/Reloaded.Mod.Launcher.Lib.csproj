@@ -43,10 +43,6 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Model\DownloadModDialog\" />
-  </ItemGroup>
-
   <Import Project="..\Reloaded.Mod.Shared\Reloaded.Mod.Shared.projitems" Label="Shared" />
 
 </Project>

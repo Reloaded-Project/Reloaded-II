@@ -26,7 +26,6 @@ global using Reloaded.Mod.Loader.IO.Services;
 global using Reloaded.Mod.Loader.IO.Structs;
 global using Reloaded.Mod.Loader.IO.Utility;
 global using Reloaded.Mod.Loader.Update.Caching;
-global using Reloaded.Mod.Loader.Update.Dependency.Interfaces;
 global using Reloaded.Mod.Loader.Update.Index.Provider;
 global using Reloaded.Mod.Loader.Update.Index.Structures;
 global using Reloaded.Mod.Loader.Update.Index.Structures.Config;
