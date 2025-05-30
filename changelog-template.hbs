@@ -1,91 +1,34 @@
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
-[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.28.8).
+[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.29.0).
 
-This release consists of community contributions; cleaned up and merged into the main project.
+This is an emergency release to address crashes with .NET 9.0.5.
+Please note this release lacks proper testing; as this is a very urgent/emergency release.
 
-## User Friendly Enums by @RyoTune 
+## Emergency .NET 9.0.5 Rollback by @Sewer56
 
-Thanks to @RyoTune  it is now possible to give 'enums' user friendly named in mod configs; 
-before you had:
+Microsoft rolled out .NET 9.0.5 with a change that causes crashes in all games when used with Reloaded-II.
 
-```csharp
-public enum SampleEnum
-{
-    NoOpinion,
-    Sucks,
-    IsMediocre,
-    IsOk,
-    IsCool,
-    ILoveIt,
-}
-```
+I've made the following changes to address this:
 
-Which produced
+- **Enforced .NET 9.0.4**: Mod loader now requires .NET 9.0.4 and prevents booting with 9.0.5
+  - Launcher still allows 9.0.5, but will prompt 9.0.4 installation for Mod Loader if needed.
+- **Improved Dependency Installation**: Automatically downloads and installs exact dependency versions
+- **Enhanced Progress Feedback**: Detailed progress during dependency installation
+- **Automatic Runtime Installation**: Fully automatic runtime installation in launcher
 
-![image](https://github.com/user-attachments/assets/b0e7dba7-4380-4e09-b162-1088f496856d)
+![image](https://github.com/user-attachments/assets/b0532c4d-34cb-4d08-b9ce-d6b8453509e4)
 
-With the new addition, it's now possible to add user friendly names to each configuration item:
+*Note: The crashes appear to be related to garbage collector changes in .NET 9.0.5, though specific details are still being investigated.*
 
-```csharp
-public enum SampleEnum
-{
-    [Display(Name = "No Opinion 🤷")]
-    NoOpinion,
-    [Display(Name = "It's Sucks! 👎")]
-    Sucks,
-    [Display(Name = "It's mediocre 😐")]
-    IsMediocre,
-    [Display(Name = "It's okay! 👍")]
-    IsOk,
-    [Display(Name = "It's cool! 😎")]
-    IsCool,
-    [Display(Name = "I Love It!!! ❤️🔥")]
-    ILoveIt,
-}
-```
+## Bug Fixes by @RyoTune
 
-![image](https://github.com/user-attachments/assets/c99a1ed1-6b3d-4fa6-928b-b2fecfe2a460)
+- **Fixed Config Reset Crashes**: Fixed crashes when resetting configurations with different integer types (byte, short vs int)
+- **Fixed Mod Template ConfigContext**: Mod templates now properly set ConfigContext with IApplicationConfig
+  - This allows mods to have per-application (per-game) configurations.
 
-## Explicit Item Ordering by @RyoTune 
+## French Localization by @dysfunctionalriot
 
-![image](https://github.com/user-attachments/assets/466ffc2c-ed19-4ec7-bf05-43d054fbd0e4)
-
-```csharp
-[Display(Order = 0)]
-public int OrderFirst { get; set; }
-
-[Display(Order = 1)]
-public int OrderSecond { get; set; }
-
-[Display(Order = 2)]
-public int OrderThird { get; set; }
-```
-
-Lower order means items come first.
-
-Do note that this is inverted from the original PR; so if you originally wrote your mod against [Reloaded II.5 ReMIX](https://github.com/RyoTune/Reloaded-II.5) fork, it may be the opposite to what you expected.
-
-## Launcher Error Reporting by @TheBestAstroNOT + @Sewer56 
-
-![image](https://github.com/user-attachments/assets/83be5235-d6ee-46ee-932d-a2af6cf88c7e)
-
-Launcher errors now give you the option to print the error details to a text file.
-
-![image](https://github.com/user-attachments/assets/4ebf6b82-498d-4c35-b7b0-01870389dc12)
-
-Hopefully this is a bit friendlier for end users 🤞.
-
-## Improved Missing Loader Error by @TheBestAstroNOT + @Sewer56 
-
-Sometimes users do the following:
-
-- Use the `Deploy ASI Loader` feature in Reloaded, and then uninstall Reloaded.
-- Use the `Deploy ASI Loader` feature and then move the Reloaded folder.
-
-![image](https://github.com/user-attachments/assets/24d4bb31-ee41-4bd0-8046-f5619a6d513d)
-
-The error message for missing Mod Loader DLL was updated to account for these situations.
-The user is now explicitly let known how to resolve the error.
+Complete French translation added! 🇫🇷 All text up to version 1.29.0 has been translated.
 
 ------------------------------------
 
