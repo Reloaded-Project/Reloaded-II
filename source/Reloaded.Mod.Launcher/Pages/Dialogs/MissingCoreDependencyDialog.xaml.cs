@@ -15,7 +15,7 @@ public partial class MissingCoreDependencyDialog : ReloadedWindow
 
     private async void DownloadButtonClick(object sender, RoutedEventArgs e)
     {
-        var model = (MissingDependency)((FrameworkElement)sender).DataContext;
-        await model.OpenUrlsAsync();
+        if (await ViewModel.DownloadAndInstallMissingDependenciesAsync())
+            this.Close();
     }
 }

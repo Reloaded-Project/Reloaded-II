@@ -35,7 +35,7 @@ public static class Setup
 
             updateText(Resources.SplashCreatingDefaultConfig.Get());
             backgroundTasks.Add(UpdateDefaultConfig()); // Fire and forget.
-            CheckForMissingDependencies();
+            await CheckForMissingDependenciesAsync(); // blocks async only if missing dependencies, so no perf penalty
                 
             updateText(Resources.SplashPreparingResources.Get());
             backgroundTasks.Add(Task.Run(CheckForUpdatesAsync)); // Fire and forget, we don't want to delay startup time.
@@ -83,15 +83,17 @@ public static class Setup
     /// <summary>
     /// Checks for missing mod loader dependencies.
     /// </summary>
-    private static void CheckForMissingDependencies()
+    private static async Task CheckForMissingDependenciesAsync()
     {
-        var deps = new DependencyChecker(IoC.Get<LoaderConfig>(), IntPtr.Size == 8);
-        if (deps.AllAvailable) 
+        var loaderConfig = IoC.Get<LoaderConfig>();
+        var vm = await MissingCoreDependencyDialogViewModel.CreateAsync(Path.GetDirectoryName(loaderConfig.LauncherPath)!);
+        if (!vm.MissingDependencies)
             return;
-
+        
+        // ReSharper disable once MethodHasAsyncOverload
         ActionWrappers.ExecuteWithApplicationDispatcher(() =>
         {
-            Actions.ShowMissingCoreDependencyDialog(new MissingCoreDependencyDialogViewModel(deps));
+            Actions.ShowMissingCoreDependencyDialog(vm);
         });
     }
 

@@ -96,7 +96,7 @@ public class ModLoaderUpdateDialogViewModel : ObservableObject
 
     private void OnApplySelfUpdate(string newUpdateDir)
     {
-        var updates = Task.Run(() => DependencyInstaller.GetMissingRuntimeUrls(newUpdateDir)).GetAwaiter().GetResult();
+        var updates = Task.Run(() => DependencyInstaller.GetMissingDependencies(newUpdateDir)).GetAwaiter().GetResult();
         if (updates.Count <= 0)
             return;
 

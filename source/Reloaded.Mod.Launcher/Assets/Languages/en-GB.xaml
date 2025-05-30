@@ -730,4 +730,7 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     <sys:String x:Key="ErrorViewDetails">Do you want to view the error details?</sys:String>
     <sys:String x:Key="ErrorStacktraceTitle">This is a Reloaded-II launcher error</sys:String>
     <sys:String x:Key="ErrorStacktraceSubtitle">Report issues to https://github.com/Reloaded-Project/Reloaded-II/issues/new</sys:String>
+    
+    <!-- Update 1.30.1: Missing Dependencies using same code as Installer -->
+    <sys:String x:Key="MissingDependenciesText3">Please download the requirements above by using the button below. You may need administrator permissions.</sys:String>
 </ResourceDictionary>

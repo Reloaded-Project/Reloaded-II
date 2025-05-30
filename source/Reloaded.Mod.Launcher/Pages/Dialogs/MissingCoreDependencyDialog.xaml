@@ -5,6 +5,7 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
                 xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+                xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
                 mc:Ignorable="d"
                 Height="Auto" 
                 Width="500"
@@ -34,20 +35,41 @@
                 VerticalContentAlignment="Center">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding Name}" Width="*" IsReadOnly="True" />
-                    <DataGridTemplateColumn Header="{DynamicResource UpdateModDownload}" Width="Auto" IsReadOnly="True">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="{DynamicResource UpdateModDownload}" Click="DownloadButtonClick" IsEnabled="{Binding IsMissing}" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="{DynamicResource CreateModDialogName}" Binding="{Binding FriendlyName}" Width="*" IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-            <TextBlock Text="{DynamicResource MissingDependenciesText2}" 
+            <TextBlock Text="{DynamicResource MissingDependenciesText3}" 
                        Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
                        Style="{DynamicResource RIIDefaultTextBlock}"
                        TextWrapping="Wrap"/>
+
+            <!-- Download Progress and Button -->
+            <Grid Margin="{DynamicResource CommonItemCombinedMarginSmaller}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="{DynamicResource GridInterPanelMargin}"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ProgressBar Grid.Column="0"
+                             Height="{Binding Path=Height, ElementName=DownloadButton}"
+                             Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
+                             Maximum="100" />
+
+                <Button Grid.Column="2" 
+                        Content="{DynamicResource UpdateModDownload}" 
+                        x:Name="DownloadButton"
+                        IsEnabled="{Binding CanDownload}"
+                        Click="DownloadButtonClick"/>
+            </Grid>
+
+            <!-- Current Step Display -->
+            <TextBlock Text="{Binding CurrentStep, UpdateSourceTrigger=PropertyChanged}" 
+                       Margin="{DynamicResource CommonItemCombinedMarginSmaller}"
+                       Style="{DynamicResource RIIDefaultTextBlock}"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       Visibility="{Binding CurrentStep, Converter={x:Static converters:StringToVisibilityConverter.Instance}}" />
         </StackPanel>
     </Grid>
 </default:ReloadedWindow>
