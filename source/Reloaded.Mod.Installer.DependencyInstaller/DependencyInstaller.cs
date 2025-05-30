@@ -30,14 +30,14 @@ public static class DependencyInstaller
             foreach (var runtimeConfig in filesWithRuntimeConfigs)
             {
                 var runtimeOptions = RuntimeOptions.FromFile(runtimeConfig);
-                var result = resolver.Resolve(runtimeOptions); ;
+                var result = resolver.Resolve(runtimeOptions);
                 foreach (var missingDep in result.MissingDependencies)
                 {
                     var frameworkDownloader = new FrameworkDownloader(runtimeOptions.GetAllFrameworks()[0].NuGetVersion, missingDep.FrameworkName);
                     urlSet.Add(new UrlCommandlinePair()
                     {
                         FriendlyName = $".NET Core {runtimeOptions.GetAllFrameworks()[0].Version} {architecture}",
-                        Url = await frameworkDownloader.GetDownloadUrlAsync(architecture),
+                        Url = await frameworkDownloader.GetDownloadUrlAsync(architecture, Platform.Windows, Format.Executable, false),
                         Parameters = dotNetCommandLineParams
                     });
                 }
