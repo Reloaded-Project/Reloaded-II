@@ -35,7 +35,7 @@ public class NetCoreDependency : IDependency
             try
             {
                 var downloader = new FrameworkDownloader(dependency.NuGetVersion, dependency.FrameworkName);
-                url = await downloader.GetDownloadUrlAsync(Architecture, Platform.Windows, Format.Executable, true);
+                url = await downloader.GetDownloadUrlAsync(Architecture, Platform.Windows, Format.Executable, false);
             }
             catch (Exception) { url = ""; }
 
