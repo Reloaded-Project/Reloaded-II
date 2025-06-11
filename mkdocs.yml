@@ -8,8 +8,8 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Sewer56
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/TheSewer56
+    - icon: fontawesome/brands/bluesky
+      link: https://bsky.app/profile/sewer56.dev
 
 markdown_extensions:
   - admonition
