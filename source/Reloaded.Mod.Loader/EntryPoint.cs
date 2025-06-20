@@ -128,6 +128,7 @@ public static class EntryPoint
 
     private static unsafe void SetupHooks(IReloadedHooks hooks)
     {
+        /*
         // Hook ExitProcess to ensure log save on process exit.
         _exitHook = new ProcessExitHook(SaveAndFlushLog, hooks);
         _crashHook = new ProcessCrashHook(&HandleCrash, hooks);
@@ -137,6 +138,7 @@ public static class EntryPoint
             _loader.Console.OnConsoleClose += SaveAndFlushLog;
 
         // Hook Steam
+        */
         _steamHook = new SteamHook(hooks, _loader.Logger, Path.GetDirectoryName(_process.MainModule.FileName));
     }
 
