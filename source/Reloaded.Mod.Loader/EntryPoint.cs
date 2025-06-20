@@ -139,7 +139,7 @@ public static class EntryPoint
 
         // Hook Steam
         */
-        _steamHook = new SteamHook(hooks, _loader.Logger, Path.GetDirectoryName(_process.MainModule.FileName));
+        //_steamHook = new SteamHook(hooks, _loader.Logger, Path.GetDirectoryName(_process.MainModule.FileName));
     }
 
     private static void LoadMods(IReloadedHooks hooks)
