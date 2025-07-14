@@ -31,11 +31,19 @@ public class GitHubDependencyResolver : IDependencyResolver
             InheritVersionFromTag = gitConfig.Config.UseReleaseTag
         }, new CommonPackageResolverSettings() { MetadataFileName = gitConfig.ReleaseMetadataName });
 
-        await ((IPackageResolver)resolver).InitializeAsync();
-        result.FoundDependencies.Add(new UpdateDownloadablePackage(resolver)
+        try
         {
-            Id = packageId
-        });
+            await ((IPackageResolver)resolver).InitializeAsync();
+            
+            result.FoundDependencies.Add(new UpdateDownloadablePackage(resolver)
+            {
+                Id = packageId
+            });
+        }
+        catch (Exception ex)
+        {
+            return ModDependencyResolveResult.FromError(packageId, ex, nameof(GitHubDependencyResolver));
+        }
 
         return result;
     }

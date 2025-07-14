@@ -68,4 +68,33 @@ public class GameBananaDependencyResolverTests : IDisposable
         Assert.NotEmpty(result.NotFoundDependencies);
         Assert.Empty(result.FoundDependencies);
     }
+
+    [Fact]
+    public async Task ResolveAsync_WithInvalidConfig_ReturnsError()
+    {
+        // Arrange
+        var config = new GameBananaUpdateResolverFactory.GameBananaConfig()
+        {
+            ItemId = -1, // Invalid item ID that should cause InitializeAsync to fail
+            ItemType = "Mod"
+        };
+        var clonedDependency = _testEnvironmoent.TestModConfigBTuple.DeepClone();
+        Singleton<GameBananaUpdateResolverFactory>.Instance.SetConfiguration(clonedDependency, config);
+        var clonedOriginal = _testEnvironmoent.TestModConfigATuple.DeepClone();
+        
+        var gameBanana = new GameBananaDependencyMetadataWriter();
+        gameBanana.Update(clonedOriginal.Config, [clonedDependency.Config]);
+
+        // Act
+        var resolver = new GameBananaDependencyResolver();
+        var result = await resolver.ResolveAsync(clonedDependency.Config.ModId, clonedOriginal.Config.PluginData);
+
+        // Assert
+        Assert.Single(result.Errors);
+        Assert.Equal(clonedDependency.Config.ModId, result.Errors[0].PackageId);
+        Assert.Equal(nameof(GameBananaDependencyResolver), result.Errors[0].Resolver);
+        Assert.NotNull(result.Errors[0].Exception);
+        Assert.Contains(clonedDependency.Config.ModId, result.NotFoundDependencies);
+        Assert.Empty(result.FoundDependencies);
+    }
 }
