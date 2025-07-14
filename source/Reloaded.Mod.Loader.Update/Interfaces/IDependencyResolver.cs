@@ -30,6 +30,11 @@ public class ModDependencyResolveResult
     public HashSet<string> NotFoundDependencies { get; } = new HashSet<string>();
 
     /// <summary>
+    /// List of errors that occurred during dependency resolution.
+    /// </summary>
+    public List<DependencyResolveError> Errors { get; } = new List<DependencyResolveError>();
+
+    /// <summary>
     /// Combines the results of multiple resolve operations.
     /// </summary>
     /// <param name="results">Results of multiple operations.</param>
@@ -59,6 +64,9 @@ public class ModDependencyResolveResult
 
             foreach (var notFound in result.NotFoundDependencies)
                 returnValue.NotFoundDependencies.Add(notFound);
+                
+            foreach (var error in result.Errors)
+                returnValue.Errors.Add(error);
         }
 
         // Remove dependencies that were found from the notFound set.
@@ -67,5 +75,54 @@ public class ModDependencyResolveResult
         
         returnValue.FoundDependencies.AddRange(idToNewestVersion.Values);
         return returnValue;
+    }
+
+    /// <summary>
+    /// Creates a result with an error for a specific package.
+    /// </summary>
+    /// <param name="packageId">The package ID that failed to resolve.</param>
+    /// <param name="exception">The exception that occurred during resolution.</param>
+    /// <param name="resolver">The resolver that caused the error.</param>
+    /// <returns>A result containing the error information.</returns>
+    public static ModDependencyResolveResult FromError(string packageId, Exception exception, string resolver)
+    {
+        var result = new ModDependencyResolveResult();
+        result.Errors.Add(new DependencyResolveError(packageId, exception, resolver));
+        result.NotFoundDependencies.Add(packageId);
+        return result;
+    }
+}
+
+/// <summary>
+/// Represents an error that occurred during dependency resolution.
+/// </summary>
+public class DependencyResolveError
+{
+    /// <summary>
+    /// The package ID that failed to resolve.
+    /// </summary>
+    public string PackageId { get; }
+
+    /// <summary>
+    /// The exception that occurred during resolution.
+    /// </summary>
+    public Exception Exception { get; }
+
+    /// <summary>
+    /// The name of the resolver that caused the error.
+    /// </summary>
+    public string Resolver { get; }
+
+    /// <summary>
+    /// Creates a new dependency resolve error.
+    /// </summary>
+    /// <param name="packageId">The package ID that failed to resolve.</param>
+    /// <param name="exception">The exception that occurred during resolution.</param>
+    /// <param name="resolver">The name of the resolver that caused the error.</param>
+    public DependencyResolveError(string packageId, Exception exception, string resolver)
+    {
+        PackageId = packageId;
+        Exception = exception;
+        Resolver = resolver;
     }
 }

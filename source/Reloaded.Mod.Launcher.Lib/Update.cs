@@ -264,15 +264,32 @@ public static class Update
         // Get Dependencies
         var resolver = DependencyResolverFactory.GetInstance(IoC.Get<AggregateNugetRepository>());
             
-        var results = new List<Task<ModDependencyResolveResult>>();
+        var taskToDependencyMap = new Dictionary<Task<ModDependencyResolveResult>, string>();
         foreach (var dependencyItem in missingDeps.Items)
         foreach (var dependency in dependencyItem.Dependencies)
-            results.Add(resolver.ResolveAsync(dependency, dependencyItem.Mod.PluginData, token));
+        {
+            var task = resolver.ResolveAsync(dependency, dependencyItem.Mod.PluginData, token);
+            taskToDependencyMap[task] = dependency;
+        }
 
-        await Task.WhenAll(results);
+        // Handle each result individually to avoid stopping on failures
+        var resolveResults = new List<ModDependencyResolveResult>();
+        foreach (var kvp in taskToDependencyMap)
+        {
+            try
+            {
+                var taskResult = await kvp.Key;
+                resolveResults.Add(taskResult);
+            }
+            catch (Exception ex)
+            {
+                // Create error result for unexpected exceptions that weren't caught by resolvers
+                resolveResults.Add(ModDependencyResolveResult.FromError(kvp.Value, ex, "UnknownResolver"));
+            }
+        }
 
         // Merge Results
-        var result = ModDependencyResolveResult.Combine(results.Select(x => x.Result));;
+        var result = ModDependencyResolveResult.Combine(resolveResults);
         if (result.NotFoundDependencies.Count <= 0)
             return result;
 

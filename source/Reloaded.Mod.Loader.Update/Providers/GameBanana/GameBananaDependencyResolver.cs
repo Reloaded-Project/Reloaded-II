@@ -27,12 +27,19 @@ public class GameBananaDependencyResolver : IDependencyResolver
             ModType = gbConfig.Config.ItemType
         }, new CommonPackageResolverSettings() { MetadataFileName = gbConfig.ReleaseMetadataName });
 
-        await resolver.InitializeAsync();
-
-        result.FoundDependencies.Add(new UpdateDownloadablePackage(resolver)
+        try
         {
-            Id = packageId
-        });
+            await resolver.InitializeAsync();
+            
+            result.FoundDependencies.Add(new UpdateDownloadablePackage(resolver)
+            {
+                Id = packageId
+            });
+        }
+        catch (Exception ex)
+        {
+            return ModDependencyResolveResult.FromError(packageId, ex, nameof(GameBananaDependencyResolver));
+        }
 
         return result;
     }
