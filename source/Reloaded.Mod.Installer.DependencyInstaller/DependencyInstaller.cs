@@ -10,7 +10,21 @@ public static class DependencyInstaller
     /// <param name="reloadedFolderPath">Folder path for an application, library will check every runtimeconfig.json inside this folder.</param>
     public static async Task<HashSet<MissingDependency>> GetMissingDependencies(string reloadedFolderPath)
     {
-        var allFiles = Directory.GetFiles(reloadedFolderPath, "*.*", SearchOption.AllDirectories);
+        // Folders to exclude from dependency scanning
+        var excludedFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Apps", "Mods", "Plugins", "User", "Theme", "Assets"
+        };
+
+        var allFiles = Directory.GetFiles(reloadedFolderPath, "*.*", SearchOption.AllDirectories)
+            .Where(file => 
+            {
+                var normalizedBasePath = reloadedFolderPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                var relativePath = file.Substring(normalizedBasePath.Length + 1);
+                var topLevelFolder = relativePath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)[0];
+                return !excludedFolders.Contains(topLevelFolder);
+            })
+            .ToArray();
         var filesWithRuntimeConfigs = allFiles.Where(x => x.EndsWith(".runtimeconfig.json")).ToArray();
 
         // Now that we have the runtime config files, get all missing deps from them.
