@@ -1,34 +1,34 @@
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
-[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.29.0).
+[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.29.1).
 
-This is an emergency release to address crashes with .NET 9.0.5.
-Please note this release lacks proper testing; as this is a very urgent/emergency release.
+# 1.29.2: Miscellaneous Things
 
-## Emergency .NET 9.0.5 Rollback by @Sewer56
+Just a few low effort fixes and miscellany. As usual, Reloaded-II is on life support while I spend
+the next years building the next best thing - if you want features, please contribute!
 
-Microsoft rolled out .NET 9.0.5 with a change that causes crashes in all games when used with Reloaded-II.
+## Fix: Better Error Handling for Bad Update Files
 
-I've made the following changes to address this:
+Previously, if someone uploaded a corrupted `Sewer56.Update.Metadata.json` file to GameBanana or GitHub,
+Reloaded would crash. Now it handles these errors gracefully instead of crashing.
 
-- **Enforced .NET 9.0.4**: Mod loader now requires .NET 9.0.4 and prevents booting with 9.0.5
-  - Launcher still allows 9.0.5, but will prompt 9.0.4 installation for Mod Loader if needed.
-- **Improved Dependency Installation**: Automatically downloads and installs exact dependency versions
-- **Enhanced Progress Feedback**: Detailed progress during dependency installation
-- **Automatic Runtime Installation**: Fully automatic runtime installation in launcher
+Might add UI in future.
 
-![image](https://github.com/user-attachments/assets/b0532c4d-34cb-4d08-b9ce-d6b8453509e4)
+## Fix: Unnecessary Runtime Downloads
 
-*Note: The crashes appear to be related to garbage collector changes in .NET 9.0.5, though specific details are still being investigated.*
+![](https://github.com/user-attachments/assets/45795e1b-c922-44e9-9134-60fe18b27f29)
 
-## Bug Fixes by @RyoTune
+Fixed an issue where the dependency installer was requesting unnecessary .NET runtime downloads.
+The problem was that the installer wasn't filtering out the `Mods` folder, so it tried to install
+runtimes that mods were built with, even though all mods use the loader's runtime.
 
-- **Fixed Config Reset Crashes**: Fixed crashes when resetting configurations with different integer types (byte, short vs int)
-- **Fixed Mod Template ConfigContext**: Mod templates now properly set ConfigContext with IApplicationConfig
-  - This allows mods to have per-application (per-game) configurations.
+Now it only installs truly needed dependencies.
 
-## French Localization by @dysfunctionalriot
+[This happened because in the last release the in-launcher dependency installer was updated to use
+the same code as `Setup.exe`; and this was a small oversight in the migration.]
 
-Complete French translation added! 🇫🇷 All text up to version 1.29.0 has been translated.
+## Updated French Localization by @dysfunctionalriot
+
+🇫🇷 Updated translations for version 1.29.1.
 
 ------------------------------------
 
