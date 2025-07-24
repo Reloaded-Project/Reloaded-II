@@ -177,7 +177,7 @@ public class AsiLoaderDeployer
         string? GetSupportedDll(BasicPeParser file, string[] supportedDlls)
         {
             var names = file.GetImportDescriptorNames();
-            return names.FirstOrDefault(x => supportedDlls.Contains(x, StringComparer.OrdinalIgnoreCase));
+            return supportedDlls.FirstOrDefault(x => names.Contains(x, StringComparer.OrdinalIgnoreCase));
         }
 
         return GetSupportedDll(peParser, peParser.Is32BitHeader ? AsiLoaderSupportedDll32 : AsiLoaderSupportedDll64);
@@ -203,13 +203,13 @@ public class AsiLoaderDeployer
 
     private static readonly string[] AsiLoaderSupportedDll32 = 
     {
-        "xlive.dll",
+        "version.dll",
         "winmm.dll",
         "wininet.dll",
         "vorbisFile.dll",
-        "version.dll",
         "msvfw32.dll",
         "msacm32.dll",
+        "xlive.dll",
         "dsound.dll",
         "dinput8.dll",
         "dinput.dll",
@@ -221,11 +221,11 @@ public class AsiLoaderDeployer
 
     private static readonly string[] AsiLoaderSupportedDll64 = 
     {
+        "version.dll",
         "winmm.dll",
         "wininet.dll",
         "dsound.dll",
-        "dinput8.dll",
-        "version.dll"
+        "dinput8.dll"
     };
 
     private static readonly string[] AsiCommonDirectories = 
