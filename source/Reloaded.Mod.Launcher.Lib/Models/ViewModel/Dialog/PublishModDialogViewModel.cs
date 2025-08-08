@@ -120,8 +120,6 @@ public class PublishModDialogViewModel : ObservableObject
             _modTuple.Config.IgnoreRegexes.AddRange(IgnoreRegexes.Select(x => x.Value));
             _modTuple.Save();
         };
-
-        // IncludeRegexes
         IncludeRegexes = new ObservableCollection<StringWrapper>(
             _modTuple.Config.IncludeRegexes.Select(x => new StringWrapper { Value = x })
         );
