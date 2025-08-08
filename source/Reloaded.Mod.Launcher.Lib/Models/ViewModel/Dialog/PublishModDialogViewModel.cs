@@ -100,7 +100,9 @@ public class PublishModDialogViewModel : ObservableObject
     /// <summary/>
     public PublishModDialogViewModel(PathTuple<ModConfig> modTuple)
     {
-        _modTuple = modTuple;
+        _modTuple    = modTuple;
+        PackageName  = IOEx.ForceValidFilePath(_modTuple.Config.ModName.Replace(' ', '_'));
+        OutputFolder = Path.Combine(Path.GetTempPath(), $"{IOEx.ForceValidFilePath(_modTuple.Config.ModId)}.Publish");
         if (!_modTuple.Config.IgnoreRegexes.Contains($"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}"))
         {
             _modTuple.Config.IgnoreRegexes.Add($"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}");
@@ -109,11 +111,27 @@ public class PublishModDialogViewModel : ObservableObject
         {
             _modTuple.Config.IncludeRegexes.Add(Regex.Escape(ModConfig.ConfigFileName));
         }
-        PackageName  = IOEx.ForceValidFilePath(_modTuple.Config.ModName.Replace(' ', '_'));
-        OutputFolder = Path.Combine(Path.GetTempPath(), $"{IOEx.ForceValidFilePath(_modTuple.Config.ModId)}.Publish");
+        IgnoreRegexes = new ObservableCollection<StringWrapper>(
+            _modTuple.Config.IgnoreRegexes.Select(x => new StringWrapper { Value = x })
+        );
+        IgnoreRegexes.CollectionChanged += (s, e) =>
+        {
+            _modTuple.Config.IgnoreRegexes.Clear();
+            _modTuple.Config.IgnoreRegexes.AddRange(IgnoreRegexes.Select(x => x.Value));
+            _modTuple.Save();
+        };
 
-        // Set notifications
-        PropertyChanged += ChangeUiVisbilityOnPropertyChanged;
+        // IncludeRegexes
+        IncludeRegexes = new ObservableCollection<StringWrapper>(
+            _modTuple.Config.IncludeRegexes.Select(x => new StringWrapper { Value = x })
+        );
+        IncludeRegexes.CollectionChanged += (s, e) =>
+        {
+            _modTuple.Config.IncludeRegexes.Clear();
+            _modTuple.Config.IncludeRegexes.AddRange(IncludeRegexes.Select(x => x.Value));
+            _modTuple.Save();
+        };
+
     }
 
     /// <summary>
@@ -221,22 +239,22 @@ public class PublishModDialogViewModel : ObservableObject
     /// <summary>
     /// Removes the selected ignore regex.
     /// </summary>
-    public void RemoveSelectedIgnoreRegex() => RemoveSelectedOrLastItemRegex(_modTuple.Config.IgnoreRegexes);
+    public void RemoveSelectedIgnoreRegex() => RemoveSelectedOrLastItem(SelectedIgnoreRegex, IgnoreRegexes);
 
     /// <summary>
     /// Removes the selected include regex.
     /// </summary>
-    public void RemoveSelectedIncludeRegex() => RemoveSelectedOrLastItemRegex(_modTuple.Config.IncludeRegexes);
+    public void RemoveSelectedIncludeRegex() => RemoveSelectedOrLastItem(SelectedIncludeRegex, IncludeRegexes);
 
     /// <summary>
     /// Adds a regular expression for ignoring files.
     /// </summary>
-    public void AddIgnoreRegex() => _modTuple.Config.IgnoreRegexes.Add("New Ignore Regex");
+    public void AddIgnoreRegex() => IgnoreRegexes.Add("New Ignore Regex");
 
     /// <summary>
     /// Adds a regular expression for including files.
     /// </summary>
-    public void AddIncludeRegex() => _modTuple.Config.IncludeRegexes.Add("New Include Regex");
+    public void AddIncludeRegex() => IncludeRegexes.Add("New Include Regex");
 
     /// <summary>
     /// Calculates all files that will be removed from the final archive and displays them to the user.
@@ -290,15 +308,7 @@ public class PublishModDialogViewModel : ObservableObject
         else if (allItems.Count > 0)
             allItems.RemoveAt(allItems.Count - 1);
     }
-
-    private void RemoveSelectedOrLastItemRegex(List<string> allItems)
-    {
-        if (allItems.Count() > 0)
-        {
-            allItems.RemoveAt(allItems.Count - 1);
-        }
-    }
-
+    
     private void ChangeUiVisbilityOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(PublishTarget))
