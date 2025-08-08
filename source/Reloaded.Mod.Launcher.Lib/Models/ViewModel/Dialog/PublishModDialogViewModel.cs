@@ -103,23 +103,33 @@ public class PublishModDialogViewModel : ObservableObject
         _modTuple    = modTuple;
         PackageName  = IOEx.ForceValidFilePath(_modTuple.Config.ModName.Replace(' ', '_'));
         OutputFolder = Path.Combine(Path.GetTempPath(), $"{IOEx.ForceValidFilePath(_modTuple.Config.ModId)}.Publish");
-
-        // Set default Regexes.
-        IgnoreRegexes = new ObservableCollection<StringWrapper>()
+        if (!_modTuple.Config.IgnoreRegexes.Contains($"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}"))
         {
-            @".*\.json", // Config files
-            $"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}"
+            _modTuple.Config.IgnoreRegexes.Add($"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}");
+        }
+        if (!_modTuple.Config.IncludeRegexes.Contains(Regex.Escape(ModConfig.ConfigFileName)))
+        {
+            _modTuple.Config.IncludeRegexes.Add(Regex.Escape(ModConfig.ConfigFileName));
+        }
+        IgnoreRegexes = new ObservableCollection<StringWrapper>(
+            _modTuple.Config.IgnoreRegexes.Select(x => new StringWrapper { Value = x })
+        );
+        IgnoreRegexes.CollectionChanged += (s, e) =>
+        {
+            _modTuple.Config.IgnoreRegexes.Clear();
+            _modTuple.Config.IgnoreRegexes.AddRange(IgnoreRegexes.Select(x => x.Value));
+            _modTuple.SaveAsync();
+        };
+        IncludeRegexes = new ObservableCollection<StringWrapper>(
+            _modTuple.Config.IncludeRegexes.Select(x => new StringWrapper { Value = x })
+        );
+        IncludeRegexes.CollectionChanged += (s, e) =>
+        {
+            _modTuple.Config.IncludeRegexes.Clear();
+            _modTuple.Config.IncludeRegexes.AddRange(IncludeRegexes.Select(x => x.Value));
+            _modTuple.SaveAsync();
         };
 
-        IncludeRegexes = new ObservableCollection<StringWrapper>()
-        {
-            Regex.Escape(ModConfig.ConfigFileName),
-            @"\.deps\.json",
-            @"\.runtimeconfig\.json",
-        };
-
-        // Set notifications
-        PropertyChanged += ChangeUiVisbilityOnPropertyChanged;
     }
 
     /// <summary>
@@ -148,8 +158,8 @@ public class PublishModDialogViewModel : ObservableObject
                     PublishTarget = PublishTarget,
                     OutputFolder = OutputFolder,
                     ModTuple = _modTuple,
-                    IgnoreRegexes = IgnoreRegexes.Select(x => x.Value).ToList(),
-                    IncludeRegexes = IncludeRegexes.Select(x => x.Value).ToList(),
+                    IgnoreRegexes = _modTuple.Config.IgnoreRegexes,
+                    IncludeRegexes = _modTuple.Config.IncludeRegexes,
                     Progress = new Progress<double>(d => BuildProgress = d * 100),
                     AutomaticDelta = AutomaticDelta,
                     CompressionLevel = CompressionLevel,
