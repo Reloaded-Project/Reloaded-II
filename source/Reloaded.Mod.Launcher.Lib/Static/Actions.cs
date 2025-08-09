@@ -77,6 +77,9 @@ public static class Actions
     /// </summary>
     public static ShowFetchPackageDialogDelegate ShowFetchPackageDialog { get; set; } = null!;
 
+    public static ShowInstallPackageDialogDelegate ShowInstallPackageDialog { get; set; } = null!;
+
+
     /// <summary>
     /// Shows a dialog that can be used to select the added game.
     /// </summary>
@@ -253,6 +256,12 @@ public static class Actions
     /// </summary>
     /// <param name="viewModel">The ViewModel used for downloading the individual package.</param>
     public delegate bool ShowFetchPackageDialogDelegate(DownloadPackageViewModel viewModel);
+
+    /// <summary>
+    /// Shows a dialog that can be used to download an individual package.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel used for downloading the individual package.</param>
+    public delegate bool ShowInstallPackageDialogDelegate(InstallPackageViewModel viewModel);
 
     /// <summary>
     /// Shows a dialog that can be used to select the added game.

@@ -116,7 +116,7 @@ public class UpdateDownloadablePackage : IDownloadablePackage
         await archiveExtractor.ExtractPackageAsync(tempDownloadPath, tempExtractDir.FolderPath, extractSlice, token);
 
         // Copy all packages from download.
-        return WebDownloadablePackage.CopyPackagesFromExtractFolderToTargetDir(packageFolder, tempExtractDir.FolderPath, token);
+        return await WebDownloadablePackage.CopyPackagesFromExtractFolderToTargetDir(packageFolder, tempExtractDir.FolderPath, token);
     }
 
 #pragma warning disable CS0067 // Event never used
