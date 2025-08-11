@@ -197,6 +197,10 @@
     <!-- Download Mod Archive -->
     <sys:String x:Key="DownloadModArchiveTitle">Download Mod Archive</sys:String>
     <sys:String x:Key="DownloadModArchiveName">File Name</sys:String>
+    
+    <!-- Instal Mod Archive -->
+    <sys:String x:Key="InstallModArchiveTitle">Installing Mod Archive</sys:String>
+    <sys:String x:Key="InstalledModName">Mod Name</sys:String>
 
     <!-- WMI Administrator Message -->
     <sys:String x:Key="RunAsAdminMessage">You need to run this application as administrator.&#x0a;Administrative privileges are needed to receive application launch/exit events from Windows Management Instrumentation (WMI).&#x0a;Developers: Run your favourite IDE e.g. Visual Studio as Admin.</sys:String>

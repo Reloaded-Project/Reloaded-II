@@ -27,6 +27,7 @@ public static class LibraryBindings
             publishModDialog: PublishModDialog,
             showEditModUserConfig: ShowEditModUserConfig,
             showFetchPackageDialog: ShowFetchPackageDialog,
+            showInstallPackageDialog: ShowInstallPackageDialog,
             showSelectAddedGameDialog: ShowSelectAddedGameDialog,
             showAddAppMismatchDialog: ShowAddAppMismatchDialog,
             showApplicationWarningDialog: ShowApplicationWarningDialog,
@@ -106,6 +107,7 @@ public static class LibraryBindings
     private static bool ShowEditModUserConfig(EditModUserConfigDialogViewModel viewmodel) => ShowDialogAndGetResult(new EditModUserConfigDialog(viewmodel));
     private static bool PublishModDialog(PublishModDialogViewModel viewmodel) => ShowDialogAndGetResult(new PublishModDialog(viewmodel));
     private static bool ShowFetchPackageDialog(DownloadPackageViewModel viewmodel) => ShowDialogAndGetResult(new DownloadPackageDialog(viewmodel));
+    private static bool ShowInstallPackageDialog(InstallPackageViewModel viewmodel) => ShowDialogAndGetResult(new InstallPackageDialog(viewmodel));
     private static bool ShowAddAppMismatchDialog(AddAppHashMismatchDialogViewModel viewmodel) => ShowDialogAndGetResult(new AddAppHashMismatchDialog(viewmodel));
     private static bool ShowApplicationWarningDialog(AddApplicationWarningDialogViewModel viewmodel) => ShowDialogAndGetResult(new ShowApplicationWarningDialog(viewmodel));
     private static bool ShowInstallModPackDialog(InstallModPackDialogViewModel viewmodel) => ShowDialogAndGetResult(new InstallModPackDialog(viewmodel));
