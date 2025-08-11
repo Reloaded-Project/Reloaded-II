@@ -6,10 +6,22 @@ namespace Reloaded.Mod.Loader.Update.Utilities;
 [JsonConverter(typeof(StringWrapperConverter))]
 public class StringWrapper : ObservableObject
 {
+    private string _value = "";
     /// <summary>
     /// Value of the string wrapper.
     /// </summary>
-    public string Value { get; set; } = "";
+    public string Value
+    {
+        get => _value;
+        set
+        {
+            if (_value != value)
+            {
+                _value = value;
+                RaisePropertyChangedEvent(nameof(Value));
+            }
+        }
+    }
 
     /// <summary/>
     public static implicit operator string(StringWrapper wrapper) => wrapper.Value;
