@@ -33,6 +33,8 @@ public class CreateModViewModel : ObservableObject
             ReleaseMetadataFileName = $"{ModId}.ReleaseMetadata.json"
         };
 
+        config.IgnoreRegexes.Add($"{Regex.Escape($@"{config.ModId}.nuspec")}");
+        config.IncludeRegexes.Add(Regex.Escape(ModConfig.ConfigFileName));
         var modDirectory = Path.Combine(IoC.Get<LoaderConfig>().GetModConfigDirectory(), IOEx.ForceValidFilePath(ModId));
         var filePath = Path.Combine(modDirectory, ModConfig.ConfigFileName);
         await IConfig<ModConfig>.ToPathAsync(config, filePath);

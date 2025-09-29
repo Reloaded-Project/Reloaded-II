@@ -103,16 +103,6 @@ public class PublishModDialogViewModel : ObservableObject
         _modTuple    = modTuple;
         PackageName  = IOEx.ForceValidFilePath(_modTuple.Config.ModName.Replace(' ', '_'));
         OutputFolder = Path.Combine(Path.GetTempPath(), $"{IOEx.ForceValidFilePath(_modTuple.Config.ModId)}.Publish");
-        if (!_modTuple.Config.IgnoreRegexes.Contains($"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}"))
-        {
-            _modTuple.Config.IgnoreRegexes.Add($"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}");
-            _modTuple.SaveAsync();
-        }
-        if (!_modTuple.Config.IncludeRegexes.Contains(Regex.Escape(ModConfig.ConfigFileName)))
-        {
-            _modTuple.Config.IncludeRegexes.Add(Regex.Escape(ModConfig.ConfigFileName));
-            _modTuple.SaveAsync();
-        }
         IgnoreRegexes = new ObservableCollection<StringWrapper>(
             _modTuple.Config.IgnoreRegexes.Select(x => new StringWrapper { Value = x })
         );
