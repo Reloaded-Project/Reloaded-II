@@ -93,7 +93,7 @@ public partial class MainWindow : ReloadedWindow
 
             var installVM = new InstallPackageViewModel
             {
-                Text = "Extracting a local mod, please wait!",
+                Text = (string)Application.Current.Resources["ExtractingLocalModArchive"],
                 Progress = 0
             };
 
@@ -115,13 +115,11 @@ public partial class MainWindow : ReloadedWindow
                     Actions.ShowInstallPackageDialog.Invoke(installVM);
                 }
             };
-
             timer.Start();
 
             await archiveExtractor.ExtractPackageAsync(file, tempFolder.FolderPath, progress, default);
 
-            /* Get name of package. */
-            installVM.Text = "Please wait while we install the mod!";
+            installVM.Text = (string)Application.Current.Resources["InstallingModWait"];
             await WebDownloadablePackage.CopyPackagesFromExtractFolderToTargetDir(modsFolder!, tempFolder.FolderPath, default);
             installVM.IsComplete = true;
         }
