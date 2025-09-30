@@ -24,6 +24,9 @@
     <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
     <!-- If you set this to true, trimming will be enabled when you publish the Mod Loader. -->
     <RobustILLink>true</RobustILLink>
+      
+    <!-- Allow builds from Linux -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <ItemGroup>

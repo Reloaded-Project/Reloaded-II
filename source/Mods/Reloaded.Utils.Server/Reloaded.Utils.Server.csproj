@@ -15,6 +15,9 @@
          Test trimming with: `BuildLinked.ps1` in PowerShell. -->
     <RobustILLink>true</RobustILLink>
     <TrimmerDefaultAction>link</TrimmerDefaultAction>
+
+    <!-- Allow builds from Linux -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <ItemGroup>

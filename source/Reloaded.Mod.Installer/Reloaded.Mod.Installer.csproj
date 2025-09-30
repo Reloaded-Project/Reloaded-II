@@ -13,6 +13,9 @@
     <StartupObject>Reloaded.Mod.Installer.Program</StartupObject>
     <DebugType>portable</DebugType>
     <_SuppressWpfTrimError>true</_SuppressWpfTrimError>
+
+    <!-- Allow builds from Linux -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0-windows'))">
