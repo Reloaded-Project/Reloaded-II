@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <IsPackable>false</IsPackable>
+    <LangVersion>preview</LangVersion>
+    <OutputPath>..\Output\Tests\Update</OutputPath>
+    <Nullable>disable</Nullable>
+    <NoWarn>$(NoWarn);NU1605;NU1701;MSB3270</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="xunit.runner.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="xunit.runner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.6.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reloaded.Mod.Loader.Update\Reloaded.Mod.Loader.Update.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModA\TestModA.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModB\TestModB.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModC\TestModC.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModD\TestModD.csproj" />
+    <ProjectReference Include="..\Testing\Mods\TestModE\TestModE.csproj" />
+  </ItemGroup>
+
+</Project>

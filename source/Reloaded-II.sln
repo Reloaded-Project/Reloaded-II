@@ -86,6 +86,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Installer.Lib"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Installer.Cli", "Reloaded.Mod.Installer.Cli\Reloaded.Mod.Installer.Cli.csproj", "{A5C8607B-C5C6-4EF5-A86D-1E9B79B1E7E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloaded.Mod.Loader.Update.Tests", "Reloaded.Mod.Loader.Update.Tests\Reloaded.Mod.Loader.Update.Tests.csproj", "{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -546,6 +548,22 @@ Global
 		{A5C8607B-C5C6-4EF5-A86D-1E9B79B1E7E5}.Release-ModLoaderOnly|Any CPU.Build.0 = Debug|Any CPU
 		{A5C8607B-C5C6-4EF5-A86D-1E9B79B1E7E5}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Debug|Any CPU
 		{A5C8607B-C5C6-4EF5-A86D-1E9B79B1E7E5}.Release-ModLoaderOnly|X64+X86.Build.0 = Debug|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Debug|X64+X86.ActiveCfg = Debug|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Debug|X64+X86.Build.0 = Debug|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Debug-ModLoaderOnly|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Debug-ModLoaderOnly|Any CPU.Build.0 = Debug|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Debug-ModLoaderOnly|X64+X86.ActiveCfg = Debug|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Debug-ModLoaderOnly|X64+X86.Build.0 = Debug|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Release|X64+X86.ActiveCfg = Release|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Release|X64+X86.Build.0 = Release|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Release-ModLoaderOnly|Any CPU.ActiveCfg = Release|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Release-ModLoaderOnly|Any CPU.Build.0 = Release|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Release-ModLoaderOnly|X64+X86.ActiveCfg = Release|Any CPU
+		{6C29FA8C-0B8E-4B1B-AB83-DA45C48F6618}.Release-ModLoaderOnly|X64+X86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

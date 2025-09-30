@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0-windows</TargetFramework>
@@ -13,8 +13,11 @@
 
   <ItemGroup>
     <Compile Remove="Server\**" />
+    <Compile Remove="Update\**" />
     <EmbeddedResource Remove="Server\**" />
+    <EmbeddedResource Remove="Update\**" />
     <None Remove="Server\**" />
+    <None Remove="Update\**" />
   </ItemGroup>
 
   <ItemGroup>
