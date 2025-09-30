@@ -3,63 +3,13 @@ namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 /// <summary>
 /// ViewModel for downloading an individual package.
 /// </summary>
+[AddINotifyPropertyChangedInterface]
 public class InstallPackageViewModel : INotifyPropertyChanged
 {
-    private string _text;
-    public string Text
-    {
-        get => _text;
-        set
-        {
-            if (_text != value)
-            {
-                _text = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Text)));
-            }
-        }
-    }
-
-    private string _title;
-    public string Title
-    {
-        get => _title;
-        set
-        {
-            if (_title != value)
-            {
-                _title = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Title)));
-            }
-        }
-    }
-
-    private double _progress;
-    public double Progress
-    {
-        get => _progress;
-        set
-        {
-            if (_progress != value)
-            {
-                _progress = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Progress)));
-            }
-        }
-    }
-
-    private bool _isComplete;
-    public bool IsComplete
-    {
-        get => _isComplete;
-        set
-        {
-            if (_isComplete != value)
-            {
-                _isComplete = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsComplete)));
-            }
-        }
-    }
+    public string Text { get; set; }
+    public string Title { get; set; }
+    public double Progress { get; set; }
+    public bool IsComplete { get; set; }
 
     public event PropertyChangedEventHandler PropertyChanged;
 }

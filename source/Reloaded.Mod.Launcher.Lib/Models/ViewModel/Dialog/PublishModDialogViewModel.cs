@@ -119,7 +119,6 @@ public class PublishModDialogViewModel : ObservableObject
                     item.PropertyChanged -= (_, __) => UpdateConfig(_modTuple.Config.IgnoreRegexes, IgnoreRegexes);
             _modTuple.Config.IgnoreRegexes.Clear();
             _modTuple.Config.IgnoreRegexes.AddRange(IgnoreRegexes.Select(x => x.Value));
-            _modTuple.SaveAsync();
         };
         IncludeRegexes = new ObservableCollection<StringWrapper>(
             _modTuple.Config.IncludeRegexes.Select(x => new StringWrapper { Value = x })
@@ -137,7 +136,6 @@ public class PublishModDialogViewModel : ObservableObject
                     item.PropertyChanged -= (_, __) => UpdateConfig(_modTuple.Config.IncludeRegexes, IncludeRegexes);
             _modTuple.Config.IncludeRegexes.Clear();
             _modTuple.Config.IncludeRegexes.AddRange(IncludeRegexes.Select(x => x.Value));
-            _modTuple.SaveAsync();
         };
     }
 
@@ -311,6 +309,11 @@ public class PublishModDialogViewModel : ObservableObject
     /// Lets the user select a new readme path.
     /// </summary>
     public void SetReadmePath() => ReadmePath = FileSelectors.SelectMarkdownFile();
+
+    /// <summary>
+    /// Lets the user save all changes to the mod config.
+    /// </summary>
+    public Task SaveAsync() => _modTuple.SaveAsync();
 
     private string GetModFolder() => Path.GetDirectoryName(_modTuple.Path)!;
     

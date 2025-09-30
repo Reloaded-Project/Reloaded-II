@@ -103,6 +103,7 @@ public partial class MainWindow : ReloadedWindow
                 installVM.Progress = value * 100;
             });
 
+            //Waits for 3 seconds before showing the install dialog, if the installation is not complete by then.
             var timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(3)
