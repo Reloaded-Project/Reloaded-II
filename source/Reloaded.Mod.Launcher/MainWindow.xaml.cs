@@ -93,7 +93,8 @@ public partial class MainWindow : ReloadedWindow
 
             var installVM = new InstallPackageViewModel
             {
-                Text = (string)Application.Current.Resources["ExtractingLocalModArchive"],
+                Title = InstallModArchiveTitle.Get(),
+                Text = ExtractingLocalModArchive.Get(),
                 Progress = 0
             };
 
@@ -119,7 +120,7 @@ public partial class MainWindow : ReloadedWindow
 
             await archiveExtractor.ExtractPackageAsync(file, tempFolder.FolderPath, progress, default);
 
-            installVM.Text = (string)Application.Current.Resources["InstallingModWait"];
+            installVM.Text = InstallingModWait.Get();
             await WebDownloadablePackage.CopyPackagesFromExtractFolderToTargetDir(modsFolder!, tempFolder.FolderPath, default);
             installVM.IsComplete = true;
         }

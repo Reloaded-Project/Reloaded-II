@@ -14,6 +14,7 @@ public partial class InstallPackageDialog : ReloadedWindow
     {
         InitializeComponent();
         ViewModel = viewModel;
+        DataContext = viewModel;
         viewModel.PropertyChanged += (s, e) =>
         {
             if (e.PropertyName == nameof(InstallPackageViewModel.IsComplete) && viewModel.IsComplete)

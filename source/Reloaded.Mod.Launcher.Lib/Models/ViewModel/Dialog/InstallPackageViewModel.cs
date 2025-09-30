@@ -19,6 +19,20 @@ public class InstallPackageViewModel : INotifyPropertyChanged
         }
     }
 
+    private string _title;
+    public string Title
+    {
+        get => _title;
+        set
+        {
+            if (_title != value)
+            {
+                _title = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Title)));
+            }
+        }
+    }
+
     private double _progress;
     public double Progress
     {
