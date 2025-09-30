@@ -16,11 +16,6 @@ internal class Assets
     /// Path to the folder containing the index.
     /// </summary>
     public static readonly string IndexAssetsFolder = Path.Combine(AssetsFolder, "Index");
-    
-    /// <summary>
-    /// Path to the folder containing the r2 bundle package files.
-    /// </summary>
-    public static readonly string PackAssetsFolder = Path.Combine(AssetsFolder, "R2Pack");
 
     /// <summary>
     /// Path to the folder containing the sample index.

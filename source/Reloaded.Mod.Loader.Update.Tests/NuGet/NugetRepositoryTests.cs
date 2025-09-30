@@ -34,11 +34,11 @@ public class NugetRepositoryTests
     public void DownloadPackage()
     {
         var downloadResourceResult = _nugetRepository.DownloadPackageAsync(TestPackageName, true, true).Result;
-        var tempLocation           = Directory.CreateDirectory("Temp\\DownloadedMod");
+        var tempLocation           = Directory.CreateDirectory("Temp/DownloadedMod");
         Nuget.ExtractPackage(downloadResourceResult, tempLocation.FullName);
 
         // Check ModConfig.json exists.
-        string modConfigLocation = $"{tempLocation.FullName}\\ModConfig.json";
+        string modConfigLocation = $"{tempLocation.FullName}/ModConfig.json";
         Assert.True(File.Exists(modConfigLocation));
 
         Directory.Delete(tempLocation.FullName, true);

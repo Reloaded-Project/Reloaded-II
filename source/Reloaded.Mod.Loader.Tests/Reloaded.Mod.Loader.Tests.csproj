@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0-windows</TargetFramework>
@@ -13,11 +13,8 @@
 
   <ItemGroup>
     <Compile Remove="Server\**" />
-    <Compile Remove="Update\**" />
     <EmbeddedResource Remove="Server\**" />
-    <EmbeddedResource Remove="Update\**" />
     <None Remove="Server\**" />
-    <None Remove="Update\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,15 +23,6 @@
 
   <ItemGroup>
     <Content Include="Assets.cs" />
-    <Content Include="HeroesControllerPostProcess.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="HeroesControllerPostProcessBad.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="HeroesControllerPostProcessOld.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="xunit.runner.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -82,7 +70,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\R2Pack" />
     <Folder Include="Utility\" />
   </ItemGroup>
 

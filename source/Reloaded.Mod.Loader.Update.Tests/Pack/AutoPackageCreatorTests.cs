@@ -59,7 +59,7 @@ public class AutoPackageCreatorTests
         var provider = GetGameBananaPackageProvider();
         
         // Act
-        var pack = await AutoPackCreator.CreateAsync(new ModConfig[] { modConf.Config }, 
+        var pack = await AutoPackCreator.CreateAsync([modConf.Config], 
             new DummyImageConverter(), new List<IDownloadablePackageProvider>() { provider});
         var built = pack.Build(out var package);
 
