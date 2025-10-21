@@ -1,0 +1,5 @@
+The search Android material design icon seen in the center of Search-Icon is licensed under the Apache License Version 2.0.
+https://www.apache.org/licenses/LICENSE-2.0.html
+
+Other icons, unless listed were created by Sewer56 (Reloaded II author) and are licensed under the MIT license:
+https://opensource.org/licenses/MIT
