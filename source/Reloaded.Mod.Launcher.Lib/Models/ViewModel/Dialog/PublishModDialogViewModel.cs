@@ -103,23 +103,47 @@ public class PublishModDialogViewModel : ObservableObject
         _modTuple    = modTuple;
         PackageName  = IOEx.ForceValidFilePath(_modTuple.Config.ModName.Replace(' ', '_'));
         OutputFolder = Path.Combine(Path.GetTempPath(), $"{IOEx.ForceValidFilePath(_modTuple.Config.ModId)}.Publish");
-
-        // Set default Regexes.
-        IgnoreRegexes = new ObservableCollection<StringWrapper>()
+        IgnoreRegexes = new ObservableCollection<StringWrapper>(
+            _modTuple.Config.IgnoreRegexes.Select(x => new StringWrapper { Value = x })
+        );
+        foreach (StringWrapper item in IgnoreRegexes)
+            item.PropertyChanged += (_, __) => UpdateConfig(_modTuple.Config.IgnoreRegexes, IgnoreRegexes);
+        IgnoreRegexes.CollectionChanged += (s, e) =>
         {
-            @".*\.json", // Config files
-            $"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}"
-        };
+            if (e.NewItems != null)
+                foreach (StringWrapper item in e.NewItems)
+                    item.PropertyChanged += (_, __) => UpdateConfig(_modTuple.Config.IgnoreRegexes, IgnoreRegexes);
 
-        IncludeRegexes = new ObservableCollection<StringWrapper>()
+            if (e.OldItems != null)
+                foreach (StringWrapper item in e.OldItems)
+                    item.PropertyChanged -= (_, __) => UpdateConfig(_modTuple.Config.IgnoreRegexes, IgnoreRegexes);
+            _modTuple.Config.IgnoreRegexes.Clear();
+            _modTuple.Config.IgnoreRegexes.AddRange(IgnoreRegexes.Select(x => x.Value));
+        };
+        IncludeRegexes = new ObservableCollection<StringWrapper>(
+            _modTuple.Config.IncludeRegexes.Select(x => new StringWrapper { Value = x })
+        );
+        foreach (StringWrapper item in IncludeRegexes)
+            item.PropertyChanged += (_, __) => UpdateConfig(_modTuple.Config.IncludeRegexes, IncludeRegexes);
+        IncludeRegexes.CollectionChanged += (s, e) =>
         {
-            Regex.Escape(ModConfig.ConfigFileName),
-            @"\.deps\.json",
-            @"\.runtimeconfig\.json",
-        };
+            if (e.NewItems != null)
+                foreach (StringWrapper item in e.NewItems)
+                    item.PropertyChanged += (_, __) => UpdateConfig(_modTuple.Config.IncludeRegexes, IncludeRegexes);
 
-        // Set notifications
-        PropertyChanged += ChangeUiVisbilityOnPropertyChanged;
+            if (e.OldItems != null)
+                foreach (StringWrapper item in e.OldItems)
+                    item.PropertyChanged -= (_, __) => UpdateConfig(_modTuple.Config.IncludeRegexes, IncludeRegexes);
+            _modTuple.Config.IncludeRegexes.Clear();
+            _modTuple.Config.IncludeRegexes.AddRange(IncludeRegexes.Select(x => x.Value));
+        };
+    }
+
+    void UpdateConfig(List<string> list, ObservableCollection<StringWrapper> collection)
+    {
+        list.Clear();
+        list.AddRange(collection.Select(x => x.Value));
+        _modTuple.SaveAsync();
     }
 
     /// <summary>
@@ -148,8 +172,8 @@ public class PublishModDialogViewModel : ObservableObject
                     PublishTarget = PublishTarget,
                     OutputFolder = OutputFolder,
                     ModTuple = _modTuple,
-                    IgnoreRegexes = IgnoreRegexes.Select(x => x.Value).ToList(),
-                    IncludeRegexes = IncludeRegexes.Select(x => x.Value).ToList(),
+                    IgnoreRegexes = _modTuple.Config.IgnoreRegexes,
+                    IncludeRegexes = _modTuple.Config.IncludeRegexes,
                     Progress = new Progress<double>(d => BuildProgress = d * 100),
                     AutomaticDelta = AutomaticDelta,
                     CompressionLevel = CompressionLevel,
@@ -285,6 +309,11 @@ public class PublishModDialogViewModel : ObservableObject
     /// Lets the user select a new readme path.
     /// </summary>
     public void SetReadmePath() => ReadmePath = FileSelectors.SelectMarkdownFile();
+
+    /// <summary>
+    /// Lets the user save all changes to the mod config.
+    /// </summary>
+    public Task SaveAsync() => _modTuple.SaveAsync();
 
     private string GetModFolder() => Path.GetDirectoryName(_modTuple.Path)!;
     
