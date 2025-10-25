@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Reloaded.WPF.Controls;assembly=Reloaded.WPF">
+
+
+    <!-- 
+        This is an example of a more advanced theme. 
+    
+        Due to technical reasons; mainly involving the use of "Animations" and "Storyboards" all of the control "styles" have to be re-imported.
+    
+        This is a rather complicated process; especially to those who may be unfamiliar with WPF (the UI technology used by Reloaded).
+        In this theme, we achieved this by copying the source files from the default theme and adjusting the paths of any SharedResourceDictionaries 
+        inside the files to our own custom modified ones.
+    
+        Feel free to use this theme as a base for your own.
+        PS. No guarantees stuff wouldn't break after updates.
+    -->
+
+    <ResourceDictionary.MergedDictionaries>
+        
+        <!-- Redefine the Theme Colours -->
+        <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Violet/Colours.xaml"/>
+
+        <!-- Redefine the Launcher Control Styles -->
+        <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Violet/Controls.xaml"/>
+
+        <!-- Redefine the Reloaded.WPF (Library) Control Styles -->
+        <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Violet/Styles.xaml"/>
+
+        <!-- Redefine the Launcher Images -->
+        <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Violet/Images.xaml"/>
+
+        <!-- Redefine the Reloaded-II Control Styles -->
+        <controls:SharedResourceDictionary Source="pack://siteoforigin:,,,/Theme/Violet/CustomStyles.xaml"/>
+
+        <!-- 
+            Note: You can technically import just Controls.xaml, since that imports Styles which imports Colours.
+                  However, we are importing all files in case of future internal changes.
+        -->
+
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- 
+        == Updates ==
+    
+        At the time of writing
+        Mod Loader Version: 1.7.0
+        Reloaded.WPF.Theme.Default: 3.0.4
+        
+        In case you ever feel like re-pasting the contents of Controls.xaml and Styles.xaml to account for new controls etc.
+    -->
+
+</ResourceDictionary>
