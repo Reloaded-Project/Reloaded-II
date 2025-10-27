@@ -54,6 +54,11 @@ Template Name             Short Name  Language  Tags
 Reloaded II Mod Template  reloaded    [C#]      Common/Library/Games
 ```
 
+!!! warning
+
+	If you are using Visual Studio, install the **.NET desktop environment** workload through the installer, otherwise the template will not display.
+	
+
 ## Summary
 
 You are now ready to start developing mods with Reloaded.  
