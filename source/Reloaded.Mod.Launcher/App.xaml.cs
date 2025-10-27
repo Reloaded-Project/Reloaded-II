@@ -42,6 +42,8 @@ public partial class App : Application
         // Need to construct MainWindow before invoking any dialog, otherwise Shutdown will be called on closing the dialog
         var window = new MainWindow();
 
+        ThemeDownloader.OnRefresh = OnThemeFetch;
+
         // Warn if OneDrive or NonAsciiChars detected in Reloaded-II directory
         bool reloadedPathHasNonAsciiChars = AppContext.BaseDirectory.Any(c => c > 127);
         if (AppContext.BaseDirectory.Contains("OneDrive") || reloadedPathHasNonAsciiChars)
@@ -77,7 +79,7 @@ public partial class App : Application
     {
         var launcherFolder = AppContext.BaseDirectory;
         var languageSelector = new XamlFileSelector($"{launcherFolder}\\Assets\\Languages");
-        var themeSelector    = new XamlFileSelector($"{launcherFolder}\\Theme");
+        var themeSelector    = new XamlThemeSelector($"{launcherFolder}\\Theme");
         
         var conf = Lib.IoC.GetConstant<LoaderConfig>();
         if (conf.FirstLaunch)
@@ -188,5 +190,16 @@ public partial class App : Application
             Lib.IoC.GetConstant<ImageCacheService>().Shutdown();
 
         Caches.Shutdown();
+    }
+
+    public void OnThemeFetch()
+    {
+        var themeSelector = (XamlThemeSelector)Resources.MergedDictionaries[10];
+
+        foreach (string theme in ThemeDownloader.ThemesDictionary.Keys)
+        {    
+            if (!themeSelector.Files.Contains(theme))
+                themeSelector.Files.Add(theme);
+        }
     }
 }
