@@ -33,18 +33,30 @@ public class XamlThemeSelector : XamlFileSelector
         }
         catch
         {
+            var selectedTheme = File;
+
             DownloadPackageViewModel viewModel = new([], Lib.IoC.Get<LoaderConfig>())
             {
                 Progress = 0,
-                Text = "Downloading Theme",
+                Text = "Downloading Theme...",
                 Packages = [],
-                DownloadTask = ThemeDownloader.DownloadThemeByName(File)
             };
+
+            viewModel.DownloadTask = ThemeDownloader.DownloadThemeByName(File, viewModel);
             var dialog = new DownloadPackageDialog(viewModel);
             dialog.ShowDialog();
             dialog.ViewModel.DownloadTask!.Wait();
 
             PopulateAndFetch(false);
+
+            if (System.IO.File.Exists(ThemeDownloader.GetFullPath(selectedTheme)))
+            {
+                File = selectedTheme;
+                UpdateSource();
+                OnPropertyChanged();
+                return;
+            }
+                
         }
 
         /*
