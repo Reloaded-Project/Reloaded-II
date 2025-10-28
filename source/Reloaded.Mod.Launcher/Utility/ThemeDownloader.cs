@@ -1,6 +1,8 @@
-﻿using Reloaded.Mod.Loader.Update.Providers.GameBanana.Structures;
+﻿//#define TEST_MODE
 
-namespace Reloaded.Mod.Launcher.Lib.Utility;
+using Reloaded.Mod.Loader.Update.Providers.GameBanana.Structures;
+
+namespace Reloaded.Mod.Launcher.Utility;
 
 /// <summary>
 /// Manages updating the list of available themes, and downloading/installing them
@@ -26,6 +28,7 @@ public class ThemeDownloader
         return modName.Replace("Theme", "").Replace("theme", "").Replace("  ", " ").Trim().Replace(" ", "_");
     }
 
+#if TEST_MODE
     private static GameBananaModFile TestModFile(string filename, string description, string url)
     {
         var file = new GameBananaModFile();
@@ -72,6 +75,7 @@ public class ThemeDownloader
         );
         AvailableThemes = [discordTheme, personaTheme, heroesTheme, themePack];
     }
+#endif
 
     /// <summary>
     /// Fetches all themes from GameBanana, and updates the dictionary
@@ -84,9 +88,12 @@ public class ThemeDownloader
             ThemesDictionary.Clear();
             AvailableThemes.Clear();
 
+#if TEST_MODE
             TestFetch();
+#else
             // Hangs here forever
-            //AvailableThemes = await GameBananaMod.GetByNameAsync("", 7486, 1, 5, "GUIs");
+            AvailableThemes = await GameBananaMod.GetByNameAsync("", 7486, 1, 5, "GUIs");
+#endif
 
             for (int i = 0; i < AvailableThemes.Count; i++)
             {
@@ -116,11 +123,11 @@ public class ThemeDownloader
     }
 
     private static readonly string ThemeFolder = "Theme";
-    private static readonly string TempFolder = "Theme/.tmp";
-    private static readonly string TempZip = "Theme/tmptheme.zip";
+    public static readonly string TempFolder = "Theme/.tmp";
+    public static readonly string TempZip = "Theme/tmptheme.zip";
 
     /// <summary>
-    /// Turns a .xaml filename into the full absolute path
+    /// Turns a .xaml filename into the full absolute path for the merged dictionary
     /// </summary>
     /// <param name="filename">The .xaml from the file selector</param>
     public static string GetFullPath(string filename)
@@ -131,17 +138,6 @@ public class ThemeDownloader
         path = path.Replace($"Launcher{Path.DirectorySeparatorChar}", $"Launcher{Path.DirectorySeparatorChar}{Path.DirectorySeparatorChar}");
 
         return path;
-    }
-
-    private static async Task DownloadAndExtractZip(GameBananaModFile file)
-    {
-        Stream data = await SharedHttpClient.UncachedAndCompressed.GetStreamAsync(file.DownloadUrl);
-        var zipFile = File.Create(TempZip);
-        data.CopyTo(zipFile);
-        zipFile.Close();
-        data.Close();
-
-        ZipFile.ExtractToDirectory(TempZip, TempFolder);
     }
 
     private static readonly string[] ThemeContentsFilenames = [
@@ -226,13 +222,7 @@ public class ThemeDownloader
         return createTheme;
     }
 
-    private static void UpdateDownloadWindow(DownloadPackageViewModel viewModel, double progress, string text)
-    {
-        viewModel.Progress = progress;
-        viewModel.Text = text;
-    }
-
-    private static async Task DownloadTheme(GameBananaMod theme, DownloadPackageViewModel viewModel)
+    private static void DownloadTheme(GameBananaMod theme)
     {
         // There needs to be a standard for how to upload themes
         // I'll support all of the current ones but there's likely to be an edge case that causes it to break in the future -zw
@@ -243,16 +233,12 @@ public class ThemeDownloader
         // These should be deleted at the end but just in case it crashes or something
         DeleteTempFiles();
 
-        UpdateDownloadWindow(viewModel, 0, "Downloading Theme...");
-
         string themeName = GetFileNameFromModName(theme.Name!);
         string themeFolder = $"{ThemeFolder}/{themeName}";
 
         if (theme.Files.Count == 1 && theme.Files[0].FileName.EndsWith(".zip"))
         {
-            await DownloadAndExtractZip(theme.Files[0]);
-
-            UpdateDownloadWindow(viewModel, 50, "Installing Theme...");
+            new ThemeDownloadDialog(theme.Files[0]);
 
             if (ThemeNeedsToBeCreated(out var existingXAMLs))
             {
@@ -281,23 +267,15 @@ public class ThemeDownloader
         // Checking for the heroes mod loader theme
         else if (theme.Files.Count == 2 && theme.Files[0].FileName == "default_5073e.zip")
         {
-            await DownloadAndExtractZip(theme.Files[0]);
-
-            UpdateDownloadWindow(viewModel, 20, "Installing Theme...");
+            new ThemeDownloadDialog(theme.Files[0]);
 
             Directory.Move($"{TempFolder}/Default", themeFolder);
             Directory.Delete(TempFolder);
 
-            UpdateDownloadWindow(viewModel, 40, "Downloading Image...");
-
-            await DownloadAndExtractZip(theme.Files[1]);
-
-            UpdateDownloadWindow(viewModel, 60, "Installing Image...");
+            new ThemeDownloadDialog(theme.Files[1]);
 
             string imagesFolder = $"{themeFolder}/Images";
             Directory.Move(TempFolder, imagesFolder);
-
-            UpdateDownloadWindow(viewModel, 80, "Finishing Up...");
 
             File.Move($"{themeFolder}/R-II/Controls.xaml", $"{themeFolder}/Controls.xaml");
             CopyFromHalogen($"{ThemeFolder}/Halogen/CustomStyles.xaml", $"{themeFolder}/CustomStyles.xaml", themeName);
@@ -307,8 +285,6 @@ public class ThemeDownloader
             CopyFromHalogen($"{ThemeFolder}/Halogen.xaml", themeFolder + ".xaml", themeName);
         }
 
-        UpdateDownloadWindow(viewModel, 100, "Done!");
-
         DeleteTempFiles();
     }
 
@@ -317,13 +293,13 @@ public class ThemeDownloader
     /// </summary>
     /// <param name="name">The .xaml to load from the theme selector</param>
     /// <param name="viewModel">The view model for the download window, so it can update the progress bar and text as it goes</param>
-    public static async Task DownloadThemeByName(string name, DownloadPackageViewModel viewModel)
+    public static void DownloadThemeByName(string name)
     {
         foreach ((var subtheme, var index) in ThemesDictionary)
         {
             if (subtheme == name)
             {
-                await DownloadTheme(AvailableThemes[index], viewModel);
+                DownloadTheme(AvailableThemes[index]);
                 break;
             }
         }

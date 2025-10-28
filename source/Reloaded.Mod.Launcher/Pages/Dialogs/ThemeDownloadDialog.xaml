@@ -1,0 +1,29 @@
+﻿<default:ReloadedWindow
+    x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.ThemeDownloadDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Reloaded.Mod.Launcher.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:default="clr-namespace:Reloaded.WPF.Theme.Default;assembly=Reloaded.WPF.Theme.Default"
+    xmlns:local="clr-namespace:Reloaded.Mod.Launcher.Pages.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Downloading Theme..."
+    Width="500"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    SizeToContent="Height"
+    Style="{DynamicResource ReloadedWindow}"
+    mc:Ignorable="d">
+
+    <Grid Height="50" Background="{DynamicResource BackgroundBrush}">
+        <Grid Margin="6">
+            <Grid Width="485" HorizontalAlignment="Center">
+                <ProgressBar x:Name="ThemeProgressBar" Value="{Binding Progress}" />
+                <TextBlock
+                    x:Name="ThemeTextBlock"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="White"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</default:ReloadedWindow>

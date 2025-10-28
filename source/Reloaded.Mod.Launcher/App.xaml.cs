@@ -197,9 +197,9 @@ public partial class App : Application
         var themeSelector = (XamlThemeSelector)Resources.MergedDictionaries[10];
 
         foreach (string theme in ThemeDownloader.ThemesDictionary.Keys)
-        {    
+        {
             if (!themeSelector.Files.Contains(theme))
-                themeSelector.Files.Add(theme);
+                themeSelector.InsertAlphabetical(theme);
         }
     }
 }

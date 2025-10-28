@@ -2,18 +2,30 @@
 
 public class XamlThemeSelector : XamlFileSelector
 {
-    public XamlThemeSelector(string directoryPath) : base(directoryPath)
+    public static readonly string FetchText = "Fetch Themes...";
+
+    private void InsertFetchButton()
     {
-        Files.Insert(0, "Fetch Themes...");
+        Files.Insert(0, FetchText);
     }
 
-    private void PopulateAndFetch(bool fetch=true)
+    public XamlThemeSelector(string directoryPath) : base(directoryPath)
+    {
+        InsertFetchButton();
+    }
+
+    private void PopulateAndFetch(string selectedTheme, bool fetch=true)
     {
         PopulateXamlFiles();
-
         ThemeDownloader.RefreshAvailableThemes(fetch).Wait();
+        InsertFetchButton();
 
-        Files.Insert(0, "Fetch Themes...");
+        if (System.IO.File.Exists(selectedTheme))
+        {
+            // Why do I need to do it twice? I don't know -zw
+            File = selectedTheme;
+            File = selectedTheme;
+        }
     }
 
     protected override void UpdateSource()
@@ -21,9 +33,9 @@ public class XamlThemeSelector : XamlFileSelector
         if (File == null)
             return;
 
-        if (File == "Fetch Themes...")
+        if (File == FetchText)
         {
-            PopulateAndFetch();
+            PopulateAndFetch(ThemeDownloader.GetFullPath(Path.GetFileName(Source.ToString())));
             return;
         }
 
@@ -34,29 +46,12 @@ public class XamlThemeSelector : XamlFileSelector
         catch
         {
             var selectedTheme = File;
+            ThemeDownloader.DownloadThemeByName(File);
+            PopulateAndFetch(selectedTheme, false);
 
-            DownloadPackageViewModel viewModel = new([], Lib.IoC.Get<LoaderConfig>())
-            {
-                Progress = 0,
-                Text = "Downloading Theme...",
-                Packages = [],
-            };
-
-            viewModel.DownloadTask = ThemeDownloader.DownloadThemeByName(File, viewModel);
-            var dialog = new DownloadPackageDialog(viewModel);
-            dialog.ShowDialog();
-            dialog.ViewModel.DownloadTask!.Wait();
-
-            PopulateAndFetch(false);
-
-            if (System.IO.File.Exists(ThemeDownloader.GetFullPath(selectedTheme)))
-            {
-                File = selectedTheme;
-                UpdateSource();
-                OnPropertyChanged();
-                return;
-            }
-                
+            // Probably the bodgey-est bodge I've ever done -zw
+            File = Files.FirstOrDefault();
+            File = selectedTheme;
         }
 
         /*
@@ -70,5 +65,44 @@ public class XamlThemeSelector : XamlFileSelector
         */
 
         OnNewFileSet();
+    }
+
+    private static int LetterIndex(string str, int letterIndex)
+    {
+        string letterChart = "abcdefghijklmnopqrstuvwxyz";
+        return letterChart.IndexOf(str.ToLower()[letterIndex]);
+    }
+
+    // Returns true if str1 should be ordered after str2
+    private static bool AlphabeticalCompare(string str1, string str2)
+    {
+        int length = Math.Min(str1.Length, str2.Length);
+        for (int i = 0; i < length; i++)
+        {
+            int index1 = LetterIndex(str1, i);
+            int index2 = LetterIndex(str2, i);
+            if (index1 == index2) continue;
+
+            return index1 > index2;
+        }
+
+        return str1.Length > str2.Length;
+    }
+
+    /// <summary>
+    /// Places the new entry in a spot to keep the alphabetical sorting
+    /// </summary>
+    public void InsertAlphabetical(string item)
+    {
+        for (int i = Files[0] == FetchText ? 1 : 0; i < Files.Count; i++)
+        {
+            if (AlphabeticalCompare(Files[i], item))
+            {
+                Files.Insert(i, item);
+                return;
+            }
+        }
+
+        Files.Add(item);
     }
 }
