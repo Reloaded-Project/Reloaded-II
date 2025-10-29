@@ -1,6 +1,7 @@
 ﻿//#define TEST_MODE
 
 using Reloaded.Mod.Loader.Update.Providers.GameBanana.Structures;
+using MessageBox = Reloaded.Mod.Launcher.Pages.Dialogs.MessageBox;
 
 namespace Reloaded.Mod.Launcher.Utility;
 
@@ -91,8 +92,23 @@ public class ThemeDownloader
 #if TEST_MODE
             TestFetch();
 #else
-            // Hangs here forever
-            AvailableThemes = await GameBananaMod.GetByNameAsync("", 7486, 1, 5, "GUIs");
+            int attempts = 0;
+        Retry:
+            try
+            {
+                // Hangs here forever
+                AvailableThemes = await GameBananaMod.GetByNameAsync("", 7486, 1, 5, "GUIs");
+            }
+            catch (Exception e)
+            {
+                if (attempts++ < 10)
+                    goto Retry;
+
+                var messageBox = new MessageBox("Fetch Error", "Failed to fetch the mods! Check your internet connection, and if that's good, it might just be GameBanana's servers acting up, try again later");
+                messageBox.ShowDialog();
+
+                return;
+            }
 #endif
 
             for (int i = 0; i < AvailableThemes.Count; i++)
@@ -123,8 +139,8 @@ public class ThemeDownloader
     }
 
     private static readonly string ThemeFolder = "Theme";
-    public static readonly string TempFolder = "Theme/.tmp";
-    public static readonly string TempZip = "Theme/tmptheme.zip";
+    public static readonly string TempFolder = $"{ThemeFolder}/.tmp";
+    public static readonly string TempZip = $"{ThemeFolder}/tmptheme.zip";
 
     /// <summary>
     /// Turns a .xaml filename into the full absolute path for the merged dictionary
@@ -292,7 +308,6 @@ public class ThemeDownloader
     /// Finds the theme from the given .xaml, and then downloads and installs it
     /// </summary>
     /// <param name="name">The .xaml to load from the theme selector</param>
-    /// <param name="viewModel">The view model for the download window, so it can update the progress bar and text as it goes</param>
     public static void DownloadThemeByName(string name)
     {
         foreach ((var subtheme, var index) in ThemesDictionary)

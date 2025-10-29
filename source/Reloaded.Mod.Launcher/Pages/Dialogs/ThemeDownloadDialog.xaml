@@ -17,7 +17,7 @@
     <Grid Height="50" Background="{DynamicResource BackgroundBrush}">
         <Grid Margin="6">
             <Grid Width="485" HorizontalAlignment="Center">
-                <ProgressBar x:Name="ThemeProgressBar" Value="{Binding Progress}" />
+                <ProgressBar x:Name="ThemeProgressBar"/>
                 <TextBlock
                     x:Name="ThemeTextBlock"
                     HorizontalAlignment="Center"
