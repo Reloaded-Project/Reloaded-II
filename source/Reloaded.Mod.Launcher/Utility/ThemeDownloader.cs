@@ -238,7 +238,7 @@ public class ThemeDownloader
         return createTheme;
     }
 
-    private static void DownloadTheme(GameBananaMod theme)
+    private static async Task DownloadTheme(GameBananaMod theme, ThemeDownloadDialog dialog)
     {
         // There needs to be a standard for how to upload themes
         // I'll support all of the current ones but there's likely to be an edge case that causes it to break in the future -zw
@@ -254,7 +254,8 @@ public class ThemeDownloader
 
         if (theme.Files.Count == 1 && theme.Files[0].FileName.EndsWith(".zip"))
         {
-            new ThemeDownloadDialog(theme.Files[0]);
+            if (await dialog.DownloadAndExtractZip(theme.Files[0]) != ThemeDownloadDialogResult.Ok)
+                goto Exit;
 
             if (ThemeNeedsToBeCreated(out var existingXAMLs))
             {
@@ -283,12 +284,13 @@ public class ThemeDownloader
         // Checking for the heroes mod loader theme
         else if (theme.Files.Count == 2 && theme.Files[0].FileName == "default_5073e.zip")
         {
-            new ThemeDownloadDialog(theme.Files[0]);
+
+            if (await dialog.DownloadAndExtractZip(theme.Files[0]) != ThemeDownloadDialogResult.Ok) goto Exit;
 
             Directory.Move($"{TempFolder}/Default", themeFolder);
             Directory.Delete(TempFolder);
 
-            new ThemeDownloadDialog(theme.Files[1]);
+            if (await dialog.DownloadAndExtractZip(theme.Files[1]) != ThemeDownloadDialogResult.Ok) goto Exit;
 
             string imagesFolder = $"{themeFolder}/Images";
             Directory.Move(TempFolder, imagesFolder);
@@ -301,6 +303,8 @@ public class ThemeDownloader
             CopyFromHalogen($"{ThemeFolder}/Halogen.xaml", themeFolder + ".xaml", themeName);
         }
 
+    Exit:
+        dialog.Close();
         DeleteTempFiles();
     }
 
@@ -308,13 +312,13 @@ public class ThemeDownloader
     /// Finds the theme from the given .xaml, and then downloads and installs it
     /// </summary>
     /// <param name="name">The .xaml to load from the theme selector</param>
-    public static void DownloadThemeByName(string name)
+    public static async Task DownloadThemeByName(string name, ThemeDownloadDialog dialog)
     {
         foreach ((var subtheme, var index) in ThemesDictionary)
         {
             if (subtheme == name)
             {
-                DownloadTheme(AvailableThemes[index]);
+                await DownloadTheme(AvailableThemes[index], dialog);
                 break;
             }
         }

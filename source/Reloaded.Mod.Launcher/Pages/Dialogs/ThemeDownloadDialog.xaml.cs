@@ -5,61 +5,91 @@ using System.Net.Http.Handlers;
 
 namespace Reloaded.Mod.Launcher.Pages.Dialogs;
 
+public enum ThemeDownloadDialogResult
+{
+    Ok,
+    Cancelled,
+    Failed
+}
+
+
 /// <summary>
 /// Interaction logic for ThemeDownloadDialog.xaml
 /// </summary>
 public partial class ThemeDownloadDialog : ReloadedWindow
 {
-    private readonly CancellationTokenSource CancellationToken;
-    private readonly Task DownloadTask;
+    private CancellationTokenSource CancellationToken;
 
-    public ThemeDownloadDialog(GameBananaModFile file)
+    public ThemeDownloadDialog()
     {
         InitializeComponent();
 
         CancellationToken = new CancellationTokenSource();
-
-        DownloadTask = DownloadAndExtractZip(file);
-        ShowDialog();
-        DownloadTask.Wait();
     }
 
-    public async Task DownloadAndExtractZip(GameBananaModFile file)
+    // progress is measured from 0-1
+    private void UpdateProgressBar(double progress)
     {
+        for (int i = 0; i < 2; i++)
+            ((System.Windows.Media.LinearGradientBrush)ThemeTextBlock.Foreground).GradientStops[i].Offset = progress;
+
+        ThemeProgressBar.Value = progress * 100;
+    }
+
+    public async Task<ThemeDownloadDialogResult> DownloadAndExtractZip(GameBananaModFile file)
+    {
+        CancellationToken = new CancellationTokenSource();
+
+        var result = ThemeDownloadDialogResult.Ok;
+
+        UpdateProgressBar(0);
         ThemeTextBlock.Text = $"Downloading {file.FileName}...";
 
         var handler = new HttpClientHandler() { AllowAutoRedirect = true };
         var progressHandler = new ProgressMessageHandler(handler);
 
-        // This is supposed to update the progress bar as it's downloading, emphasis on supposed to
-        progressHandler.HttpReceiveProgress += (obj, args) => { ThemeProgressBar.Value = (args.BytesTransferred / (double)args.TotalBytes!) * 100.0; };
+        progressHandler.HttpReceiveProgress += (obj, args) => { UpdateProgressBar(args.BytesTransferred / (double)args.TotalBytes!); };
 
         int attempts = 0;
         Stream zipStream;
     Retry:
         try
         {
-            zipStream = await new HttpClient(progressHandler).GetStreamAsync(file.DownloadUrl);
+            zipStream = await new HttpClient(progressHandler).GetStreamAsync(file.DownloadUrl, CancellationToken.Token);
         }
-        catch (Exception e)
+        catch
         {
             if (attempts++ < 10)
                 goto Retry;
 
-            var messageBox = new MessageBox("Theme Download Error", "Failed to download the mod! Check your internet connection, and if that's good, it might just be GameBanana's servers acting up, try again later");
+            var messageBox = new MessageBox("Theme Download Error", "Failed to download the theme! Check your internet connection, and if that's good, it might just be GameBanana's servers acting up, try again later");
             messageBox.ShowDialog();
 
+            result = ThemeDownloadDialogResult.Failed;
             // I know, I know, gotos are bad, but in this case it saves a few lines of code -zw
             goto Exit;
         }
 
-        ThemeTextBlock.Text = $"Extracting {file.FileName}...";
-        ZipFile.ExtractToDirectory(zipStream, ThemeDownloader.TempFolder);
+        if (CancellationToken.IsCancellationRequested)
+            result = ThemeDownloadDialogResult.Cancelled;
+        else
+        {
+            ThemeTextBlock.Text = $"Extracting {file.FileName}...";
+            try
+            {
+                ZipFile.ExtractToDirectory(zipStream, ThemeDownloader.TempFolder);
+            }
+            catch
+            {
+                result = ThemeDownloadDialogResult.Failed;
+                goto Exit;
+            }
+        }
 
         zipStream.Close();
 
     Exit:
-        Close();
+        return result;
     }
 
     private void CancelButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)

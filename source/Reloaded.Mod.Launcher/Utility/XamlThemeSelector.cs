@@ -28,6 +28,27 @@ public class XamlThemeSelector : XamlFileSelector
         }
     }
 
+    private async Task DownloadTheme()
+    {
+        string selectedTheme = File!;
+
+        var dialog = new ThemeDownloadDialog();
+        var task = ThemeDownloader.DownloadThemeByName(File, dialog);
+        dialog.ShowDialog();
+        await task;
+
+        bool exists = System.IO.File.Exists(selectedTheme);
+
+        PopulateAndFetch(exists ? selectedTheme : ThemeDownloader.GetFullPath("Default.xaml"), false);
+
+        if (exists)
+        {
+            // Probably the bodgey-est bodge I've ever done -zw
+            File = Files.FirstOrDefault();
+            File = selectedTheme;
+        }
+    }
+
     protected override void UpdateSource()
     {
         if (File == null)
@@ -45,13 +66,8 @@ public class XamlThemeSelector : XamlFileSelector
         }
         catch
         {
-            var selectedTheme = File;
-            ThemeDownloader.DownloadThemeByName(File);
-            PopulateAndFetch(selectedTheme, false);
-
-            // Probably the bodgey-est bodge I've ever done -zw
-            File = Files.FirstOrDefault();
-            File = selectedTheme;
+            DownloadTheme();
+            return;
         }
 
         /*

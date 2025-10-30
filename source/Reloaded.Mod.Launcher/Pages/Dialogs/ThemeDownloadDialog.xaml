@@ -16,13 +16,23 @@
 
     <Grid Height="50" Background="{DynamicResource BackgroundBrush}">
         <Grid Margin="6">
-            <Grid Width="485" HorizontalAlignment="Center">
-                <ProgressBar x:Name="ThemeProgressBar"/>
+            <Grid Width="400" HorizontalAlignment="Left">
+                <ProgressBar x:Name="ThemeProgressBar" />
                 <TextBlock
                     x:Name="ThemeTextBlock"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Foreground="White"/>
+                    VerticalAlignment="Center">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush>
+                            <GradientStop Offset="0.0" Color="Black" />
+                            <GradientStop Offset="0.0" Color="White" />
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
+            </Grid>
+
+            <Grid Width="90" HorizontalAlignment="Right">
+                <Button Name="CancelButton" PreviewMouseDown="CancelButton_PreviewMouseDown">Cancel</Button>
             </Grid>
         </Grid>
     </Grid>
