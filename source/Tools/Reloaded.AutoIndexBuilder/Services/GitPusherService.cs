@@ -5,7 +5,7 @@ public class GitPusherService
     private readonly Logger _logger;
     private readonly Settings _settings;
 
-    private Signature Signature => new Signature("Reloaded Index Bot", "admin@sewer56.dev", DateTimeOffset.UtcNow);
+    private Signature Signature => new Signature("Reloaded Index Bot", "bot@sewer56.dev", DateTimeOffset.UtcNow);
     private Repository Repository
     {
         get
