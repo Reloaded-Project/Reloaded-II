@@ -181,7 +181,7 @@ public static class Resources
     // Update 1.21.0: Mod Packs Install
     public static IDictionaryResource<string> InstallModPackDownloading { get; set; }
     public static IDictionaryResource<string> InstallModPackErrorDownloadFail { get; set; }
-    
+
     // Update 1.21.6: Mod Packs Install
     public static IDictionaryResource<string> ErrorAddApplicationGeneral { get; set; }
     public static IDictionaryResource<string> ErrorAddApplicationCantReadSymlink { get; set; }
@@ -219,4 +219,10 @@ public static class Resources
     public static IDictionaryResource<string> ErrorViewDetails { get; set; }
     public static IDictionaryResource<string> ErrorStacktraceTitle { get; set; }
     public static IDictionaryResource<string> ErrorStacktraceSubtitle { get; set; }
+
+    // Update 1.X.X: New Progress Window for Local Mod Installation (UPDATE LAUNCHER VER BEFORE RELEASE)
+    public static IDictionaryResource<string> InstallModArchiveTitle { get; set; }
+    public static IDictionaryResource<string> InstalledModName { get; set; }
+    public static IDictionaryResource<string> InstallingModWait { get; set; }
+    public static IDictionaryResource<string> ExtractingLocalModArchive { get; set; }
 }
