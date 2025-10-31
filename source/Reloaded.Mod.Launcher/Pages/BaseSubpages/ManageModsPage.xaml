@@ -37,12 +37,12 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{DynamicResource LeftPanelWidth}"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="{DynamicResource LeftPanelWidth}"/>
             </Grid.ColumnDefinitions>
 
             <!-- Left Side. -->
-            <ScrollViewer Margin="{DynamicResource PanelMargin}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer Margin="{DynamicResource PanelMargin}" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
 
                     <!-- Application Image -->
@@ -69,7 +69,6 @@
                     <Grid Margin="{DynamicResource CommonItemVerticalMargin}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
@@ -79,41 +78,28 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0"
-                                Grid.Row="0"
-                                Margin="0"
-                                Style="{DynamicResource UnpaddedStretchedGridButton}"
-                                Content="{DynamicResource AddAppNewButton}" 
-                                Click="New_Click"/>
 
-                        <Button Grid.Column="1"
-                                Grid.Row="0"
-                                Margin="0"
-                                Style="{DynamicResource UnpaddedStretchedGridButton}"
-                                Content="{DynamicResource AddAppDeleteButton}" 
-                                Command="{Binding DeleteModCommand}"/>
-
-                        <Button Grid.Row="1"
+                        <Button Grid.Row="0"
                                 Grid.Column="0"
                                 Style="{DynamicResource UnpaddedStretchedButton}"
                                 Content="{DynamicResource ModManagerContextEdit}" 
                                 Margin="0"
                                 Command="{Binding EditModCommand}"/>
 
-                        <Button Grid.Row="1"
+                        <Button Grid.Row="2"
                                 Grid.Column="1"
                                 Style="{DynamicResource UnpaddedStretchedButton}"
                                 Content="{DynamicResource ModManagerContextPublish}" 
                                 Margin="0"
                                 Command="{Binding PublishModCommand}"/>
-                        
-                        <Button Grid.Row="2"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Style="{DynamicResource UnpaddedStretchedButton}"
-                                Content="{DynamicResource CreateModPackTitle}" 
+
+                        <Button Grid.Column="1"
+                                Grid.Row="3"
                                 Margin="0"
-                                Command="{Binding CreateModPackCommand}"/>
+                                Style="{DynamicResource UnpaddedStretchedGridButton}"
+                                Content="{DynamicResource AddAppDeleteButton}" 
+                                Command="{Binding DeleteModCommand}"/>
+
                     </Grid>
 
                     <!-- Mod Properties -->
@@ -136,7 +122,7 @@
             </ScrollViewer>
 
             <!-- Right Side. -->
-            <Grid Margin="{DynamicResource PanelMargin}" Grid.Column="1">
+            <Grid Margin="{DynamicResource PanelMargin}" Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="3*"/>
                     <RowDefinition Height="2*"/>
@@ -148,7 +134,6 @@
                     <!-- Search Textboxes -->
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
@@ -156,87 +141,120 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
+                    <Border Background="Transparent" BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="0,0,0,3">
+                        <DockPanel Background="Transparent" >
+                            <DockPanel Background="#11FFFFFF"  DockPanel.Dock="Top" Height="50">
+                                <Button Margin="10,0,10,0"
+                                        Width="60"
+                                        Style="{DynamicResource UnpaddedStretchedGridButton}"
+                                        Content="{DynamicResource AddAppNewButton}" 
+                                        Click="New_Click"/>
+                                <Button Width="130"
+                                        Style="{DynamicResource UnpaddedStretchedButton}"
+                                        Content="{DynamicResource CreateModPackTitle}" 
+                                        Margin="0,0,5,0"
+                                        Command="{Binding CreateModPackCommand}"/>
+                                <Border Background="#FF1D1D1D" Margin="5,10,10,10" BorderBrush="#FF0C0C0C" BorderThickness="1" DockPanel.Dock="Left">
+                                    <TextBox x:Name="ModsFilter"                                          
+                                             Style="{DynamicResource TextboxWithPlaceholder}"  
+                                             Margin="8,2,8,2"
+                                             Tag="{DynamicResource ModManagerSearchMods}"
+                                             AutomationProperties.Name="{DynamicResource ModManagerSearchMods}"
+                                             TextChanged="ModsFilter_TextChanged" 
+                                             HorizontalContentAlignment="Left"/>
+                                </Border>
+                                
+                            </DockPanel>
+                            <!-- List of Mods -->
+                            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"   >  <!--Margin="{DynamicResource PanelMargin}"--> 
+                                <ListView                                     
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding Source={StaticResource SortedMods}}"
+                                    SelectedItem="{Binding SelectedModTuple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    ToolTip="{DynamicResource ModManagerSelectMod}"
+                                    SelectionChanged="ListView_SelectionChanged"
+                                    SelectionMode="Single"
+                                    VerticalAlignment="Stretch"
+                                    VerticalContentAlignment="Top" 
+                                    BorderBrush="{x:Null}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Config.ModDisplayName}"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Grid>
+                        </DockPanel>
+                    </Border>
                     
-                    <TextBox x:Name="ModsFilter" Style="{DynamicResource TextboxWithPlaceholder}" 
-                             Margin="{DynamicResource PanelMargin}"
-                             Tag="{DynamicResource ModManagerSearchMods}"
-                             AutomationProperties.Name="{DynamicResource ModManagerSearchMods}"
-                             TextChanged="ModsFilter_TextChanged" 
-                             Grid.Column="0" 
-                             Grid.Row="0"/>
 
-                    <TextBox x:Name="AppsFilter" 
-                             Margin="{DynamicResource PanelMargin}"
-                             Style="{DynamicResource TextboxWithPlaceholder}" 
-                             Tag="{DynamicResource ModManagerSearchApps}"
-                             AutomationProperties.Name="{DynamicResource ModManagerSearchApps}"
-                             TextChanged="AppsFilter_TextChanged" 
-                             Grid.Column="1" 
-                             Grid.Row="0"/>
-
-                    <!-- List of Mods -->
-                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="{DynamicResource PanelMargin}">
-                        <ListView 
-                            HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding Source={StaticResource SortedMods}}"
-                            SelectedItem="{Binding SelectedModTuple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                            ToolTip="{DynamicResource ModManagerSelectMod}"
-                            SelectionChanged="ListView_SelectionChanged"
-                            SelectionMode="Single"
-                            VerticalAlignment="Stretch"
-                            VerticalContentAlignment="Top">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Config.ModDisplayName}"  VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{DynamicResource ListEntryItemMarginSmall}"/>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
+                    
                 </Grid>
 
-                <Grid Grid.Row="1" Margin="{DynamicResource PanelMargin}">
-                    <ListView 
-                        ToolTip="{DynamicResource ModManagerSelectApp}"
-                        ItemsSource="{Binding Source={StaticResource SortedApps}}"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        VerticalContentAlignment="Top">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <CheckBox IsChecked="{Binding Enabled}" 
-                                              Style="{DynamicResource DefaultCheckBox}" 
-                                              Height="{DynamicResource ListEntryCheckboxHeightSmall}" 
-                                              HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center" 
-                                              Margin="{DynamicResource ListEntryItemMarginSmall}" />
+                <Border Background="Transparent" BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="0,12,0,0">
+                    <DockPanel Grid.Row="1">
+                        <DockPanel  Background="#11FFFFFF" DockPanel.Dock="Top" Height="45">
+                            <Border Background="#FF1D1D1D" Margin="10,8,10,8" BorderBrush="#FF0C0C0C" BorderThickness="1" DockPanel.Dock="Left">
+                                <TextBox x:Name="AppsFilter" 
+                                         Margin="8,2,8,2"
+                                         Style="{DynamicResource TextboxWithPlaceholder}" 
+                                         Tag="{DynamicResource ModManagerSearchApps}"
+                                         AutomationProperties.Name="{DynamicResource ModManagerSearchApps}"
+                                         TextChanged="AppsFilter_TextChanged" 
+                                         Grid.Column="1" 
+                                         Grid.Row="0"
+                                         HorizontalContentAlignment="Left"/>
+                            </Border>
+                            
+                        </DockPanel>
+                        <Grid Grid.Row="1" DockPanel.Dock="Top">
+                            <!--Margin="{DynamicResource PanelMargin}"-->
+                            <ListView 
+                ToolTip="{DynamicResource ModManagerSelectApp}"
+                ItemsSource="{Binding Source={StaticResource SortedApps}}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Top"
+                BorderBrush="{x:Null}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding Enabled}" 
+                            Style="{DynamicResource DefaultCheckBox}" 
+                            Height="{DynamicResource ListEntryCheckboxHeightSmall}" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            Margin="{DynamicResource ListEntryItemMarginSmall}" />
 
-                                    <TextBlock VerticalAlignment="Center" 
-                                               HorizontalAlignment="Center" 
-                                               Margin="{DynamicResource ListEntryItemMarginSmall}">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="Text">
-                                                    <Setter.Value>
-                                                        <MultiBinding StringFormat="{}{0} ({1})">
-                                                            <Binding Path="Generic.AppName" />
-                                                            <Binding Path="Generic.AppId" />
-                                                        </MultiBinding>
-                                                    </Setter.Value>
-                                                </Setter>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Generic.AppName, UpdateSourceTrigger=PropertyChanged}" Value="">
-                                                        <Setter Property="Text" Value="{Binding Generic.AppId, UpdateSourceTrigger=PropertyChanged}" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
+                                            <TextBlock VerticalAlignment="Center" 
+                                    HorizontalAlignment="Center" 
+                                    Margin="{DynamicResource ListEntryItemMarginSmall}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Text">
+                                                            <Setter.Value>
+                                                                <MultiBinding StringFormat="{}{0} ({1})">
+                                                                    <Binding Path="Generic.AppName" />
+                                                                    <Binding Path="Generic.AppId" />
+                                                                </MultiBinding>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Generic.AppName, UpdateSourceTrigger=PropertyChanged}" Value="">
+                                                                <Setter Property="Text" Value="{Binding Generic.AppId, UpdateSourceTrigger=PropertyChanged}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    </DockPanel>
+                </Border>                
+                
             </Grid>
         </Grid>
     </Grid>
