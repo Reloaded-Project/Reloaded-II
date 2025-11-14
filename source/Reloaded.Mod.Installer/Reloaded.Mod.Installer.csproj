@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>NET472;net9.0-windows</TargetFrameworks>
+    <TargetFrameworks>NET472;net10.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <LangVersion>preview</LangVersion>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -15,7 +15,7 @@
     <_SuppressWpfTrimError>true</_SuppressWpfTrimError>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0-windows'))">
+  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0-windows'))">
     <PublishAot>true</PublishAot>
   </PropertyGroup>
 

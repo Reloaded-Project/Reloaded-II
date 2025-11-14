@@ -81,7 +81,7 @@ dotnet publish "$communityProjectPath" -c Release -r win-x64 --self-contained fa
 dotnet publish "$installerProjectPath" -f net472 -o "$installerPublishDirectory"
 
 # Build Installer (Static/Linux)
-dotnet publish "$installerCliProjectPath" -f net9.0-windows -r win-x64 -o "$installerStaticPublishDirectory"
+dotnet publish "$installerCliProjectPath" -f net10.0-windows -r win-x64 -o "$installerStaticPublishDirectory"
 
 # Build Templates
 dotnet pack "$templateProjectPath" -o "$templatePublishDirectory"
