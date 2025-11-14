@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0-windows</TargetFramework>
-    <RuntimeFrameworkVersion>9.0.8</RuntimeFrameworkVersion>
-    <RollForward>Minor</RollForward> <!-- Allow 9.X greater than 9.0.8 -->
-    
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RollForward>Disable</RollForward>
 	  <LangVersion>preview</LangVersion>
     <AssemblyTitle>Reloaded.Mod.Loader</AssemblyTitle>
 	  <UseWindowsForms>true</UseWindowsForms>
@@ -98,7 +96,7 @@
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.5" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="2.0.0" />
-    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.11" />
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="10.0.0" />
     <PackageReference Include="Reloaded.SharedLib.Hooks" Version="1.9.0" ExcludeAssets="runtime" />
   </ItemGroup>
   <ItemGroup>
