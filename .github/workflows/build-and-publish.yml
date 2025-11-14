@@ -31,7 +31,7 @@ jobs:
         shell: pwsh
     
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         fetch-depth: 0
         submodules: 'recursive'
@@ -45,9 +45,9 @@ jobs:
     
     # Required for C#10 features.
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
-        node-version: '14'
+        node-version: '20'
     
     - name: Setup MSVC
       uses: ilammy/msvc-dev-cmd@v1
@@ -59,24 +59,29 @@ jobs:
       run: npm install -g auto-changelog
    
     - name: Setup Dotnet SDK (5.0)
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '5.0.x'
 
     - name: Setup Dotnet SDK (7.0)
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '7.0.x'
 
     - name: Setup Dotnet SDK (8.0)
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '8.0.x'
 
     - name: Setup Dotnet SDK (9.0)
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '9.0.x'
+        
+    - name: Setup Dotnet SDK (10.0)
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '10.0.x'
     
     - name: Get Dotnet Info
       run: dotnet --info
@@ -121,7 +126,7 @@ jobs:
         }
         
     - name: Upload Chocolatey Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         # Artifact name
         name: Chocolatey Package
@@ -130,7 +135,7 @@ jobs:
         retention-days: 0
         
     - name: Upload Reloaded Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         # Artifact name
         name: Loader Build
@@ -139,7 +144,7 @@ jobs:
         retention-days: 0
         
     - name: Upload Installer Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         # Artifact name
         name: Installer
@@ -150,7 +155,7 @@ jobs:
         retention-days: 0
          
     - name: Upload NuGet Artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         # Artifact name
         name: NuGet Packages
@@ -159,7 +164,7 @@ jobs:
         retention-days: 0
         
     - name: Upload Changelog Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         # Artifact name
         name: Changelog
@@ -168,7 +173,7 @@ jobs:
         retention-days: 0
     
     - name: Upload Tools Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         # Artifact name
         name: Tools
