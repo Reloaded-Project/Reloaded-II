@@ -1,13 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0-windows</TargetFramework>
-    <!-- 9.0.5 is broken, don't allow booting with it -->
-    <RuntimeFrameworkVersion>9.0.4</RuntimeFrameworkVersion>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <RollForward>Disable</RollForward>
-    
-	  <LangVersion>preview</LangVersion>
+	<LangVersion>preview</LangVersion>
     <AssemblyTitle>Reloaded.Mod.Loader</AssemblyTitle>
-	  <UseWindowsForms>true</UseWindowsForms>
+	<UseWindowsForms>true</UseWindowsForms>
     <Product>Reloaded.Mod.Loader</Product>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -15,7 +12,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU1605;NU1701</NoWarn>
-	  <Version>1.29.2</Version>
+	<Version>1.29.2</Version>
     <CETCompat>false</CETCompat>
     <Platforms>x86;x64</Platforms>
     <GenerateDepsJson>false</GenerateDepsJson>
@@ -97,7 +94,7 @@
     <PackageReference Include="Colorful.Console" Version="1.2.2-reloaded" />
     <PackageReference Include="Indieteur.SteamAppsManAndVDFAPI" Version="1.0.5" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="2.0.0" />
-    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.3" />
+    <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="10.0.0" />
     <PackageReference Include="Reloaded.SharedLib.Hooks" Version="1.9.0" ExcludeAssets="runtime" />
   </ItemGroup>
   <ItemGroup>
