@@ -103,23 +103,12 @@ public class PublishModDialogViewModel : ObservableObject
         _modTuple    = modTuple;
         PackageName  = IOEx.ForceValidFilePath(_modTuple.Config.ModName.Replace(' ', '_'));
         OutputFolder = Path.Combine(Path.GetTempPath(), $"{IOEx.ForceValidFilePath(_modTuple.Config.ModId)}.Publish");
-
-        // Set default Regexes.
-        IgnoreRegexes = new ObservableCollection<StringWrapper>()
-        {
-            @".*\.json", // Config files
-            $"{Regex.Escape($@"{_modTuple.Config.ModId}.nuspec")}"
-        };
-
-        IncludeRegexes = new ObservableCollection<StringWrapper>()
-        {
-            Regex.Escape(ModConfig.ConfigFileName),
-            @"\.deps\.json",
-            @"\.runtimeconfig\.json",
-        };
-
-        // Set notifications
-        PropertyChanged += ChangeUiVisbilityOnPropertyChanged;
+        IgnoreRegexes = new ObservableCollection<StringWrapper>(
+            _modTuple.Config.IgnoreRegexes.Select(x => new StringWrapper { Value = x })
+        );
+        IncludeRegexes = new ObservableCollection<StringWrapper>(
+            _modTuple.Config.IncludeRegexes.Select(x => new StringWrapper { Value = x })
+        );
     }
 
     /// <summary>
@@ -129,6 +118,9 @@ public class PublishModDialogViewModel : ObservableObject
     /// <returns>True if a build has started and the operation completed, else false.</returns>
     public async Task<bool> BuildAsync(CancellationToken cancellationToken = default)
     {
+        // Save all changes before building to ensure config is current
+        await SaveAsync();
+
         // Check if Auto Delta can be performed.
         if (AutomaticDelta && !Singleton<ReleaseMetadata>.Instance.CanReadFromDirectory(OutputFolder, null, out _, out _))
         {
@@ -148,8 +140,8 @@ public class PublishModDialogViewModel : ObservableObject
                     PublishTarget = PublishTarget,
                     OutputFolder = OutputFolder,
                     ModTuple = _modTuple,
-                    IgnoreRegexes = IgnoreRegexes.Select(x => x.Value).ToList(),
-                    IncludeRegexes = IncludeRegexes.Select(x => x.Value).ToList(),
+                    IgnoreRegexes = _modTuple.Config.IgnoreRegexes,
+                    IncludeRegexes = _modTuple.Config.IncludeRegexes,
                     Progress = new Progress<double>(d => BuildProgress = d * 100),
                     AutomaticDelta = AutomaticDelta,
                     CompressionLevel = CompressionLevel,
@@ -286,6 +278,23 @@ public class PublishModDialogViewModel : ObservableObject
     /// </summary>
     public void SetReadmePath() => ReadmePath = FileSelectors.SelectMarkdownFile();
 
+    /// <summary>
+    /// Saves all changes to the mod config.
+    /// Automatically syncs collections before saving to ensure all in-memory edits are persisted.
+    /// </summary>
+    public async Task SaveAsync()
+    {
+        UpdateConfig(_modTuple.Config.IgnoreRegexes, IgnoreRegexes);
+        UpdateConfig(_modTuple.Config.IncludeRegexes, IncludeRegexes);
+        await _modTuple.SaveAsync();
+
+        void UpdateConfig(List<string> list, ObservableCollection<StringWrapper> collection)
+        {
+            list.Clear();
+            list.AddRange(collection.Select(x => x.Value));
+        }
+    }
+
     private string GetModFolder() => Path.GetDirectoryName(_modTuple.Path)!;
     
 
@@ -295,11 +304,5 @@ public class PublishModDialogViewModel : ObservableObject
             allItems.Remove(item);
         else if (allItems.Count > 0)
             allItems.RemoveAt(allItems.Count - 1);
-    }
-    
-    private void ChangeUiVisbilityOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(PublishTarget))
-            ShowLastVersionUiItems = PublishTarget != PublishTarget.NuGet;
     }
 }

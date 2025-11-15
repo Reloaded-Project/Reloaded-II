@@ -1,7 +1,9 @@
-using System.Text;
+using NuGet.Common;
 using Reloaded.Mod.Loader.Update.Providers.Web;
 using Sewer56.DeltaPatchGenerator.Lib.Utility;
 using Sewer56.Update.Extractors.SevenZipSharp;
+using System.Text;
+using System.Windows.Threading;
 using static Reloaded.Mod.Launcher.Lib.Static.Resources;
 
 namespace Reloaded.Mod.Launcher;
@@ -88,10 +90,40 @@ public partial class MainWindow : ReloadedWindow
             /* Extract to Temp Directory */
             using var tempFolder = new TemporaryFolderAllocation();
             var archiveExtractor = new SevenZipSharpExtractor();
-            await archiveExtractor.ExtractPackageAsync(file, tempFolder.FolderPath, new Progress<double>(), default);
 
-            /* Get name of package. */
-            WebDownloadablePackage.CopyPackagesFromExtractFolderToTargetDir(modsFolder!, tempFolder.FolderPath, default);
+            var installVM = new InstallPackageViewModel
+            {
+                Title = InstallModArchiveTitle.Get(),
+                Text = ExtractingLocalModArchive.Get(),
+                Progress = 0
+            };
+
+            var progress = new Progress<double>(value =>
+            {
+                installVM.Progress = value * 100;
+            });
+
+            //Waits for 3 seconds before showing the install dialog, if the installation is not complete by then.
+            var timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(3)
+            };
+
+            timer.Tick += (s, e) =>
+            {
+                timer.Stop();
+                if (installVM.Progress != 100)
+                {
+                    Actions.ShowInstallPackageDialog.Invoke(installVM);
+                }
+            };
+            timer.Start();
+
+            await archiveExtractor.ExtractPackageAsync(file, tempFolder.FolderPath, progress, default);
+
+            installVM.Text = InstallingModWait.Get();
+            await WebDownloadablePackage.CopyPackagesFromExtractFolderToTargetDir(modsFolder!, tempFolder.FolderPath, default);
+            installVM.IsComplete = true;
         }
         
         // Find the new mods

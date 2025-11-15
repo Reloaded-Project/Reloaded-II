@@ -62,7 +62,7 @@ public static class Lib
         Actions.ShowModLoaderUpdateDialogDelegate showModLoaderUpdate, Actions.ShowModUpdateDialogDelegate showModUpdate, Actions.ConfigureNuGetFeedsDialogDelegate configureNuGetFeeds,
         Actions.ConfigureModDialogDelegate configureModDialog, Actions.ShowMissingCoreDependencyDialogDelegate showMissingCoreDependency,
         Actions.EditModDialogDelegate editModDialog, Actions.PublishModDialogDelegate publishModDialog,
-        Actions.ShowEditModUserConfigDialogDelegate showEditModUserConfig, Actions.ShowFetchPackageDialogDelegate showFetchPackageDialog,
+        Actions.ShowEditModUserConfigDialogDelegate showEditModUserConfig, Actions.ShowFetchPackageDialogDelegate showFetchPackageDialog, Actions.ShowInstallPackageDialogDelegate showInstallPackageDialog,
         Actions.ShowSelectAddedGameDialogDelegate showSelectAddedGameDialog, Actions.ShowAddAppHashMismatchDialogDelegate showAddAppMismatchDialog,
         Actions.ShowApplicationWarningDialogDelegate showApplicationWarningDialog, Actions.ShowRunAppViaWineDialogDelegate showRunAppViaWineDialog,
         Actions.ShowEditPackDialogDelegate showEditPackDialog, Actions.ShowInstallModPackDialogDelegate showInstallModPackDialog, Action initControllerSupport)
@@ -85,6 +85,7 @@ public static class Lib
         Actions.PublishModDialog = publishModDialog;
         Actions.ShowEditModUserConfig = showEditModUserConfig;
         Actions.ShowFetchPackageDialog = showFetchPackageDialog;
+        Actions.ShowInstallPackageDialog = showInstallPackageDialog;
         Actions.ShowSelectAddedGameDialog = showSelectAddedGameDialog;
         Actions.ShowAddAppHashMismatchDialog = showAddAppMismatchDialog;
         Actions.ShowApplicationWarningDialog = showApplicationWarningDialog;
