@@ -1,34 +1,29 @@
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
-[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.29.1).
-
-# 1.29.2: Miscellaneous Things
+[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.29.2).
 
 Just a few low effort fixes and miscellany. As usual, Reloaded-II is on life support while I spend
 the next years building the next best thing - if you want features, please contribute!
 
-## Fix: Better Error Handling for Bad Update Files
+# vNext: Miscellaneous Improvements
 
-Previously, if someone uploaded a corrupted `Sewer56.Update.Metadata.json` file to GameBanana or GitHub,
-Reloaded would crash. Now it handles these errors gracefully instead of crashing.
+No update to .NET 10 as of current.
 
-Might add UI in future.
+According to 3rd party reports I got thus far, `Proton` needs updating to receive some upstream fixes from `Wine` for .NET 10, which may take a while.
 
-## Fix: Unnecessary Runtime Downloads
+## Added Progress Bar for Mod Installation
 
-![](https://github.com/user-attachments/assets/45795e1b-c922-44e9-9134-60fe18b27f29)
+![Image](https://github.com/user-attachments/assets/9f09ccad-f036-4856-806c-3c75f281307a)
 
-Fixed an issue where the dependency installer was requesting unnecessary .NET runtime downloads.
-The problem was that the installer wasn't filtering out the `Mods` folder, so it tried to install
-runtimes that mods were built with, even though all mods use the loader's runtime.
+If a mod takes longer than 3 seconds to install via Drag & Drop, a simple progress bar will display on the screen now.
+In practice you should only see this if you install large mods (think >500MB); on a typical CPU.
 
-Now it only installs truly needed dependencies.
+## Save Mod Config on Publish, Including `IncludeFiles` and `ExcludeFiles` by @TheBestAstroNOT , @Sewer56
 
-[This happened because in the last release the in-launcher dependency installer was updated to use
-the same code as `Setup.exe`; and this was a small oversight in the migration.]
+When you `Publish` a mod you have an option to exclude certain files from the released project via `File Inclusions & Exclusions`.
+By default, that is all `.json` files except `.deps.json` and `.runtimeconfig.json` ones.
 
-## Updated French Localization by @dysfunctionalriot
-
-🇫🇷 Updated translations for version 1.29.1.
+Previously, changes on this menu didn't save; as barely anyone ever changed the defaults.
+Now they do.
 
 ------------------------------------
 
