@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0-windows</TargetFramework>
-    <!-- 9.0.5 is broken, don't allow booting with it -->
-    <RuntimeFrameworkVersion>9.0.4</RuntimeFrameworkVersion>
-    <RollForward>Disable</RollForward>
+    <RuntimeFrameworkVersion>9.0.8</RuntimeFrameworkVersion>
+    <RollForward>Minor</RollForward> <!-- Allow 9.X greater than 9.0.8 -->
     
 	  <LangVersion>preview</LangVersion>
     <AssemblyTitle>Reloaded.Mod.Loader</AssemblyTitle>
@@ -15,7 +14,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU1605;NU1701</NoWarn>
-	  <Version>1.29.2</Version>
+	  <Version>1.29.3</Version>
     <CETCompat>false</CETCompat>
     <Platforms>x86;x64</Platforms>
     <GenerateDepsJson>false</GenerateDepsJson>
