@@ -106,44 +106,9 @@ public class PublishModDialogViewModel : ObservableObject
         IgnoreRegexes = new ObservableCollection<StringWrapper>(
             _modTuple.Config.IgnoreRegexes.Select(x => new StringWrapper { Value = x })
         );
-        foreach (StringWrapper item in IgnoreRegexes)
-            item.PropertyChanged += (_, __) => UpdateConfig(_modTuple.Config.IgnoreRegexes, IgnoreRegexes);
-        IgnoreRegexes.CollectionChanged += (s, e) =>
-        {
-            if (e.NewItems != null)
-                foreach (StringWrapper item in e.NewItems)
-                    item.PropertyChanged += (_, __) => UpdateConfig(_modTuple.Config.IgnoreRegexes, IgnoreRegexes);
-
-            if (e.OldItems != null)
-                foreach (StringWrapper item in e.OldItems)
-                    item.PropertyChanged -= (_, __) => UpdateConfig(_modTuple.Config.IgnoreRegexes, IgnoreRegexes);
-            _modTuple.Config.IgnoreRegexes.Clear();
-            _modTuple.Config.IgnoreRegexes.AddRange(IgnoreRegexes.Select(x => x.Value));
-        };
         IncludeRegexes = new ObservableCollection<StringWrapper>(
             _modTuple.Config.IncludeRegexes.Select(x => new StringWrapper { Value = x })
         );
-        foreach (StringWrapper item in IncludeRegexes)
-            item.PropertyChanged += (_, __) => UpdateConfig(_modTuple.Config.IncludeRegexes, IncludeRegexes);
-        IncludeRegexes.CollectionChanged += (s, e) =>
-        {
-            if (e.NewItems != null)
-                foreach (StringWrapper item in e.NewItems)
-                    item.PropertyChanged += (_, __) => UpdateConfig(_modTuple.Config.IncludeRegexes, IncludeRegexes);
-
-            if (e.OldItems != null)
-                foreach (StringWrapper item in e.OldItems)
-                    item.PropertyChanged -= (_, __) => UpdateConfig(_modTuple.Config.IncludeRegexes, IncludeRegexes);
-            _modTuple.Config.IncludeRegexes.Clear();
-            _modTuple.Config.IncludeRegexes.AddRange(IncludeRegexes.Select(x => x.Value));
-        };
-    }
-
-    void UpdateConfig(List<string> list, ObservableCollection<StringWrapper> collection)
-    {
-        list.Clear();
-        list.AddRange(collection.Select(x => x.Value));
-        _modTuple.SaveAsync();
     }
 
     /// <summary>
@@ -153,6 +118,9 @@ public class PublishModDialogViewModel : ObservableObject
     /// <returns>True if a build has started and the operation completed, else false.</returns>
     public async Task<bool> BuildAsync(CancellationToken cancellationToken = default)
     {
+        // Save all changes before building to ensure config is current
+        await SaveAsync();
+
         // Check if Auto Delta can be performed.
         if (AutomaticDelta && !Singleton<ReleaseMetadata>.Instance.CanReadFromDirectory(OutputFolder, null, out _, out _))
         {
@@ -311,9 +279,21 @@ public class PublishModDialogViewModel : ObservableObject
     public void SetReadmePath() => ReadmePath = FileSelectors.SelectMarkdownFile();
 
     /// <summary>
-    /// Lets the user save all changes to the mod config.
+    /// Saves all changes to the mod config.
+    /// Automatically syncs collections before saving to ensure all in-memory edits are persisted.
     /// </summary>
-    public Task SaveAsync() => _modTuple.SaveAsync();
+    public async Task SaveAsync()
+    {
+        UpdateConfig(_modTuple.Config.IgnoreRegexes, IgnoreRegexes);
+        UpdateConfig(_modTuple.Config.IncludeRegexes, IncludeRegexes);
+        await _modTuple.SaveAsync();
+
+        void UpdateConfig(List<string> list, ObservableCollection<StringWrapper> collection)
+        {
+            list.Clear();
+            list.AddRange(collection.Select(x => x.Value));
+        }
+    }
 
     private string GetModFolder() => Path.GetDirectoryName(_modTuple.Path)!;
     
@@ -324,11 +304,5 @@ public class PublishModDialogViewModel : ObservableObject
             allItems.Remove(item);
         else if (allItems.Count > 0)
             allItems.RemoveAt(allItems.Count - 1);
-    }
-    
-    private void ChangeUiVisbilityOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(PublishTarget))
-            ShowLastVersionUiItems = PublishTarget != PublishTarget.NuGet;
     }
 }
