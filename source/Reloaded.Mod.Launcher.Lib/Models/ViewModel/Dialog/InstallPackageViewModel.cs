@@ -3,13 +3,26 @@ namespace Reloaded.Mod.Launcher.Lib.Models.ViewModel.Dialog;
 /// <summary>
 /// ViewModel for downloading an individual package.
 /// </summary>
-[AddINotifyPropertyChangedInterface]
-public class InstallPackageViewModel : INotifyPropertyChanged
+public class InstallPackageViewModel : ObservableObject
 {
-    public string Text { get; set; }
-    public string Title { get; set; }
-    public double Progress { get; set; }
-    public bool IsComplete { get; set; }
+    /// <summary>
+    /// The display text for the package installation.
+    /// </summary>
+    public string Text { get; set; } = "";
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    /// <summary>
+    /// The title for the package installation.
+    /// </summary>
+    public string Title { get; set; } = "";
+
+    /// <summary>
+    /// The current progress of the installation operation.
+    /// Range 0-100.
+    /// </summary>
+    public double Progress { get; set; }
+
+    /// <summary>
+    /// True if the installation is complete, else false.
+    /// </summary>
+    public bool IsComplete { get; set; }
 }
