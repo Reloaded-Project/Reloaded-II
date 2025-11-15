@@ -7,9 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.25" PrivateAssets="All" />
+    <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.39" PrivateAssets="All" />
     <PackageReference Include="NetCoreInstallChecker" Version="3.0.4" />
     <PackageReference Include="RedistributableChecker" Version="0.2.3" />
+    <PackageReference Include="System.Text.Json" Version="10.0.0" />
   </ItemGroup>
 
 </Project>
