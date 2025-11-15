@@ -1,11 +1,8 @@
-using PropertyChanged;
-
 namespace Reloaded.Mod.Loader.Update.Utilities;
 
 /// <summary>
 /// Class that wraps a string. Used for data binding.
 /// </summary>
-[AddINotifyPropertyChangedInterface]
 [JsonConverter(typeof(StringWrapperConverter))]
 public class StringWrapper : ObservableObject
 {
