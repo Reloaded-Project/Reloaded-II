@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
-    <RollForward>Disable</RollForward>
+    <RollForward>Minor</RollForward>
 	  <LangVersion>preview</LangVersion>
     <AssemblyTitle>Reloaded.Mod.Loader</AssemblyTitle>
 	  <UseWindowsForms>true</UseWindowsForms>
