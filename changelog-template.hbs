@@ -36,6 +36,14 @@ Now matches using order defined in our code, rather than the order in `PE Header
 With that in mind, items were rearranged to be as least intrusive as possible.
 For instance, ASI Loader as `dinput8.dll` has caused issues in the past in limited scenarios; e.g. when using C# library with SharpDX to read inputs via dinput.
 
+## Disabled CET
+
+[.NET 9 added a security feature (on by default)](https://learn.microsoft.com/en-us/dotnet/core/compatibility/interop/9.0/cet-support) which is incompatible with older unsupported versions of Windows.
+Namely Windows 10 22H2 and older.
+
+Given that Reloaded-II is already unsafe by design (injects arbitrary code), and it's usually not used for multiplayer, there is no good reason for CET to be enforced.
+Rather, it should be the game's responsibility to opt in. Generally, if possible, if the base game runs on the PC, the modded game should too, out of the box.
+
 ## Misc
 
 - Update Dependencies (@dreamsyntax)

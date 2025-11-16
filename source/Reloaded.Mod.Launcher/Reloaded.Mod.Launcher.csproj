@@ -19,6 +19,9 @@
     <NoWarn>CS0067</NoWarn>
       <DebugType>portable</DebugType>
       <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+      <!-- For backcompat with out of support versions of Windows -->
+      <CETCompat>false</CETCompat>
   </PropertyGroup>
 	
   <ItemGroup>

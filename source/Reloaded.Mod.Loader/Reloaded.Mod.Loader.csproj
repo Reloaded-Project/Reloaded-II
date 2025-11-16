@@ -19,6 +19,8 @@
     <Platforms>x86;x64</Platforms>
     <GenerateDepsJson>false</GenerateDepsJson>
     <DebugType>portable</DebugType>
+    <!-- For backcompat with out of support versions of Windows -->
+    <CETCompat>false</CETCompat>
 
     <!-- IL Trimming Support forked from https://github.com/space-wizards/RobustToolbox, under the MIT License -->
     <!-- If you set this to true, trimming will be enabled when you publish the Mod Loader. -->
