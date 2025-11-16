@@ -1,4 +1,5 @@
 using Reloaded.Memory.Extensions;
+using System.Text.RegularExpressions;
 
 namespace Reloaded.Mod.Loader.IO.Config;
 
@@ -35,6 +36,10 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
     public bool?  HasExports        { get; set; } = null;
     public bool   IsLibrary         { get; set; } = false;
     public string ReleaseMetadataFileName { get; set; } = "Sewer56.Update.ReleaseMetadata.json";
+
+    /// Publishing
+    public List<string> IgnoreRegexes { get; set; } = [@".*\.json"];
+    public List<string> IncludeRegexes { get; set; } = [@"\.deps\.json", @"\.runtimeconfig\.json"];
 
     [JsonIgnore]
     public string ModSubDirs { get; set; } = string.Empty;

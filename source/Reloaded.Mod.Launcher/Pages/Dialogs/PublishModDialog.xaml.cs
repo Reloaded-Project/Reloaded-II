@@ -20,7 +20,10 @@ public partial class PublishModDialog : ReloadedWindow
         this.Closing += OnClosing;
     }
 
-    private void OnClosing(object? sender, CancelEventArgs e) => _cancellationTokenSource.Cancel();
+    private async void OnClosing(object? sender, CancelEventArgs e) {
+        await ViewModel.SaveAsync();
+        _cancellationTokenSource.Cancel();
+    }
 
     private async void Publish_Click(object sender, System.Windows.RoutedEventArgs e)
     {
