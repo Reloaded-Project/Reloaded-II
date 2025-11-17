@@ -12,21 +12,25 @@ public class ThemeDownloader
 {
     private static List<GameBananaMod> AvailableThemes = [];
 
-    // Things like my theme pack contain multiple themes in one (bad idea in hindsight), so now I have to account for that -zw
     /// <summary>
-    /// The key is the name of a subtheme contained in a pack, the value is the index into AvailableThemes
+    /// The key is the name of a subtheme contained in a pack, the value is a 32-bit index into available themes concatenated with a 32-bit file index
     /// </summary>
-    public static Dictionary<string, int> ThemesDictionary = [];
+    public static Dictionary<string, ulong> ThemesDictionary = [];
 
     /// <summary>
     /// Called after RefreshAvailableThemes runs
     /// </summary>
     public static Action? OnRefresh = null;
 
-    private static string GetFileNameFromModName(string modName)
+    // If using the mod's name as the theme name, it will remove 'theme' from the name, fix any double spaces that might cause, trim it, and then replace spaces with underscores
+    private static string GetFileNameFromModName(string modName) => modName.Replace("Theme", "").Replace("theme", "").Replace("  ", " ").Trim().Replace(" ", "_");
+
+    private static ulong CombineIndices(int themeIndex, int fileIndex) => ((ulong)themeIndex << 32) | (uint)fileIndex;
+
+    private static void SeparateIndices(ulong index, out int themeIndex, out int fileIndex)
     {
-        // If using the mod's name as the theme name, it will remove 'theme' from the name, fix any double spaces that might cause, trim it, and then replace spaces with underscores
-        return modName.Replace("Theme", "").Replace("theme", "").Replace("  ", " ").Trim().Replace(" ", "_");
+        themeIndex = (int)(index >> 32);
+        fileIndex = (int)(index & uint.MaxValue);
     }
 
 #if TEST_MODE
@@ -96,8 +100,7 @@ public class ThemeDownloader
         Retry:
             try
             {
-                // Hangs here forever
-                AvailableThemes = await GameBananaMod.GetByNameAsync("", 7486, 1, 5, "GUIs");
+                AvailableThemes = await GameBananaMod.GetByNameAsync("theme", 7486, 1, 50);
             }
             catch (Exception e)
             {
@@ -111,27 +114,34 @@ public class ThemeDownloader
             }
 #endif
 
-            for (int i = 0; i < AvailableThemes.Count; i++)
+            for (int themeIndex = 0; themeIndex < AvailableThemes.Count; themeIndex++)
             {
-                var theme = AvailableThemes[i];
+                var theme = AvailableThemes[themeIndex];
                 if (theme.Name == null) continue;
 
-                // It checks for a bullet-point list to determine which themes are contained in a pack
-                if (theme.Description != null && theme.Description.Contains("<ul"))
+                switch (theme.Files![0].FileName)
                 {
-                    // Prepare for my trademark python text manipulation -zw
-                    var startIndex = theme.Description.IndexOf("<ul");
-                    startIndex = theme.Description.IndexOf(">", startIndex) + 1;
-                    var endIndex = theme.Description.IndexOf("</ul>");
-                    var containingThemes = theme.Description[startIndex..endIndex].Replace("<li>", "").Replace(" ", "_").Replace("\n", "").Split("</li>")[..^1];
-                    foreach (var subtheme in containingThemes)
-                    {
-                        if (subtheme != "")
-                            ThemesDictionary.Add(GetFullPath(subtheme + ".xaml"), i);
-                    }
+                    case "default_5073e.zip":
+                        ThemesDictionary.Add(GetFullPath("heroes_mod_loader.xaml"), CombineIndices(themeIndex, 0));
+                        continue;
+
+                    case "p4g_theme.zip":
+                        ThemesDictionary.Add(GetFullPath("Persona_4_Golden.xaml"), CombineIndices(themeIndex, 0));
+                        continue;
+
+                    // Unfortunately even the discord theme needs an exception here since the zip name isn't capitalized like the xaml
+                    case "discord.zip":
+                        ThemesDictionary.Add(GetFullPath("Discord.xaml"), CombineIndices(themeIndex, 0));
+                        continue;
+
+                    default:
+                        for (int fileIndex = 0; fileIndex < theme.Files.Count; fileIndex++)
+                        {
+                            if (theme.Files[fileIndex].FileName.EndsWith(".zip"))
+                                ThemesDictionary.Add(GetFullPath(theme.Files[fileIndex].FileName[..^4] + ".xaml"), CombineIndices(themeIndex, fileIndex));
+                        }
+                        break;
                 }
-                else
-                    ThemesDictionary.Add(GetFullPath(GetFileNameFromModName(theme.Name) + ".xaml"), i);
             }
         }
 
@@ -238,10 +248,10 @@ public class ThemeDownloader
         return createTheme;
     }
 
-    private static async Task DownloadTheme(GameBananaMod theme, ThemeDownloadDialog dialog)
+    private static async Task DownloadTheme(GameBananaMod theme, string themeName, int fileIndex, ThemeDownloadDialog dialog)
     {
-        // There needs to be a standard for how to upload themes
-        // I'll support all of the current ones but there's likely to be an edge case that causes it to break in the future -zw
+        // The standard is 1 theme per zip file
+        // I'll still support all of the current ones as of writing this though
 
         if (theme.Files == null || theme.Files.Count == 0)
             return;
@@ -249,12 +259,14 @@ public class ThemeDownloader
         // These should be deleted at the end but just in case it crashes or something
         DeleteTempFiles();
 
-        string themeName = GetFileNameFromModName(theme.Name!);
         string themeFolder = $"{ThemeFolder}/{themeName}";
 
-        if (theme.Files.Count == 1 && theme.Files[0].FileName.EndsWith(".zip"))
+        GameBananaModFile file = theme.Files[fileIndex];
+
+        // It would make more sense to have it be == and then return, but I want the diff to be as clean as possible -zw
+        if (file.FileName != "default_5073e.zip")
         {
-            if (await dialog.DownloadAndExtractZip(theme.Files[0]) != ThemeDownloadDialogResult.Ok)
+            if (await dialog.DownloadAndExtractZip(file) != ThemeDownloadDialogResult.Ok)
                 goto Exit;
 
             if (ThemeNeedsToBeCreated(out var existingXAMLs))
@@ -263,7 +275,7 @@ public class ThemeDownloader
                 MoveTempFiles(themeFolder);
 
                 // Checking for the persona 4 golden theme
-                if (theme.Files[0].FileName == "p4g_theme.zip")
+                if (theme.Files[fileIndex].FileName == "p4g_theme.zip")
                 {
                     Directory.Move($"{themeFolder}/R-II/Images", $"{themeFolder}/Images");
                     File.Move($"{themeFolder}/R-II/Settings.xaml", $"{themeFolder}/Settings.xaml");
@@ -282,9 +294,8 @@ public class ThemeDownloader
                 MoveTempFiles(ThemeFolder);
         }
         // Checking for the heroes mod loader theme
-        else if (theme.Files.Count == 2 && theme.Files[0].FileName == "default_5073e.zip")
+        else
         {
-
             if (await dialog.DownloadAndExtractZip(theme.Files[0]) != ThemeDownloadDialogResult.Ok) goto Exit;
 
             Directory.Move($"{TempFolder}/Default", themeFolder);
@@ -314,11 +325,12 @@ public class ThemeDownloader
     /// <param name="name">The .xaml to load from the theme selector</param>
     public static async Task DownloadThemeByName(string name, ThemeDownloadDialog dialog)
     {
-        foreach ((var subtheme, var index) in ThemesDictionary)
+        foreach ((var theme, var index) in ThemesDictionary)
         {
-            if (subtheme == name)
+            if (theme == name)
             {
-                await DownloadTheme(AvailableThemes[index], dialog);
+                SeparateIndices(index, out var themeIndex, out var fileIndex);
+                await DownloadTheme(AvailableThemes[themeIndex], Path.GetFileName(name)[..^5], fileIndex, dialog);
                 break;
             }
         }

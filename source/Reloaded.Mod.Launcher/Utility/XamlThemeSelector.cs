@@ -6,7 +6,8 @@ public class XamlThemeSelector : XamlFileSelector
 
     private void InsertFetchButton()
     {
-        Files.Insert(0, FetchText);
+        if (Files[0] != FetchText)
+            Files.Insert(0, FetchText);
     }
 
     public XamlThemeSelector(string directoryPath) : base(directoryPath)
@@ -14,10 +15,10 @@ public class XamlThemeSelector : XamlFileSelector
         InsertFetchButton();
     }
 
-    private void PopulateAndFetch(string selectedTheme, bool fetch=true)
+    private async void PopulateAndFetch(string selectedTheme, bool fetch=true)
     {
         PopulateXamlFiles();
-        ThemeDownloader.RefreshAvailableThemes(fetch).Wait();
+        await ThemeDownloader.RefreshAvailableThemes(fetch);
         InsertFetchButton();
 
         if (System.IO.File.Exists(selectedTheme))
