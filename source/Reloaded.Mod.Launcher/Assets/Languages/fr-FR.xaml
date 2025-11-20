@@ -201,6 +201,12 @@
     <sys:String x:Key="DownloadModArchiveTitle">Télécharger l'archive du mod</sys:String>
     <sys:String x:Key="DownloadModArchiveName">Nom du fichier</sys:String>
 
+    <!-- Installer l'archive du mod -->
+    <sys:String x:Key="InstallModArchiveTitle">Installer l'archive du mod</sys:String>
+    <sys:String x:Key="InstalledModName">Nom du mod</sys:String>
+    <sys:String x:Key="InstallingModWait">Veuillez patienter pendant que nous installons le mod !</sys:String>
+    <sys:String x:Key="ExtractingLocalModArchive">Extration d'un mod local, veuillez patienter !</sys:String>
+
     <!-- Message « Administrateur WMI » -->
     <sys:String x:Key="RunAsAdminMessage">Vous devez exécuter cette application en tant qu'administrateur.&#x0a;Des privilèges administratifs sont nécessaires pour recevoir les événements de lancement/sortie d’application de Windows Management Instrumentation (WMI).&#x0a;Développeurs : Exécutez votre IDE préféré, par ex. Visual Studio en tant qu'administrateur.</sys:String>
 
@@ -732,7 +738,4 @@ Pour plus d'informations, consultez le tutoriel. N'oubliez pas de définir la ci
     <sys:String x:Key="ErrorViewDetails">Voulez-vous voir les détails de l'erreur ?</sys:String>
     <sys:String x:Key="ErrorStacktraceTitle">Il s'agit d'une erreur du lanceur Reloaded II</sys:String>
     <sys:String x:Key="ErrorStacktraceSubtitle">Signalez les problèmes sur https://github.com/Reloaded-Project/Reloaded-II/issues/new</sys:String>
-
-    <!-- MàJ 1.30.1 : Dépendance manquantes ulitisant le même code que l'installateur -->
-    <sys:String x:Key="MissingDependenciesText3">Veuillez télécharger les dépendances ci-dessus en utilisant le bouton ci-dessous. Vous aurez peut-être besoin d'autorisations d'administrateur.</sys:String>
 </ResourceDictionary> 
