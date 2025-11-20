@@ -201,6 +201,12 @@
     <sys:String x:Key="DownloadModArchiveTitle">Télécharger l'archive du mod</sys:String>
     <sys:String x:Key="DownloadModArchiveName">Nom du fichier</sys:String>
 
+    <!-- Installer l'archive du mod -->
+    <sys:String x:Key="InstallModArchiveTitle">Installer l'archive du mod</sys:String>
+    <sys:String x:Key="InstalledModName">Nom du mod</sys:String>
+    <sys:String x:Key="InstallingModWait">Veuillez patienter pendant que nous installons le mod !</sys:String>
+    <sys:String x:Key="ExtractingLocalModArchive">Extration d'un mod local, veuillez patienter !</sys:String>
+
     <!-- Message « Administrateur WMI » -->
     <sys:String x:Key="RunAsAdminMessage">Vous devez exécuter cette application en tant qu'administrateur.&#x0a;Des privilèges administratifs sont nécessaires pour recevoir les événements de lancement/sortie d’application de Windows Management Instrumentation (WMI).&#x0a;Développeurs : Exécutez votre IDE préféré, par ex. Visual Studio en tant qu'administrateur.</sys:String>
 
