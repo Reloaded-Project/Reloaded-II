@@ -169,11 +169,11 @@ StartupWMClass=reloaded-ii.exe
 
         try
         {
-            File.WriteAllText(shortcutPath, desktopFile);
+            WriteTextWithDirectory(shortcutPath, desktopFile);
 
             // Write `.desktop` file that integrates into shell.
             var shellShortcutPath = $@"Z:/home/{userName}/.local/share/applications/{SanitizeFileName(Path.GetFileName(shortcutPath))}";
-            File.WriteAllText(shellShortcutPath, desktopFile);
+            WriteTextWithDirectory(shellShortcutPath, desktopFile);
 
             // Mark as executable.
             LinuxTryMarkAsExecutable(shortcutPath);
@@ -191,6 +191,14 @@ StartupWMClass=reloaded-ii.exe
         {
             throw new Exception("Failed to create Reloaded shortcut.\n" +
                                 "If you have `protontricks` installed via `flatpak`, you may need to give it FileSystem permission `flatpak override --user --filesystem=host com.github.Matoking.protontricks`", e);
+        }
+
+        static void WriteTextWithDirectory(string path, string content)
+        {
+            var directory = Path.GetDirectoryName(path);
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(directory);
+            File.WriteAllText(path, content);
         }
     }
 
