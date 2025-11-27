@@ -390,9 +390,8 @@ StartupWMClass=reloaded-ii.exe
     {
         try
         {
-            using RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Wine", true)!;
-            // Set the ShowDotFiles value to "Y"
-            key.SetValue("ShowDotFiles", "Y", RegistryValueKind.String);
+            using RegistryKey? key = Registry.CurrentUser.CreateSubKey(@"Software\Wine");
+            key!.SetValue("ShowDotFiles", "Y", RegistryValueKind.String);
             Console.WriteLine("Successfully set ShowDotFiles to Y in the Wine registry.");
         }
         catch (Exception)
