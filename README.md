@@ -30,4 +30,4 @@ Contributions to this project are **highly encouraged**.
 
 Feel free to implement new features, make bug fixes or suggestions so long as they are accompanied by an issue with a clear description of the pull request.
 
-Documentation is just as welcome as code changes!
+Documentation is just as welcome as code changes!!
