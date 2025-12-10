@@ -1,4 +1,5 @@
 using NuGet.Common;
+using Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 using Reloaded.Mod.Loader.Update.Providers.Web;
 using Sewer56.DeltaPatchGenerator.Lib.Utility;
 using Sewer56.Update.Extractors.SevenZipSharp;
@@ -132,7 +133,48 @@ public partial class MainWindow : ReloadedWindow
         foreach (var item in modConfigService.ItemsById.ToArray())
         {
             if (!modsBefore.ContainsKey(item.Key))
+            {
                 newConfigs.Add(item.Value.Config);
+                if(item.Value.Config.IsUniversalMod || item.Value.Config.SupportedAppId.Length > 0)
+                {
+                    var match = Lib.IoC.Get<ApplicationConfigService>().Items.FirstOrDefault(app => item.Value.Config.SupportedAppId.Contains(app.Config.AppId));
+                    if(match == null)
+                    {
+                        bool loadAppPage = Actions.DisplayMessagebox!.Invoke(
+                            NoCompatibleAppsInConfigTitle.Get(),
+                            $"{NoCompatibleAppsInConfigDescription.Get()}\n{AppSelectionQuestion.Get()}",
+                            new Actions.DisplayMessageBoxParams
+                            {
+                                Type = Actions.MessageBoxType.OkCancel
+                            });
+                        if (loadAppPage)
+                        {
+                            var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
+                            createModDialog.Owner = System.Windows.Window.GetWindow(this);
+                            createModDialog.RealViewModel.Page = EditModPage.Special;
+                            createModDialog.ShowDialog();
+                        }
+                    }
+                }
+                else
+                {
+                    bool loadAppPage = Actions.DisplayMessagebox!.Invoke(
+                        NoAppsInConfigTitle.Get(), $"{NoAppsInConfigDescription.Get()}\n{AppSelectionQuestion.Get()}"
+                        ,
+                        new Actions.DisplayMessageBoxParams
+                        {
+                            Type = Actions.MessageBoxType.OkCancel
+                        });
+                    if (loadAppPage)
+                    {
+                        var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
+                        createModDialog.Owner = System.Windows.Window.GetWindow(this);
+                        createModDialog.RealViewModel.Page = EditModPage.Special;
+                        createModDialog.ShowDialog();
+                    }
+                }
+            }
+                
         }
 
         if (newConfigs.Count <= 0)

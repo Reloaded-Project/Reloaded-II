@@ -203,6 +203,13 @@
     <sys:String x:Key="InstalledModName">Mod Name</sys:String>
     <sys:String x:Key="InstallingModWait">Please wait while we install the mod!</sys:String>
     <sys:String x:Key="ExtractingLocalModArchive">Extracting a local mod, please wait!</sys:String>
+    
+    <!-- App Resolution Failure Message-->
+    <sys:String x:Key="NoAppsInConfigTitle">Unable to find any supported app</sys:String>
+    <sys:String x:Key="NoAppsInConfigDescription">Reloaded-II was unable to find any supported apps in the mod's config.</sys:String>
+    <sys:String x:Key="NoCompatibleAppsInConfigTitle">Unable to find a compatible app</sys:String>
+    <sys:String x:Key="NoCompatibleAppsInConfigDescription">Reloaded-II was unable to find an installed app which is compatible with this mod.</sys:String>
+    <sys:String x:Key="AppSelectionQuestion">Do you want to select a supported app manually?</sys:String>
 
     <!-- WMI Administrator Message -->
     <sys:String x:Key="RunAsAdminMessage">You need to run this application as administrator.&#x0a;Administrative privileges are needed to receive application launch/exit events from Windows Management Instrumentation (WMI).&#x0a;Developers: Run your favourite IDE e.g. Visual Studio as Admin.</sys:String>

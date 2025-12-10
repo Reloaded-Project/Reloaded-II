@@ -220,9 +220,16 @@ public static class Resources
     public static IDictionaryResource<string> ErrorStacktraceTitle { get; set; }
     public static IDictionaryResource<string> ErrorStacktraceSubtitle { get; set; }
 
-    // Update 1.X.X: New Progress Window for Local Mod Installation (UPDATE LAUNCHER VER BEFORE RELEASE)
+    // Update 1.29.3: New Progress Window for Local Mod Installation
     public static IDictionaryResource<string> InstallModArchiveTitle { get; set; }
     public static IDictionaryResource<string> InstalledModName { get; set; }
     public static IDictionaryResource<string> InstallingModWait { get; set; }
     public static IDictionaryResource<string> ExtractingLocalModArchive { get; set; }
+
+    // Update 1.XX.XX: Add warning during installation of mods with no apps in their supported apps list or when no compatible app is installed (UPDATE LAUNCHER VER BEFORE RELEASE)
+    public static IDictionaryResource<string> NoAppsInConfigTitle { get; set; }
+    public static IDictionaryResource<string> NoAppsInConfigDescription { get; set; }
+    public static IDictionaryResource<string> NoCompatibleAppsInConfigTitle { get; set; }
+    public static IDictionaryResource<string> NoCompatibleAppsInConfigDescription { get; set; }
+    public static IDictionaryResource<string> AppSelectionQuestion { get; set; }
 }
