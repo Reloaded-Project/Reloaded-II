@@ -149,7 +149,7 @@ public partial class MainWindow : ReloadedWindow
                             });
                         if (loadAppPage)
                         {
-                            var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
+                            var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>().Items, modConfigService.Items));
                             createModDialog.Owner = System.Windows.Window.GetWindow(this);
                             createModDialog.RealViewModel.Page = EditModPage.Special;
                             createModDialog.ShowDialog();
@@ -167,7 +167,7 @@ public partial class MainWindow : ReloadedWindow
                         });
                     if (loadAppPage)
                     {
-                        var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
+                        var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>().Items, modConfigService.Items));
                         createModDialog.Owner = System.Windows.Window.GetWindow(this);
                         createModDialog.RealViewModel.Page = EditModPage.Special;
                         createModDialog.ShowDialog();

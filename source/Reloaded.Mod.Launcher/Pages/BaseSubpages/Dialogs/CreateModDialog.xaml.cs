@@ -26,7 +26,7 @@ public partial class CreateModDialog : ReloadedWindow
         var mod = await ActionWrappers.TryGetValueAsync(() => modConfigService.ItemsById[createdMod.Config.ModId], 5000, 32);
         if (mod != null)
         {
-            var createModDialog = new EditModDialog(new EditModDialogViewModel(mod, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
+            var createModDialog = new EditModDialog(new EditModDialogViewModel(mod, Lib.IoC.Get<ApplicationConfigService>().Items, modConfigService.Items));
             createModDialog.Owner = Window.GetWindow(this);
             createModDialog.ShowDialog();
         }

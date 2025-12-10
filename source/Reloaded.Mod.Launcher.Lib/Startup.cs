@@ -110,6 +110,17 @@ public static class Startup
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DownloadModAndExit(string downloadUrl)
     {
+        var loaderConfig = IoC.Get<LoaderConfig>();
+        var modConfigDir = loaderConfig.GetModConfigDirectory();
+        var modConfig = ModConfig.GetAllMods(modConfigDir);
+        var allAppsList = ApplicationConfig.GetAllApplications(loaderConfig.GetApplicationConfigDirectory());
+        var allApps = new ObservableCollection<PathTuple<ApplicationConfig>>(allAppsList);
+        var oldItemsById = modConfig.ToDictionary(
+            x => x.Config.ModId,
+            x => x,
+            StringComparer.OrdinalIgnoreCase
+        );
+
         if (downloadUrl.StartsWith($"{Constants.ReloadedProtocol}:", StringComparison.InvariantCultureIgnoreCase))
             downloadUrl = downloadUrl.Substring(Constants.ReloadedProtocol.Length + 1);
 
@@ -119,6 +130,55 @@ public static class Startup
 
         Actions.ShowFetchPackageDialog(viewModel);
         Update.ResolveMissingPackages();
+
+        modConfig = ModConfig.GetAllMods(modConfigDir);
+        var itemsById = modConfig.ToDictionary(x => x.Config.ModId, x => x, StringComparer.OrdinalIgnoreCase);
+        var items = new ObservableCollection<PathTuple<ModConfig>>(modConfig);
+        foreach (var item in itemsById.ToArray())
+        {
+            if (!oldItemsById.ContainsKey(item.Key))
+            {
+                if (item.Value.Config.IsUniversalMod || item.Value.Config.SupportedAppId.Length > 0)
+                {
+                    var match = IoC.Get<ApplicationConfigService>().Items.FirstOrDefault(app => item.Value.Config.SupportedAppId.Contains(app.Config.AppId));
+                    if (match == null)
+                    {
+                        bool loadAppPage = Actions.DisplayMessagebox(
+                            Resources.NoCompatibleAppsInConfigTitle.Get(),
+                            $"{Resources.NoCompatibleAppsInConfigDescription.Get()}\n{Resources.AppSelectionQuestion.Get()}",
+                            new Actions.DisplayMessageBoxParams
+                            {
+                                Type = Actions.MessageBoxType.OkCancel,
+                                StartupLocation = Actions.WindowStartupLocation.CenterScreen
+                            });
+                        if (loadAppPage)
+                        {
+                            var viewmodel = new EditModDialogViewModel(item.Value, allApps, items);
+                            viewmodel.Page = EditModPage.Special;
+                            var createModDialog = Actions.EditModDialog(viewmodel, null);
+                        }
+                    }
+                }
+                else
+                {
+                    bool loadAppPage = Actions.DisplayMessagebox(
+                        Resources.NoAppsInConfigTitle.Get(),
+                        $"{Resources.NoAppsInConfigDescription.Get()}\n{Resources.AppSelectionQuestion.Get()}",
+                        new Actions.DisplayMessageBoxParams
+                        {
+                            Type = Actions.MessageBoxType.OkCancel
+                        });
+                    if (loadAppPage)
+                    {
+                        var viewmodel = new EditModDialogViewModel(item.Value, allApps, items);
+                        viewmodel.Page = EditModPage.Special;
+                        var createModDialog = Actions.EditModDialog(viewmodel, null);
+                    }
+                }
+            }
+
+        }
+
         Actions.DisplayMessagebox(Resources.PackageDownloaderDownloadCompleteTitle.Get(), Resources.PackageDownloaderDownloadCompleteDescription.Get(), new Actions.DisplayMessageBoxParams()
         {
             Type = Actions.MessageBoxType.Ok,
