@@ -10,9 +10,9 @@ public class XamlResourceMessageBoxOkCancel : MessageBoxOkCancel
 
     }
 
-    public XamlResourceMessageBoxOkCancel(string titleResourceName, string descriptionResourceName, string okButtonTextResourceName, string cancelButtonTextResourceName) : base(new XamlResource<string>(titleResourceName).Get(), new XamlResource<string>(descriptionResourceName).Get())
+    public XamlResourceMessageBoxOkCancel(string title, string message, string okText, string cancelText) : base(title, message)
     {
-        this.CancelBtn.Content = Lib.Static.Resources.ResourceProvider.Get<string>(cancelButtonTextResourceName);
-        this.OKBtn.Content = Lib.Static.Resources.ResourceProvider.Get<string>(okButtonTextResourceName);
+        this.OKBtn.Content = okText;
+        this.CancelBtn.Content = cancelText;
     }
 }
