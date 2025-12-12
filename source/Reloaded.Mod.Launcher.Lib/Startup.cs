@@ -143,14 +143,7 @@ public static class Startup
                     var match = IoC.Get<ApplicationConfigService>().Items.FirstOrDefault(app => item.Value.Config.SupportedAppId.Contains(app.Config.AppId));
                     if (match == null)
                     {
-                        bool loadAppPage = Actions.DisplayMessagebox(
-                            Resources.NoCompatibleAppsInConfigTitle.Get(),
-                            $"{Resources.NoCompatibleAppsInConfigDescription.Get()}\n{Resources.AppSelectionQuestion.Get()}",
-                            new Actions.DisplayMessageBoxParams
-                            {
-                                Type = Actions.MessageBoxType.OkCancel,
-                                StartupLocation = Actions.WindowStartupLocation.CenterScreen
-                            });
+                        bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel(Resources.NoCompatibleAppsInConfigTitle.Get(), $"{Resources.NoCompatibleAppsInConfigDescription.Get()}\n{Resources.AppSelectionQuestion.Get()}", Resources.Yes.Get(), Resources.No.Get());
                         if (loadAppPage)
                         {
                             var viewmodel = new EditModDialogViewModel(item.Value, allApps, items);
@@ -161,13 +154,7 @@ public static class Startup
                 }
                 else
                 {
-                    bool loadAppPage = Actions.DisplayMessagebox(
-                        Resources.NoAppsInConfigTitle.Get(),
-                        $"{Resources.NoAppsInConfigDescription.Get()}\n{Resources.AppSelectionQuestion.Get()}",
-                        new Actions.DisplayMessageBoxParams
-                        {
-                            Type = Actions.MessageBoxType.OkCancel
-                        });
+                    bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel(Resources.NoAppsInConfigTitle.Get(), $"{Resources.NoAppsInConfigDescription.Get()}\n{Resources.AppSelectionQuestion.Get()}", Resources.Yes.Get(), Resources.No.Get());
                     if (loadAppPage)
                     {
                         var viewmodel = new EditModDialogViewModel(item.Value, allApps, items);

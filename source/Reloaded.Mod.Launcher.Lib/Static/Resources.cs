@@ -232,4 +232,6 @@ public static class Resources
     public static IDictionaryResource<string> NoCompatibleAppsInConfigTitle { get; set; }
     public static IDictionaryResource<string> NoCompatibleAppsInConfigDescription { get; set; }
     public static IDictionaryResource<string> AppSelectionQuestion { get; set; }
+    public static IDictionaryResource<string> Yes { get; set; }
+    public static IDictionaryResource<string> No { get; set; }
 }

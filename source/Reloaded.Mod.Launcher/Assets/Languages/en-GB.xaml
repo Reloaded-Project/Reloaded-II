@@ -746,4 +746,9 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     
     <!-- Update 1.30.1: Missing Dependencies using same code as Installer -->
     <sys:String x:Key="MissingDependenciesText3">Please download the requirements above by using the button below. You may need administrator permissions.</sys:String>
+    
+    <!-- Update 1.XX.X: Uhh no strings for Yes and No? -->
+    <sys:String x:Key="Yes">Yes</sys:String>
+    <sys:String x:Key="No">No</sys:String>
+    
 </ResourceDictionary>

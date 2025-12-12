@@ -294,6 +294,8 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
         _viewModel.DownloadPackageStatus = DownloadPackageStatus.Downloading;
         try
         {
+            var modConfigService = IoC.GetConstant<ModConfigService>();
+            var modsBefore = new Dictionary<string, PathTuple<ModConfig>>(modConfigService.ItemsById);
             _canExecute = false;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             
@@ -306,6 +308,40 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
                 await dl;
                 await Update.ResolveMissingPackagesAsync();
             });
+
+            modConfigService.ForceRefresh();
+            var newConfigs = new List<ModConfig>();
+            foreach (var item in modConfigService.ItemsById.ToArray())
+            {
+                if (!modsBefore.ContainsKey(item.Key))
+                {
+                    newConfigs.Add(item.Value.Config);
+                    if (item.Value.Config.IsUniversalMod || item.Value.Config.SupportedAppId.Length > 0)
+                    {
+                        var match = IoC.Get<ApplicationConfigService>().Items.FirstOrDefault(app => item.Value.Config.SupportedAppId.Contains(app.Config.AppId));
+                        if (match == null)
+                        {
+                            bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel!.Invoke(Resources.NoCompatibleAppsInConfigTitle.Get(), $"{Resources.NoCompatibleAppsInConfigDescription.Get()}\n{Resources.AppSelectionQuestion.Get()}", Resources.Yes.Get(), Resources.No.Get());
+                            if (loadAppPage)
+                            {
+                                var viewmodel = new EditModDialogViewModel(item.Value, IoC.Get<ApplicationConfigService>().Items, modConfigService.Items);
+                                viewmodel.Page = EditModPage.Special;
+                                var createModDialog = Actions.EditModDialog(viewmodel, null);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel!.Invoke(Resources.NoAppsInConfigTitle.Get(), $"{Resources.NoAppsInConfigDescription.Get()}\n{Resources.AppSelectionQuestion.Get()}", Resources.Yes.Get(), Resources.No.Get());
+                        if (loadAppPage)
+                        {
+                            var viewmodel = new EditModDialogViewModel(item.Value, IoC.Get<ApplicationConfigService>().Items, modConfigService.Items);
+                            viewmodel.Page = EditModPage.Special;
+                            var createModDialog = Actions.EditModDialog(viewmodel, null);
+                        }
+                    }
+                }
+            }
 
             _canExecute = true;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));

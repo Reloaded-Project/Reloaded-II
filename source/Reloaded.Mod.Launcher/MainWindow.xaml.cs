@@ -140,13 +140,7 @@ public partial class MainWindow : ReloadedWindow
                     var match = Lib.IoC.Get<ApplicationConfigService>().Items.FirstOrDefault(app => item.Value.Config.SupportedAppId.Contains(app.Config.AppId));
                     if(match == null)
                     {
-                        bool loadAppPage = Actions.DisplayMessagebox!.Invoke(
-                            NoCompatibleAppsInConfigTitle.Get(),
-                            $"{NoCompatibleAppsInConfigDescription.Get()}\n{AppSelectionQuestion.Get()}",
-                            new Actions.DisplayMessageBoxParams
-                            {
-                                Type = Actions.MessageBoxType.OkCancel
-                            });
+                        bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel!.Invoke(NoCompatibleAppsInConfigTitle.Get(), $"{NoCompatibleAppsInConfigDescription.Get()}\n{AppSelectionQuestion.Get()}", Yes.Get(), No.Get());
                         if (loadAppPage)
                         {
                             var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>().Items, modConfigService.Items));
@@ -158,13 +152,7 @@ public partial class MainWindow : ReloadedWindow
                 }
                 else
                 {
-                    bool loadAppPage = Actions.DisplayMessagebox!.Invoke(
-                        NoAppsInConfigTitle.Get(), $"{NoAppsInConfigDescription.Get()}\n{AppSelectionQuestion.Get()}"
-                        ,
-                        new Actions.DisplayMessageBoxParams
-                        {
-                            Type = Actions.MessageBoxType.OkCancel
-                        });
+                    bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel!.Invoke(NoAppsInConfigTitle.Get(), $"{NoAppsInConfigDescription.Get()}\n{AppSelectionQuestion.Get()}" , Yes.Get(), No.Get());
                     if (loadAppPage)
                     {
                         var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>().Items, modConfigService.Items));
