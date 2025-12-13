@@ -39,7 +39,7 @@ public class ModConfig : ObservableObject, IConfig<ModConfig>, IModConfig
 
     /// Publishing
     public List<string> IgnoreRegexes { get; set; } = [@".*\.json"];
-    public List<string> IncludeRegexes { get; set; } = [@"\.deps\.json", @"\.runtimeconfig\.json"];
+    public List<string> IncludeRegexes { get; set; } = [@"\.deps\.json", @"\.runtimeconfig\.json", @"ModConfig\.json"];
 
     [JsonIgnore]
     public string ModSubDirs { get; set; } = string.Empty;
