@@ -1,4 +1,4 @@
-﻿<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.PublishModDialog"
+<default:ReloadedWindow x:Class="Reloaded.Mod.Launcher.Pages.Dialogs.PublishModDialog"
                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -136,6 +136,12 @@
                                     Style="{DynamicResource DefaultButton}"
                                     Click="AddIgnoreRegex_Click" />
                         </StackPanel>
+
+                        <TextBlock Text="{DynamicResource PublishModIncludeTitle}" 
+                                   Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource DefaultTextBlock}" />
 
                         <DataGrid Margin="{DynamicResource CommonItemVerticalMarginSmaller}"
                                   HorizontalAlignment="Center" 
