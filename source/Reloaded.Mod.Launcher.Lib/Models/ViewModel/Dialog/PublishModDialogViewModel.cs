@@ -109,6 +109,8 @@ public class PublishModDialogViewModel : ObservableObject
         IncludeRegexes = new ObservableCollection<StringWrapper>(
             _modTuple.Config.IncludeRegexes.Select(x => new StringWrapper { Value = x })
         );
+        
+        if (!IncludeRegexes.Contains(@"ModConfig\.json")) IncludeRegexes.Add(@"ModConfig\.json");
     }
 
     /// <summary>
