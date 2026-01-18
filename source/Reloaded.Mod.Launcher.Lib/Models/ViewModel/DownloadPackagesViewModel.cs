@@ -316,7 +316,11 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
                 if (!modsBefore.ContainsKey(item.Key))
                 {
                     newConfigs.Add(item.Value.Config);
-                    if (item.Value.Config.IsUniversalMod || item.Value.Config.SupportedAppId.Length > 0)
+
+                    if (item.Value.Config.IsUniversalMod)
+                        continue;
+
+                    if (item.Value.Config.SupportedAppId.Length > 0)
                     {
                         var match = IoC.Get<ApplicationConfigService>().Items.FirstOrDefault(app => item.Value.Config.SupportedAppId.Contains(app.Config.AppId));
                         if (match == null)
