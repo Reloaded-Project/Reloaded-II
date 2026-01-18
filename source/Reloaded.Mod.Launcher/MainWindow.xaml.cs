@@ -143,7 +143,7 @@ public partial class MainWindow : ReloadedWindow
                         bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel!.Invoke(NoCompatibleAppsInConfigTitle.Get(), $"{NoCompatibleAppsInConfigDescription.Get()}\n{AppSelectionQuestion.Get()}", Yes.Get(), No.Get());
                         if (loadAppPage)
                         {
-                            var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>().Items, modConfigService.Items));
+                            var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
                             createModDialog.Owner = System.Windows.Window.GetWindow(this);
                             createModDialog.RealViewModel.Page = EditModPage.Special;
                             createModDialog.ShowDialog();
@@ -155,7 +155,7 @@ public partial class MainWindow : ReloadedWindow
                     bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel!.Invoke(NoAppsInConfigTitle.Get(), $"{NoAppsInConfigDescription.Get()}\n{AppSelectionQuestion.Get()}" , Yes.Get(), No.Get());
                     if (loadAppPage)
                     {
-                        var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>().Items, modConfigService.Items));
+                        var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
                         createModDialog.Owner = System.Windows.Window.GetWindow(this);
                         createModDialog.RealViewModel.Page = EditModPage.Special;
                         createModDialog.ShowDialog();

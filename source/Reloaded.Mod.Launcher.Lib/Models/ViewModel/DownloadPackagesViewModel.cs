@@ -324,7 +324,7 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
                             bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel!.Invoke(Resources.NoCompatibleAppsInConfigTitle.Get(), $"{Resources.NoCompatibleAppsInConfigDescription.Get()}\n{Resources.AppSelectionQuestion.Get()}", Resources.Yes.Get(), Resources.No.Get());
                             if (loadAppPage)
                             {
-                                var viewmodel = new EditModDialogViewModel(item.Value, IoC.Get<ApplicationConfigService>().Items, modConfigService.Items);
+                                var viewmodel = new EditModDialogViewModel(item.Value, IoC.Get<ApplicationConfigService>(), modConfigService);
                                 viewmodel.Page = EditModPage.Special;
                                 var createModDialog = Actions.EditModDialog(viewmodel, null);
                             }
@@ -335,7 +335,7 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
                         bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel!.Invoke(Resources.NoAppsInConfigTitle.Get(), $"{Resources.NoAppsInConfigDescription.Get()}\n{Resources.AppSelectionQuestion.Get()}", Resources.Yes.Get(), Resources.No.Get());
                         if (loadAppPage)
                         {
-                            var viewmodel = new EditModDialogViewModel(item.Value, IoC.Get<ApplicationConfigService>().Items, modConfigService.Items);
+                            var viewmodel = new EditModDialogViewModel(item.Value, IoC.Get<ApplicationConfigService>(), modConfigService);
                             viewmodel.Page = EditModPage.Special;
                             var createModDialog = Actions.EditModDialog(viewmodel, null);
                         }

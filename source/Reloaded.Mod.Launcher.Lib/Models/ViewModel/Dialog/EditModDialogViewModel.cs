@@ -71,6 +71,9 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
     private Action? _close;
 
     /// <inheritdoc />
+    public EditModDialogViewModel(PathTuple<ModConfig> modTuple, ApplicationConfigService applicationConfigService, ModConfigService modConfigService) : this(modTuple, applicationConfigService.Items, modConfigService.Items) { }
+
+    /// <inheritdoc />
     public EditModDialogViewModel(PathTuple<ModConfig> modTuple, ObservableCollection<PathTuple<ApplicationConfig>> appItems, ObservableCollection<PathTuple<ModConfig>> modsItems)
     {
         ConfigTuple = modTuple;
