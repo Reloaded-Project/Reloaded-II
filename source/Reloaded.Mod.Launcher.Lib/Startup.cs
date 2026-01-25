@@ -110,17 +110,6 @@ public static class Startup
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DownloadModAndExit(string downloadUrl)
     {
-        var loaderConfig = IoC.Get<LoaderConfig>();
-        var modConfigDir = loaderConfig.GetModConfigDirectory();
-        var modConfig = ModConfig.GetAllMods(modConfigDir);
-        var allAppsList = ApplicationConfig.GetAllApplications(loaderConfig.GetApplicationConfigDirectory());
-        var allApps = new ObservableCollection<PathTuple<ApplicationConfig>>(allAppsList);
-        var oldItemsById = modConfig.ToDictionary(
-            x => x.Config.ModId,
-            x => x,
-            StringComparer.OrdinalIgnoreCase
-        );
-
         if (downloadUrl.StartsWith($"{Constants.ReloadedProtocol}:", StringComparison.InvariantCultureIgnoreCase))
             downloadUrl = downloadUrl.Substring(Constants.ReloadedProtocol.Length + 1);
 
@@ -130,6 +119,28 @@ public static class Startup
 
         Actions.ShowFetchPackageDialog(viewModel);
         Update.ResolveMissingPackages();
+
+        // Ensure downloaded mod(s) all at least advertise 1 compatible App (if not universal)
+        AssertAllModsHaveAtLeastOneCompatibleApp();
+
+        Actions.DisplayMessagebox(Resources.PackageDownloaderDownloadCompleteTitle.Get(), Resources.PackageDownloaderDownloadCompleteDescription.Get(), new Actions.DisplayMessageBoxParams()
+        {
+            Type = Actions.MessageBoxType.Ok,
+            StartupLocation = Actions.WindowStartupLocation.CenterScreen,
+            Timeout = TimeSpan.FromSeconds(8)
+        });
+    }
+
+    private static void AssertAllModsHaveAtLeastOneCompatibleApp()
+    {
+        var loaderConfig = IoC.Get<LoaderConfig>();
+        var modConfigDir = loaderConfig.GetModConfigDirectory();
+        var modConfig = ModConfig.GetAllMods(modConfigDir);
+        var oldItemsById = modConfig.ToDictionary(
+            x => x.Config.ModId,
+            x => x,
+            StringComparer.OrdinalIgnoreCase
+        );
 
         modConfig = ModConfig.GetAllMods(modConfigDir);
         var itemsById = modConfig.ToDictionary(x => x.Config.ModId, x => x, StringComparer.OrdinalIgnoreCase);
@@ -143,13 +154,6 @@ public static class Startup
                     IoC.Get<ModConfigService>());
             }
         }
-
-        Actions.DisplayMessagebox(Resources.PackageDownloaderDownloadCompleteTitle.Get(), Resources.PackageDownloaderDownloadCompleteDescription.Get(), new Actions.DisplayMessageBoxParams()
-        {
-            Type = Actions.MessageBoxType.Ok,
-            StartupLocation = Actions.WindowStartupLocation.CenterScreen,
-            Timeout = TimeSpan.FromSeconds(8)
-        });
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
