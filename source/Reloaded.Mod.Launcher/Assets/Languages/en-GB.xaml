@@ -203,6 +203,13 @@
     <sys:String x:Key="InstalledModName">Mod Name</sys:String>
     <sys:String x:Key="InstallingModWait">Please wait while we install the mod!</sys:String>
     <sys:String x:Key="ExtractingLocalModArchive">Extracting a local mod, please wait!</sys:String>
+    
+    <!-- App Resolution Failure Message-->
+    <sys:String x:Key="NoAppsInConfigTitle">Unable to find any supported app</sys:String>
+    <sys:String x:Key="NoAppsInConfigDescription">Reloaded-II was unable to find any supported apps in the mod's config.</sys:String>
+    <sys:String x:Key="NoCompatibleAppsInConfigTitle">Unable to find a compatible app</sys:String>
+    <sys:String x:Key="NoCompatibleAppsInConfigDescription">Reloaded-II was unable to find an installed app which is compatible with this mod.</sys:String>
+    <sys:String x:Key="AppSelectionQuestion">Do you want to select a supported app manually?</sys:String>
 
     <!-- WMI Administrator Message -->
     <sys:String x:Key="RunAsAdminMessage">You need to run this application as administrator.&#x0a;Administrative privileges are needed to receive application launch/exit events from Windows Management Instrumentation (WMI).&#x0a;Developers: Run your favourite IDE e.g. Visual Studio as Admin.</sys:String>
@@ -739,4 +746,9 @@ For more info, refer to the tutorial. Don't forget to set correct Publish target
     
     <!-- Update 1.30.1: Missing Dependencies using same code as Installer -->
     <sys:String x:Key="MissingDependenciesText3">Please download the requirements above by using the button below. You may need administrator permissions.</sys:String>
+    
+    <!-- Update 1.30.0: Uhh no strings for Yes and No? -->
+    <sys:String x:Key="Yes">Yes</sys:String>
+    <sys:String x:Key="No">No</sys:String>
+    
 </ResourceDictionary>

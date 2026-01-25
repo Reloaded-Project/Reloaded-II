@@ -294,6 +294,8 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
         _viewModel.DownloadPackageStatus = DownloadPackageStatus.Downloading;
         try
         {
+            var modConfigService = IoC.GetConstant<ModConfigService>();
+            var modsBefore = new Dictionary<string, PathTuple<ModConfig>>(modConfigService.ItemsById);
             _canExecute = false;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             
@@ -306,6 +308,20 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
                 await dl;
                 await Update.ResolveMissingPackagesAsync();
             });
+
+            modConfigService.ForceRefresh();
+            var newConfigs = new List<ModConfig>();
+            foreach (var item in modConfigService.ItemsById.ToArray())
+            {
+                if (!modsBefore.ContainsKey(item.Key))
+                {
+                    newConfigs.Add(item.Value.Config);
+                    ModValidationHelper.ValidateModAppCompatibility(
+                        item.Value,
+                        IoC.Get<ApplicationConfigService>(),
+                        modConfigService);
+                }
+            }
 
             _canExecute = true;
             RaiseCanExecute(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));

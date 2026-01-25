@@ -119,12 +119,41 @@ public static class Startup
 
         Actions.ShowFetchPackageDialog(viewModel);
         Update.ResolveMissingPackages();
+
+        // Ensure downloaded mod(s) all at least advertise 1 compatible App (if not universal)
+        AssertAllModsHaveAtLeastOneCompatibleApp();
+
         Actions.DisplayMessagebox(Resources.PackageDownloaderDownloadCompleteTitle.Get(), Resources.PackageDownloaderDownloadCompleteDescription.Get(), new Actions.DisplayMessageBoxParams()
         {
             Type = Actions.MessageBoxType.Ok,
             StartupLocation = Actions.WindowStartupLocation.CenterScreen,
             Timeout = TimeSpan.FromSeconds(8)
         });
+    }
+
+    private static void AssertAllModsHaveAtLeastOneCompatibleApp()
+    {
+        var loaderConfig = IoC.Get<LoaderConfig>();
+        var modConfigDir = loaderConfig.GetModConfigDirectory();
+        var modConfig = ModConfig.GetAllMods(modConfigDir);
+        var oldItemsById = modConfig.ToDictionary(
+            x => x.Config.ModId,
+            x => x,
+            StringComparer.OrdinalIgnoreCase
+        );
+
+        modConfig = ModConfig.GetAllMods(modConfigDir);
+        var itemsById = modConfig.ToDictionary(x => x.Config.ModId, x => x, StringComparer.OrdinalIgnoreCase);
+        foreach (var item in itemsById.ToArray())
+        {
+            if (!oldItemsById.ContainsKey(item.Key))
+            {
+                ModValidationHelper.ValidateModAppCompatibility(
+                    item.Value,
+                    IoC.Get<ApplicationConfigService>(),
+                    IoC.Get<ModConfigService>());
+            }
+        }
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]

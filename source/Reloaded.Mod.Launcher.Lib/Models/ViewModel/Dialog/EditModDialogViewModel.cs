@@ -67,14 +67,15 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
     /// </summary>
     public ObservableCollection<ResolverFactoryConfiguration> Updates { get; set; } = new ObservableCollection<ResolverFactoryConfiguration>();
 
-    private readonly ApplicationConfigService _applicationConfigService;
     private SetModImageCommand _setModImageCommand;
     private Action? _close;
 
     /// <inheritdoc />
-    public EditModDialogViewModel(PathTuple<ModConfig> modTuple, ApplicationConfigService applicationConfigService, ModConfigService modConfigService)
+    public EditModDialogViewModel(PathTuple<ModConfig> modTuple, ApplicationConfigService applicationConfigService, ModConfigService modConfigService) : this(modTuple, applicationConfigService.Items, modConfigService.Items) { }
+
+    /// <inheritdoc />
+    public EditModDialogViewModel(PathTuple<ModConfig> modTuple, ObservableCollection<PathTuple<ApplicationConfig>> appItems, ObservableCollection<PathTuple<ModConfig>> modsItems)
     {
-        _applicationConfigService = applicationConfigService;
         ConfigTuple = modTuple;
         Config = modTuple.Config;
 
@@ -82,7 +83,7 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
         Tags.AddRange(Config.Tags);
 
         // Add Known Apps
-        var apps = applicationConfigService.Items;
+        var apps = appItems;
         foreach (var app in apps)
         {
             bool isAppEnabled = modTuple.Config.SupportedAppId.Contains(app.Config.AppId, StringComparer.OrdinalIgnoreCase);
@@ -90,7 +91,7 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
         }
 
         // Build Dependencies
-        var mods = modConfigService.Items; // In case collection changes during window open.
+        var mods = modsItems; // In case collection changes during window open.
         foreach (var mod in mods)
         {
             bool isModEnabled = modTuple.Config.ModDependencies.Contains(mod.Config.ModId, StringComparer.OrdinalIgnoreCase);
@@ -98,6 +99,7 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
             Dependencies.Add(dep);
 
             // Add Unknown Apps from Mods
+            // Note: O(N²) via Applications.Any() is acceptable here; typical users have <3 apps.
             foreach (var appId in mod.Config.SupportedAppId)
             {
                 if (!Applications.Any(x => x.Generic.AppId.Equals(appId, StringComparison.OrdinalIgnoreCase)))

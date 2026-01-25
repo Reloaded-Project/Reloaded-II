@@ -1,4 +1,5 @@
 using NuGet.Common;
+using Reloaded.Mod.Launcher.Pages.BaseSubpages.Dialogs;
 using Reloaded.Mod.Loader.Update.Providers.Web;
 using Sewer56.DeltaPatchGenerator.Lib.Utility;
 using Sewer56.Update.Extractors.SevenZipSharp;
@@ -132,7 +133,14 @@ public partial class MainWindow : ReloadedWindow
         foreach (var item in modConfigService.ItemsById.ToArray())
         {
             if (!modsBefore.ContainsKey(item.Key))
+            {
                 newConfigs.Add(item.Value.Config);
+                ModValidationHelper.ValidateModAppCompatibility(
+                    item.Value,
+                    Lib.IoC.Get<ApplicationConfigService>(),
+                    modConfigService,
+                    System.Windows.Window.GetWindow(this));
+            }
         }
 
         if (newConfigs.Count <= 0)
