@@ -1,69 +1,25 @@
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
-[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.29.3).
+[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.29.5).
 
-Just a few community PRs and miscellany. As usual, Reloaded-II is on life support while I spend
-the next years building the next best thing - if you want features, please contribute!
+# 1.30.0: SliderControlParams TickFrequencyDouble
 
-# 1.29.5: Add missing `ModConfig.json` to include files
+## Added `TickFrequencyDouble` to `SliderControlParamsAttribute`
 
-There was a small regression in `1.29.3`, where the default includes did not
-include `ModConfig.json`, that's now been fixed.
+The `TickFrequency` property on `SliderControlParamsAttribute` was previously an `int`, which prevented
+using non-integer tick frequencies for sliders (e.g., `0.5`).
 
-In addition I added a missing 'include files' label before the second table.
+A new `TickFrequencyDouble` property has been added. When set, it takes precedence over the old `TickFrequency` property.
 
-# 1.29.4: Misc Linux Installer Improvements
+```csharp
+// Old way (integer only, now obsolete)
+[SliderControlParams(minimum: 0, maximum: 1, tickFrequency: 1)]
 
-Small improvements to install on Linux:
+// New way (supports non-integer values)
+[SliderControlParams(minimum: 0, maximum: 1, TickFrequencyDouble = 0.1)]
+```
 
-- [Ensure 'Applications' directory exists so creating shortcut doesn't fail during install on some systems.](https://github.com/Reloaded-Project/Reloaded-II/issues/717)
-- Create `Software\Wine` key in registry if doesn't exist. May fix odd cases where people's 'show dot files' settings don't enable by default. 
-
-And also:
-- Updated 🇫🇷 French Localization by @dysfunctionalriot
-
-# 1.29.3: More Miscellaneous Improvements
-
-## Allow .NET 9 Versions >= 9.0.8 for loader.
-
-No update to .NET 10 as of current; but am allowing 9.0.8 or greater for loader now.
-
-According to 3rd party reports I got thus far, `Proton` needs updating to receive some upstream fixes from `Wine` for .NET 10, which may take a while to reach downstream.
-We wait for Proton 11, I suppose.
-
-## Added Progress Bar for Mod Installation
-
-![Image](https://github.com/user-attachments/assets/9f09ccad-f036-4856-806c-3c75f281307a)
-
-If a mod takes longer than 3 seconds to install via Drag & Drop, a simple progress bar will display on the screen now.
-In practice you should only see this if you install large mods (think >500MB); on a typical CPU.
-
-## Save Mod Config on Publish, Including `IncludeFiles` and `ExcludeFiles` by @TheBestAstroNOT , @Sewer56
-
-When you `Publish` a mod you have an option to exclude certain files from the released project via `File Inclusions & Exclusions`.
-By default, that is all `.json` files except `.deps.json` and `.runtimeconfig.json` ones.
-
-Previously, changes on this menu didn't save; as barely anyone ever changed the defaults.
-Now they do.
-
-## Reorder ASI Loader DLL Detection Order by @dreamsyntax
-
-The order of which DLL name gets selected for Ultimate ASI Loader was changed.
-Now matches using order defined in our code, rather than the order in `PE Header`.
-
-With that in mind, items were rearranged to be as least intrusive as possible.
-For instance, ASI Loader as `dinput8.dll` has caused issues in the past in limited scenarios; e.g. when using C# library with SharpDX to read inputs via dinput.
-
-## Disabled CET
-
-[.NET 9 added a security feature (on by default)](https://learn.microsoft.com/en-us/dotnet/core/compatibility/interop/9.0/cet-support) which is incompatible with older unsupported versions of Windows.
-Namely Windows 10 22H2 and older.
-
-Given that Reloaded-II is already unsafe by design (injects arbitrary code), and it's usually not used for multiplayer, there is no good reason for CET to be enforced.
-Rather, it should be the game's responsibility to opt in. Generally, if possible, if the base game runs on the PC, the modded game should too, out of the box.
-
-## Misc
-
-- Update Dependencies (@dreamsyntax)
+The old `TickFrequency` property has been marked as `[Obsolete]` but remains functional for backwards compatibility.
+Both binary and source compatibility with existing mods is preserved.
 
 ------------------------------------
 

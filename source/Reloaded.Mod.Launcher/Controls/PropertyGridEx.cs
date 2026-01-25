@@ -476,7 +476,7 @@ public class SliderPropertyEditor : PropertyEditorBase
             Maximum = SliderControlParams.Maximum,
             SmallChange = SliderControlParams.SmallChange,
             LargeChange = SliderControlParams.LargeChange,
-            TickFrequency = SliderControlParams.TickFrequency,
+            TickFrequency = SliderControlParams.TickFrequencyDouble > 0 ? SliderControlParams.TickFrequencyDouble : SliderControlParams.TickFrequency,
             IsSnapToTickEnabled = SliderControlParams.IsSnapToTickEnabled,
             TickPlacement = SliderTickPlacementEnumConvert.ToTickPlacement(SliderControlParams.TickPlacement)
         };

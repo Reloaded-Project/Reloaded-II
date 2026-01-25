@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using TestModControlParams.Template.Configuration;
 using Reloaded.Mod.Interfaces.Structs;
 
@@ -27,6 +27,21 @@ namespace TestModControlParams.Configuration
         [DefaultValue(0.5)]
         [SliderControlParams(minimum: 0.0, maximum: 1.0, showTextField: true, textFieldFormat: "{0:#,0.000}")]
         public double DoubleSlider { get; set; } = 0.5;
+
+        [DisplayName("Double Slider (TickFrequencyDouble)")]
+        [Description("This slider uses the new TickFrequencyDouble property for 0.01 tick increments.")]
+        [DefaultValue(0.5)]
+        [SliderControlParams(
+            minimum: 0.0,
+            maximum: 1.0,
+            smallChange: 0.01,
+            largeChange: 0.1,
+            isSnapToTickEnabled: true,
+            tickPlacement: SliderControlTickPlacement.BottomRight,
+            showTextField: true,
+            textFieldFormat: "{0:0.00}",
+            TickFrequencyDouble = 0.01)]
+        public double DoubleSliderWithTickFrequencyDouble { get; set; } = 0.5;
 
         [DisplayName("File Picker")]
         [Description("This is a sample file picker.")]
