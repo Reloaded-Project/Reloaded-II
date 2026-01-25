@@ -226,7 +226,7 @@ public static class Resources
     public static IDictionaryResource<string> InstallingModWait { get; set; }
     public static IDictionaryResource<string> ExtractingLocalModArchive { get; set; }
 
-    // Update 1.XX.XX: Add warning during installation of mods with no apps in their supported apps list or when no compatible app is installed (UPDATE LAUNCHER VER BEFORE RELEASE)
+    // Update 1.30.0: Add warning during installation of mods with no apps in their supported apps list or when no compatible app is installed
     public static IDictionaryResource<string> NoAppsInConfigTitle { get; set; }
     public static IDictionaryResource<string> NoAppsInConfigDescription { get; set; }
     public static IDictionaryResource<string> NoCompatibleAppsInConfigTitle { get; set; }
