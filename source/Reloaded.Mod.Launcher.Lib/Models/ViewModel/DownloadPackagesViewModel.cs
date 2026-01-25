@@ -330,7 +330,7 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
                             {
                                 var viewmodel = new EditModDialogViewModel(item.Value, IoC.Get<ApplicationConfigService>(), modConfigService);
                                 viewmodel.Page = EditModPage.Special;
-                                var createModDialog = Actions.EditModDialog(viewmodel, null);
+                                Actions.EditModDialog(viewmodel, null);
                             }
                         }
                     }
@@ -341,7 +341,7 @@ public class DownloadPackageCommand : WithCanExecuteChanged, ICommand
                         {
                             var viewmodel = new EditModDialogViewModel(item.Value, IoC.Get<ApplicationConfigService>(), modConfigService);
                             viewmodel.Page = EditModPage.Special;
-                            var createModDialog = Actions.EditModDialog(viewmodel, null);
+                            Actions.EditModDialog(viewmodel, null);
                         }
                     }
                 }

@@ -151,7 +151,7 @@ public static class Startup
                         {
                             var viewmodel = new EditModDialogViewModel(item.Value, allApps, items);
                             viewmodel.Page = EditModPage.Special;
-                            var createModDialog = Actions.EditModDialog(viewmodel, null);
+                            Actions.EditModDialog(viewmodel, null);
                         }
                     }
                 }
@@ -162,7 +162,7 @@ public static class Startup
                     {
                         var viewmodel = new EditModDialogViewModel(item.Value, allApps, items);
                         viewmodel.Page = EditModPage.Special;
-                        var createModDialog = Actions.EditModDialog(viewmodel, null);
+                        Actions.EditModDialog(viewmodel, null);
                     }
                 }
             }
