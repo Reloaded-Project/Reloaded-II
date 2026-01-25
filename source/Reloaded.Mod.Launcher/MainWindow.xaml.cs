@@ -135,38 +135,12 @@ public partial class MainWindow : ReloadedWindow
             if (!modsBefore.ContainsKey(item.Key))
             {
                 newConfigs.Add(item.Value.Config);
-
-                if (item.Value.Config.IsUniversalMod)
-                    continue;
-
-                if(item.Value.Config.SupportedAppId.Length > 0)
-                {
-                    var match = Lib.IoC.Get<ApplicationConfigService>().Items.FirstOrDefault(app => item.Value.Config.SupportedAppId.Contains(app.Config.AppId));
-                    if(match == null)
-                    {
-                        bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel!.Invoke(NoCompatibleAppsInConfigTitle.Get(), $"{NoCompatibleAppsInConfigDescription.Get()}\n{AppSelectionQuestion.Get()}", Yes.Get(), No.Get());
-                        if (loadAppPage)
-                        {
-                            var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
-                            createModDialog.Owner = System.Windows.Window.GetWindow(this);
-                            createModDialog.RealViewModel.Page = EditModPage.Special;
-                            createModDialog.ShowDialog();
-                        }
-                    }
-                }
-                else
-                {
-                    bool loadAppPage = Actions.DisplayResourceMessageBoxOkCancel!.Invoke(NoAppsInConfigTitle.Get(), $"{NoAppsInConfigDescription.Get()}\n{AppSelectionQuestion.Get()}" , Yes.Get(), No.Get());
-                    if (loadAppPage)
-                    {
-                        var createModDialog = new EditModDialog(new EditModDialogViewModel(item.Value, Lib.IoC.Get<ApplicationConfigService>(), modConfigService));
-                        createModDialog.Owner = System.Windows.Window.GetWindow(this);
-                        createModDialog.RealViewModel.Page = EditModPage.Special;
-                        createModDialog.ShowDialog();
-                    }
-                }
+                ModValidationHelper.ValidateModAppCompatibility(
+                    item.Value,
+                    Lib.IoC.Get<ApplicationConfigService>(),
+                    modConfigService,
+                    System.Windows.Window.GetWindow(this));
             }
-                
         }
 
         if (newConfigs.Count <= 0)
