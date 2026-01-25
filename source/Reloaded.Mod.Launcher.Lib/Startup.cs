@@ -133,7 +133,6 @@ public static class Startup
 
         modConfig = ModConfig.GetAllMods(modConfigDir);
         var itemsById = modConfig.ToDictionary(x => x.Config.ModId, x => x, StringComparer.OrdinalIgnoreCase);
-        var items = new ObservableCollection<PathTuple<ModConfig>>(modConfig);
         foreach (var item in itemsById.ToArray())
         {
             if (!oldItemsById.ContainsKey(item.Key))
