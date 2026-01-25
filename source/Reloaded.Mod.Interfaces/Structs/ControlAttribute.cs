@@ -1,4 +1,4 @@
-﻿namespace Reloaded.Mod.Interfaces.Structs;
+namespace Reloaded.Mod.Interfaces.Structs;
 
 /// <summary>
 /// Change the position that the ticks appear for the Slider Control
@@ -35,9 +35,22 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
     /// </summary>
     public double LargeChange { get; }
     /// <summary>
-    /// Places a tick every N values
+    /// Places a tick every N values.
     /// </summary>
+    /// <remarks>
+    /// This property is obsolete. Use <see cref="TickFrequencyDouble"/> instead, which supports non-integer tick frequencies.
+    /// This property remains for binary backwards compatibility.
+    /// </remarks>
+    [Obsolete("Use TickFrequencyDouble instead. This property remains for binary backwards compatibility.")]
     public int TickFrequency { get; }
+
+    /// <summary>
+    /// Places a tick every N values. If set to a value greater than 0, this takes precedence over <see cref="TickFrequency"/>.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 0, which means the old <see cref="TickFrequency"/> property is used instead.
+    /// </remarks>
+    public double TickFrequencyDouble { get; set; }
     /// <summary>
     /// If enabled, the slider will snap to the tick values.
     /// </summary>
@@ -78,7 +91,23 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
     bool showTextField,
     bool isTextFieldEditable,
     string textValidationRegex
-) : this(minimum, maximum, smallChange, largeChange, tickFrequency, isSnapToTickEnabled, tickPlacement, showTextField, isTextFieldEditable, textValidationRegex, textFieldFormat: "")
+) : this(minimum, maximum, smallChange, largeChange, tickFrequency, isSnapToTickEnabled, tickPlacement, showTextField, isTextFieldEditable, textValidationRegex, "")
+    {}
+
+    // 2.4.1 BACKCOMPAT OVERLOAD -- DO NOT TOUCH
+    public SliderControlParamsAttribute(
+        double minimum,
+        double maximum,
+        double smallChange,
+        double largeChange,
+        int tickFrequency,
+        bool isSnapToTickEnabled,
+        SliderControlTickPlacement tickPlacement,
+        bool showTextField,
+        bool isTextFieldEditable,
+        string textValidationRegex,
+        string textFieldFormat
+    ) : this(minimum, maximum, smallChange, largeChange, tickFrequency, isSnapToTickEnabled, tickPlacement, showTextField, isTextFieldEditable, textValidationRegex, textFieldFormat, 0)
     {}
 
     public SliderControlParamsAttribute(
@@ -92,13 +121,17 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
         bool showTextField = false,
         bool isTextFieldEditable = true,
         string textValidationRegex = ".*",
-        string textFieldFormat = ""
+        string textFieldFormat = "",
+        double tickFrequencyDouble = 0
     ) {
         Minimum = minimum;
         Maximum = maximum;
         SmallChange = smallChange;
         LargeChange = largeChange;
+#pragma warning disable CS0618 // Type or member is obsolete
         TickFrequency = tickFrequency;
+#pragma warning restore CS0618
+        TickFrequencyDouble = tickFrequencyDouble;
         IsSnapToTickEnabled = isSnapToTickEnabled;
         TickPlacement = tickPlacement;
         ShowTextField = showTextField;

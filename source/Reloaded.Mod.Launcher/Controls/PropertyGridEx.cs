@@ -476,7 +476,9 @@ public class SliderPropertyEditor : PropertyEditorBase
             Maximum = SliderControlParams.Maximum,
             SmallChange = SliderControlParams.SmallChange,
             LargeChange = SliderControlParams.LargeChange,
-            TickFrequency = SliderControlParams.TickFrequency,
+#pragma warning disable CS0618 // TickFrequency is obsolete - intentional fallback for backward compatibility
+            TickFrequency = SliderControlParams.TickFrequencyDouble > 0 ? SliderControlParams.TickFrequencyDouble : SliderControlParams.TickFrequency,
+#pragma warning restore CS0618
             IsSnapToTickEnabled = SliderControlParams.IsSnapToTickEnabled,
             TickPlacement = SliderTickPlacementEnumConvert.ToTickPlacement(SliderControlParams.TickPlacement)
         };
