@@ -34,13 +34,13 @@ namespace TestModControlParams.Configuration
         [SliderControlParams(
             minimum: 0.0,
             maximum: 1.0,
-            smallChange: 0.01,
-            largeChange: 0.1,
+            smallChange: 0.001,
+            largeChange: 0.001,
             isSnapToTickEnabled: true,
             tickPlacement: SliderControlTickPlacement.BottomRight,
             showTextField: true,
-            textFieldFormat: "{0:0.00}",
-            TickFrequencyDouble = 0.01)]
+            textFieldFormat: "{0:0.000}",
+            TickFrequencyDouble = 0.001)]
         public double DoubleSliderWithTickFrequencyDouble { get; set; } = 0.5;
 
         [DisplayName("File Picker")]
