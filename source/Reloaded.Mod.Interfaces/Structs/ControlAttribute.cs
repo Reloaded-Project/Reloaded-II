@@ -128,7 +128,9 @@ public class SliderControlParamsAttribute : Attribute, ICustomControlAttribute
         Maximum = maximum;
         SmallChange = smallChange;
         LargeChange = largeChange;
+#pragma warning disable CS0618 // Type or member is obsolete
         TickFrequency = tickFrequency;
+#pragma warning restore CS0618
         TickFrequencyDouble = tickFrequencyDouble;
         IsSnapToTickEnabled = isSnapToTickEnabled;
         TickPlacement = tickPlacement;
