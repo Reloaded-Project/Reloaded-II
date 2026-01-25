@@ -99,6 +99,7 @@ public class EditModDialogViewModel : ObservableObject, IDisposable
             Dependencies.Add(dep);
 
             // Add Unknown Apps from Mods
+            // Note: O(N²) via Applications.Any() is acceptable here; typical users have <3 apps.
             foreach (var appId in mod.Config.SupportedAppId)
             {
                 if (!Applications.Any(x => x.Generic.AppId.Equals(appId, StringComparison.OrdinalIgnoreCase)))
