@@ -22,7 +22,31 @@ Alongside the addition of  `textFieldFormat` from @monkeyman192 which (somehow) 
 
 <img width="851" height="382" alt="image" src="https://github.com/user-attachments/assets/92d09c19-3454-4d9e-ba83-4704c65d9c6f" />
 
+A real example where this could be useful could look like this:
+
+<img width="900" height="729" alt="image" src="https://github.com/user-attachments/assets/7bbd90a4-5b96-47e7-8f79-ecba27bd256e" />
+
+Making the HUD arbitrarily wide on widescreen displays.
+
 The old `TickFrequency` property has been marked as `[Obsolete]` but remains functional for backwards compatibility.
+
+## Warn When Installing Mods Without Supported Games
+
+When installing mods via drag-and-drop, download, or the `r2:` protocol, Reloaded-II now checks if the mod
+has any supported applications configured. If none are found, a dialog will prompt you to select which
+game(s) the mod should be enabled for.
+
+<img width="1500" height="900" alt="image" src="https://github.com/user-attachments/assets/c070449b-e34c-418c-aebc-08c60cdd8ec3" />
+
+- Selecting **Yes** opens the mod edit dialog to configure supported applications
+- Selecting **No** keeps the mod installed without changes (you can configure it later)
+
+This helps prevent the occasional issue where a mod author forgot to mark a mod as compatible with any game.
+Without an associated game, the mod wouldn't appear in any game's mod list, which could leave users confused.
+
+<img width="1500" height="900" alt="image" src="https://github.com/user-attachments/assets/e9fdcf84-3fa2-47ad-bb39-df40b3abcb59" />
+
+Fixes [#751](https://github.com/Reloaded-Project/Reloaded-II/issues/751).
 
 ------------------------------------
 
