@@ -207,6 +207,23 @@
     <sys:String x:Key="InstallingModWait">Veuillez patienter pendant que nous installons le mod !</sys:String>
     <sys:String x:Key="ExtractingLocalModArchive">Extration d'un mod local, veuillez patienter !</sys:String>
 
+    <!-- Message « échec du résolution de l'appli » -->
+
+
+    <sys:String x:Key="NoAppsInConfigTitle">Impossible de trouver une appli prise en charge</sys:String>
+
+
+    <sys:String x:Key="NoAppsInConfigDescription">Reloaded-II n'a trouvé aucune appli prise en charge dans la configuration du mod.</sys:String>
+
+
+    <sys:String x:Key="NoCompatibleAppsInConfigTitle">Impossible de trouver une appli compatible</sys:String>
+
+
+    <sys:String x:Key="NoCompatibleAppsInConfigDescription">Reloaded-II n'a pas trouvé une appli installée combatible avec ce mod.</sys:String>
+
+
+    <sys:String x:Key="AppSelectionQuestion">Souhaitez-vous choisir une appli prise en charge manuellment ?</sys:String>
+
     <!-- Message « Administrateur WMI » -->
     <sys:String x:Key="RunAsAdminMessage">Vous devez exécuter cette application en tant qu'administrateur.&#x0a;Des privilèges administratifs sont nécessaires pour recevoir les événements de lancement/sortie d’application de Windows Management Instrumentation (WMI).&#x0a;Développeurs : Exécutez votre IDE préféré, par ex. Visual Studio en tant qu'administrateur.</sys:String>
 
@@ -741,4 +758,8 @@ Pour plus d'informations, consultez le tutoriel. N'oubliez pas de définir la ci
 
     <!-- MàJ 1.30.1 : Dépendance manquantes ulitisant le même code que l'installateur -->
     <sys:String x:Key="MissingDependenciesText3">Veuillez télécharger les dépendances ci-dessus en utilisant le bouton ci-dessous. Vous aurez peut-être besoin d'autorisations d'administrateur.</sys:String>
+
+    <!-- MàJ 1.30.0 : « Uhh no strings for Yes and No? » -->
+    <sys:String x:Key="Yes">Oui</sys:String>
+    <sys:String x:Key="No">Non</sys:String>
 </ResourceDictionary> 
