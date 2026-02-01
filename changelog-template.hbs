@@ -1,5 +1,21 @@
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
-[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.29.5).
+[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.30.0).
+
+# 1.30.1: Fixes for French Text and Publishing
+
+## Fix ModConfig.json Regex Inclusion Duplicate Check by @nenkai
+
+`ModConfig.json` is required for all mods, but `.json` files are otherwise excluded when packaging. Reloaded-II ensures it's included by checking your "Include Regexes" list.
+
+The duplicate check was broken, causing `ModConfig\.json` to appear twice in the list if you already had it configured.
+
+This happened because the check used a `StringWrapper` type that didn't implement `Equals`, so it compared object references instead of the actual string values.
+
+## Add French Strings for "Yes/No" Dialog by @dysfunctionalriot
+
+Adds French localization strings for the mod compatibility warning dialog buttons introduced in 1.30.0.
+
+------------------------------------
 
 # 1.30.0: Sliders and Supported Games
 
