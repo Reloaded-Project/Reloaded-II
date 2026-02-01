@@ -110,7 +110,8 @@ public class PublishModDialogViewModel : ObservableObject
             _modTuple.Config.IncludeRegexes.Select(x => new StringWrapper { Value = x })
         );
         
-        if (!IncludeRegexes.Contains(@"ModConfig\.json")) IncludeRegexes.Add(@"ModConfig\.json");
+        if (!IncludeRegexes.Any(e => e.Value.Equals(@"ModConfig\.json", StringComparison.OrdinalIgnoreCase)))
+            IncludeRegexes.Add(@"ModConfig\.json");
     }
 
     /// <summary>
