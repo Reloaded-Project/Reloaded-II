@@ -149,7 +149,7 @@ public class MainWindowViewModel : ObservableObject
 """
 [Desktop Entry]
 Name=Reloaded-II ({SUFFIX})
-Exec=bash -ic 'protontricks-launch --appid {APPID} "{NATIVEPATH}"'
+Exec=bash -lc 'protontricks-launch --appid {APPID} "{NATIVEPATH}"'
 Type=Application
 StartupNotify=true
 Comment=Reloaded II installation for {SUFFIX}
@@ -162,7 +162,20 @@ StartupWMClass=reloaded-ii.exe
         desktopFile = desktopFile.Replace("{APPID}", Environment.GetEnvironmentVariable("STEAM_APPID"));
         desktopFile = desktopFile.Replace("{SUFFIX}", protonTricksSuffix);
         desktopFile = desktopFile.Replace("{RELOADEDFOLDER}", Path.GetDirectoryName(nativeExecutablePath)!);
-        desktopFile = desktopFile.Replace("{NATIVEPATH}", nativeExecutablePath);
+
+
+        var launcherFileName = $"reloaded-launcher-{SanitizeFileName(protonTricksSuffix)}.sh";
+        var nativeLauncherPath = Path.Combine(Path.GetDirectoryName(nativeExecutablePath)!, launcherFileName).Replace('\\', '/');
+
+        var launcherScript = "#!/bin/bash\n" +
+                             "bash -ic 'protontricks-launch --appid {APPID} \"{NATIVEPATH}\"'\n";
+
+        launcherScript = launcherScript.Replace("{APPID}", Environment.GetEnvironmentVariable("STEAM_APPID"));
+        launcherScript = launcherScript.Replace("{NATIVEPATH}", nativeExecutablePath);
+        var shellScriptPath = $@"Z:{nativeLauncherPath}".Replace('\\', '/');
+        WriteTextWithDirectory(shellScriptPath, launcherScript);
+        LinuxTryMarkAsExecutable(shellScriptPath);
+        desktopFile = desktopFile.Replace("{NATIVEPATH}", nativeLauncherPath);
         desktopFile = desktopFile.Replace('\\', '/');
         shortcutPath = shortcutPath.Replace('\\', '/');
         shortcutPath = shortcutPath.Replace(".lnk", ".desktop");
