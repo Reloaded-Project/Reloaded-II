@@ -90,6 +90,10 @@ public class ModLoaderUpdateDialogViewModel : ObservableObject
             _manager.OnApplySelfUpdate += OnApplySelfUpdate;
             await _manager.PrepareUpdateAsync(_targetVersion, new Progress<double>(d => { Progress = d * 100; }));
             await _manager.StartUpdateAsync(_targetVersion, new OutOfProcessOptions() { Restart = true }, new UpdateOptions() { CleanupAfterUpdate = true });
+
+            // 2s wait to handle race issue on low end hardware running on wine
+            await Task.Delay(2000);
+
             Environment.Exit(0);
         }
     }
