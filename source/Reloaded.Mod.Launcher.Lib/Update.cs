@@ -406,6 +406,8 @@ public static class Update
                            $"Please report this issue to the link above if you encounter it.\n" +
                            $"In the meantime, download the required mods manually (you should " +
                            $"hopefully find it by ID or Name).\n\n" +
+                           $"Sometimes this also happens if you exceed your API limit,\n" +
+                           $"So you can also try waiting for 1 hour and the problem may fix itself.\n\n" +
                            $"Sorry for the pain.");
 
         ActionWrappers.ExecuteWithApplicationDispatcher(() =>
