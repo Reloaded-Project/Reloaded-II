@@ -84,9 +84,9 @@ Then you will need to make sure that Wine will load this DLL; there is more than
 
 === "Recommended Approach (Per-Application)"
 
-    `WINEDLLOVERRIDES` lets you temporarily specify DLL overrides for a specific wine process. You can use it in the terminal as such: `WINEDLLOVERRIDES="version=n,b" wine BTD5-Win.exe`.  
+    `WINEDLLOVERRIDES` lets you temporarily specify DLL overrides for a specific wine process. You can use it in the terminal as such: `WINEDLLOVERRIDES="winmm=n,b" wine BTD5-Win.exe`.  
 
-    If you are using Steam to launch your games you can, Right Click Game in Library, `Properties` and in `Launch Options` add `WINEDLLOVERRIDES="version=n,b" %command%`.  
+    If you are using Steam to launch your games you can, Right Click Game in Library, `Properties` and in `Launch Options` add `WINEDLLOVERRIDES="winmm=n,b" %command%`.  
 
     ![Steam Launch Options](./Images/Steam-LaunchOptions-ASILoader.png)
 
