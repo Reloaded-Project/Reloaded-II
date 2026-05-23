@@ -106,8 +106,12 @@ public class SteamHook
                 break; // We found a valid app ID, so exit the loop.
             }
         }
-        // Write the Steam AppID to a local file and proceed with the original function call.
-        SteamAppId.WriteToDirectory(_applicationFolder, (int)appid);
+
+        // Write the Steam AppID to a local file when correct ID is obtained, and proceed with the original function call.
+        if (appid != 0)
+        {
+            SteamAppId.WriteToDirectory(_applicationFolder, (int)appid);
+        }
         _restartAppIfNecessaryHook.OriginalFunction(appid);
         return false;
     }
