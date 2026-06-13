@@ -64,7 +64,7 @@ public class AddApplicationCommand : ICommand
 
         // Warn if OneDrive or NonAsciiChars detected in Game Path
         bool hasNonAsciiChars = exePath.Any(c => c > 127);
-        if (exePath.Contains("OneDrive") || hasNonAsciiChars)
+        if (PathUtility.IsPathInOneDrive(exePath) || hasNonAsciiChars)
         {
             var confirmAddAnyway = Actions.DisplayMessagebox.Invoke(Resources.ProblematicPathTitle.Get(), Resources.ProblematicPathAppDescription.Get(), new Actions.DisplayMessageBoxParams()
             {

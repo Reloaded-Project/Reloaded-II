@@ -174,17 +174,21 @@ public class NtQueryDirectoryFileSearcher
                     {
                         info = (FILE_DIRECTORY_INFORMATION*)currentBufferPtr;
 
-                        // Not symlink or symlink to offline file.
-                        if ((info->FileAttributes & FileAttributes.ReparsePoint) != 0 &&
-                            (info->FileAttributes & FileAttributes.Offline) == 0)
-                            goto nextfile;
-
                         var fileName = Marshal.PtrToStringUni(currentBufferPtr + sizeof(FILE_DIRECTORY_INFORMATION), (int)info->FileNameLength / 2);
 
                         if (fileName == "." || fileName == "..")
                             goto nextfile;
 
                         var isDirectory = (info->FileAttributes & FileAttributes.Directory) > 0;
+
+                        // Skip symlinks/junctions that point elsewhere (prevents infinite recursion).
+                        // Cloud folders (e.g. OneDrive) use different reparse tags, so they are
+                        // treated as normal directories and enumerated. Only checked for directories;
+                        // files with reparse points are always enumerated.
+                        if (isDirectory && (info->FileAttributes & FileAttributes.ReparsePoint) != 0 &&
+                            IsNameSurrogateReparsePoint($@"{originalDirPath}\{fileName}"))
+                            goto nextfile;
+
                         if (isDirectory)
                         {
                             directories.Add(new DirectoryInformation
@@ -193,7 +197,7 @@ public class NtQueryDirectoryFileSearcher
                                 LastWriteTime = info->LastWriteTime.ToDateTime()
                             });
                         }
-                        else if (!isDirectory)
+                        else
                         {
                             files.Add(new FileInformation
                             {
@@ -216,6 +220,63 @@ public class NtQueryDirectoryFileSearcher
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Returns true if the reparse point at <paramref name="fullPath"/> is a 'name surrogate'
+    /// (a symlink or junction/mount-point that redirects the path). Such entries are skipped
+    /// during enumeration to prevent following them into cycles.
+    ///
+    /// Cloud providers (e.g. OneDrive) also use reparse points on real, locally-available
+    /// folders; those tags do not carry the name-surrogate bit, so this returns false for them
+    /// and the directory is enumerated normally.
+    ///
+    /// On any failure to determine the tag we conservatively return false (do not skip), since
+    /// wrongly skipping a real directory is the original bug this guards against. A genuine
+    /// symlink whose tag cannot be read would still be bounded by <c>maxDepth</c>.
+    /// </summary>
+    private static unsafe bool IsNameSurrogateReparsePoint(string fullPath)
+    {
+        const uint FSCTL_GET_REPARSE_POINT = 0x000900A8;
+
+        // Bit set in the reparse tag of entries that substitute/redirect the name
+        // (symlinks, junctions/mount-points). Cloud reparse tags do not set this bit.
+        const uint REPARSE_TAG_NAME_SURROGATE = 0x80000000;
+
+        const uint GENERIC_READ = 0x80000000;
+        const uint FILE_SHARE_READ = 0x00000001;
+        const uint FILE_SHARE_WRITE = 0x00000002;
+        const uint OPEN_EXISTING = 3;
+
+        // BACKUP_SEMANTICS allows opening directories; OPEN_REPARSE_POINT opens the
+        // reparse entry itself instead of resolving through it.
+        const uint FILE_FLAG_BACKUP_SEMANTICS = 0x02000000;
+        const uint FILE_FLAG_OPEN_REPARSE_POINT = 0x00200000;
+
+        const int BufferSize = 1024 * 16;
+
+        var handle = CreateFileW(fullPath, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE,
+            IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT, IntPtr.Zero);
+
+        if (handle == new IntPtr(-1))
+            return false;
+
+        try
+        {
+            byte* buffer = stackalloc byte[BufferSize];
+            if (!DeviceIoControl(handle, FSCTL_GET_REPARSE_POINT, IntPtr.Zero, 0,
+                (IntPtr)buffer, BufferSize, out _, IntPtr.Zero))
+            {
+                return false;
+            }
+
+            // REPARSE_DATA_BUFFER.ReparseTag is the first DWORD.
+            return (*(uint*)buffer & REPARSE_TAG_NAME_SURROGATE) != 0;
+        }
+        finally
+        {
+            CloseHandle(handle);
+        }
     }
 
     internal struct MultithreadedDirectorySearcher : IDisposable
@@ -315,6 +376,17 @@ public class NtQueryDirectoryFileSearcher
 
     [DllImport("kernel32.dll", CharSet = CharSet.Ansi)]
     static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    internal static extern IntPtr CreateFileW(string lpFileName, uint dwDesiredAccess, uint dwShareMode, IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool DeviceIoControl(IntPtr hDevice, uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned, IntPtr lpOverlapped);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool CloseHandle(IntPtr hObject);
     #endregion
 
     #region Native Import Wrappers

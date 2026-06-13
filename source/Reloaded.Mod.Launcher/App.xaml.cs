@@ -44,7 +44,7 @@ public partial class App : Application
 
         // Warn if OneDrive or NonAsciiChars detected in Reloaded-II directory
         bool reloadedPathHasNonAsciiChars = AppContext.BaseDirectory.Any(c => c > 127);
-        if (AppContext.BaseDirectory.Contains("OneDrive") || reloadedPathHasNonAsciiChars)
+        if (PathUtility.IsPathInOneDrive(AppContext.BaseDirectory) || reloadedPathHasNonAsciiChars)
         {
             Actions.DisplayMessagebox.Invoke(Lib.Static.Resources.ProblematicPathTitle.Get(), Lib.Static.Resources.ProblematicPathReloadedDescription.Get(), new Actions.DisplayMessageBoxParams()
             {
@@ -59,7 +59,7 @@ public partial class App : Application
             if (modsDirectory != null)
             {
                 bool modsDirectoryPathHasNonAsciiChars = modsDirectory.Any(c => c > 127);
-                if (modsDirectory.Contains("OneDrive") || modsDirectoryPathHasNonAsciiChars)
+                if (PathUtility.IsPathInOneDrive(modsDirectory) || modsDirectoryPathHasNonAsciiChars)
                 {
                     Actions.DisplayMessagebox.Invoke(Lib.Static.Resources.ProblematicPathTitle.Get(), Lib.Static.Resources.ProblematicPathModsDescription.Get(), new Actions.DisplayMessageBoxParams()
                     {

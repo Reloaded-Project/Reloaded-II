@@ -36,7 +36,7 @@ public class Settings
     {
         var installPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         bool hasNonAsciiChars = installPath.Any(c => c > 127);
-        if (installPath.Contains("OneDrive") || hasNonAsciiChars)
+        if (IsPathInOneDrive(installPath) || hasNonAsciiChars)
         {
             var driveRoot = Path.GetPathRoot(Environment.SystemDirectory);
             if (driveRoot == null)
@@ -45,5 +45,36 @@ public class Settings
             return driveRoot;
         }
         return installPath;
+    }
+
+    /// <summary>
+    /// Checks whether a given path is inside a OneDrive-managed folder.
+    /// Uses the OneDrive environment variables.
+    /// </summary>
+    private static bool IsPathInOneDrive(string path)
+    {
+        if (string.IsNullOrEmpty(path))
+            return false;
+
+        foreach (var envVar in new[] { "OneDrive", "OneDriveCommercial" })
+        {
+            var root = Environment.GetEnvironmentVariable(envVar);
+            if (string.IsNullOrEmpty(root))
+                continue;
+
+            try
+            {
+                var fullRoot = Path.GetFullPath(root)
+                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                var fullPath = Path.GetFullPath(path)
+                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+                if (fullPath.StartsWith(fullRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            catch { /* malformed path - skip */ }
+        }
+
+        return false;
     }
 }
