@@ -241,7 +241,7 @@ public class NtQueryDirectoryFileSearcher
 
         // Bit set in the reparse tag of entries that substitute/redirect the name
         // (symlinks, junctions/mount-points). Cloud reparse tags do not set this bit.
-        const uint REPARSE_TAG_NAME_SURROGATE = 0x80000000;
+        const uint REPARSE_TAG_NAME_SURROGATE = 0x20000000;
 
         const uint GENERIC_READ = 0x80000000;
         const uint FILE_SHARE_READ = 0x00000001;

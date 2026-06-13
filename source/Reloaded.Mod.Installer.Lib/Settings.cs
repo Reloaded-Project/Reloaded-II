@@ -35,8 +35,7 @@ public class Settings
     private static string GetSafeInstallPath()
     {
         var installPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-        bool hasNonAsciiChars = installPath.Any(c => c > 127);
-        if (IsPathInOneDrive(installPath) || hasNonAsciiChars)
+        if (IsPathInCloudSyncFolder(installPath))
         {
             var driveRoot = Path.GetPathRoot(Environment.SystemDirectory);
             if (driveRoot == null)
@@ -48,15 +47,36 @@ public class Settings
     }
 
     /// <summary>
-    /// Checks whether a given path is inside a OneDrive-managed folder.
-    /// Uses the OneDrive environment variables.
+    /// Checks whether a given path is inside a cloud sync folder (OneDrive, Dropbox, Google Drive,
+    /// iCloud, Box, MEGA, etc.). Reloaded installed into such folders is avoided because many mods
+    /// do not tolerate cloud offload/locking, and load times are poor.
+    ///
+    /// Detection is layered, checked in order:
+    ///
+    /// - OneDrive environment variables (<c>OneDrive</c> / <c>OneDriveCommercial</c>).
+    ///
+    /// - The Windows Cloud Files API (<c>CfGetSyncRootInfoByPath</c>, available on Windows 10 1709+),
+    ///   which detects any provider that registers a sync root.
+    ///
+    /// Desktop is only ever redirected by OneDrive, so these two tiers are sufficient for the install-path check.
     /// </summary>
-    private static bool IsPathInOneDrive(string path)
+    private static bool IsPathInCloudSyncFolder(string path)
     {
         if (string.IsNullOrEmpty(path))
             return false;
 
-        foreach (var envVar in new[] { "OneDrive", "OneDriveCommercial" })
+        string fullPath;
+        try { fullPath = Path.GetFullPath(path); }
+        catch { return false; }
+
+        return IsInOneDrive(fullPath)
+            || IsInRegisteredCloudSyncRoot(fullPath);
+    }
+
+    // --- Tier 1: OneDrive environment variables ---
+    private static bool IsInOneDrive(string fullPath)
+    {
+        foreach (var envVar in s_oneDriveEnvVars)
         {
             var root = Environment.GetEnvironmentVariable(envVar);
             if (string.IsNullOrEmpty(root))
@@ -66,15 +86,58 @@ public class Settings
             {
                 var fullRoot = Path.GetFullPath(root)
                     .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-                var fullPath = Path.GetFullPath(path)
-                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-
-                if (fullPath.StartsWith(fullRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                if (IsUnder(fullPath, fullRoot))
                     return true;
             }
-            catch { /* malformed path - skip */ }
+            catch { /* malformed path/env - skip */ }
         }
 
         return false;
     }
+
+    // --- Tier 2: Cloud Files API (cldapi.dll), Windows 10 1709+ ---
+    // A single native call reports whether the path is inside any registered cloud sync root,
+    // regardless of provider. No ancestor walk or hydration-state dependence.
+    private static bool IsInRegisteredCloudSyncRoot(string fullPath)
+    {
+        try
+        {
+            // CF_SYNC_ROOT_INFO_CLASS.CfSyncRootInfoBasic == 0.
+            // A small buffer is plenty for the basic info struct; we only care about the HRESULT.
+            var buffer = new byte[256];
+            int hr = CfGetSyncRootInfoByPath(fullPath, 0, buffer, buffer.Length, out _);
+            return hr >= 0; // S_OK (0) => the path resolves to a registered sync root.
+        }
+        catch
+        {
+            // cldapi.dll missing (older than Windows 10 1709) or call failed: rely on other tiers.
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// True if <paramref name="fullPath"/> equals or is a descendant of <paramref name="root"/>.
+    /// Case-insensitive. The separator is appended on the prefix check so a root named
+    /// e.g. "OneDrive" does not match a sibling like "OneDriveBackup".
+    /// </summary>
+    private static bool IsUnder(string fullPath, string root)
+    {
+        var trimmedRoot = root.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        if (trimmedRoot.Length == 0)
+            return false;
+
+        return fullPath.Equals(trimmedRoot, StringComparison.OrdinalIgnoreCase)
+            || fullPath.StartsWith(trimmedRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [DllImport("cldapi.dll", CharSet = CharSet.Unicode)]
+    [return: MarshalAs(UnmanagedType.I4)]
+    private static extern int CfGetSyncRootInfoByPath(
+        string filePath,
+        int infoClass,
+        [Out] byte[] infoBuffer,
+        int infoBufferSize,
+        out int returnedLength);
+
+    private static readonly string[] s_oneDriveEnvVars = { "OneDrive", "OneDriveCommercial" };
 }
