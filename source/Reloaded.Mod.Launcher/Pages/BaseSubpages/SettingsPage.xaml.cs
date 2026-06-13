@@ -51,4 +51,11 @@ public partial class SettingsPage : ReloadedIIPage, IDisposable
     }
 
     private void ControllerConfig_Click(object sender, RoutedEventArgs e) => ControllerSupport.Controller.Configure(true);
+
+    private void ThemeDropdown_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        // TODO: Figure out why the fetch button disappears so I don't have to do this -zw
+        if (ViewModel.ThemeSelector?.Files[0] != XamlThemeSelector.FetchText)
+            ViewModel.ThemeSelector!.Files.Insert(0, XamlThemeSelector.FetchText);
+    }
 }

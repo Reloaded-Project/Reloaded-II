@@ -52,7 +52,7 @@ public class XamlFileSelector : ResourceDictionary, IResourceFileSelector
         }
     }
 
-    private void PopulateXamlFiles()
+    protected void PopulateXamlFiles()
     {
         var files = System.IO.Directory.GetFiles(Directory, XamlFilter, SearchOption.TopDirectoryOnly);
         Collections.ModifyObservableCollection(Files, files);
@@ -60,7 +60,7 @@ public class XamlFileSelector : ResourceDictionary, IResourceFileSelector
             File = files.FirstOrDefault();
     }
 
-    private void UpdateSource()
+    protected virtual void UpdateSource()
     {
         if (File == null) 
             return;
@@ -76,7 +76,7 @@ public class XamlFileSelector : ResourceDictionary, IResourceFileSelector
 
             As this in practice occurs over a theme or language switch, it should be largely unnoticeable to the end user.
         */
-        NewFileSet?.Invoke();
+        OnNewFileSet();
     }
 
     /* Events */
@@ -95,6 +95,10 @@ public class XamlFileSelector : ResourceDictionary, IResourceFileSelector
         ActionWrappers.ExecuteWithApplicationDispatcher(PopulateXamlFiles);
     }
 
+    protected void OnNewFileSet()
+    {
+        NewFileSet?.Invoke();
+    }
 
     #region PropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
