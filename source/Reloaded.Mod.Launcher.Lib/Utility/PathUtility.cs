@@ -1,54 +1,16 @@
-﻿using System.Linq;
-namespace Reloaded.Mod.Installer.Lib;
+using System.Runtime.InteropServices;
+using Environment = System.Environment;
+
+namespace Reloaded.Mod.Launcher.Lib.Utility;
 
 /// <summary>
-///     Settings for the installer.
+/// Utility methods for inspecting file system paths.
 /// </summary>
-public class Settings
+public static class PathUtility
 {
-    public string InstallLocation { get; set; } = Path.Combine(GetSafeInstallPath(), "Reloaded-II");
-    public bool IsManuallyOverwrittenLocation { get; set; }
-    public bool CreateShortcut { get; set; } = true;
-    public bool HideNonErrorGuiMessages { get; set; } = false;
-    public bool StartReloaded { get; set; } = true;
-    
-    public Settings() { }
-    
-    public static Settings GetSettings(string[] args)
-    {
-        var settings = new Settings();
-        for (int x = 0; x < args.Length - 1; x++)
-        {
-            if (args[x] == "--installdir")
-            {
-                settings.InstallLocation = args[x + 1];
-                settings.IsManuallyOverwrittenLocation = true;
-            }
-            if (args[x] == "--nogui") settings.HideNonErrorGuiMessages = true;
-            if (args[x] == "--nocreateshortcut") settings.CreateShortcut = false;
-            if (args[x] == "--nostartreloaded") settings.StartReloaded = false;
-        }
-
-        return settings;
-    }
-
-    private static string GetSafeInstallPath()
-    {
-        var installPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-        if (IsPathInCloudSyncFolder(installPath))
-        {
-            var driveRoot = Path.GetPathRoot(Environment.SystemDirectory);
-            if (driveRoot == null)
-                // if for some reason we can't determine the root, fallback to Desktop
-                return installPath;
-            return driveRoot;
-        }
-        return installPath;
-    }
-
     /// <summary>
     /// Checks whether a given path is inside a cloud sync folder (OneDrive, Dropbox, Google Drive,
-    /// iCloud, Box, MEGA, etc.). Reloaded installed into such folders is avoided because many mods
+    /// iCloud, Box, MEGA, etc.). Reloaded and games inside such folders are avoided because many mods
     /// do not tolerate cloud offload/locking, and load times are poor.
     ///
     /// Detection is layered, checked in order:
@@ -56,11 +18,14 @@ public class Settings
     /// - OneDrive environment variables (<c>OneDrive</c> / <c>OneDriveCommercial</c>).
     ///
     /// - The Windows Cloud Files API (<c>CfGetSyncRootInfoByPath</c>, available on Windows 10 1709+),
-    ///   which detects any provider that registers a sync root.
+    ///   which detects any provider that registers a sync root (OneDrive, Dropbox, iCloud, Box, ...).
     ///
-    /// Desktop is only ever redirected by OneDrive, so these two tiers are sufficient for the install-path check.
+    /// - Known cloud folder names under the user profile, as a fallback for older systems or
+    ///   providers that do not register a sync root.
     /// </summary>
-    private static bool IsPathInCloudSyncFolder(string path)
+    /// <param name="path">The path to check.</param>
+    /// <returns>True if the path is inside a cloud-synced folder; false otherwise.</returns>
+    public static bool IsPathInCloudSyncFolder(string path)
     {
         if (string.IsNullOrEmpty(path))
             return false;
@@ -70,7 +35,8 @@ public class Settings
         catch { return false; }
 
         return IsInOneDrive(fullPath)
-            || IsInRegisteredCloudSyncRoot(fullPath);
+            || IsInRegisteredCloudSyncRoot(fullPath)
+            || IsInKnownCloudFolder(fullPath);
     }
 
     // --- Tier 1: OneDrive environment variables ---
@@ -115,6 +81,30 @@ public class Settings
         }
     }
 
+    // --- Tier 3: known cloud folder names under the user profile ---
+    private static bool IsInKnownCloudFolder(string fullPath)
+    {
+        var userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        if (string.IsNullOrEmpty(userProfile))
+            return false;
+
+        string fullProfile;
+        try { fullProfile = Path.GetFullPath(userProfile).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar); }
+        catch { return false; }
+
+        foreach (var folder in s_knownCloudFolders)
+        {
+            try
+            {
+                if (IsUnder(fullPath, Path.Combine(fullProfile, folder)))
+                    return true;
+            }
+            catch { /* malformed name - skip */ }
+        }
+
+        return false;
+    }
+
     /// <summary>
     /// True if <paramref name="fullPath"/> equals or is a descendant of <paramref name="root"/>.
     /// Case-insensitive. The separator is appended on the prefix check so a root named
@@ -140,4 +130,16 @@ public class Settings
         out int returnedLength);
 
     private static readonly string[] s_oneDriveEnvVars = { "OneDrive", "OneDriveCommercial" };
+
+    private static readonly string[] s_knownCloudFolders =
+    {
+        "Dropbox",
+        "Google Drive",
+        "GoogleDrive",
+        "iCloudDrive",
+        "Box Sync",
+        "Box",
+        "MEGA",
+        "pCloud"
+    };
 }
