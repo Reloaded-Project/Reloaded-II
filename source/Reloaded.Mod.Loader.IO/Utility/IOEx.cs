@@ -5,6 +5,13 @@ public static class IOEx
     private static readonly char[] InvalidFilePathChars = Path.GetInvalidPathChars().Union(Path.GetInvalidFileNameChars()).ToArray();
 
     /// <summary>
+    /// Hard ceiling on recursion depth to prevent infinite loops via reparse point
+    /// (junction/symlink) cycles, since the runtime follows reparse points without
+    /// cycle detection. 256 is well above any legitimate mod directory depth.
+    /// </summary>
+    private const int MaxRecursionDepthCap = 256;
+
+    /// <summary>
     /// Moves a directory from a given source path to a target path, overwriting all files.
     /// </summary>
     /// <param name="source">The source path.</param>
@@ -175,6 +182,7 @@ public static class IOEx
     /// <param name="recurseOnFound">Continues to search in subdirectories even if <see cref="fileName"/> is found.</param>
     public static List<string> GetFilesEx(string directory, string fileName, int maxDepth = 1, int minDepth = 1, bool recurseOnFound = true)
     {
+        maxDepth = Math.Min(maxDepth, MaxRecursionDepthCap);
         var files = new List<string>();
 
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

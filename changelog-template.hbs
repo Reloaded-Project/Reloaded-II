@@ -3,29 +3,34 @@
 
 # 1.30.2: Cloud Storage & Wine Improvements
 
-## Generalize Cloud Folder Detection Beyond OneDrive
+## Fix Broken File Detection in OneDrive Folders
 
-The fast hand-rolled directory scanner previously accidentally skipped some
-contents of OneDrive cloud folders.
+The directory scanner (file search) skipped symlinks for 'offline' (non-local) files.
 
-Previously in Reloaded-II, we skipped resolving Symlinks in the `Mods` folder;
-and symlinks to 'offline' files (not on current machine).
+> The file is offline. The data of the file is not immediately available.
+> [FileAttributes.Offline](https://learn.microsoft.com/en-us/dotnet/api/system.io.fileattributes?view=net-10.0#fields)
 
-Turns out- files under OneDrive can classify as symlinks- so in some cases- they
-were just not being picked up. Unfortunately- optimizations here have backfired.
+A younger me, half a decade ago misunderstood this to mean as
+'this file cannot be accessed' or 'on a server, but you're offline'.
 
-Coincidentally, [Opst34](https://github.com/Reloaded-Project/Reloaded-II/issues/882) ran into
-an issue where they couldn't configure their mod- due to the OneDrive sync feature; which
-is how I found out.
+This was not correct- what it rather means is, if you try to read the data; it will
+fetch it from the cloud rather than local storage. This means that if a file is
+on cloud, but not on local storage; we would not recognise it.
 
-This may have been the culprit of the infamous endless update loop some folks experienced
-when inside OneDrive.
+[Opst34](https://github.com/Reloaded-Project/Reloaded-II/issues/882) reported a mod that
+could not be configured due to the OneDrive sync feature.
 
-In any case, we now separate symlinks and cloud storage folders apart, to best
-of ability.
+Over the years, this may also have caused the infamous endless update loop some
+users saw inside OneDrive.
 
-In reality, we probably should just allow all files- but this was the most painless
-fix (for now).
+The scanner no longer ignores these files. Just in case, infinite recursion is also handled,
+by a hard recursion-depth cap (256). So if you got cyclic symlinks like
+`C:\Reloaded-II\Mods\Loop\Loop\Loop\...`, it will stop after 256 iterations rather
+than hanging.
+
+Detection of cloud storage also updated; since users who have installed Windows
+without OneDrive enabled, and then opted into it later would not be caught. This
+however wasn't well tested; but should not cause regression in worse case.
 
 ## Only Write `steamappid.txt` File When Correct ID Is Obtained by @datasone0
 
