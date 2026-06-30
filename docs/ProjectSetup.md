@@ -81,3 +81,7 @@ If you have built your mod in `Debug` configuration and a supported IDE/Debugger
 ![Debugger Launch](./Images/DebuggerLaunch.png)  
 
 Select your IDE/Debugger of choice and have fun.  
+
+!!! warning
+
+    Some games running [Steam's DRM](https://partner.steamgames.com/doc/features/drm) may not trigger breakpoints after a debugger is attached. To get around this, unpack the executable first (with utilities such as [Steamless](https://github.com/atom0s/Steamless)) and edit the application within Reloaded-II to use the new executable.
