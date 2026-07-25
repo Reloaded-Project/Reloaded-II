@@ -41,15 +41,26 @@ public class ModUpdateDialogViewModel : ObservableObject
     /// </summary>
     public bool CanDownload { get; set; }
 
-    /// <summary/>
-    public ModUpdateDialogViewModel(Updater updater, ModUpdateSummary summary)
+    /// <summary>
+    /// Creates the ViewModel using precomputed update info.
+    /// </summary>
+    public ModUpdateDialogViewModel(Updater updater, ModUpdateSummary summary, ModUpdate[] updateInfo)
     {
         Updater = updater;
         Summary = summary;
-        UpdateInfo = Summary.GetUpdateInfo();
+        UpdateInfo = updateInfo;
         TotalSize = UpdateInfo.Sum(x => x.UpdateSize);
-        SelectedUpdate = UpdateInfo[0];
-        CanDownload = true;
+
+        if (UpdateInfo.Length > 0)
+        {
+            SelectedUpdate = UpdateInfo[0];
+            CanDownload = true;
+        }
+        else
+        {
+            SelectedUpdate = null;
+            CanDownload = false;
+        }
     }
 
     /// <summary>

@@ -130,9 +130,14 @@ public static class Update
 
             if (updateDetails.HasUpdates())
             {
+                // Fetch update metadata (download sizes, changelogs) on a background thread.
+                // Doing this inside the ViewModel constructor blocked the UI thread on
+                // unbounded network I/O, freezing the launcher on startup. See issue #910.
+                var updateInfo = await updateDetails.GetUpdateInfoAsync();
+
                 Actions.SynchronizationContext.Send(_ =>
                 {
-                    Actions.ShowModUpdateDialog.Invoke(new ModUpdateDialogViewModel(updater, updateDetails));
+                    Actions.ShowModUpdateDialog.Invoke(new ModUpdateDialogViewModel(updater, updateDetails, updateInfo));
                 }, null);
 
                 return true;
