@@ -84,4 +84,6 @@ Select your IDE/Debugger of choice and have fun.
 
 !!! warning
 
-    Some games running [Steam's DRM](https://partner.steamgames.com/doc/features/drm) may not trigger breakpoints after a debugger is attached. To get around this, unpack the executable first (with utilities such as [Steamless](https://github.com/atom0s/Steamless)) and edit the application within Reloaded-II to use the new executable.
+    Games using [Steam Stub DRM](https://partner.steamgames.com/doc/features/drm) may crash or not trigger breakpoints after a debugger is attached. Reloaded logs a warning in the console when this is detected.
+
+    See [Troubleshooting: Steam DRM Prevents Debugging](./Troubleshooting.md#steam-drm-prevents-debugging) for the fix.

@@ -24,7 +24,8 @@ public static class DRMHelper
         {
             logger?.WriteLineAsync("Warning: Steam Stub (Embedded Steam DRM) found.\n" +
                                    "This means EXE is encrypted at launch. Support for bypassing this DRM is experimental.\n" +
-                                   "If you find issues, remove the DRM using `Steamless` or try using ASI Loader `Edit Application -> Deploy ASI Loader`", logger.ColorWarning);
+                                   "If you find issues, remove the DRM using `Steamless` or try using ASI Loader `Edit Application -> Deploy ASI Loader`\n\n" +
+                                   "Steam DRM prevents debugging. For workarounds, see: https://reloaded-project.github.io/Reloaded-II/Troubleshooting/#steam-drm-prevents-debugging", logger.ColorWarning);
 
             requiresDelayStart = true;
             drmType |= DrmType.SteamStub;
