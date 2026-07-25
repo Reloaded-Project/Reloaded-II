@@ -1,68 +1,68 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0-windows</TargetFramework>
-	  <LangVersion>preview</LangVersion>
-	  <UseWPF>true</UseWPF>
+    <LangVersion>preview</LangVersion>
+    <UseWPF>true</UseWPF>
     <AssemblyName>Reloaded-II</AssemblyName>
     <RootNamespace>Reloaded.Mod.Launcher</RootNamespace>
-    <Version>1.30.2</Version>
+    <Version>1.30.3</Version>
     <Copyright>Sewer56 ~ $([System.DateTime]::UtcNow.ToString("s")) | $(Version)</Copyright>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ApplicationIcon>appicon.ico</ApplicationIcon>
-	  <OutputPath>..\Output\Launcher\</OutputPath>
-	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>..\Output\Launcher\</OutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <NoWarn>CS0067</NoWarn>
-      <DebugType>portable</DebugType>
-      <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <DebugType>portable</DebugType>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
-      <!-- For backcompat with out of support versions of Windows -->
-      <CETCompat>false</CETCompat>
+    <!-- For backcompat with out of support versions of Windows -->
+    <CETCompat>false</CETCompat>
   </PropertyGroup>
-	
+
   <ItemGroup>
     <None Remove="Assets\**" />
     <None Remove="Theme\**" />
     <None Remove="LICENSE.txt" />
   </ItemGroup>
-	
+
   <ItemGroup>
     <Content Include="Assets\Languages\**\*.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile> 
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-	  <Content Include="Assets\HTML\**" Link="%(RecursiveDir)\%(Filename)%(Extension)">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	  <Content Include="Theme\**">
-	    <Generator>MSBuild:Compile</Generator>
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	  <Content Include="Assets\Loader\**" Link="Loader\%(RecursiveDir)\%(Filename)%(Extension)">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	  <Content Include="LICENSE.txt">
+    <Content Include="Assets\HTML\**" Link="%(RecursiveDir)\%(Filename)%(Extension)">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
-	  <Content Include="Utility\ThemeHelpers.cs" />
+    <Content Include="Theme\**">
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Include="Assets\Loader\**" Link="Loader\%(RecursiveDir)\%(Filename)%(Extension)">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Include="Utility\ThemeHelpers.cs" />
     <Content Include="Assets\DefaultSettings\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>
-	
+
   <ItemGroup>
     <Compile Remove="Theme\Helpers\ThemeHelpers.cs" />
   </ItemGroup>
-	
+
   <ItemGroup>
     <Page Remove="Theme\Default\R-II\Colours.xaml" />
   </ItemGroup>
@@ -96,9 +96,9 @@
   </ItemGroup>
 
   <ItemGroup>
-	<Reference Include="PropertyChanged">
-	  <HintPath>Dependencies\PropertyChanged.dll</HintPath>
-	</Reference>
+    <Reference Include="PropertyChanged">
+      <HintPath>Dependencies\PropertyChanged.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -112,10 +112,11 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-    
+
   <!-- Disable HTTP/3, as this has issues with Wine out of the box. -->
   <ItemGroup>
-      <RuntimeHostConfigurationOption Include="System.Net.SocketsHttpHandler.Http3Support" Value="false" />
+    <RuntimeHostConfigurationOption Include="System.Net.SocketsHttpHandler.Http3Support"
+      Value="false" />
   </ItemGroup>
-    
+
 </Project>

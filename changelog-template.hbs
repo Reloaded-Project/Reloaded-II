@@ -1,5 +1,65 @@
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
-[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.30.1).
+[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.30.2).
+
+Just a tiny maintenance update. My health hasn't been the best lately- because
+I haven't been taking good care of myself. So this is all I can give for now in
+some spare time.
+
+# 1.30.3: Startup Freeze Fix & Steam DRM Docs
+
+## Fix Launcher Freezing on Startup by @drewmcelhany
+
+Some users reported the launcher hanging on startup; never quite making it to
+the main window.
+
+The cause was the mod update check. After updates were found, but before
+showing the update dialog, the launcher fetched extra details for each one;
+asking the download source for the file size, and pulling the changelog text.
+It did this on the thread responsible for drawing the UI. A slow network or
+unresponsive download source froze the whole launcher.
+
+The fetch now happens in the background; the dialog only opens once the
+data is ready.
+
+Also hardened the surrounding code while at it:
+
+- Don't crash when the update list is somehow empty
+- Don't crash when a download source can't report file sizes
+- A failing changelog download no longer aborts the whole update check
+- Background work no longer accidentally hops back onto the UI thread
+
+Fixes [#910](https://github.com/Reloaded-Project/Reloaded-II/issues/910).
+
+(Note: The actual cause is my NuGet server being slow as of late; while gobbling
+up gigabytes of RAM. I'm currently investigating why. Regardless, the launcher
+should never freeze over a slow server; so the fix applies universally.)
+
+## Document Steam DRM Debugging Issues by @nenkai & @Sewer56
+
+Games with Steam's Stub DRM may ignore breakpoints or crash when a debugger
+attaches.
+
+Reloaded already warned in the console when it detected the DRM's `.bind`
+section; that warning now links to a new
+[Troubleshooting entry](https://reloaded-project.github.io/Reloaded-II/Troubleshooting/)
+with the workaround (unpack the exe with [Steamless](https://github.com/atom0s/Steamless),
+then point Reloaded at the unpacked executable).
+
+The 'New Mod Project' docs also warn about this upfront; so mod authors don't
+lose an afternoon wondering why their breakpoints are dead.
+
+## Improved Dependency Loop Error Message by @TheBestAstroNOT
+
+The 'dependency loop' error shown when resolving mod dependencies now mentions
+another common cause: hitting the download API rate limit. If you see it,
+waiting an hour and trying again may just fix it.
+
+## Updated UltimateASILoader to v9.7.2
+
+The bundled Ultimate ASI Loader used for ASI support has been updated to
+v9.7.2; pulling in the upstream fixes and improvements since the last bump.
+
+------------------------------------------------------------------------
 
 # 1.30.2: Cloud Storage & Wine Improvements
 
