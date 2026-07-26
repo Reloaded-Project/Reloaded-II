@@ -163,6 +163,7 @@ public static class Startup
             downloadUrl = downloadUrl.Substring(Constants.ReloadedPackProtocol.Length + 1);
 
         using var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(HttpEx.ApplicationUserAgent);
         var file = new MemoryStream(Task.Run(() => httpClient.GetByteArrayAsync(downloadUrl)).Result);
         var config = IoC.Get<LoaderConfig>();
         Actions.ShowInstallModPackDialog(new InstallModPackDialogViewModel(new ReloadedPackReader(file), config, new AggregateNugetRepository(config.NuGetFeeds)));

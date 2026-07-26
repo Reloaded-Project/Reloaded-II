@@ -2,6 +2,7 @@ using static System.Environment;
 using Environment = Reloaded.Mod.Shared.Environment;
 using Path = System.IO.Path;
 using Paths = Reloaded.Mod.Loader.IO.Paths;
+using Sewer56.Update.Http;
 
 namespace Reloaded.Mod.Launcher;
 
@@ -17,6 +18,11 @@ public partial class App : Application
 
     private void OnStartup(object sender, StartupEventArgs e)
     {
+        // Identify our HTTP traffic server-side. Set before any HTTP request is made
+        // (command-line download handlers may issue requests below).
+        var ver = typeof(App).Assembly.GetName().Version!;
+        HttpEx.ApplicationUserAgent = $"Reloaded-II/{ver.Major}.{ver.Minor}.{ver.Build}";
+
         // Run update handler.
         if (Sewer56.Update.Hooks.Startup.HandleCommandLineArgs(GetCommandLineArgs()))
         {

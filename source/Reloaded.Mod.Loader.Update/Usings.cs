@@ -48,6 +48,7 @@ global using Reloaded.Mod.Loader.Update.Utilities.Nuget.Structs;
 global using ReverseMarkdown;
 global using Sewer56.DeltaPatchGenerator.Lib.Utility;
 global using Sewer56.Update;
+global using Sewer56.Update.Http;
 global using Sewer56.Update.Extractors.SevenZipSharp;
 global using Sewer56.Update.Interfaces.Extensions;
 global using Sewer56.Update.Misc;

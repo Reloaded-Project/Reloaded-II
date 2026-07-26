@@ -1,11 +1,11 @@
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
 [Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.30.2).
 
-Just a tiny maintenance update. My health hasn't been the best lately- because
-I haven't been taking good care of myself. So this is all I can give for now in
-some spare time.
+Just a tiny maintenance update that took around ~12h of work over the weekend.
+My health hasn't been the best lately- because I haven't been taking good care of myself.
+So this is all I can give for now in some spare time.
 
-# 1.30.3: Startup Freeze Fix & Steam DRM Docs
+# 1.30.3: Startup Freeze Fix, Network Hammering Fix & Steam DRM Docs
 
 ## Fix Launcher Freezing on Startup by @drewmcelhany
 
@@ -31,8 +31,79 @@ Also hardened the surrounding code while at it:
 Fixes [#910](https://github.com/Reloaded-Project/Reloaded-II/issues/910).
 
 (Note: The actual cause is my NuGet server being slow as of late; while gobbling
-up gigabytes of RAM. I'm currently investigating why. Regardless, the launcher
-should never freeze over a slow server; so the fix applies universally.)
+up gigabytes of RAM. I've been investigating why.)
+
+## Fix Server Slowdown / Self-Inflicted DDoS by @Sewer56
+
+Found the cause of the slow server mentioned above.
+
+It was me; to be more exact; a multitude of different issues all piling up:
+
+- Launcher started full file downloads just to get their size
+- Launcher didn't send a `User-Agent` header
+- Server wrote to the database on every download
+- Server re-ran search queries that rarely change
+- Server let clients request unbounded result sets
+
+### Launcher Downloading Files to Get Their Size
+
+When checking for mod updates; the launcher needs the file size of each
+available update.
+
+To get it, the launcher sent a full `GET` request; which started downloading the file,
+and then immediately threw it away. Every user, on every launch, for every
+available update.
+
+Multiply that by enough users at once; and we've basically DDoS'd ourselves.
+Hence the slowdown, and the RAM gobbling.
+
+Things got worse when I added HTTPS support via a Caddy reverse proxy late last
+year; since abandoned downloads now kept a TLS connection open longer per
+request.
+
+The size check now issues a `HEAD` request; which gets the file size from headers
+alone- no body download.
+
+### Launcher Not Sending a `User-Agent`
+
+The launcher wasn't sending a `User-Agent` header on any of its HTTP requests.
+
+It now does; so I can distinguish scrapers more easily.
+
+The rest of the issues were server-side. The [server itself](https://github.com/Sewer56/BaGet-ReloadedII)
+was also not built for the kind of traffic Reloaded gets; so I fixed that too.
+Original BaGet was mostly for smaller deployments.
+
+### Batch Download Counts
+
+Every package download ran a database write before returning the file.
+
+These writes fought over the same database lock; queuing everything up.
+
+Download counts (which BaGet doesn't even properly track in the first place) are
+now buffered in memory and flushed every 5 seconds.
+
+In local testing this pushed throughput from ~1,100 to ~4,700 req/s; and cut
+worst-case latency from 640ms down to 37ms.
+
+### Cache Search and Autocomplete
+
+Search and autocomplete hit the database fresh on every request.
+These are now cached in memory.
+
+In local testing this pushed throughput from ~1,470 to ~4,640 req/s; and cut
+worst-case latency from 51ms down to 19ms. Results may be stale for up to 2
+minutes; but package listings don't change often enough to notice.
+
+### Cap Search Page Size & Fix Total Hit Count
+
+The search endpoint accepted any amount of user requested results; so a request
+like `take=100000` would pull a massive result set.
+
+The page size is now capped at 1000; well above what any legitimate client uses.
+
+Also fixed; the `totalHits` field was reporting the page size instead of the
+actual total number of matching packages.
 
 ## Document Steam DRM Debugging Issues by @nenkai & @Sewer56
 

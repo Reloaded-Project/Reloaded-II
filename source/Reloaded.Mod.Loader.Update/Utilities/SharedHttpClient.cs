@@ -23,6 +23,7 @@ public static class SharedHttpClient
             {
                 AutomaticDecompression = DecompressionMethods.All
             });
+            _cachedAndCompressed.DefaultRequestHeaders.UserAgent.ParseAdd(HttpEx.ApplicationUserAgent);
 
             return _cachedAndCompressed;
         }
@@ -39,6 +40,7 @@ public static class SharedHttpClient
                 return _cached;
 
             _cached = AkavacheWebCacheStore.Instance.CreateClient();
+            _cached.DefaultRequestHeaders.UserAgent.ParseAdd(HttpEx.ApplicationUserAgent);
             return _cached;
         }
     }
@@ -57,6 +59,7 @@ public static class SharedHttpClient
             {
                 AutomaticDecompression = DecompressionMethods.All
             });
+            _uncachedAndCompressed.DefaultRequestHeaders.UserAgent.ParseAdd(HttpEx.ApplicationUserAgent);
 
             return _uncachedAndCompressed;
         }

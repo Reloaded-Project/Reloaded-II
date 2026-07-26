@@ -54,6 +54,7 @@ global using Reloaded.Mod.Loader.Update.Utilities.Nuget;
 global using Reloaded.Mod.Shared;
 global using SevenZip;
 global using Sewer56.Update;
+global using Sewer56.Update.Http;
 global using Sewer56.Update.Extractors.SevenZipSharp;
 global using Sewer56.Update.Misc;
 global using Sewer56.Update.Packaging.Interfaces;

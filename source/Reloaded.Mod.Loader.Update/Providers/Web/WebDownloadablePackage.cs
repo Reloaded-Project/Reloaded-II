@@ -111,6 +111,7 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
 
         // Start the modification download.
         using var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(HttpEx.ApplicationUserAgent);
         var downloadProgress = progressSlicer.Slice(0.9);
 
         await retryPolicy.ExecuteAsync(async () =>
@@ -159,10 +160,12 @@ public class WebDownloadablePackage : IDownloadablePackage, IDownloadablePackage
 
     private async Task GetNameAndSize(Uri url)
     {
-        // Obtain the name of the file.
+        // Obtain the name and size of the file via HEAD (headers only, no body download).
         try
         {
             var fileReq = WebRequest.CreateHttp(url);
+            HttpEx.ApplyUserAgent(fileReq);
+            fileReq.Method = "HEAD";
             using var fileResp = await fileReq.GetResponseAsync();
 
             try
