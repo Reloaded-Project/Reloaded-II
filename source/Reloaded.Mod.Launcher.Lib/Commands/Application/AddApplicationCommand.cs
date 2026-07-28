@@ -62,9 +62,9 @@ public class AddApplicationCommand : ICommand
         try { exePath = SymlinkResolver.GetFinalPathName(exePath); }
         catch (Exception e) { Errors.HandleException(e, Resources.ErrorAddApplicationCantReadSymlink.Get()); }
 
-        // Warn if the Game Path is inside a cloud sync folder (OneDrive, Dropbox, ...) or has NonAsciiChars
+        // Warn if OneDrive or NonAsciiChars detected in Game Path
         bool hasNonAsciiChars = exePath.Any(c => c > 127);
-        if (PathUtility.IsPathInCloudSyncFolder(exePath) || hasNonAsciiChars)
+        if (exePath.Contains("OneDrive") || hasNonAsciiChars)
         {
             var confirmAddAnyway = Actions.DisplayMessagebox.Invoke(Resources.ProblematicPathTitle.Get(), Resources.ProblematicPathAppDescription.Get(), new Actions.DisplayMessageBoxParams()
             {
