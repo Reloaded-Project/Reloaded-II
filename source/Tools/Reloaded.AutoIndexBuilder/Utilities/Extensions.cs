@@ -3,6 +3,23 @@ namespace Reloaded.AutoIndexBuilder.Utilities;
 public static class Extensions
 {
     /// <summary>
+    /// Maximum length of an embed description accepted by Discord.
+    /// </summary>
+    public const int DiscordEmbedDescriptionLimit = 4096;
+
+    /// <summary>
+    /// Truncates text to Discord's embed description limit.
+    /// </summary>
+    public static string TruncateDiscordDescription(string? description)
+    {
+        if (string.IsNullOrEmpty(description) || description.Length <= DiscordEmbedDescriptionLimit)
+            return description ?? string.Empty;
+
+        const string suffix = "\n...[truncated]";
+        return description[..(DiscordEmbedDescriptionLimit - suffix.Length)] + suffix;
+    }
+
+    /// <summary>
     /// Makes a Discord error embed for a given title and description.
     /// </summary>
     public static Embed MakeInfoEmbed(string description, string title = "Into")
@@ -10,7 +27,7 @@ public static class Extensions
         return new EmbedBuilder()
             .WithColor(Color.LightGrey)
             .WithTitle(title)
-            .WithDescription(description)
+            .WithDescription(TruncateDiscordDescription(description))
             .WithTimestamp(DateTimeOffset.UtcNow)
             .Build();
     }
@@ -23,7 +40,7 @@ public static class Extensions
         return new EmbedBuilder()
             .WithColor(Color.Red)
             .WithTitle(title)
-            .WithDescription(description)
+            .WithDescription(TruncateDiscordDescription(description))
             .WithTimestamp(DateTimeOffset.UtcNow)
             .Build();
     }
@@ -36,7 +53,7 @@ public static class Extensions
         return new EmbedBuilder()
             .WithColor(Color.Green)
             .WithTitle(title)
-            .WithDescription(description)
+            .WithDescription(TruncateDiscordDescription(description))
             .WithTimestamp(DateTimeOffset.UtcNow)
             .Build();
     }
@@ -49,7 +66,7 @@ public static class Extensions
         return new EmbedBuilder()
             .WithColor(Color.Gold)
             .WithTitle(title)
-            .WithDescription(description)
+            .WithDescription(TruncateDiscordDescription(description))
             .WithTimestamp(DateTimeOffset.UtcNow)
             .Build();
     }

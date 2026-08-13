@@ -5,48 +5,67 @@ namespace Reloaded.AutoIndexBuilder.Mixin;
 /// </summary>
 public class DiscordErrorLoggerSink : ILogEventSink
 {
-    private readonly DiscordSocketClient _client;
-    private readonly Settings _settings;
+    private readonly Func<Embed, Task> _sendMessageAsync;
+    private readonly ulong _discordOwnerId;
 
-    public DiscordErrorLoggerSink(DiscordSocketClient client, Settings settings)
+    public DiscordErrorLoggerSink(Func<Embed, Task> sendMessageAsync, ulong discordOwnerId)
     {
-        _client = client;
-        _settings = settings;
+        _sendMessageAsync = sendMessageAsync;
+        _discordOwnerId = discordOwnerId;
     }
 
     /// <summary>
     /// Sends error logs to Discord.
     /// </summary>
     /// <param name="logEvent"></param>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public async void Emit(LogEvent logEvent)
+    public void Emit(LogEvent logEvent)
     {
         if (logEvent.Level < LogEventLevel.Error)
             return;
 
-        var embedBuilder = new EmbedBuilder();
-        switch (logEvent.Level)
+        try
         {
-            case LogEventLevel.Error:
-                embedBuilder.Color = Color.Red;
-                embedBuilder.Description = $"Error!! {logEvent.RenderMessage()}\n" +
-                                           $"{logEvent.Exception}\n" +
-                                           $"<@{_settings.DiscordOwnerId}>";
-                break;
-            case LogEventLevel.Fatal:
-                embedBuilder.Color = Color.DarkRed;
-                embedBuilder.Description = $"Fatal!! {logEvent.RenderMessage()}\n" +
-                                           $"{logEvent.Exception}"+
-                                           $"<@{_settings.DiscordOwnerId}>";
-                break;
+            var embedBuilder = new EmbedBuilder
+            {
+                Color = logEvent.Level == LogEventLevel.Fatal ? Color.DarkRed : Color.Red,
+                Description = Extensions.TruncateDiscordDescription(
+                    $"{(logEvent.Level == LogEventLevel.Fatal ? "Fatal" : "Error")}!! " +
+                    $"{logEvent.RenderMessage()}\n" +
+                    $"{logEvent.Exception}\n" +
+                    $"<@{_discordOwnerId}>")
+            };
 
-            default:
-                throw new ArgumentOutOfRangeException();
+            // After this line: Discord errors cannot escape logging sink.
+            _ = SendMessageSafelyAsync(embedBuilder.Build());
         }
+        catch (Exception exception)
+        {
+            ReportSinkFailure(exception);
+        }
+    }
 
-        if (!_client.TryGetOutputChannel(_settings, null, nameof(DiscordErrorLoggerSink), out var textChannel))
-            return;
+    private async Task SendMessageSafelyAsync(Embed embed)
+    {
+        try
+        {
+            await _sendMessageAsync(embed);
+        }
+        catch (Exception exception)
+        {
+            ReportSinkFailure(exception);
+        }
+    }
 
-        await textChannel!.SendMessageAsync(embed: embedBuilder.Build());
+    private static void ReportSinkFailure(Exception exception)
+    {
+        // Do not use Serilog here. This is failure handling for Serilog itself.
+        try
+        {
+            Console.Error.WriteLine($"Discord error logger failed: {exception}");
+        }
+        catch
+        {
+            // Logging must never terminate the worker process.
+        }
     }
 }

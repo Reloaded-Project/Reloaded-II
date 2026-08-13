@@ -34,7 +34,18 @@ internal class Program
         collection.AddSingleton<GitPusherService>();
         collection.AddSingleton<Settings>(settings);
         collection.AddSingleton<Stats>(Stats.Get());
-        collection.AddTransient<DiscordErrorLoggerSink>();
+        collection.AddTransient<DiscordErrorLoggerSink>(sp =>
+        {
+            var client = sp.GetRequiredService<DiscordSocketClient>();
+            var settings = sp.GetRequiredService<Settings>();
+            return new DiscordErrorLoggerSink(async embed =>
+            {
+                if (!client.TryGetOutputChannel(settings, null, nameof(DiscordErrorLoggerSink), out var channel))
+                    return;
+
+                await channel!.SendMessageAsync(embed: embed);
+            }, settings.DiscordOwnerId);
+        });
 
         collection.AddLogging(x => x.AddSerilog());
         collection.AddSingleton<Logger>(sp =>
