@@ -8,7 +8,7 @@
   "ModIcon": "",
   "ModR2RManagedDll32": "",
   "ModR2RManagedDll64": "",
-  "ModNativeDll32": "",
+  "ModNativeDll32": "Reloaded.Native.Template32.dll",
   "ModNativeDll64": "Reloaded.Native.Template.dll",
   "IsLibrary": false,
   "ReleaseMetadataFileName": "Sewer56.Update.ReleaseMetadata.json",
