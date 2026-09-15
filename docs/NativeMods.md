@@ -98,7 +98,7 @@ static void my_start()
 RELOADED_MOD_CONFIG_IMPL(my_start)
 ```
 
-Missing values fall back to the schema defaults, then to the fallback argument. The header only needs the C++17 standard library (Windows APIs are used behind `_WIN32`, everything else uses `std::filesystem`), so it also works outside of Windows if you ever reuse it. `config.watch(callback)` spawns a thread that reloads the settings when the user changes them while the game is running. It hands you that thread, keep it and detach or join it, letting it go out of scope while it runs kills the process.
+Missing values fall back to the schema defaults, then to the fallback argument. The header only needs the C++17 standard library (or later) and only work on Windows.
 
 ## Exports
 
