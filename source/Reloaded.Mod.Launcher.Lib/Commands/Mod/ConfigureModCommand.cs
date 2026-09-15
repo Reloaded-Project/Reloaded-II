@@ -67,9 +67,39 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
     private bool TryGetConfigurator(out IConfiguratorV1? configurator, out PluginLoader? loader)
     {
         var config = _modTuple!.Config;
-        string dllPath = config.GetManagedDllPath(_modTuple.Path);
         configurator = null;
         loader = null;
+
+        var modDirectory = Path.GetFullPath(Path.GetDirectoryName(_modTuple.Path)!);
+
+        // Native (C/C++) mods describe their settings in a schema file, no managed code required.
+        if (NativeModConfigSchema.ExistsInFolder(modDirectory))
+        {
+            // Validate upfront, a broken schema disables the button instead of failing later.
+            NativeModConfigSchema.Load(modDirectory);
+
+            var nativeConfigurator = new NativeModConfigurator(modDirectory);
+            nativeConfigurator.SetModDirectory(modDirectory);
+
+            if (_modUserConfigTuple != null)
+            {
+                var configDirectory = Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!);
+                nativeConfigurator.Migrate(modDirectory, configDirectory);
+                nativeConfigurator.SetConfigDirectory(configDirectory);
+            }
+
+            nativeConfigurator.SetContext(new ConfiguratorContext()
+            {
+                Application = _applicationTuple.Config,
+                ModConfigPath = _modTuple.Path,
+                ApplicationConfigPath = _applicationTuple.Path
+            });
+
+            configurator = nativeConfigurator;
+            return true;
+        }
+
+        string dllPath = config.GetManagedDllPath(_modTuple.Path);
 
         if (!File.Exists(dllPath))
             return false;
@@ -89,7 +119,6 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
             return false;
 
         configurator = (IConfiguratorV1)Activator.CreateInstance(entryPoint)!;
-        var modDirectory = Path.GetFullPath(Path.GetDirectoryName(_modTuple.Path)!);
         configurator.SetModDirectory(modDirectory);
 
         if (configurator is IConfiguratorV2 versionTwo && _modUserConfigTuple != null)

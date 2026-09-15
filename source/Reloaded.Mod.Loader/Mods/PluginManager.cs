@@ -301,12 +301,15 @@ public class PluginManager : IDisposable
     {
         var modId = tuple.Config.ModId;
         var dllPath = tuple.Config.GetNativeDllPath(tuple.Path);
-        
+
         if (!DoesDllExist(dllPath, tuple))
             return new ModInstance(tuple.Config);
-        
+
         _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path)!);
-        return new ModInstance(new NativeMod(dllPath), tuple.Config);
+
+        // Hand the mod its user config directory, needed for mods that read their configuration.
+        var userConfigDirectory = ModUserConfig.GetUserConfigFolderForMod(modId, _loader.LoaderConfig.GetModUserConfigDirectory());
+        return new ModInstance(new NativeMod(dllPath, userConfigDirectory), tuple.Config);
     }
 
     private ModInstance PrepareNonDllMod(PathTuple<ModConfig> tuple)

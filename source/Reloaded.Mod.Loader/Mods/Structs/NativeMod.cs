@@ -13,6 +13,7 @@ public class NativeMod : IModV1
     private IntPtr _moduleHandle;
 
     private ReloadedStart _start;
+    private ReloadedStartEx _startEx;
     private ReloadedSuspend _reloadedSuspend;
     private ReloadedResume _reloadedResume;
     private ReloadedUnload _reloadedUnload;
@@ -21,13 +22,19 @@ public class NativeMod : IModV1
     private InitializeASI _initializeAsi;
     private Init _init;
     private bool _started;
+    private string _modDirectory;
+    private string _userConfigDirectory;
 
     /// <summary>
     /// Creates an IMod wrapper for a native DLL.
     /// </summary>
     /// <param name="path">Path to the native DLL.</param>
-    public NativeMod(string path)
+    /// <param name="userConfigDirectory">Path to the directory where the mod's user configuration is stored, passed to mods exporting ReloadedStartEx.</param>
+    public NativeMod(string path, string userConfigDirectory = null)
     {
+        _modDirectory = Path.GetDirectoryName(Path.GetFullPath(path))!;
+        _userConfigDirectory = userConfigDirectory;
+
         // Set new DLL Directory, load library and restore.
         // This could probably be better optimised but isn't a hot path, would rather save on memory, so it's no big deal.
         var builder = new StringBuilder(4096); // ought to be enough characters given most programs break at 260 anyway. 
@@ -35,8 +42,9 @@ public class NativeMod : IModV1
         SetDllDirectoryW(Path.GetDirectoryName(path));
         _moduleHandle = LoadLibraryW(path);
         SetDllDirectoryW(builder.ToString());
-        
+
         _start = GetDelegateForNativeFunction<ReloadedStart>(_moduleHandle, nameof(ReloadedStart));
+        _startEx = GetDelegateForNativeFunction<ReloadedStartEx>(_moduleHandle, nameof(ReloadedStartEx));
         _reloadedSuspend = GetDelegateForNativeFunction<ReloadedSuspend>(_moduleHandle, nameof(ReloadedSuspend));
         _reloadedResume = GetDelegateForNativeFunction<ReloadedResume>(_moduleHandle, nameof(ReloadedResume));
         _reloadedUnload = GetDelegateForNativeFunction<ReloadedUnload>(_moduleHandle, nameof(ReloadedUnload));
@@ -51,7 +59,16 @@ public class NativeMod : IModV1
     public void Start(IModLoaderV1 loader)
     {
         // Try Reloaded Entry point and then others.
-        if (_start != null)
+        if (_startEx != null)
+        {
+            // Extended entry point hands the mod its folders, so it can find its configuration.
+            if (_userConfigDirectory != null)
+                Directory.CreateDirectory(_userConfigDirectory);
+
+            _startEx.Invoke(_modDirectory, _userConfigDirectory);
+            _started = true;
+        }
+        else if (_start != null)
         {
             _start.Invoke();
             _started = true;
@@ -89,6 +106,10 @@ public class NativeMod : IModV1
 
     // Delegates for native Reloaded Exports.
     private delegate void ReloadedStart();
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+    private delegate void ReloadedStartEx(string modDirectory, string userConfigDirectory);
+
     private delegate void ReloadedSuspend();
     private delegate void ReloadedResume();
     private delegate void ReloadedUnload();

@@ -17,6 +17,7 @@ global using Reloaded.Mod.Launcher.Lib.Commands.Templates;
 global using Reloaded.Mod.Launcher.Lib.Interop;
 global using Reloaded.Mod.Launcher.Lib.Misc;
 global using Reloaded.Mod.Launcher.Lib.Models.Model.Application;
+global using Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
 global using Reloaded.Mod.Launcher.Lib.Models.Model.Dialog;
 global using Reloaded.Mod.Launcher.Lib.Models.Model.DownloadPackagePage;
 global using Reloaded.Mod.Launcher.Lib.Models.Model.Pages;
