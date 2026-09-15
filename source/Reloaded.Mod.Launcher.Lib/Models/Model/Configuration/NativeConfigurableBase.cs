@@ -4,7 +4,7 @@ using System.Text.Json.Nodes;
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
 
 /// <summary>
-/// Base class for the configuration objects generated for native (C/C++) mods.
+/// Base class for the configuration objects generated for native (non .NET) mods.
 /// The <see cref="NativeConfigTypeEmitter"/> emits one derived class per schema configuration;
 /// the derived class holds the settings as properties, this class supplies the behaviour
 /// (name, saving, file watching) expected by the launcher's configuration dialog.

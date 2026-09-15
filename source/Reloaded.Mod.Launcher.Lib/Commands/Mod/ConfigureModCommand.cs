@@ -72,7 +72,7 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
 
         var modDirectory = Path.GetFullPath(Path.GetDirectoryName(_modTuple.Path)!);
 
-        // Native (C/C++) mods describe their settings in a schema file, no managed code required.
+        // Native (non .NET) mods describe their settings in a schema file, no managed code required.
         if (NativeModConfigSchema.ExistsInFolder(modDirectory))
         {
             // Validate upfront, a broken schema disables the button instead of failing later.

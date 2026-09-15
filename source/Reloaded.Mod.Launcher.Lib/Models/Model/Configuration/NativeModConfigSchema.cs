@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
 
 /// <summary>
-/// Declarative configuration schema for native (C/C++) mods.
+/// Declarative configuration schema for native (non .NET) mods.
 /// A mod declares its settings by placing a <c>ConfigSchema.json</c> file next to its <c>ModConfig.json</c>.
 /// The launcher then builds a configuration UI from that schema.
 /// The config file mirrors the attributes used by the C# mod template (DisplayName, Description, Category,

@@ -3,16 +3,6 @@
     {
       "FileName": "Config.json",
       "DisplayName": "Default Config",
-      "Enums": [
-        {
-          "Name": "Quality",
-          "Members": [
-            { "Name": "Low", "DisplayName": "Low" },
-            { "Name": "Medium", "DisplayName": "Medium" },
-            { "Name": "High", "DisplayName": "High" }
-          ]
-        }
-      ],
       "Properties": [
         {
           "Name": "EnableThing",
@@ -51,12 +41,17 @@
         },
         {
           "Name": "Quality",
-          "Type": "Quality",
+          "Type": "enum",
           "DisplayName": "Quality",
           "Description": "Quality of the thing.",
           "Category": "General",
           "Order": 3,
-          "DefaultValue": "High"
+          "DefaultValue": "High",
+          "Values": [
+            "Low",
+            "Medium",
+            { "Name": "High", "DisplayName": "High Quality" }
+          ]
         },
         {
           "Name": "CustomFile",

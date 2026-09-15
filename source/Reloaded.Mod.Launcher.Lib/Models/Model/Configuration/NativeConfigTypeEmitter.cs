@@ -7,9 +7,14 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
 /// <summary>
 /// Builds .NET types out of native mod configuration schemas using Reflection.Emit.
 /// The generated types subclass <see cref="NativeConfigurableBase"/> and carry the same
-/// attributes (<c>DisplayName</c>, <c>Description</c>, <c>Category</c>, <c>DefaultValue</c>,
-/// <c>Display</c>, <c>SliderControlParams</c>, ...) as a hand written C# configuration class,
-/// so the launcher's PropertyGrid renders them exactly like the configuration of a C# mod.
+/// attributes as a hand written C# configuration class:
+/// <list type="bullet">
+/// <item><see cref="DisplayNameAttribute"/>, <see cref="DescriptionAttribute"/>, <see cref="CategoryAttribute"/></item>
+/// <item><see cref="DefaultValueAttribute"/> (backs the Reset button of the dialog)</item>
+/// <item><c>Display</c> (sort order)</item>
+/// <item><c>SliderControlParams</c>, <c>FilePickerParams</c>, <c>FolderPickerParams</c> (custom editors)</item>
+/// </list>
+/// This way the launcher's PropertyGrid renders them exactly like the configuration of a C# mod.
 /// </summary>
 public static class NativeConfigTypeEmitter
 {

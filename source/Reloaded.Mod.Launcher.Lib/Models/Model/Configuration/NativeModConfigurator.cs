@@ -1,7 +1,7 @@
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
 
 /// <summary>
-/// Configurator for native (C/C++) mods that declare their settings through a <c>ConfigSchema.json</c> file.
+/// Configurator for native (non .NET) mods that declare their settings through a <c>ConfigSchema.json</c> file.
 /// Use the same interface as a C# mod's configurator.
 /// </summary>
 public class NativeModConfigurator : IConfiguratorV3
