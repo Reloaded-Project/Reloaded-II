@@ -113,15 +113,18 @@ public class NativeModConfigTests : IDisposable
         Assert.NotNull(slider);
         Assert.Equal(0.0, slider!.Minimum);
         Assert.Equal(100.0, slider.Maximum);
-        Assert.Equal(10, slider.TickFrequency);
+        Assert.Equal(10, slider.TickFrequencyDouble);
 
         var filePicker = type.GetProperty("FileSetting")!.GetCustomAttribute<FilePickerParamsAttribute>();
         Assert.NotNull(filePicker);
         Assert.Equal("Text (*.txt)|*.txt", filePicker!.Filter);
 
         // Enum members support display names.
-        var enumType = type.GetProperty("EnumSetting")!.PropertyType;
+        var enumProperty = type.GetProperty("EnumSetting")!;
+        var enumType = enumProperty.PropertyType;
         Assert.True(enumType.IsEnum);
+
+        Assert.Null(enumProperty.GetCustomAttribute<DefaultValueAttribute>());
         var members = enumType.GetFields(BindingFlags.Public | BindingFlags.Static);
         Assert.Equal(2, members.Length);
         Assert.Equal("I Love It!!!", members[1].GetCustomAttribute<DisplayAttribute>()?.GetName());
@@ -203,6 +206,95 @@ public class NativeModConfigTests : IDisposable
 
         var error = Assert.Throws<InvalidOperationException>(() => configurator.GetConfigurations());
         Assert.Contains("nosuchenum", error.Message, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void Slider_On_Enum_Property_Throws()
+    {
+        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), """
+        {
+          "Configurations": [
+          {
+            "FileName": "Config.json",
+            "Enums": [ { "Name": "Mode", "Members": [ { "Name": "Fast" }, { "Name": "Slow" } ] } ],
+            "Properties": [ { "Name": "Speed", "Type": "Mode", "DefaultValue": "Fast", "Slider": { "Minimum": 0.0, "Maximum": 1.0 } } ]
+          }]
+        }
+        """);
+        var configurator = CreateConfigurator();
+
+        var error = Assert.Throws<InvalidOperationException>(() => configurator.GetConfigurations());
+        Assert.Contains("sliders are only supported", error.Message);
+    }
+
+    [Theory]
+    [InlineData("../evil.json")]
+    [InlineData("..\\evil.json")]
+    [InlineData("C:\\Windows\\Temp\\evil.json")]
+    [InlineData("SubFolder/Config.json")]
+    public void FileNames_With_Paths_Are_Rejected(string fileName)
+    {
+        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), $$"""
+        { "Configurations": [ { "FileName": "{{fileName.Replace("\\", "\\\\")}}", "Properties": [] } ] }
+        """);
+
+        var error = Assert.Throws<InvalidOperationException>(() => NativeModConfigSchema.Load(ModDirectory));
+        var jsonError = Assert.IsType<JsonException>(error.InnerException);
+        Assert.Contains("plain file name", jsonError.Message);
+    }
+
+    [Fact]
+    public void TryMigrate_Reports_Failure_And_Keeps_Error()
+    {
+        var configurator = CreateConfigurator();
+
+        // A path with invalid characters makes creating the directory fail.
+        Assert.False(configurator.TryMigrate(ModDirectory, "C:\\<not a valid folder>\\"));
+        Assert.NotNull(configurator.MigrationError);
+    }
+
+    [Fact]
+    public void Inline_Enum_Values_Build_A_Dropdown()
+    {
+        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), """
+        {
+          "Configurations": [
+          {
+            "FileName": "Config.json",
+            "Properties": [
+              {
+                "Name": "Difficulty",
+                "Type": "enum",
+                "DefaultValue": "Hard",
+                "Values": [ "Easy", { "Name": "Hard", "DisplayName": "Very Hard" } ]
+              }
+            ]
+          }]
+        }
+        """);
+        var configurable = Assert.Single(CreateConfigurator().GetConfigurations());
+
+        var property = configurable.GetType().GetProperty("Difficulty")!;
+        var enumType = property.PropertyType;
+        Assert.True(enumType.IsEnum);
+        Assert.Equal("Hard", GetProperty<object>(configurable, "Difficulty")!.ToString());
+
+        var members = enumType.GetFields(BindingFlags.Public | BindingFlags.Static);
+        Assert.Equal(2, members.Length);
+        Assert.Equal("Easy", members[0].Name);
+        Assert.Equal("Very Hard", members[1].GetCustomAttribute<DisplayAttribute>()?.GetName());
+    }
+
+    [Fact]
+    public void Enum_Type_Without_Values_Gives_Hint()
+    {
+        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), """
+        { "Configurations": [ { "FileName": "Config.json", "Properties": [ { "Name": "Broken", "Type": "enum" } ] } ] }
+        """);
+        var configurator = CreateConfigurator();
+
+        var error = Assert.Throws<InvalidOperationException>(() => configurator.GetConfigurations());
+        Assert.Contains("Values", error.Message);
     }
 
     private NativeModConfigurator CreateConfigurator()

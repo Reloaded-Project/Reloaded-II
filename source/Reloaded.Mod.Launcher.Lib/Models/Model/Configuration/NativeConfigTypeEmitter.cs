@@ -55,7 +55,7 @@ public static class NativeConfigTypeEmitter
         var enums = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
         var displayCtor = GetCtor(typeof(DataAnnotations.DisplayAttribute), 0);
         var displayNameProperty = typeof(DataAnnotations.DisplayAttribute).GetProperty(nameof(DataAnnotations.DisplayAttribute.Name))!;
-        foreach (var schemaEnum in configuration.Enums)
+        foreach (var schemaEnum in CollectEnums(configuration))
         {
             var enumBuilder = module.DefineEnum($"{typeBuilder.FullName}.{MakeIdentifier(schemaEnum.Name)}", TypeAttributes.Public, typeof(int));
             for (int x = 0; x < schemaEnum.Members.Count; x++)
@@ -106,6 +106,21 @@ public static class NativeConfigTypeEmitter
         return typeBuilder.CreateType()!;
     }
 
+    /// <summary>
+    /// The enums declared by a configuration, properties with inline <c>Values</c>
+    /// </summary>
+    private static IEnumerable<NativeConfigSchemaEnum> CollectEnums(NativeConfigSchemaConfiguration configuration)
+    {
+        foreach (var schemaEnum in configuration.Enums)
+            yield return schemaEnum;
+
+        foreach (var property in configuration.Properties)
+        {
+            if (property.Values.Count > 0)
+                yield return new NativeConfigSchemaEnum() { Name = property.Name, Members = property.Values };
+        }
+    }
+
     private static (Type propertyType, object? defaultValue) ResolveTypeAndDefault(NativeConfigSchemaProperty property, Dictionary<string, Type> enums)
     {
         switch (property.Type)
@@ -127,7 +142,13 @@ public static class NativeConfigTypeEmitter
 
             default:
                 if (!enums.TryGetValue(property.Type, out var enumType))
-                    throw new InvalidOperationException($"Property '{property.Name}' has unknown Type '{property.Type}'. Declare an enum with this name under '{Keys.Enums}'.");
+                {
+                    var hint = string.Equals(property.Type, "enum", StringComparison.OrdinalIgnoreCase)
+                        ? $"Inline enums need a '{Keys.Values}' array on the property."
+                        : $"Declare an enum with this name under '{Keys.Enums}'.";
+
+                    throw new InvalidOperationException($"Property '{property.Name}' has unknown Type '{property.Type}'. {hint}");
+                }
 
                 return (enumType, GetEnumDefault(property, enumType));
         }
@@ -206,14 +227,19 @@ public static class NativeConfigTypeEmitter
         }
 
         // The default value backs the Reset button of the configuration dialog.
-        var boxedDefault = defaultValue == null && propertyType == typeof(string) ? "" : defaultValue;
-        var defaultValueCtor = typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(object) })!;
-        yield return new CustomAttributeBuilder(defaultValueCtor, new[] { boxedDefault! });
+       
+        // Enums are skipped
+        if (!propertyType.IsEnum)
+        {
+            var boxedDefault = defaultValue == null && propertyType == typeof(string) ? "" : defaultValue;
+            var defaultValueCtor = typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(object) })!;
+            yield return new CustomAttributeBuilder(defaultValueCtor, new[] { boxedDefault! });
+        }
 
         if (property.Slider != null)
         {
             var slider = property.Slider;
-            if (!propertyType.IsEnum && propertyType != typeof(int) && propertyType != typeof(float) && propertyType != typeof(double))
+            if (propertyType != typeof(int) && propertyType != typeof(float) && propertyType != typeof(double))
                 throw new InvalidOperationException($"Property '{property.Name}': sliders are only supported for int, float and double properties.");
 
             var tickPlacement = Enum.TryParse<SliderControlTickPlacement>(slider.TickPlacement, true, out var placement) ? placement : SliderControlTickPlacement.None;

@@ -290,7 +290,7 @@ public class NativeConfigSchemaProperty
             }
 
             if (property.Values.Count > 0)
-                property.Type = property.Name; // inline enums borrow the property name.
+                property.Type = property.Name; // inline enums uses the property name.
         }
 
         if (property.Name.Length <= 0)
