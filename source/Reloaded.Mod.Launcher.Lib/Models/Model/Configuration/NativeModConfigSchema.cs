@@ -88,7 +88,7 @@ public class NativeConfigSchemaConfiguration
     {
         var configuration = new NativeConfigSchemaConfiguration
         {
-            FileName    = node.GetStringOrDefault(Keys.FileName, "Config.json")!,
+            FileName    = ValidateFileName(node.GetStringOrDefault(Keys.FileName, "Config.json")!),
             DisplayName = node.GetStringOrDefault(Keys.DisplayName, null)
         };
 
@@ -105,6 +105,18 @@ public class NativeConfigSchemaConfiguration
         }
 
         return configuration;
+    }
+
+    /// <summary>
+    /// The file name is used to build paths inside the user config directory,
+    /// so anything that is not a plain file name (rooted paths, separators) is rejected.
+    /// </summary>
+    private static string ValidateFileName(string fileName)
+    {
+        if (fileName.Length <= 0 || Path.IsPathRooted(fileName) || fileName != Path.GetFileName(fileName))
+            throw new JsonException($"'{Keys.FileName}' must be a plain file name, got '{fileName}'.");
+
+        return fileName;
     }
 }
 
@@ -238,6 +250,11 @@ public class NativeConfigSchemaProperty
     /// </summary>
     public NativeConfigSchemaFolderPicker? FolderPicker { get; set; }
 
+    /// <summary>
+    /// Enum values declared directly on the property, for the common case where an enum is used once.
+    /// </summary>
+    public List<NativeConfigSchemaEnumMember> Values { get; set; } = new();
+
     public static NativeConfigSchemaProperty Parse(JsonNode node)
     {
         var property = new NativeConfigSchemaProperty
@@ -259,6 +276,22 @@ public class NativeConfigSchemaProperty
 
         if (node[Keys.FolderPicker] is JsonNode folderPicker)
             property.FolderPicker = NativeConfigSchemaFolderPicker.Parse(folderPicker);
+
+        if (node[Keys.Values] is JsonArray values)
+        {
+            foreach (var valueNode in values)
+            {
+                var member = valueNode!.GetValueKind() == JsonValueKind.String
+                    ? new NativeConfigSchemaEnumMember { Name = valueNode.GetValue<string>() }
+                    : NativeConfigSchemaEnumMember.Parse(valueNode);
+
+                if (member.Name.Length > 0)
+                    property.Values.Add(member);
+            }
+
+            if (property.Values.Count > 0)
+                property.Type = property.Name; // inline enums borrow the property name.
+        }
 
         if (property.Name.Length <= 0)
             throw new JsonException($"A property in the schema has no '{Keys.Name}'.");
@@ -388,6 +421,7 @@ internal static class Keys
     public const string Slider         = "Slider";
     public const string FilePicker     = "FilePicker";
     public const string FolderPicker   = "FolderPicker";
+    public const string Values         = "Values";
 
     // Control Params
     public const string Minimum              = "Minimum";
