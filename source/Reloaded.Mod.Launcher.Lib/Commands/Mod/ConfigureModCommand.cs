@@ -81,12 +81,14 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
             var nativeConfigurator = new NativeModConfigurator(modDirectory);
             nativeConfigurator.SetModDirectory(modDirectory);
 
-            if (_modUserConfigTuple != null)
-            {
-                var configDirectory = Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!);
-                nativeConfigurator.Migrate(modDirectory, configDirectory);
+
+            string configDirectory = _modUserConfigTuple != null
+                ? Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!)
+                : ModUserConfig.GetUserConfigFolderForMod(_modTuple.Config.ModId);
+
+
+            if (nativeConfigurator.TryMigrate(modDirectory, configDirectory))
                 nativeConfigurator.SetConfigDirectory(configDirectory);
-            }
 
             nativeConfigurator.SetContext(new ConfiguratorContext()
             {

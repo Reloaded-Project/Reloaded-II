@@ -55,8 +55,17 @@ public class NativeModConfigurator : IConfiguratorV3
     public bool TryRunCustomConfiguration() => false;
 
     /// <inheritdoc />
-    public void Migrate(string oldDirectory, string newDirectory)
+    public void Migrate(string oldDirectory, string newDirectory) => TryMigrate(oldDirectory, newDirectory);
+
+    /// <summary>
+    /// Moves value files left behind in an old directory over to a new one.
+    /// Returns false when the move failed; the reason is in <see cref="MigrationError"/>.
+    /// </summary>
+    /// <param name="oldDirectory">The old mod config directory, usually the mod folder.</param>
+    /// <param name="newDirectory">The new mod config directory, usually the user config folder.</param>
+    public bool TryMigrate(string oldDirectory, string newDirectory)
     {
+        MigrationError = null;
         try
         {
             var schema = NativeModConfigSchema.Load(_modDirectory);
@@ -68,12 +77,21 @@ public class NativeModConfigurator : IConfiguratorV3
                 if (File.Exists(oldPath) && !File.Exists(newPath))
                     File.Move(oldPath, newPath);
             }
+
+            return true;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-       
+            // The caller keeps using the old directory when the move fails.
+            MigrationError = e;
+            return false;
         }
     }
+
+    /// <summary>
+    /// Exception of the last failed migration, if any.
+    /// </summary>
+    public Exception? MigrationError { get; private set; }
 
     /// <inheritdoc />
     public void SetConfigDirectory(string configDirectory) => _configDirectory = configDirectory;
