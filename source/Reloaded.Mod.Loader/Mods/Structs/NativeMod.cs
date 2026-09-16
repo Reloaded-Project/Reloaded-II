@@ -65,7 +65,7 @@ public class NativeMod : IModV1
             if (_userConfigDirectory != null)
                 Directory.CreateDirectory(_userConfigDirectory);
 
-            _startEx.Invoke(_modDirectory, _userConfigDirectory);
+            InvokeStartEx();
             _started = true;
         }
         else if (_start != null)
@@ -93,6 +93,33 @@ public class NativeMod : IModV1
 
     public Action Disposing { get; }
 
+    /// <summary>
+    /// Call the ReloadedStartEx export, passing the mod its directories
+    /// through a versioned struct.
+    /// </summary>
+    private void InvokeStartEx()
+    {
+        var info = new NativeReloadedStartInfo()
+        {
+            ApiVersion = 1,
+            ModDirectory = Marshal.StringToHGlobalUni(_modDirectory),
+            UserConfigDirectory = Marshal.StringToHGlobalUni(_userConfigDirectory)
+        };
+
+        try
+        {
+            _startEx.Invoke(ref info);
+        }
+        finally
+        {
+            if (info.ModDirectory != IntPtr.Zero)
+                Marshal.FreeHGlobal(info.ModDirectory);
+
+            if (info.UserConfigDirectory != IntPtr.Zero)
+                Marshal.FreeHGlobal(info.UserConfigDirectory);
+        }
+    }
+
     // Utility Functions.
     private TDelegate GetDelegateForNativeFunction<TDelegate>(IntPtr moduleHandle, string functionName) where TDelegate : Delegate
     {
@@ -107,14 +134,40 @@ public class NativeMod : IModV1
     // Delegates for native Reloaded Exports.
     private delegate void ReloadedStart();
 
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-    private delegate void ReloadedStartEx(string modDirectory, string userConfigDirectory);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void ReloadedStartEx(ref NativeReloadedStartInfo info);
 
     private delegate void ReloadedSuspend();
     private delegate void ReloadedResume();
     private delegate void ReloadedUnload();
     private delegate bool ReloadedCanUnload();
     private delegate bool ReloadedCanSuspend();
+
+    /// <summary>
+    /// Information handed to native mods exporting ReloadedStartEx.
+    /// The layout is append only, so new fields are only valid when
+    /// <see cref="ApiVersion"/> is high enough, meaning the struct stays a stable contract.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct NativeReloadedStartInfo
+    {
+        /// <summary>
+        /// Version of the struct, starts at 1. 
+        /// </summary>
+        public int ApiVersion;
+
+        /// <summary>
+        /// Folder with the mod's own files (ConfigSchema.json, ...). Valid from version 1.
+        /// UTF-16 string, only valid for the duration of the call.
+        /// </summary>
+        public IntPtr ModDirectory;
+
+        /// <summary>
+        /// Folder where the launcher stores the user settings. Valid from version 1.
+        /// UTF-16 string, only valid for the duration of the call.
+        /// </summary>
+        public IntPtr UserConfigDirectory;
+    }
 
     #region Native Imports
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]

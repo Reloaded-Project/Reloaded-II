@@ -86,9 +86,10 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
                 ? Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!)
                 : ModUserConfig.GetUserConfigFolderForMod(_modTuple.Config.ModId);
 
+            if (!nativeConfigurator.TryMigrate(modDirectory, configDirectory))
+                throw new InvalidOperationException($"Could not move the settings of '{_modTuple.Config.ModName}' from '{modDirectory}' to '{configDirectory}'.", nativeConfigurator.MigrationError);
 
-            if (nativeConfigurator.TryMigrate(modDirectory, configDirectory))
-                nativeConfigurator.SetConfigDirectory(configDirectory);
+            nativeConfigurator.SetConfigDirectory(configDirectory);
 
             nativeConfigurator.SetContext(new ConfiguratorContext()
             {

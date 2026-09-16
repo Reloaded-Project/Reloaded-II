@@ -59,13 +59,15 @@ public class NativeModConfigurator : IConfiguratorV3
 
     /// <summary>
     /// Moves value files left behind in an old directory over to a new one.
-    /// Returns false when the move failed; the reason is in <see cref="MigrationError"/>.
+    /// On failure the files already moved return to
+    /// the old directory and the reason is in <see cref="MigrationError"/>.
     /// </summary>
     /// <param name="oldDirectory">The old mod config directory, usually the mod folder.</param>
     /// <param name="newDirectory">The new mod config directory, usually the user config folder.</param>
     public bool TryMigrate(string oldDirectory, string newDirectory)
     {
         MigrationError = null;
+        var moved = new List<(string OldPath, string NewPath)>();
         try
         {
             var schema = NativeModConfigSchema.Load(_modDirectory);
@@ -75,15 +77,32 @@ public class NativeModConfigurator : IConfiguratorV3
                 var oldPath = Path.Combine(oldDirectory, configuration.FileName);
                 var newPath = Path.Combine(newDirectory, configuration.FileName);
                 if (File.Exists(oldPath) && !File.Exists(newPath))
+                {
                     File.Move(oldPath, newPath);
+                    moved.Add((oldPath, newPath));
+                }
             }
 
             return true;
         }
         catch (Exception e)
         {
-            // The caller keeps using the old directory when the move fails.
             MigrationError = e;
+
+            // The caller keeps using the old directory, so put back what was moved.
+            for (int x = moved.Count - 1; x >= 0; x--)
+            {
+                try
+                {
+                    if (!File.Exists(moved[x].OldPath))
+                        File.Move(moved[x].NewPath, moved[x].OldPath);
+                }
+                catch (Exception)
+                {
+                    // MigrationError above holds the real cause.
+                }
+            }
+
             return false;
         }
     }

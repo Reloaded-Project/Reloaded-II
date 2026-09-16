@@ -33,7 +33,7 @@ public class NativeModConfigTests : IDisposable
             { "Name": "EnumSetting", "Type": "SampleEnum", "DefaultValue": "ILoveIt" },
             {
               "Name": "SliderSetting", "Type": "int", "DefaultValue": 100, "Order": 0,
-              "Slider": { "Minimum": 0.0, "Maximum": 100.0, "SmallChange": 1.0, "LargeChange": 10.0, "TickFrequency": 10, "ShowTextField": true }
+              "Slider": { "Minimum": 0.0, "Maximum": 100.0, "SmallChange": 1.0, "LargeChange": 10.0, "TickFrequency": 10, "TickFrequencyDouble": 2.5, "ShowTextField": true }
             },
             { "Name": "FileSetting", "Type": "string", "DefaultValue": "", "FilePicker": { "Title": "Pick a file", "Filter": "Text (*.txt)|*.txt" } }
           ]
@@ -113,7 +113,7 @@ public class NativeModConfigTests : IDisposable
         Assert.NotNull(slider);
         Assert.Equal(0.0, slider!.Minimum);
         Assert.Equal(100.0, slider.Maximum);
-        Assert.Equal(10, slider.TickFrequencyDouble);
+        Assert.Equal(10, slider.TickFrequency);
 
         var filePicker = type.GetProperty("FileSetting")!.GetCustomAttribute<FilePickerParamsAttribute>();
         Assert.NotNull(filePicker);
@@ -251,6 +251,33 @@ public class NativeModConfigTests : IDisposable
         // A path with invalid characters makes creating the directory fail.
         Assert.False(configurator.TryMigrate(ModDirectory, "C:\\<not a valid folder>\\"));
         Assert.NotNull(configurator.MigrationError);
+    }
+
+    [Fact]
+    public void TryMigrate_Rolls_Back_Moves_On_Failure()
+    {
+        // Two configs with values in the mod folder, the second move fails
+        // because a directory ends being where the file would land.
+        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), """
+        {
+          "Configurations": [
+            { "FileName": "First.json", "Properties": [] },
+            { "FileName": "Second.json", "Properties": [] }
+          ]
+        }
+        """);
+        File.WriteAllText(Path.Combine(ModDirectory, "First.json"), "{ \"Value\": 1 }");
+        File.WriteAllText(Path.Combine(ModDirectory, "Second.json"), "{ \"Value\": 2 }");
+        Directory.CreateDirectory(Path.Combine(ConfigDirectory, "Second.json"));
+
+        var configurator = CreateConfigurator();
+        Assert.False(configurator.TryMigrate(ModDirectory, ConfigDirectory));
+        Assert.NotNull(configurator.MigrationError);
+
+        // The first file was moved before the failure: put it back in place.
+        Assert.True(File.Exists(Path.Combine(ModDirectory, "First.json")));
+        Assert.True(File.Exists(Path.Combine(ModDirectory, "Second.json")));
+        Assert.False(File.Exists(Path.Combine(ConfigDirectory, "First.json")));
     }
 
     [Fact]
