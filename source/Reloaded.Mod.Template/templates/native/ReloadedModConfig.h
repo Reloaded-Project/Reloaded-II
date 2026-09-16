@@ -37,11 +37,18 @@
 #include <functional>
 #include <iterator>
 #include <map>
+#include <mutex>
 #include <optional>
 #include <string>
 #include <thread>
 #include <utility>
 #include <vector>
+
+#if defined(__cpp_lib_to_chars) && __cpp_lib_to_chars >= 201611L
+    #include <charconv>
+#else
+    #include <locale.h>
+#endif
 
 #ifndef RELOADED_MOD_CONFIG_DEFAULT_FILE
 #define RELOADED_MOD_CONFIG_DEFAULT_FILE L"Config.json"
@@ -362,15 +369,28 @@ namespace reloaded
 
         static bool parse_number(const std::string& s, size_t& pos, Json& out)
         {
-            const char* start = s.c_str() + pos;
+            const char* start = s.data() + pos;
+            const char* limit = s.data() + s.size();
+            double value = 0.0;
+
+#if defined(__cpp_lib_to_chars) && __cpp_lib_to_chars >= 201611L
+            auto result = std::from_chars(start, limit, value);
+            if (result.ec != std::errc() && result.ec != std::errc::result_out_of_range)
+                return false;
+
+            pos += (size_t)(result.ptr - start);
+#else
+            static _locale_t c_locale = _create_locale(LC_NUMERIC, "C");
             char* end = nullptr;
-            double value = strtod(start, &end);
+            value = _strtod_l(start, &end, c_locale);
             if (end == start)
                 return false;
 
+            pos += (size_t)(end - start);
+#endif
+
             out.type = Type::Number;
             out.number = value;
-            pos += (size_t)(end - start);
             return true;
         }
 
@@ -492,6 +512,43 @@ namespace reloaded
     }
 
     /*
+        ------------------------
+        ReloadedStartEx contract
+        ------------------------
+    */
+    // Version of ReloadedStartInfo filled in by the loader.
+    #define RELOADED_START_INFO_VERSION 1
+
+    // Handed to ReloadedStartEx as a pointer, so the layout can grow over time.
+    // Fields are only valid when api_version is high enough; existing fields
+    // never move or change meaning, keeping the export a stable contract.
+    struct ReloadedStartInfo
+    {
+        unsigned int api_version;
+
+        // v1: folder with the mod's own files (ConfigSchema.json, ...).
+        const wchar_t* mod_directory;
+
+        // v1: folder where the launcher stores the user settings.
+        const wchar_t* user_config_directory;
+    };
+
+    // Copy what the loader passed into native_mod_info.
+    // Strings are only valid during the ReloadedStartEx call, so we duplicate them.
+    inline void store_start_info(const ReloadedStartInfo* info)
+    {
+        if (info == nullptr || info->api_version < 1)
+            return;
+
+        auto& stored = native_mod_info();
+        if (info->mod_directory != nullptr)
+            stored.mod_directory = info->mod_directory;
+
+        if (info->user_config_directory != nullptr)
+            stored.config_directory = info->user_config_directory;
+    }
+
+    /*
         -----------
         ModConfig
         -----------
@@ -504,16 +561,18 @@ namespace reloaded
         }
 
         // Directory of the mod itself.
-        const std::wstring& mod_directory() const
+        std::wstring mod_directory() const
         {
             resolve_paths();
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             return _mod_directory;
         }
 
         // Directory where the launcher stores the values file.
-        const std::wstring& config_directory() const
+        std::wstring config_directory() const
         {
             resolve_paths();
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             return _config_directory;
         }
 
@@ -521,6 +580,7 @@ namespace reloaded
         std::wstring values_path() const
         {
             resolve_paths();
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             return _config_directory + _values_file;
         }
 
@@ -528,6 +588,7 @@ namespace reloaded
         std::wstring schema_path() const
         {
             resolve_paths();
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             return _mod_directory + L"ConfigSchema.json";
         }
 
@@ -535,11 +596,15 @@ namespace reloaded
         bool load()
         {
             resolve_paths();
+
+            // Parse outside the lock; the file reads are the slow part.
             auto schema = Json::parse_file(schema_path());
+            auto values = Json::parse_file(values_path());
+
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             if (schema)
                 parse_defaults(*schema);
 
-            auto values = Json::parse_file(values_path());
             if (!values)
                 return false;
 
@@ -551,7 +616,7 @@ namespace reloaded
         // True when the values file changed on disk since the last load.
         bool changed_on_disk() const
         {
-            resolve_paths();
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             WIN32_FILE_ATTRIBUTE_DATA data;
             if (!GetFileAttributesExW(values_path().c_str(), GetFileExInfoStandard, &data))
                 return false;
@@ -559,31 +624,40 @@ namespace reloaded
             return CompareFileTime(&data.ftLastWriteTime, &_write_time) != 0;
         }
 
-        // Starts a thread that reloads the config and calls the callback on change.
+        // Starts a thread that reloads the config and calls the callback when the
+        // values file changes. The OS wakes the thread, no polling involved.
         // Keep the returned thread; detach it or join it on unload.
         // Dropping it on the floor while it still runs kills the process.
-        [[nodiscard]] std::thread watch(const std::function<void(ModConfig&)>& callback, int poll_ms = 500)
+        [[nodiscard]] std::thread watch(const std::function<void(ModConfig&)>& callback)
         {
-            return std::thread([this, callback, poll_ms]()
-                {
-                    while (!_stop_watching.load(std::memory_order_relaxed))
-                    {
-                        Sleep((DWORD)poll_ms);
-                        if (_stop_watching.load(std::memory_order_relaxed))
-                            break;
 
-                        if (changed_on_disk())
-                        {
-                            load();
-                            callback(*this);
-                        }
-                    }
+            HANDLE stop_event = GetOrCreateStopEvent();
+            if (_stop_requested.load(std::memory_order_acquire) || stop_event == nullptr)
+                return std::thread([]() {}); // already stopped so hand back a finished thread
+
+            return std::thread([this, callback, stop_event]()
+                {
+                    WatchThread(callback, stop_event);
                 });
         }
 
+        // Wakes up any threads started by watch(); they exit soon after.
         void stop_watching()
         {
-            _stop_watching.store(true, std::memory_order_relaxed);
+            _stop_requested.store(true, std::memory_order_release);
+
+            HANDLE stop_event = _stop_event.load(std::memory_order_acquire);
+            if (stop_event != nullptr)
+                SetEvent(stop_event);
+        }
+
+        ~ModConfig()
+        {
+            stop_watching();
+
+            HANDLE stop_event = _stop_event.load(std::memory_order_acquire);
+            if (stop_event != nullptr)
+                CloseHandle(stop_event);
         }
 
         /*
@@ -596,12 +670,14 @@ namespace reloaded
 
         bool has(const char* name) const
         {
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             const Json* value = find_value(name);
             return value != nullptr;
         }
 
         bool get_bool(const char* name, bool fallback) const
         {
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             const Json* value = find_value(name);
             if (value != nullptr && value->type == Json::Type::Bool)
                 return value->boolean;
@@ -615,6 +691,7 @@ namespace reloaded
 
         long long get_int(const char* name, long long fallback) const
         {
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             const Json* value = find_value(name);
             if (value != nullptr && value->type == Json::Type::Number)
                 return (long long)value->number;
@@ -628,6 +705,7 @@ namespace reloaded
 
         double get_float(const char* name, double fallback) const
         {
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             const Json* value = find_value(name);
             if (value != nullptr && value->type == Json::Type::Number)
                 return value->number;
@@ -642,6 +720,7 @@ namespace reloaded
         // Strings and enums are stored as UTF-8; enums return the member name.
         std::string get_string(const char* name, const char* fallback = "") const
         {
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             const Json* value = find_value(name);
             if (value != nullptr && value->type == Json::Type::String)
                 return value->text;
@@ -655,6 +734,7 @@ namespace reloaded
 
         std::wstring get_wstring(const char* name, const wchar_t* fallback = L"") const
         {
+            std::lock_guard<std::recursive_mutex> guard(_lock);
             const Json* value = find_value(name);
             if (value != nullptr && value->type == Json::Type::String)
                 return utf8_to_utf16(value->text);
@@ -687,12 +767,16 @@ namespace reloaded
         Json _values;
         Json _schema_defaults;
         FILETIME _write_time = {};
-        mutable std::atomic_bool _paths_resolved{ false };
-        std::atomic_bool _stop_watching{ false };
+        bool _paths_resolved = false;
+        std::atomic<HANDLE> _stop_event{ nullptr };
+        std::atomic_bool _stop_requested{ false };
+
+        mutable std::recursive_mutex _lock;
 
         void resolve_paths() const
         {
-            if (_paths_resolved.load(std::memory_order_relaxed))
+            std::lock_guard<std::recursive_mutex> guard(_lock);
+            if (_paths_resolved)
                 return;
 
             // Cast away to keep the getters const; resolution happens at most once.
@@ -711,12 +795,116 @@ namespace reloaded
                 self->_config_directory = dll_directory;
             }
 
-            self->_paths_resolved.store(true, std::memory_order_relaxed);
+            self->_paths_resolved = true;
         }
 
         const Json* find_value(const char* name) const
         {
             return _values.find(name);
+        }
+
+        // Body of the thread started by watch(), waits on OS change notifications.
+        void WatchThread(const std::function<void(ModConfig&)>& callback, HANDLE stop_event)
+        {
+            std::wstring directory = config_directory();
+            std::wstring file_name = _values_file;
+
+            HANDLE directory_handle = CreateFileW(directory.c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED, nullptr);
+            
+            if (directory_handle == INVALID_HANDLE_VALUE)
+                return;
+
+            HANDLE change_event = CreateEventW(nullptr, TRUE, FALSE, nullptr); // manual reset
+            
+            if (change_event == nullptr)
+            {
+                CloseHandle(directory_handle);
+                return;
+            }
+
+            OVERLAPPED overlapped = {};
+            unsigned char buffer[64 * 1024];
+            const DWORD filter = FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_SIZE;
+
+            while (true)
+            {
+                ResetEvent(change_event);
+                overlapped = {};
+                overlapped.hEvent = change_event;
+
+                if (!ReadDirectoryChangesW(directory_handle, buffer, sizeof(buffer), FALSE, filter, nullptr, &overlapped, nullptr))
+                    break;
+
+                HANDLE handles[2] = { change_event, stop_event };
+                DWORD wait = WaitForMultipleObjects(2, handles, FALSE, INFINITE);
+                if (wait != WAIT_OBJECT_0)
+                {
+                    // Stopped, or something went wrong with the wait itself.
+                    CancelIoEx(directory_handle, &overlapped);
+                    DWORD unused = 0;
+                    GetOverlappedResult(directory_handle, &overlapped, &unused, TRUE);
+                    break;
+                }
+
+                DWORD transferred = 0;
+                if (!GetOverlappedResult(directory_handle, &overlapped, &transferred, FALSE))
+                    break;
+
+                if (transferred <= 0)
+                    continue; // Buffer overflowed with too many changes, next round catches up.
+
+                if (!IsValuesFileNotification(buffer, transferred, file_name.c_str()))
+                    continue;
+
+                // Give the writer a moment to finish, then load
+                // a partially written file is simply read again on the next event.
+                Sleep(50);
+                load();
+                callback(*this);
+            }
+
+            CloseHandle(change_event);
+            CloseHandle(directory_handle);
+        }
+
+
+        static bool IsValuesFileNotification(void* buffer, DWORD size, const wchar_t* file_name)
+        {
+            auto* record = (FILE_NOTIFY_INFORMATION*)buffer;
+            while (true)
+            {
+                std::wstring changed(record->FileName, record->FileNameLength / sizeof(wchar_t));
+                bool is_our_file = _wcsicmp(changed.c_str(), file_name) == 0;
+                bool is_content = record->Action == FILE_ACTION_ADDED || record->Action == FILE_ACTION_MODIFIED || record->Action == FILE_ACTION_RENAMED_NEW_NAME;
+                if (is_our_file && is_content)
+                    return true;
+
+                if (record->NextEntryOffset == 0)
+                    return false;
+
+                record = (FILE_NOTIFY_INFORMATION*)((BYTE*)record + record->NextEntryOffset);
+            }
+        }
+
+        HANDLE GetOrCreateStopEvent()
+        {
+            HANDLE existing = _stop_event.load(std::memory_order_acquire);
+            if (existing != nullptr)
+                return existing;
+
+            HANDLE created = CreateEventW(nullptr, TRUE, FALSE, nullptr);
+            
+            if (created == nullptr)
+                return nullptr;
+
+            HANDLE expected = nullptr;
+            if (!_stop_event.compare_exchange_strong(expected, created))
+            {
+                CloseHandle(created); // Close if a thread race is happening
+                return expected;
+            }
+
+            return created;
         }
 
         const Json* find_default(const char* name) const
@@ -787,28 +975,20 @@ namespace reloaded
     Implement this macro in exactly one source file of the mod.
     FN is a function 'void FN()' called on start, with directories known and config loaded.
 */
-#define RELOADED_MOD_CONFIG_IMPL(FN)                                                                          \
-    extern "C" __declspec(dllexport) void ReloadedStartEx(const wchar_t* mod_directory, const wchar_t* user_config_directory) \
-    {                                                                                                         \
-        auto& info = reloaded::native_mod_info();                                                             \
-        if (mod_directory != nullptr)                                                                         \
-            info.mod_directory = mod_directory;                                                               \
-        if (user_config_directory != nullptr)                                                                 \
-            info.config_directory = user_config_directory;                                                    \
-        reloaded::config().load();                                                                            \
-        FN();                                                                                                 \
+#define RELOADED_MOD_CONFIG_IMPL(FN)                                                              \
+    extern "C" __declspec(dllexport) void ReloadedStartEx(const reloaded::ReloadedStartInfo* info) \
+    {                                                                                             \
+        reloaded::store_start_info(info);                                                         \
+        reloaded::config().load();                                                                \
+        FN();                                                                                     \
     }
 
 // Same as above but without a start callback, for mods driven by DllMain or other entry points.
-#define RELOADED_MOD_CONFIG_IMPL_NO_START()                                                                   \
-    extern "C" __declspec(dllexport) void ReloadedStartEx(const wchar_t* mod_directory, const wchar_t* user_config_directory) \
-    {                                                                                                         \
-        auto& info = reloaded::native_mod_info();                                                             \
-        if (mod_directory != nullptr)                                                                         \
-            info.mod_directory = mod_directory;                                                               \
-        if (user_config_directory != nullptr)                                                                 \
-            info.config_directory = user_config_directory;                                                    \
-        reloaded::config().load();                                                                            \
+#define RELOADED_MOD_CONFIG_IMPL_NO_START()                                                       \
+    extern "C" __declspec(dllexport) void ReloadedStartEx(const reloaded::ReloadedStartInfo* info) \
+    {                                                                                             \
+        reloaded::store_start_info(info);                                                         \
+        reloaded::config().load();                                                                \
     }
 
 #endif // RELOADED_MOD_CONFIG_H
