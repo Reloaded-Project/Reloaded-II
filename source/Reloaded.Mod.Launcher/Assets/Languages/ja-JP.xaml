@@ -1,0 +1,751 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xml:space="preserve">
+
+    <!-- This file contains the Japanese Language Text for Reloaded II -->
+    <!--  allows for new line. &#x0a; is new line (ASCII character). -->
+
+    <!-- Page Titles -->
+    <sys:String x:Key="TitleAddApplication">アプリケーションの追加</sys:String>
+    <sys:String x:Key="TitleEditApplication">アプリケーションの編集</sys:String>
+    <sys:String x:Key="TitleManageMods">MODの管理</sys:String>
+    <sys:String x:Key="TitleDownloadMods">MODのダウンロード</sys:String>
+    <sys:String x:Key="TitleLoaderSettings">MODローダー設定</sys:String>
+    <sys:String x:Key="TitleMainPage">メインページ</sys:String>
+    <sys:String x:Key="TitleSearchApplications">アプリケーションを検索/絞り込み</sys:String> <!-- Sidebar button to search applications. Removed. Might be brought back someday. -->
+    <sys:String x:Key="TitleSplashPage">Reloaded II を準備中..</sys:String>
+
+    <!-- Splash Screen: Progress Messages -->
+    <sys:String x:Key="SplashCreatingDefaultConfig">既定の設定を作成中</sys:String>
+    <sys:String x:Key="SplashCleaningConfigurations">アプリ/ローダー/MODの設定を整理中</sys:String>
+    <sys:String x:Key="SplashPreparingResources">リソースを準備中</sys:String>
+    <sys:String x:Key="SplashLoadCompleteIn">読み込み完了:</sys:String>
+    <sys:String x:Key="SplashCreatingTemplates">テンプレートを作成中</sys:String> <!-- Unused as of 1.8.0 -->
+    <sys:String x:Key="SplashCheckingForUpdates">アップデートを確認中</sys:String>
+    <sys:String x:Key="SplashRunningSanityChecks">動作前チェックを実行中</sys:String>
+
+    <!-- Add Application Page -->
+    <sys:String x:Key="AddAppImageTooltip">この画像をクリックすると、独自のロゴを読み込めます。</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">アイコンとして使う画像を選択してください。</sys:String>
+    <sys:String x:Key="AddAppImageSelectorFilter">画像</sys:String>
+
+    <sys:String x:Key="AddAppNewButton">新規</sys:String>
+    <sys:String x:Key="AddAppDeleteButton">削除</sys:String>
+
+    <sys:String x:Key="AddAppName">アプリケーション名</sys:String>
+    <sys:String x:Key="AddAppLocation">実行ファイルの場所</sys:String>
+    <sys:String x:Key="AddAppArguments">コマンドライン引数</sys:String>
+
+    <sys:String x:Key="AddAppAdvancedOptions">詳細ツールとオプション</sys:String>
+    <sys:String x:Key="AddAppCreateShortcut">ショートカットを作成</sys:String>
+    <sys:String x:Key="AddAppAutoInject">自動インジェクト</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage">注意: 自動インジェクトは用意されていますが、MODのコードがアプリケーションより先に実行される保証がないため推奨しません。&#x0a;代わりに Reloaded の通常の「アプリケーションを起動」か、GitHub のドキュメントに記載された「DLL Loader」方式を使用してください。&#x0a;自動インジェクトで動作しないMODについて不具合報告はしないでください。</sys:String>
+
+    <sys:String x:Key="AddAppExecutableTitle">設定を作成するアプリケーションを選択してください。</sys:String>
+    <sys:String x:Key="AddAppExecutableFilter">アプリケーションの実行ファイル</sys:String>
+
+    <sys:String x:Key="AddAppShortcutCreatedTitle">ショートカットを作成しました</sys:String>
+    <sys:String x:Key="AddAppShortcutCreatedMessage">ショートカットの作成先:</sys:String>
+
+    <!-- Mod Manager Page -->
+    <sys:String x:Key="ModManagerSearchMods">MODを検索</sys:String>
+    <sys:String x:Key="ModManagerSearchApps">アプリを検索</sys:String>
+    <sys:String x:Key="ModManagerExtraOptions">その他のオプション</sys:String>
+    <sys:String x:Key="ModManagerOpenModDirectory">MODフォルダを開く</sys:String>
+    <sys:String x:Key="ModManagerConvertToNuget">NuGet形式に変換</sys:String>
+    <sys:String x:Key="ModManagerManageDependencies">依存関係の管理</sys:String>
+    <sys:String x:Key="ModManagerSelectMod">詳細を変更するMODを選択してください。</sys:String>
+    <sys:String x:Key="ModManagerSelectApp">このMODに対応するアプリケーションを選択してください。</sys:String>
+
+    <!-- Mod Manager: Set Dependencies -->
+    <sys:String x:Key="TitleSetDependenciesDialog">MODの依存関係を設定</sys:String>
+
+    <!-- Mod Manager: Create Mod Page | Edit Mod Page since 1.12.0 -->
+    <sys:String x:Key="TitleCreateModDialog">MODの作成</sys:String>
+    <sys:String x:Key="CreateModDialogSave">MODを作成</sys:String>
+    <sys:String x:Key="CreateModDialogId">固有ID</sys:String>
+    <sys:String x:Key="CreateModDialogName">名前</sys:String>
+    <sys:String x:Key="CreateModDialogAuthor">制作者</sys:String>
+    <sys:String x:Key="CreateModDialogVersion">バージョン</sys:String>
+    <sys:String x:Key="CreateModDialogDescription">簡単な説明</sys:String>
+    <sys:String x:Key="CreateModDialogDependencies">MODの依存関係</sys:String>
+
+    <sys:String x:Key="CreateModDialogImageSelectorTitle">MODのロゴ画像を選択してください。</sys:String>
+    <sys:String x:Key="CreateModDialogImageSelectorFilter">画像</sys:String>
+
+    <sys:String x:Key="TitleCreateModNonUniqueId">IDが重複しています</sys:String>
+    <sys:String x:Key="MessageCreateModNonUniqueId">作成しようとしているMODの ModId が他と重複しています。&#x0a;重複しない ModId にしてください。</sys:String>
+
+    <!-- Mod Loader Settings -->
+    <sys:String x:Key="LoaderSettingsCleanup">設定の整理</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupWarning">この操作は、各種設定（アプリ、MODなど）の整理を行います。&#x0a;整理には、MODの依存関係リストから存在しないMODを取り除く処理などが含まれます。&#x0a;依存MODや対応アプリケーションなどが不足している場合、それらは設定ファイルから削除されますのでご注意ください。</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupComplete">整理が完了しました</sys:String>
+
+    <sys:String x:Key="LoaderSettingsAppsInstalled">登録アプリケーション数:</sys:String>
+    <sys:String x:Key="LoaderSettingsModsInstalled">インストール済みMOD数:</sys:String>
+    <sys:String x:Key="LoaderSettingsCompileDate">ビルド日時:</sys:String>
+    <sys:String x:Key="LoaderSettingsAndDocumentation">ユーザーガイド＆ドキュメント</sys:String>
+    <sys:String x:Key="LoaderSettingsCopyright">Reloaded II は GNU GPL V3 ライセンスのフリーソフトウェアです</sys:String>
+    <sys:String x:Key="LoaderSettingsEnableAutomaticUpdates">自動アップデート</sys:String>
+    <sys:String x:Key="LoaderSettingsShowConsole">コンソールを表示</sys:String>
+    <sys:String x:Key="LoaderSettingsLoadAsynchronously">非同期で読み込む</sys:String>
+    <sys:String x:Key="LoaderSettingsWarning">Reloaded は任意のコードを実行できる強力なソフトウェアです。自己責任でご利用ください。</sys:String>
+
+    <!-- Application Entry -->
+    <sys:String x:Key="TitleApplication">アプリケーションハブ</sys:String>
+    <sys:String x:Key="ApplicationTotalMods">MOD総数</sys:String>
+    <sys:String x:Key="ApplicationOtherInstances">その他のインスタンス</sys:String>       <!-- Unused as of 1.7.0 -->
+    <sys:String x:Key="ApplicationReloadedInstances">Reloaded インスタンス</sys:String> <!-- Unused as of 1.7.0 -->
+
+    <!-- First Launch | Unused, Superseeded by 1.12.0 - New First Launch Experience -->
+    <sys:String x:Key="TitleFirstLaunch">Reloaded II へようこそ</sys:String> <!-- Unused as of 1.12.0 -->
+    <sys:String x:Key="FirstLaunchLineOne">Reloaded II を初めて使用します。</sys:String>
+    <sys:String x:Key="FirstLaunchLineTwo">始める前に、以下のリンクを確認しておくことをお勧めします:</sys:String>
+    <sys:String x:Key="FirstLaunchLineDocumentation">ドキュメント</sys:String>
+    <sys:String x:Key="FirstLaunchLineUserguide">ユーザーガイド</sys:String>
+    <sys:String x:Key="FirstLaunchLineThree">これらのリンクは後から [MODローダー設定] でも確認できます。</sys:String>
+
+    <!-- Dialogs -->
+    <sys:String x:Key="MessageBoxButtonOK">OK</sys:String>
+    <sys:String x:Key="MessageBoxButtonCancel">キャンセル</sys:String>
+
+    <!-- Non-Reloaded Process -->
+    <sys:String x:Key="TitleNonReloadedProcess">Reloaded 管理外のプロセス</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageOne">このプロセスは Reloaded の管理下にありません。</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageTwo">下のボタンを押すと Reloaded を読み込めます。</sys:String>
+    <sys:String x:Key="NonReloadedProcessInject">インジェクト</sys:String>
+    <sys:String x:Key="NonReloadedProcessInjectWarning">注意: アプリケーションが一時停止されていない実行中の状態で読み込むと、一部のMODは正常に動作しない場合があります。この機能で動作しないMODについて不具合報告はしないでください。</sys:String>
+
+    <!-- Reloaded Process -->
+    <sys:String x:Key="TitleReloadedProcess">Reloaded プロセス</sys:String>
+
+    <!-- Application & SubMenus -->
+    <sys:String x:Key="TitleConfigureMods">MODの設定</sys:String>
+    <sys:String x:Key="ApplicationLaunch">アプリケーションを起動</sys:String>
+
+    <sys:String x:Key="ConfigureModsListItemTooltip">ドラッグ＆ドロップでMODの読み込み順を変更できます。上のMODから順に読み込まれ、一番下のMODが最後になります。</sys:String>
+    <sys:String x:Key="ConfigureModsDummyText">Reloaded を使ってMODを入手しましょう。Reloaded-II は最高！ かわいいは正義、それが法律です！</sys:String> <!-- Unused for now, will be used down the road. -->
+    <sys:String x:Key="ConfigureModsConfigure">MODの設定</sys:String>
+    <sys:String x:Key="ConfigureModsOpenFolder">フォルダを開く</sys:String>
+
+    <sys:String x:Key="LoadModSet">MODセットを読み込む</sys:String>
+    <sys:String x:Key="SaveModSet">MODセットを保存</sys:String>
+    <sys:String x:Key="LoadModSetDialogTitle">MODリストを読み込むファイルを選択してください。</sys:String>
+    <sys:String x:Key="SaveModSetDialogTitle">MODリストの保存先を選択してください。</sys:String>
+
+    <!-- Obsolete as of 1.12.0 onwards -->
+    <sys:String x:Key="LoadModSetIncompatibleTitle">互換性の警告</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage">このアプリケーションに対応していないMODが有効になっています:</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage2">OK を押すとこのアプリケーションでMODを有効にします。キャンセルを押すとMODを無効にします。</sys:String>
+
+    <!-- Reloaded Process -->
+    <sys:String x:Key="ReloadedProcessResume">再開</sys:String>
+    <sys:String x:Key="ReloadedProcessSuspend">一時停止</sys:String>
+    <sys:String x:Key="ReloadedProcessUnload">アンロード</sys:String>
+    <sys:String x:Key="ReloadedProcessRefresh">更新</sys:String>
+    <sys:String x:Key="ReloadedProcessLoadMod">MODを読み込む</sys:String>
+    <sys:String x:Key="ReloadedProcessNotice">注意: このメニューは主に開発者向けです。</sys:String>
+
+    <!-- Update Mod Dialog -->
+    <sys:String x:Key="UpdateModTitle">MODのアップデートがあります</sys:String>
+    <sys:String x:Key="UpdateModDownload">ダウンロード</sys:String>
+    <sys:String x:Key="UpdateModModId">MOD ID</sys:String>
+    <sys:String x:Key="UpdateModSize">サイズ (MB)</sys:String>
+    <sys:String x:Key="UpdateModOldVersion">旧バージョン</sys:String>
+    <sys:String x:Key="UpdateModNewVersion">新バージョン</sys:String>
+
+    <!-- Update Mod Confirmation Dialog -->
+    <sys:String x:Key="UpdateModConfirmTitle">アプリケーション実行中</sys:String>
+    <sys:String x:Key="UpdateModConfirmMessage">Reloaded を実行中のアプリケーションがあります。&#x0a;アップデートはダウンロードされますが、すべてのアプリケーションを閉じるまで適用されません。</sys:String>
+
+    <!-- Update Loader Dialog -->
+    <sys:String x:Key="UpdateLoaderTitle">アップデートがあります</sys:String>
+    <sys:String x:Key="UpdateLoaderCurrentVersion">現在のバージョン</sys:String>
+    <sys:String x:Key="UpdateLoaderNewVersion">新しいバージョン</sys:String>
+
+    <sys:String x:Key="UpdateLoaderChangelogUnavailable">変更履歴はありません</sys:String>
+    <sys:String x:Key="UpdateLoaderChangelog">GitHub で変更履歴を見る</sys:String>
+    <sys:String x:Key="UpdateLoaderUpdate">アップデート</sys:String>
+
+    <sys:String x:Key="UpdateLoaderRunningTitle">アプリケーション実行中</sys:String>
+    <sys:String x:Key="UpdateLoaderRunningMessage">Reloaded を実行中のアプリケーションがあります。&#x0a;アップデートを実行できません。すべてのアプリケーションを閉じてください。</sys:String>
+    <sys:String x:Key="UpdateLoaderProcessList">プロセス一覧</sys:String>
+
+    <!-- Download Mods Page -->
+    <sys:String x:Key="DownloadModsDownload">ダウンロード</sys:String>
+    <sys:String x:Key="DownloadModsDownloading">ダウンロード中</sys:String>
+    <sys:String x:Key="DownloadModsAlreadyDownloaded">ダウンロード済み</sys:String>
+
+    <sys:String x:Key="DownloadModsVisitWebsite">ウェブサイトを開く</sys:String>
+    <sys:String x:Key="DownloadModsCheckUpdatesAndDependencies">アップデートと依存関係を確認</sys:String>
+
+    <!-- No Update Dialog -->
+    <sys:String x:Key="NoUpdateDialogTitle">やったね！</sys:String>
+    <sys:String x:Key="NoUpdateDialogMessage">やることはありません。すべてのMODは最新です！</sys:String>
+
+    <!-- Fetch Nuget Dialog | Obsolete since 1.12.0 but some strings still used. -->
+    <sys:String x:Key="FetchNugetTitle">パッケージのダウンロード</sys:String>
+    <sys:String x:Key="FetchNugetMessage">以下のパッケージをインストールします:</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundMessage">以下のパッケージが見つかりませんでした:</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundAdvice">ご自身で探す必要があります :/</sys:String>
+
+    <!-- Startup Failure -->
+    <sys:String x:Key="FailedToLaunchTitle">おっと！</sys:String>
+    <sys:String x:Key="FailedToLaunchMessage">Reloaded-II の読み込み中にエラーが発生しました。</sys:String>
+
+    <!-- Download Mod Archive -->
+    <sys:String x:Key="DownloadModArchiveTitle">MODアーカイブのダウンロード</sys:String>
+    <sys:String x:Key="DownloadModArchiveName">ファイル名</sys:String>
+    
+    <!-- Install Mod Archive -->
+    <sys:String x:Key="InstallModArchiveTitle">MODアーカイブをインストール中</sys:String>
+    <sys:String x:Key="InstalledModName">MOD名</sys:String>
+    <sys:String x:Key="InstallingModWait">MODをインストールしています。しばらくお待ちください！</sys:String>
+    <sys:String x:Key="ExtractingLocalModArchive">ローカルMODを展開（解凍）しています。しばらくお待ちください！</sys:String>
+    
+    <!-- App Resolution Failure Message-->
+    <sys:String x:Key="NoAppsInConfigTitle">対応するアプリが見つかりません</sys:String>
+    <sys:String x:Key="NoAppsInConfigDescription">Reloaded-IIは、MODの設定（Config）に記述されている対応アプリケーションを見つけることができませんでした。</sys:String>
+    <sys:String x:Key="NoCompatibleAppsInConfigTitle">互換性のあるアプリが見つかりません</sys:String>
+    <sys:String x:Key="NoCompatibleAppsInConfigDescription">Reloaded-IIは、インストールされているアプリの中から、このMODと互換性があるものを見つけることができませんでした。</sys:String>
+    <sys:String x:Key="AppSelectionQuestion">対応するアプリを手動で選択しますか？</sys:String>
+
+    <!-- WMI Administrator Message -->
+    <sys:String x:Key="RunAsAdminMessage">このアプリケーションは管理者として実行する必要があります。&#x0a;Windows Management Instrumentation (WMI) からアプリケーションの起動/終了イベントを受け取るには、管理者権限が必要です。&#x0a;開発者の方へ：Visual Studio などの好みのIDEを管理者として実行してください。</sys:String>
+
+    <!-- Configure Mod Dialog -->
+    <sys:String x:Key="ConfigureModDialogTitle">MODの設定</sys:String>
+    <sys:String x:Key="ConfigureModDialogSave">保存</sys:String>
+
+    <!-- Errors -->
+    <sys:String x:Key="ErrorError">エラー</sys:String> <!-- Just the word "Error" in native language. -->
+    <sys:String x:Key="ErrorUnknown">不明なエラー</sys:String>
+    <sys:String x:Key="ErrorPathNullOrEmpty">このアプリケーションのパスが空白または空です。パスを修正してください。</sys:String>
+    <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">削除対象のMODフォルダの取得に失敗しました。</sys:String>
+    <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">削除対象のアプリケーションフォルダの取得に失敗しました。</sys:String>
+    <sys:String x:Key="ErrorLoaderNotFound">が見つかりませんでした。セキュリティ対策ソフト（ウイルス対策ソフト）による削除、またはGitHubリポジトリでの破壊的変更が原因の可能性があります。</sys:String> <!-- Loader DLL Name displays before this message -->
+    <sys:String x:Key="ErrorFailedToStartProcess">プロセスの起動に失敗しました。通常、以下の3つの問題のいずれかが原因です：&#x0a;- EXEへのパスが正しくない（アプリケーションを移動しませんでしたか？）&#x0a;- プログラムが管理者として実行するように設定されているが（右クリック -&gt; プロパティ）、Reloadedがユーザーモードで動作している。&#x0a;- ウイルス対策ソフトなどによる干渉。ログを確認してください。&#x0a;Windowsから返されたエラーコードは以下の通りです: </sys:String>
+    <sys:String x:Key="ErrorDllInjectionFailed">アプリケーションプロセスへのDLLインジェクションに失敗しました。</sys:String>
+    <sys:String x:Key="ErrorPathToApplicationInvalid">ReloadedはこのプログラムのEXEファイルを見つけることができません。
+「アプリケーションの編集」 -&gt; 「更新」からパスを更新することを検討してください。
+通常、これは以下のような場合に発生します：
+- アプリケーションフォルダを移動した。
+- アップデート後にアプリフォルダが移動された（GamePass / UWPなどで発生する可能性があります）。</sys:String>
+    <sys:String x:Key="ErrorCheckUpdatesFailed">アップデートの確認に失敗しました。GitHubからの一時的なアクセス制限（レートリミット）を受けているか、インターネットに接続されていない可能性があります。</sys:String>
+    <sys:String x:Key="ErrorGetProcAddress32Failed">警告：おそらくx86（32bit）版の .NET Core が不足しているため、32bitアプリケーションが動作しません。&#x0a;ダウンロードページに記載されている動作要件を再確認してください。&#x0a;実際のエラー：x86用の GetProcAddress アドレスの取得に失敗しました。</sys:String>
+
+    <!-- Asi Loader -->
+    <sys:String x:Key="AsiLoaderInstall">ASIローダーを配置する</sys:String>
+    <sys:String x:Key="AsiLoaderDialogTitle">ASIローダーの配置</sys:String>
+    <sys:String x:Key="AsiLoaderDialogDescription">ランチャーやショートカットを使用せずに、Reloadedを自動的に起動させたい場合、&#x0a;ThirteenAG氏の「Ultimate ASI Loader」（サードパーティ製DLLローダー）を配置することができます。このローダーを配置しますか？</sys:String>
+    <sys:String x:Key="AsiLoaderDialogLoaderDeployed">ASIローダーが正常に配置されました: </sys:String>
+    <sys:String x:Key="AsiLoaderDialogBootstrapperDeployed">Reloadedブートストラッパーが正常に配置されました: </sys:String>
+    <sys:String x:Key="ErrorAsiNotSupported">Ultimate ASI Loaderを追加するための、互換性のあるDLL名が見つかりませんでした。</sys:String> <!-- Unused at the moment, may be used in the future. -->
+
+    <!-- Missing Dependencies Dialog -->
+    <sys:String x:Key="MissingDependenciesTitle">必要なコンポーネントの不足</sys:String>
+    <sys:String x:Key="MissingDependenciesText">Reloadedを実行するために必要な特定の要件（システムコンポーネント等）がシステムに不足しているようです。ランチャーは以下の不足を検出しました：</sys:String>
+    <sys:String x:Key="MissingDependenciesText2">上記の必要な要件をダウンロードし、このウィンドウを閉じてください。</sys:String>
+
+    <!-- Categories: Main Menu Screen -->
+    <sys:String x:Key="AppCategoryMain">メイン</sys:String>
+    <sys:String x:Key="AppCategoryActions">アクション</sys:String>
+    <sys:String x:Key="AppCategoryProcesses">プロセス</sys:String>
+    <sys:String x:Key="AppCategorySummary">概要</sys:String>
+
+    <!-- Update 1.7.0: Loader Settings Icons -->
+    <sys:String x:Key="LoaderSettingsTwitter">作者のTwitter（現X）</sys:String>
+    <sys:String x:Key="LoaderSettingsDonate">GitHubでスポンサーになる</sys:String>
+    <sys:String x:Key="LoaderSettingsDiscord">公式Discordサーバーに参加</sys:String>
+
+    <!-- Update 1.7.0: NuGet Feeds -->
+    <sys:String x:Key="TitleConfigNuGetFeeds">NuGetソースの設定</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsButton">ソースを設定</sys:String> <!-- Button in Download Mods Menu -->
+
+    <sys:String x:Key="ConfigNuGetFeedsName">名前 (必須)</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURL">URL (必須)</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURLTooltip">例: http://167.71.128.50:5000/v3/index.json</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsDescription">説明</sys:String>
+
+    <!-- Update 1.7.9: Wine Compatibility Notes -->
+    <sys:String x:Key="WineCompatibilityNoticeTitle">Wine互換性に関する注意</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeText">Wine環境からこのランチャーを使用してアプリケーションを実行しようとしているようです。&#x0a;対象のアプリケーションを動作させるために特殊な設定が必要であったり、環境の分離（異なるWineプレフィックスなど）によってDLLインジェクションが妨げられたりするため、この操作は失敗する可能性が高いです。&#x0a;&#x0a;Wine環境下で動作させるには、ASIローダーを配置（「アプリケーションの編集」メニューを参照）した上で、ランチャーを介さずにゲームを直接起動することをお勧めします。&#x0a;なお、ReloadedはWine上での頻繁なテストを行っておりません。</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeOk">とにかく試す</sys:String>
+
+    <!-- Update 1.8.0: Configuration -->
+    <sys:String x:Key="LoaderSettingsConfigPopup">Reloadedの設定</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigLanguage">言語 (Language)</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigTheme">テーマ (Theme)</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigLog">ログファイルを表示</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigFile">設定ファイルを開く</sys:String>
+
+    <!-- Update 1.8.0: Extra Error(s) -->
+    <sys:String x:Key="ErrorFailedToObtainPort">アプリケーションがクラッシュしたか、Reloadedのロードに失敗したか、あるいはタイムアウト制限内にReloadedが初期化されませんでした。&#x0a;&#x0a;以下の操作を試すと解決する場合があります：&#x0a;- このエラーを閉じ、数秒待ってから再試行する。&#x0a;- 他に起動している同じアプリケーションがあればすべて閉じる。（タスクマネージャーを使用）&#x0a;- パソコンを再起動する。&#x0a;&#x0a;これは警告です。アプリケーションが正常に動作している場合は、このメッセージを無視して構いません。&#x0a;&#x0a;実際のエラー：&#x0a;プロセス内で実行中のReloadedインスタンスのポート取得に失敗しました。</sys:String>
+
+    <!-- Update 1.10.0: Reloaded Bootstrapper Update -->
+    <sys:String x:Key="BootstrapperUpdateTitle">ブートストラッパーを更新しました</sys:String>
+    <sys:String x:Key="BootstrapperUpdateDescription">Reloadedブートストラッパーが、以下のプログラム向けに自動更新されました：&#x0a;{0}</sys:String>
+
+    <!-- Update 1.10.1: Reloaded Bootstrapper Hotfix -->
+    <sys:String x:Key="BootstrapperCreateDirectoryError">ブートストラッパー配置用のフォルダ作成に失敗しました。Reloadedを管理者として実行することを検討してください。&#x0a;実際のエラー: {0}</sys:String>
+
+    <!-- Update 1.12.0: New First Launch Experience -->
+    <sys:String x:Key="TitleFirstLaunchEx">Reloaded II チュートリアル</sys:String>
+
+    <sys:String x:Key="FirstLaunchExStepAddApplication">アプリの追加</sys:String>
+    <sys:String x:Key="FirstLaunchExStepExtractMod">MODの展開</sys:String>
+    <sys:String x:Key="FirstLaunchExStepConfigureMod">MODの設定</sys:String>
+    <sys:String x:Key="FirstLaunchExStepEnableMod">MODの有効化</sys:String>
+    <sys:String x:Key="FirstLaunchExStepComplete">完了</sys:String>
+
+    <sys:String x:Key="FirstLaunchExAddApplicationButton">アプリケーションを追加</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationSkipTutorialButton">チュートリアルをスキップ</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationSkipStepButton">このステップをスキップ</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription1">Reloadedを始めるための最初のステップは、MODを適用したい「アプリケーション」を追加することです。&#x0a;（通常、ランチャーの左下にある「＋」ボタンから行えます）</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription2">上記で示されているように、ランチャー自体ではなく「対象ゲームのアプリ（EXE）」を追加するようにしてください。</sys:String>
+
+    <sys:String x:Key="FirstLaunchExAddModExtractDescription1">MODをインストールするには、ダウンロードしたzipファイルを「Mods」フォルダに展開（解凍）するだけです。</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractDescription2">ダウンロードしたMODの中にフォルダが無い場合は、自分でフォルダを1つ作ってください。</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractPrev">戻る</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractNext">次へ</sys:String>
+
+    <sys:String x:Key="FirstLaunchExConfigureModDescription1">一部のMODは追加の設定に対応しており、各種調整を行うことができます。</sys:String>
+    <sys:String x:Key="FirstLaunchExConfigureModDescription2">MODを選択した時に「MODの設定」が赤く表示されていれば、そのMODは設定を変更できます。</sys:String>
+
+    <sys:String x:Key="FirstLaunchExEnableModDescription1">MODを有効にするには、四角いチェックボックスを押すだけです。</sys:String>
+    <sys:String x:Key="FirstLaunchExEnableModDescription2">チェックボックスが赤くなっている場合は有効、グレーの場合は無効であることを意味します。</sys:String>
+
+    <sys:String x:Key="FirstLaunchExCompleteDescription1">Reloaded II をご利用いただきありがとうございます。</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription2">以下のリンクも役立つかもしれません：</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription3">これらのリンクは [MODローダー設定] からいつでも確認できます。</sys:String>
+
+    <!-- Update 1.12.0: Context Menu for Application Mod Items -->
+    <sys:String x:Key="ModManagerContextPublish">公開する</sys:String>
+    <sys:String x:Key="ModManagerContextEdit">編集</sys:String>
+    <sys:String x:Key="ModManagerContextEditMod">MODの編集</sys:String>
+    <sys:String x:Key="ModManagerContextEditModUser">ユーザー設定</sys:String>
+    <sys:String x:Key="ModManagerContextOpenFolder">フォルダを開く</sys:String>
+    <sys:String x:Key="ModManagerContextConfigure">設定</sys:String>
+
+    <!-- Update 1.12.0: Edit Mod Dialog -->
+    <sys:String x:Key="TitleEditModDialog">MODの編集</sys:String>
+
+    <!-- Update 1.12.0: Additional Errors -->
+    <sys:String x:Key="ErrorUnableDetermineVersion">エラー: Reloaded II のバージョンを特定できません</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUseTitle">MODが使用中</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUse">Reloadedを実行中のアプリケーションがあります。&#x0a;アップデートはダウンロードされますが、すべてのアプリケーションが閉じられるまで適用されません。</sys:String>
+    <sys:String x:Key="ErrorMissingDependency">不足している依存関係</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionTitle">無効なバージョン番号</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionDescription">このMODで使用されているバージョン番号は「セマンティックバージョニング」(SemVer) 規格に準拠していないため、アップデートを受け取ることができません。&#x0a;MODのバージョン番号をSemVerに準拠するように更新してください。&#x0a;例: `1.0.0`, `1.0`, `2.0-alpha`</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Mod -->
+    <sys:String x:Key="CreateModDialogDescriptionShort">説明</sys:String>
+
+    <sys:String x:Key="EditModStepMain">基本情報</sys:String>
+    <sys:String x:Key="EditModStepDependencies">MODの依存関係</sys:String>
+    <sys:String x:Key="EditModStepUpdates">アップデートサポート</sys:String>
+    <sys:String x:Key="EditModStepComplete">最終調整</sys:String>
+
+    <sys:String x:Key="EditModDependenciesDescription">このMODの動作に別のMODが必要な場合は、ここで選択してください。</sys:String>
+
+    <sys:String x:Key="EditModUniversalMod">ユニバーサルMOD (すべてのアプリに適用)</sys:String>
+    <sys:String x:Key="EditModUniversalModDescription">有効にすると、このMODはデフォルトですべてのアプリケーションのリストに表示されます。</sys:String>
+
+    <sys:String x:Key="EditModLibrary">ライブラリ（前提MOD）</sys:String>
+    <sys:String x:Key="EditModLibraryDescription">有効にすると、ユーザーがこのMODを直接有効化することはできなくなります。他のMODの「依存関係」としてのみ有効化されます。</sys:String>
+
+    <sys:String x:Key="EditModSave">保存</sys:String>
+    <sys:String x:Key="EditModAppsDescription">このMODを使用可能にするアプリケーションを選択してください。</sys:String>
+
+    <sys:String x:Key="EditModMetadataNameTooltip">JSONメタデータファイルの名前です。&#x0a;同じページで複数のMODを公開する場合にのみ、この名前を変更してください。</sys:String>
+
+    <!-- Update 1.12.0: Extended Application Configuration -->
+    <sys:String x:Key="ConfigureModsRightClickAdvice">右クリックで詳細オプションを表示</sys:String>
+
+    <!-- Update 1.12.0: Create Mod Dialog -->
+    <sys:String x:Key="CreateModDialogIdDesc1">固有のMOD ID</sys:String>
+    <sys:String x:Key="CreateModDialogIdDesc2">"game.type.name"の形式で、固有のMOD IDを設定してください。 例: `sonicheroes.skins.seasidehillmidnight`。 一度設定したIDは変更できません。</sys:String>
+
+    <!-- Update 1.12.0: Edit Application Ex -->
+    <sys:String x:Key="AddAppId">アプリケーションID</sys:String>
+    <sys:String x:Key="AddAppUpdate">更新</sys:String>
+
+    <sys:String x:Key="AddAppWarningTitle">実行ファイル名に関する警告</sys:String>
+    <sys:String x:Key="AddAppWarning">追加されたアプリケーションの実行ファイル（EXE）名がオリジナルと異なっています。&#x0a;別のアプリケーションを追加しようとしている場合は、新規のアプリケーションとして追加してください。</sys:String>
+
+    <!-- Update 1.12.0: Publish Mod Dialog -->
+    <sys:String x:Key="TitlePublishModDialog">MODの公開</sys:String>
+    <sys:String x:Key="PublishModTarget">公開先</sys:String>
+    <sys:String x:Key="PublishModTargetTooltip">公開先に特定のオプションが指定されていない限り、デフォルトを使用してください。&#x0a;特定の挙動を有効/無効にします。</sys:String>
+
+    <sys:String x:Key="PublishModExcludeTitle">除外するファイル</sys:String>
+    <sys:String x:Key="PublishModIncludeTitle">含めるファイル</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsTitle">過去のバージョン</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsDescription">MODの古いバージョンを提供することで、古いバージョンから新しいバージョンにアップグレードする際のダウンロードサイズを小さく抑える「差分圧縮（デルタ圧縮）」を利用できるようになります。</sys:String>
+    <sys:String x:Key="PublishModButtonText">公開</sys:String>
+
+    <sys:String x:Key="PublishSelectConfigTitle">MOD設定ファイル (ModConfig.json) を選択してください。</sys:String>
+    <sys:String x:Key="PublishSelectConfigFileTypeName">設定ファイル</sys:String>
+
+    <sys:String x:Key="ErrorInvalidModConfigTitle">無効なMOD設定</sys:String>
+    <sys:String x:Key="ErrorInvalidModConfigDescription">提供されたファイルは、有効なMOD設定（ModConfig.json）ではありません。</sys:String>
+
+    <sys:String x:Key="ErrorNewerModConfigVersionTitle">無効なMODバージョン</sys:String>
+    <sys:String x:Key="ErrorNewerModConfigVersionDescription">指定されたMODバージョンは、公開予定のバージョンと同じか、それよりも新しいバージョンです。</sys:String>
+
+    <sys:String x:Key="ErrorPublishModIdMismatch">無効なMOD ID</sys:String>
+    <sys:String x:Key="ErrorPublishModIdDescription">提供されたMOD IDは、公開対象のMOD IDと一致しません。</sys:String>
+
+    <sys:String x:Key="PublishModRegexSectionTitle">ファイル包含 ＆ 除外設定</sys:String>
+    <sys:String x:Key="PublishModRegexTitle">正規表現 (Regular Expression)</sys:String>
+    <sys:String x:Key="PublishModRegexTest">正規表現のテスト</sys:String>
+    <sys:String x:Key="PublishModRegexDialogTitle">除外されたファイル</sys:String>
+
+    <sys:String x:Key="PublishModCompSettings">圧縮設定</sys:String>
+    <sys:String x:Key="PublishModCompLevel">圧縮レベル</sys:String>
+    <sys:String x:Key="PublishModCompMethod">圧縮方法</sys:String>
+
+    <sys:String x:Key="PublishOutputFolder">出力フォルダ</sys:String>
+    <sys:String x:Key="PublishSetOutputFolder">出力フォルダを設定</sys:String>
+
+    <sys:String x:Key="PublishAutoDelta">自動差分 (Auto-Delta)</sys:String>
+    <sys:String x:Key="PublishAutoDeltaDescription">前バージョンとの差分パッケージを自動的に作成します。&#x0a;出力先パスを、既存のリリースがある場所に設定するのを忘れないでください。</sys:String>
+
+    <sys:String x:Key="PublishAutoDeltaWarningTitle">自動差分に関する警告</sys:String>
+    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat">出力フォルダにリリースメタデータファイルが見つかりません。必要に応じてファイル名を変更してください。&#x0a;想定されるファイル名: {0}</sys:String>
+
+    <sys:String x:Key="PublishFileNameTooltip">生成される.7z圧縮パッケージファイルの名称</sys:String>
+
+    <sys:String x:Key="PublishModTutorial">公開方法のチュートリアル</sys:String>
+    <sys:String x:Key="PublishModWarningTitle">アップデートサポートに関する警告</sys:String>
+    <sys:String x:Key="PublishModWarningDescription">このMODにはアップデート設定が構成されておらず、自動アップデートを受け取ることができません。&#x0a;公開する前に「公開方法のチュートリアル」を参照して、設定手順を確認してください。</sys:String>
+
+    <!-- Update 1.12.0: Edit Mod User Config -->
+    <sys:String x:Key="TitleEditModUserConfig">ユーザー設定の編集</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleases">ベータ版（早期バージョン）を許可する</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleasesTooltip">開発途中の早期バージョン（ベータ/プレリリース版）のMODをダウンロード可能にします。</sys:String>
+
+    <!-- Update 1.12.0: Fast Package Download Experience -->
+    <sys:String x:Key="PackageDownloaderDownloadCompleteTitle">ダウンロード完了</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadCompleteDescription">ダウンロードが完了しました。&#x0a;このウィンドウは数秒後に自動的に閉じます。</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadingDependencies">依存パッケージをダウンロード中</sys:String>
+
+    <!-- Update 1.12.0: Extended Download Mods Menu -->
+    <sys:String x:Key="DownloadPackagesSource">ソース</sys:String>
+    <sys:String x:Key="DownloadPackagesAll">すべてのソース</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Application -->
+    <sys:String x:Key="AddAppModSources">MODダウンロードソース</sys:String>
+
+    <!-- Update 1.12.0: Extended Edit Application -->
+    <sys:String x:Key="AddAppRepoBadExecutable">間違った実行ファイル</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashTitle">ハッシュの不一致</sys:String>
+    <sys:String x:Key="AddAppRepoWarningTitle">警告</sys:String>
+
+    <sys:String x:Key="AddAppRepoBadHashDesc1">アプリケーションのメイン実行ファイル（EXE）が改造されているか、想定されているバージョンと異なります。</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashDesc2">すべてのMODが予期通りに動作するとは限りませんのでご注意ください。上記のメッセージに案内が表示されている場合は、それに従うことを検討してください。</sys:String>
+
+    <sys:String x:Key="AddAppRepoWarningDesc1">ゲームフォルダのクイックスキャンの結果、警告が検出されました：</sys:String>
+    <sys:String x:Key="AddAppRepoWarningDesc2">すべてのMODが予期通りに動作するとは限りませんのでご注意ください。上記の警告メッセージに案内が表示されている場合は、それに従うことを検討してください。</sys:String>
+
+    <sys:String x:Key="AddAppRepoSelectGameDialogTitle">ゲームの選択</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc1">以下のリストから目的のゲームを選択し、OKを押してください。</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc2">お探しのゲームがリストにない場合は、「その他のゲーム」を選択してください。</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogOtherGame">その他のゲーム</sys:String>
+
+    <sys:String x:Key="AddAppRepoTestButton">コミュニティ設定をテスト</sys:String>
+    <sys:String x:Key="AddAppRepoTestButtonTooltip">Reloaded Community Indexへ登録申請を行う前に、アプリケーション設定をテストすることができます。</sys:String>
+
+    <sys:String x:Key="AddAppRepoTestJsonSelectTitle">JSONファイルを選択</sys:String>
+    <sys:String x:Key="AddAppRepoTestJsonSelectFilter">コミュニティ設定ファイル</sys:String>
+
+    <!-- Update 1.18.0: Application Menu Tooltips -->
+    <sys:String x:Key="ApplicationTooltipCreateShortcutDescription">Reloadedランチャーを起動せずに、MODを適用した状態でアプリを直接起動するためのショートカットを保存します。</sys:String>
+    <sys:String x:Key="ApplicationTooltipLoadModSet">有効化するMODの一覧（MODセット）を読み込みます。</sys:String>
+    <sys:String x:Key="ApplicationTooltipSaveModSet">現在有効化されているMODの一覧（MODセット）を保存します。</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessSysDescription">ここからReloadedをこのプログラムにロード（インジェクト）できます。</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessRldDescription">ここから現在ロードされているMODを管理できます。</sys:String>
+
+    <!-- Update 1.19.0: Configure Mod Menu Reset -->
+    <sys:String x:Key="ConfigureModDialogReset">リセット</sys:String>
+    <sys:String x:Key="ConfigureModDialogResetDescription">設定値をすべてデフォルト（初期状態）にリセットします。&#x0a;［注意: MOD側がリセット機能に対応している必要があります。動作しない場合は制作者へお問い合わせください］</sys:String>
+
+    <!-- Update 1.19.0: Controller Support -->
+    <sys:String x:Key="LoaderSettingsControllerBtn">コントローラーの設定</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneName">なし</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneDescription">何もしません。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnUpName">上</sys:String>
+    <sys:String x:Key="ConfiguratorBtnUpDescription">メニューを上に移動します。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDownName">下</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDownDescription">メニューを下に移動します。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLeftName">左</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLeftDescription">メニューを左に移動します。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnRightName">右</sys:String>
+    <sys:String x:Key="ConfiguratorBtnRightDescription">メニューを右に移動します。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnAcceptName">決定</sys:String>
+    <sys:String x:Key="ConfiguratorBtnAcceptDescription">ボタンをクリック（選択）します。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDeclineName">キャンセル / 戻る</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDeclineDescription">現在開いている（メインではない）サブウィンドウを閉じます。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnNextPageName">次のページ</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNextPageDescription">複数ページあるウィンドウで、次のページに進みます。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLastPageName">前のページ</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLastPageDescription">複数ページあるウィンドウで、前のページに戻ります。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnIncrementName">値を増やす</sys:String>
+    <sys:String x:Key="ConfiguratorBtnIncrementDescription">UI要素の現在値を「+1」します。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDecrementName">値を減らす</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDecrementDescription">UI要素の現在値を「-1」します。</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnModifierName">修飾キー (Modifier)</sys:String>
+    <sys:String x:Key="ConfiguratorBtnModifierDescription">一部のUI要素で別の動作を行えるようにします。&#x0a;例: Mod+上 でMODの並び順を変更できます。</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightName">メニュー 左右移動 [スティック]</sys:String>
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightDescription">メニューを左右に移動させます。</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownName">メニュー 上下移動 [スティック]</sys:String>
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownDescription">メニューを上下に移動させます。</sys:String>
+
+    <sys:String x:Key="ConfiguratorCustomStringMainConfig">メイン設定</sys:String>  <!-- Name of main controller configuration. Likely the only configuration. -->
+    <sys:String x:Key="ConfiguratorCustomStringTrigger">トリガー</sys:String> <!-- Displays in name of trigger bindings. Formatted as ["YOUR_TEXT_HERE"] -->
+    <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">コントローラーのトリガー（L2/R2など）に割り当てる場合はこれを使用します</sys:String> <!-- Displays in description of trigger bindings. -->
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded コントローラー設定</sys:String> <!-- Name of the input configurator window. -->
+
+    <sys:String x:Key="ConfiguratorLibCustomStringNew">新規</sys:String> <!-- "New" Used for button that adds values. -->
+    <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">左クリックで新しい割り当て（マッピング）を設定します。&#x0a;中クリック（ホイール）で入力方向を反転させます。&#x0a;右クリックで割り当てを消去します！&#x0a;「!」マークが表示されている項目は、入力方向が反転していることを示します。</sys:String> <!-- "The description of the tooltip that appears on buttons". -->
+    <sys:String x:Key="ConfiguratorLibCustomStringTimeout">タイムアウト</sys:String> <!-- Name of the input configurator window. -->
+
+    <!-- Update 1.20.0: Server as Separate Mod -->
+    <sys:String x:Key="ReloadedProcessNoticeNew">「LiteNetLib Host」を使用した「Reloaded II Server」MODを有効にする必要があります。&#x0a;「MODのダウンロード」メニューからダウンロードしてください。</sys:String>
+    <sys:String x:Key="ReloadedProcessState">状態</sys:String> <!-- Is the mod running or paused? -->
+
+    <!-- Update 1.20.0: New Wine Run Dialog -->
+    <sys:String x:Key="WineCompatibilityNoticeTitleNew">Wineからの起動</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeHeader_1">Wine環境下でReloadedを実行しています。以下の点にご注意ください：</sys:String>
+    
+    <sys:String x:Key="WineCompatibilityNoticeList_1">- ゲームはこのランチャーと同じWine/Proton設定を使用して起動されます。</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_2_1">- これを望まない場合は、</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_2_2">ASIローダーを配置</sys:String> <!-- Hyperlink-->
+    <sys:String x:Key="WineCompatibilityNoticeList_2_3">した上で、ランチャーを介さずに直接ゲームを起動してください。</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_3_1">- Proton環境で実行するには追加の手順が必要です。</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_3_2">詳しくはWikiを参照してください。</sys:String> <!-- Hyperlink-->
+
+    <sys:String x:Key="WineCompatibilityNoticeFooter_1">さらに詳しいサポートが必要な場合は、</sys:String> <!-- Start of footer, continued below. -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_2">Wikiを参照する</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+    <sys:String x:Key="WineCompatibilityNoticeFooter_3">か、</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeFooter_4">GitHubでIssueを作成してください。</sys:String>  <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <sys:String x:Key="WineCompatibilityNoticeOkNew">アプリケーションを起動</sys:String>
+
+    <!-- Update 1.20.0: Extended Publish Options -->
+    <sys:String x:Key="PublishModReadmeSectionTitle">Readme ＆ 変更履歴</sys:String>
+    <sys:String x:Key="PublishModReadmeSet">Readmeファイルを設定</sys:String>
+    <sys:String x:Key="PublishModReadmeTooltip">Readme（説明書）ファイルを指定できます。&#x0a;Readmeファイルの中身は、「MODのダウンロード」メニューで表示される説明文として使用されます。&#x0a;Markdown（マークダウン）形式に対応しています。詳しくはWikiを参照してください。</sys:String> <!-- Displays on Hover -->
+    <sys:String x:Key="PublishModChangelogSet">変更履歴ファイルを設定</sys:String>
+    <sys:String x:Key="PublishModChangelogTooltip">変更履歴（Changelog）ファイルを指定できます。&#x0a;変更履歴は、「MODのダウンロード」メニューやアップデート確認ダイアログで使用されます。&#x0a;Markdown（マークダウン）形式に対応しています。詳しくはWikiを参照してください。</sys:String>
+
+    <sys:String x:Key="PublishSelectMarkdownTitle">Markdownファイル (*.md) を選択してください。</sys:String>
+    <sys:String x:Key="PublishSelectMarkdownTypeName">Markdownファイル</sys:String>
+
+    <!-- Update 1.20.0: Revamped Downloads Menu -->
+    <sys:String x:Key="DownloadsMenuNuGetButton">NuGet</sys:String>
+
+    <sys:String x:Key="DownloadsPackagePreviewProjectUrl">プロジェクトサイト</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewClose">閉じる</sys:String>
+
+    <sys:String x:Key="DownloadsPackageSourceTooltip">MOD提供元: </sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewModAuthorTooltip">MOD制作者</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewLikeCountTooltip">いいね数</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewDownloadCountTooltip">ダウンロード数</sys:String> <!-- Shows on hover -->
+    <sys:String x:Key="DownloadsPackagePreviewViewCountTooltip">閲覧数</sys:String> <!-- Number of Views -->
+    <sys:String x:Key="DownloadsPackagePreviewPublishDateTooltip">最終更新日</sys:String> <!-- Shows on hover -->
+
+    <!-- Update 1.20.0: Self Runtime Update -->
+    <sys:String x:Key="RuntimeUpdateRequiredTitle">ランタイムの更新が必要です</sys:String>
+    <sys:String x:Key="RuntimeUpdateRequiredDescription">新しいバージョンのReloadedを実行するには、.NETランタイムのアップデートが必要です。&#x0a;このボックスを閉じるとダウンロードが開始されます。&#x0a;「ユーザーアカウント制御 (UAC)」ダイアログが表示された場合は、「はい」をクリックしてください。</sys:String>
+
+    <!-- Update 1.20.0: Extended Mod Update Dialog -->
+    <sys:String x:Key="UpdateModModName">MOD名</sys:String>
+    <sys:String x:Key="UpdateModModEnabled">更新する?</sys:String>
+
+    <!-- Update 1.20.0: Adding Project URL -->
+    <sys:String x:Key="CreateModDialogProjectUrl">ウェブサイト</sys:String>
+    <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">ウェブサイトへの完全なURL (http/https) を入力してください。</sys:String> <!-- Shown as a placeholder -->
+    <sys:String x:Key="ModManagerContextVisitWebsite">ウェブサイトを訪問</sys:String>
+
+    <!-- Update 1.21.0: Mod Packs: Dialog -->
+    <sys:String x:Key="CreateModPackTitle">MODパックの作成</sys:String>
+
+    <sys:String x:Key="CreateModPackNote1">要件を満たしたMODのみが表示されています。</sys:String>
+    <sys:String x:Key="CreateModPackNote2">MODパックに含めるには、対象MODが自動アップデートに対応している必要があります。</sys:String> <!-- Hyperlink. (Continues from previous entry.) -->
+
+    <!-- Update 1.21.0: Mod Packs: Editor -->
+    <sys:String x:Key="EditModPackTitle">MODパックの編集</sys:String>
+
+    <sys:String x:Key="ModPackImageTooltip">注意: カルーセル内の画像はインストール中に適切なサイズに調整されます。&#x0a;アスペクト比のズレは無視して構いません。</sys:String>
+    <sys:String x:Key="ModPackImageCaption">画像キャプション</sys:String>
+
+    <sys:String x:Key="ModPackClickToEdit">クリックして編集</sys:String>
+    <sys:String x:Key="ModPackAddMod">MODを追加</sys:String>
+    <sys:String x:Key="ModPackAddModTooltip">このパックにMODを追加します。&#x0a;注意: 画像が多数含まれている場合、処理に少し時間がかかる場合があります。</sys:String>
+    <sys:String x:Key="ModPackRemoveMod">MODを削除</sys:String>
+    <sys:String x:Key="ModPackRemoveModTooltip">このパックから最後に選択したMODを削除します。</sys:String>
+    <sys:String x:Key="ModPackSaveReadme">Readmeを保存</sys:String>
+    <sys:String x:Key="ModPackSetReadme">Readmeを設定</sys:String>
+    <sys:String x:Key="ModPackAddImage">画像を追加</sys:String>
+    <sys:String x:Key="ModPackRemoveImage">画像を削除</sys:String>
+    <sys:String x:Key="ModPackLoadExisting">既存のパックを読み込む</sys:String>
+    <sys:String x:Key="ModPackSavePack">パックを保存</sys:String>
+    <sys:String x:Key="ModPackPreviewPack">パックをテスト</sys:String>
+
+    <sys:String x:Key="ModPackPackNameTooltip">インストール中に表示されるパックの名前です。</sys:String>
+    <sys:String x:Key="ModPackModNameTooltip">インストール中に表示されるMODの名前です。</sys:String>
+    <sys:String x:Key="ModPackImageAddTooltip">パックまたはMODに新しい画像を追加します。</sys:String>
+    <sys:String x:Key="ModPackImageRemoveTooltip">現在表示されている画像を削除します。</sys:String>
+    <sys:String x:Key="ModPackDescriptionTooltip">MODの簡単な説明（1行）です。ユーザーはインストール中に展開してフルバージョンのReadmeを確認できます。</sys:String>
+    <sys:String x:Key="ModPackSetReadmeTooltip">MODまたはパックのフルバージョンReadmeを更新します。ReadmeはMarkdown (.md) 形式です。</sys:String>
+    <sys:String x:Key="ModPackSaveReadmeTooltip">外部エディタで編集できるように、Readmeをディスクに保存します。</sys:String>
+
+    <sys:String x:Key="ModPackSelectExistingTitle">MODパック (*.r2pack) を選択してください。</sys:String>
+    <sys:String x:Key="ModPackSelectExistingTypeName">R2 MODパッケージ</sys:String>
+    <sys:String x:Key="ErrorFailedToSaveModPack">MODパックの保存に失敗しました</sys:String>
+
+    <!-- Update 1.21.0: Mod Packs: Installer -->
+    <sys:String x:Key="InstallModPackTitle">MODパックのインストール</sys:String>
+
+    <sys:String x:Key="InstallModPackEnableHeader">ダウンロード</sys:String>
+    <sys:String x:Key="InstallModPackErrorDownloadFail">一部のMODのダウンロードに失敗しました</sys:String>
+
+    <sys:String x:Key="InstallModPackConfirmTitle">ダウンロードするMODの確認</sys:String>
+    <sys:String x:Key="InstallModPackConfirmDescription">内容をダブルチェックしたら、ダウンロードを開始してください。</sys:String>
+
+    <sys:String x:Key="InstallModPackDownloading">{0} をダウンロード中...</sys:String> <!-- {0} is replaced by mod name -->
+    <sys:String x:Key="InstallModPackStart">スタート</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackPrevious">戻る</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackStartDownload">ダウンロード開始</sys:String> <!-- Sets Page Backwards -->
+    <sys:String x:Key="InstallModPackInstall">このMODをインストール</sys:String> <!-- Advances Page -->
+    <sys:String x:Key="InstallModPackSkip">このMODをスキップ</sys:String> <!-- Advances Page -->
+
+    <!-- Update 1.21.0: Generic Image Selector -->
+    <sys:String x:Key="ImageSelectorTitle">画像を選択してください。</sys:String>
+    <sys:String x:Key="ImageSelectorFilter">画像</sys:String>
+
+    <!-- Update 1.22.0: Download Package Settings -->
+    <sys:String x:Key="DownloadPackagesSettingHide">インストール済みを非表示</sys:String>
+    <sys:String x:Key="DownloadPackagesSettingHideTooltip">可能な限り、すでにインストールされているMODを非表示にします。&#x0a;（NuGetおよび「公開 (Publish)」エクスポートされたMODに対応しています。）</sys:String>
+
+    <!-- Update 1.22.6: Errors -->
+    <sys:String x:Key="ErrorAddApplicationCantReadSymlink">ファイルの最終パスの解決に失敗しました（シンボリックリンク検出）。
+DRMまたは特殊なファイルシステム仕様によってエラーが発生している可能性があります。エラーが発生した場合は、ローダーログからEXEのパスをコピーし、「アプリケーションの編集」メニューに直接入力してください。</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGetVersionInfo">ディスクからファイルのメタデータ/バージョン情報の取得に失敗しました。可能な限り推測して設定を試みます。
+（これは一部の特殊なネットワーク構成 [例: CIFS] で発生することが報告されています。これ以上の問題が発生しなければ、そのままで問題ありません）。</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGeneral">アプリケーションの追加中にエラーが発生しました。主な原因は以下の通りです：
+- 特殊なファイルシステム構成（ネットワーク共有上のアプリケーションなど）
+- ファイルへのアクセス権限がない
+- MicrosoftのDRM（Microsoft Store / Xbox GamePass）による制限</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFile">EXEファイルの読み込みに失敗しました。これにはいくつかの原因が考えられます：
+- DRM（Microsoft Store / Xbox GamePass）。
+- EXEファイルへのアクセス権限がない。
+- ファイルが元の場所から移動されている。
+
+Microsoft Store / Xbox GamePass版のゲームをご利用の場合は、DRM（暗号化）の影響により、手動でASIローダーを配置した上で、EXEから直接プログラムを起動する必要がある可能性が非常に高いです。詳しくはお使いのゲームのコミュニティにお尋ねください。
+
+DRM: 『何も所有せず、幸せになる。』</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">ASIローダーを配置可能か確認するための、EXEファイルの読み込みに失敗しました。これにはいくつかの原因が考えられます：
+- DRM（Microsoft Store / Xbox GamePass）。
+- EXEファイルへのアクセス権限がない。
+- ファイルが元の場所から移動されている。</sys:String>
+
+    <!-- Update 1.23.0: Mod Packs Extras -->
+    <sys:String x:Key="InstallModPackInstallAll">すべてのMODをインストール</sys:String> <!-- Click and it installs all. -->
+    
+    <!-- Update 1.23.0: Search Sorting Options -->
+    <sys:String x:Key="SearchOptionSortNone">なし</sys:String> 
+    <sys:String x:Key="SearchOptionSortLastModified">最終更新日時</sys:String> 
+    <sys:String x:Key="SearchOptionSortDownloads">ダウンロード数</sys:String> 
+    <sys:String x:Key="SearchOptionSortLikes">いいね数</sys:String> 
+    <sys:String x:Key="SearchOptionSortViews">閲覧数</sys:String> 
+    
+    <sys:String x:Key="SearchOptionAscending">昇順</sys:String> 
+    <sys:String x:Key="SearchOptionDescending">降順</sys:String> 
+    
+    <sys:String x:Key="SearchOptionsTooltip">一部のダウンロードソースは、並び替えやフィルタリングに対応していない場合がありますのでご注意ください。</sys:String> 
+    
+    <!-- Update 1.23.0: Publish Important Note -->
+    <sys:String x:Key="PublishModNotice">「パブリッシャー」によって作成されたすべてのファイルをそのままアップロードしてください。ファイル名は変更しないでください。
+詳細については、チュートリアルを参照してください。正しい公開ターゲット（Publish target）を設定するのを忘れないでください。</sys:String> 
+    
+    <!-- Note for translators: Please update ErrorPathToApplicationInvalid if you get down this far, message was updated. -->
+
+    <!-- Update 1.23.0: Tags -->
+    <sys:String x:Key="EditModAddTag">タグを追加</sys:String> 
+    <sys:String x:Key="EditModSelectPresetTagTooltip">プリセットタグを選択</sys:String> 
+    <sys:String x:Key="EditModAddTagPlaceHolder">タグ名を入力（または右側のプリセットを選択 👉）</sys:String> 
+    <sys:String x:Key="ConfigureModsSelectTagTooltip">タグでフィルター</sys:String> 
+
+    <!-- Update 1.23.8: Tags -->
+    <sys:String x:Key="AddAppWorkingDirectory">作業ディレクトリ (Working Directory)</sys:String>
+   
+    <!-- Update 1.26.0: Preserve Disabled Mod Order -->
+    <sys:String x:Key="PreserveDisabledModOrder">再起動後もMODの順序を保持する</sys:String>
+    <sys:String x:Key="PreserveDisabledModOrderTooltip">【有効】の場合、アプリケーション再起動後もすべてのMODの並び順が維持されます。&#x0a;【無効】の場合、「有効」になっているMODがロード順の最上部に配置され、「無効」になっているMODはアルファベット順に最下部へ移動します。&#x0a;（ユーザーからのフィードバックを募るためデフォルトで「有効」に設定されていますが、将来的に変更される可能性があります。）</sys:String>
+    
+    <!-- Update 1.26.0: GamePass ASI Loader Auto Deploy -->
+    <sys:String x:Key="AsiLoaderGamePassAutoInstallFail">申し訳ありませんが、このGamePassタイトルは自動セットアップに対応していません。手動でのASIローダーの配置、または別のシム（Shim）の導入が必要です。</sys:String>
+    <sys:String x:Key="EditModDontInject">ローダーをインジェクトしない</sys:String>
+    <sys:String x:Key="EditModDontInjectTooltip">【有効】の場合、ローダーをインジェクトしません。ASIローダーなどの外部シム経由でReloadedをロードする場合にこれを使用します。&#x0a;【無効】の場合、通常通りローダーをインジェクトします。</sys:String>
+
+    <!-- Update 1.26.0: Drag & Drop Install Mods -->
+    <sys:String x:Key="DragDropInstalledModsTitle">ドラッグ＆ドロップでMODをインストールしました</sys:String>
+    <sys:String x:Key="DragDropInstalledModsDescription">{0} 個のMODをインストールしました</sys:String>
+
+    <!-- Update 1.27.0: Updating 'First Launch' Experience a Bit -->
+    <!-- These replace FirstLaunchExAddModExtractDescription -->
+    <sys:String x:Key="FirstLaunchExStepInstallMod">MODのインストール</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall1">MODはファイルをReloadedのウィンドウ上にドラッグ＆ドロップすることで簡単にインストールできます。</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall_2_1">または、</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall_2_2">手動でMODをインストールする</sys:String> <!-- Hyperlink-->
+
+    <!-- Update 1.27.10: Accessibility Text for Visually Impaired -->
+    <sys:String x:Key="DownloadPackagesSettingsBtn">検索設定</sys:String>
+    <sys:String x:Key="DownloadPackagesPrevious">前へ</sys:String>
+    <sys:String x:Key="DownloadPackagesNext">次へ</sys:String>
+
+    <!-- Update 1.28.4: Delete Mod Dialog -->
+    <sys:String x:Key="DeleteModDialogTitle">MODの削除</sys:String>
+    <sys:String x:Key="DeleteModDialogDescription">{0}&#x0a;が削除されます。</sys:String>
+    
+    <!-- Update 1.28.6: Problematic Path Warnings -->
+    <sys:String x:Key="ProblematicPathTitle">問題を引き起こす可能性のあるパスを検出</sys:String>
+    <sys:String x:Key="ProblematicPathAppDescription">選択されたアプリケーションは、OneDriveによって管理されているフォルダ、または非ASCII文字（日本語などの全角文字や特殊文字）を含むフォルダ内にあります。&#x0a;「C:\Games\」などの別のパスへアプリケーションを移動することをお勧めします。&#x0a;非対応のパスのまま使用すると、MODが正常に動作しない原因になります。&#x0a;&#x0a;それでもアプリケーションを追加する場合は、OKを押してください。</sys:String>
+    <sys:String x:Key="ProblematicPathReloadedDescription">Reloaded-IIが、OneDriveによって管理されているフォルダ、または非ASCII文字（全角文字や特殊文字）を含むフォルダ内にインストールされていることを検出しました。&#x0a;Reloaded-IIのフォルダを「C:\Reloaded-II\」などの別のパスへ移動することをお勧めします。&#x0a;非対応のパスにReloaded-IIを配置したままだと、MODが正常に動作しない原因になります。</sys:String>
+    <sys:String x:Key="ProblematicPathModsDescription">MODフォルダが、OneDriveによって管理されているフォルダ、または非ASCII文字（全角文字や特殊文字）を含むフォルダ内にあることを検出しました。&#x0a;MODフォルダを別のパスへ移動することをお勧めします。&#x0a;非対応のパスにMODフォルダを配置したままだと、MODの実行時に問題が発生する原因になります。</sys:String>
+
+    <!-- Update 1.29.0: Launcher Error Reporting -->
+    <sys:String x:Key="ErrorViewDetails">エラーの詳細を確認しますか？</sys:String>
+    <sys:String x:Key="ErrorStacktraceTitle">これはReloaded-II ランチャーのエラーです</sys:String>
+    <sys:String x:Key="ErrorStacktraceSubtitle">不具合の報告はこちらへ: https://github.com/Reloaded-Project/Reloaded-II/issues/new</sys:String>
+    
+    <!-- Update 1.30.1: Missing Dependencies using same code as Installer -->
+    <sys:String x:Key="MissingDependenciesText3">以下のボタンを使用して、上記の必要なコンポーネントをダウンロードしてください。実行には管理者権限が必要となる場合があります。</sys:String>
+    
+    <!-- Update 1.30.0: Uhh no strings for Yes and No? -->
+    <sys:String x:Key="Yes">はい</sys:String>
+    <sys:String x:Key="No">いいえ</sys:String>
+    
+</ResourceDictionary>
