@@ -664,12 +664,14 @@ DRMまたは特殊なファイルシステム仕様によってエラーが発�
 
 Microsoft Store / Xbox GamePass版のゲームをご利用の場合は、DRM（暗号化）の影響により、手動でASIローダーを配置した上で、EXEから直接プログラムを起動する必要がある可能性が非常に高いです。詳しくはお使いのゲームのコミュニティにお尋ねください。
 
-DRM: 『何も所有せず、幸せになる。』</sys:String>
+DRM: 『何も所有せず、幸せになる。』
+</sys:String>
 
     <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">ASIローダーを配置可能か確認するための、EXEファイルの読み込みに失敗しました。これにはいくつかの原因が考えられます：
 - DRM（Microsoft Store / Xbox GamePass）。
 - EXEファイルへのアクセス権限がない。
-- ファイルが元の場所から移動されている。</sys:String>
+- ファイルが元の場所から移動されている。
+</sys:String>
 
     <!-- Update 1.23.0: Mod Packs Extras -->
     <sys:String x:Key="InstallModPackInstallAll">すべてのMODをインストール</sys:String> <!-- Click and it installs all. -->
