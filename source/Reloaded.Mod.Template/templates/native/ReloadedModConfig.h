@@ -498,10 +498,14 @@ namespace reloaded
         Mod startup information
         ---------------------
     */
+    struct ReloadedLoaderApi;
+
     struct NativeModInfo
     {
         std::wstring mod_directory;    // Folder with the mod's own files (ConfigSchema.json, ...).
         std::wstring config_directory; // Folder where the launcher writes user settings.
+        std::string mod_id;
+        ReloadedLoaderApi* loader = nullptr; 
     };
 
     // Filled by the ReloadedStartEx export; safe to read after mod start.
@@ -519,6 +523,27 @@ namespace reloaded
     // Version of ReloadedStartInfo filled in by the loader.
     #define RELOADED_START_INFO_VERSION 1
 
+    // Wrapper around the loader's IModLoader interface, handed to native mods.
+    // New functions are only valid when api_version
+    // is high enough, so it stays a stable contract.
+    // The returned strings are UTF-16 and belong to the loader, the memory does not
+    // come from your CRT, so give them back to free_string once you are done.
+    struct ReloadedLoaderApi
+    {
+        unsigned int api_version;
+
+        // We use cdecl since the loader hands out cdecl pointers and a
+        // mod built with /Gz would otherwise read them as stdcall on 32 bit.
+        void (__cdecl *load_mod)(const char* mod_id);
+        void (__cdecl *unload_mod)(const char* mod_id);
+        void (__cdecl *suspend_mod)(const char* mod_id);
+        void (__cdecl *resume_mod)(const char* mod_id);
+        wchar_t* (__cdecl *get_directory_for_mod)(const char* mod_id);
+        wchar_t* (__cdecl *get_mod_config_directory)(const char* mod_id);
+        void (__cdecl *log)(const char* text);
+        void (__cdecl *free_string)(wchar_t* value);
+    };
+
     // Handed to ReloadedStartEx as a pointer, so the layout can grow over time.
     // Fields are only valid when api_version is high enough; existing fields
     // never move or change meaning, keeping the export a stable contract.
@@ -526,15 +551,21 @@ namespace reloaded
     {
         unsigned int api_version;
 
-        // v1: folder with the mod's own files (ConfigSchema.json, ...).
+        // Folder with the mod's own files (ConfigSchema.json, ...).
         const wchar_t* mod_directory;
 
-        // v1: folder where the launcher stores the user settings.
+        // Folder where the launcher stores the user settings.
         const wchar_t* user_config_directory;
+
+        // Id of the mod being started, UTF-8.
+        const char* mod_id;
+
+        // The loader API wrapper, valid for the lifetime of the mod.
+        ReloadedLoaderApi* loader;
     };
 
-    // Copy what the loader passed into native_mod_info.
-    // Strings are only valid during the ReloadedStartEx call, so we duplicate them.
+    // Copies what the loader passed into native_mod_info().
+    // The start info strings are only valid during the ReloadedStartEx call, so they are duplicated.
     inline void store_start_info(const ReloadedStartInfo* info)
     {
         if (info == nullptr || info->api_version < 1)
@@ -546,6 +577,34 @@ namespace reloaded
 
         if (info->user_config_directory != nullptr)
             stored.config_directory = info->user_config_directory;
+
+        if (info->mod_id != nullptr)
+            stored.mod_id = info->mod_id; // already UTF-8, matching the loader API.
+
+        stored.loader = info->loader;
+    }
+
+    // The loader API wrapper handed to this mod, or null on older loaders.
+    inline ReloadedLoaderApi* loader()
+    {
+        return native_mod_info().loader;
+    }
+
+    // Writes to the Reloaded log when the loader API is available.
+    inline void log(const char* text)
+    {
+        ReloadedLoaderApi* api = loader();
+        if (api != nullptr && api->api_version >= 1 && api->log != nullptr)
+            api->log(text);
+    }
+
+    // Give a string from the loader API back to the loader, it allocated it and
+    // is the only one that can free it.
+    inline void free_string(wchar_t* value)
+    {
+        ReloadedLoaderApi* api = loader();
+        if (value != nullptr && api != nullptr && api->api_version >= 1 && api->free_string != nullptr)
+            api->free_string(value);
     }
 
     /*
@@ -782,18 +841,42 @@ namespace reloaded
             // Cast away to keep the getters const; resolution happens at most once.
             auto* self = const_cast<ModConfig*>(this);
             const NativeModInfo& info = native_mod_info();
-            if (!info.mod_directory.empty())
+
+            if (info.loader != nullptr && info.loader->api_version >= 1 && !info.mod_id.empty())
+            {
+                wchar_t* mod_directory = info.loader->get_directory_for_mod(info.mod_id.c_str());
+                wchar_t* config_directory = info.loader->get_mod_config_directory(info.mod_id.c_str());
+
+                if (mod_directory != nullptr)
+                {
+                    self->_mod_directory = with_trailing_separator(mod_directory);
+                    free_string(mod_directory);
+                }
+
+                if (config_directory != nullptr)
+                {
+                    self->_config_directory = with_trailing_separator(config_directory);
+                    free_string(config_directory);
+                }
+            }
+
+            // Fallback: the folders copied into the start info.
+            if (self->_mod_directory.empty() && !info.mod_directory.empty())
             {
                 self->_mod_directory = with_trailing_separator(info.mod_directory);
                 self->_config_directory = with_trailing_separator(info.config_directory.empty() ? info.mod_directory : info.config_directory);
             }
-            else
+
+            // Last attempt, loaded by another injector: assume the values live next to the DLL.
+            if (self->_mod_directory.empty())
             {
-                // Loaded by an older loader or another injector: assume the values live next to the DLL.
                 const std::wstring& dll_directory = this_module_directory();
                 self->_mod_directory = dll_directory;
                 self->_config_directory = dll_directory;
             }
+
+            if (self->_config_directory.empty())
+                self->_config_directory = self->_mod_directory;
 
             self->_paths_resolved = true;
         }
@@ -975,20 +1058,20 @@ namespace reloaded
     Implement this macro in exactly one source file of the mod.
     FN is a function 'void FN()' called on start, with directories known and config loaded.
 */
-#define RELOADED_MOD_CONFIG_IMPL(FN)                                                              \
-    extern "C" __declspec(dllexport) void ReloadedStartEx(const reloaded::ReloadedStartInfo* info) \
-    {                                                                                             \
-        reloaded::store_start_info(info);                                                         \
-        reloaded::config().load();                                                                \
-        FN();                                                                                     \
+#define RELOADED_MOD_CONFIG_IMPL(FN)                                                                      \
+    extern "C" __declspec(dllexport) void __cdecl ReloadedStartEx(const reloaded::ReloadedStartInfo* info) \
+    {                                                                                                     \
+        reloaded::store_start_info(info);                                                                 \
+        reloaded::config().load();                                                                        \
+        FN();                                                                                             \
     }
 
 // Same as above but without a start callback, for mods driven by DllMain or other entry points.
-#define RELOADED_MOD_CONFIG_IMPL_NO_START()                                                       \
-    extern "C" __declspec(dllexport) void ReloadedStartEx(const reloaded::ReloadedStartInfo* info) \
-    {                                                                                             \
-        reloaded::store_start_info(info);                                                         \
-        reloaded::config().load();                                                                \
+#define RELOADED_MOD_CONFIG_IMPL_NO_START()                                                               \
+    extern "C" __declspec(dllexport) void __cdecl ReloadedStartEx(const reloaded::ReloadedStartInfo* info) \
+    {                                                                                                     \
+        reloaded::store_start_info(info);                                                                 \
+        reloaded::config().load();                                                                        \
     }
 
 #endif // RELOADED_MOD_CONFIG_H

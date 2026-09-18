@@ -20,6 +20,7 @@ public class PluginManager : IDisposable
 
     private LoadContext _sharedContext;
     private readonly Loader _loader;
+    private readonly NativeLoaderApiBridge _nativeLoaderApi;
 
     /// <summary>
     /// Initializes the <see cref="PluginManager"/>
@@ -30,6 +31,9 @@ public class PluginManager : IDisposable
     {
         _loader = loader;
         LoaderApi = new LoaderAPI(_loader);
+
+        // The native loader API table shared by all native mods.
+        _nativeLoaderApi = new NativeLoaderApiBridge(LoaderApi, _loader.Logger);
         _sharedContext = sharedContext ?? LoadContext.BuildSharedLoadContext();
     }
 
@@ -39,6 +43,8 @@ public class PluginManager : IDisposable
         {
             modification.Dispose();
         }
+
+        _nativeLoaderApi.Dispose();
     }
 
     /// <summary>
@@ -307,9 +313,9 @@ public class PluginManager : IDisposable
 
         _modIdToFolder[modId] = Path.GetFullPath(Path.GetDirectoryName(tuple.Path)!);
 
-        // Hand the mod its user config directory, needed for mods that read their configuration.
+        // Hand the mod its user config directory and the loader API table
         var userConfigDirectory = ModUserConfig.GetUserConfigFolderForMod(modId, _loader.LoaderConfig.GetModUserConfigDirectory());
-        return new ModInstance(new NativeMod(dllPath, userConfigDirectory), tuple.Config);
+        return new ModInstance(new NativeMod(dllPath, userConfigDirectory, _nativeLoaderApi.TablePointer, modId), tuple.Config);
     }
 
     private ModInstance PrepareNonDllMod(PathTuple<ModConfig> tuple)

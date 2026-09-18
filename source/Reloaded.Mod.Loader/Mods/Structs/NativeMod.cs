@@ -24,20 +24,26 @@ public class NativeMod : IModV1
     private bool _started;
     private string _modDirectory;
     private string _userConfigDirectory;
+    private string _modId;
+    private IntPtr _loaderApiTable;
 
     /// <summary>
     /// Creates an IMod wrapper for a native DLL.
     /// </summary>
     /// <param name="path">Path to the native DLL.</param>
     /// <param name="userConfigDirectory">Path to the directory where the mod's user configuration is stored, passed to mods exporting ReloadedStartEx.</param>
-    public NativeMod(string path, string userConfigDirectory = null)
+    /// <param name="loaderApiTable">Pointer to the native loader API table shared by all mods, passed to mods exporting ReloadedStartEx.</param>
+    /// <param name="modId">Id of this mod, handed to the mod with the loader API.</param>
+    public NativeMod(string path, string userConfigDirectory = null, IntPtr loaderApiTable = default, string modId = null)
     {
         _modDirectory = Path.GetDirectoryName(Path.GetFullPath(path))!;
         _userConfigDirectory = userConfigDirectory;
+        _modId = modId ?? string.Empty;
+        _loaderApiTable = loaderApiTable;
 
         // Set new DLL Directory, load library and restore.
         // This could probably be better optimised but isn't a hot path, would rather save on memory, so it's no big deal.
-        var builder = new StringBuilder(4096); // ought to be enough characters given most programs break at 260 anyway. 
+        var builder = new StringBuilder(4096); // ought to be enough characters given most programs break at 260 anyway.
         GetDllDirectoryW(builder.Length, builder);
         SetDllDirectoryW(Path.GetDirectoryName(path));
         _moduleHandle = LoadLibraryW(path);
@@ -94,8 +100,8 @@ public class NativeMod : IModV1
     public Action Disposing { get; }
 
     /// <summary>
-    /// Call the ReloadedStartEx export, passing the mod its directories
-    /// through a versioned struct.
+    /// Call the ReloadedStartEx export, passing the mod its directories and the
+    /// loader API through a versioned struct.
     /// </summary>
     private void InvokeStartEx()
     {
@@ -103,7 +109,9 @@ public class NativeMod : IModV1
         {
             ApiVersion = 1,
             ModDirectory = Marshal.StringToHGlobalUni(_modDirectory),
-            UserConfigDirectory = Marshal.StringToHGlobalUni(_userConfigDirectory)
+            UserConfigDirectory = Marshal.StringToHGlobalUni(_userConfigDirectory),
+            ModId = StringToHGlobalUTF8(_modId),
+            LoaderApi = _loaderApiTable
         };
 
         try
@@ -117,6 +125,9 @@ public class NativeMod : IModV1
 
             if (info.UserConfigDirectory != IntPtr.Zero)
                 Marshal.FreeHGlobal(info.UserConfigDirectory);
+
+            if (info.ModId != IntPtr.Zero)
+                Marshal.FreeHGlobal(info.ModId);
         }
     }
 
@@ -125,6 +136,18 @@ public class NativeMod : IModV1
     {
         var address = GetProcAddress(moduleHandle, functionName);
         return address != IntPtr.Zero ? Marshal.GetDelegateForFunctionPointer<TDelegate>(address) : null;
+    }
+
+    /// <summary>
+    /// Copies a string to unmanaged memory as UTF-8; free with <see cref="Marshal.FreeHGlobal"/>.
+    /// </summary>
+    private static IntPtr StringToHGlobalUTF8(string value)
+    {
+        var bytes = Encoding.UTF8.GetBytes(value);
+        var pointer = Marshal.AllocHGlobal(bytes.Length + 1);
+        Marshal.Copy(bytes, 0, pointer, bytes.Length);
+        Marshal.WriteByte(pointer, bytes.Length, 0);
+        return pointer;
     }
 
     // Delegates for native Other Exports.
@@ -145,8 +168,8 @@ public class NativeMod : IModV1
 
     /// <summary>
     /// Information handed to native mods exporting ReloadedStartEx.
-    /// The layout is append only, so new fields are only valid when
-    /// <see cref="ApiVersion"/> is high enough, meaning the struct stays a stable contract.
+    /// New fields are only valid when <see cref="ApiVersion"/> is high enough,
+    /// (this is to make sure the struct stays a stable contract).
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     internal struct NativeReloadedStartInfo
@@ -157,16 +180,29 @@ public class NativeMod : IModV1
         public int ApiVersion;
 
         /// <summary>
-        /// Folder with the mod's own files (ConfigSchema.json, ...). Valid from version 1.
+        /// Folder with the mod's own files (ConfigSchema.json, ...).
         /// UTF-16 string, only valid for the duration of the call.
         /// </summary>
         public IntPtr ModDirectory;
 
         /// <summary>
-        /// Folder where the launcher stores the user settings. Valid from version 1.
+        /// Folder where the launcher stores the user settings.
         /// UTF-16 string, only valid for the duration of the call.
         /// </summary>
         public IntPtr UserConfigDirectory;
+
+        /// <summary>
+        /// Id of the mod being started.
+        /// UTF-8 string, only valid for the duration of the call.
+        /// </summary>
+        public IntPtr ModId;
+
+        /// <summary>
+        /// Wrapper around the loader API (<see cref="IModLoader"/>), usable to load,
+        /// unload and query other mods. Stays valid past the call,
+        /// for the lifetime of the mod.
+        /// </summary>
+        public IntPtr LoaderApi;
     }
 
     #region Native Imports

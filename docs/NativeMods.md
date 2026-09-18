@@ -28,10 +28,13 @@ Reloaded tries to start mods by using the following entry points in order:
 
 If none of these entry points is found, the mod will not be loaded.
 
-`ReloadedStartInfo` is an append only struct: `api_version` tells which fields
-are filled in, and the mod's folders arrive as UTF-16 strings valid only
-during the call. Use the helper header below if your mod reads its
-configuration; the other entry points have no parameters and return `void`.
+`ReloadedStartInfo` is a struct which contains: api_version, the mod's folders, the mod's
+id and `ReloadedLoaderApi`, a wrapper around `IModLoader` usable to load,
+unload and query other mods.
+
+The folders and the id are only valid during the call, so copy them if you need
+them later. Strings returned by `ReloadedLoaderApi` stay valid past the call,
+but the loader allocated them, so give them back to `free_string`.
 
 **Suspend, Resume, Unload:**
 
