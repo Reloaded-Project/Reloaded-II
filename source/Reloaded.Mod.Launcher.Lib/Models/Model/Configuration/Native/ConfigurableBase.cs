@@ -5,11 +5,15 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 
 /// <summary>
 /// Base class for the configuration objects generated for native (non .NET) mods.
-/// The <see cref="ConfigTypeEmitter"/> emits one derived class per schema configuration;
-/// the derived class holds the settings as properties, this class supplies the behaviour
-/// (name, saving, file watching) expected by the launcher's configuration dialog.
-/// Native equivalent of <c>Configurable&lt;T&gt;</c> in the C# mod template.
 /// </summary>
+/// <remarks>
+/// Each configuration in a mod's <see cref="ModConfigSchema"/> becomes one derived
+/// class, emitted by <see cref="ConfigTypeEmitter"/>. The derived class only holds
+/// the settings as properties; this base class supplies what the launcher's
+/// configuration dialog expects: display name, saving and file watching.
+///
+/// Native equivalent of <c>Configurable&lt;T&gt;</c> in the C# mod template.
+/// </remarks>
 public abstract class ConfigurableBase : IUpdatableConfigurable
 {
     /// <summary>
@@ -47,7 +51,8 @@ public abstract class ConfigurableBase : IUpdatableConfigurable
     private static object _readLock = new object();
 
     /// <summary>
-    /// Initializes an instance after construction, arming the file watcher and save action.
+    /// Initializes an instance after construction, arming the file watcher
+    /// and save action.
     /// </summary>
     /// <param name="filePath">Full path to the file storing the values.</param>
     /// <param name="configName">Name displayed in the launcher dialog.</param>
@@ -98,9 +103,14 @@ public abstract class ConfigurableBase : IUpdatableConfigurable
 
 /// <summary>
 /// Reads and writes the value files of native mod configurations.
-/// The file format is a flat JSON object of property name to value, with enums stored as strings;
-/// identical in shape to what the C# mod template writes, so C++ mods can parse it with ease.
 /// </summary>
+/// <remarks>
+/// The file format is a flat JSON object mapping property names to values,
+/// with enums stored as strings.
+///
+/// It is identical in shape to what the C# mod template writes, so C++ mods
+/// can parse it with ease.
+/// </remarks>
 public static class ConfigIO
 {
     private static readonly JsonSerializerOptions SerializerOptions = new() { WriteIndented = true };
@@ -152,11 +162,14 @@ public static class ConfigIO
     }
 
     /// <summary>
-    /// Applies the values from a file onto an instance; properties missing from the file keep their current (default) values.
-    /// Returns false if the file could not be read.
+    /// Applies the values from a file onto an instance.
+    /// Properties missing from the file keep their current (default) values.
     /// </summary>
     /// <param name="instance">Instance to load the values into.</param>
     /// <param name="filePath">Full path of the file to read from.</param>
+    /// <returns>
+    /// True if loading succeeded; false if the file was missing or unreadable.
+    /// </returns>
     public static bool Apply(object instance, string filePath)
     {
         if (!File.Exists(filePath))
@@ -178,9 +191,20 @@ public static class ConfigIO
     }
 
     /// <summary>
-    /// Creates a new instance of the given configuration type with values loaded from disk.
+    /// Creates a new instance of the given configuration type with values
+    /// loaded from disk.
+    ///
     /// Missing or unreadable files yield an instance with the schema default values.
     /// </summary>
+    /// <param name="type">Configuration type to create an instance of.</param>
+    /// <param name="filePath">Full path of the file to load the values from.</param>
+    /// <param name="configName">Name displayed in the launcher dialog.</param>
+    /// <param name="timeout">Milliseconds to wait between read attempts.</param>
+    /// <param name="retries">Number of attempts made to read the file.</param>
+    /// <returns>
+    /// The new instance, initialized and armed; values default when the file
+    /// is missing or unreadable.
+    /// </returns>
     public static ConfigurableBase Load(Type type, string filePath, string configName, int timeout = 0, int retries = 1)
     {
         var instance = (ConfigurableBase)Activator.CreateInstance(type)!;
@@ -247,5 +271,9 @@ public static class ConfigIO
     /// <summary>
     /// Returns the editable settings declared by a generated configuration type.
     /// </summary>
+    /// <param name="type">Configuration type to list the settings of.</param>
+    /// <returns>
+    /// The public read/write properties declared directly on the type.
+    /// </returns>
     public static PropertyInfo[] GetProperties(Type type) => PropertyCache.GetOrAdd(type, static t => [.. t.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.DeclaringType == t && p.CanRead && p.CanWrite && p.GetIndexParameters().Length == 0)]);
 }
