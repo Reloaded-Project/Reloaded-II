@@ -4,15 +4,19 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
 
 /// <summary>
 /// Declarative configuration schema for native (non .NET) mods.
-/// A mod declares its settings by placing a <c>ConfigSchema.json</c> file next to its <c>ModConfig.json</c>.
-/// The launcher then builds a configuration UI from that schema.
-/// The config file mirrors the attributes used by the C# mod template (DisplayName, Description, Category,
-/// DefaultValue, Slider/File/Folder control params) so both kinds of mod look and behave the same.
+/// A mod declares its settings in a <c>ConfigSchema.json</c> file next to
+/// its <c>ModConfig.json</c>. The launcher builds the configuration UI
+/// from that schema.
+///
+/// The schema mirrors the attributes used by the C# mod template.
+/// Native and C# mods therefore look and behave the same:
+/// - DisplayName, Description, Category, DefaultValue
+/// - Slider/File/Folder control params
 /// </summary>
 public class NativeModConfigSchema
 {
     /// <summary>
-    /// Name of the config file, need to be placed inside the mod folder.
+    /// Name of the config file to place inside the mod folder.
     /// </summary>
     public const string SchemaFileName = "ConfigSchema.json";
 
@@ -31,6 +35,11 @@ public class NativeModConfigSchema
     /// Loads config schema from local disk.
     /// </summary>
     /// <param name="modDirectory">Full path to the folder containing the mod.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the schema is empty or invalid. A missing file throws
+    /// <see cref="FileNotFoundException"/>; malformed JSON,
+    /// <see cref="JsonException"/>.
+    /// </exception>
     public static NativeModConfigSchema Load(string modDirectory) => Parse(JsonNode.Parse(File.ReadAllText(Path.Combine(modDirectory, SchemaFileName)), new JsonNodeOptions() { PropertyNameCaseInsensitive = true }) ?? throw newException(modDirectory), modDirectory);
 
     private static Exception newException(string modDirectory) => new InvalidOperationException($"Failed to parse {SchemaFileName} in '{modDirectory}'. The file may be empty or invalid.");
@@ -59,7 +68,8 @@ public class NativeModConfigSchema
 }
 
 /// <summary>
-/// Individual configuration of a native mod, essentially mirrors one <c>IConfigurable</c> from C# mod.
+/// Individual configuration of a native mod; essentially mirrors one
+/// <c>IConfigurable</c> from the C# mod template.
 /// </summary>
 public class NativeConfigSchemaConfiguration
 {
@@ -70,7 +80,7 @@ public class NativeConfigSchemaConfiguration
     public string FileName { get; set; } = "Config.json";
 
     /// <summary>
-    /// Name shown in the launcher's configuration dropdown. 
+    /// Name shown in the launcher's configuration dropdown.
     /// </summary>
     public string? DisplayName { get; set; }
 
@@ -84,6 +94,13 @@ public class NativeConfigSchemaConfiguration
     /// </summary>
     public List<NativeConfigSchemaProperty> Properties { get; set; } = new();
 
+    /// <summary>
+    /// Reads a configuration from its JSON representation.
+    /// </summary>
+    /// <param name="node">Node holding the configuration's properties.</param>
+    /// <exception cref="JsonException">
+    /// Thrown when <c>FileName</c> is not a plain file name.
+    /// </exception>
     public static NativeConfigSchemaConfiguration Parse(JsonNode node)
     {
         var configuration = new NativeConfigSchemaConfiguration
@@ -108,8 +125,8 @@ public class NativeConfigSchemaConfiguration
     }
 
     /// <summary>
-    /// The file name is used to build paths inside the user config directory,
-    /// so anything that is not a plain file name (rooted paths, separators) is rejected.
+    /// The file name builds paths inside the user config directory, so it
+    /// must be a plain file name; rooted paths and separators fail validation.
     /// </summary>
     private static string ValidateFileName(string fileName)
     {
@@ -135,6 +152,13 @@ public class NativeConfigSchemaEnum
     /// </summary>
     public List<NativeConfigSchemaEnumMember> Members { get; set; } = new();
 
+    /// <summary>
+    /// Reads an enum from its JSON representation.
+    /// </summary>
+    /// <param name="node">Node holding the enum's properties.</param>
+    /// <exception cref="JsonException">
+    /// Thrown when the enum declares no members.
+    /// </exception>
     public static NativeConfigSchemaEnum Parse(JsonNode node)
     {
         var result = new NativeConfigSchemaEnum
@@ -174,6 +198,10 @@ public class NativeConfigSchemaEnumMember
     /// </summary>
     public string? DisplayName { get; set; }
 
+    /// <summary>
+    /// Reads an enum member from its JSON representation.
+    /// </summary>
+    /// <param name="node">Node holding the member's properties.</param>
     public static NativeConfigSchemaEnumMember Parse(JsonNode node) => new()
     {
         Name        = node.GetStringOrDefault(Keys.Name, "")!,
@@ -182,14 +210,15 @@ public class NativeConfigSchemaEnumMember
 }
 
 /// <summary>
-/// An individual setting of a configuration; mirrors a property of a C# mod's config class.
+/// An individual setting of a configuration; mirrors a property of a
+/// C# mod's config class.
 /// </summary>
 public class NativeConfigSchemaProperty
 {
     /// <summary>
     /// Supported values for <see cref="Type"/>.
     /// </summary>
-    public static class SupportedTypes
+    internal static class SupportedTypes
     {
         public const string Bool   = "bool";
         public const string Int    = "int";
@@ -204,8 +233,9 @@ public class NativeConfigSchemaProperty
     public string Name { get; set; } = "";
 
     /// <summary>
-    /// Type of the setting; one of <c>bool</c>, <c>int</c>, <c>float</c>, <c>double</c>, <c>string</c>
-    /// or the name of an enum declared in the same configuration.
+    /// Type of the setting; one of the following:
+    /// - <c>bool</c>, <c>int</c>, <c>float</c>, <c>double</c> or <c>string</c>
+    /// - the name of an enum declared in the same configuration
     /// </summary>
     public string Type { get; set; } = SupportedTypes.String;
 
@@ -230,8 +260,10 @@ public class NativeConfigSchemaProperty
     public int? Order { get; set; }
 
     /// <summary>
-    /// Default value of the setting (bool/int/float/double, string or enum member name).
-    /// Used when the user has not changed the setting, and by the Reset button.
+    /// Default value of the setting; its shape matches <see cref="Type"/>:
+    /// - a <c>bool</c>, <c>int</c>, <c>float</c> or <c>double</c> literal
+    /// - a <c>string</c> or an enum member name
+    /// Initial value before any user change; the Reset button restores it.
     /// </summary>
     public object? DefaultValue { get; set; }
 
@@ -251,10 +283,18 @@ public class NativeConfigSchemaProperty
     public NativeConfigSchemaFolderPicker? FolderPicker { get; set; }
 
     /// <summary>
-    /// Enum values declared directly on the property, for the common case where an enum is used once.
+    /// Enum values declared directly on the property, for the common case
+    /// of an enum used by a single setting.
     /// </summary>
     public List<NativeConfigSchemaEnumMember> Values { get; set; } = new();
 
+    /// <summary>
+    /// Reads a property from its JSON representation.
+    /// </summary>
+    /// <param name="node">Node holding the setting's properties.</param>
+    /// <exception cref="JsonException">
+    /// Thrown when the property has no name.
+    /// </exception>
     public static NativeConfigSchemaProperty Parse(JsonNode node)
     {
         var property = new NativeConfigSchemaProperty
@@ -301,23 +341,76 @@ public class NativeConfigSchemaProperty
 }
 
 /// <summary>
-/// Parameters for the slider control; mirrors <c>SliderControlParamsAttribute</c> of the C# interface.
+/// Parameters for the slider control; mirrors
+/// <c>SliderControlParamsAttribute</c> of the C# interface.
 /// </summary>
 public class NativeConfigSchemaSlider
 {
+    /// <summary>
+    /// Minimum value of the slider.
+    /// </summary>
     public double Minimum { get; set; } = 0.0;
+
+    /// <summary>
+    /// Maximum value of the slider.
+    /// </summary>
     public double Maximum { get; set; } = 1.0;
+
+    /// <summary>
+    /// Value change of a small step (arrow keys).
+    /// </summary>
     public double SmallChange { get; set; } = 0.1;
+
+    /// <summary>
+    /// Value change of a large step (page up/down or gutter click).
+    /// </summary>
     public double LargeChange { get; set; } = 1.0;
+
+    /// <summary>
+    /// Distance between tick marks. Legacy;
+    /// <see cref="TickFrequencyDouble"/> wins when greater than zero.
+    /// </summary>
     public int TickFrequency { get; set; } = 10;
+
+    /// <summary>
+    /// Snap the value to the nearest tick.
+    /// </summary>
     public bool IsSnapToTickEnabled { get; set; } = false;
+
+    /// <summary>
+    /// Where tick marks are drawn; a <c>SliderControlTickPlacement</c> name.
+    /// </summary>
     public string TickPlacement { get; set; } = "None";
+
+    /// <summary>
+    /// Show the value in a text field left of the slider.
+    /// </summary>
     public bool ShowTextField { get; set; } = false;
+
+    /// <summary>
+    /// Allow typing in the text field.
+    /// </summary>
     public bool IsTextFieldEditable { get; set; } = true;
+
+    /// <summary>
+    /// Regex the text field input must match.
+    /// </summary>
     public string TextValidationRegex { get; set; } = ".*";
+
+    /// <summary>
+    /// Format string applied to the text field value.
+    /// </summary>
     public string TextFieldFormat { get; set; } = "";
+
+    /// <summary>
+    /// Distance between tick marks; allows fractions.
+    /// </summary>
     public double TickFrequencyDouble { get; set; } = 0.0;
 
+    /// <summary>
+    /// Reads the slider parameters from their JSON representation.
+    /// </summary>
+    /// <param name="node">Node holding the slider's properties.</param>
     public static NativeConfigSchemaSlider Parse(JsonNode node) => new()
     {
         Minimum              = node.GetDoubleOrDefault(Keys.Minimum, 0.0),
@@ -336,24 +429,81 @@ public class NativeConfigSchemaSlider
 }
 
 /// <summary>
-/// Parameters for the file picker control; mirrors <c>FilePickerParamsAttribute</c> of the C# interface.
+/// Parameters for the file picker control; mirrors
+/// <c>FilePickerParamsAttribute</c> of the C# interface.
 /// </summary>
 public class NativeConfigSchemaFilePicker
 {
+    /// <summary>
+    /// Initial directory shown; null for the default.
+    /// </summary>
     public string? InitialDirectory { get; set; }
+
+    /// <summary>
+    /// Fallback folder when <see cref="InitialDirectory"/> is null, as an
+    /// <c>Environment.SpecialFolder</c> value.
+    /// </summary>
     public int InitialFolderPath { get; set; } = 0x05; // Environment.SpecialFolder.Personal
+
+    /// <summary>
+    /// Label of the choose file button.
+    /// </summary>
     public string ChooseFileButtonLabel { get; set; } = "Choose File";
+
+    /// <summary>
+    /// Allow typing in the path box.
+    /// </summary>
     public bool UserCanEditPathText { get; set; } = true;
+
+    /// <summary>
+    /// Title of the dialog.
+    /// </summary>
     public string Title { get; set; } = "";
+
+    /// <summary>
+    /// Filter of the dialog, e.g. <c>All files (*.*)|*.*</c>.
+    /// </summary>
     public string Filter { get; set; } = "All files (*.*)|*.*";
+
+    /// <summary>
+    /// Index of the filter selected at open.
+    /// </summary>
     public int FilterIndex { get; set; } = 0;
+
+    /// <summary>
+    /// Allow selecting multiple files.
+    /// </summary>
     public bool Multiselect { get; set; } = false;
+
+    /// <summary>
+    /// Support extensions with multiple dots, e.g. <c>.tar.gz</c>.
+    /// </summary>
     public bool SupportMultiDottedExtensions { get; set; } = false;
+
+    /// <summary>
+    /// Show hidden files in the dialog.
+    /// </summary>
     public bool ShowHiddenFiles { get; set; } = false;
+
+    /// <summary>
+    /// Show the file preview pane.
+    /// </summary>
     public bool ShowPreview { get; set; } = false;
+
+    /// <summary>
+    /// Restore the working directory after the dialog closes.
+    /// </summary>
     public bool RestoreDirectory { get; set; } = false;
+
+    /// <summary>
+    /// Add the chosen file to the recent documents.
+    /// </summary>
     public bool AddToRecent { get; set; } = false;
 
+    /// <summary>
+    /// Reads the file picker parameters from their JSON representation.
+    /// </summary>
+    /// <param name="node">Node holding the picker's properties.</param>
     public static NativeConfigSchemaFilePicker Parse(JsonNode node) => new()
     {
         InitialDirectory           = node.GetStringOrDefault(Keys.InitialDirectory, null),
@@ -373,20 +523,61 @@ public class NativeConfigSchemaFilePicker
 }
 
 /// <summary>
-/// Parameters for the folder picker control; mirrors <c>FolderPickerParamsAttribute</c> of the C# interface.
+/// Parameters for the folder picker control; mirrors
+/// <c>FolderPickerParamsAttribute</c> of the C# interface.
 /// </summary>
 public class NativeConfigSchemaFolderPicker
 {
+    /// <summary>
+    /// Initial directory shown; null for the default.
+    /// </summary>
     public string? InitialDirectory { get; set; }
+
+    /// <summary>
+    /// Fallback folder when <see cref="InitialDirectory"/> is null, as an
+    /// <c>Environment.SpecialFolder</c> value.
+    /// </summary>
     public int InitialFolderPath { get; set; } = 0x05; // Environment.SpecialFolder.Personal
+
+    /// <summary>
+    /// Label of the choose folder button.
+    /// </summary>
     public string ChooseFolderButtonLabel { get; set; } = "Choose Folder";
+
+    /// <summary>
+    /// Allow typing in the path box.
+    /// </summary>
     public bool UserCanEditPathText { get; set; } = true;
+
+    /// <summary>
+    /// Title of the dialog.
+    /// </summary>
     public string Title { get; set; } = "";
+
+    /// <summary>
+    /// Label of the OK button.
+    /// </summary>
     public string OkButtonLabel { get; set; } = "Ok";
+
+    /// <summary>
+    /// Label of the file name box.
+    /// </summary>
     public string FileNameLabel { get; set; } = "";
+
+    /// <summary>
+    /// Allow selecting multiple folders.
+    /// </summary>
     public bool Multiselect { get; set; } = false;
+
+    /// <summary>
+    /// Only accept folders in the file system.
+    /// </summary>
     public bool ForceFileSystem { get; set; } = false;
 
+    /// <summary>
+    /// Reads the folder picker parameters from their JSON representation.
+    /// </summary>
+    /// <param name="node">Node holding the picker's properties.</param>
     public static NativeConfigSchemaFolderPicker Parse(JsonNode node) => new()
     {
         InitialDirectory       = node.GetStringOrDefault(Keys.InitialDirectory, null),
@@ -462,7 +653,7 @@ internal static class JsonNodeExtensions
 {
     public static string? GetStringOrDefault(this JsonNode? node, string name, string? fallback)
     {
-        var value = node[name];
+        var value = node?[name];
         if (value == null)
             return fallback;
 
@@ -471,7 +662,7 @@ internal static class JsonNodeExtensions
 
     public static int GetIntOrDefault(this JsonNode? node, string name, int fallback)
     {
-        var value = node[name];
+        var value = node?[name];
         if (value == null)
             return fallback;
 
@@ -487,7 +678,7 @@ internal static class JsonNodeExtensions
 
     public static int? GetIntOrNull(this JsonNode? node, string name)
     {
-        var value = node[name];
+        var value = node?[name];
         if (value == null)
             return null;
 
@@ -503,7 +694,7 @@ internal static class JsonNodeExtensions
 
     public static double GetDoubleOrDefault(this JsonNode? node, string name, double fallback)
     {
-        var value = node[name];
+        var value = node?[name];
         if (value == null)
             return fallback;
 
@@ -512,7 +703,7 @@ internal static class JsonNodeExtensions
 
     public static bool GetBoolOrDefault(this JsonNode? node, string name, bool fallback)
     {
-        var value = node[name];
+        var value = node?[name];
         if (value == null)
             return fallback;
 
@@ -520,7 +711,11 @@ internal static class JsonNodeExtensions
     }
 
     /// <summary>
-    /// Returns the raw boxed value of a node (bool/int/double/string) or null.
+    /// Returns the raw boxed value of a node as one of the following:
+    /// - <c>bool</c>
+    /// - <c>int</c> if it fits, else <c>double</c>
+    /// - <c>string</c>
+    /// - null for any other content
     /// </summary>
     public static object? GetValueOrNull(this JsonNode? node)
     {

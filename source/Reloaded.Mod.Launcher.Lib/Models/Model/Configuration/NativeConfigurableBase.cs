@@ -145,7 +145,7 @@ public static class NativeConfigIO
         }
 
         var directory = Path.GetDirectoryName(filePath);
-        if (directory.Length > 0)
+        if (directory!.Length > 0)
             Directory.CreateDirectory(directory);
 
         File.WriteAllText(filePath, root.ToJsonString(SerializerOptions));

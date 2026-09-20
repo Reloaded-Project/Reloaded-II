@@ -5,16 +5,17 @@ using DataAnnotations = System.ComponentModel.DataAnnotations;
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
 
 /// <summary>
-/// Builds .NET types out of native mod configuration schemas using Reflection.Emit.
-/// The generated types subclass <see cref="NativeConfigurableBase"/> and carry the same
-/// attributes as a hand written C# configuration class:
-/// <list type="bullet">
-/// <item><see cref="DisplayNameAttribute"/>, <see cref="DescriptionAttribute"/>, <see cref="CategoryAttribute"/></item>
-/// <item><see cref="DefaultValueAttribute"/> (backs the Reset button of the dialog)</item>
-/// <item><c>Display</c> (sort order)</item>
-/// <item><c>SliderControlParams</c>, <c>FilePickerParams</c>, <c>FolderPickerParams</c> (custom editors)</item>
-/// </list>
-/// This way the launcher's PropertyGrid renders them exactly like the configuration of a C# mod.
+/// Builds .NET types from native mod configuration schemas using
+/// Reflection.Emit.
+/// The generated types subclass <see cref="NativeConfigurableBase"/> and carry
+/// the same attributes as a hand written C# configuration class:
+/// - <see cref="DisplayNameAttribute"/>, <see cref="DescriptionAttribute"/>,
+///   <see cref="CategoryAttribute"/>
+/// - <see cref="DefaultValueAttribute"/> (backs the Reset button of the dialog)
+/// - <c>Display</c> (sort order)
+/// - <c>SliderControlParams</c>, <c>FilePickerParams</c>,
+///   <c>FolderPickerParams</c> (custom editors)
+/// The PropertyGrid renders them exactly like a C# mod's configuration.
 /// </summary>
 public static class NativeConfigTypeEmitter
 {
@@ -30,12 +31,16 @@ public static class NativeConfigTypeEmitter
     /// </summary>
     /// <param name="configuration">The configuration to build a type for.</param>
     /// <param name="cacheKey">Unique key identifying the (version of the) configuration.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when a property's Type is unknown, or a control does not match
+    /// the property type.
+    /// </exception>
     public static NativeConfigurableBase CreateInstance(NativeConfigSchemaConfiguration configuration, string cacheKey)
     {
         Type type;
         lock (BuildLock)
         {
-            if (!TypeCache.TryGetValue(cacheKey, out type))
+            if (!TypeCache.TryGetValue(cacheKey, out type!))
             {
                 type = BuildType(configuration, cacheKey);
                 TypeCache[cacheKey] = type;
@@ -107,7 +112,7 @@ public static class NativeConfigTypeEmitter
     }
 
     /// <summary>
-    /// The enums declared by a configuration, properties with inline <c>Values</c>
+    /// Declared enums plus one per property with inline <c>Values</c>.
     /// </summary>
     private static IEnumerable<NativeConfigSchemaEnum> CollectEnums(NativeConfigSchemaConfiguration configuration)
     {
@@ -227,7 +232,7 @@ public static class NativeConfigTypeEmitter
         }
 
         // The default value backs the Reset button of the configuration dialog.
-       
+
         // Enums are skipped
         if (!propertyType.IsEnum)
         {
@@ -260,7 +265,7 @@ public static class NativeConfigTypeEmitter
 
             yield return new CustomAttributeBuilder(GetCtor(typeof(FilePickerParamsAttribute), 13), new object[]
             {
-                file.InitialDirectory, (System.Environment.SpecialFolder)file.InitialFolderPath,
+                file.InitialDirectory!, (System.Environment.SpecialFolder)file.InitialFolderPath,
                 file.ChooseFileButtonLabel, file.UserCanEditPathText, file.Title, file.Filter,
                 file.FilterIndex, file.Multiselect, file.SupportMultiDottedExtensions,
                 file.ShowHiddenFiles, file.ShowPreview, file.RestoreDirectory, file.AddToRecent
@@ -275,7 +280,7 @@ public static class NativeConfigTypeEmitter
 
             yield return new CustomAttributeBuilder(GetCtor(typeof(FolderPickerParamsAttribute), 9), new object[]
             {
-                folder.InitialDirectory, (System.Environment.SpecialFolder)folder.InitialFolderPath,
+                folder.InitialDirectory!, (System.Environment.SpecialFolder)folder.InitialFolderPath,
                 folder.ChooseFolderButtonLabel, folder.UserCanEditPathText, folder.Title,
                 folder.OkButtonLabel, folder.FileNameLabel, folder.Multiselect, folder.ForceFileSystem
             });

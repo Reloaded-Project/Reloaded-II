@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using Reloaded.Mod.Interfaces;
 
 namespace Reloaded.Mod.Loader.Tests.Loader;
 

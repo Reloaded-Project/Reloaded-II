@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text.Json.Nodes;
+using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Interfaces.Structs;
 using Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
 
 namespace Reloaded.Mod.Loader.Tests.Launcher;
@@ -110,7 +112,9 @@ public class NativeModConfigTests : IDisposable
         Assert.NotNull(slider);
         Assert.Equal(0.0, slider!.Minimum);
         Assert.Equal(100.0, slider.Maximum);
+#pragma warning disable CS0618 // Legacy tick frequency; schemas still feed it.
         Assert.Equal(10, slider.TickFrequency);
+#pragma warning restore CS0618
 
         var filePicker = type.GetProperty("FileSetting")!.GetCustomAttribute<FilePickerParamsAttribute>();
         Assert.NotNull(filePicker);
@@ -253,8 +257,8 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void TryMigrate_Rolls_Back_Moves_On_Failure()
     {
-        // Two configs with values in the mod folder, the second move fails
-        // because a directory ends being where the file would land.
+        // Two configs with values in the mod folder; the second move fails
+        // because a directory already sits where the file would land.
         File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), """
         {
           "Configurations": [
