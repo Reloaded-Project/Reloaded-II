@@ -3,14 +3,14 @@ using System.Text.Json.Nodes;
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native.Schema;
 
 /// <summary>
-/// Individual configuration of a native mod; essentially mirrors one
-/// <c>IConfigurable</c> from the C# mod template.
+/// Individual configuration of a native mod; native equivalent of one
+/// <see cref="Reloaded.Mod.Interfaces.IConfigurable"/>.
 /// </summary>
 public class Configuration
 {
     /// <summary>
     /// Name of the config file where the values for this configuration are stored.
-    /// Defaults to <c>Config.json</c>, matching the C# template.
+    /// Defaults to <c>Config.json</c>.
     /// </summary>
     public string FileName { get; set; } = "Config.json";
 

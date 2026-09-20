@@ -8,7 +8,7 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 /// The <see cref="ConfigTypeEmitter"/> emits one derived class per schema configuration;
 /// the derived class holds the settings as properties, this class supplies the behaviour
 /// (name, saving, file watching) expected by the launcher's configuration dialog.
-/// Mirrors <c>Configurable&lt;T&gt;</c> of the C# mod template.
+/// Native equivalent of <c>Configurable&lt;T&gt;</c> in the C# mod template.
 /// </summary>
 public abstract class ConfigurableBase : IUpdatableConfigurable
 {

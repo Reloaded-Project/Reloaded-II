@@ -3,8 +3,8 @@ using System.Text.Json.Nodes;
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native.Schema;
 
 /// <summary>
-/// An individual setting of a configuration; mirrors a property of a
-/// C# mod's config class.
+/// An individual setting of a configuration; native equivalent of a
+/// property on an <see cref="Reloaded.Mod.Interfaces.IConfigurable"/> implementation.
 /// </summary>
 public class Property
 {

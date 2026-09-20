@@ -3,8 +3,8 @@ using System.Text.Json.Nodes;
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native.Schema;
 
 /// <summary>
-/// Parameters for the file picker control; mirrors
-/// <c>FilePickerParamsAttribute</c> of the C# interface.
+/// Parameters for the file picker control; native equivalent of
+/// <see cref="Reloaded.Mod.Interfaces.Structs.FilePickerParamsAttribute"/>.
 /// </summary>
 public class FilePicker
 {

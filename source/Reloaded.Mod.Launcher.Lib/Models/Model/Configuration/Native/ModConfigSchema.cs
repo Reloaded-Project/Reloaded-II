@@ -8,7 +8,8 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 /// its <c>ModConfig.json</c>. The launcher builds the configuration UI
 /// from that schema.
 ///
-/// The schema mirrors the attributes used by the C# mod template.
+/// The schema is the native equivalent of the attributes C# mods declare,
+/// such as <see cref="Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute"/>.
 /// Native and C# mods therefore look and behave the same:
 /// - DisplayName, Description, Category, DefaultValue
 /// - Slider/File/Folder control params

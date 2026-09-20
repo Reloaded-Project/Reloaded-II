@@ -3,8 +3,8 @@ using System.Text.Json.Nodes;
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native.Schema;
 
 /// <summary>
-/// Parameters for the folder picker control; mirrors
-/// <c>FolderPickerParamsAttribute</c> of the C# interface.
+/// Parameters for the folder picker control; native equivalent of
+/// <see cref="Reloaded.Mod.Interfaces.Structs.FolderPickerParamsAttribute"/>.
 /// </summary>
 public class FolderPicker
 {

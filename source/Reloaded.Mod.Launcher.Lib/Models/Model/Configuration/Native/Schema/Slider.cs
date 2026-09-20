@@ -3,8 +3,8 @@ using System.Text.Json.Nodes;
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native.Schema;
 
 /// <summary>
-/// Parameters for the slider control; mirrors
-/// <c>SliderControlParamsAttribute</c> of the C# interface.
+/// Parameters for the slider control; native equivalent of
+/// <see cref="Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute"/>.
 /// </summary>
 public class Slider
 {
