@@ -2,12 +2,12 @@ using System.Reflection.Emit;
 using Reloaded.Mod.Interfaces.Structs;
 using DataAnnotations = System.ComponentModel.DataAnnotations;
 
-namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
+namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 
 /// <summary>
 /// Builds .NET types from native mod configuration schemas using
 /// Reflection.Emit.
-/// The generated types subclass <see cref="NativeConfigurableBase"/> and carry
+/// The generated types subclass <see cref="ConfigurableBase"/> and carry
 /// the same attributes as a hand written C# configuration class:
 /// - <see cref="DisplayNameAttribute"/>, <see cref="DescriptionAttribute"/>,
 ///   <see cref="CategoryAttribute"/>
@@ -17,7 +17,7 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
 ///   <c>FolderPickerParams</c> (custom editors)
 /// The PropertyGrid renders them exactly like a C# mod's configuration.
 /// </summary>
-public static class NativeConfigTypeEmitter
+public static class ConfigTypeEmitter
 {
     private static readonly object BuildLock = new object();
     private static ModuleBuilder? _module;
@@ -35,7 +35,7 @@ public static class NativeConfigTypeEmitter
     /// Thrown when a property's Type is unknown, or a control does not match
     /// the property type.
     /// </exception>
-    public static NativeConfigurableBase CreateInstance(NativeConfigSchemaConfiguration configuration, string cacheKey)
+    public static ConfigurableBase CreateInstance(ConfigSchemaConfiguration configuration, string cacheKey)
     {
         Type type;
         lock (BuildLock)
@@ -47,13 +47,13 @@ public static class NativeConfigTypeEmitter
             }
         }
 
-        return (NativeConfigurableBase)Activator.CreateInstance(type)!;
+        return (ConfigurableBase)Activator.CreateInstance(type)!;
     }
 
-    private static Type BuildType(NativeConfigSchemaConfiguration configuration, string cacheKey)
+    private static Type BuildType(ConfigSchemaConfiguration configuration, string cacheKey)
     {
         var module = GetModule();
-        var typeBuilder = module.DefineType($"NativeModConfig_{Interlocked.Increment(ref _typeCounter)}_{MakeIdentifier(cacheKey)}", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, typeof(NativeConfigurableBase));
+        var typeBuilder = module.DefineType($"NativeModConfig_{Interlocked.Increment(ref _typeCounter)}_{MakeIdentifier(cacheKey)}", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, typeof(ConfigurableBase));
 
         // Build the enums first, so they can be used as property types.
         // They are named after the config type, so two mods declaring the same enum name won't clash.
@@ -77,7 +77,7 @@ public static class NativeConfigTypeEmitter
         // Build the properties.
         var ctor = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes);
         var ctorIl = ctor.GetILGenerator();
-        var baseCtor = typeof(NativeConfigurableBase).GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, binder: null, Type.EmptyTypes, modifiers: null)!;
+        var baseCtor = typeof(ConfigurableBase).GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, binder: null, Type.EmptyTypes, modifiers: null)!;
         ctorIl.Emit(OpCodes.Ldarg_0);
         ctorIl.Emit(OpCodes.Call, baseCtor);
 
@@ -114,7 +114,7 @@ public static class NativeConfigTypeEmitter
     /// <summary>
     /// Declared enums plus one per property with inline <c>Values</c>.
     /// </summary>
-    private static IEnumerable<NativeConfigSchemaEnum> CollectEnums(NativeConfigSchemaConfiguration configuration)
+    private static IEnumerable<ConfigSchemaEnum> CollectEnums(ConfigSchemaConfiguration configuration)
     {
         foreach (var schemaEnum in configuration.Enums)
             yield return schemaEnum;
@@ -122,27 +122,27 @@ public static class NativeConfigTypeEmitter
         foreach (var property in configuration.Properties)
         {
             if (property.Values.Count > 0)
-                yield return new NativeConfigSchemaEnum() { Name = property.Name, Members = property.Values };
+                yield return new ConfigSchemaEnum() { Name = property.Name, Members = property.Values };
         }
     }
 
-    private static (Type propertyType, object? defaultValue) ResolveTypeAndDefault(NativeConfigSchemaProperty property, Dictionary<string, Type> enums)
+    private static (Type propertyType, object? defaultValue) ResolveTypeAndDefault(ConfigSchemaProperty property, Dictionary<string, Type> enums)
     {
         switch (property.Type)
         {
-            case NativeConfigSchemaProperty.SupportedTypes.Bool:
+            case ConfigSchemaProperty.SupportedTypes.Bool:
                 return (typeof(bool), property.DefaultValue is bool b ? b : false);
 
-            case NativeConfigSchemaProperty.SupportedTypes.Int:
+            case ConfigSchemaProperty.SupportedTypes.Int:
                 return (typeof(int), property.DefaultValue == null ? 0 : Convert.ToInt32(property.DefaultValue));
 
-            case NativeConfigSchemaProperty.SupportedTypes.Float:
+            case ConfigSchemaProperty.SupportedTypes.Float:
                 return (typeof(float), property.DefaultValue == null ? 0.0f : Convert.ToSingle(property.DefaultValue));
 
-            case NativeConfigSchemaProperty.SupportedTypes.Double:
+            case ConfigSchemaProperty.SupportedTypes.Double:
                 return (typeof(double), property.DefaultValue == null ? 0.0 : Convert.ToDouble(property.DefaultValue));
 
-            case NativeConfigSchemaProperty.SupportedTypes.String:
+            case ConfigSchemaProperty.SupportedTypes.String:
                 return (typeof(string), property.DefaultValue?.ToString());
 
             default:
@@ -159,7 +159,7 @@ public static class NativeConfigTypeEmitter
         }
     }
 
-    private static object GetEnumDefault(NativeConfigSchemaProperty property, Type enumType)
+    private static object GetEnumDefault(ConfigSchemaProperty property, Type enumType)
     {
         if (property.DefaultValue is string memberName)
         {
@@ -214,7 +214,7 @@ public static class NativeConfigTypeEmitter
         il.Emit(OpCodes.Stfld, field);
     }
 
-    private static IEnumerable<CustomAttributeBuilder> BuildAttributes(NativeConfigSchemaProperty property, Type propertyType, object? defaultValue)
+    private static IEnumerable<CustomAttributeBuilder> BuildAttributes(ConfigSchemaProperty property, Type propertyType, object? defaultValue)
     {
         if (property.DisplayName != null)
             yield return new CustomAttributeBuilder(GetCtor(typeof(DisplayNameAttribute), 1), new object[] { property.DisplayName });

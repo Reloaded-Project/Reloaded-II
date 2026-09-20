@@ -1,6 +1,6 @@
 using System.Text.Json.Nodes;
 
-namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
+namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 
 /// <summary>
 /// Declarative configuration schema for native (non .NET) mods.
@@ -13,7 +13,7 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
 /// - DisplayName, Description, Category, DefaultValue
 /// - Slider/File/Folder control params
 /// </summary>
-public class NativeModConfigSchema
+public class ModConfigSchema
 {
     /// <summary>
     /// Name of the config file to place inside the mod folder.
@@ -23,7 +23,7 @@ public class NativeModConfigSchema
     /// <summary>
     /// The individual configurations (pages/files) exposed by the mod.
     /// </summary>
-    public List<NativeConfigSchemaConfiguration> Configurations { get; set; } = new();
+    public List<ConfigSchemaConfiguration> Configurations { get; set; } = new();
 
     /// <summary>
     /// Returns true if the specified mod directory contains a config schema.
@@ -40,19 +40,19 @@ public class NativeModConfigSchema
     /// <see cref="FileNotFoundException"/>; malformed JSON,
     /// <see cref="JsonException"/>.
     /// </exception>
-    public static NativeModConfigSchema Load(string modDirectory) => Parse(JsonNode.Parse(File.ReadAllText(Path.Combine(modDirectory, SchemaFileName)), new JsonNodeOptions() { PropertyNameCaseInsensitive = true }) ?? throw newException(modDirectory), modDirectory);
+    public static ModConfigSchema Load(string modDirectory) => Parse(JsonNode.Parse(File.ReadAllText(Path.Combine(modDirectory, SchemaFileName)), new JsonNodeOptions() { PropertyNameCaseInsensitive = true }) ?? throw newException(modDirectory), modDirectory);
 
     private static Exception newException(string modDirectory) => new InvalidOperationException($"Failed to parse {SchemaFileName} in '{modDirectory}'. The file may be empty or invalid.");
 
-    private static NativeModConfigSchema Parse(JsonNode node, string modDirectory)
+    private static ModConfigSchema Parse(JsonNode node, string modDirectory)
     {
         try
         {
-            var schema = new NativeModConfigSchema();
+            var schema = new ModConfigSchema();
             if (node[Keys.Configurations] is JsonArray configurations)
             {
                 foreach (var configurationNode in configurations)
-                    schema.Configurations.Add(NativeConfigSchemaConfiguration.Parse(configurationNode!));
+                    schema.Configurations.Add(ConfigSchemaConfiguration.Parse(configurationNode!));
             }
 
             if (schema.Configurations.Count <= 0)
@@ -71,7 +71,7 @@ public class NativeModConfigSchema
 /// Individual configuration of a native mod; essentially mirrors one
 /// <c>IConfigurable</c> from the C# mod template.
 /// </summary>
-public class NativeConfigSchemaConfiguration
+public class ConfigSchemaConfiguration
 {
     /// <summary>
     /// Name of the config file where the values for this configuration are stored.
@@ -87,12 +87,12 @@ public class NativeConfigSchemaConfiguration
     /// <summary>
     /// Enumerations available to the properties of this configuration.
     /// </summary>
-    public List<NativeConfigSchemaEnum> Enums { get; set; } = new();
+    public List<ConfigSchemaEnum> Enums { get; set; } = new();
 
     /// <summary>
     /// The individual settings.
     /// </summary>
-    public List<NativeConfigSchemaProperty> Properties { get; set; } = new();
+    public List<ConfigSchemaProperty> Properties { get; set; } = new();
 
     /// <summary>
     /// Reads a configuration from its JSON representation.
@@ -101,9 +101,9 @@ public class NativeConfigSchemaConfiguration
     /// <exception cref="JsonException">
     /// Thrown when <c>FileName</c> is not a plain file name.
     /// </exception>
-    public static NativeConfigSchemaConfiguration Parse(JsonNode node)
+    public static ConfigSchemaConfiguration Parse(JsonNode node)
     {
-        var configuration = new NativeConfigSchemaConfiguration
+        var configuration = new ConfigSchemaConfiguration
         {
             FileName    = ValidateFileName(node.GetStringOrDefault(Keys.FileName, "Config.json")!),
             DisplayName = node.GetStringOrDefault(Keys.DisplayName, null)
@@ -112,13 +112,13 @@ public class NativeConfigSchemaConfiguration
         if (node[Keys.Enums] is JsonArray enums)
         {
             foreach (var enumNode in enums)
-                configuration.Enums.Add(NativeConfigSchemaEnum.Parse(enumNode!));
+                configuration.Enums.Add(ConfigSchemaEnum.Parse(enumNode!));
         }
 
         if (node[Keys.Properties] is JsonArray properties)
         {
             foreach (var propertyNode in properties)
-                configuration.Properties.Add(NativeConfigSchemaProperty.Parse(propertyNode!));
+                configuration.Properties.Add(ConfigSchemaProperty.Parse(propertyNode!));
         }
 
         return configuration;
@@ -140,7 +140,7 @@ public class NativeConfigSchemaConfiguration
 /// <summary>
 /// Enumeration with display names, rendered as a list in Reloaded.
 /// </summary>
-public class NativeConfigSchemaEnum
+public class ConfigSchemaEnum
 {
     /// <summary>
     /// Name of the enum type, referenced by property <c>Type</c>.
@@ -150,7 +150,7 @@ public class NativeConfigSchemaEnum
     /// <summary>
     /// The individual values of the enum.
     /// </summary>
-    public List<NativeConfigSchemaEnumMember> Members { get; set; } = new();
+    public List<ConfigSchemaEnumMember> Members { get; set; } = new();
 
     /// <summary>
     /// Reads an enum from its JSON representation.
@@ -159,9 +159,9 @@ public class NativeConfigSchemaEnum
     /// <exception cref="JsonException">
     /// Thrown when the enum declares no members.
     /// </exception>
-    public static NativeConfigSchemaEnum Parse(JsonNode node)
+    public static ConfigSchemaEnum Parse(JsonNode node)
     {
-        var result = new NativeConfigSchemaEnum
+        var result = new ConfigSchemaEnum
         {
             Name = node.GetStringOrDefault(Keys.Name, "")!
         };
@@ -170,7 +170,7 @@ public class NativeConfigSchemaEnum
         {
             foreach (var memberNode in members)
             {
-                var member = NativeConfigSchemaEnumMember.Parse(memberNode!);
+                var member = ConfigSchemaEnumMember.Parse(memberNode!);
                 if (member.Name.Length > 0)
                     result.Members.Add(member);
             }
@@ -186,7 +186,7 @@ public class NativeConfigSchemaEnum
 /// <summary>
 /// An individual value of a schema enum.
 /// </summary>
-public class NativeConfigSchemaEnumMember
+public class ConfigSchemaEnumMember
 {
     /// <summary>
     /// Name of the value, stored in the config file.
@@ -202,7 +202,7 @@ public class NativeConfigSchemaEnumMember
     /// Reads an enum member from its JSON representation.
     /// </summary>
     /// <param name="node">Node holding the member's properties.</param>
-    public static NativeConfigSchemaEnumMember Parse(JsonNode node) => new()
+    public static ConfigSchemaEnumMember Parse(JsonNode node) => new()
     {
         Name        = node.GetStringOrDefault(Keys.Name, "")!,
         DisplayName = node.GetStringOrDefault(Keys.DisplayName, null)
@@ -213,7 +213,7 @@ public class NativeConfigSchemaEnumMember
 /// An individual setting of a configuration; mirrors a property of a
 /// C# mod's config class.
 /// </summary>
-public class NativeConfigSchemaProperty
+public class ConfigSchemaProperty
 {
     /// <summary>
     /// Supported values for <see cref="Type"/>.
@@ -270,23 +270,23 @@ public class NativeConfigSchemaProperty
     /// <summary>
     /// Renders this setting as a slider. Only valid for numeric types.
     /// </summary>
-    public NativeConfigSchemaSlider? Slider { get; set; }
+    public ConfigSchemaSlider? Slider { get; set; }
 
     /// <summary>
     /// Renders this setting (string) with a file picker dialog.
     /// </summary>
-    public NativeConfigSchemaFilePicker? FilePicker { get; set; }
+    public ConfigSchemaFilePicker? FilePicker { get; set; }
 
     /// <summary>
     /// Renders this setting (string) with a folder picker dialog.
     /// </summary>
-    public NativeConfigSchemaFolderPicker? FolderPicker { get; set; }
+    public ConfigSchemaFolderPicker? FolderPicker { get; set; }
 
     /// <summary>
     /// Enum values declared directly on the property, for the common case
     /// of an enum used by a single setting.
     /// </summary>
-    public List<NativeConfigSchemaEnumMember> Values { get; set; } = new();
+    public List<ConfigSchemaEnumMember> Values { get; set; } = new();
 
     /// <summary>
     /// Reads a property from its JSON representation.
@@ -295,9 +295,9 @@ public class NativeConfigSchemaProperty
     /// <exception cref="JsonException">
     /// Thrown when the property has no name.
     /// </exception>
-    public static NativeConfigSchemaProperty Parse(JsonNode node)
+    public static ConfigSchemaProperty Parse(JsonNode node)
     {
-        var property = new NativeConfigSchemaProperty
+        var property = new ConfigSchemaProperty
         {
             Name          = node.GetStringOrDefault(Keys.Name, "")!,
             Type          = node.GetStringOrDefault(Keys.Type, SupportedTypes.String)!.ToLowerInvariant(),
@@ -309,21 +309,21 @@ public class NativeConfigSchemaProperty
         };
 
         if (node[Keys.Slider] is JsonNode slider)
-            property.Slider = NativeConfigSchemaSlider.Parse(slider);
+            property.Slider = ConfigSchemaSlider.Parse(slider);
 
         if (node[Keys.FilePicker] is JsonNode filePicker)
-            property.FilePicker = NativeConfigSchemaFilePicker.Parse(filePicker);
+            property.FilePicker = ConfigSchemaFilePicker.Parse(filePicker);
 
         if (node[Keys.FolderPicker] is JsonNode folderPicker)
-            property.FolderPicker = NativeConfigSchemaFolderPicker.Parse(folderPicker);
+            property.FolderPicker = ConfigSchemaFolderPicker.Parse(folderPicker);
 
         if (node[Keys.Values] is JsonArray values)
         {
             foreach (var valueNode in values)
             {
                 var member = valueNode!.GetValueKind() == JsonValueKind.String
-                    ? new NativeConfigSchemaEnumMember { Name = valueNode.GetValue<string>() }
-                    : NativeConfigSchemaEnumMember.Parse(valueNode);
+                    ? new ConfigSchemaEnumMember { Name = valueNode.GetValue<string>() }
+                    : ConfigSchemaEnumMember.Parse(valueNode);
 
                 if (member.Name.Length > 0)
                     property.Values.Add(member);
@@ -344,7 +344,7 @@ public class NativeConfigSchemaProperty
 /// Parameters for the slider control; mirrors
 /// <c>SliderControlParamsAttribute</c> of the C# interface.
 /// </summary>
-public class NativeConfigSchemaSlider
+public class ConfigSchemaSlider
 {
     /// <summary>
     /// Minimum value of the slider.
@@ -411,7 +411,7 @@ public class NativeConfigSchemaSlider
     /// Reads the slider parameters from their JSON representation.
     /// </summary>
     /// <param name="node">Node holding the slider's properties.</param>
-    public static NativeConfigSchemaSlider Parse(JsonNode node) => new()
+    public static ConfigSchemaSlider Parse(JsonNode node) => new()
     {
         Minimum              = node.GetDoubleOrDefault(Keys.Minimum, 0.0),
         Maximum              = node.GetDoubleOrDefault(Keys.Maximum, 1.0),
@@ -432,7 +432,7 @@ public class NativeConfigSchemaSlider
 /// Parameters for the file picker control; mirrors
 /// <c>FilePickerParamsAttribute</c> of the C# interface.
 /// </summary>
-public class NativeConfigSchemaFilePicker
+public class ConfigSchemaFilePicker
 {
     /// <summary>
     /// Initial directory shown; null for the default.
@@ -504,7 +504,7 @@ public class NativeConfigSchemaFilePicker
     /// Reads the file picker parameters from their JSON representation.
     /// </summary>
     /// <param name="node">Node holding the picker's properties.</param>
-    public static NativeConfigSchemaFilePicker Parse(JsonNode node) => new()
+    public static ConfigSchemaFilePicker Parse(JsonNode node) => new()
     {
         InitialDirectory           = node.GetStringOrDefault(Keys.InitialDirectory, null),
         InitialFolderPath          = node.GetIntOrDefault(Keys.InitialFolderPath, 0x05),
@@ -526,7 +526,7 @@ public class NativeConfigSchemaFilePicker
 /// Parameters for the folder picker control; mirrors
 /// <c>FolderPickerParamsAttribute</c> of the C# interface.
 /// </summary>
-public class NativeConfigSchemaFolderPicker
+public class ConfigSchemaFolderPicker
 {
     /// <summary>
     /// Initial directory shown; null for the default.
@@ -578,7 +578,7 @@ public class NativeConfigSchemaFolderPicker
     /// Reads the folder picker parameters from their JSON representation.
     /// </summary>
     /// <param name="node">Node holding the picker's properties.</param>
-    public static NativeConfigSchemaFolderPicker Parse(JsonNode node) => new()
+    public static ConfigSchemaFolderPicker Parse(JsonNode node) => new()
     {
         InitialDirectory       = node.GetStringOrDefault(Keys.InitialDirectory, null),
         InitialFolderPath      = node.GetIntOrDefault(Keys.InitialFolderPath, 0x05),

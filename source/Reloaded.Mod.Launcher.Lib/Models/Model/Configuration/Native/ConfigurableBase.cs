@@ -1,16 +1,16 @@
 using System.Collections.Concurrent;
 using System.Text.Json.Nodes;
 
-namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
+namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 
 /// <summary>
 /// Base class for the configuration objects generated for native (non .NET) mods.
-/// The <see cref="NativeConfigTypeEmitter"/> emits one derived class per schema configuration;
+/// The <see cref="ConfigTypeEmitter"/> emits one derived class per schema configuration;
 /// the derived class holds the settings as properties, this class supplies the behaviour
 /// (name, saving, file watching) expected by the launcher's configuration dialog.
 /// Mirrors <c>Configurable&lt;T&gt;</c> of the C# mod template.
 /// </summary>
-public abstract class NativeConfigurableBase : IUpdatableConfigurable
+public abstract class ConfigurableBase : IUpdatableConfigurable
 {
     /// <summary>
     /// Full path to the file storing the values of this configuration.
@@ -82,7 +82,7 @@ public abstract class NativeConfigurableBase : IUpdatableConfigurable
         lock (_readLock)
         {
             // Note: External program might still be writing to file while this is being executed, so we need to keep retrying.
-            var newConfig = NativeConfigIO.Load(GetType(), FilePath!, ConfigName, 250, 2);
+            var newConfig = ConfigIO.Load(GetType(), FilePath!, ConfigName, 250, 2);
 
             // Load and copy events, then disable events for this instance.
             newConfig.ConfigurationUpdated = ConfigurationUpdated;
@@ -93,7 +93,7 @@ public abstract class NativeConfigurableBase : IUpdatableConfigurable
         }
     }
 
-    private void OnSave() => NativeConfigIO.Save(this, FilePath!);
+    private void OnSave() => ConfigIO.Save(this, FilePath!);
 }
 
 /// <summary>
@@ -101,7 +101,7 @@ public abstract class NativeConfigurableBase : IUpdatableConfigurable
 /// The file format is a flat JSON object of property name to value, with enums stored as strings;
 /// identical in shape to what the C# mod template writes, so C++ mods can parse it with ease.
 /// </summary>
-public static class NativeConfigIO
+public static class ConfigIO
 {
     private static readonly JsonSerializerOptions SerializerOptions = new() { WriteIndented = true };
 
@@ -181,9 +181,9 @@ public static class NativeConfigIO
     /// Creates a new instance of the given configuration type with values loaded from disk.
     /// Missing or unreadable files yield an instance with the schema default values.
     /// </summary>
-    public static NativeConfigurableBase Load(Type type, string filePath, string configName, int timeout = 0, int retries = 1)
+    public static ConfigurableBase Load(Type type, string filePath, string configName, int timeout = 0, int retries = 1)
     {
-        var instance = (NativeConfigurableBase)Activator.CreateInstance(type)!;
+        var instance = (ConfigurableBase)Activator.CreateInstance(type)!;
         for (int x = 0; x < retries; x++)
         {
             if (Apply(instance, filePath))

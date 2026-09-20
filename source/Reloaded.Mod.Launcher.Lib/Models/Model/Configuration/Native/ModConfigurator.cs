@@ -1,10 +1,10 @@
-namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
+namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 
 /// <summary>
 /// Configurator for native (non .NET) mods that declare their settings through a <c>ConfigSchema.json</c> file.
 /// Use the same interface as a C# mod's configurator.
 /// </summary>
-public class NativeModConfigurator : IConfiguratorV3
+public class ModConfigurator : IConfiguratorV3
 {
     private string _schemaPath;
     private string _modDirectory = "";
@@ -12,26 +12,26 @@ public class NativeModConfigurator : IConfiguratorV3
     private ConfiguratorContext _context;
 
     /// <summary>
-    /// Creates a configurator for a mod folder containing <see cref="NativeModConfigSchema.SchemaFileName"/>.
+    /// Creates a configurator for a mod folder containing <see cref="ModConfigSchema.SchemaFileName"/>.
     /// </summary>
     /// <param name="modDirectory">Full path to the folder containing the mod.</param>
-    public NativeModConfigurator(string modDirectory)
+    public ModConfigurator(string modDirectory)
     {
         _modDirectory = modDirectory;
-        _schemaPath = Path.Combine(modDirectory, NativeModConfigSchema.SchemaFileName);
+        _schemaPath = Path.Combine(modDirectory, ModConfigSchema.SchemaFileName);
     }
 
     /// <inheritdoc />
     public void SetModDirectory(string modDirectory)
     {
         _modDirectory = modDirectory;
-        _schemaPath = Path.Combine(modDirectory, NativeModConfigSchema.SchemaFileName);
+        _schemaPath = Path.Combine(modDirectory, ModConfigSchema.SchemaFileName);
     }
 
     /// <inheritdoc />
     public IConfigurable[] GetConfigurations()
     {
-        var schema = NativeModConfigSchema.Load(_modDirectory);
+        var schema = ModConfigSchema.Load(_modDirectory);
         var configDirectory = _configDirectory ?? _modDirectory;
 
         // Include the file's last write time in the cache key, such that mod updates invalidate emitted types.
@@ -40,10 +40,10 @@ public class NativeModConfigurator : IConfiguratorV3
         foreach (var configuration in schema.Configurations)
         {
             var cacheKey = $"{_modDirectory}|{configuration.FileName}|{lastWrite}";
-            var instance = NativeConfigTypeEmitter.CreateInstance(configuration, cacheKey);
+            var instance = ConfigTypeEmitter.CreateInstance(configuration, cacheKey);
 
             var valuesPath = Path.Combine(configDirectory, configuration.FileName);
-            NativeConfigIO.Apply(instance, valuesPath);
+            ConfigIO.Apply(instance, valuesPath);
             instance.Initialize(valuesPath, configuration.DisplayName ?? Path.GetFileNameWithoutExtension(configuration.FileName));
             result.Add(instance);
         }
@@ -70,7 +70,7 @@ public class NativeModConfigurator : IConfiguratorV3
         var moved = new List<(string OldPath, string NewPath)>();
         try
         {
-            var schema = NativeModConfigSchema.Load(_modDirectory);
+            var schema = ModConfigSchema.Load(_modDirectory);
             Directory.CreateDirectory(newDirectory);
             foreach (var configuration in schema.Configurations)
             {

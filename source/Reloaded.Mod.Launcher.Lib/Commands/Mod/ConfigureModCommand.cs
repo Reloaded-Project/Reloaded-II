@@ -1,3 +1,5 @@
+using Native = Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
+
 namespace Reloaded.Mod.Launcher.Lib.Commands.Mod;
 
 /// <summary>
@@ -73,12 +75,12 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         var modDirectory = Path.GetFullPath(Path.GetDirectoryName(_modTuple.Path)!);
 
         // Native (non .NET) mods describe their settings in a schema file, no managed code required.
-        if (NativeModConfigSchema.ExistsInFolder(modDirectory))
+        if (Native.ModConfigSchema.ExistsInFolder(modDirectory))
         {
             // Validate upfront, a broken schema disables the button instead of failing later.
-            NativeModConfigSchema.Load(modDirectory);
+            Native.ModConfigSchema.Load(modDirectory);
 
-            var nativeConfigurator = new NativeModConfigurator(modDirectory);
+            var nativeConfigurator = new Native.ModConfigurator(modDirectory);
             nativeConfigurator.SetModDirectory(modDirectory);
 
 

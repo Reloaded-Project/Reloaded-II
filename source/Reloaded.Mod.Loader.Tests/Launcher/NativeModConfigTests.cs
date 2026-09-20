@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text.Json.Nodes;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Structs;
-using Reloaded.Mod.Launcher.Lib.Models.Model.Configuration;
+using Native = Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 
 namespace Reloaded.Mod.Loader.Tests.Launcher;
 
@@ -50,15 +50,15 @@ public class NativeModConfigTests : IDisposable
         ConfigDirectory = Path.Combine(Path.GetTempPath(), $"reloaded-native-config-{Guid.NewGuid():N}");
         Directory.CreateDirectory(ModDirectory);
         Directory.CreateDirectory(ConfigDirectory);
-        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), Schema);
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), Schema);
     }
 
     [Fact]
     public void Schema_Is_Detected_And_Parsed()
     {
-        Assert.True(NativeModConfigSchema.ExistsInFolder(ModDirectory));
+        Assert.True(Native.ModConfigSchema.ExistsInFolder(ModDirectory));
 
-        var schema = NativeModConfigSchema.Load(ModDirectory);
+        var schema = Native.ModConfigSchema.Load(ModDirectory);
         var configuration = Assert.Single(schema.Configurations);
         Assert.Equal("Config.json", configuration.FileName);
         Assert.Equal("Default Config", configuration.DisplayName);
@@ -200,7 +200,7 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Unknown_Type_Throws_Descriptive_Error()
     {
-        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), """
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
         { "Configurations": [ { "FileName": "Config.json", "Properties": [ { "Name": "Broken", "Type": "NoSuchEnum" } ] } ] }
         """);
         var configurator = CreateConfigurator();
@@ -212,7 +212,7 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Slider_On_Enum_Property_Throws()
     {
-        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), """
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
         {
           "Configurations": [
           {
@@ -235,11 +235,11 @@ public class NativeModConfigTests : IDisposable
     [InlineData("SubFolder/Config.json")]
     public void FileNames_With_Paths_Are_Rejected(string fileName)
     {
-        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), $$"""
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), $$"""
         { "Configurations": [ { "FileName": "{{fileName.Replace("\\", "\\\\")}}", "Properties": [] } ] }
         """);
 
-        var error = Assert.Throws<InvalidOperationException>(() => NativeModConfigSchema.Load(ModDirectory));
+        var error = Assert.Throws<InvalidOperationException>(() => Native.ModConfigSchema.Load(ModDirectory));
         var jsonError = Assert.IsType<JsonException>(error.InnerException);
         Assert.Contains("plain file name", jsonError.Message);
     }
@@ -259,7 +259,7 @@ public class NativeModConfigTests : IDisposable
     {
         // Two configs with values in the mod folder; the second move fails
         // because a directory already sits where the file would land.
-        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), """
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
         {
           "Configurations": [
             { "FileName": "First.json", "Properties": [] },
@@ -284,7 +284,7 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Inline_Enum_Values_Build_A_Dropdown()
     {
-        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), """
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
         {
           "Configurations": [
           {
@@ -316,7 +316,7 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Enum_Type_Without_Values_Gives_Hint()
     {
-        File.WriteAllText(Path.Combine(ModDirectory, NativeModConfigSchema.SchemaFileName), """
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
         { "Configurations": [ { "FileName": "Config.json", "Properties": [ { "Name": "Broken", "Type": "enum" } ] } ] }
         """);
         var configurator = CreateConfigurator();
@@ -325,9 +325,9 @@ public class NativeModConfigTests : IDisposable
         Assert.Contains("Values", error.Message);
     }
 
-    private NativeModConfigurator CreateConfigurator()
+    private Native.ModConfigurator CreateConfigurator()
     {
-        var configurator = new NativeModConfigurator(ModDirectory);
+        var configurator = new Native.ModConfigurator(ModDirectory);
         configurator.SetModDirectory(ModDirectory);
         configurator.SetConfigDirectory(ConfigDirectory);
         return configurator;
