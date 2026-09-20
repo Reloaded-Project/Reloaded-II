@@ -11,8 +11,6 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 /// class, emitted by <see cref="ConfigTypeEmitter"/>. The derived class only holds
 /// the settings as properties; this base class supplies what the launcher's
 /// configuration dialog expects: display name, saving and file watching.
-///
-/// Native equivalent of <c>Configurable&lt;T&gt;</c> in the C# mod template.
 /// </remarks>
 public abstract class ConfigurableBase : IUpdatableConfigurable
 {
