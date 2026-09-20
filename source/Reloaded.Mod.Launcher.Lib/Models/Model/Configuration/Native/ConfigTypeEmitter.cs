@@ -35,7 +35,7 @@ public static class ConfigTypeEmitter
     /// Thrown when a property's Type is unknown, or a control does not match
     /// the property type.
     /// </exception>
-    public static ConfigurableBase CreateInstance(ConfigSchemaConfiguration configuration, string cacheKey)
+    public static ConfigurableBase CreateInstance(Schema.Configuration configuration, string cacheKey)
     {
         Type type;
         lock (BuildLock)
@@ -50,7 +50,7 @@ public static class ConfigTypeEmitter
         return (ConfigurableBase)Activator.CreateInstance(type)!;
     }
 
-    private static Type BuildType(ConfigSchemaConfiguration configuration, string cacheKey)
+    private static Type BuildType(Schema.Configuration configuration, string cacheKey)
     {
         var module = GetModule();
         var typeBuilder = module.DefineType($"NativeModConfig_{Interlocked.Increment(ref _typeCounter)}_{MakeIdentifier(cacheKey)}", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed, typeof(ConfigurableBase));
@@ -114,7 +114,7 @@ public static class ConfigTypeEmitter
     /// <summary>
     /// Declared enums plus one per property with inline <c>Values</c>.
     /// </summary>
-    private static IEnumerable<ConfigSchemaEnum> CollectEnums(ConfigSchemaConfiguration configuration)
+    private static IEnumerable<Schema.Enum> CollectEnums(Schema.Configuration configuration)
     {
         foreach (var schemaEnum in configuration.Enums)
             yield return schemaEnum;
@@ -122,35 +122,35 @@ public static class ConfigTypeEmitter
         foreach (var property in configuration.Properties)
         {
             if (property.Values.Count > 0)
-                yield return new ConfigSchemaEnum() { Name = property.Name, Members = property.Values };
+                yield return new Schema.Enum() { Name = property.Name, Members = property.Values };
         }
     }
 
-    private static (Type propertyType, object? defaultValue) ResolveTypeAndDefault(ConfigSchemaProperty property, Dictionary<string, Type> enums)
+    private static (Type propertyType, object? defaultValue) ResolveTypeAndDefault(Schema.Property property, Dictionary<string, Type> enums)
     {
         switch (property.Type)
         {
-            case ConfigSchemaProperty.SupportedTypes.Bool:
+            case Schema.Property.SupportedTypes.Bool:
                 return (typeof(bool), property.DefaultValue is bool b ? b : false);
 
-            case ConfigSchemaProperty.SupportedTypes.Int:
+            case Schema.Property.SupportedTypes.Int:
                 return (typeof(int), property.DefaultValue == null ? 0 : Convert.ToInt32(property.DefaultValue));
 
-            case ConfigSchemaProperty.SupportedTypes.Float:
+            case Schema.Property.SupportedTypes.Float:
                 return (typeof(float), property.DefaultValue == null ? 0.0f : Convert.ToSingle(property.DefaultValue));
 
-            case ConfigSchemaProperty.SupportedTypes.Double:
+            case Schema.Property.SupportedTypes.Double:
                 return (typeof(double), property.DefaultValue == null ? 0.0 : Convert.ToDouble(property.DefaultValue));
 
-            case ConfigSchemaProperty.SupportedTypes.String:
+            case Schema.Property.SupportedTypes.String:
                 return (typeof(string), property.DefaultValue?.ToString());
 
             default:
                 if (!enums.TryGetValue(property.Type, out var enumType))
                 {
                     var hint = string.Equals(property.Type, "enum", StringComparison.OrdinalIgnoreCase)
-                        ? $"Inline enums need a '{Keys.Values}' array on the property."
-                        : $"Declare an enum with this name under '{Keys.Enums}'.";
+                        ? $"Inline enums need a '{Schema.Keys.Values}' array on the property."
+                        : $"Declare an enum with this name under '{Schema.Keys.Enums}'.";
 
                     throw new InvalidOperationException($"Property '{property.Name}' has unknown Type '{property.Type}'. {hint}");
                 }
@@ -159,7 +159,7 @@ public static class ConfigTypeEmitter
         }
     }
 
-    private static object GetEnumDefault(ConfigSchemaProperty property, Type enumType)
+    private static object GetEnumDefault(Schema.Property property, Type enumType)
     {
         if (property.DefaultValue is string memberName)
         {
@@ -214,7 +214,7 @@ public static class ConfigTypeEmitter
         il.Emit(OpCodes.Stfld, field);
     }
 
-    private static IEnumerable<CustomAttributeBuilder> BuildAttributes(ConfigSchemaProperty property, Type propertyType, object? defaultValue)
+    private static IEnumerable<CustomAttributeBuilder> BuildAttributes(Schema.Property property, Type propertyType, object? defaultValue)
     {
         if (property.DisplayName != null)
             yield return new CustomAttributeBuilder(GetCtor(typeof(DisplayNameAttribute), 1), new object[] { property.DisplayName });
