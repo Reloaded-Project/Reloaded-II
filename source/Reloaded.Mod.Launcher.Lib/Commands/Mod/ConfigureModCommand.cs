@@ -21,6 +21,13 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         _applicationTuple = applicationTuple;
     }
 
+    /// <summary>
+    /// Full path of the mod's user config folder; null when the mod has none.
+    /// </summary>
+    private string? ExistingUserConfigFolder => _modUserConfigTuple != null
+        ? Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!)
+        : null;
+
     /* ICommand */
 
     // Disallowed inlining to ensure nothing from library can be kept alive by stack references etc.
@@ -68,40 +75,53 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
     [MethodImpl(MethodImplOptions.NoInlining)]
     private bool TryGetConfigurator(out IConfiguratorV1? configurator, out PluginLoader? loader)
     {
-        var config = _modTuple!.Config;
-        configurator = null;
-        loader = null;
-
-        var modDirectory = Path.GetFullPath(Path.GetDirectoryName(_modTuple.Path)!);
+        var modDirectory = Path.GetFullPath(Path.GetDirectoryName(_modTuple!.Path)!);
 
         // Native (non .NET) mods describe their settings in a schema file, no managed code required.
         if (Native.ModConfigSchema.ExistsInFolder(modDirectory))
         {
-            // Validate upfront, a broken schema disables the button instead of failing later.
-            Native.ModConfigSchema.Load(modDirectory);
-
-            var nativeConfigurator = new Native.ModConfigurator(modDirectory);
-            nativeConfigurator.SetModDirectory(modDirectory);
-
-            string configDirectory = _modUserConfigTuple != null
-                ? Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!)
-                : ModUserConfig.GetUserConfigFolderForMod(_modTuple.Config.ModId);
-
-            if (!nativeConfigurator.TryMigrate(modDirectory, configDirectory))
-                throw new InvalidOperationException($"Could not move the settings of '{_modTuple.Config.ModName}' from '{modDirectory}' to '{configDirectory}'.", nativeConfigurator.MigrationError);
-
-            nativeConfigurator.SetConfigDirectory(configDirectory);
-
-            nativeConfigurator.SetContext(new ConfiguratorContext()
-            {
-                Application = _applicationTuple.Config,
-                ModConfigPath = _modTuple.Path,
-                ApplicationConfigPath = _applicationTuple.Path
-            });
-
-            configurator = nativeConfigurator;
+            loader = null;
+            configurator = CreateNativeConfigurator(modDirectory);
             return true;
         }
+
+        return TryGetManagedConfigurator(modDirectory, out configurator, out loader);
+    }
+
+    /// <summary>
+    /// Creates the configurator for a native mod.
+    /// </summary>
+    /// <remarks>
+    /// Throws when the settings schema is broken or the settings cannot move
+    /// to the user config folder.
+    /// </remarks>
+    private IConfiguratorV1 CreateNativeConfigurator(string modDirectory)
+    {
+        // Validate upfront, a broken schema disables the button instead of failing later.
+        Native.ModConfigSchema.Load(modDirectory);
+
+        // Native settings always live in the user config folder, creating the
+        // standard one when the mod has none yet.
+        string configDirectory = ExistingUserConfigFolder
+            ?? ModUserConfig.GetUserConfigFolderForMod(_modTuple!.Config.ModId);
+
+        Directory.CreateDirectory(configDirectory);
+
+        var nativeConfigurator = new Native.ModConfigurator(modDirectory);
+        ConfigureConfigurator(nativeConfigurator, modDirectory, configDirectory);
+
+        return nativeConfigurator;
+    }
+
+    /// <summary>
+    /// Loads the configurator from the mod's .NET DLL, returning false when the
+    /// DLL is missing or holds no configurator.
+    /// </summary>
+    private bool TryGetManagedConfigurator(string modDirectory, out IConfiguratorV1? configurator, out PluginLoader? loader)
+    {
+        var config = _modTuple!.Config;
+        configurator = null;
+        loader = null;
 
         string dllPath = config.GetManagedDllPath(_modTuple.Path);
 
@@ -118,32 +138,61 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
         var assembly = loader.LoadDefaultAssembly();
         var types = assembly.GetTypes();
         var entryPoint = types.FirstOrDefault(t => typeof(IConfiguratorV1).IsAssignableFrom(t) && !t.IsAbstract);
-        
-        if (entryPoint == null) 
+
+        if (entryPoint == null)
             return false;
 
         configurator = (IConfiguratorV1)Activator.CreateInstance(entryPoint)!;
+        ConfigureConfigurator(configurator, modDirectory, ExistingUserConfigFolder);
+
+        return true;
+    }
+
+    /// <summary>
+    /// Sets up a freshly created configurator with its mod directory, user
+    /// config location and application context.
+    /// </summary>
+    /// <param name="configurator">The configurator to set up.</param>
+    /// <param name="modDirectory">Full path to the mod's folder.</param>
+    /// <param name="configDirectory">Full path to the mod's user config
+    /// folder; null skips migration and leaves the location untouched.</param>
+    private void ConfigureConfigurator(IConfiguratorV1 configurator, string modDirectory, string? configDirectory)
+    {
         configurator.SetModDirectory(modDirectory);
 
-        if (configurator is IConfiguratorV2 versionTwo && _modUserConfigTuple != null)
+        if (configurator is IConfiguratorV2 versionTwo && configDirectory != null)
         {
-            var configDirectory = Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!);
-            versionTwo.Migrate(modDirectory, configDirectory);
+            MigrateConfigurator(versionTwo, modDirectory, configDirectory);
             versionTwo.SetConfigDirectory(configDirectory);
         }
 
         if (configurator is IConfiguratorV3 versionThree)
-        {
-            versionThree.SetContext(new ConfiguratorContext()
-            {
-                Application = _applicationTuple.Config,
-                ModConfigPath = _modTuple.Path,
-                ApplicationConfigPath = _applicationTuple.Path
-            });
-        }
-            
-        return true;
+            versionThree.SetContext(CreateContext());
     }
+
+    /// <summary>
+    /// Moves a configurator's config files to a new folder.
+    /// </summary>
+    private void MigrateConfigurator(IConfiguratorV2 configurator, string modDirectory, string configDirectory)
+    {
+        if (configurator is Native.ModConfigurator native)
+        {
+            if (!native.TryMigrate(modDirectory, configDirectory))
+                throw new InvalidOperationException($"Could not move the settings of '{_modTuple!.Config.ModName}' from '{modDirectory}' to '{configDirectory}'.", native.MigrationError);
+        }
+        else
+        {
+            configurator.Migrate(modDirectory, configDirectory);
+        }
+    }
+
+    /// Builds the application/mod context handed to V3 configurators.
+    private ConfiguratorContext CreateContext() => new ConfiguratorContext()
+    {
+        Application = _applicationTuple.Config,
+        ModConfigPath = _modTuple!.Path,
+        ApplicationConfigPath = _applicationTuple.Path
+    };
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private void Execute_Internal()

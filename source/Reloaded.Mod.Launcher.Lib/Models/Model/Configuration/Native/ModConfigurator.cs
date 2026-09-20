@@ -29,10 +29,14 @@ public class ModConfigurator : IConfiguratorV3
     }
 
     /// <inheritdoc />
+    /// <exception cref="InvalidOperationException">Thrown when the settings
+    /// folder was not set with <see cref="SetConfigDirectory"/>.</exception>
     public IConfigurable[] GetConfigurations()
     {
         var schema = ModConfigSchema.Load(_modDirectory);
-        var configDirectory = _configDirectory ?? _modDirectory;
+
+        var configDirectory = _configDirectory
+            ?? throw new InvalidOperationException($"Call {nameof(SetConfigDirectory)} before {nameof(GetConfigurations)}.");
 
         // Include the file's last write time in the cache key, such that mod updates invalidate emitted types.
         var lastWrite = File.GetLastWriteTimeUtc(_schemaPath).Ticks.ToString();
