@@ -83,7 +83,6 @@ public class ConfigureModCommand : WithCanExecuteChanged, ICommand
             var nativeConfigurator = new Native.ModConfigurator(modDirectory);
             nativeConfigurator.SetModDirectory(modDirectory);
 
-
             string configDirectory = _modUserConfigTuple != null
                 ? Path.GetFullPath(Path.GetDirectoryName(_modUserConfigTuple.Path)!)
                 : ModUserConfig.GetUserConfigFolderForMod(_modTuple.Config.ModId);
