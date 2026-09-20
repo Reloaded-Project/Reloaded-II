@@ -40,7 +40,8 @@ public class Slider
     public bool IsSnapToTickEnabled { get; set; } = false;
 
     /// <summary>
-    /// Where tick marks are drawn; a <c>SliderControlTickPlacement</c> name.
+    /// Where tick marks are drawn; a
+    /// <see cref="Reloaded.Mod.Interfaces.Structs.SliderControlTickPlacement"/> name.
     /// </summary>
     public string TickPlacement { get; set; } = "None";
 

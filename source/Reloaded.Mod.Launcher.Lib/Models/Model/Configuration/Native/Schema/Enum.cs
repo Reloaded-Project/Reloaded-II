@@ -8,7 +8,7 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native.Schema;
 public class Enum
 {
     /// <summary>
-    /// Name of the enum type, referenced by property <c>Type</c>.
+    /// Name of the enum type, referenced by property <see cref="Property.Type"/>.
     /// </summary>
     public string Name { get; set; } = "";
 

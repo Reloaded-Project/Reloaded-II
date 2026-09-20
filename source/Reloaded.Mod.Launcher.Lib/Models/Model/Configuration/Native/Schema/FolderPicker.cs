@@ -15,7 +15,7 @@ public class FolderPicker
 
     /// <summary>
     /// Fallback folder when <see cref="InitialDirectory"/> is null, as an
-    /// <c>Environment.SpecialFolder</c> value.
+    /// <see cref="System.Environment.SpecialFolder"/> value.
     /// </summary>
     public int InitialFolderPath { get; set; } = 0x05; // Environment.SpecialFolder.Personal
 

@@ -34,7 +34,7 @@ public class Configuration
     /// </summary>
     /// <param name="node">Node holding the configuration's properties.</param>
     /// <exception cref="JsonException">
-    /// Thrown when <c>FileName</c> is not a plain file name.
+    /// Thrown when <see cref="FileName"/> is not a plain file name.
     /// </exception>
     public static Configuration Parse(JsonNode node)
     {

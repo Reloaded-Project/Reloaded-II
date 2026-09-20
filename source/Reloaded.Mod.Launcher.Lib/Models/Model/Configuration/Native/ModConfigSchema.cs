@@ -12,8 +12,10 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 /// The schema is the native equivalent of the attributes C# mods declare,
 /// such as <see cref="Reloaded.Mod.Interfaces.Structs.SliderControlParamsAttribute"/>.
 /// Native and C# mods therefore look and behave the same:
-/// - DisplayName, Description, Category, DefaultValue
-/// - Slider/File/Folder control params
+/// - <see cref="Schema.Property.DisplayName"/>, <see cref="Schema.Property.Description"/>,
+///   <see cref="Schema.Property.Category"/> and <see cref="Schema.Property.DefaultValue"/>
+/// - <see cref="Schema.Slider"/>, <see cref="Schema.FilePicker"/> and
+///   <see cref="Schema.FolderPicker"/> control params
 ///
 /// The individual schema models live in the <see cref="Schema"/> namespace.
 /// </summary>

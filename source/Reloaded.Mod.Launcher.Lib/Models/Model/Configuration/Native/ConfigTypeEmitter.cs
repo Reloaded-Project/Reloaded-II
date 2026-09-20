@@ -12,9 +12,9 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 /// - <see cref="DisplayNameAttribute"/>, <see cref="DescriptionAttribute"/>,
 ///   <see cref="CategoryAttribute"/>
 /// - <see cref="DefaultValueAttribute"/> (backs the Reset button of the dialog)
-/// - <c>Display</c> (sort order)
-/// - <c>SliderControlParams</c>, <c>FilePickerParams</c>,
-///   <c>FolderPickerParams</c> (custom editors)
+/// - <see cref="DataAnnotations.DisplayAttribute"/> (sort order)
+/// - <see cref="SliderControlParamsAttribute"/>, <see cref="FilePickerParamsAttribute"/>,
+///   <see cref="FolderPickerParamsAttribute"/> (custom editors)
 /// The PropertyGrid renders them exactly like a C# mod's configuration.
 /// </summary>
 public static class ConfigTypeEmitter
@@ -112,7 +112,7 @@ public static class ConfigTypeEmitter
     }
 
     /// <summary>
-    /// Declared enums plus one per property with inline <c>Values</c>.
+    /// Declared enums plus one per property with inline <see cref="Schema.Property.Values"/>.
     /// </summary>
     private static IEnumerable<Schema.Enum> CollectEnums(Schema.Configuration configuration)
     {
