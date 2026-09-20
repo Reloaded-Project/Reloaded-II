@@ -4,6 +4,7 @@ namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native;
 
 /// <summary>
 /// Declarative configuration schema for native (non .NET) mods.
+/// 
 /// A mod declares its settings in a <c>ConfigSchema.json</c> file next to
 /// its <c>ModConfig.json</c>. The launcher builds the configuration UI
 /// from that schema.
