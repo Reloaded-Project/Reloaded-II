@@ -28,13 +28,11 @@ Reloaded tries to start mods by using the following entry points in order:
 
 If none of these entry points is found, the mod will not be loaded.
 
-`ReloadedStartInfo` is a struct which contains: api_version, the mod's folders, the mod's
-id and `ReloadedLoaderApi`, a wrapper around `IModLoader` usable to load,
-unload and query other mods.
+In the case of `ReloadedStartInfo`, it provides a wrapper around the API that's
+usually provided to .NET mods (`IModLoader`).
 
-The folders and the id are only valid during the call, so copy them if you need
-them later. Strings returned by `ReloadedLoaderApi` stay valid past the call,
-but the loader allocated them, so give them back to `free_string`.
+After calling any API that returns strings, you will need to call `free_string`
+afterwards.
 
 **Suspend, Resume, Unload:**
 
@@ -68,8 +66,7 @@ You need a C++17 compiler and CMake to build native mods:
 - CMake 3.15 or newer, bundled with Visual Studio (or from [cmake.org](https://cmake.org)).
 
 Start from the template (`dotnet new reloaded-native`) or copy the files from
-the [native mod template][native-template], it contains the mod manifest, a
-sample configuration schema and `ReloadedModConfig.h`, the helper header.
+the [native mod template][native-template].
 
 Build the DLL for your game's architecture:
 
@@ -79,22 +76,19 @@ cmake -B build -A Win32      (32-bit game)
 cmake --build build --config Release
 ```
 
-No manual copy is needed, Reloaded sets the `RELOADEDIIMODS`
-environment variable to your mods folder on first run, and the template's
-CMake script deploys the DLL, `ModConfig.json` and `ConfigSchema.json` there
-after each build. The mod then shows up in the launcher right away.
+Upon building, the mod will automatically be copied to the right location
+and show up in Reloaded-II.
 
-#### User Settings (Config Dialog)
+## Mod Configuration
 
-Native mods can expose settings in the launcher's *Configure* dialog without
-any C# code, through a declarative schema file. 
+### User Settings (Config Dialog)
 
-Place a `ConfigSchema.json` file next to your `ModConfig.json` describing your settings, and the launcher
-builds the same configuration UI used by C# mods: checkboxes, numeric boxes,
-sliders, dropdowns, file and folder pickers, with categories, tooltips and a
-Reset button.
+The Reloaded-II launcher exposes a *Configure* dialog for native mods if the
+`ConfigSchema.json` file exists next to `ModConfig.json`.
 
-A minimal schema looks like this:
+The declarative schema file supports all features supported by the .NET equivalent.
+
+Example:
 
 ```json
 {
@@ -143,9 +137,7 @@ A minimal schema looks like this:
 }
 ```
 
-Notes:
-
-- `Type` is one of `bool`, `int`, `float`, `double`, `string`, or an enum.
+- `Type` is `bool`, `int`, `float`, `double`, `string`, or an enum.
   Enums list their values inline under `Values`, or under a shared `Enums`
   array when the same enum is used by several properties.
 - `DisplayName`, `Description`, `Category`, `Order` and `DefaultValue` mirror
@@ -169,13 +161,13 @@ The values are saved as a flat JSON file such as:
 }
 ```
 
-#### Reading the Settings
+### Reading the Settings
 
-To read the settings inside your mod, copy `ReloadedModConfig.h` from the
-[native mod template][native-template]
-into your project and define `RELOADED_MOD_CONFIG_IMPL(your_start_function)` in
-exactly one source file. The macro exports `ReloadedStartEx`, which the loader
-calls with your mod's folders:
+#### C++
+
+Using `ReloadedModConfig.h` from the [native mod template][native-template],
+define `RELOADED_MOD_CONFIG_IMPL(your_start_function)` in
+exactly one source file:
 
 ```cpp
 #include "ReloadedModConfig.h"
@@ -198,9 +190,6 @@ RELOADED_MOD_CONFIG_IMPL(my_start)
 Missing values fall back to the schema defaults, then to the fallback
 argument. `config.watch(callback)` reloads the settings when the user changes
 them while the game is running.
-
-## CoreRT/NativeAOT?
-Yes you can; mad scientist. 
 
 [native-template]: https://github.com/Reloaded-Project/Reloaded-II/tree/master/source/Reloaded.Mod.Template/templates/native
 [native-header]: https://github.com/Reloaded-Project/Reloaded-II/blob/master/source/Reloaded.Mod.Template/templates/native/ReloadedModConfig.h
