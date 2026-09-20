@@ -60,14 +60,14 @@ public class FolderPicker
     /// <param name="node">Node holding the picker's properties.</param>
     public static FolderPicker Parse(JsonNode node) => new()
     {
-        InitialDirectory       = node.GetStringOrDefault(Keys.InitialDirectory, null),
-        InitialFolderPath      = node.GetIntOrDefault(Keys.InitialFolderPath, 0x05),
+        InitialDirectory        = node.GetStringOrDefault(Keys.InitialDirectory, null),
+        InitialFolderPath       = node.GetIntOrDefault(Keys.InitialFolderPath, 0x05),
         ChooseFolderButtonLabel = node.GetStringOrDefault(Keys.ChooseFolderButtonLabel, "Choose Folder")!,
-        UserCanEditPathText    = node.GetBoolOrDefault(Keys.UserCanEditPathText, true),
-        Title                  = node.GetStringOrDefault(Keys.Title, "")!,
-        OkButtonLabel          = node.GetStringOrDefault(Keys.OkButtonLabel, "Ok")!,
-        FileNameLabel          = node.GetStringOrDefault(Keys.FileNameLabel, "")!,
-        Multiselect            = node.GetBoolOrDefault(Keys.Multiselect, false),
-        ForceFileSystem        = node.GetBoolOrDefault(Keys.ForceFileSystem, false)
+        UserCanEditPathText     = node.GetBoolOrDefault(Keys.UserCanEditPathText, true),
+        Title                   = node.GetStringOrDefault(Keys.Title, "")!,
+        OkButtonLabel           = node.GetStringOrDefault(Keys.OkButtonLabel, "Ok")!,
+        FileNameLabel           = node.GetStringOrDefault(Keys.FileNameLabel, "")!,
+        Multiselect             = node.GetBoolOrDefault(Keys.Multiselect, false),
+        ForceFileSystem         = node.GetBoolOrDefault(Keys.ForceFileSystem, false)
     };
 }

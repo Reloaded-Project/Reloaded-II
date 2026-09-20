@@ -80,18 +80,18 @@ public class FilePicker
     /// <param name="node">Node holding the picker's properties.</param>
     public static FilePicker Parse(JsonNode node) => new()
     {
-        InitialDirectory           = node.GetStringOrDefault(Keys.InitialDirectory, null),
-        InitialFolderPath          = node.GetIntOrDefault(Keys.InitialFolderPath, 0x05),
-        ChooseFileButtonLabel      = node.GetStringOrDefault(Keys.ChooseFileButtonLabel, "Choose File")!,
-        UserCanEditPathText        = node.GetBoolOrDefault(Keys.UserCanEditPathText, true),
-        Title                      = node.GetStringOrDefault(Keys.Title, "")!,
-        Filter                     = node.GetStringOrDefault(Keys.Filter, "All files (*.*)|*.*")!,
-        FilterIndex                = node.GetIntOrDefault(Keys.FilterIndex, 0),
-        Multiselect                = node.GetBoolOrDefault(Keys.Multiselect, false),
+        InitialDirectory             = node.GetStringOrDefault(Keys.InitialDirectory, null),
+        InitialFolderPath            = node.GetIntOrDefault(Keys.InitialFolderPath, 0x05),
+        ChooseFileButtonLabel        = node.GetStringOrDefault(Keys.ChooseFileButtonLabel, "Choose File")!,
+        UserCanEditPathText          = node.GetBoolOrDefault(Keys.UserCanEditPathText, true),
+        Title                        = node.GetStringOrDefault(Keys.Title, "")!,
+        Filter                       = node.GetStringOrDefault(Keys.Filter, "All files (*.*)|*.*")!,
+        FilterIndex                  = node.GetIntOrDefault(Keys.FilterIndex, 0),
+        Multiselect                  = node.GetBoolOrDefault(Keys.Multiselect, false),
         SupportMultiDottedExtensions = node.GetBoolOrDefault(Keys.SupportMultiDottedExtensions, false),
-        ShowHiddenFiles            = node.GetBoolOrDefault(Keys.ShowHiddenFiles, false),
-        ShowPreview                = node.GetBoolOrDefault(Keys.ShowPreview, false),
-        RestoreDirectory           = node.GetBoolOrDefault(Keys.RestoreDirectory, false),
-        AddToRecent                = node.GetBoolOrDefault(Keys.AddToRecent, false)
+        ShowHiddenFiles              = node.GetBoolOrDefault(Keys.ShowHiddenFiles, false),
+        ShowPreview                  = node.GetBoolOrDefault(Keys.ShowPreview, false),
+        RestoreDirectory             = node.GetBoolOrDefault(Keys.RestoreDirectory, false),
+        AddToRecent                  = node.GetBoolOrDefault(Keys.AddToRecent, false)
     };
 }
