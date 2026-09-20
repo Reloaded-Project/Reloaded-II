@@ -26,11 +26,8 @@ cmake -B build -A Win32      (32-bit game, makes Reloaded.Native.Template32.dll)
 cmake --build build --config Release
 ```
 
-The Reloaded launcher sets the `RELOADEDIIMODS` environment variable to your
-mods folder on first run; the CMake script deploys the DLL, `ModConfig.json`
-and `ConfigSchema.json` there after each build, so the mod appears in the
-launcher without manual copying. Without the variable the DLL is built into
-`build/` and must be copied next to `ModConfig.json` by hand.
+Upon building, the mod will automatically be copied to the right location
+and show up in Reloaded-II.
 
 ## Workflow
 
@@ -38,17 +35,3 @@ launcher without manual copying. Without the variable the DLL is built into
 2. Read the values in C++ through `reloaded::config()` (see `main.cpp`).
 3. Users change the settings in the launcher; values are saved to
    `<Reloaded>/User/Mods/<ModId>/Config.json` and read by your mod.
-
-## Entry Point
-
-The loader starts native mods by calling the first of these exports it finds:
-
-- `ReloadedStartEx(const ReloadedStartInfo* info)` (recommended; provided by `RELOADED_MOD_CONFIG_IMPL`)
-- `ReloadedStart`
-- `InitializeASI`
-- `Init`
-
-`ReloadedStartEx` receives the mod and user-config directories, which is how the
-helper finds the schema and the values file.
-
-See the wiki page "Writing Native Mods" for the optional suspend/resume/unload exports.
