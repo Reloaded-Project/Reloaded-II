@@ -56,9 +56,11 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Schema_Is_Detected_And_Parsed()
     {
-        Assert.True(Native.ModConfigSchema.ExistsInFolder(ModDirectory));
-
+        // Act
         var schema = Native.ModConfigSchema.Load(ModDirectory);
+
+        // Assert
+        Assert.True(Native.ModConfigSchema.ExistsInFolder(ModDirectory));
         var configuration = Assert.Single(schema.Configurations);
         Assert.Equal("Config.json", configuration.FileName);
         Assert.Equal("Default Config", configuration.DisplayName);
@@ -77,10 +79,12 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Configurator_Returns_Configurable_With_Default_Values()
     {
+        // Act
         var configurator = CreateConfigurator();
         var configurations = configurator.GetConfigurations();
         var configurable = Assert.Single(configurations);
 
+        // Assert
         Assert.Equal("Default Config", configurable.ConfigName);
         Assert.IsAssignableFrom<IUpdatableConfigurable>(configurable);
         Assert.NotNull(configurable.Save);
@@ -96,9 +100,11 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Generated_Properties_Carry_UI_Attributes()
     {
+        // Act
         var configurable = Assert.Single(CreateConfigurator().GetConfigurations());
         var type = configurable.GetType();
 
+        // Assert
         var booleanProperty = type.GetProperty("BooleanSetting")!;
         Assert.Equal("Bool", booleanProperty.GetCustomAttribute<DisplayNameAttribute>()!.DisplayName);
         Assert.Equal("This is a bool.", booleanProperty.GetCustomAttribute<DescriptionAttribute>()!.Description);
@@ -134,7 +140,10 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Save_Writes_Values_And_New_Instance_Reads_Them_Back()
     {
+        // Arrange
         var configurable = Assert.Single(CreateConfigurator().GetConfigurations());
+
+        // Act
         SetProperty(configurable, "BooleanSetting", false);
         SetProperty(configurable, "IntegerSetting", 1337);
         SetProperty(configurable, "FloatSetting", 0.25f);
@@ -142,6 +151,7 @@ public class NativeModConfigTests : IDisposable
         SetProperty(configurable, "EnumSetting", Enum.Parse(configurable.GetType().GetProperty("EnumSetting")!.PropertyType, "NoOpinion"));
         configurable.Save!();
 
+        // Assert
         string valuesPath = Path.Combine(ConfigDirectory, "Config.json");
         Assert.True(File.Exists(valuesPath));
 
@@ -153,8 +163,11 @@ public class NativeModConfigTests : IDisposable
         Assert.Equal("changed", json["StringSetting"]!.GetValue<string>());
         Assert.Equal("NoOpinion", json["EnumSetting"]!.GetValue<string>());
 
+        // Act
         // A fresh instance starts from the saved values.
         var reloaded = Assert.Single(CreateConfigurator().GetConfigurations());
+
+        // Assert
         Assert.False(GetProperty<bool>(reloaded, "BooleanSetting"));
         Assert.Equal(1337, GetProperty<int>(reloaded, "IntegerSetting"));
         Assert.Equal(0.25f, GetProperty<float>(reloaded, "FloatSetting"));
@@ -165,9 +178,13 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Unknown_Values_In_File_Are_Ignored()
     {
+        // Arrange
         File.WriteAllText(Path.Combine(ConfigDirectory, "Config.json"), """{ "IntegerSetting": 5, "NotARealSetting": "abc" }""");
+
+        // Act
         var configurable = Assert.Single(CreateConfigurator().GetConfigurations());
 
+        // Assert
         Assert.Equal(5, GetProperty<int>(configurable, "IntegerSetting"));
         Assert.True(GetProperty<bool>(configurable, "BooleanSetting"));
         Assert.Equal("hello world", GetProperty<string>(configurable, "StringSetting"));
@@ -176,7 +193,10 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Missing_Values_File_Leaves_Defaults()
     {
+        // Act
         var configurable = Assert.Single(CreateConfigurator().GetConfigurations());
+
+        // Assert
         Assert.Equal(42, GetProperty<int>(configurable, "IntegerSetting"));
         Assert.False(File.Exists(Path.Combine(ConfigDirectory, "Config.json")));
     }
@@ -184,12 +204,15 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Migrate_Moves_Values_File()
     {
+        // Arrange
         // Simulate values living in the mod folder (pre-migration).
         File.WriteAllText(Path.Combine(ModDirectory, "Config.json"), """{ "IntegerSetting": 9 }""");
-
         var configurator = CreateConfigurator();
+
+        // Act
         configurator.Migrate(ModDirectory, ConfigDirectory);
 
+        // Assert
         Assert.False(File.Exists(Path.Combine(ModDirectory, "Config.json")));
         Assert.True(File.Exists(Path.Combine(ConfigDirectory, "Config.json")));
 
@@ -200,18 +223,23 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Unknown_Type_Throws_Descriptive_Error()
     {
+        // Arrange
         File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
         { "Configurations": [ { "FileName": "Config.json", "Properties": [ { "Name": "Broken", "Type": "NoSuchEnum" } ] } ] }
         """);
         var configurator = CreateConfigurator();
 
+        // Act
         var error = Assert.Throws<InvalidOperationException>(() => configurator.GetConfigurations());
+
+        // Assert
         Assert.Contains("nosuchenum", error.Message, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
     public void Slider_On_Enum_Property_Throws()
     {
+        // Arrange
         File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
         {
           "Configurations": [
@@ -224,7 +252,10 @@ public class NativeModConfigTests : IDisposable
         """);
         var configurator = CreateConfigurator();
 
+        // Act
         var error = Assert.Throws<InvalidOperationException>(() => configurator.GetConfigurations());
+
+        // Assert
         Assert.Contains("sliders are only supported", error.Message);
     }
 
@@ -235,11 +266,15 @@ public class NativeModConfigTests : IDisposable
     [InlineData("SubFolder/Config.json")]
     public void FileNames_With_Paths_Are_Rejected(string fileName)
     {
+        // Arrange
         File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), $$"""
         { "Configurations": [ { "FileName": "{{fileName.Replace("\\", "\\\\")}}", "Properties": [] } ] }
         """);
 
+        // Act
         var error = Assert.Throws<InvalidOperationException>(() => Native.ModConfigSchema.Load(ModDirectory));
+
+        // Assert
         var jsonError = Assert.IsType<JsonException>(error.InnerException);
         Assert.Contains("plain file name", jsonError.Message);
     }
@@ -247,16 +282,21 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void TryMigrate_Reports_Failure_And_Keeps_Error()
     {
+        // Arrange
         var configurator = CreateConfigurator();
 
+        // Act
         // A path with invalid characters makes creating the directory fail.
         Assert.False(configurator.TryMigrate(ModDirectory, "C:\\<not a valid folder>\\"));
+
+        // Assert
         Assert.NotNull(configurator.MigrationError);
     }
 
     [Fact]
     public void TryMigrate_Rolls_Back_Moves_On_Failure()
     {
+        // Arrange
         // Two configs with values in the mod folder; the second move fails
         // because a directory already sits where the file would land.
         File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
@@ -270,9 +310,12 @@ public class NativeModConfigTests : IDisposable
         File.WriteAllText(Path.Combine(ModDirectory, "First.json"), "{ \"Value\": 1 }");
         File.WriteAllText(Path.Combine(ModDirectory, "Second.json"), "{ \"Value\": 2 }");
         Directory.CreateDirectory(Path.Combine(ConfigDirectory, "Second.json"));
-
         var configurator = CreateConfigurator();
+
+        // Act
         Assert.False(configurator.TryMigrate(ModDirectory, ConfigDirectory));
+
+        // Assert
         Assert.NotNull(configurator.MigrationError);
 
         // The first file was moved before the failure: put it back in place.
@@ -284,6 +327,7 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Inline_Enum_Values_Build_A_Dropdown()
     {
+        // Arrange
         File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
         {
           "Configurations": [
@@ -300,8 +344,11 @@ public class NativeModConfigTests : IDisposable
           }]
         }
         """);
+
+        // Act
         var configurable = Assert.Single(CreateConfigurator().GetConfigurations());
 
+        // Assert
         var property = configurable.GetType().GetProperty("Difficulty")!;
         var enumType = property.PropertyType;
         Assert.True(enumType.IsEnum);
@@ -316,12 +363,16 @@ public class NativeModConfigTests : IDisposable
     [Fact]
     public void Enum_Type_Without_Values_Gives_Hint()
     {
+        // Arrange
         File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
         { "Configurations": [ { "FileName": "Config.json", "Properties": [ { "Name": "Broken", "Type": "enum" } ] } ] }
         """);
         var configurator = CreateConfigurator();
 
+        // Act
         var error = Assert.Throws<InvalidOperationException>(() => configurator.GetConfigurations());
+
+        // Assert
         Assert.Contains("Values", error.Message);
     }
 

@@ -20,7 +20,10 @@ public class NativeLoaderApiBridgeTests : IDisposable
     [Fact]
     public void Table_Has_Version_And_Functions()
     {
+        // Act
         var table = ReadTable();
+
+        // Assert
         Assert.Equal(1, table.ApiVersion);
         Assert.NotEqual(IntPtr.Zero, table.LoadMod);
         Assert.NotEqual(IntPtr.Zero, table.GetModConfigDirectory);
@@ -31,11 +34,14 @@ public class NativeLoaderApiBridgeTests : IDisposable
     [Fact]
     public void GetModConfigDirectory_Returns_The_String()
     {
+        // Arrange
         _loader.Setup(l => l.GetModConfigDirectory("some.mod")).Returns(@"D:\User\Mods\SomeMod");
-
         var getString = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.Utf8ToString>(ReadTable().GetModConfigDirectory);
+
+        // Act
         var pointer = getString(ToUtf8("some.mod"));
 
+        // Assert
         // We own the memory, so it goes back through the table's free function.
         Assert.Equal(@"D:\User\Mods\SomeMod", Marshal.PtrToStringUni(pointer));
 
@@ -46,36 +52,45 @@ public class NativeLoaderApiBridgeTests : IDisposable
     [Fact]
     public void FreeString_Ignores_Null()
     {
+        // Arrange
         // Native mods may hand back whatever the getters returned, zero included.
         var freeString = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.FreeAction>(ReadTable().FreeString);
+
+        // Act
         freeString(IntPtr.Zero);
     }
 
     [Fact]
     public void GetDirectoryForMod_Returns_Zero_Instead_Of_Throwing()
     {
+        // Arrange
         // Unknown mods throw inside the loader; native callers must never see that.
         _loader.Setup(l => l.GetDirectoryForModId("nope.mod")).Throws(new KeyNotFoundException());
-
         var getString = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.Utf8ToString>(ReadTable().GetDirectoryForMod);
+
+        // Act
         var result = getString(ToUtf8("nope.mod"));
 
+        // Assert
         Assert.Equal(IntPtr.Zero, result);
     }
 
     [Fact]
     public void ModStateFunctions_Forward_To_Loader()
     {
+        // Arrange
         var loadMod = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.Utf8Action>(ReadTable().LoadMod);
         var unloadMod = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.Utf8Action>(ReadTable().UnloadMod);
         var suspendMod = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.Utf8Action>(ReadTable().SuspendMod);
         var resumeMod = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.Utf8Action>(ReadTable().ResumeMod);
 
+        // Act
         loadMod(ToUtf8("some.mod"));
         unloadMod(ToUtf8("some.mod"));
         suspendMod(ToUtf8("some.mod"));
         resumeMod(ToUtf8("some.mod"));
 
+        // Assert
         _loader.Verify(l => l.LoadMod("some.mod"), Times.Once);
         _loader.Verify(l => l.UnloadMod("some.mod"), Times.Once);
         _loader.Verify(l => l.SuspendMod("some.mod"), Times.Once);
@@ -85,8 +100,13 @@ public class NativeLoaderApiBridgeTests : IDisposable
     [Fact]
     public void Dispose_Releases_The_Table()
     {
+        // Arrange
         var pointer = _bridge.TablePointer;
+
+        // Act
         _bridge.Dispose();
+
+        // Assert
         Assert.Equal(IntPtr.Zero, _bridge.TablePointer);
     }
 
