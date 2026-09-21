@@ -6,6 +6,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(${PROJECT_NAME} SHARED main.cpp)
 
+# The Loader API expects UTF-8 strings, so compile with UTF-8 and
+# execution character sets.
+if (MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /utf-8)
+endif()
+
 # Match the game's architecture:
 #   64-bit game: cmake -B build -A x64
 #   32-bit game: cmake -B build -A Win32

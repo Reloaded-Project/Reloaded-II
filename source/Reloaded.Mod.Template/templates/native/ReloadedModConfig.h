@@ -29,6 +29,12 @@
 
 #include <windows.h>
 
+// The loader API takes UTF-8 strings, however MSVC encodes narrow string literals in the 
+// system code page (unless told otherwise), we can force literal encoding to UTF-8 as a workaround.
+#if defined(_MSC_VER) && !defined(__clang__)
+    #pragma execution_character_set("utf-8")
+#endif
+
 #include <atomic>
 #include <cstdint>
 #include <cstdio>
@@ -542,6 +548,7 @@ namespace reloaded
         wchar_t* (__cdecl *get_mod_config_directory)(const char* mod_id);
         void (__cdecl *log)(const char* text);
         void (__cdecl *free_string)(wchar_t* value);
+        void (__cdecl *log_async)(const char* text);
     };
 
     // Handed to ReloadedStartEx as a pointer, so the layout can grow over time.
@@ -596,6 +603,13 @@ namespace reloaded
         ReloadedLoaderApi* api = loader();
         if (api != nullptr && api->api_version >= 1 && api->log != nullptr)
             api->log(text);
+    }
+
+    inline void log_async(const char* text)
+    {
+        ReloadedLoaderApi* api = loader();
+        if (api != nullptr && api->log_async != nullptr)
+            api->log_async(text);
     }
 
     // Give a string from the loader API back to the loader, it allocated it and

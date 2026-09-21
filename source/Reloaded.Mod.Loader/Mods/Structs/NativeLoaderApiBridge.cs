@@ -17,6 +17,7 @@ public struct NativeReloadedLoaderApiTable
     public IntPtr GetModConfigDirectory;
     public IntPtr Log;
     public IntPtr FreeString;
+    public IntPtr LogAsync;
 }
 
 /// <summary>
@@ -53,6 +54,7 @@ public sealed class NativeLoaderApiBridge : IDisposable
     private readonly Utf8ToString _getModConfigDirectory;
     private readonly Utf8Action _log;
     private readonly FreeAction _freeString;
+    private readonly Utf8Action _logAsync;
 
     /// <summary>
     ///Wraps the loader and logger into a native API table.
@@ -72,6 +74,7 @@ public sealed class NativeLoaderApiBridge : IDisposable
         _getModConfigDirectory = GetModConfigDirectory;
         _log                   = Log;
         _freeString            = FreeString;
+        _logAsync              = LogAsync;
 
         var table = new NativeReloadedLoaderApiTable()
         {
@@ -83,7 +86,8 @@ public sealed class NativeLoaderApiBridge : IDisposable
             GetDirectoryForMod    = Marshal.GetFunctionPointerForDelegate(_getDirectoryForMod),
             GetModConfigDirectory = Marshal.GetFunctionPointerForDelegate(_getModConfigDirectory),
             Log                   = Marshal.GetFunctionPointerForDelegate(_log),
-            FreeString            = Marshal.GetFunctionPointerForDelegate(_freeString)
+            FreeString            = Marshal.GetFunctionPointerForDelegate(_freeString),
+            LogAsync              = Marshal.GetFunctionPointerForDelegate(_logAsync)
         };
 
         _tablePointer = Marshal.AllocHGlobal(Marshal.SizeOf<NativeReloadedLoaderApiTable>());
@@ -135,6 +139,15 @@ public sealed class NativeLoaderApiBridge : IDisposable
     {
         try { _logger?.WriteLine(ReadUtf8(textUtf8)); }
         catch (Exception e) { LogError(e, nameof(Log)); }
+    }
+
+    /// <summary>
+    /// Log with a queue system.
+    /// </summary>
+    private void LogAsync(IntPtr textUtf8)
+    {
+        try { _logger?.WriteLineAsync(ReadUtf8(textUtf8)); }
+        catch (Exception e) { LogError(e, nameof(LogAsync)); }
     }
 
     /// <summary>

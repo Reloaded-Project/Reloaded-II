@@ -376,6 +376,85 @@ public class NativeModConfigTests : IDisposable
         Assert.Contains("Values", error.Message);
     }
 
+    [Fact]
+    public void Names_That_Are_Not_Identifiers_Are_Rejected()
+    {
+        // Arrange: property, inline enum value and shared enum member with spaces.
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
+        {
+          "Configurations": [ {
+            "FileName": "Config.json",
+            "Properties": [ { "Name": "My Setting", "Type": "bool" } ]
+          }]
+        }
+        """);
+
+        var error = Assert.Throws<InvalidOperationException>(() => Native.ModConfigSchema.Load(ModDirectory));
+
+        Assert.Contains("letters, digits and underscores", error.InnerException!.Message);
+
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
+        {
+          "Configurations": [ {
+            "FileName": "Config.json",
+            "Properties": [ { "Name": "Difficulty", "Type": "enum", "Values": [ "Very Hard" ] } ]
+          }]
+        }
+        """);
+
+        // Act + Assert
+        Assert.Throws<InvalidOperationException>(() => Native.ModConfigSchema.Load(ModDirectory));
+    }
+
+    [Fact]
+    public void SpecialFolder_Is_Parsed_By_Name()
+    {
+        // Arrange
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
+        {
+          "Configurations": [ {
+            "FileName": "Config.json",
+            "Properties": [ {
+              "Name": "CustomFile", "Type": "string", "FilePicker": { "InitialFolderPath": "Desktop" }
+            }]
+          }]
+        }
+        """);
+
+
+        var configurable = Assert.Single(CreateConfigurator().GetConfigurations());
+
+        var picker = configurable.GetType().GetProperty("CustomFile")!.GetCustomAttribute<FilePickerParamsAttribute>();
+        Assert.Equal(System.Environment.SpecialFolder.Desktop, picker!.InitialFolderPath);
+
+        // Arrange: unknown folder names are rejected instead of silently falling back.
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
+        {
+          "Configurations": [ {
+            "FileName": "Config.json",
+            "Properties": [ {
+              "Name": "CustomFile", "Type": "string", "FilePicker": { "InitialFolderPath": "Nowhere" }
+            }]
+          }]
+        }
+        """);
+
+        var error = Assert.Throws<InvalidOperationException>(() => CreateConfigurator().GetConfigurations());
+        Assert.Contains("Nowhere", error.InnerException!.Message);
+    }
+
+    [Fact]
+    public void Null_Array_Entries_Are_Rejected()
+    {
+        // Arrange
+        File.WriteAllText(Path.Combine(ModDirectory, Native.ModConfigSchema.SchemaFileName), """
+        { "Configurations": [ null ] }
+        """);
+
+        var error = Assert.Throws<InvalidOperationException>(() => Native.ModConfigSchema.Load(ModDirectory));
+        Assert.IsType<JsonException>(error.InnerException);
+    }
+
     private Native.ModConfigurator CreateConfigurator()
     {
         var configurator = new Native.ModConfigurator(ModDirectory);

@@ -15,9 +15,10 @@ public class FilePicker
 
     /// <summary>
     /// Fallback folder when <see cref="InitialDirectory"/> is null, as an
-    /// <see cref="System.Environment.SpecialFolder"/> value.
+    /// <see cref="System.Environment.SpecialFolder"/> value; declared in the
+    /// schema by name, e.g. <c>Desktop</c>.
     /// </summary>
-    public int InitialFolderPath { get; set; } = 0x05; // Environment.SpecialFolder.Personal
+    public System.Environment.SpecialFolder InitialFolderPath { get; set; } = System.Environment.SpecialFolder.Personal;
 
     /// <summary>
     /// Label of the choose file button.
@@ -81,7 +82,7 @@ public class FilePicker
     public static FilePicker Parse(JsonNode node) => new()
     {
         InitialDirectory             = node.GetStringOrDefault(Keys.InitialDirectory, null),
-        InitialFolderPath            = node.GetIntOrDefault(Keys.InitialFolderPath, 0x05),
+        InitialFolderPath            = node.GetSpecialFolderOrDefault(Keys.InitialFolderPath, System.Environment.SpecialFolder.Personal),
         ChooseFileButtonLabel        = node.GetStringOrDefault(Keys.ChooseFileButtonLabel, "Choose File")!,
         UserCanEditPathText          = node.GetBoolOrDefault(Keys.UserCanEditPathText, true),
         Title                        = node.GetStringOrDefault(Keys.Title, "")!,

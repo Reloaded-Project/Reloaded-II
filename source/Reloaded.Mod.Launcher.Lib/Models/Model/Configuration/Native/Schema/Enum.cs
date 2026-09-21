@@ -35,7 +35,10 @@ public class Enum
         {
             foreach (var memberNode in members)
             {
-                var member = EnumMember.Parse(memberNode!);
+                if (memberNode == null)
+                    throw new JsonException($"Enum '{result.Name}' has a null entry in '{Keys.Members}'.");
+
+                var member = EnumMember.Parse(memberNode);
                 if (member.Name.Length > 0)
                     result.Members.Add(member);
             }

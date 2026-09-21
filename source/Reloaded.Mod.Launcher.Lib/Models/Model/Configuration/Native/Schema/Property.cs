@@ -114,10 +114,14 @@ public class Property
         {
             foreach (var valueNode in values)
             {
-                var member = valueNode!.GetValueKind() == JsonValueKind.String
+                if (valueNode == null)
+                    throw new JsonException($"Property '{property.Name}' has a null entry in '{Keys.Values}'.");
+
+                var member = valueNode.GetValueKind() == JsonValueKind.String
                     ? new EnumMember { Name = valueNode.GetValue<string>() }
                     : EnumMember.Parse(valueNode);
 
+                ValidateName(member.Name, $"'{Keys.Values}' entry '{member.Name}' of property '{property.Name}'");
                 if (member.Name.Length > 0)
                     property.Values.Add(member);
             }
@@ -129,6 +133,16 @@ public class Property
         if (property.Name.Length <= 0)
             throw new JsonException($"A property in the schema has no '{Keys.Name}'.");
 
+        ValidateName(property.Name, $"'{Keys.Name}' of property '{property.Name}'");
         return property;
+    }
+
+    internal static void ValidateName(string name, string what)
+    {
+        var valid = name.Length > 0 && (char.IsLetter(name[0]) || name[0] == '_') 
+            && name.All(c => char.IsLetterOrDigit(c) || c == '_');
+
+        if (!valid)
+            throw new JsonException($"{what} must only contain letters, digits and underscores, and start with a letter. Use '{Keys.DisplayName}' for freeform text. Got '{name}'.");
     }
 }

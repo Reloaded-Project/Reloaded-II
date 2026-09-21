@@ -265,7 +265,7 @@ public static class ConfigTypeEmitter
 
             yield return new CustomAttributeBuilder(GetCtor(typeof(FilePickerParamsAttribute), 13), new object[]
             {
-                file.InitialDirectory!, (System.Environment.SpecialFolder)file.InitialFolderPath,
+                file.InitialDirectory!, file.InitialFolderPath,
                 file.ChooseFileButtonLabel, file.UserCanEditPathText, file.Title, file.Filter,
                 file.FilterIndex, file.Multiselect, file.SupportMultiDottedExtensions,
                 file.ShowHiddenFiles, file.ShowPreview, file.RestoreDirectory, file.AddToRecent
@@ -280,7 +280,7 @@ public static class ConfigTypeEmitter
 
             yield return new CustomAttributeBuilder(GetCtor(typeof(FolderPickerParamsAttribute), 9), new object[]
             {
-                folder.InitialDirectory!, (System.Environment.SpecialFolder)folder.InitialFolderPath,
+                folder.InitialDirectory!, folder.InitialFolderPath,
                 folder.ChooseFolderButtonLabel, folder.UserCanEditPathText, folder.Title,
                 folder.OkButtonLabel, folder.FileNameLabel, folder.Multiselect, folder.ForceFileSystem
             });

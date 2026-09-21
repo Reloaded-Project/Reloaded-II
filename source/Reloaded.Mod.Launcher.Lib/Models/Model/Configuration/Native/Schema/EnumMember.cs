@@ -21,9 +21,18 @@ public class EnumMember
     /// Reads an enum member from its JSON representation.
     /// </summary>
     /// <param name="node">Node holding the member's properties.</param>
-    public static EnumMember Parse(JsonNode node) => new()
+    /// <exception cref="JsonException">
+    /// Thrown when the name is not a valid identifier.
+    /// </exception>
+    public static EnumMember Parse(JsonNode node)
     {
-        Name        = node.GetStringOrDefault(Keys.Name, "")!,
-        DisplayName = node.GetStringOrDefault(Keys.DisplayName, null)
-    };
+        var member = new EnumMember
+        {
+            Name        = node.GetStringOrDefault(Keys.Name, "")!,
+            DisplayName = node.GetStringOrDefault(Keys.DisplayName, null)
+        };
+
+        Property.ValidateName(member.Name, $"'{Keys.Name}' of enum value '{member.Name}'");
+        return member;
+    }
 }

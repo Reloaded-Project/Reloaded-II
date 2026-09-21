@@ -85,7 +85,9 @@ public abstract class ConfigurableBase : IUpdatableConfigurable
         lock (_readLock)
         {
             // Note: External program might still be writing to file while this is being executed, so we need to keep retrying.
-            var newConfig = ConfigIO.Load(GetType(), FilePath!, ConfigName, 250, 2);
+            var newConfig = ConfigIO.TryLoad(GetType(), FilePath!, ConfigName, 250, 2);
+            if (newConfig == null)
+                return;
 
             // Load and copy events, then disable events for this instance.
             newConfig.ConfigurationUpdated = ConfigurationUpdated;
@@ -217,6 +219,28 @@ public static class ConfigIO
 
         instance.Initialize(filePath, configName);
         return instance;
+    }
+
+    /// <summary>
+    /// Attempt to load a file from disk.
+    /// Create a new instance of ConfigurableBase upon success.
+    /// </summary>
+    public static ConfigurableBase? TryLoad(Type type, string filePath, string configName, int timeout = 0, int retries = 1)
+    {
+        var instance = (ConfigurableBase)Activator.CreateInstance(type)!;
+        for (int x = 0; x < retries; x++)
+        {
+            if (Apply(instance, filePath))
+            {
+                instance.Initialize(filePath, configName);
+                return instance;
+            }
+
+            if (x + 1 < retries)
+                Thread.Sleep(timeout);
+        }
+
+        return null;
     }
 
     private static void ApplyFromObject(object instance, JsonObject root)

@@ -58,7 +58,12 @@ public class ModConfigSchema
             if (node[Schema.Keys.Configurations] is JsonArray configurations)
             {
                 foreach (var configurationNode in configurations)
-                    schema.Configurations.Add(Schema.Configuration.Parse(configurationNode!));
+                {
+                    if (configurationNode == null)
+                        throw new JsonException($"'{Schema.Keys.Configurations}' has a null entry.");
+
+                    schema.Configurations.Add(Schema.Configuration.Parse(configurationNode));
+                }
             }
 
             if (schema.Configurations.Count <= 0)

@@ -29,6 +29,7 @@ public class NativeLoaderApiBridgeTests : IDisposable
         Assert.NotEqual(IntPtr.Zero, table.GetModConfigDirectory);
         Assert.NotEqual(IntPtr.Zero, table.Log);
         Assert.NotEqual(IntPtr.Zero, table.FreeString);
+        Assert.NotEqual(IntPtr.Zero, table.LogAsync);
     }
 
     [Fact]

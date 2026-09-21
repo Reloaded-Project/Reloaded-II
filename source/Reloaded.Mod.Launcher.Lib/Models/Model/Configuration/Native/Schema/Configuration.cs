@@ -47,13 +47,23 @@ public class Configuration
         if (node[Keys.Enums] is JsonArray enums)
         {
             foreach (var enumNode in enums)
-                configuration.Enums.Add(Enum.Parse(enumNode!));
+            {
+                if (enumNode == null)
+                    throw new JsonException($"'{Keys.Enums}' has a null entry.");
+
+                configuration.Enums.Add(Enum.Parse(enumNode));
+            }
         }
 
         if (node[Keys.Properties] is JsonArray properties)
         {
             foreach (var propertyNode in properties)
-                configuration.Properties.Add(Property.Parse(propertyNode!));
+            {
+                if (propertyNode == null)
+                    throw new JsonException($"'{Keys.Properties}' has a null entry.");
+
+                configuration.Properties.Add(Property.Parse(propertyNode));
+            }
         }
 
         return configuration;
