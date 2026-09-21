@@ -140,11 +140,15 @@ Example:
 - `Type` is `bool`, `int`, `float`, `double`, `string`, or an enum.
   Enums list their values inline under `Values`, or under a shared `Enums`
   array when the same enum is used by several properties.
+- Property and enum value `Name`s must only contain letters, digits and
+  underscores. Use `DisplayName` for freeform text.
 - `DisplayName`, `Description`, `Category`, `Order` and `DefaultValue` mirror
   the attributes used by the C# mod template.
 - `Slider`, `FilePicker` and `FolderPicker` mirror the `SliderControlParams`,
   `FilePickerParams` and `FolderPickerParams` attributes, all fields are
-  optional.
+  optional. `InitialFolderPath` is one of .NET's
+  `Environment.SpecialFolder` names, e.g. `Desktop`, `MyDocuments`,
+  `ProgramFiles`, etc.
 - Each entry in `Configurations` becomes one page of the dialog, saved to its
   own file (`FileName`) inside the mod's user config folder
   (`User/Mods/<ModId>`). Values missing from the file fall back to
@@ -190,6 +194,12 @@ RELOADED_MOD_CONFIG_IMPL(my_start)
 Missing values fall back to the schema defaults, then to the fallback
 argument. `config.watch(callback)` reloads the settings when the user changes
 them while the game is running.
+
+`reloaded::log(text)` writes to the Reloaded log through the loader API;
+`reloaded::log_async(text)` queues the write instead, prefer it from hot paths
+such as game hooks. The text is UTF-8; the helper header already asks MSVC to
+encode narrow literals as UTF-8, and building with `/utf-8` does the same for
+the whole project.
 
 [native-template]: https://github.com/Reloaded-Project/Reloaded-II/tree/master/source/Reloaded.Mod.Template/templates/native
 [native-header]: https://github.com/Reloaded-Project/Reloaded-II/blob/master/source/Reloaded.Mod.Template/templates/native/ReloadedModConfig.h
