@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Sewer56",
+    "classifications": [
+        "Common",
+        "Library",
+        "Games"
+    ],
+    "name": "Reloaded II Native Mod Template (C++)",
+    "description": "Template for a Reloaded-II native C/C++ modification with launcher configuration.",
+    "sourceName": "Reloaded.Native.Template",
+    "defaultName": "My Reloaded-II Native Mod",
+    "identity": "Reloaded.Native.Mod.Template",
+    "shortName": "reloaded-native",
+    "tags": {
+        "language": "C++",
+        "type": "project"
+    },
+    "preferNameDirectory": true,
+    "symbols": {
+        "ModName": {
+            "type": "parameter",
+            "displayName": "Mod Name",
+            "description": "Name of the mod as seen in the launcher.",
+            "datatype": "text",
+            "replaces": "ModNameValue",
+            "defaultValue": "My Cool Native Mod"
+        },
+        "ModDescription": {
+            "type": "parameter",
+            "displayName": "Mod Description",
+            "description": "Description of the mod as seen in the launcher.",
+            "datatype": "text",
+            "replaces": "ModDescriptionValue",
+            "defaultValue": "Description"
+        },
+        "ModAuthor": {
+            "type": "parameter",
+            "displayName": "Mod Author",
+            "description": "Author of the mod as seen in the launcher.",
+            "datatype": "text",
+            "replaces": "ModAuthorValue",
+            "defaultValue": "Me"
+        }
+    }
+}

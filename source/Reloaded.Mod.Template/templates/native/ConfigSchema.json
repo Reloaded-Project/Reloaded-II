@@ -1,0 +1,71 @@
+{
+  "Configurations": [
+    {
+      "FileName": "Config.json",
+      "DisplayName": "Default Config",
+      "Properties": [
+        {
+          "Name": "EnableThing",
+          "Type": "bool",
+          "DisplayName": "Enable Thing",
+          "Description": "Turns the thing on or off.",
+          "Category": "General",
+          "Order": 0,
+          "DefaultValue": true
+        },
+        {
+          "Name": "Volume",
+          "Type": "int",
+          "DisplayName": "Volume",
+          "Description": "How loud the thing is.",
+          "Category": "General",
+          "Order": 1,
+          "DefaultValue": 75,
+          "Slider": {
+            "Minimum": 0.0,
+            "Maximum": 100.0,
+            "SmallChange": 1.0,
+            "LargeChange": 10.0,
+            "TickFrequency": 10,
+            "ShowTextField": true
+          }
+        },
+        {
+          "Name": "Brightness",
+          "Type": "float",
+          "DisplayName": "Brightness",
+          "Description": "Brightness of the thing.",
+          "Category": "General",
+          "Order": 2,
+          "DefaultValue": 1.5
+        },
+        {
+          "Name": "Quality",
+          "Type": "enum",
+          "DisplayName": "Quality",
+          "Description": "Quality of the thing.",
+          "Category": "General",
+          "Order": 3,
+          "DefaultValue": "High",
+          "Values": [
+            "Low",
+            "Medium",
+            { "Name": "High", "DisplayName": "High Quality" }
+          ]
+        },
+        {
+          "Name": "CustomFile",
+          "Type": "string",
+          "DisplayName": "Custom File",
+          "Description": "Extra file used by the thing.",
+          "Category": "Files",
+          "Order": 4,
+          "DefaultValue": "",
+          "FilePicker": {
+            "Title": "Choose a File"
+          }
+        }
+      ]
+    }
+  ]
+}

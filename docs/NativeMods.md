@@ -21,12 +21,18 @@ To generate the config file, create a new mod from within the launcher.
 
 Reloaded tries to start mods by using the following entry points in order:
 
+- [ReloadedStartEx][native-header] - `void fn(const ReloadedStartInfo* info)`
 - ReloadedStart
 - InitializeASI
 - Init
 
 If none of these entry points is found, the mod will not be loaded.
-The exported methods should have no parameters and return `void`.
+
+In the case of `ReloadedStartInfo`, it provides a wrapper around the API that's
+usually provided to .NET mods (`IModLoader`).
+
+After calling any API that returns strings, you will need to call `free_string`
+afterwards.
 
 **Suspend, Resume, Unload:**
 
@@ -47,5 +53,158 @@ Specifically, you will need to use a good hooking/detouring library that fully r
 
 Here is an example of how such a hooking library may be implemented: [Reloaded.Hooks](https://github.com/Reloaded-Project/Reloaded.Hooks/issues/2).
 
-## CoreRT/NativeAOT?
-Yes you can; mad scientist. 
+## Languages
+
+### C/C++
+
+#### Setup
+
+You need a C++17 compiler and CMake to build native mods:
+
+- Visual Studio 2022 (or newer) with the *Desktop development with C++* workload,
+  using the MSVC or Clang toolset.
+- CMake 3.15 or newer, bundled with Visual Studio (or from [cmake.org](https://cmake.org)).
+
+Start from the template (`dotnet new reloaded-native`) or copy the files from
+the [native mod template][native-template].
+
+Build the DLL for your game's architecture:
+
+```text
+cmake -B build -A x64        (64-bit game)
+cmake -B build -A Win32      (32-bit game)
+cmake --build build --config Release
+```
+
+Upon building, the mod will automatically be copied to the right location
+and show up in Reloaded-II.
+
+## Mod Configuration
+
+### User Settings (Config Dialog)
+
+The Reloaded-II launcher exposes a *Configure* dialog for native mods if the
+`ConfigSchema.json` file exists next to `ModConfig.json`.
+
+The declarative schema file supports all features supported by the .NET equivalent.
+
+Example:
+
+```json
+{
+  "Configurations": [
+    {
+      "FileName": "Config.json",
+      "DisplayName": "Default Config",
+      "Properties": [
+        {
+          "Name": "EnableThing",
+          "Type": "bool",
+          "DisplayName": "Enable Thing",
+          "Description": "Turns the thing on or off.",
+          "Category": "General",
+          "Order": 0,
+          "DefaultValue": true
+        },
+        {
+          "Name": "Volume",
+          "Type": "int",
+          "DefaultValue": 75,
+          "Slider": {
+            "Minimum": 0.0, "Maximum": 100.0,
+            "SmallChange": 1.0, "LargeChange": 10.0,
+            "TickFrequency": 10, "ShowTextField": true
+          }
+        },
+        { "Name": "Brightness", "Type": "float", "DefaultValue": 1.5 },
+        {
+          "Name": "Quality",
+          "Type": "enum",
+          "DefaultValue": "High",
+          "Values": [
+            "Low",
+            { "Name": "High", "DisplayName": "High Quality" }
+          ]
+        },
+        {
+          "Name": "CustomFile",
+          "Type": "string",
+          "FilePicker": { "Title": "Choose a File" }
+        }
+      ]
+    }
+  ]
+}
+```
+
+- `Type` is `bool`, `int`, `float`, `double`, `string`, or an enum.
+  Enums list their values inline under `Values`, or under a shared `Enums`
+  array when the same enum is used by several properties.
+- Property and enum value `Name`s must only contain letters, digits and
+  underscores. Use `DisplayName` for freeform text.
+- `DisplayName`, `Description`, `Category`, `Order` and `DefaultValue` mirror
+  the attributes used by the C# mod template.
+- `Slider`, `FilePicker` and `FolderPicker` mirror the `SliderControlParams`,
+  `FilePickerParams` and `FolderPickerParams` attributes, all fields are
+  optional.
+- Use a .NET [Environment.SpecialFolder][special-folder] name for
+  `InitialFolderPath`, such as `Desktop`, `MyDocuments` or `ProgramFiles`.
+- Each entry in `Configurations` becomes one page of the dialog, saved to its
+  own file (`FileName`) inside the mod's user config folder
+  (`User/Mods/<ModId>`). Values missing from the file fall back to
+  `DefaultValue`.
+
+The values are saved as a flat JSON file such as:
+
+```json
+{
+  "EnableThing": false,
+  "Volume": 10,
+  "Brightness": 0.25,
+  "Quality": "Low"
+}
+```
+
+### Reading the Settings
+
+#### C++
+
+Using `ReloadedModConfig.h` from the [native mod template][native-template],
+define `RELOADED_MOD_CONFIG_IMPL(your_start_function)` in
+exactly one source file:
+
+```cpp
+#include "ReloadedModConfig.h"
+
+static void my_start()
+{
+    auto& config = reloaded::config();
+
+    // Schema defaults take precedence over these fallbacks.
+    bool enabled      = config.get_bool("EnableThing", true);
+    long long volume  = config.get_int("Volume", 75);
+    double brightness = config.get_float("Brightness", 1.5);
+    std::wstring file = config.get_wstring("CustomFile", L"");
+
+    static const char* quality[] = { "Low", "High" };
+    int qualityIndex = config.get_enum("Quality", quality, 2, 1);
+
+    // Reload on changes; detach the thread or retain and join it on unload.
+    // config.watch([](reloaded::ModConfig& changedConfig) {
+    //     reloaded::write_line("Configuration changed");
+    // }).detach();
+
+    // Writes go to the Reloaded log; *_line adds a newline, *_async queues.
+    // Prefer async except for temporary debugging.
+    // reloaded::write_line("Configuration loaded");
+    // reloaded::write_line_async("Configuration loaded");
+    // reloaded::write("Configuration loaded");
+    // reloaded::write_async("Configuration loaded");
+}
+
+RELOADED_MOD_CONFIG_IMPL(my_start)
+```
+
+[native-template]: https://github.com/Reloaded-Project/Reloaded-II/tree/master/source/Reloaded.Mod.Template/templates/native
+[native-header]: https://github.com/Reloaded-Project/Reloaded-II/blob/master/source/Reloaded.Mod.Template/templates/native/ReloadedModConfig.h
+[special-folder]: https://learn.microsoft.com/dotnet/api/system.environment.specialfolder
