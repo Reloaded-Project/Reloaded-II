@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using Reloaded.Mod.Interfaces;
+using Reloaded.Mod.Loader.Logging;
 
 namespace Reloaded.Mod.Loader.Tests.Loader;
 
@@ -27,9 +28,11 @@ public class NativeLoaderApiBridgeTests : IDisposable
         Assert.Equal(1, table.ApiVersion);
         Assert.NotEqual(IntPtr.Zero, table.LoadMod);
         Assert.NotEqual(IntPtr.Zero, table.GetModConfigDirectory);
-        Assert.NotEqual(IntPtr.Zero, table.Log);
+        Assert.NotEqual(IntPtr.Zero, table.Write);
+        Assert.NotEqual(IntPtr.Zero, table.WriteAsync);
+        Assert.NotEqual(IntPtr.Zero, table.WriteLine);
+        Assert.NotEqual(IntPtr.Zero, table.WriteLineAsync);
         Assert.NotEqual(IntPtr.Zero, table.FreeString);
-        Assert.NotEqual(IntPtr.Zero, table.LogAsync);
     }
 
     [Fact]
@@ -96,6 +99,42 @@ public class NativeLoaderApiBridgeTests : IDisposable
         _loader.Verify(l => l.UnloadMod("some.mod"), Times.Once);
         _loader.Verify(l => l.SuspendMod("some.mod"), Times.Once);
         _loader.Verify(l => l.ResumeMod("some.mod"), Times.Once);
+    }
+
+    [Fact]
+    public void LoggingFunctions_Forward_To_Logger()
+    {
+        // Arrange
+        var logger = new Logger();
+        var bridge = new NativeLoaderApiBridge(_loader.Object, logger);
+        var table = Marshal.PtrToStructure<NativeReloadedLoaderApiTable>(bridge.TablePointer);
+
+        var write = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.Utf8Action>(table.Write);
+        var writeAsync = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.Utf8Action>(table.WriteAsync);
+        var writeLine = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.Utf8Action>(table.WriteLine);
+        var writeLineAsync = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.Utf8Action>(table.WriteLineAsync);
+
+        var written = new List<string>();
+        var lines = new List<string>();
+        logger.OnWrite += (_, message) => { lock (written) { written.Add(message.text); } };
+        logger.OnWriteLine += (_, message) => { lock (lines) { lines.Add(message.text); } };
+
+        // Act
+        write(ToUtf8("plain"));
+        writeLine(ToUtf8("line"));
+        writeAsync(ToUtf8("queued plain"));
+        writeLineAsync(ToUtf8("queued line"));
+
+        // Assert
+        // The queued writes land on the logger's background thread, so give them a moment.
+        Assert.True(SpinWait.SpinUntil(() => IsLogged(written, "queued plain") && IsLogged(lines, "queued line"), 5000));
+        Assert.Equal(new[] { "plain", "queued plain" }, written);
+        Assert.Equal(new[] { "line", "queued line" }, lines);
+    }
+
+    private static bool IsLogged(List<string> logged, string message)
+    {
+        lock (logged) { return logged.Contains(message); }
     }
 
     [Fact]

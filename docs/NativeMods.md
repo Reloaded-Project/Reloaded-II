@@ -195,11 +195,11 @@ Missing values fall back to the schema defaults, then to the fallback
 argument. `config.watch(callback)` reloads the settings when the user changes
 them while the game is running.
 
-`reloaded::log(text)` writes to the Reloaded log through the loader API;
-`reloaded::log_async(text)` queues the write instead, prefer it from hot paths
-such as game hooks. The text is UTF-8; the helper header already asks MSVC to
-encode narrow literals as UTF-8, and building with `/utf-8` does the same for
-the whole project.
+`reloaded::write_line(text)` writes a line to the Reloaded log through the
+loader API and `reloaded::write_line_async(text)` queues the write instead. 
+`write`/`write_async` counterparts write the text without appending a newline. 
+The text is UTF-8; the helper header already asks MSVC to encode narrow literals as UTF-8 and 
+building with `/utf-8` does the same for the whole project.
 
 [native-template]: https://github.com/Reloaded-Project/Reloaded-II/tree/master/source/Reloaded.Mod.Template/templates/native
 [native-header]: https://github.com/Reloaded-Project/Reloaded-II/blob/master/source/Reloaded.Mod.Template/templates/native/ReloadedModConfig.h

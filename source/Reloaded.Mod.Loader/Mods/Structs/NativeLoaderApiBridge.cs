@@ -15,9 +15,11 @@ public struct NativeReloadedLoaderApiTable
     public IntPtr ResumeMod;
     public IntPtr GetDirectoryForMod;
     public IntPtr GetModConfigDirectory;
-    public IntPtr Log;
+    public IntPtr Write;
+    public IntPtr WriteAsync;
+    public IntPtr WriteLine;
+    public IntPtr WriteLineAsync;
     public IntPtr FreeString;
-    public IntPtr LogAsync;
 }
 
 /// <summary>
@@ -52,9 +54,11 @@ public sealed class NativeLoaderApiBridge : IDisposable
     private readonly Utf8Action _resumeMod;
     private readonly Utf8ToString _getDirectoryForMod;
     private readonly Utf8ToString _getModConfigDirectory;
-    private readonly Utf8Action _log;
+    private readonly Utf8Action _write;
+    private readonly Utf8Action _writeAsync;
+    private readonly Utf8Action _writeLine;
+    private readonly Utf8Action _writeLineAsync;
     private readonly FreeAction _freeString;
-    private readonly Utf8Action _logAsync;
 
     /// <summary>
     ///Wraps the loader and logger into a native API table.
@@ -72,9 +76,11 @@ public sealed class NativeLoaderApiBridge : IDisposable
         _resumeMod             = ResumeMod;
         _getDirectoryForMod    = GetDirectoryForMod;
         _getModConfigDirectory = GetModConfigDirectory;
-        _log                   = Log;
+        _write                 = Write;
+        _writeAsync            = WriteAsync;
+        _writeLine             = WriteLine;
+        _writeLineAsync        = WriteLineAsync;
         _freeString            = FreeString;
-        _logAsync              = LogAsync;
 
         var table = new NativeReloadedLoaderApiTable()
         {
@@ -85,9 +91,11 @@ public sealed class NativeLoaderApiBridge : IDisposable
             ResumeMod             = Marshal.GetFunctionPointerForDelegate(_resumeMod),
             GetDirectoryForMod    = Marshal.GetFunctionPointerForDelegate(_getDirectoryForMod),
             GetModConfigDirectory = Marshal.GetFunctionPointerForDelegate(_getModConfigDirectory),
-            Log                   = Marshal.GetFunctionPointerForDelegate(_log),
-            FreeString            = Marshal.GetFunctionPointerForDelegate(_freeString),
-            LogAsync              = Marshal.GetFunctionPointerForDelegate(_logAsync)
+            Write                 = Marshal.GetFunctionPointerForDelegate(_write),
+            WriteAsync            = Marshal.GetFunctionPointerForDelegate(_writeAsync),
+            WriteLine             = Marshal.GetFunctionPointerForDelegate(_writeLine),
+            WriteLineAsync        = Marshal.GetFunctionPointerForDelegate(_writeLineAsync),
+            FreeString            = Marshal.GetFunctionPointerForDelegate(_freeString)
         };
 
         _tablePointer = Marshal.AllocHGlobal(Marshal.SizeOf<NativeReloadedLoaderApiTable>());
@@ -135,19 +143,37 @@ public sealed class NativeLoaderApiBridge : IDisposable
         catch (Exception e) { LogError(e, nameof(GetModConfigDirectory)); return IntPtr.Zero; }
     }
 
-    private void Log(IntPtr textUtf8)
+    /// <summary>
+    /// Writes text to the log without appending a newline.
+    /// </summary>
+    private void Write(IntPtr textUtf8)
     {
-        try { _logger?.WriteLine(ReadUtf8(textUtf8)); }
-        catch (Exception e) { LogError(e, nameof(Log)); }
+        try { _logger?.Write(ReadUtf8(textUtf8)); }
+        catch (Exception e) { LogError(e, nameof(Write)); }
     }
 
     /// <summary>
-    /// Log with a queue system.
+    /// Writes text to the log without appending a newline, with a queue system.
     /// </summary>
-    private void LogAsync(IntPtr textUtf8)
+    private void WriteAsync(IntPtr textUtf8)
+    {
+        try { _logger?.WriteAsync(ReadUtf8(textUtf8)); }
+        catch (Exception e) { LogError(e, nameof(WriteAsync)); }
+    }
+
+    private void WriteLine(IntPtr textUtf8)
+    {
+        try { _logger?.WriteLine(ReadUtf8(textUtf8)); }
+        catch (Exception e) { LogError(e, nameof(WriteLine)); }
+    }
+
+    /// <summary>
+    /// Writes a line to the log, with a queue system.
+    /// </summary>
+    private void WriteLineAsync(IntPtr textUtf8)
     {
         try { _logger?.WriteLineAsync(ReadUtf8(textUtf8)); }
-        catch (Exception e) { LogError(e, nameof(LogAsync)); }
+        catch (Exception e) { LogError(e, nameof(WriteLineAsync)); }
     }
 
     /// <summary>
