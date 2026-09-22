@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using Environment = System.Environment;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native.Schema;
 
@@ -15,10 +16,10 @@ public class FilePicker
 
     /// <summary>
     /// Fallback folder when <see cref="InitialDirectory"/> is null, as an
-    /// <see cref="System.Environment.SpecialFolder"/> value; declared in the
+    /// <see cref="Environment.SpecialFolder"/> value; declared in the
     /// schema by name, e.g. <c>Desktop</c>.
     /// </summary>
-    public System.Environment.SpecialFolder InitialFolderPath { get; set; } = System.Environment.SpecialFolder.Personal;
+    public Environment.SpecialFolder InitialFolderPath { get; set; } = Environment.SpecialFolder.Personal;
 
     /// <summary>
     /// Label of the choose file button.
@@ -82,7 +83,7 @@ public class FilePicker
     public static FilePicker Parse(JsonNode node) => new()
     {
         InitialDirectory             = node.GetStringOrDefault(Keys.InitialDirectory, null),
-        InitialFolderPath            = node.GetSpecialFolderOrDefault(Keys.InitialFolderPath, System.Environment.SpecialFolder.Personal),
+        InitialFolderPath            = node.GetSpecialFolderOrDefault(Keys.InitialFolderPath, Environment.SpecialFolder.Personal),
         ChooseFileButtonLabel        = node.GetStringOrDefault(Keys.ChooseFileButtonLabel, "Choose File")!,
         UserCanEditPathText          = node.GetBoolOrDefault(Keys.UserCanEditPathText, true),
         Title                        = node.GetStringOrDefault(Keys.Title, "")!,

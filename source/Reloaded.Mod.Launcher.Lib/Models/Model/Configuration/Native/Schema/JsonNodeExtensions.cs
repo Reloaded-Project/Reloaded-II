@@ -1,4 +1,5 @@
 using System.Text.Json.Nodes;
+using Environment = System.Environment;
 
 namespace Reloaded.Mod.Launcher.Lib.Models.Model.Configuration.Native.Schema;
 
@@ -95,11 +96,11 @@ internal static class JsonNodeExtensions
     }
 
     /// <summary>
-    /// Reads a <see cref="System.Environment.SpecialFolder"/> given either by name
+    /// Reads a <see cref="Environment.SpecialFolder"/> given either by name
     /// (e.g. <c>Desktop</c>, <c>ProgramFiles</c>) or by numeric value.
     /// Throws <see cref="JsonException"/> for unknown names.
     /// </summary>
-    public static System.Environment.SpecialFolder GetSpecialFolderOrDefault(this JsonNode? node, string name, System.Environment.SpecialFolder fallback)
+    public static Environment.SpecialFolder GetSpecialFolderOrDefault(this JsonNode? node, string name, Environment.SpecialFolder fallback)
     {
         var value = node?[name];
         if (value == null)
@@ -108,17 +109,17 @@ internal static class JsonNodeExtensions
         if (value.GetValueKind() == JsonValueKind.String)
         {
             var text = value.GetValue<string>();
-            if (System.Enum.TryParse<System.Environment.SpecialFolder>(text, ignoreCase: true, out var parsed))
+            if (System.Enum.TryParse<Environment.SpecialFolder>(text, ignoreCase: true, out var parsed))
                 return parsed;
 
-            throw new JsonException($"'{name}' value '{text}' is not a known '{nameof(System.Environment.SpecialFolder)}' name.");
+            throw new JsonException($"'{name}' value '{text}' is not a known '{nameof(Environment.SpecialFolder)}' name.");
         }
 
         if (value.GetValueKind() == JsonValueKind.Number)
         {
             var element = value.GetValue<JsonElement>();
             if (element.TryGetInt32(out var number))
-                return (System.Environment.SpecialFolder)number;
+                return (Environment.SpecialFolder)number;
         }
 
         return fallback;
