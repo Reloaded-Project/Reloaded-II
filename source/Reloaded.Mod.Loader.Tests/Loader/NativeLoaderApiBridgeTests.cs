@@ -26,13 +26,13 @@ public class NativeLoaderApiBridgeTests : IDisposable
 
         // Assert
         Assert.Equal(1, table.ApiVersion);
-        Assert.NotEqual(IntPtr.Zero, table.LoadMod);
-        Assert.NotEqual(IntPtr.Zero, table.GetModConfigDirectory);
-        Assert.NotEqual(IntPtr.Zero, table.Write);
-        Assert.NotEqual(IntPtr.Zero, table.WriteAsync);
-        Assert.NotEqual(IntPtr.Zero, table.WriteLine);
-        Assert.NotEqual(IntPtr.Zero, table.WriteLineAsync);
-        Assert.NotEqual(IntPtr.Zero, table.FreeString);
+        Assert.NotEqual(nint.Zero, table.LoadMod);
+        Assert.NotEqual(nint.Zero, table.GetModConfigDirectory);
+        Assert.NotEqual(nint.Zero, table.Write);
+        Assert.NotEqual(nint.Zero, table.WriteAsync);
+        Assert.NotEqual(nint.Zero, table.WriteLine);
+        Assert.NotEqual(nint.Zero, table.WriteLineAsync);
+        Assert.NotEqual(nint.Zero, table.FreeString);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class NativeLoaderApiBridgeTests : IDisposable
         var freeString = Marshal.GetDelegateForFunctionPointer<NativeLoaderApiBridge.FreeAction>(ReadTable().FreeString);
 
         // Act
-        freeString(IntPtr.Zero);
+        freeString(nint.Zero);
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class NativeLoaderApiBridgeTests : IDisposable
         var result = getString(ToUtf8("nope.mod"));
 
         // Assert
-        Assert.Equal(IntPtr.Zero, result);
+        Assert.Equal(nint.Zero, result);
     }
 
     [Fact]
@@ -147,12 +147,12 @@ public class NativeLoaderApiBridgeTests : IDisposable
         _bridge.Dispose();
 
         // Assert
-        Assert.Equal(IntPtr.Zero, _bridge.TablePointer);
+        Assert.Equal(nint.Zero, _bridge.TablePointer);
     }
 
     private NativeReloadedLoaderApiTable ReadTable() => Marshal.PtrToStructure<NativeReloadedLoaderApiTable>(_bridge.TablePointer);
 
-    private static IntPtr ToUtf8(string value)
+    private static nint ToUtf8(string value)
     {
         var bytes = Encoding.UTF8.GetBytes(value);
         var pointer = Marshal.AllocHGlobal(bytes.Length + 1);

@@ -9,17 +9,17 @@ public struct NativeReloadedLoaderApiTable
 {
     public int ApiVersion;
 
-    public IntPtr LoadMod;
-    public IntPtr UnloadMod;
-    public IntPtr SuspendMod;
-    public IntPtr ResumeMod;
-    public IntPtr GetDirectoryForMod;
-    public IntPtr GetModConfigDirectory;
-    public IntPtr Write;
-    public IntPtr WriteAsync;
-    public IntPtr WriteLine;
-    public IntPtr WriteLineAsync;
-    public IntPtr FreeString;
+    public nint LoadMod;
+    public nint UnloadMod;
+    public nint SuspendMod;
+    public nint ResumeMod;
+    public nint GetDirectoryForMod;
+    public nint GetModConfigDirectory;
+    public nint Write;
+    public nint WriteAsync;
+    public nint WriteLine;
+    public nint WriteLineAsync;
+    public nint FreeString;
 }
 
 /// <summary>
@@ -35,17 +35,17 @@ public sealed class NativeLoaderApiBridge : IDisposable
     // the table has to say so. Delegates default to stdcall instead, which would
     // wreck the stack on 32 bit games.
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void Utf8Action(IntPtr valueUtf8);
+    public delegate void Utf8Action(nint valueUtf8);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate IntPtr Utf8ToString(IntPtr valueUtf8);
+    public delegate nint Utf8ToString(nint valueUtf8);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void FreeAction(IntPtr value);
+    public delegate void FreeAction(nint value);
 
     private readonly IModLoader _loader;
     private readonly Logger _logger;
-    private IntPtr _tablePointer;
+    private nint _tablePointer;
 
 
     private readonly Utf8Action _loadMod;
@@ -105,63 +105,63 @@ public sealed class NativeLoaderApiBridge : IDisposable
     /// <summary>
     /// Pointer to the native table, placed inside ReloadedStartInfo
     /// </summary>
-    public IntPtr TablePointer => _tablePointer;
+    public nint TablePointer => _tablePointer;
 
-    private void LoadMod(IntPtr modIdUtf8)
+    private void LoadMod(nint modIdUtf8)
     {
         try { _loader.LoadMod(ReadUtf8(modIdUtf8)); }
         catch (Exception e) { LogError(e, nameof(LoadMod)); }
     }
 
-    private void UnloadMod(IntPtr modIdUtf8)
+    private void UnloadMod(nint modIdUtf8)
     {
         try { _loader.UnloadMod(ReadUtf8(modIdUtf8)); }
         catch (Exception e) { LogError(e, nameof(UnloadMod)); }
     }
 
-    private void SuspendMod(IntPtr modIdUtf8)
+    private void SuspendMod(nint modIdUtf8)
     {
         try { _loader.SuspendMod(ReadUtf8(modIdUtf8)); }
         catch (Exception e) { LogError(e, nameof(SuspendMod)); }
     }
 
-    private void ResumeMod(IntPtr modIdUtf8)
+    private void ResumeMod(nint modIdUtf8)
     {
         try { _loader.ResumeMod(ReadUtf8(modIdUtf8)); }
         catch (Exception e) { LogError(e, nameof(ResumeMod)); }
     }
 
-    private IntPtr GetDirectoryForMod(IntPtr modIdUtf8)
+    private nint GetDirectoryForMod(nint modIdUtf8)
     {
         try { return Marshal.StringToHGlobalUni(_loader.GetDirectoryForModId(ReadUtf8(modIdUtf8))); }
-        catch (Exception e) { LogError(e, nameof(GetDirectoryForMod)); return IntPtr.Zero; }
+        catch (Exception e) { LogError(e, nameof(GetDirectoryForMod)); return nint.Zero; }
     }
 
-    private IntPtr GetModConfigDirectory(IntPtr modIdUtf8)
+    private nint GetModConfigDirectory(nint modIdUtf8)
     {
         try { return Marshal.StringToHGlobalUni(_loader.GetModConfigDirectory(ReadUtf8(modIdUtf8))); }
-        catch (Exception e) { LogError(e, nameof(GetModConfigDirectory)); return IntPtr.Zero; }
+        catch (Exception e) { LogError(e, nameof(GetModConfigDirectory)); return nint.Zero; }
     }
 
-    private void Write(IntPtr textUtf8)
+    private void Write(nint textUtf8)
     {
         try { _logger?.Write(ReadUtf8(textUtf8)); }
         catch (Exception e) { LogError(e, nameof(Write)); }
     }
 
-    private void WriteAsync(IntPtr textUtf8)
+    private void WriteAsync(nint textUtf8)
     {
         try { _logger?.WriteAsync(ReadUtf8(textUtf8)); }
         catch (Exception e) { LogError(e, nameof(WriteAsync)); }
     }
 
-    private void WriteLine(IntPtr textUtf8)
+    private void WriteLine(nint textUtf8)
     {
         try { _logger?.WriteLine(ReadUtf8(textUtf8)); }
         catch (Exception e) { LogError(e, nameof(WriteLine)); }
     }
 
-    private void WriteLineAsync(IntPtr textUtf8)
+    private void WriteLineAsync(nint textUtf8)
     {
         try { _logger?.WriteLineAsync(ReadUtf8(textUtf8)); }
         catch (Exception e) { LogError(e, nameof(WriteLineAsync)); }
@@ -171,11 +171,11 @@ public sealed class NativeLoaderApiBridge : IDisposable
     /// Gives back a string handed out by the functions above. Mods can't free it
     /// themselves, the memory comes from our side of the fence, not their CRT.
     /// </summary>
-    private void FreeString(IntPtr value)
+    private void FreeString(nint value)
     {
         try
         {
-            if (value != IntPtr.Zero)
+            if (value != nint.Zero)
                 Marshal.FreeHGlobal(value);
         }
         catch (Exception e) { LogError(e, nameof(FreeString)); }
@@ -183,14 +183,14 @@ public sealed class NativeLoaderApiBridge : IDisposable
 
     private void LogError(Exception e, string function) => _logger?.WriteLineAsync($"[NativeLoaderApi] {function} failed: {e.Message}");
 
-    private static string ReadUtf8(IntPtr pointer) => pointer == IntPtr.Zero ? string.Empty : Marshal.PtrToStringUTF8(pointer)!;
+    private static string ReadUtf8(nint pointer) => pointer == nint.Zero ? string.Empty : Marshal.PtrToStringUTF8(pointer)!;
 
     public void Dispose()
     {
-        if (_tablePointer == IntPtr.Zero)
+        if (_tablePointer == nint.Zero)
             return;
 
         Marshal.FreeHGlobal(_tablePointer);
-        _tablePointer = IntPtr.Zero;
+        _tablePointer = nint.Zero;
     }
 }

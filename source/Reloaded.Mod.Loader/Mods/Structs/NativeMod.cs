@@ -10,7 +10,7 @@ public class NativeMod : IModV1
     /// <summary>
     /// Handle to the native module.
     /// </summary>
-    private IntPtr _moduleHandle;
+    private nint _moduleHandle;
 
     private ReloadedStart _start;
     private ReloadedStartEx _startEx;
@@ -25,7 +25,7 @@ public class NativeMod : IModV1
     private string _modDirectory;
     private string _userConfigDirectory;
     private string _modId;
-    private IntPtr _loaderApiTable;
+    private nint _loaderApiTable;
 
     /// <summary>
     /// Creates an IMod wrapper for a native DLL.
@@ -34,7 +34,7 @@ public class NativeMod : IModV1
     /// <param name="userConfigDirectory">Path to the directory where the mod's user configuration is stored, passed to mods exporting ReloadedStartEx.</param>
     /// <param name="loaderApiTable">Pointer to the native loader API table shared by all mods, passed to mods exporting ReloadedStartEx.</param>
     /// <param name="modId">Id of this mod, handed to the mod with the loader API.</param>
-    public NativeMod(string path, string userConfigDirectory = null, IntPtr loaderApiTable = default, string modId = null)
+    public NativeMod(string path, string userConfigDirectory = null, nint loaderApiTable = default, string modId = null)
     {
         _modDirectory = Path.GetDirectoryName(Path.GetFullPath(path))!;
         _userConfigDirectory = userConfigDirectory;
@@ -120,28 +120,28 @@ public class NativeMod : IModV1
         }
         finally
         {
-            if (info.ModDirectory != IntPtr.Zero)
+            if (info.ModDirectory != nint.Zero)
                 Marshal.FreeHGlobal(info.ModDirectory);
 
-            if (info.UserConfigDirectory != IntPtr.Zero)
+            if (info.UserConfigDirectory != nint.Zero)
                 Marshal.FreeHGlobal(info.UserConfigDirectory);
 
-            if (info.ModId != IntPtr.Zero)
+            if (info.ModId != nint.Zero)
                 Marshal.FreeHGlobal(info.ModId);
         }
     }
 
     // Utility Functions.
-    private TDelegate GetDelegateForNativeFunction<TDelegate>(IntPtr moduleHandle, string functionName) where TDelegate : Delegate
+    private TDelegate GetDelegateForNativeFunction<TDelegate>(nint moduleHandle, string functionName) where TDelegate : Delegate
     {
         var address = GetProcAddress(moduleHandle, functionName);
-        return address != IntPtr.Zero ? Marshal.GetDelegateForFunctionPointer<TDelegate>(address) : null;
+        return address != nint.Zero ? Marshal.GetDelegateForFunctionPointer<TDelegate>(address) : null;
     }
 
     /// <summary>
     /// Copies a string to unmanaged memory as UTF-8; free with <see cref="Marshal.FreeHGlobal"/>.
     /// </summary>
-    private static IntPtr StringToHGlobalUTF8(string value)
+    private static nint StringToHGlobalUTF8(string value)
     {
         var bytes = Encoding.UTF8.GetBytes(value);
         var pointer = Marshal.AllocHGlobal(bytes.Length + 1);
@@ -183,34 +183,34 @@ public class NativeMod : IModV1
         /// Folder with the mod's own files (ConfigSchema.json, ...).
         /// UTF-16 string, only valid for the duration of the call.
         /// </summary>
-        public IntPtr ModDirectory;
+        public nint ModDirectory;
 
         /// <summary>
         /// Folder where the launcher stores the user settings.
         /// UTF-16 string, only valid for the duration of the call.
         /// </summary>
-        public IntPtr UserConfigDirectory;
+        public nint UserConfigDirectory;
 
         /// <summary>
         /// Id of the mod being started.
         /// UTF-8 string, only valid for the duration of the call.
         /// </summary>
-        public IntPtr ModId;
+        public nint ModId;
 
         /// <summary>
         /// Wrapper around the loader API (<see cref="IModLoader"/>), usable to load,
         /// unload and query other mods. Stays valid past the call,
         /// for the lifetime of the mod.
         /// </summary>
-        public IntPtr LoaderApi;
+        public nint LoaderApi;
     }
 
     #region Native Imports
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern IntPtr LoadLibraryW(string lpFileName);
+    public static extern nint LoadLibraryW(string lpFileName);
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Ansi)]
-    public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
+    public static extern nint GetProcAddress(nint hModule, string lpProcName);
     
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     public static extern int GetDllDirectoryW(int nBufferLength, StringBuilder lpPathName);
