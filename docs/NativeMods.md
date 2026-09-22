@@ -179,6 +179,8 @@ exactly one source file:
 static void my_start()
 {
     auto& config = reloaded::config();
+
+    // Schema defaults take precedence over these fallbacks.
     bool enabled      = config.get_bool("EnableThing", true);
     long long volume  = config.get_int("Volume", 75);
     double brightness = config.get_float("Brightness", 1.5);
@@ -186,18 +188,22 @@ static void my_start()
 
     static const char* quality[] = { "Low", "High" };
     int qualityIndex = config.get_enum("Quality", quality, 2, 1);
+
+    // Reload on changes; detach the thread or retain and join it on unload.
+    // config.watch([](reloaded::ModConfig& changedConfig) {
+    //     reloaded::write_line("Configuration changed");
+    // }).detach();
+
+    // Writes go to the Reloaded log; *_line adds a newline, *_async queues.
+    // Prefer async except for temporary debugging.
+    // reloaded::write_line("Configuration loaded");
+    // reloaded::write_line_async("Configuration loaded");
+    // reloaded::write("Configuration loaded");
+    // reloaded::write_async("Configuration loaded");
 }
 
 RELOADED_MOD_CONFIG_IMPL(my_start)
 ```
-
-Missing values fall back to the schema defaults, then to the fallback
-argument. `config.watch(callback)` reloads the settings when the user changes
-them while the game is running.
-
-`reloaded::write_line(text)` writes a line to the Reloaded log through the
-loader API and `reloaded::write_line_async(text)` queues the write instead. 
-`write`/`write_async` counterparts write the text without appending a newline. 
 
 [native-template]: https://github.com/Reloaded-Project/Reloaded-II/tree/master/source/Reloaded.Mod.Template/templates/native
 [native-header]: https://github.com/Reloaded-Project/Reloaded-II/blob/master/source/Reloaded.Mod.Template/templates/native/ReloadedModConfig.h
