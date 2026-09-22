@@ -146,9 +146,9 @@ Example:
   the attributes used by the C# mod template.
 - `Slider`, `FilePicker` and `FolderPicker` mirror the `SliderControlParams`,
   `FilePickerParams` and `FolderPickerParams` attributes, all fields are
-  optional. `InitialFolderPath` is one of .NET's
-  `Environment.SpecialFolder` names, e.g. `Desktop`, `MyDocuments`,
-  `ProgramFiles`, etc.
+  optional.
+- Use a .NET [Environment.SpecialFolder][special-folder] name for
+  `InitialFolderPath`, such as `Desktop`, `MyDocuments` or `ProgramFiles`.
 - Each entry in `Configurations` becomes one page of the dialog, saved to its
   own file (`FileName`) inside the mod's user config folder
   (`User/Mods/<ModId>`). Values missing from the file fall back to
@@ -198,8 +198,7 @@ them while the game is running.
 `reloaded::write_line(text)` writes a line to the Reloaded log through the
 loader API and `reloaded::write_line_async(text)` queues the write instead. 
 `write`/`write_async` counterparts write the text without appending a newline. 
-The text is UTF-8; the helper header already asks MSVC to encode narrow literals as UTF-8 and 
-building with `/utf-8` does the same for the whole project.
 
 [native-template]: https://github.com/Reloaded-Project/Reloaded-II/tree/master/source/Reloaded.Mod.Template/templates/native
 [native-header]: https://github.com/Reloaded-Project/Reloaded-II/blob/master/source/Reloaded.Mod.Template/templates/native/ReloadedModConfig.h
+[special-folder]: https://learn.microsoft.com/dotnet/api/system.environment.specialfolder
