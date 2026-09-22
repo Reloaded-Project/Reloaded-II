@@ -103,7 +103,7 @@ public sealed class NativeLoaderApiBridge : IDisposable
     }
 
     /// <summary>
-    ///Pointer to the native table, placed inside ReloadedStartInfo
+    /// Pointer to the native table, placed inside ReloadedStartInfo
     /// </summary>
     public IntPtr TablePointer => _tablePointer;
 
@@ -143,18 +143,12 @@ public sealed class NativeLoaderApiBridge : IDisposable
         catch (Exception e) { LogError(e, nameof(GetModConfigDirectory)); return IntPtr.Zero; }
     }
 
-    /// <summary>
-    /// Writes text to the log without appending a newline.
-    /// </summary>
     private void Write(IntPtr textUtf8)
     {
         try { _logger?.Write(ReadUtf8(textUtf8)); }
         catch (Exception e) { LogError(e, nameof(Write)); }
     }
 
-    /// <summary>
-    /// Writes text to the log without appending a newline, with a queue system.
-    /// </summary>
     private void WriteAsync(IntPtr textUtf8)
     {
         try { _logger?.WriteAsync(ReadUtf8(textUtf8)); }
@@ -167,9 +161,6 @@ public sealed class NativeLoaderApiBridge : IDisposable
         catch (Exception e) { LogError(e, nameof(WriteLine)); }
     }
 
-    /// <summary>
-    /// Writes a line to the log, with a queue system.
-    /// </summary>
     private void WriteLineAsync(IntPtr textUtf8)
     {
         try { _logger?.WriteLineAsync(ReadUtf8(textUtf8)); }
