@@ -84,7 +84,6 @@ public abstract class ConfigurableBase : IUpdatableConfigurable
     {
         lock (_readLock)
         {
-            // Note: External program might still be writing to file while this is being executed, so we need to keep retrying.
             var newConfig = ConfigIO.TryLoad(GetType(), FilePath!, ConfigName, 250, 2);
             if (newConfig == null)
                 return;
