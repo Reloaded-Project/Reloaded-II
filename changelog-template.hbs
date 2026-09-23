@@ -1,250 +1,89 @@
 [Read and Discuss in a Browser](https://github.com/Reloaded-Project/Reloaded-II/discussions/473).
-[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.30.2).
-
-Just a tiny maintenance update that took around ~12h of work over the weekend.
-My health hasn't been the best lately- because I haven't been taking good care of myself.
-So this is all I can give for now in some spare time.
-
-# 1.30.3: Startup Freeze Fix, Network Hammering Fix & Steam DRM Docs
-
-## Fix Launcher Freezing on Startup by @drewmcelhany
-
-Some users reported the launcher hanging on startup; never quite making it to
-the main window.
-
-The cause was the mod update check. After updates were found, but before
-showing the update dialog, the launcher fetched extra details for each one;
-asking the download source for the file size, and pulling the changelog text.
-It did this on the thread responsible for drawing the UI. A slow network or
-unresponsive download source froze the whole launcher.
-
-The fetch now happens in the background; the dialog only opens once the
-data is ready.
-
-Also hardened the surrounding code while at it:
-
-- Don't crash when the update list is somehow empty
-- Don't crash when a download source can't report file sizes
-- A failing changelog download no longer aborts the whole update check
-- Background work no longer accidentally hops back onto the UI thread
-
-Fixes [#910](https://github.com/Reloaded-Project/Reloaded-II/issues/910).
-
-(Note: The actual cause is my NuGet server being slow as of late; while gobbling
-up gigabytes of RAM. I've been investigating why.)
-
-## Fix Server Slowdown / Self-Inflicted DDoS by @Sewer56
-
-Found the cause of the slow server mentioned above.
-
-It was me; to be more exact; a multitude of different issues all piling up:
-
-- Launcher started full file downloads just to get their size
-- Launcher didn't send a `User-Agent` header
-- Server wrote to the database on every download
-- Server re-ran search queries that rarely change
-- Server let clients request unbounded result sets
-
-### Launcher Downloading Files to Get Their Size
-
-When checking for mod updates; the launcher needs the file size of each
-available update.
-
-To get it, the launcher sent a full `GET` request; which started downloading the file,
-and then immediately threw it away. Every user, on every launch, for every
-available update.
-
-Multiply that by enough users at once; and we've basically DDoS'd ourselves.
-Hence the slowdown, and the RAM gobbling.
-
-Things got worse when I added HTTPS support via a Caddy reverse proxy late last
-year; since abandoned downloads now kept a TLS connection open longer per
-request.
-
-The size check now issues a `HEAD` request; which gets the file size from headers
-alone- no body download.
-
-### Launcher Not Sending a `User-Agent`
-
-The launcher wasn't sending a `User-Agent` header on any of its HTTP requests.
-
-It now does; so I can distinguish scrapers more easily.
-
-The rest of the issues were server-side. The [server itself](https://github.com/Sewer56/BaGet-ReloadedII)
-was also not built for the kind of traffic Reloaded gets; so I fixed that too.
-Original BaGet was mostly for smaller deployments.
-
-### Batch Download Counts
-
-Every package download ran a database write before returning the file.
-
-These writes fought over the same database lock; queuing everything up.
-
-Download counts (which BaGet doesn't even properly track in the first place) are
-now buffered in memory and flushed every 5 seconds.
-
-In local testing this pushed throughput from ~1,100 to ~4,700 req/s; and cut
-worst-case latency from 640ms down to 37ms.
-
-### Cache Search and Autocomplete
-
-Search and autocomplete hit the database fresh on every request.
-These are now cached in memory.
-
-In local testing this pushed throughput from ~1,470 to ~4,640 req/s; and cut
-worst-case latency from 51ms down to 19ms. Results may be stale for up to 2
-minutes; but package listings don't change often enough to notice.
-
-### Cap Search Page Size & Fix Total Hit Count
-
-The search endpoint accepted any amount of user requested results; so a request
-like `take=100000` would pull a massive result set.
-
-The page size is now capped at 1000; well above what any legitimate client uses.
-
-Also fixed; the `totalHits` field was reporting the page size instead of the
-actual total number of matching packages.
-
-## Document Steam DRM Debugging Issues by @nenkai & @Sewer56
-
-Games with Steam's Stub DRM may ignore breakpoints or crash when a debugger
-attaches.
-
-Reloaded already warned in the console when it detected the DRM's `.bind`
-section; that warning now links to a new
-[Troubleshooting entry](https://reloaded-project.github.io/Reloaded-II/Troubleshooting/)
-with the workaround (unpack the exe with [Steamless](https://github.com/atom0s/Steamless),
-then point Reloaded at the unpacked executable).
-
-The 'New Mod Project' docs also warn about this upfront; so mod authors don't
-lose an afternoon wondering why their breakpoints are dead.
-
-## Improved Dependency Loop Error Message by @TheBestAstroNOT
-
-The 'dependency loop' error shown when resolving mod dependencies now mentions
-another common cause: hitting the download API rate limit. If you see it,
-waiting an hour and trying again may just fix it.
-
-## Updated UltimateASILoader to v9.7.2
-
-The bundled Ultimate ASI Loader used for ASI support has been updated to
-v9.7.2; pulling in the upstream fixes and improvements since the last bump.
-
-------------------------------------------------------------------------
-
-# 1.30.2: Cloud Storage & Wine Improvements
-
-## Fix Broken File Detection in OneDrive Folders
-
-The directory scanner (file search) skipped symlinks for 'offline' (non-local) files.
-
-> The file is offline. The data of the file is not immediately available.
-> [FileAttributes.Offline](https://learn.microsoft.com/en-us/dotnet/api/system.io.fileattributes?view=net-10.0#fields)
-
-A younger me, half a decade ago misunderstood this to mean as
-'this file cannot be accessed' or 'on a server, but you're offline'.
-
-This was not correct- what it rather means is, if you try to read the data; it will
-fetch it from the cloud rather than local storage. This means that if a file is
-on cloud, but not on local storage; we would not recognise it.
-
-[Opst34](https://github.com/Reloaded-Project/Reloaded-II/issues/882) reported a mod that
-could not be configured due to the OneDrive sync feature.
-
-Over the years, this may also have caused the infamous endless update loop some
-users saw inside OneDrive.
-
-The scanner no longer ignores these files. Just in case, infinite recursion is also handled,
-by a hard recursion-depth cap (256). So if you got cyclic symlinks like
-`C:\Reloaded-II\Mods\Loop\Loop\Loop\...`, it will stop after 256 iterations rather
-than hanging.
-
-Detection of cloud storage also updated; since users who have installed Windows
-without OneDrive enabled, and then opted into it later would not be caught. This
-however wasn't well tested; but should not cause regression in worse case.
-
-## Only Write `steamappid.txt` File When Correct ID Is Obtained by @datasone0
-
-Reloaded previously wrote the `steamappid.txt` file unconditionally, even when the
-obtained ID was invalid or defaulted. It now only writes the file when a correct
-Steam AppID is retrieved, avoiding incorrect overrides.
-
-------------------------------------------------------------------------
-
-# 1.30.1: Fixes for French Text and Publishing
-
-## Fix ModConfig.json Regex Inclusion Duplicate Check by @nenkai
-
-`ModConfig.json` is required for all mods, but `.json` files are otherwise excluded when packaging. Reloaded-II ensures
-it's included by checking your "Include Regexes" list.
-
-The duplicate check was broken, causing `ModConfig\.json` to appear twice in the list if you already had it configured.
-
-This happened because the check used a `StringWrapper` type that didn't implement `Equals`, so it compared object
-references instead of the actual string values.
-
-## Add French Strings for "Yes/No" Dialog by @dysfunctionalriot
-
-Adds French localization strings for the mod compatibility warning dialog buttons introduced in 1.30.0.
-
-------------------------------------
-
-# 1.30.0: Sliders and Supported Games
-
-# Added `TickFrequencyDouble` to `SliderControlParamsAttribute`
-
-The `TickFrequency` property on `SliderControlParamsAttribute` was previously an `int`, which prevented
-using non-integer tick frequencies for sliders (e.g., `0.5`).
-
-A new `TickFrequencyDouble` property has been added. When set, it takes precedence over the old `TickFrequency`
-property.
-
-```csharp
-// Old way (integer only, now obsolete)
-[SliderControlParams(minimum: 0, maximum: 1, tickFrequency: 1)]
-
-// New way (supports non-integer values)
-[SliderControlParams(minimum: 0, maximum: 1, TickFrequencyDouble = 0.1)]
+[Previous Changelog](https://github.com/Reloaded-Project/Reloaded-II/releases/tag/1.30.3).
+
+# 1.31.0: Native Mod Configuration
+
+## Add Native Mod Configuration and Loader API by @Sora-yx & @Sewer56
+
+Just a temporary stopgap until Reloaded3.
+
+### Configure Native Mod Settings
+
+Native mods can now use the launcher's settings dialog without a C# DLL.
+Declare settings in `ConfigSchema.json`, beside `ModConfig.json`:
+
+```json
+{
+  "Configurations": [
+    {
+      "FileName": "Config.json",
+      "Properties": [
+        { "Name": "Enabled", "Type": "bool", "DefaultValue": true },
+        {
+          "Name": "Volume", "Type": "int", "DefaultValue": 75,
+          "Slider": { "Minimum": 0, "Maximum": 100 }
+        }
+      ]
+    }
+  ]
+}
 ```
 
-Alongside the addition of `textFieldFormat` from @monkeyman192 which (somehow) sat unreleased for 2 years, due to
-missing `Reloaded.Mod.Interfaces` release, you can now have sliders with nice fractions in configs, without crazy
-behaviour.
+Native settings have feature parity with C#.
+They support sliders, enums, file/folder pickers, and opt-in real-time updates.
 
-<img width="851" height="382" alt="image"
-  src="https://github.com/user-attachments/assets/92d09c19-3454-4d9e-ba83-4704c65d9c6f" />
+### Use the Native Loader API
 
-A real example where this could be useful could look like this:
+Native mods can now access some parts of the `IModLoader` API through
+`ReloadedStartEx`.
 
-<img width="900" height="729" alt="image"
-  src="https://github.com/user-attachments/assets/7bbd90a4-5b96-47e7-8f79-ecba27bd256e" />
+```cpp
+#include "ReloadedModConfig.h"
 
-Making the HUD arbitrarily wide on widescreen displays.
+static void my_start()
+{
+    auto& config = reloaded::config();
 
-The old `TickFrequency` property has been marked as `[Obsolete]` but remains functional for backwards compatibility.
+    // Schema defaults take precedence over these fallbacks.
+    bool enabled      = config.get_bool("EnableThing", true);
+    long long volume  = config.get_int("Volume", 75);
+    double brightness = config.get_float("Brightness", 1.5);
+    std::wstring file = config.get_wstring("CustomFile", L"");
 
-## Warn When Installing Mods Without Supported Games
+    // Query loader stuff.
+    std::wstring modDir = config.mod_directory();
+    std::wstring configDir = config.config_directory();
 
-When installing mods via drag-and-drop, download, or the `r2:` protocol, Reloaded-II now checks if the mod
-has any supported applications configured. If none are found, a dialog will prompt you to select which
-game(s) the mod should be enabled for.
+    static const char* quality[] = { "Low", "High" };
+    int qualityIndex = config.get_enum("Quality", quality, 2, 1);
 
-<img width="1500" height="900" alt="image"
-  src="https://github.com/user-attachments/assets/c070449b-e34c-418c-aebc-08c60cdd8ec3" />
+    // Reload on changes; detach the thread or retain and join it on unload.
+    // config.watch([](reloaded::ModConfig& changedConfig) {
+    //     reloaded::write_line("Configuration changed");
+    // }).detach();
 
-- Selecting **Yes** opens the mod edit dialog to configure supported applications
-- Selecting **No** keeps the mod installed without changes (you can configure it later)
+    // Writes go to the Reloaded log; *_line adds a newline, *_async queues.
+    // Prefer async except for temporary debugging.
+    // reloaded::write_line("Configuration loaded");
+    // reloaded::write_line_async("Configuration loaded");
+    // reloaded::write("Configuration loaded");
+    // reloaded::write_async("Configuration loaded");
+}
 
-This helps prevent the occasional issue where a mod author forgot to mark a mod as compatible with any game.
-Without an associated game, the mod wouldn't appear in any game's mod list, which could leave users confused.
+RELOADED_MOD_CONFIG_IMPL(my_start)
+```
 
-<img width="1500" height="900" alt="image"
-  src="https://github.com/user-attachments/assets/e9fdcf84-3fa2-47ad-bb39-df40b3abcb59" />
+More APIs welcome with future PRs.
 
-Fixes [#751](https://github.com/Reloaded-Project/Reloaded-II/issues/751).
-Contributed by @TheBestAstroNOT (thanks!) , with extra quick cleanup done before merging.
+Start with `dotnet new reloaded-native`, or copy `ReloadedModConfig.h` from the
+template. See the
+[native mod guide](https://reloaded-project.github.io/Reloaded-II/NativeMods/)
+for more information.
 
-------------------------------------
+## Add Japanese Translation by @ShibainuK
+
+Adds a Japanese (`ja-JP`) launcher translation, with corrected line breaks for
+executable-read error messages.
 
 ## Complete Changes (Autogenerated)
 
