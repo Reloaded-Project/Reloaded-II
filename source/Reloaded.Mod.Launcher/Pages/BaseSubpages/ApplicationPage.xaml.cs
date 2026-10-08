@@ -58,11 +58,21 @@ public partial class ApplicationPage : ReloadedIIPage, IDisposable
 
     private void ReloadedMod_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (sender is not FrameworkElement { DataContext: Process process }) 
+        if (sender is not FrameworkElement { DataContext: Process process })
+            return;
+
+        if (HasExitedSafe(process))
             return;
 
         ViewModel.SelectedProcess = process;
         ViewModel.ChangeApplicationPage(ApplicationSubPage.ReloadedProcess);
+    }
+
+    private static bool HasExitedSafe(Process process)
+    {
+        try { return process.HasExited; }
+        catch (InvalidOperationException) { return true; }
+        catch (System.ComponentModel.Win32Exception) { return false; }
     }
 
     private void NonReloadedMod_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

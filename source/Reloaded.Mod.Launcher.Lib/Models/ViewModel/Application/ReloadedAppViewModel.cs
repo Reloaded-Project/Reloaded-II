@@ -38,8 +38,20 @@ public class ReloadedAppViewModel : ObservableObject, IDisposable
     public ReloadedAppViewModel(ApplicationViewModel applicationViewModel)
     {
         ApplicationViewModel = applicationViewModel;
-        ApplicationViewModel.SelectedProcess!.EnableRaisingEvents = true;
-        ApplicationViewModel.SelectedProcess.Exited += SelectedProcessOnExited;
+        var process = ApplicationViewModel.SelectedProcess!;
+
+        process.Exited += SelectedProcessOnExited;
+        try
+        {
+            process.EnableRaisingEvents = true;
+        }
+        catch (InvalidOperationException)
+        {
+            process.Exited -= SelectedProcessOnExited;
+            ActionWrappers.ExecuteWithApplicationDispatcherAsync(() =>
+                ApplicationViewModel.ChangeApplicationPage(ApplicationSubPage.ApplicationSummary));
+            return;
+        }
 
         /* Try establish connection. */
         if (!TryGetPort(true, out _port)) 
