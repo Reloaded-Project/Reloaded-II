@@ -37,10 +37,10 @@
     <sys:String x:Key="AddAppLocation">Розташування EXE-файлу</sys:String>
     <sys:String x:Key="AddAppArguments">Аргументи командного рядка</sys:String>
 
-    <sys:String x:Key="AddAppAdvancedOptions">Продвинуті інструменти та алаштування</sys:String>
+    <sys:String x:Key="AddAppAdvancedOptions">Продвинуті інструменти та налаштування</sys:String>
     <sys:String x:Key="AddAppCreateShortcut">Створити ярлик</sys:String>
     <sys:String x:Key="AddAppAutoInject">Автоін'єкція</sys:String>
-    <sys:String x:Key="AddAppAutoInjectMessage">Нотатка: Хоча автоін'єкція присутня, її не рекомендується використовувати, оскільки нема гарантії, що моди запустять код до запуску програми.&#x0a;Натомість просимо використовувати «Запустити програму» з Reloaded або метод «Завантажувач DLL», який описаний у документації на GitHub.&#x0a;Будь ласка, не повідомляйте про баги тих модів, які не використовують автоін'єкцію.</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage">Нотатка: Хоча автоін'єкція присутня, її не рекомендується використовувати, оскільки нема гарантії, що моди запустять код до запуску програми.&#x0a;Натомість просимо використовувати «Запустити програму» з Reloaded або метод «Завантажувач DLL», який описаний у документації на GitHub.&#x0a;Будь ласка, не повідомляйте про баги модів, які не працюють у режимі автоін'єкції.</sys:String>
 
     <sys:String x:Key="AddAppExecutableTitle">Виберіть програму, для якої хочете створити конфігурацію.</sys:String>
     <sys:String x:Key="AddAppExecutableFilter">EXE-файл програми</sys:String>
@@ -115,7 +115,7 @@
     <sys:String x:Key="NonReloadedProcessMessageOne">Reloaded не керує цим процесом.</sys:String>
     <sys:String x:Key="NonReloadedProcessMessageTwo">Ви можете завантажити Reloaded натиснувши кнопку внизу.</sys:String>
     <sys:String x:Key="NonReloadedProcessInject">Ін'єктувати</sys:String>
-    <sys:String x:Key="NonReloadedProcessInjectWarning">Нотатка: Не всі моди можуть функціонувати, як очікується, якщо вони завантажені, коли програма працює і не призупинена. Будь ласка, не повідомляйте про баги модів, які працюють, не використовуючи цю функцію.</sys:String>
+    <sys:String x:Key="NonReloadedProcessInjectWarning">Нотатка: Не всі моди можуть функціонувати, як очікується, якщо вони завантажені, коли програма працює і не призупинена. Будь ласка, не повідомляйте про баги модів, які не працюють під час використання цієї функції.</sys:String>
 
     <!-- Reloaded Process -->
     <sys:String x:Key="TitleReloadedProcess">Процес Reloaded</sys:String>
@@ -186,7 +186,7 @@
 
     <!-- Fetch Nuget Dialog | Obsolete since 1.12.0 but some strings still used. -->
     <sys:String x:Key="FetchNugetTitle">Завантажити пакети</sys:String>
-    <sys:String x:Key="FetchNugetMessage">Наступні пакети не будуть встановлені:</sys:String>
+    <sys:String x:Key="FetchNugetMessage">Наступні пакети будуть встановлені:</sys:String>
     <sys:String x:Key="FetchNugetNotFoundMessage">Наступні пакети не знайдено:</sys:String>
     <sys:String x:Key="FetchNugetNotFoundAdvice">Вам потрібно знайти їх самостійно:/</sys:String>
 
@@ -246,7 +246,7 @@
     <!-- Missing Dependencies Dialog -->
     <sys:String x:Key="MissingDependenciesTitle">Відсутні вимоги (requirements)</sys:String>
     <sys:String x:Key="MissingDependenciesText">Схоже, що деякі вимоги для роботи Reloaded відсутні на вашому пристрої. Лаунчер знайшов наступні відсутні вимоги: </sys:String>
-    <sys:String x:Key="MissingDependenciesText2">Будь ласка, завантажте зазаначені вимоги і закрийте це вікно.</sys:String>
+    <sys:String x:Key="MissingDependenciesText2">Будь ласка, завантажте зазначені вимоги і закрийте це вікно.</sys:String>
 
     <!-- Categories: Main Menu Screen -->
     <sys:String x:Key="AppCategoryMain">Головне</sys:String>
