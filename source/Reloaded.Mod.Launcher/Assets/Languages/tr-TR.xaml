@@ -1,0 +1,642 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xml:space="preserve">
+
+    <sys:String x:Key="TitleAddApplication">Uygulama Ekle</sys:String>
+    <sys:String x:Key="TitleEditApplication">Uygulamayı Düzenle</sys:String>
+    <sys:String x:Key="TitleManageMods">Modları Yönet</sys:String>
+    <sys:String x:Key="TitleDownloadMods">Mod İndir</sys:String>
+    <sys:String x:Key="TitleLoaderSettings">Mod Yükleyici Ayarları</sys:String>
+    <sys:String x:Key="TitleMainPage">Ana Sayfa</sys:String>
+    <sys:String x:Key="TitleSearchApplications">Uygulamaları Ara/Filtrele</sys:String>
+    <sys:String x:Key="TitleSplashPage">Reloaded II hazırlanıyor...</sys:String>
+
+    <sys:String x:Key="SplashCreatingDefaultConfig">Varsayılan yapılandırma oluşturuluyor</sys:String>
+    <sys:String x:Key="SplashCleaningConfigurations">Uygulama/yükleyici/mod yapılandırmaları temizleniyor</sys:String>
+    <sys:String x:Key="SplashPreparingResources">Kaynaklar hazırlanıyor</sys:String>
+    <sys:String x:Key="SplashLoadCompleteIn">Yükleme süresi:</sys:String>
+    <sys:String x:Key="SplashCreatingTemplates">Şablonlar oluşturuluyor</sys:String>
+    <sys:String x:Key="SplashCheckingForUpdates">Güncellemeler denetleniyor</sys:String>
+    <sys:String x:Key="SplashRunningSanityChecks">Tutarlılık kontrolleri yapılıyor</sys:String>
+
+    <sys:String x:Key="AddAppImageTooltip">Özel bir logo içe aktarmak için bu görsele tıklayın.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorTitle">Simge olarak kullanılacak görseli seçin.</sys:String>
+    <sys:String x:Key="AddAppImageSelectorFilter">Görsel</sys:String>
+
+    <sys:String x:Key="AddAppNewButton">Yeni</sys:String>
+    <sys:String x:Key="AddAppDeleteButton">Sil</sys:String>
+
+    <sys:String x:Key="AddAppName">Uygulama Adı</sys:String>
+    <sys:String x:Key="AddAppLocation">Yürütülebilir Dosya Konumu</sys:String>
+    <sys:String x:Key="AddAppArguments">Komut Satırı Bağımsız Değişkenleri</sys:String>
+
+    <sys:String x:Key="AddAppAdvancedOptions">Gelişmiş Araçlar ve Seçenekler</sys:String>
+    <sys:String x:Key="AddAppCreateShortcut">Kısayol Oluştur</sys:String>
+    <sys:String x:Key="AddAppAutoInject">Otomatik Enjeksiyon</sys:String>
+    <sys:String x:Key="AddAppAutoInjectMessage">Not: Otomatik enjeksiyon sunulmaktadır ancak modların uygulamadan önce kod çalıştıracağı garanti edilemediği için önerilmez.&#x0a;Bunun yerine Reloaded üzerinden normal "Uygulamayı Başlat" seçeneğini veya GitHub belgelerinde açıklanan "DLL Loader" yöntemini kullanın.&#x0a;Otomatik enjeksiyon modunda çalışmayan modlar için hata bildirimi göndermeyin.</sys:String>
+
+    <sys:String x:Key="AddAppExecutableTitle">Yapılandırması oluşturulacak uygulamayı seçin.</sys:String>
+    <sys:String x:Key="AddAppExecutableFilter">Uygulamanın Yürütülebilir Dosyası</sys:String>
+
+    <sys:String x:Key="AddAppShortcutCreatedTitle">Kısayol Oluşturuldu</sys:String>
+    <sys:String x:Key="AddAppShortcutCreatedMessage">Kısayolun oluşturulduğu konum:</sys:String>
+
+    <sys:String x:Key="ModManagerSearchMods">Modları Ara</sys:String>
+    <sys:String x:Key="ModManagerSearchApps">Uygulamaları Ara</sys:String>
+    <sys:String x:Key="ModManagerExtraOptions">Ek Seçenekler</sys:String>
+    <sys:String x:Key="ModManagerOpenModDirectory">Mod Klasörünü Aç</sys:String>
+    <sys:String x:Key="ModManagerConvertToNuget">NuGet Biçimine Dönüştür</sys:String>
+    <sys:String x:Key="ModManagerManageDependencies">Bağımlılıkları Yönet</sys:String>
+    <sys:String x:Key="ModManagerSelectMod">Ayrıntılarını değiştirmek istediğiniz modu seçin.</sys:String>
+    <sys:String x:Key="ModManagerSelectApp">Bu modla uyumlu uygulamaları seçin.</sys:String>
+
+    <sys:String x:Key="TitleSetDependenciesDialog">Mod Bağımlılıklarını Belirle</sys:String>
+
+    <sys:String x:Key="TitleCreateModDialog">Mod Oluştur</sys:String>
+    <sys:String x:Key="CreateModDialogSave">Mod Oluştur</sys:String>
+    <sys:String x:Key="CreateModDialogId">Benzersiz Kimlik</sys:String>
+    <sys:String x:Key="CreateModDialogName">Ad</sys:String>
+    <sys:String x:Key="CreateModDialogAuthor">Yazar</sys:String>
+    <sys:String x:Key="CreateModDialogVersion">Sürüm</sys:String>
+    <sys:String x:Key="CreateModDialogDescription">Kısa Açıklama</sys:String>
+    <sys:String x:Key="CreateModDialogDependencies">Mod Bağımlılıkları</sys:String>
+
+    <sys:String x:Key="CreateModDialogImageSelectorTitle">Mod için özel bir logo seçin.</sys:String>
+    <sys:String x:Key="CreateModDialogImageSelectorFilter">Görsel</sys:String>
+
+    <sys:String x:Key="TitleCreateModNonUniqueId">Benzersiz Olmayan Kimlik</sys:String>
+    <sys:String x:Key="MessageCreateModNonUniqueId">Oluşturduğunuz modun ModId değeri benzersiz değil.&#x0a;Lütfen benzersiz bir ModId belirleyin.</sys:String>
+
+    <sys:String x:Key="LoaderSettingsCleanup">Yapılandırmaları Temizle</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupWarning">Bu işlem çeşitli yapılandırmalarda (uygulama, mod vb.) bakım yapar.&#x0a;Bakım işlemleri, bir modun bağımlılık listesinden artık mevcut olmayan modların kaldırılmasını da içerir.&#x0a;Eksik bağımlılıkların, desteklenen uygulamaların vb. yapılandırma dosyalarından kaldırılacağını unutmayın.</sys:String>
+    <sys:String x:Key="LoaderSettingsCleanupComplete">Temizlik Tamamlandı</sys:String>
+
+    <sys:String x:Key="LoaderSettingsAppsInstalled">Yüklü Uygulamalar:</sys:String>
+    <sys:String x:Key="LoaderSettingsModsInstalled">Yüklü Modlar:</sys:String>
+    <sys:String x:Key="LoaderSettingsCompileDate">Derleme tarihi:</sys:String>
+    <sys:String x:Key="LoaderSettingsAndDocumentation">Kullanıcı Kılavuzu ve Belgeler</sys:String>
+    <sys:String x:Key="LoaderSettingsCopyright">Reloaded II, GNU GPL v3 lisanslı özgür yazılımdır.</sys:String>
+    <sys:String x:Key="LoaderSettingsEnableAutomaticUpdates">Otomatik Güncellemeler</sys:String>
+    <sys:String x:Key="LoaderSettingsShowConsole">Konsolu Göster</sys:String>
+    <sys:String x:Key="LoaderSettingsLoadAsynchronously">Eşzamansız Yükle</sys:String>
+    <sys:String x:Key="LoaderSettingsWarning">Reloaded, herhangi bir özel kodun çalıştırılmasına olanak tanıyan güçlü bir yazılımdır. Sorumluluk size ait olmak üzere kullanın.</sys:String>
+
+    <sys:String x:Key="TitleApplication">Uygulama Merkezi</sys:String>
+    <sys:String x:Key="ApplicationTotalMods">Toplam Mod</sys:String>
+    <sys:String x:Key="ApplicationOtherInstances">Diğer Örnekler</sys:String>
+    <sys:String x:Key="ApplicationReloadedInstances">Reloaded Örnekleri</sys:String>
+
+    <sys:String x:Key="TitleFirstLaunch">Reloaded II'ye Hoş Geldiniz</sys:String>
+    <sys:String x:Key="FirstLaunchLineOne">Reloaded II'yi ilk kez kullanıyorsunuz.</sys:String>
+    <sys:String x:Key="FirstLaunchLineTwo">Başlamadan önce aşağıdaki bağlantılara göz atabilirsiniz:</sys:String>
+    <sys:String x:Key="FirstLaunchLineDocumentation">Belgeler</sys:String>
+    <sys:String x:Key="FirstLaunchLineUserguide">Kullanıcı Kılavuzu</sys:String>
+    <sys:String x:Key="FirstLaunchLineThree">Bu bağlantıları daha sonra [Mod Yükleyici Ayarları] bölümünde bulabilirsiniz.</sys:String>
+
+    <sys:String x:Key="MessageBoxButtonOK">Tamam</sys:String>
+    <sys:String x:Key="MessageBoxButtonCancel">İptal</sys:String>
+
+    <sys:String x:Key="TitleNonReloadedProcess">Reloaded Yüklenmemiş İşlem</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageOne">Reloaded bu işlemi yönetmiyor.</sys:String>
+    <sys:String x:Key="NonReloadedProcessMessageTwo">Aşağıdaki düğmeye basarak Reloaded'ı yükleyebilirsiniz.</sys:String>
+    <sys:String x:Key="NonReloadedProcessInject">Enjekte Et</sys:String>
+    <sys:String x:Key="NonReloadedProcessInjectWarning">Not: Uygulama çalışırken ve askıya alınmamışken yüklenen tüm modlar beklendiği gibi çalışmayabilir. Bu işlevle çalışmayan modlar için hata bildirimi göndermeyin.</sys:String>
+
+    <sys:String x:Key="TitleReloadedProcess">Reloaded Yüklü İşlem</sys:String>
+
+    <sys:String x:Key="TitleConfigureMods">Modları Yapılandır</sys:String>
+    <sys:String x:Key="ApplicationLaunch">Uygulamayı Başlat</sys:String>
+
+    <sys:String x:Key="ConfigureModsListItemTooltip">Modların yükleme sırasını değiştirmek için öğeleri sürükleyip bırakın. Modlar yukarıdan aşağıya doğru yüklenir.</sys:String>
+    <sys:String x:Key="ConfigureModsDummyText">Mod edinmenizi söylemek için Reloaded'ı kullanır. Reloaded-II harika! Sevimlilik adalettir, kanun budur!</sys:String>
+    <sys:String x:Key="ConfigureModsConfigure">Modu Yapılandır</sys:String>
+    <sys:String x:Key="ConfigureModsOpenFolder">Klasörü Aç</sys:String>
+
+    <sys:String x:Key="LoadModSet">Mod Setini Yükle</sys:String>
+    <sys:String x:Key="SaveModSet">Mod Setini Kaydet</sys:String>
+    <sys:String x:Key="LoadModSetDialogTitle">Mod listesinin yükleneceği dosyayı seçin.</sys:String>
+    <sys:String x:Key="SaveModSetDialogTitle">Mod listesinin kaydedileceği konumu seçin.</sys:String>
+
+    <sys:String x:Key="LoadModSetIncompatibleTitle">Uyumluluk Uyarısı</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage">Uygulamanızla uyumlu olarak işaretlenmemiş etkin modlar var:</sys:String>
+    <sys:String x:Key="LoadModSetIncompatibleMessage2">Tamam düğmesine basmak modları uygulamanız için etkinleştirir. İptal düğmesine basmak modları devre dışı bırakır.</sys:String>
+
+    <sys:String x:Key="ReloadedProcessResume">Devam Ettir</sys:String>
+    <sys:String x:Key="ReloadedProcessSuspend">Askıya Al</sys:String>
+    <sys:String x:Key="ReloadedProcessUnload">Yüklemeyi Kaldır</sys:String>
+    <sys:String x:Key="ReloadedProcessRefresh">Yenile</sys:String>
+    <sys:String x:Key="ReloadedProcessLoadMod">Mod Yükle</sys:String>
+    <sys:String x:Key="ReloadedProcessNotice">Not: Bu menü öncelikle geliştiriciler için tasarlanmıştır.</sys:String>
+
+    <sys:String x:Key="UpdateModTitle">Mod Güncellemeleri Mevcut</sys:String>
+    <sys:String x:Key="UpdateModDownload">İndir</sys:String>
+    <sys:String x:Key="UpdateModModId">Mod Kimliği</sys:String>
+    <sys:String x:Key="UpdateModSize">Boyut (MB)</sys:String>
+    <sys:String x:Key="UpdateModOldVersion">Eski Sürüm</sys:String>
+    <sys:String x:Key="UpdateModNewVersion">Yeni Sürüm</sys:String>
+
+    <sys:String x:Key="UpdateModConfirmTitle">Çalışan Uygulamalar</sys:String>
+    <sys:String x:Key="UpdateModConfirmMessage">Şu anda Reloaded ile çalışan uygulamalarınız var.&#x0a;Güncellemeler indirilecek ancak tüm uygulamalar kapatılana kadar uygulanmayacak.</sys:String>
+
+    <sys:String x:Key="UpdateLoaderTitle">Güncelleme Mevcut</sys:String>
+    <sys:String x:Key="UpdateLoaderCurrentVersion">Mevcut Sürüm</sys:String>
+    <sys:String x:Key="UpdateLoaderNewVersion">Yeni Sürüm</sys:String>
+
+    <sys:String x:Key="UpdateLoaderChangelogUnavailable">Değişiklik Günlüğü Bulunamadı</sys:String>
+    <sys:String x:Key="UpdateLoaderChangelog">Değişiklik Günlüğünü GitHub'da Görüntüle</sys:String>
+    <sys:String x:Key="UpdateLoaderUpdate">Güncelle</sys:String>
+
+    <sys:String x:Key="UpdateLoaderRunningTitle">Çalışan Uygulamalar</sys:String>
+    <sys:String x:Key="UpdateLoaderRunningMessage">Şu anda Reloaded ile çalışan uygulamalarınız var.&#x0a;Güncelleme yapılamıyor, lütfen tüm uygulamaları kapatın.</sys:String>
+    <sys:String x:Key="UpdateLoaderProcessList">İşlem Listesi</sys:String>
+
+    <sys:String x:Key="DownloadModsDownload">İndir</sys:String>
+    <sys:String x:Key="DownloadModsDownloading">İndiriliyor</sys:String>
+    <sys:String x:Key="DownloadModsAlreadyDownloaded">Zaten İndirilmiş</sys:String>
+
+    <sys:String x:Key="DownloadModsVisitWebsite">Web Sitesini Ziyaret Et</sys:String>
+    <sys:String x:Key="DownloadModsCheckUpdatesAndDependencies">Güncellemeleri ve Bağımlılıkları Denetle</sys:String>
+
+    <sys:String x:Key="NoUpdateDialogTitle">Harika!</sys:String>
+    <sys:String x:Key="NoUpdateDialogMessage">Yapılacak işlem yok. Tüm modlar kontrol edildi!</sys:String>
+
+    <sys:String x:Key="FetchNugetTitle">Paketleri İndir</sys:String>
+    <sys:String x:Key="FetchNugetMessage">Aşağıdaki paketler yüklenecek:</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundMessage">Aşağıdaki paketler bulunamadı:</sys:String>
+    <sys:String x:Key="FetchNugetNotFoundAdvice">Bunları kendiniz bulmanız gerekecek :/</sys:String>
+
+    <sys:String x:Key="FailedToLaunchTitle">Eyvah!</sys:String>
+    <sys:String x:Key="FailedToLaunchMessage">Reloaded-II yüklenirken bir hata oluştu.</sys:String>
+
+    <sys:String x:Key="DownloadModArchiveTitle">Mod Arşivini İndir</sys:String>
+    <sys:String x:Key="DownloadModArchiveName">Dosya Adı</sys:String>
+
+    <sys:String x:Key="InstallModArchiveTitle">Mod Arşivi Yükleniyor</sys:String>
+    <sys:String x:Key="InstalledModName">Mod Adı</sys:String>
+    <sys:String x:Key="InstallingModWait">Mod yüklenirken lütfen bekleyin!</sys:String>
+    <sys:String x:Key="ExtractingLocalModArchive">Yerel mod arşivi açılıyor, lütfen bekleyin!</sys:String>
+
+    <sys:String x:Key="NoAppsInConfigTitle">Desteklenen uygulama bulunamadı</sys:String>
+    <sys:String x:Key="NoAppsInConfigDescription">Reloaded-II, modun yapılandırmasında desteklenen bir uygulama bulamadı.</sys:String>
+    <sys:String x:Key="NoCompatibleAppsInConfigTitle">Uyumlu uygulama bulunamadı</sys:String>
+    <sys:String x:Key="NoCompatibleAppsInConfigDescription">Reloaded-II, bu modla uyumlu yüklü bir uygulama bulamadı.</sys:String>
+    <sys:String x:Key="AppSelectionQuestion">Desteklenen bir uygulamayı elle seçmek ister misiniz?</sys:String>
+
+    <sys:String x:Key="RunAsAdminMessage">Bu uygulamayı yönetici olarak çalıştırmanız gerekiyor.&#x0a;Windows Yönetim Araçları (WMI) üzerinden uygulama başlatma/kapatma olaylarını almak için yönetici yetkisi gereklidir.&#x0a;Geliştiriciler: Visual Studio gibi tercih ettiğiniz IDE'yi yönetici olarak çalıştırın.</sys:String>
+
+    <sys:String x:Key="ConfigureModDialogTitle">Modu Yapılandır</sys:String>
+    <sys:String x:Key="ConfigureModDialogSave">Kaydet</sys:String>
+
+    <sys:String x:Key="ErrorError">Hata</sys:String>
+    <sys:String x:Key="ErrorUnknown">Bilinmeyen Hata</sys:String>
+    <sys:String x:Key="ErrorPathNullOrEmpty">Bu uygulamanın yolu tanımlanmamış veya boş. Lütfen yolu düzeltin.</sys:String>
+    <sys:String x:Key="ErrorFailedToGetDirectoryOfMod">Silinecek modun klasörü alınamadı.</sys:String>
+    <sys:String x:Key="ErrorFailedToGetDirectoryOfApplication">Silinecek uygulamanın klasörü alınamadı.</sys:String>
+    <sys:String x:Key="ErrorLoaderNotFound">bulunamadı. Bunun nedeni antivirüs yazılımının dosyayı silmesi veya GitHub deposundaki uyumluluğu bozan değişiklikler olabilir.</sys:String>
+    <sys:String x:Key="ErrorFailedToStartProcess">İşlem başlatılamadı. Bu genellikle şu üç nedenden birinden kaynaklanır:&#x0a;- EXE yolu hatalı (uygulamayı taşımış olabilir misiniz?)&#x0a;- Program yönetici olarak çalışacak şekilde ayarlanmış (sağ tık -&gt; özellikler), ancak Reloaded kullanıcı modunda çalışıyor.&#x0a;- Antivirüs gibi yazılımların müdahalesi. Günlüklerinizi kontrol edin.&#x0a;Windows tarafından döndürülen hata: </sys:String>
+    <sys:String x:Key="ErrorDllInjectionFailed">Uygulama işlemine DLL enjekte edilemedi.</sys:String>
+    <sys:String x:Key="ErrorPathToApplicationInvalid">Reloaded bu programın EXE dosyasını bulamıyor.&#x0a;`Uygulamayı Düzenle` -&gt; `Güncelle` bölümünden yolu güncellemeyi deneyin.&#x0a;Bu durum genellikle şu nedenlerle oluşur:&#x0a;- Uygulama klasörünü taşıdınız.&#x0a;- Güncelleme sonrasında uygulama klasörü taşındı (GamePass/UWP ile olabilir).</sys:String>
+    <sys:String x:Key="ErrorCheckUpdatesFailed">Güncellemeler denetlenemedi. GitHub istek sınırına takılmış veya internet bağlantınız kesilmiş olabilir.</sys:String>
+    <sys:String x:Key="ErrorGetProcAddress32Failed">Uyarı: Muhtemelen .NET Core'un x86 sürümü eksik. 32 bit uygulamalar çalışmayacaktır.&#x0a;Lütfen indirme sayfasındaki gereksinimleri yeniden kontrol edin.&#x0a;Asıl hata: x86 için GetProcAddress adresi alınamadı.</sys:String>
+
+    <sys:String x:Key="AsiLoaderInstall">ASI Loader'ı Kur</sys:String>
+    <sys:String x:Key="AsiLoaderDialogTitle">ASI Loader Kurulumu</sys:String>
+    <sys:String x:Key="AsiLoaderDialogDescription">Reloaded'ın bir başlatıcı veya kısayol kullanmadan otomatik başlatılmasını istiyorsanız ThirteenAG tarafından geliştirilen Ultimate ASI Loader (üçüncü taraf DLL yükleyici) kurulabilir.&#x0a;Bu yükleyiciyi kurmak ister misiniz?</sys:String>
+    <sys:String x:Key="AsiLoaderDialogLoaderDeployed">ASI Loader şu konuma başarıyla kuruldu: </sys:String>
+    <sys:String x:Key="AsiLoaderDialogBootstrapperDeployed">Reloaded Bootstrapper şu konuma kuruldu: </sys:String>
+    <sys:String x:Key="ErrorAsiNotSupported">Ultimate ASI Loader eklemek için uyumlu DLL adı bulunamadı.</sys:String>
+
+    <sys:String x:Key="MissingDependenciesTitle">Eksik Gereksinimler</sys:String>
+    <sys:String x:Key="MissingDependenciesText">Reloaded'ı çalıştırmak için gereken bazı bileşenler sisteminizde eksik görünüyor. Başlatıcı aşağıdaki eksik gereksinimleri tespit etti:</sys:String>
+    <sys:String x:Key="MissingDependenciesText2">Lütfen yukarıda belirtilen gereksinimleri indirin ve pencereyi kapatın.</sys:String>
+
+    <sys:String x:Key="AppCategoryMain">Ana</sys:String>
+    <sys:String x:Key="AppCategoryActions">Eylemler</sys:String>
+    <sys:String x:Key="AppCategoryProcesses">İşlemler</sys:String>
+    <sys:String x:Key="AppCategorySummary">Özet</sys:String>
+
+    <sys:String x:Key="LoaderSettingsTwitter">Bana Tweet Gönder</sys:String>
+    <sys:String x:Key="LoaderSettingsDonate">GitHub'da Bana Sponsor Ol</sys:String>
+    <sys:String x:Key="LoaderSettingsDiscord">Discord Sunucusuna Katıl</sys:String>
+
+    <sys:String x:Key="TitleConfigNuGetFeeds">NuGet Kaynaklarını Yapılandır</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsButton">Kaynakları Yapılandır</sys:String>
+
+    <sys:String x:Key="ConfigNuGetFeedsName">Ad (Zorunlu)</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURL">URL (Zorunlu)</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsURLTooltip">Örnek: http://167.71.128.50:5000/v3/index.json</sys:String>
+    <sys:String x:Key="ConfigNuGetFeedsDescription">Açıklama</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeTitle">Wine Uyumluluk Uyarısı</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeText">Wine içinden başlatıcıyı kullanarak bir uygulama çalıştırmaya çalışıyor görünüyorsunuz.&#x0a;Hedef uygulamanın çalışması için özel yöntemler gerekmesi veya farklı bir Wine prefix gibi yalıtım koşullarının DLL enjeksiyonunu engellemesi nedeniyle bu işlem başarısız olabilir.&#x0a;&#x0a;Wine altında çalıştırmak için ASI Loader'ı kurmanız (bkz. Uygulamayı Düzenle menüsü) ve oyunu başlatıcı dışında çalıştırmanız önerilir.&#x0a;Reloaded'ın Wine altında sık sık test edilmediğini unutmayın.</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeOk">Yine de Dene</sys:String>
+
+    <sys:String x:Key="LoaderSettingsConfigPopup">Reloaded Ayarları</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigLanguage">Dil</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigTheme">Tema</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigLog">Günlük Dosyalarını Görüntüle</sys:String>
+    <sys:String x:Key="LoaderSettingsConfigFile">Yapılandırma Dosyasını Aç</sys:String>
+
+    <sys:String x:Key="ErrorFailedToObtainPort">Uygulama çökmüş, Reloaded yüklenememiş veya zaman aşımı süresi içinde başlatılamamış olabilir.&#x0a;&#x0a;Şu işlemler yardımcı olabilir:&#x0a;- Bu hatayı kapatın, birkaç saniye bekleyin ve yeniden deneyin.&#x0a;- Uygulamanın çalışan diğer örneklerini kapatın. (Görev Yöneticisi'ni kullanın.)&#x0a;- Bilgisayarınızı yeniden başlatın.&#x0a;&#x0a;Bu bir uyarıdır. Uygulamanız beklendiği gibi çalışıyorsa bu mesajı yok sayabilirsiniz.&#x0a;&#x0a;Asıl hata:&#x0a;İşlem içinde çalışan Reloaded örneğinin bağlantı noktası alınamadı.</sys:String>
+
+    <sys:String x:Key="BootstrapperUpdateTitle">Bootstrapper Güncellendi</sys:String>
+    <sys:String x:Key="BootstrapperUpdateDescription">Reloaded Bootstrapper aşağıdaki programlar için otomatik güncellendi:&#x0a;{0}</sys:String>
+
+    <sys:String x:Key="BootstrapperCreateDirectoryError">Bootstrapper kurulumu için klasör oluşturulamadı. Reloaded'ı yönetici olarak çalıştırmayı deneyin.&#x0a;Asıl hata: {0}</sys:String>
+
+    <sys:String x:Key="TitleFirstLaunchEx">Reloaded II Eğitim Kılavuzu</sys:String>
+
+    <sys:String x:Key="FirstLaunchExStepAddApplication">Uygulama Ekle</sys:String>
+    <sys:String x:Key="FirstLaunchExStepExtractMod">Mod Arşivlerini Aç</sys:String>
+    <sys:String x:Key="FirstLaunchExStepConfigureMod">Modları Yapılandır</sys:String>
+    <sys:String x:Key="FirstLaunchExStepEnableMod">Modları Etkinleştir</sys:String>
+    <sys:String x:Key="FirstLaunchExStepComplete">Tamamla</sys:String>
+
+    <sys:String x:Key="FirstLaunchExAddApplicationButton">Uygulama Ekle</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationSkipTutorialButton">Eğitimi Atla</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationSkipStepButton">Bu Adımı Atla</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription1">Reloaded'ı kullanmaya başlamak için ilk adım, modlamak istediğiniz uygulamayı eklemektir.&#x0a;(Normalde başlatıcının sol altındaki + düğmesiyle yapılır.)</sys:String>
+    <sys:String x:Key="FirstLaunchExAddApplicationDescription2">Yukarıda gösterildiği gibi başlatıcıyı değil, uygulamanın kendisini eklediğinizden emin olun.</sys:String>
+
+    <sys:String x:Key="FirstLaunchExAddModExtractDescription1">Mod yüklemek için indirdiğiniz ZIP arşivini 'Mods' klasörüne çıkarmanız yeterlidir.</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractDescription2">İndirilen mod tek bir klasör içermiyorsa kendiniz bir klasör oluşturun.</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractPrev">Önceki</sys:String>
+    <sys:String x:Key="FirstLaunchExAddModExtractNext">Sonraki</sys:String>
+
+    <sys:String x:Key="FirstLaunchExConfigureModDescription1">Bazı modlar ek yapılandırma seçeneklerini destekler ve ayarları değiştirmenize olanak tanır.</sys:String>
+    <sys:String x:Key="FirstLaunchExConfigureModDescription2">Mod seçildiğinde "Modu Yapılandır" düğmesi kırmızıysa yapılandırılabilir.</sys:String>
+
+    <sys:String x:Key="FirstLaunchExEnableModDescription1">Modları etkinleştirmek için kare onay kutusuna basmanız yeterlidir.</sys:String>
+    <sys:String x:Key="FirstLaunchExEnableModDescription2">Onay kutusu kırmızıysa mod etkin, griyse devre dışıdır.</sys:String>
+
+    <sys:String x:Key="FirstLaunchExCompleteDescription1">Reloaded II'yi denediğiniz için teşekkür ederiz.</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription2">Aşağıdaki bağlantılar da işinize yarayabilir:</sys:String>
+    <sys:String x:Key="FirstLaunchExCompleteDescription3">Bu bağlantıları [Mod Yükleyici Ayarları] bölümünde de bulabilirsiniz.</sys:String>
+
+    <sys:String x:Key="ModManagerContextPublish">Yayımla</sys:String>
+    <sys:String x:Key="ModManagerContextEdit">Düzenle</sys:String>
+    <sys:String x:Key="ModManagerContextEditMod">Modu Düzenle</sys:String>
+    <sys:String x:Key="ModManagerContextEditModUser">Kullanıcı Yapılandırması</sys:String>
+    <sys:String x:Key="ModManagerContextOpenFolder">Klasörü Aç</sys:String>
+    <sys:String x:Key="ModManagerContextConfigure">Yapılandır</sys:String>
+
+    <sys:String x:Key="TitleEditModDialog">Modu Düzenle</sys:String>
+
+    <sys:String x:Key="ErrorUnableDetermineVersion">Hata: Reloaded II sürümü belirlenemedi</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUseTitle">Kullanımda Olan Modlar</sys:String>
+    <sys:String x:Key="ErrorUpdateModInUse">Şu anda Reloaded ile çalışan uygulamalarınız var.&#x0a;Güncellemeler indirilecek ancak tüm uygulamalar kapatılana kadar uygulanmayacak.</sys:String>
+    <sys:String x:Key="ErrorMissingDependency">Eksik Bağımlılıklar</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionTitle">Geçersiz Sürüm Numarası</sys:String>
+    <sys:String x:Key="ErrorInvalidSemanticVersionDescription">Modun kullandığı sürüm numarası `Semantic Versioning` (SemVer) standardına uymuyor ve güncelleme alamaz.&#x0a;Lütfen modunuzun sürüm numarasını SemVer standardına uygun şekilde güncelleyin.&#x0a;Örnekler: `1.0.0`, `1.0`, `2.0-alpha`.</sys:String>
+
+    <sys:String x:Key="CreateModDialogDescriptionShort">Açıklama</sys:String>
+
+    <sys:String x:Key="EditModStepMain">Genel Bilgiler</sys:String>
+    <sys:String x:Key="EditModStepDependencies">Mod Bağımlılıkları</sys:String>
+    <sys:String x:Key="EditModStepUpdates">Güncelleme Desteği</sys:String>
+    <sys:String x:Key="EditModStepComplete">Son Adımlar</sys:String>
+
+    <sys:String x:Key="EditModDependenciesDescription">Modunuzun çalışması için başka bir mod gerekiyorsa burada seçin.</sys:String>
+
+    <sys:String x:Key="EditModUniversalMod">Evrensel Mod</sys:String>
+    <sys:String x:Key="EditModUniversalModDescription">Etkinleştirilirse mod varsayılan olarak her uygulamada görünür.</sys:String>
+
+    <sys:String x:Key="EditModLibrary">Kitaplık</sys:String>
+    <sys:String x:Key="EditModLibraryDescription">Etkinleştirilirse mod kullanıcı tarafından doğrudan etkinleştirilemez. Yalnızca bağımlılık olarak etkinleştirilebilir.</sys:String>
+
+    <sys:String x:Key="EditModSave">Kaydet</sys:String>
+    <sys:String x:Key="EditModAppsDescription">Modun kullanılabileceği uygulamaları seçin.</sys:String>
+
+    <sys:String x:Key="EditModMetadataNameTooltip">JSON meta veri dosyasının adı.&#x0a;Bunu yalnızca aynı sayfada birden fazla mod yayımlıyorsanız değiştirin.</sys:String>
+
+    <sys:String x:Key="ConfigureModsRightClickAdvice">Daha Fazla Seçenek İçin Moda Sağ Tıklayın</sys:String>
+
+    <sys:String x:Key="CreateModDialogIdDesc1">Benzersiz Mod Kimliği</sys:String>
+    <sys:String x:Key="CreateModDialogIdDesc2">Lütfen "game.type.name" biçiminde benzersiz bir mod kimliği belirleyin. Örneğin: `sonicheroes.skins.seasidehillmidnight`. Kimlik belirlendikten sonra değiştirilemez.</sys:String>
+
+    <sys:String x:Key="AddAppId">Uygulama Kimliği</sys:String>
+    <sys:String x:Key="AddAppUpdate">Güncelle</sys:String>
+
+    <sys:String x:Key="AddAppWarningTitle">Yürütülebilir Dosya Adı Uyarısı</sys:String>
+    <sys:String x:Key="AddAppWarning">Eklenen uygulamanın yürütülebilir dosya adı orijinalinden farklı.&#x0a;Başka bir uygulama ekliyorsanız yeni uygulama olarak eklemelisiniz.</sys:String>
+
+    <sys:String x:Key="TitlePublishModDialog">Modu Yayımla</sys:String>
+    <sys:String x:Key="PublishModTarget">Yayımlama Hedefi</sys:String>
+    <sys:String x:Key="PublishModTargetTooltip">Yayımlayacağınız platforma özel bir seçenek yoksa varsayılanı kullanın.&#x0a;Belirli davranışları etkinleştirir veya devre dışı bırakır.</sys:String>
+
+    <sys:String x:Key="PublishModExcludeTitle">Dosyaları Hariç Tut</sys:String>
+    <sys:String x:Key="PublishModIncludeTitle">Dosyaları Dahil Et</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsTitle">Önceki Sürümler</sys:String>
+    <sys:String x:Key="PublishModPreviousVersionsDescription">Modunuzun önceki sürümlerini belirtmek, eski bir sürümden yeni sürüme geçerken indirme boyutunu azaltan fark sıkıştırmasının kullanılmasını sağlar.</sys:String>
+    <sys:String x:Key="PublishModButtonText">Yayımla</sys:String>
+
+    <sys:String x:Key="PublishSelectConfigTitle">Bir mod yapılandırması (ModConfig.json) seçin.</sys:String>
+    <sys:String x:Key="PublishSelectConfigFileTypeName">Yapılandırma</sys:String>
+
+    <sys:String x:Key="ErrorInvalidModConfigTitle">Geçersiz Mod Yapılandırması</sys:String>
+    <sys:String x:Key="ErrorInvalidModConfigDescription">Belirtilen dosya geçerli bir mod yapılandırması değil.</sys:String>
+
+    <sys:String x:Key="ErrorNewerModConfigVersionTitle">Geçersiz Mod Sürümü</sys:String>
+    <sys:String x:Key="ErrorNewerModConfigVersionDescription">Belirtilen mod sürümü yayımlanacak sürümden daha yeni veya onunla aynı.</sys:String>
+
+    <sys:String x:Key="ErrorPublishModIdMismatch">Geçersiz Mod Kimliği</sys:String>
+    <sys:String x:Key="ErrorPublishModIdDescription">Belirtilen mod kimliği yayımlanacak modun kimliğiyle eşleşmiyor.</sys:String>
+
+    <sys:String x:Key="PublishModRegexSectionTitle">Dosya Dahil Etme ve Hariç Tutma</sys:String>
+    <sys:String x:Key="PublishModRegexTitle">Düzenli İfade</sys:String>
+    <sys:String x:Key="PublishModRegexTest">Düzenli İfadeleri Test Et</sys:String>
+    <sys:String x:Key="PublishModRegexDialogTitle">Hariç Tutulan Dosyalar</sys:String>
+
+    <sys:String x:Key="PublishModCompSettings">Sıkıştırma Ayarları</sys:String>
+    <sys:String x:Key="PublishModCompLevel">Sıkıştırma Düzeyi</sys:String>
+    <sys:String x:Key="PublishModCompMethod">Sıkıştırma Yöntemi</sys:String>
+
+    <sys:String x:Key="PublishOutputFolder">Çıktı Klasörü</sys:String>
+    <sys:String x:Key="PublishSetOutputFolder">Çıktı Klasörünü Belirle</sys:String>
+
+    <sys:String x:Key="PublishAutoDelta">Otomatik Fark Paketi</sys:String>
+    <sys:String x:Key="PublishAutoDeltaDescription">Son sürümden otomatik olarak bir fark paketi oluşturur.&#x0a;Çıktı yolunu mevcut bir yayının konumuna ayarlamayı unutmayın.</sys:String>
+
+    <sys:String x:Key="PublishAutoDeltaWarningTitle">Otomatik Fark Paketi Uyarısı</sys:String>
+    <sys:String x:Key="PublishAutoDeltaWarningDescriptionFormat">Çıktı klasöründe yayın meta veri dosyası bulunamadı. Gerekirse dosyanın adını değiştirmeyi deneyin.&#x0a;Beklenen dosya adı: {0}.</sys:String>
+
+    <sys:String x:Key="PublishFileNameTooltip">Oluşturulan .7z paket dosyasının adı</sys:String>
+
+    <sys:String x:Key="PublishModTutorial">Yayımlama Kılavuzu</sys:String>
+    <sys:String x:Key="PublishModWarningTitle">Güncelleme Desteği Uyarısı</sys:String>
+    <sys:String x:Key="PublishModWarningDescription">Bu mod için güncelleme ayarları yapılandırılmamış, dolayısıyla otomatik güncelleme alamaz.&#x0a;Yayımlamadan önce bunu nasıl ayarlayacağınızı öğrenmek için `Yayımlama Kılavuzu` bölümüne bakın.</sys:String>
+
+    <sys:String x:Key="TitleEditModUserConfig">Kullanıcı Yapılandırmasını Düzenle</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleases">Beta Sürümlerine İzin Ver</sys:String>
+    <sys:String x:Key="TitleEditModUserAllowPrereleasesTooltip">Modun erken sürümlerinin indirilmesini sağlar.</sys:String>
+
+    <sys:String x:Key="PackageDownloaderDownloadCompleteTitle">İndirme Tamamlandı</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadCompleteDescription">İndirme tamamlandı.&#x0a;Bu pencere birkaç saniye içinde otomatik olarak kapanacak.</sys:String>
+    <sys:String x:Key="PackageDownloaderDownloadingDependencies">Bağımlılıklar İndiriliyor</sys:String>
+
+    <sys:String x:Key="DownloadPackagesSource">Kaynak</sys:String>
+    <sys:String x:Key="DownloadPackagesAll">Tüm Kaynaklar</sys:String>
+
+    <sys:String x:Key="AddAppModSources">Mod İndirme Kaynakları</sys:String>
+
+    <sys:String x:Key="AddAppRepoBadExecutable">Yanlış Yürütülebilir Dosya</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashTitle">Karma Değeri Uyuşmazlığı</sys:String>
+    <sys:String x:Key="AddAppRepoWarningTitle">Uyarı</sys:String>
+
+    <sys:String x:Key="AddAppRepoBadHashDesc1">Uygulamanın ana yürütülebilir dosyası (EXE) değiştirilmiş veya beklenenden farklı bir sürümde.</sys:String>
+    <sys:String x:Key="AddAppRepoBadHashDesc2">Tüm modların beklendiği gibi çalışmayabileceğini unutmayın. Yukarıdaki mesajda varsa belirtilen yönergeleri uygulamayı düşünün.</sys:String>
+
+    <sys:String x:Key="AddAppRepoWarningDesc1">Oyun klasörünün hızlı taraması şu uyarıları verdi:</sys:String>
+    <sys:String x:Key="AddAppRepoWarningDesc2">Tüm modların beklendiği gibi çalışmayabileceğini unutmayın. Yukarıdaki uyarılarda varsa belirtilen yönergeleri uygulamayı düşünün.</sys:String>
+
+    <sys:String x:Key="AddAppRepoSelectGameDialogTitle">Oyun Seç</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc1">Lütfen aşağıdaki listeden istediğiniz oyunu seçip Tamam düğmesine basın.</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogDesc2">Oyununuz listede yoksa 'Diğer Oyun' seçeneğini seçin.</sys:String>
+    <sys:String x:Key="AddAppRepoSelectGameDialogOtherGame">Diğer Oyun</sys:String>
+
+    <sys:String x:Key="AddAppRepoTestButton">Topluluk Yapılandırmasını Test Et</sys:String>
+    <sys:String x:Key="AddAppRepoTestButtonTooltip">Uygulama yapılandırmasını Reloaded Topluluk İndeksi'ne göndermeden önce test etmenizi sağlar.</sys:String>
+
+    <sys:String x:Key="AddAppRepoTestJsonSelectTitle">JSON Dosyası Seç</sys:String>
+    <sys:String x:Key="AddAppRepoTestJsonSelectFilter">Topluluk Yapılandırması</sys:String>
+
+    <sys:String x:Key="ApplicationTooltipCreateShortcutDescription">Uygulamayı Reloaded başlatıcısı olmadan modlu şekilde başlatabilecek bir kısayol kaydeder.</sys:String>
+    <sys:String x:Key="ApplicationTooltipLoadModSet">Etkin modların listesini yükler.</sys:String>
+    <sys:String x:Key="ApplicationTooltipSaveModSet">Mevcut etkin mod listesini kaydeder.</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessSysDescription">Reloaded'ı bu programa yüklemek için beni kullanabilirsiniz.</sys:String>
+    <sys:String x:Key="ApplicationTooltipProcessRldDescription">Şu anda yüklü modları yönetmek için beni kullanabilirsiniz.</sys:String>
+
+    <sys:String x:Key="ConfigureModDialogReset">Sıfırla</sys:String>
+    <sys:String x:Key="ConfigureModDialogResetDescription">Yapılandırma değerlerini varsayılanlara sıfırlar.&#x0a;[Not: Mod desteği gerektirir; çalışmazsa yapımcıyla iletişime geçin.]</sys:String>
+
+    <sys:String x:Key="LoaderSettingsControllerBtn">Oyun Kumandası Yapılandırması</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneName">Yok</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNoneDescription">Hiçbir işlem yapmaz.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnUpName">Yukarı</sys:String>
+    <sys:String x:Key="ConfiguratorBtnUpDescription">Menüde yukarı gider.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDownName">Aşağı</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDownDescription">Menüde aşağı gider.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLeftName">Sol</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLeftDescription">Menüde sola gider.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnRightName">Sağ</sys:String>
+    <sys:String x:Key="ConfiguratorBtnRightDescription">Menüde sağa gider.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnAcceptName">Onayla</sys:String>
+    <sys:String x:Key="ConfiguratorBtnAcceptDescription">Bir düğmeye basar.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDeclineName">Reddet</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDeclineDescription">Ana pencere dışındaki geçerli pencereyi kapatır.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnNextPageName">Sonraki Sayfa</sys:String>
+    <sys:String x:Key="ConfiguratorBtnNextPageDescription">Birden çok sayfalı pencerelerde sonraki sayfaya geçer.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnLastPageName">Önceki Sayfa</sys:String>
+    <sys:String x:Key="ConfiguratorBtnLastPageDescription">Birden çok sayfalı pencerelerde önceki sayfaya geçer.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnIncrementName">Artır</sys:String>
+    <sys:String x:Key="ConfiguratorBtnIncrementDescription">Bir arayüz öğesinin mevcut değerini 1 artırır.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnDecrementName">Azalt</sys:String>
+    <sys:String x:Key="ConfiguratorBtnDecrementDescription">Bir arayüz öğesinin mevcut değerini 1 azaltır.</sys:String>
+
+    <sys:String x:Key="ConfiguratorBtnModifierName">Değiştirici</sys:String>
+    <sys:String x:Key="ConfiguratorBtnModifierDescription">Bazı arayüz öğelerinde alternatif davranışlar sağlar.&#x0a;Örneğin Mod+Yukarı, mod sırasını değiştirmek için kullanılabilir.</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightName">Menü Sol/Sağ [Analog Çubuk]</sys:String>
+    <sys:String x:Key="ConfiguratorStickHorizontalStickToLeftRightDescription">Menüde sola/sağa gider.</sys:String>
+
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownName">Menü Yukarı/Aşağı [Analog Çubuk]</sys:String>
+    <sys:String x:Key="ConfiguratorStickVerticalStickToUpDownDescription">Menüde yukarı/aşağı gider.</sys:String>
+
+    <sys:String x:Key="ConfiguratorCustomStringMainConfig">Ana Yapılandırma</sys:String>
+    <sys:String x:Key="ConfiguratorCustomStringTrigger">Tetik</sys:String>
+    <sys:String x:Key="ConfiguratorCustomStringTriggerDescription">Kumandanın tetiğine atama yapıyorsanız bunu kullanın.</sys:String>
+    <sys:String x:Key="ConfiguratorCustomStringWindowName">Reloaded Oyun Kumandası Yapılandırması</sys:String>
+
+    <sys:String x:Key="ConfiguratorLibCustomStringNew">Yeni</sys:String>
+    <sys:String x:Key="ConfiguratorLibCustomStringBindButtonTooltip">Sol tıklama yeni bir atama yapar.&#x0a;Orta tıklama değeri tersine çevirir.&#x0a;Sağ tıklama atamayı temizler!&#x0a;! işareti değerin tersine çevrildiğini gösterir.</sys:String>
+    <sys:String x:Key="ConfiguratorLibCustomStringTimeout">Zaman Aşımı</sys:String>
+
+    <sys:String x:Key="ReloadedProcessNoticeNew">'Reloaded II Server' modunun LiteNetLib sunucusuyla etkinleştirilmesini gerektirir.&#x0a;'Mod İndir' menüsünden indirebilirsiniz.</sys:String>
+    <sys:String x:Key="ReloadedProcessState">Durum</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeTitleNew">Wine Üzerinden Başlatma</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeHeader_1">Reloaded'ı Wine içinde çalıştırıyorsunuz. Lütfen şunları dikkate alın:</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_1">- Oyun bu başlatıcıyla aynı Wine/Proton yapılandırmasını kullanarak başlatılacak.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_2_1">- Bunu istemiyorsanız</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_2_2">ASI Loader'ı Kurun</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_2_3">ve oyununuzu başlatıcı dışından çalıştırın.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeList_3_1">- Proton ile çalıştırmak bazı ek adımlar gerektirir,</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeList_3_2">lütfen wiki'ye bakın.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeFooter_1">Ek yardım için lütfen</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeFooter_2">wiki'ye başvurun</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeFooter_3">veya</sys:String>
+    <sys:String x:Key="WineCompatibilityNoticeFooter_4">GitHub'da bir sorun bildirimi açın.</sys:String>
+
+    <sys:String x:Key="WineCompatibilityNoticeOkNew">Uygulamayı Başlat</sys:String>
+
+    <sys:String x:Key="PublishModReadmeSectionTitle">Beni Oku ve Değişiklik Günlüğü</sys:String>
+    <sys:String x:Key="PublishModReadmeSet">Beni Oku Dosyasını Belirle</sys:String>
+    <sys:String x:Key="PublishModReadmeTooltip">Bir beni oku dosyası belirtmenizi sağlar.&#x0a;Beni oku dosyaları Mod İndir menüsündeki açıklama için kullanılır.&#x0a;Markdown kullanır. Daha fazla bilgi için wiki'ye bakın.</sys:String>
+    <sys:String x:Key="PublishModChangelogSet">Değişiklik Günlüğü Dosyasını Belirle</sys:String>
+    <sys:String x:Key="PublishModChangelogTooltip">Bir değişiklik günlüğü dosyası belirtmenizi sağlar.&#x0a;Değişiklik günlükleri Mod İndir menüsünde ve güncelleme penceresinde kullanılır.&#x0a;Markdown kullanır. Daha fazla bilgi için wiki'ye bakın.</sys:String>
+
+    <sys:String x:Key="PublishSelectMarkdownTitle">Bir Markdown dosyası (*.md) seçin.</sys:String>
+    <sys:String x:Key="PublishSelectMarkdownTypeName">Markdown Dosyası</sys:String>
+
+    <sys:String x:Key="DownloadsMenuNuGetButton">NuGet</sys:String>
+
+    <sys:String x:Key="DownloadsPackagePreviewProjectUrl">Proje Sitesi</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewClose">Kapat</sys:String>
+
+    <sys:String x:Key="DownloadsPackageSourceTooltip">Mod kaynağı: </sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewModAuthorTooltip">Mod Yazarı</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewLikeCountTooltip">Beğeni Sayısı</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewDownloadCountTooltip">İndirme Sayısı</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewViewCountTooltip">Görüntülenme Sayısı</sys:String>
+    <sys:String x:Key="DownloadsPackagePreviewPublishDateTooltip">Son Güncelleme</sys:String>
+
+    <sys:String x:Key="RuntimeUpdateRequiredTitle">Çalışma Zamanı Güncellemesi Gerekli</sys:String>
+    <sys:String x:Key="RuntimeUpdateRequiredDescription">Reloaded'ın yeni sürümü için .NET çalışma zamanı güncellemesi gerekiyor.&#x0a;Bu pencere kapatıldıktan sonra indirme başlayacak.&#x0a;Kullanıcı Hesabı Denetimi penceresi açılırsa lütfen 'Evet' düğmesine basın.</sys:String>
+
+    <sys:String x:Key="UpdateModModName">Mod Adı</sys:String>
+    <sys:String x:Key="UpdateModModEnabled">Güncellensin mi?</sys:String>
+
+    <sys:String x:Key="CreateModDialogProjectUrl">Web Sitesi</sys:String>
+    <sys:String x:Key="CreateModDialogProjectUrlPlaceholder">Web sitenizin tam HTTP(S) bağlantısı.</sys:String>
+    <sys:String x:Key="ModManagerContextVisitWebsite">Web Sitesini Ziyaret Et</sys:String>
+
+    <sys:String x:Key="CreateModPackTitle">Mod Paketi Oluştur</sys:String>
+
+    <sys:String x:Key="CreateModPackNote1">Yalnızca Uygun Modlar Gösterilir.</sys:String>
+    <sys:String x:Key="CreateModPackNote2">Uygun Olmaları İçin Modların Güncellemeleri Desteklemesi Gerekir.</sys:String>
+
+    <sys:String x:Key="EditModPackTitle">Mod Paketini Düzenle</sys:String>
+
+    <sys:String x:Key="ModPackImageTooltip">Not: Bu görsel galerisindeki resimler kurulum sırasında uygun şekilde boyutlandırılacaktır.&#x0a;En-boy oranı sorunlarını yok sayabilirsiniz.</sys:String>
+    <sys:String x:Key="ModPackImageCaption">Görsel Açıklaması</sys:String>
+
+    <sys:String x:Key="ModPackClickToEdit">Düzenlemek İçin Tıklayın</sys:String>
+    <sys:String x:Key="ModPackAddMod">Mod Ekle</sys:String>
+    <sys:String x:Key="ModPackAddModTooltip">Bu pakete bir mod ekler.&#x0a;Not: Çok sayıda görsel varsa bu işlem biraz zaman alabilir.</sys:String>
+    <sys:String x:Key="ModPackRemoveMod">Modu Kaldır</sys:String>
+    <sys:String x:Key="ModPackRemoveModTooltip">Son seçilen modu bu paketten kaldırır.</sys:String>
+    <sys:String x:Key="ModPackSaveReadme">Beni Oku Dosyasını Kaydet</sys:String>
+    <sys:String x:Key="ModPackSetReadme">Beni Oku Dosyasını Belirle</sys:String>
+    <sys:String x:Key="ModPackAddImage">Görsel Ekle</sys:String>
+    <sys:String x:Key="ModPackRemoveImage">Görseli Kaldır</sys:String>
+    <sys:String x:Key="ModPackLoadExisting">Mevcut Paketi Yükle</sys:String>
+    <sys:String x:Key="ModPackSavePack">Paketi Kaydet</sys:String>
+    <sys:String x:Key="ModPackPreviewPack">Paketi Test Et</sys:String>
+
+    <sys:String x:Key="ModPackPackNameTooltip">Kurulum sırasında gösterilecek paket adı.</sys:String>
+    <sys:String x:Key="ModPackModNameTooltip">Kurulum sırasında gösterilecek mod adı.</sys:String>
+    <sys:String x:Key="ModPackImageAddTooltip">Pakete/moda yeni bir görsel ekler.</sys:String>
+    <sys:String x:Key="ModPackImageRemoveTooltip">Şu anda görüntülenen görseli kaldırır.</sys:String>
+    <sys:String x:Key="ModPackDescriptionTooltip">Modun kısa açıklaması (1 satır). Kullanıcı kurulum sırasında açıklamayı genişleterek beni oku dosyasının tamamını görebilir.</sys:String>
+    <sys:String x:Key="ModPackSetReadmeTooltip">Modun/paketin tam beni oku dosyasını günceller. Beni oku dosyası Markdown (.md) biçimini kullanır.</sys:String>
+    <sys:String x:Key="ModPackSaveReadmeTooltip">Beni oku dosyasını harici bir düzenleyicide düzenlemek için diske kaydeder.</sys:String>
+
+    <sys:String x:Key="ModPackSelectExistingTitle">Bir mod paketi (*.r2pack) seçin.</sys:String>
+    <sys:String x:Key="ModPackSelectExistingTypeName">R2 Mod Paketi</sys:String>
+    <sys:String x:Key="ErrorFailedToSaveModPack">Mod Paketi Kaydedilemedi</sys:String>
+
+    <sys:String x:Key="InstallModPackTitle">Mod Paketini Yükle</sys:String>
+
+    <sys:String x:Key="InstallModPackEnableHeader">İndirilsin mi?</sys:String>
+    <sys:String x:Key="InstallModPackErrorDownloadFail">Bazı Modlar İndirilemedi</sys:String>
+
+    <sys:String x:Key="InstallModPackConfirmTitle">İndirilecek Modları Onayla</sys:String>
+    <sys:String x:Key="InstallModPackConfirmDescription">İstediğiniz modları tekrar kontrol ettikten sonra indirmeyi başlatın.</sys:String>
+
+    <sys:String x:Key="InstallModPackDownloading">{0} indiriliyor...</sys:String>
+    <sys:String x:Key="InstallModPackStart">Başlat</sys:String>
+    <sys:String x:Key="InstallModPackPrevious">Geri Dön</sys:String>
+    <sys:String x:Key="InstallModPackStartDownload">İndirmeyi Başlat</sys:String>
+    <sys:String x:Key="InstallModPackInstall">Bu Modu Yükle</sys:String>
+    <sys:String x:Key="InstallModPackSkip">Bu Modu Atla</sys:String>
+
+    <sys:String x:Key="ImageSelectorTitle">Bir görsel seçin.</sys:String>
+    <sys:String x:Key="ImageSelectorFilter">Görsel</sys:String>
+
+    <sys:String x:Key="DownloadPackagesSettingHide">Yüklü Olanları Gizle</sys:String>
+    <sys:String x:Key="DownloadPackagesSettingHideTooltip">Mümkün olduğunda zaten yüklü olan modları gizler.&#x0a;(NuGet ve 'Yayımla' ile dışa aktarılan modları destekler.)</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationCantReadSymlink">Dosyanın nihai yolu çözümlenemedi (sembolik bağlantı algılama).&#x0a;DRM veya olağandışı dosya sistemi davranışları nedeniyle bir hatayla karşılaşabilirsiniz. Böyle bir durumda yükleyici günlüğündeki EXE yolunu Uygulamayı Düzenle menüsüne kopyalayın.</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGetVersionInfo">Diskten dosya meta verileri/sürüm bilgileri alınamadı. Bilgileri olabildiğince tahmin etmeye çalışacağız.&#x0a;(Bunun CIFS gibi bazı olağandışı ağ yapılandırmalarında gerçekleşebildiği bildirilmiştir. Başka bir sorun yaşamazsanız sorun olmamalıdır.)</sys:String>
+
+    <sys:String x:Key="ErrorAddApplicationGeneral">Uygulama eklenirken hatalar oluştu. Olası nedenler:&#x0a;- Olağandışı dosya sistemi yapılandırması (ağ paylaşımındaki uygulama vb.)&#x0a;- Dosyaya erişim yetkiniz yok.&#x0a;- Microsoft DRM (MS Store/GamePass).</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFile">EXE dosyası okunamadı. Bunun çeşitli nedenleri olabilir:&#x0a;- DRM (Microsoft Store/GamePass).&#x0a;- EXE dosyasına erişim yetkiniz yok.&#x0a;- Dosya özgün konumundan taşınmış.&#x0a;&#x0a;MS Store/GamePass kullanıyorsanız DRM (şifreleme!!) nedeniyle büyük olasılıkla ASI LOADER'I ELLE KURMANIZ ve ardından programı doğrudan EXE üzerinden başlatmanız gerekir. Daha fazla yardım için topluluğunuza danışın.&#x0a;&#x0a;DRM: 'Hiçbir şeye sahip olmayacaksınız ve mutlu olacaksınız.'&#x0a;</sys:String>
+
+    <sys:String x:Key="ErrorCantReadExeFileAsiLoaderDeploy">ASI Loader'ın kurulup kurulamayacağını belirlemek için EXE dosyası okunamadı. Bunun çeşitli nedenleri olabilir:&#x0a;- DRM (Microsoft Store/GamePass).&#x0a;- EXE dosyasına erişim yetkiniz yok.&#x0a;- Dosya özgün konumundan taşınmış.&#x0a;</sys:String>
+
+    <sys:String x:Key="InstallModPackInstallAll">Tüm Modları Yükle</sys:String>
+
+    <sys:String x:Key="SearchOptionSortNone">Yok</sys:String>
+    <sys:String x:Key="SearchOptionSortLastModified">Son Değişiklik</sys:String>
+    <sys:String x:Key="SearchOptionSortDownloads">İndirmeler</sys:String>
+    <sys:String x:Key="SearchOptionSortLikes">Beğeniler</sys:String>
+    <sys:String x:Key="SearchOptionSortViews">Görüntülenmeler</sys:String>
+
+    <sys:String x:Key="SearchOptionAscending">Artan</sys:String>
+    <sys:String x:Key="SearchOptionDescending">Azalan</sys:String>
+
+    <sys:String x:Key="SearchOptionsTooltip">Bazı indirme kaynaklarının sıralama/filtreleme işlemlerini desteklemeyebileceğini unutmayın.</sys:String>
+
+    <sys:String x:Key="PublishModNotice">Yayımlama aracı tarafından oluşturulan TÜM dosyaları yükleyin, hiçbirinin adını değiştirmeyin.&#x0a;Daha fazla bilgi için kılavuza bakın. Doğru yayımlama hedefini seçmeyi unutmayın.</sys:String>
+
+    <sys:String x:Key="EditModAddTag">Etiket Ekle</sys:String>
+    <sys:String x:Key="EditModSelectPresetTagTooltip">Hazır Bir Etiket Seçin</sys:String>
+    <sys:String x:Key="EditModAddTagPlaceHolder">Etiket Adı (veya hazır etiket seçin 👉)</sys:String>
+    <sys:String x:Key="ConfigureModsSelectTagTooltip">Etikete Göre Filtrele</sys:String>
+
+    <sys:String x:Key="AddAppWorkingDirectory">Çalışma Klasörü</sys:String>
+
+    <sys:String x:Key="PreserveDisabledModOrder">Yeniden Başlatmalarda Mod Sırasını Koru</sys:String>
+    <sys:String x:Key="PreserveDisabledModOrderTooltip">ETKİN olduğunda tüm modların sırası uygulama yeniden başlatıldığında korunur.&#x0a;DEVRE DIŞI olduğunda etkin modlar yükleme sırasıyla üstte, devre dışı modlar alfabetik sırayla altta yer alır.&#x0a;(Kullanıcı geri bildirimini değerlendirmek için varsayılan ayar 'ETKİN' olarak belirlenmiştir ancak ileride değişebilir.)</sys:String>
+
+    <sys:String x:Key="AsiLoaderGamePassAutoInstallFail">Üzgünüz, bu GamePass oyunu otomatik olarak yapılandırılamıyor. ASI Loader'ı veya başka bir ara katmanı elle kurmanız gerekir.</sys:String>
+    <sys:String x:Key="EditModDontInject">Yükleyiciyi Enjekte Etme</sys:String>
+    <sys:String x:Key="EditModDontInjectTooltip">ETKİN olduğunda yükleyiciyi enjekte etmez. Reloaded'ı ASI Loader gibi harici bir ara katman üzerinden yüklerken kullanın.&#x0a;DEVRE DIŞI olduğunda yükleyiciyi her zamanki gibi enjekte eder.</sys:String>
+
+    <sys:String x:Key="DragDropInstalledModsTitle">Sürükle ve Bırak ile Yüklenen Modlar</sys:String>
+    <sys:String x:Key="DragDropInstalledModsDescription">{0} mod yüklendi</sys:String>
+
+    <sys:String x:Key="FirstLaunchExStepInstallMod">Modları Yükle</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall1">Modları Reloaded penceresine sürükleyerek yükleyebilirsiniz.</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall_2_1">Alternatif olarak</sys:String>
+    <sys:String x:Key="FirstLaunchExDragDropInstall_2_2">Modları Elle Yükleyebilirsiniz</sys:String>
+
+    <sys:String x:Key="DownloadPackagesSettingsBtn">Arama Ayarları</sys:String>
+    <sys:String x:Key="DownloadPackagesPrevious">Önceki</sys:String>
+    <sys:String x:Key="DownloadPackagesNext">Sonraki</sys:String>
+
+    <sys:String x:Key="DeleteModDialogTitle">Modu Sil</sys:String>
+    <sys:String x:Key="DeleteModDialogDescription">{0}&#x0a;silinecek.</sys:String>
+
+    <sys:String x:Key="ProblematicPathTitle">Olası Sorunlu Yol Algılandı</sys:String>
+    <sys:String x:Key="ProblematicPathAppDescription">Seçtiğiniz uygulama OneDrive tarafından yönetilen veya ASCII dışı (özel) karakterler içeren bir klasörde bulunuyor.&#x0a;Uygulamayı "C:\Games\" gibi farklı bir konuma taşımanız önerilir.&#x0a;Uygulamanın desteklenmeyen bir konumda kullanılması modların çalışmamasına neden olabilir.&#x0a;&#x0a;Uygulamayı yine de eklemek için Tamam düğmesine basın.</sys:String>
+    <sys:String x:Key="ProblematicPathReloadedDescription">Reloaded-II, OneDrive tarafından yönetilen veya ASCII dışı (özel) karakterler içeren bir klasöre kurulduğunu algıladı.&#x0a;Reloaded-II klasörünüzü "C:\Reloaded-II\" gibi farklı bir konuma taşımanız önerilir.&#x0a;Reloaded-II'yi desteklenmeyen bir konumda tutmak modların çalışmamasına neden olabilir.</sys:String>
+    <sys:String x:Key="ProblematicPathModsDescription">Reloaded-II, mod klasörünüzün OneDrive tarafından yönetildiğini veya ASCII dışı (özel) karakterler içerdiğini algıladı.&#x0a;Mod klasörünüzü farklı bir konuma taşımanız önerilir.&#x0a;Modları desteklenmeyen bir konumda tutmak, çalıştırılırken sorunlara neden olabilir.</sys:String>
+
+    <sys:String x:Key="ErrorViewDetails">Hata ayrıntılarını görüntülemek ister misiniz?</sys:String>
+    <sys:String x:Key="ErrorStacktraceTitle">Bu bir Reloaded-II başlatıcı hatasıdır</sys:String>
+    <sys:String x:Key="ErrorStacktraceSubtitle">Sorunları https://github.com/Reloaded-Project/Reloaded-II/issues/new adresine bildirin</sys:String>
+
+    <sys:String x:Key="MissingDependenciesText3">Lütfen aşağıdaki düğmeyi kullanarak yukarıda belirtilen gereksinimleri indirin. Yönetici yetkileri gerekebilir.</sys:String>
+
+    <sys:String x:Key="Yes">Evet</sys:String>
+    <sys:String x:Key="No">Hayır</sys:String>
+
+</ResourceDictionary>
